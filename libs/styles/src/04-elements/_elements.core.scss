@@ -1,0 +1,7 @@
+// =============================================================================
+// 04-elements/_elements.core.scss
+// Barrel — forwards all element-level base styles.
+// =============================================================================
+
+@forward 'elements.typography';
+@forward 'elements.links';

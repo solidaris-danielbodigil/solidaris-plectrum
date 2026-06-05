@@ -1,0 +1,14 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.transitions.scss
+// Transition duration tokens.
+// Source: libs/plectrum/src/Plectrum_v0.6/base.ts (semantic.transitionDuration, semantic.mask)
+// =============================================================================
+
+:root {
+
+  --#{$sds-prefix}-transition-duration:       0.2s;
+  --#{$sds-prefix}-transition-duration-mask:  0.15s;
+
+}

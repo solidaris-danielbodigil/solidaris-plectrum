@@ -1,0 +1,36 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.sub-nav-shell.scss
+// Sub-nav-shell component tokens (Figma: Custom components node 1:1476)
+//
+// Structural dimensions, spacing, and sizing for the second-level navigation.
+// =============================================================================
+
+:root {
+  // Structural width — fixed, layout depends on this dimension
+  --#{$sds-prefix}-size-sub-nav-shell-width: 248px;
+
+  // Header
+  --#{$sds-prefix}-space-sub-nav-shell-header-h:  52px;   // Figma: header height
+  --#{$sds-prefix}-space-sub-nav-shell-header-px: var(--spacing-2); // 16px
+
+  // Menu sections
+  --#{$sds-prefix}-space-sub-nav-shell-section-py:   var(--spacing-1);    // 8px top/bottom
+  --#{$sds-prefix}-space-sub-nav-shell-section-px:   14px;                // 14px left/right (non-scale)
+  --#{$sds-prefix}-space-sub-nav-shell-section-gap:  var(--spacing-0-5);  // 4px between items
+  --#{$sds-prefix}-space-sub-nav-shell-section-header-py: var(--spacing-0-5); // 4px
+  --#{$sds-prefix}-space-sub-nav-shell-section-header-px: var(--spacing-1);   // 8px
+
+  // Menu items
+  --#{$sds-prefix}-space-sub-nav-shell-item-py: var(--spacing-0-5);  // 4px
+  --#{$sds-prefix}-space-sub-nav-shell-item-px: var(--spacing-1);    // 8px
+  --#{$sds-prefix}-space-sub-nav-shell-item-gap: var(--spacing-0-75); // 6px icon+label gap — Figma: gap-6px
+
+  // Icons — Fixed size required: icons collapse to 0 without explicit constraint
+  --#{$sds-prefix}-size-sub-nav-shell-item-icon: 20px;
+
+  // Footer
+  --#{$sds-prefix}-space-sub-nav-shell-footer-py: var(--spacing-6); // 48px
+  --#{$sds-prefix}-space-sub-nav-shell-footer-px: var(--spacing-2); // 16px
+}

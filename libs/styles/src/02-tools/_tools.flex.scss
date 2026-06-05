@@ -1,0 +1,11 @@
+// =============================================================================
+// 02-tools/_tools.flex.scss
+// Flex display mixin.
+// =============================================================================
+
+@mixin flex($flow, $justify: flex-start, $align: '') {
+  align-items: $align;
+  display: flex;
+  flex-flow: $flow;
+  justify-content: $justify;
+}

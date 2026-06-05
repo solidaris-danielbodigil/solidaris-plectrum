@@ -1,0 +1,42 @@
+.sbdocs-wrapper:has(.welcome-page) {
+  &.css-2di7so {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) -20.96%, #FFF 100%),
+    url('/intro-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    //background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) -20.96%, #FFF 100%), url('/intro-bg.jpg') 0px -108.836px / 100% 152.69% no-repeat;
+  }
+
+  .css-1wizkyk {
+    display: none;
+  }
+
+  h1 {
+    padding-bottom: 0;
+  }
+
+  h2 {
+    padding-top: 0;
+  }
+
+  p, .link {
+    line-height: var(--typo__line-height--sm);
+  }
+
+  .link {
+    cursor: pointer;
+    @extend .fba-link-button;
+  }
+}
+
+.welcome-page {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(auto, 1fr));
+  grid-template-rows: auto;
+}
+
+
+
+

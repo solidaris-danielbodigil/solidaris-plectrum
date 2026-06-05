@@ -1,0 +1,29 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.accordion.scss
+// PrimeNG Accordion token bridge
+//
+// Maps --p-accordion-* variables to Solidaris design tokens.
+// Scoped by BEM wrapper class so overrides apply only where intended.
+// =============================================================================
+
+// ── Sub-Nav Shell context ────────────────────────────────────────────────────
+// Design ref: Figma IRkr21rHS0w7rI0bgrv1fZ node 1:1476
+.c-sub-nav-shell__accordion {
+  --p-accordion-panel-border-width: 0;
+  --p-accordion-panel-border-color: transparent;
+  --p-accordion-header-background: transparent;
+  --p-accordion-header-hover-background: transparent;
+  --p-accordion-header-active-background: transparent;
+  --p-accordion-header-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-content-background: transparent;
+  --p-accordion-content-padding: 0;
+  --p-accordion-content-border-width: 0;
+  --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+}

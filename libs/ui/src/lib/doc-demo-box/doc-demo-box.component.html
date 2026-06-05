@@ -1,0 +1,27 @@
+<div class="c-doc-demo-box">
+  <!-- Live preview area -->
+  <div
+    class="c-doc-demo-box__preview"
+    [style.min-height.px]="minHeight() || null"
+  >
+    <ng-content />
+  </div>
+
+  <!-- Show / Hide code toggle -->
+  @if (code()) {
+    <div class="c-doc-demo-box__footer o-flex o-flex--justify-content-flex-end">
+      <button
+        class="c-doc-demo-box__toggle"
+        type="button"
+        [attr.aria-expanded]="codeVisible()"
+        (click)="toggleCode()"
+      >
+        {{ codeVisible() ? 'Hide code' : 'Show code' }}
+      </button>
+    </div>
+
+    @if (codeVisible()) {
+      <pre class="c-doc-demo-box__code"><code>{{ code() }}</code></pre>
+    }
+  }
+</div>

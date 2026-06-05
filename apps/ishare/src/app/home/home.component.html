@@ -1,0 +1,73 @@
+<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">
+  <sds-nav-shell class="o-layout--relative o-flex__item--shrink-0" [items]="navItems" activeItemId="ishare"></sds-nav-shell>
+
+  <div class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0">
+    <sds-top-nav
+      class="o-layout--full-width"
+      [home]="homeBreadcrumb"
+      [breadcrumbs]="breadcrumbs"
+      [showSubNavToggle]="false"
+      avatarInitials="IS"
+      avatarState="initials"
+      avatarAriaLabel="Profil iShare"
+    ></sds-top-nav>
+
+    <main class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2">
+      <div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
+        <p-card class="o-flex o-flex__item--12 o-flex__item--4@lg o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
+          <form class="o-flex o-flex--y o-layout--gap-4 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch()" novalidate>
+            <label class="o-flex o-flex--y o-layout--gap-2">
+              <span class="color-text-muted">Bureau</span>
+              <p-autocomplete
+                name="office"
+                [(ngModel)]="selectedOffice"
+                [suggestions]="officeSuggestions"
+                (completeMethod)="filterOffices($event)"
+                optionLabel="label"
+                [dropdown]="true"
+                [forceSelection]="true"
+                placeholder="319"
+                fluid
+              ></p-autocomplete>
+            </label>
+
+            <label class="o-flex o-flex--y o-layout--gap-2">
+              <span class="color-text-muted">Type de recherche</span>
+              <p-selectbutton
+                name="searchType"
+                [(ngModel)]="selectedSearchType"
+                [options]="searchTypes"
+                optionLabel="label"
+                optionValue="value"
+                fluid
+              ></p-selectbutton>
+            </label>
+
+            <label class="o-flex o-flex--y o-layout--gap-2">
+              <span class="color-text-muted">Référence</span>
+              <input
+                pInputText
+                name="identifier"
+                [(ngModel)]="searchIdentifier"
+                required
+                fluid
+                placeholder="Numéro d'affilié"
+              />
+            </label>
+
+            <div class="o-flex o-flex--justify-content-flex-end o-layout--padding-top-2">
+              <button pButton type="submit" label="Rechercher" icon="bi bi-search" [disabled]="searchForm.invalid"></button>
+            </div>
+          </form>
+        </p-card>
+
+        <p-card class="o-flex o-flex__item--12 o-flex__item--8@lg o-layout--full-height o-layout--min-w-0" header="Détails du document">
+          <sds-empty-state
+            title="Aucun résultat pour l’instant"
+            description="Lancez une recherche pour afficher le détail du document et les actions disponibles."
+          ></sds-empty-state>
+        </p-card>
+      </div>
+    </main>
+  </div>
+</div>

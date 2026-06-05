@@ -1,0 +1,119 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Get Started / NgRx" />
+
+# [NgRx](https://ngrx.io/docs)
+
+NgRx is a framework for building reactive applications in Angular. NgRx provides libraries for:
+
+- Managing global and local state.
+- Isolation of side effects to promote a cleaner component architecture.
+- Entity collection management.
+- Integration with the Angular Router.
+- Developer tooling that enhances developer experience when building many different types of applications.
+
+## State
+
+NgRx offers a lot of useful packages that for which you can consult [their documentation](https://ngrx.io/docs).
+We also refer to this documentation for basic usage of the state.
+We will highlight the most common applications of NgRx in our applications here.
+
+![state-management-lifecycle](../.attachments/state-management-lifecycle.png)
+
+### [Store](https://ngrx.io/guide/store)
+
+Store is RxJS powered global state management for Angular applications, inspired by Redux.
+Store is a controlled state container designed to help write performant, consistent applications on top of Angular.
+
+### [Effects](https://ngrx.io/guide/effects)
+
+Effects are an RxJS powered side effect model for [Store](https://ngrx.io/guide/store). Effects use streams to provide
+new sources of actions to reduce state based on external interactions such as network requests,
+web socket messages and time-based events.
+
+### [Signals](https://ngrx.io/guide/signals)
+
+NgRx Signals is a standalone library that provides a reactive state management solution and a set
+of utilities for Angular Signals.
+
+## `+state` directory
+
+To help in keeping an overview and maintaining the project, we try to centralize all our files
+related to the state in a `+state` folder.
+This structure is aimed at centralizing our logic, making it easier to find and maintain and safe-guarding
+consistency across a large and sometimes complex codebase.
+Following an example of the NgRx documentation, we have customized an example they used and applied it into our own structure.
+Below are the files you will typically see in a `+state` directory with the file name of the example included.
+You can find the example [here on StackBlitz](https://stackblitz.com/edit/l3hqvk6y?file=src%2Fapp%2Fmy-counter%2Fmy-counter.module.ts).
+
+### `actions`
+
+> counter.actions.ts
+
+This is where we define all [actions](https://ngrx.io/guide/store/actions) related to the state.
+
+### `selectors`
+
+> counter.selectors.ts
+
+These files look like the `actions` files, but contain slightly more logic. The selectors allow us to retrieve information
+from our state by querying for it's content. Here we often combine multiple pieces of the state to return to the user and
+apply logic like filtering for example.
+
+### `effects`
+
+> counter.effects.ts
+
+These files contain Angular services, that listens to the actions that are dispatched to provide
+new sources of actions to reduce state based on external interactions such as network requests,
+web socket messages and time-based events.
+
+### `reducer`
+
+> counter.reducer.ts
+
+These files contain the core of the specific state, where we listen to all our actions and store any payloads that
+they contain. Here we will set a default state, change our state depending on the action and their payload and sometimes
+also clear the state entirely.
+
+### `state`
+
+> counter.state.ts
+
+These files mostly contain the interface describing what the state looks like.
+
+### `facade`
+
+> counter.facade.ts
+
+These files also contain an Angular service. These will serve as a centralized API for our components to
+communicate with a specific state.
+A service needs to be added in the `providers` array of the module so it is registered within the same scope for the
+dependency injection.
+
+### `service`
+
+> counter.service.ts
+
+These files are mostly used to communicate with the backend. They will contain the logic to fetch data from our backend API's
+through the use of the Angular `HttpClient`. In here we can also add logic to transform the data to a format that is more
+tailored to our front-end applications. These transformations are often put in `map` files.
+A service needs to be added in the `providers` array of the module so it is registered within the same scope for the
+dependency injection.
+
+### `map` (conditional)
+
+> country.map.ts
+
+These files are used to create functions that take the API model as an input and parse them to a format or model that
+can be used in the front-end. This is often done to make the data more readable or to filter out any possible discrepancies that
+exist in data between front-end and back-end systems.
+Oftentimes, we can prevent this thanks to our awesome back-end team, since they always send exactly what we need. Just ask them nicely
+if you need something 😜
+
+### `models` (conditional)
+
+> country.model.ts
+
+Sometimes when dealing with these transformations, we need to create models that represent the data we are working with. If these
+models are within the scope of this state, they are often placed in the `+state` folder.

@@ -1,0 +1,16 @@
+<p-card>
+  <!-- o-flex owns display/alignment/wrapping; o-layout owns gap and padding -->
+  <div class="c-toolbar__inner o-flex o-flex--align-items-flex-start o-flex--wrap o-layout--gap-row-2 o-layout--gap-column-3 o-layout--padding-3">
+
+    <!-- Start slot: grows to fill row, wraps filter buttons below search on small viewports -->
+    <div class="c-toolbar__start o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-3">
+      <ng-content select="[slot=start]" />
+    </div>
+
+    <!-- End slot: always on its own line (flex-basis:100% in SCSS forces the wrap) -->
+    <div class="c-toolbar__end o-flex o-flex--align-items-center">
+      <ng-content select="[slot=end]" />
+    </div>
+
+  </div>
+</p-card>

@@ -1,0 +1,90 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.icon.scss
+// <sds-icon> — universal icon primitive.
+//
+// Size variants map to --sds-icon-size-* tokens (defined in 01-settings/_settings.globals.scss).
+// Colour is always currentColor — no colour token applied here.
+// NOTE: inline-flex + centering stays in SCSS — this is a leaf-node primitive
+// whose entire structural purpose is centering a glyph in a fixed-size box.
+//
+// Design ref:   Figma YNZ1DlSjDNUXrvkxlSp10D (Plectrum UI Kit — Icons)
+// Token source: libs/styles/src/01-settings/_settings.globals.scss
+// =============================================================================
+
+// =============================================================================
+// Block
+// =============================================================================
+
+// Host element selector mirrors the :host rule that would live in the component
+// SCSS file — placed here so ALL styles remain in the ITCSS layer as required.
+sds-icon,
+.c-icon {
+  // Fixed size required — icon fonts / SVGs collapse to 0 without an explicit constraint.
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // Default size — overridden by modifier below.
+  width:  var(--#{$sds-prefix}-icon-size-md);
+  height: var(--#{$sds-prefix}-icon-size-md);
+  // Always inherit colour so icons follow surrounding text.
+  color: currentcolor;
+  // Prevent flex children from shrinking the icon.
+  flex-shrink: 0;
+
+  // Font-icon baseline alignment.
+  line-height: 1;
+  font-size: var(--#{$sds-prefix}-icon-size-md);
+}
+
+// =============================================================================
+// Elements
+// =============================================================================
+
+.c-icon__svg {
+  display: contents; // Let the inner <svg> fill the host dimensions.
+
+  svg {
+    // Fixed size required — SVG elements must be explicitly constrained.
+    width:  100%;
+    height: 100%;
+    fill:   currentcolor;
+    // stroke is intentionally omitted — brand-mark SVGs define their own
+    // stroke/fill; monochrome icon SVGs should use fill only.
+  }
+}
+
+// =============================================================================
+// Size modifiers
+// =============================================================================
+
+.c-icon--xs {
+  width:     var(--#{$sds-prefix}-icon-size-xs);
+  height:    var(--#{$sds-prefix}-icon-size-xs);
+  font-size: var(--#{$sds-prefix}-icon-size-xs);
+}
+
+.c-icon--sm {
+  width:     var(--#{$sds-prefix}-icon-size-sm);
+  height:    var(--#{$sds-prefix}-icon-size-sm);
+  font-size: var(--#{$sds-prefix}-icon-size-sm);
+}
+
+.c-icon--md {
+  width:     var(--#{$sds-prefix}-icon-size-md);
+  height:    var(--#{$sds-prefix}-icon-size-md);
+  font-size: var(--#{$sds-prefix}-icon-size-md);
+}
+
+.c-icon--lg {
+  width:     var(--#{$sds-prefix}-icon-size-lg);
+  height:    var(--#{$sds-prefix}-icon-size-lg);
+  font-size: var(--#{$sds-prefix}-icon-size-lg);
+}
+
+.c-icon--xl {
+  width:     var(--#{$sds-prefix}-icon-size-xl);
+  height:    var(--#{$sds-prefix}-icon-size-xl);
+  font-size: var(--#{$sds-prefix}-icon-size-xl);
+}

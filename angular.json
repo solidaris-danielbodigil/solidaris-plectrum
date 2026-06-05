@@ -1,0 +1,240 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "projects": {
+    "ishare": {
+      "projectType": "application",
+      "root": "apps/ishare",
+      "sourceRoot": "apps/ishare/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apps/ishare",
+            "index": "apps/ishare/src/index.html",
+            "browser": "apps/ishare/src/main.ts",
+            "tsConfig": "apps/ishare/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ishare:build:production"
+            },
+            "development": {
+              "buildTarget": "ishare:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "apps/ishare/tsconfig.app.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "icrm": {
+      "projectType": "application",
+      "root": "apps/icrm",
+      "sourceRoot": "apps/icrm/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apps/icrm",
+            "index": "apps/icrm/src/index.html",
+            "browser": "apps/icrm/src/main.ts",
+            "tsConfig": "apps/icrm/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "icrm:build:production"
+            },
+            "development": {
+              "buildTarget": "icrm:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "apps/icrm/tsconfig.app.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "architect": {
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": "libs/ui/.storybook",
+            "browserTarget": "ishare:build:development",
+            "port": 6006,
+            "compodoc": false,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/styles/src"
+              ]
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": "libs/ui/.storybook",
+            "browserTarget": "ishare:build:development",
+            "outputDir": "dist/storybook/ui",
+            "compodoc": false,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "libs/styles/src"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
+}

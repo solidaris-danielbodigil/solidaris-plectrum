@@ -1,0 +1,346 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Get Started / Coding Standards" />
+
+# Fleetbridge App Coding Standards
+
+
+
+
+## Code style
+
+The [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html) is the
+basis for Angular's coding style, with additional guidance here pertaining to TypeScript. The team
+uses `prettier` to automatically format code; automatic formatting is enforced by CI.
+These best practices make sense in most cases, but are open for discussion and can be elaborated
+upon in this document.
+
+## Code practices
+
+### Write useful comments
+
+Comments that explain what some block of code does are nice; they can tell you something in less
+time than it would take to follow through the code itself.
+
+Comments that explain why some block of code exists at all, or does something the way it does,
+are _invaluable_. The "why" is difficult, or sometimes impossible, to track down without seeking out
+the original author. When collaborators are in the same room, this hurts productivity.
+When collaborators are in different timezones, this can be devastating to productivity.
+
+For example, this is a not-very-useful comment:
+
+```typescript
+// Set default tabindex.
+if (!attributes['tabindex']) {
+  element.setAttribute('tabindex', '-1');
+}
+```
+
+While this is much more useful:
+
+```typescript
+// Unless the user specifies otherwise, the calendar should not be a tab stop.
+// This prevents ngAria from overzealously adding a tabindex to anything with an ng-model.
+if (!attributes['tabindex']) {
+  element.setAttribute('tabindex', '-1');
+}
+```
+
+In TypeScript code, use [JSDoc-style](#jsdoc-comments) comments for descriptions (on classes, members, etc.) and
+use `//` style comments for everything else (explanations, background info, etc.).
+
+#### [JSDoc](https://jsdoc.app/) comments
+
+All public APIs should have user-facing comments. These are extracted for API documentation and shown
+in IDEs.
+
+Private and internal APIs should have JSDoc when they are not obvious. Ultimately it is the purview
+of the code reviewer as to what is "obvious", but the rule of thumb is that _most_ classes,
+properties, and methods should have a JSDoc description.
+
+Properties should have a concise description of what the property means:
+
+```typescript
+  /** The label position relative to the checkbox. Defaults to 'after' */
+  @Input() labelPosition: 'before' | 'after' = 'after';
+```
+
+Methods blocks should describe what the function does and provide a description for each parameter
+and the return value:
+
+```typescript
+  /**
+   * Opens a modal dialog containing the given component.
+   * @param component Type of the component to load into the dialog.
+   * @param config Dialog configuration options.
+   * @returns Reference to the newly-opened dialog.
+   */
+  open<T>(component: ComponentType<T>, config?: MatDialogConfig): MatDialogRef<T> { ... }
+```
+
+Boolean properties and return values should use "Whether..." as opposed to "True if...":
+
+```ts
+/** Whether the button is disabled. */
+disabled: boolean = false;
+```
+
+### TypeScript
+
+#### Typing
+
+Avoid `any` where possible (both implicit and explicit). If you find yourself using `any`, consider whether a [generic](https://www.typescriptlang.org/docs/handbook/2/generics.html) or `unknown` may be appropriate in your case.
+
+#### Getters and Setters
+
+Getters and setters introduce openings for side effects, add more complexity for code readers,
+and generate additional code when targeting older browsers.
+
+- Only use getters and setters for `@Input` properties or when otherwise required for API
+  compatibility.
+- Avoid long or complex getters and setters. If the logic of an accessor would take more than
+  three lines, introduce a new method to contain the logic.
+- A getter should immediately precede its corresponding setter.
+- Decorators such as `@Input` should be applied to the getter and not the setter.
+- Always use a `readonly` property instead of a getter (with no setter) when possible.
+
+  ```typescript
+  /** YES */
+  readonly active: boolean;
+
+  /** NO */
+  get active(): boolean {
+    // Using a getter solely to make the property read-only.
+    return this._active;
+  }
+  ```
+
+#### Iteration
+
+Prefer `for` or `for of` to `Array.prototype.forEach`. The `forEach` API makes debugging harder
+and may increase overhead from unnecessary function invocations (though modern browsers do usually
+optimize this well).
+
+#### Try-Catch
+
+Only use `try-catch` blocks when dealing with legitimately unexpected errors. Don't use `try` to
+avoid checking for expected error conditions such as null dereference or out-of-bound array access.
+
+Each `try-catch` block **must** include a comment that explains the
+specific error being caught and why it cannot be prevented.
+
+#### Variable declarations
+
+Prefer `const` wherever possible, only using `let` when a value must change. Avoid `var` unless
+absolutely necessary.
+
+#### `readonly`
+
+Use `readonly` members wherever possible.
+
+#### `public` and `private`
+
+- We will move towards omitting the `public` keyword for public members.
+- Prefer `#` prefix for private members over `private` keyword.
+
+```typescript
+class Foo {
+  /** @public */
+  foobar: string;
+
+  /** @private */
+  #bar: string;
+}
+```
+
+#### Dependency injection
+
+Prefer using `inject()` over the constructor parameter to inject services.
+We noticed that the community is moving towards the use of `inject` over the constructor.
+On top of that, it plays better with the dependency injection mechanics of storybook.
+
+```typescript
+/** AVOID: */
+@Component({ … })
+class HeroListComponent {
+  constructor(private service: HeroService) {}
+}
+
+/** PREFER: */
+@Component({ … })
+class HeroListComponent {
+  readonly #service = inject(HeroService);
+}
+```
+
+#### Naming
+
+##### General
+
+- Prefer writing out words instead of using abbreviations.
+- Prefer kebab-case for file names and directories.
+- Prefer _exact_ names over short names (within reason). For example, `labelPosition` is better than
+  `align` because the former much more exactly communicates what the property means.
+- Except for `@Input()` properties, use `is` and `has` prefixes for boolean properties / methods.
+- Name identifiers based on their responsibility. Names should capture what the code _does_,
+  not how it is used:
+
+  ```typescript
+  /** NO: */
+  class DefaultRouteReuseStrategy {}
+
+  /** YES: */
+  class NonStoringRouteReuseStrategy {}
+  ```
+
+##### Classes
+
+- Use PascalCase (aka UpperCamelCase).
+- Class names should not end in `Impl`.
+
+##### Interfaces
+
+- Do not prefix interfaces with `I`.
+- Do not suffix interfaces with `Interface`.
+
+##### Functions and methods
+
+Use camelCase (aka lowerCamelCase).
+
+The name of a function should capture the action performed _by_ that method rather than
+describing when the method will be called. For example:
+
+```typescript
+/** AVOID: does not describe what the function does. */
+handleClick() {
+  // ...
+}
+
+/** PREFER: describes the action performed by the function. */
+activateRipple() {
+  // ...
+}
+```
+
+##### Constants and injection tokens
+
+Use UPPER_SNAKE_CASE.
+
+##### Test classes and examples
+
+Give test classes and examples meaningful, descriptive names.
+
+```ts
+/** PREFER: describes the scenario under test. */
+class FormGroupWithCheckboxAndRadios {
+  /* ... */
+}
+class InputWithNgModel {
+  /* ... */
+}
+
+/** AVOID: does not fully describe the scenario under test. */
+class Comp {
+  /* ... */
+}
+class InputComp {
+  /* ... */
+}
+```
+
+#### [RxJS](https://rxjs.dev/)
+
+- Prevent subscribing to observables in services.
+- Prevent subscribing in favor of using the `async` pipe in templates or ngrx effects for calling http service methods.
+
+#### Signals
+
+- Prefer [`linkedSignal`](https://angular.dev/guide/signals/linked-signal) to create writable, derived state from a source signal over the use of `effect`
+
+  ```typescript
+  /** AVOID: */
+  const sourceSignal = signal(0);
+  effect(() => {
+    const derivedState = sourceSignal() * 2;
+    this.someProperty = derivedState;
+  });
+
+  /** PREFER: */
+  const sourceSignal = signal(0);
+  const derivedSignal = linkedSignal(() => sourceSignal() * 2);
+  this.someProperty = derivedSignal();
+  ```
+
+- Avoid using effects for propagation of state changes. This can result in `ExpressionChangedAfterItHasBeenChecked` errors,
+  infinite circular updates, or unnecessary change detection cycles.
+  Instead, use `computed` signals to model state that depends on other state.
+
+### [State Management](./ngrx.md)
+
+For state management, we use [NgRx](https://ngrx.io/).
+More about NgRx usage in our applications can be found in our [contributing docs folder](./ngrx.md).
+
+#### Global State and Component State
+
+- **Global State**: Use NgRx for managing global state that needs to be shared across multiple components or services. This includes application-wide data such as user authentication status, settings, or data fetched from a server that is used in various parts of the application.
+- **Component State**: For more localized state management within a single component or a small set of closely related components, use NgRx's [Component Store](https://ngrx.io/guide/component-store). This is ideal for managing state that does not need to be shared globally and helps keep the global store lean and more maintainable.
+
+#### Actions and HTTP Server Calls
+
+We dispatch actions initiate our HTTP server calls (`HttpClient`). This approach helps in handling side effects in a predictable manner.
+
+- **Initiating Calls**: Dispatch an action to initiate an HTTP call (usually with a descriptive action including a mention of the start of a call).
+- **Handling Success and Errors**: Use actions and effects to handle the success and error responses from the HTTP calls. This ensures that the state is updated appropriately based on the outcome of the HTTP request (usually with a descriptive action including a mention of the success or failure of a call).
+
+#### Using NgRx Signals
+
+Whenever possible, we should also try to use the [@ngrx/signals](https://ngrx.io/guide/signals) in newer components. This helps in creating more reactive and maintainable code by leveraging the power of reactive programming.
+
+### Styling
+
+#### [BEMIT](https://gist.github.com/stephenway/a6145d9b4430e8c55a77)
+
+For styling we'll be applying the [BEMIT](https://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/) naming convention. This is a combination of [BEM](https://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/) + [ITCSS](https://www.xfive.co/blog/itcss-scalable-maintainable-css-architecture/). BEM is a front-end naming methodology and ITCSS is a project organization structure.
+
+Further usage of these conventions can be found in [storybook](https://app-fb-appdocs-test.azurewebsites.net/?path=/docs/foundations).
+
+- _BEM_: **B**lock (`.person`), **E**lement (`__hand`), **M**odifier (`--female`)
+
+  ```
+  .person {}
+  .person__hand {}
+  .person--female {}
+  .person--female__hand {}
+  .person__hand--left {}
+  ```
+
+- _ITCSS_: **I**nverted **T**riangle CSS separates your CSS codebase to several sections (called layers), which take the form of the [inverted triangle](https://www.xfivecdn.com/xfive/wp-content/uploads/2016/02/01083650/itcss-layers2.svg)
+
+![inverted triangle](https://www.xfivecdn.com/xfive/wp-content/uploads/2016/02/01083650/itcss-layers2.svg)
+
+#### Testing
+
+##### Test names
+
+Use descriptive names for tests. Ideally, test names should read as a sentence, often of
+the form "it should...".
+
+```typescript
+/** PREFER: describes the scenario under test. */
+describe('Router', () => {
+  describe('with the default route reuse strategy', () => {
+    it('should not reuse routes upon location change', () => {
+      // ...
+    });
+  });
+});
+
+/** AVOID: does not fully describe the scenario under test. */
+describe('Router', () => {
+  describe('default strategy', () => {
+    it('should work', () => {
+      // ...
+    });
+  });
+});
+```

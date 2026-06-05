@@ -1,0 +1,108 @@
+<!-- Header -->
+<header class="c-sub-nav-shell__header o-flex o-flex--align-items-center o-flex__item--shrink-0">
+  <span class="c-sub-nav-shell__title">{{ title() }}</span>
+</header>
+
+<!-- Scrollable body -->
+<div class="c-sub-nav-shell__body o-layout--overflow-x-hidden o-layout--overflow-y-auto">
+  @for (block of renderBlocks(); track $index) {
+    @if (block.type === 'standalone') {
+      <!-- Standalone items (sections without a label) -->
+      <div class="c-sub-nav-shell__featured o-flex o-flex--col">
+        @for (item of block.section.items; track item.id) {
+          <ng-container *ngTemplateOutlet="menuItemTpl; context: { $implicit: item }" />
+        }
+      </div>
+    } @else {
+      <!-- Accordion group (consecutive labeled sections) -->
+      <p-accordion [multiple]="true" [value]="expandedPanels()" (valueChange)="expandedPanels.set($event)" expandIcon="bi bi-chevron-down" collapseIcon="bi bi-chevron-up" class="c-sub-nav-shell__accordion">
+        @for (section of block.sections; track section.id) {
+          <p-accordion-panel [value]="section.id">
+            <p-accordion-header>
+              <span class="c-sub-nav-shell__section-label">{{ section.label }}</span>
+            </p-accordion-header>
+            <p-accordion-content>
+              <ul class="c-sub-nav-shell__items o-flex o-flex--col" role="list">
+                @for (item of section.items; track item.id) {
+                  <li>
+                    <ng-container *ngTemplateOutlet="menuItemTpl; context: { $implicit: item }" />
+                  </li>
+                }
+              </ul>
+            </p-accordion-content>
+          </p-accordion-panel>
+        }
+      </p-accordion>
+    }
+  }
+</div>
+
+<!-- Footer -->
+@if (version()) {
+  <footer class="c-sub-nav-shell__footer o-flex o-flex--col o-flex--align-items-center o-flex__item--shrink-0 o-layout--gap-0-5">
+    <span class="c-sub-nav-shell__footer-version">Version {{ version() }}</span>
+    <a
+      class="c-sub-nav-shell__footer-link"
+      [href]="changelogUrl()"
+    >What's new?</a>
+  </footer>
+}
+
+<!-- Reusable menu item template -->
+<ng-template #menuItemTpl let-item>
+  @if (item.routerLink) {
+    <a
+      class="c-sub-nav-shell__item o-flex o-flex--align-items-center"
+      [class.is-active]="isActive(item)"
+      [class.is-disabled]="item.disabled"
+      [routerLink]="item.disabled ? null : item.routerLink"
+      [routerLinkActive]="'is-active'"
+      [pTooltip]="item.label"
+      tooltipPosition="right"
+      [attr.aria-current]="isActive(item) ? 'page' : null"
+      [attr.aria-disabled]="item.disabled || null"
+      [tabindex]="item.disabled ? -1 : 0"
+      (click)="onItemClick(item)"
+    >
+      @if (item.icon) {
+        <span class="c-sub-nav-shell__item-icon o-flex__item--shrink-0 o-layout--overflow-hidden" aria-hidden="true">
+          <i [class]="'bi ' + item.icon"></i>
+        </span>
+      }
+      <span class="c-sub-nav-shell__item-label">{{ item.label }}</span>
+      @if (item.count !== undefined) {
+        <p-badge
+          class="c-sub-nav-shell__counter o-flex__item--shrink-0"
+          [value]="'' + item.count"
+          [severity]="item.countSeverity ?? null"
+        />
+      }
+    </a>
+  } @else {
+    <button
+      type="button"
+      class="c-sub-nav-shell__item o-flex o-flex--align-items-center"
+      [class.is-active]="isActive(item)"
+      [class.is-disabled]="item.disabled"
+      [disabled]="item.disabled"
+      [pTooltip]="item.label"
+      tooltipPosition="right"
+      [attr.aria-current]="isActive(item) ? 'page' : null"
+      (click)="onItemClick(item)"
+    >
+      @if (item.icon) {
+        <span class="c-sub-nav-shell__item-icon o-flex__item--shrink-0 o-layout--overflow-hidden" aria-hidden="true">
+          <i [class]="'bi ' + item.icon"></i>
+        </span>
+      }
+      <span class="c-sub-nav-shell__item-label">{{ item.label }}</span>
+      @if (item.count !== undefined) {
+        <p-badge
+          class="c-sub-nav-shell__counter o-flex__item--shrink-0"
+          [value]="'' + item.count"
+          [severity]="item.countSeverity ?? null"
+        />
+      }
+    </button>
+  }
+</ng-template>

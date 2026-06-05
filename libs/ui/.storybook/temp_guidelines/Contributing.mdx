@@ -1,0 +1,246 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Get Started / Contributing" />
+
+# Contributing to Fleetbridge App
+
+For optimal co-operation, project quality and consistency, take the following topics into account when working with this repository.
+
+
+
+
+## Branches & environments
+
+![branch-environments](./.attachments/branch-env.drawio.png)
+
+## Branch policies
+
+`main`, `release/*`, `test` and `develop` branches are protected by a required policy. This means that the branches can not be deleted and merges to it can only happen through a [pull request](#submitting-a-pull-request-pr). Among other things, this prevents accidental check-ins from triggering any build processes and any subsequent actions.
+`main` is considered to be the main branch where the source code of HEAD always reflects a _production-ready_ state. Therefore, we want it to be safe.
+
+> **Note: Be sure to run the [release command](#releases-and-semantic-versioning) when necessary!** (e.g. when planning a merge from `development` to `test`)
+
+## Start a new feature
+
+1. Start a new feature
+
+   ```
+   $ git checkout develop
+   $ git pull
+   $ git checkout -b feature/name-of-the-feature_0000
+   ```
+
+   > Using branch prefixes helps us in organizing and managing our branches (e.g. `feature/`, `bugfix/`, `hotfix/`, `release/`, ...).
+
+2. Create, modify, delete on your branch until you are done with your changes.
+
+3. Review your own code and stage your changes on your local branch
+
+   ```
+   $ git add .
+   ```
+
+   > **Note**: The command above stages _all_ current changes to be commited. Keep in mind that it is a best practice to first review your own code before adding anything. You can also add changes per file in VS Code, Webstorm, SourceTree, ...
+
+4. Commit the changes locally following the [commit message conventions](#git-conventional-commit-messages).
+
+   ```
+   $ git commit -m "feat(context): create component and add functions
+
+   #1234
+   This number references the Azure DevOps workitem that is linked to the changes in this commit.
+   This text below it generally explains more about the changes you've applied in this commit."
+   ```
+
+5. Push the commit to remote
+
+   ```
+   $ git push
+   ```
+
+   If the branch doesn't exists as a remote in Azure DevOps, set the upstream branch:
+
+   ```
+   $ git push --set-upstream origin feature/name-of-the-feature_0000
+   ```
+
+6. Now you are ready to [submit a Pull Request (PR)](#submitting-a-pull-request-pr).
+
+## Submitting a Pull Request (PR)
+
+Before you submit your Pull Request (PR) consider the following guidelines:
+
+1. Follow our [Coding Rules](#coding-rules)
+2. Run tests and linting to check if all is well
+3. Create a [new Pull Request](https://dev.azure.com/BridgestoneExternal/Fleetbridge/_git/Fleetbridge.App/pullrequestcreate).
+4. At the top, select in the _from_ field your branch (e.g. `hotfix/branch_name`) _to_ your target branch (e.g. `develop`).
+5. Enter a title and other info according to the [PR guidelines](https://dev.azure.com/BridgestoneExternal/Fleetbridge/_wiki/wikis/Fleetbridge%20Main%20Wiki/1962/Pull-Requests) and submit the PR so it can be reviewed.
+6. For releases to `test` and/or `main`, repeat step 3-5 with `release/*` > `test` > `main` branch respectively in step 5.
+
+## Resolve merge conflicts
+
+If you get a warning about a merge conflict while submitting your PR, the following steps can be useful to get the correct changes onto your branch:
+
+1. Get latest version of develop
+
+   ```
+   $ git checkout develop
+   $ git pull
+   ```
+
+2. Checkout branch to align with develop and solve merge conflicts :
+
+   ```
+   $ git checkout feature/your_branch_name
+   ```
+
+3. Merge branch
+
+   ```
+   $ git merge develop
+   ```
+
+4. Open editor and **carefully** solve merge conflicts.
+
+> **Important**: Make sure neither of the changes loses functionality when merging!
+
+5. Stage files with merge conflicts and commit with the default merge message :
+
+   ```
+   $ git add path/to/your/modified/file/or/files
+   $ git commit
+   ```
+
+## Coding Rules
+
+[![Coding Standards](https://img.shields.io/badge/%F0%9F%93%90-Coding%20standards-green)](./docs/coding-standards.md)
+
+To ensure consistency throughout the source code, keep these rules in mind as you are working:
+
+- See our [Coding Standards document](./docs/coding-standards.md) for specific code practices in this project.
+- Use [prettier](https://prettier.io) to format your code. This is preferred due to increased readability, consistency and traceability in git. This can be run on save with the right settings and/or plugins, depending on your IDE.
+- Use [eslint](https://eslint.org/) and lint frequently (it is also run before committing).
+- Use [editorconfig](https://editorconfig.org) to maintain consistency among projects.
+- Try to maintain and create tests when adding features.
+
+## Semantic versioning
+
+For application versioning, Semantic Versioning will be used: a version format of **X.Y.Z** (_Major.Minor.Patch_).
+
+1. **MAJOR**: version when you make an incompatible API change
+2. **MINOR**: version when you add functionality in a backwards-compatible manner
+3. **PATCH**: version when you make backwards-compatible bug fixes
+
+## Releases and semantic versioning
+
+> **Note**: Specific release guidelines might apply (e.g. application version numbers set in config.xml). For this, see if there are specific instructions in the projects separate README.
+
+To create a release for the workspace we use [standard-version](https://github.com/conventional-changelog/standard-version). Run this before creating the [pull request](<#Submitting-a-Pull-Request-(PR)>):
+
+```
+
+$ npm run release # Currently broken, contact the team for more info
+
+```
+
+This generates the CHANGELOG.md file based on the [commit messages](#type). Semantic-release
+[increments one or none](#type) of these versions. These commit messages must follow the [Angular commit message convention](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit).
+
+## Git conventional commit messages
+
+Conventional commits is a Git commit convention made by the [Angular team](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit). Basically, every pull request should end up with one commit and a standardized commit message.
+By introducing this [convention](https://www.conventionalcommits.org/en/v1.0.0-beta.2/), we create a common language that makes it easier to debug issues across project boundaries. To facilitate these commit messages you can use [commitizen](https://github.com/commitizen/cz-cli)
+
+```
+
+<type>(<scope>): <subject>
+<BLANK LINE>
+
+<body>
+<BLANK LINE>
+<footer>
+```
+
+> **Note**: The first time we setup the [standard-version](https://github.com/conventional-changelog/standard-version), we ran `npm run release:first`. This initiates the changelog at 0.0.0. This is purely informational, as we only have to execute it once.
+
+### Commit Message Header
+
+```
+<type>(<scope>): <short summary>
+  │       │             │
+  │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
+  │       │
+  │       └─⫸ Commit Scope: TBD by the team
+  │
+  └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
+```
+
+The `<type>` and `<summary>` fields are mandatory, the `(<scope>)` field is optional.
+
+### Type
+
+Must be one of the following:
+
+- **build**: Changes that affect the build system or external dependencies (example scopes: gulp, vite, webpack, npm)
+- **ci**: Changes to our CI configuration files and scripts (examples: Github Actions, DevOps Pipelines)
+- **docs**: Documentation only changes
+- **feat**: A new feature
+- **fix**: A bug fix
+- **perf**: A code change that improves performance
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **test**: Adding missing tests or correcting existing tests
+
+### Scope (optional)
+
+The scope should be the name of the app or library affected (as perceived by the person reading the
+changelog generated from commit messages).
+For example when committing a feature specifically for fleetbridge-mobile: `feat(mobile): add new awesome feature`.
+
+### Subject
+
+The subject contains a succinct description of the change:
+
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
+
+### Body
+
+Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes".
+The body should include the motivation for the change and contrast this with previous behavior.
+
+### Footer
+
+The footer should contain any information about **Breaking Changes**. **Breaking Changes** should
+start with the word `BREAKING CHANGE`: with a space or two newlines. The rest of the commit message is then used for this.
+
+### Some examples:
+
+Resulting in a patch release:
+
+```
+fix(food): don't overcook rare steaks
+```
+
+Resulting in a minor release:
+
+```
+feat(food): add mac and cheese
+```
+
+Resulting in a major release:
+
+```
+feat(staff): add chef Bob
+
+BREAKING CHANGE:
+Chef Louis has been fired, all dishes must go to chef Bob
+```
+
+## Storybook
+
+To document our UI components and design practices, we create stories in storybook. Whenever creating new components (atoms, molecules, ...), please also add stories according to the [story guidelines](https://app-fb-appdocs-test.azurewebsites.net/?path=/docs/get-started-how-to-write-stories-1-config-tips--docs).
+
+## 🚧 Known environment issues
+
+If you encounter any bugs, issues or technical debt in the environment, that you feel are important to keep track of, feel free to add them to the [🚧 Known environment issues](https://dev.azure.com/BridgestoneExternal/Fleetbridge/_wiki/wikis/Fleetbridge%20Main%20Wiki/1509/Known-Bugs-Issues) wiki page or sub-pages.

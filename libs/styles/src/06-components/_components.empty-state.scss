@@ -1,0 +1,41 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.empty-state.scss
+// c-empty-state — reusable placeholder block for empty document/result states.
+//
+// Design ref:   Figma node 441:7641 (iShare empty state illustration)
+// Token source: libs/styles/src/01-settings/_settings.empty-state.scss
+//               libs/styles/src/02-tools/_tools.typography.scss
+// =============================================================================
+
+.c-empty-state {
+  text-align: center;
+}
+
+.c-empty-state__art {
+  // Fixed size required — the SVG illustration needs a stable frame to preserve proportions.
+  position: relative;
+  inline-size: min(100%, var(--#{$sds-prefix}-size-empty-state-art-w));
+  block-size: var(--#{$sds-prefix}-size-empty-state-art-h);
+  flex-shrink: 0;
+}
+
+.c-empty-state__illustration {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.c-empty-state__title {
+  @include text-heading-md;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+.c-empty-state__description {
+  @include text-body-md;
+  color: var(--#{$sds-prefix}-color-text-muted);
+  margin: 0;
+}

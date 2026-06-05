@@ -1,0 +1,123 @@
+// =============================================================================
+// 01-settings/_settings.typography-semantic.scss
+// Plectrum semantic type scale — maps primitives to named text styles.
+// Source: https://www.figma.com/design/jH0paYnBCco2Ye6ysNcWrr/PLECTRUM-·-Foundations
+//         (Typography collection — Display/*, Heading/*, label/*, Body/*)
+//
+// DEPENDS ON: _settings.typography-primitive.scss (must be imported first)
+//
+// RULES:
+//   - Use --text-{category}-{size}-* tokens in all component SCSS.
+//   - Never reference --font-size-* or --font-family-* directly in components.
+//   - Pattern: --text-{display|heading|label|body}-{xl|lg|md|sm|xs}-{family|size|weight|line-height|spacing}
+// =============================================================================
+
+:root {
+
+  // ===========================================================================
+  // DISPLAY  (Figma: Display/*)
+  // font-family: Agenda, Bold
+  // ===========================================================================
+  --text-display-xl-family:       var(--font-family-display);
+  --text-display-xl-size:         var(--font-size-5xl);    // 40px
+  --text-display-xl-weight:       var(--font-weight-bold);
+  --text-display-xl-line-height:  var(--line-height-48);
+  --text-display-xl-spacing:      var(--letter-spacing-0);
+
+  --text-display-lg-family:       var(--font-family-display);
+  --text-display-lg-size:         var(--font-size-4xl);    // 32px
+  --text-display-lg-weight:       var(--font-weight-bold);
+  --text-display-lg-line-height:  var(--line-height-40);
+  --text-display-lg-spacing:      var(--letter-spacing-0);
+
+  --text-display-md-family:       var(--font-family-display);
+  --text-display-md-size:         var(--font-size-3xl);    // 28px
+  --text-display-md-weight:       var(--font-weight-bold);
+  --text-display-md-line-height:  var(--line-height-36);
+  --text-display-md-spacing:      var(--letter-spacing-0);
+
+  // ===========================================================================
+  // HEADING  (Figma: Heading/*)
+  // font-family: Open Sans, Bold
+  // ===========================================================================
+  --text-heading-lg-family:       var(--font-family-heading);
+  --text-heading-lg-size:         var(--font-size-2xl);    // 24px
+  --text-heading-lg-weight:       var(--font-weight-bold);
+  --text-heading-lg-line-height:  var(--line-height-40);
+  --text-heading-lg-spacing:      var(--letter-spacing-0);
+
+  --text-heading-md-family:       var(--font-family-heading);
+  --text-heading-md-size:         var(--font-size-xl);     // 20px
+  --text-heading-md-weight:       var(--font-weight-bold);
+  --text-heading-md-line-height:  var(--font-size-4xl);    // 32px (Figma: uses font/size/4xl as line-height)
+  --text-heading-md-spacing:      var(--letter-spacing-0);
+
+  --text-heading-sm-family:       var(--font-family-heading);
+  --text-heading-sm-size:         var(--font-size-md);     // 16px
+  --text-heading-sm-weight:       var(--font-weight-bold);
+  --text-heading-sm-line-height:  var(--font-size-2xl);    // 24px (Figma: uses font/size/2xl as line-height)
+  --text-heading-sm-spacing:      var(--letter-spacing-0);
+
+  --text-heading-xs-family:       var(--font-family-heading);
+  --text-heading-xs-size:         var(--font-size-xs);     // 12px
+  --text-heading-xs-weight:       var(--font-weight-bold);
+  --text-heading-xs-line-height:  var(--line-height-18);
+  --text-heading-xs-spacing:      var(--letter-spacing-0);
+
+  // ===========================================================================
+  // LABEL  (Figma: label/*)
+  // font-family: Open Sans, SemiBold
+  // ===========================================================================
+  --text-label-lg-family:       var(--font-family-label);
+  --text-label-lg-size:         var(--font-size-lg);      // 18px
+  --text-label-lg-weight:       var(--font-weight-semibold);
+  --text-label-lg-line-height:  var(--line-height-28);
+  --text-label-lg-spacing:      var(--letter-spacing-0);
+
+  --text-label-md-family:       var(--font-family-label);
+  --text-label-md-size:         var(--font-size-md);      // 16px
+  --text-label-md-weight:       var(--font-weight-semibold);
+  --text-label-md-line-height:  var(--line-height-24);
+  --text-label-md-spacing:      var(--letter-spacing-0);
+
+  --text-label-sm-family:       var(--font-family-label);
+  --text-label-sm-size:         var(--font-size-s);       // 14px
+  --text-label-sm-weight:       var(--font-weight-semibold);
+  --text-label-sm-line-height:  var(--line-height-22);
+  --text-label-sm-spacing:      var(--letter-spacing-0);
+
+  --text-label-xs-family:       var(--font-family-label);
+  --text-label-xs-size:         var(--font-size-xs);      // 12px
+  --text-label-xs-weight:       var(--font-weight-semibold);
+  --text-label-xs-line-height:  var(--line-height-20);
+  --text-label-xs-spacing:      var(--letter-spacing-0);
+
+  // ===========================================================================
+  // BODY  (Figma: Body/*)
+  // font-family: Open Sans, Regular
+  // ===========================================================================
+  --text-body-lg-family:       var(--font-family-body);
+  --text-body-lg-size:         var(--font-size-lg);      // 18px
+  --text-body-lg-weight:       var(--font-weight-regular);
+  --text-body-lg-line-height:  var(--line-height-28);
+  --text-body-lg-spacing:      var(--letter-spacing-0);
+
+  --text-body-md-family:       var(--font-family-body);
+  --text-body-md-size:         var(--font-size-md);      // 16px
+  --text-body-md-weight:       var(--font-weight-regular);
+  --text-body-md-line-height:  var(--font-size-2xl);     // 24px (Figma: uses font/size/2xl as line-height)
+  --text-body-md-spacing:      var(--letter-spacing-0);
+
+  --text-body-sm-family:       var(--font-family-body);
+  --text-body-sm-size:         var(--font-size-s);       // 14px
+  --text-body-sm-weight:       var(--font-weight-regular);
+  --text-body-sm-line-height:  var(--line-height-22);
+  --text-body-sm-spacing:      var(--letter-spacing-0);
+
+  --text-body-xs-family:       var(--font-family-body);
+  --text-body-xs-size:         var(--font-size-xs);      // 12px
+  --text-body-xs-weight:       var(--font-weight-regular);
+  --text-body-xs-line-height:  var(--line-height-20);
+  --text-body-xs-spacing:      var(--letter-spacing-0);
+
+}

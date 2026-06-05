@@ -1,0 +1,51 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.toolbar.scss
+// <sds-toolbar> — generic sticky-capable toolbar with named content slots.
+//
+// Slots:
+//   [slot=start]  — left-aligned content (search, filters, …)
+//   [slot=end]    — right-aligned content (badge, actions, …)
+//
+// Modifiers:
+//   c-toolbar--sticky  — enables position: sticky, top: 0
+//
+// Layout: all gap/padding/alignment are applied as o-flex / o-layout BEM mixes
+//         in toolbar.component.html — not here.
+//
+// Design ref:   internal component — no direct Figma node
+// Token source: libs/styles/src/01-settings/
+//   _settings.globals.scss  → --sds-z-sticky (z-index scale)
+// =============================================================================
+
+// Host element — sticky modifier
+// position:sticky must be on the host (not an inner div) so it works correctly
+// inside any scroll ancestor, including the Storybook canvas and the app shell.
+.c-toolbar {
+  display: block; // Custom element default is inline — force block for sticky to work
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    z-index: var(--#{$sds-prefix}-z-sticky, 10);
+  }
+}
+
+// Inner row — structural constraints only; layout via o-flex + o-layout BEM mixes
+.c-toolbar__inner {
+  // No gap/padding here — owned by o-layout--gap-* and o-layout--padding-* in template
+}
+
+// Start slot — structural constraint: grows to fill available row space
+.c-toolbar__start {
+  // flex: 1 1 0 has no o-flex equivalent — structural constraint, required
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+// End slot — structural constraint: always breaks to its own line below start controls
+.c-toolbar__end {
+  // flex-basis: 100% forces a line-break when .c-toolbar__inner wraps
+  flex-basis: 100%;
+}

@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "primeng": {
+      "type": "http",
+      "url": "https://primeng.org/mcp"
+    }
+  }
+}

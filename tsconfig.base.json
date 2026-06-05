@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@solidaris/contracts": [".ai/contracts/schema/index.ts"],
+      "@solidaris/plectrum": ["libs/plectrum/src/index.ts"],
+      "@solidaris/styles": ["libs/styles/src/main.scss"],
+      "@solidaris/ui": ["libs/ui/src/index.ts"]
+    }
+  },
+  "include": ["apps/**/*", "libs/**/*", ".ai/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

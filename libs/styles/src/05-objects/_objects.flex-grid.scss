@@ -1,0 +1,113 @@
+// =============================================================================
+// 05-objects/_objects.flex-grid.scss
+// Flex-based grid system — generates o-flex and o-flex__item utility classes.
+//
+// ⛔ ENFORCEMENT CONTRACT — read before editing any component SCSS ⛔
+//
+// These classes are the ONLY permitted way to express flex layout.
+// The following CSS properties are FORBIDDEN in 06-components/ SCSS files:
+//
+//   display: flex          → use  o-flex
+//   flex-flow / flex-direction / flex-wrap
+//                          → use  o-flex--{key}  (wrap, col, row-wrap, …)
+//   align-items            → use  o-flex--align-items-{value}
+//   align-content          → use  o-flex--align-content-{value}
+//   justify-content        → use  o-flex--justify-content-{value}
+//
+// Apply these classes as BEM mixes directly in HTML templates.
+// See: .ai/rules/08-object-classes.md
+// =============================================================================
+@use 'sass:map';
+@use '../01-settings/settings.grid' as grid;
+@use '../01-settings/settings.breakpoints' as bp-settings;
+@use '../02-tools/tools.breakpoints' as bp;
+@use '../02-tools/tools.responsive-modifiers' as rm;
+
+.o-flex {
+  display: flex;
+
+  // ── Container modifiers (with responsive variants) ───────────────────────
+  @include rm.responsive-modifiers('align-items',     grid.$align-items,     align-items);
+  @include rm.responsive-modifiers('align-content',   grid.$align-content,   align-content);
+  @include rm.responsive-modifiers('justify-content', grid.$justify-content, justify-content);
+
+  // Y-axis modifier (column layout flex-flow helper)
+  &--y {
+    flex-direction: column;
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      &--y\@#{$breakpoint} {
+        @include bp.breakpoint($breakpoint) {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+
+  // flex-flow shorthand (key IS the modifier name)
+  @include rm.responsive-shorthand-modifiers(grid.$flex-flow, flex-flow);
+}
+
+// Column width items
+.o-flex__item {
+  @for $i from 1 through grid.$grid-cols {
+    &--#{$i} {
+      flex: 0 0 calc(100% / #{grid.$grid-cols} * #{$i});
+      max-width: calc(100% / #{grid.$grid-cols} * #{$i});
+    }
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      @for $i from 1 through grid.$grid-cols {
+        &--#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            flex: 0 0 calc(100% / #{grid.$grid-cols} * #{$i});
+            max-width: calc(100% / #{grid.$grid-cols} * #{$i});
+          }
+        }
+      }
+    }
+  }
+
+  // Order modifiers (with responsive variants)
+  @for $i from 0 through grid.$grid-cols {
+    &--order-#{$i} { order: #{$i}; }
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      @for $i from 0 through grid.$grid-cols {
+        &--order-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            order: #{$i};
+          }
+        }
+      }
+    }
+  }
+
+  // flex-shrink / flex-grow (with responsive variants)
+  @for $i from 0 through grid.$grid-cols {
+    &--shrink-#{$i} { flex-shrink: #{$i}; }
+    &--grow-#{$i}   { flex-grow:   #{$i}; }
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      @for $i from 0 through grid.$grid-cols {
+        &--shrink-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            flex-shrink: #{$i};
+          }
+        }
+        &--grow-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            flex-grow: #{$i};
+          }
+        }
+      }
+    }
+  }
+
+  // align-self (with responsive variants)
+  @include rm.responsive-modifiers('align-self', grid.$align-self, align-self);
+}

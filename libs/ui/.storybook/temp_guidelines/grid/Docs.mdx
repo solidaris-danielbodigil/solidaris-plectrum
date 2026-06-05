@@ -1,0 +1,183 @@
+import { Meta } from '@storybook/blocks';
+import { ArgTypes, Canvas } from '@storybook/addon-docs';
+import * as GridStories from './grid.component.stories';
+
+<Meta of={GridStories} />
+
+# Flex Grid Documentation
+
+A 12 cells mobile first grid, based on Flex display.<br/>
+
+## About the syntax
+
+The syntax is based on **BEMIT** (Block - Element - Modifier - Inverted - Triangle) methodology :<br/>
+
+- `.o-` (**Prefix** for 'Object')<br/>
+- `.o-flex` (**Block** class)<br/>
+- `.o-flex__item` (**Elements**, they take double underscores \_\_ following the Block). **Elements** are Block's children<br/>
+- `.o-flex--alignCenter` (**Modifier**, double dashes --), this is a **Modifier** of `.flex` **Block** <br/>
+  They can also be applied to **Elements** : `.o-flex__item--align-self-centrer@lg`.<br/>
+- `@sm` (**Suffix** for 'mediaqueries') Ex: `.o-flex__item--3@sm`.<br/>
+
+> **The approach of this grid is to be used in your templates, as this will drastically reduce the creation of css-page-scoped files for layout.**
+
+## Initialising the grid
+
+`.o-flex` is used on the parent element to initialise the grid<br/>
+Direction, wrap, alignment, and distribution classes are defined on the parent element.<br/>
+
+`.o-flex__item` is used on children elements, or cells<br/>
+Break-points, flex properties values, self-alignment, offset and ordering classes are defined on child elements<br/>
+
+> **`gap` or any other spacing property isn't defined in either `.o-flex` nor `.o-flex__item`<br/>
+> if spacing is needed, include it in your content**.
+
+## API
+
+<ArgTypes of={GridStories} />
+
+## Responsive Layout
+
+This grid is mobile-first, meaning that the code is by default set for small screens, `@xs` will be the default, but you don't need to specify it : `.o-flex__item--3` will cover all screens.<br/>
+As soon as `@sm`, `@md`, `@lg` or `@xl` is specified they will take the lead when their breakpoint is met.<br/>
+
+> **Don't forget to add **`.o-flex--wrap`\*\* **Modifier** to **`.o-flex`** initialiser, if you don't to want to overflow when your cols are above 12 cols.\*\*
+
+<Canvas of={GridStories.ResponsiveLayout}></Canvas>
+
+### Responsive Layout in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.ResponsiveLayoutY}></Canvas>
+
+> **Height isn't inherited by default, so make sure wrappers have a height set.<br/>** > **Tip: Use `.o-layout--full-height`**
+
+## Auto columns
+
+Simply use `.o-flex__item` without any **Modifier**, as its `flex-grow` property allows it to grow, the col will share the space equally with its siblings or take the full width of its parent if it's the only child.
+
+<Canvas of={GridStories.AutoCols}></Canvas>
+
+### Auto columns in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.AutoColsY}></Canvas>
+
+## Nested Grids
+
+<Canvas of={GridStories.NestedGrids}></Canvas>
+
+## Flex-Flow
+
+This is a shorthand for the flex-direction and flex-wrap properties, which together define the flex container’s main and cross axes. <br/>
+The default `flex-flow` is `row nowrap` : `.o-flex` <br/>
+Other options are : `.o-flex--y`, `.o-flex--wrap`, `.o-flex--nowrap`, `.o-flex--wrap-reverse`,`.o-flex--row`, `.o-flex--row-reverse`, `.o-flex--col`, `.o-flex--col-reverse`, `.o-flex--col-wrap`, `.o-flex--col-nowrap`
+
+> **Direction can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+> **Another way to set up the flow, is to add `.o-flex--y` to `.o-flex` to set flex direction to column.**
+
+<Canvas of={GridStories.FlexFlow}></Canvas>
+
+## Flex-Shrink and Flex-Grow
+
+> **Shrink and Grow are still work in progress**
+
+To allow a flex-item to grow or shrink, simply add `.o-flex__item--shrink-[1-12]` or `.o-flex__item--grow-[1-12]`.<br/>
+
+> **Shrink and Grow can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.FlexGrowShrink}></Canvas>
+
+## Ordering
+
+To modify the order of a flex-item, simply add `.o-flex__item--order-[1-12]`.<br/>
+
+> **Order can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.Order}></Canvas>
+
+## Offsets
+
+To modify the offset of a flex-item, simply add `.o-flex__item--offset-[1-12]`.<br/>
+
+> **Offset can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.Offset}></Canvas>
+
+### Offsets in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.OffsetY}></Canvas>
+
+## Justify-content
+
+Justify-content defines the alignment along the main axis (defined by flex-direction). <br/>
+It allows to distribute extra free space leftover when either all the flex items are fixed or have reached their maximum size.<br/>
+It also gives control over the alignment of items when they overflow the line.<br/>
+Justify-content options are: `.o-flex--justify-content-flex-start`, `.o-flex--justify-content-center`, `.o-flex--justify-content-flex-end`, `.o-flex--justify-content-space-between`, `.o-flex--justify-content-space-around`, `.o-flex--justify-content-space-evenly`.<br/>
+
+> **Don't forget to add **`.o-flex--wrap`\*\* **Modifier** to **`.o-flex`** initialiser, if you don't to want to overflow when your cols are above 12 cols.\*\*
+
+> **Justify-content can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.JustifyContent}></Canvas>
+
+### Justify-content in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.JustifyContentY}></Canvas>
+
+## Align-items
+
+Align-items defines the default behavior for how flex items are laid out along the cross axis on the current line.<br/>
+Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).<br/>
+Align-items options are: `.o-flex--align-items-flex-start`, `.o-flex--align-items-center`, `.o-flex--align-items-flex-end`, `.o-flex--align-items-stretch`, `.o-flex--align-items-baseline`.<br/>
+
+> **Align-items can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.AlignItems}></Canvas>
+
+### Align-items in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.AlignItemsY}></Canvas>
+
+## Align-Content
+
+This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.<br/>
+Align-Content options are: `.o-flex--align-content-flex-start`, `.o-flex--align-content-center`, `.o-flex--align-content-flex-end`, `.o-flex--align-content-space-between`, `.o-flex--align-content-space-around`, `.o-flex--align-content-space-evenly`.<br/>
+
+> This property only takes effect on multi-line flexible containers, where flex-wrap is set to either `.o-flex--wrap` or `.o-flex--wrap-reverse`). <br/>
+> A single-line flexible container (i.e. where `flex-wrap` is set to its default value, `no-wrap`) will not reflect align-content.
+
+> **Align-content can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.AlignContent}></Canvas>
+
+### Align-Content in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.AlignContentY}></Canvas>
+
+## Align-Self
+
+Align-self is used to control the alignment of individual **flex items** along the cross axis, overriding the alignment set by the parent flex container.<br/>
+It allows you to align a specific flex item differently from the rest of the items in the container.<br/>
+Align-self options are: `.o-flex__item--align-self-flex-start`, `.o-flex__item--align-self-center`, `.o-flex__item--align-self-flex-end`, `.o-flex__item--align-self-baseline`, `.o-flex__item--align-self-stretch`
+
+> **Align-self can also be set with breakpoints `@sm`, `@md`, `@lg` or `@xl`**
+
+<Canvas of={GridStories.AlignSelf}></Canvas>
+
+### Align-Self in Y Axis
+
+Add `.o-flex--y` to `.o-flex` to set flex direction to column.
+
+<Canvas of={GridStories.AlignSelfY}></Canvas>

@@ -1,0 +1,60 @@
+// =============================================================================
+// 02-tools/_tools.responsive-modifiers.scss
+// Generates base + responsive modifier classes for flex object utilities.
+//
+// Usage:
+//   @use '../02-tools/tools.responsive-modifiers' as rm;
+//   .o-flex { @include rm.responsive-modifiers('align-items', grid.$align-items, align-items); }
+//
+// Output:
+//   .o-flex--align-items-center { align-items: center; }
+//   .o-flex--align-items-center\@sm { @media (min-width: 48rem) { align-items: center; } }
+//   ...
+// =============================================================================
+@use 'sass:map';
+@use '../01-settings/settings.breakpoints' as bp-settings;
+@use 'tools.breakpoints' as bp;
+
+/// Generates `&--{name}-{key}` modifiers + responsive `&--{name}-{key}@{bp}` variants.
+///
+/// @param {String} $name — modifier prefix (e.g. 'align-items')
+/// @param {Map} $values-map — Sass map of key → CSS value pairs
+/// @param {String} $property — CSS property to set
+@mixin responsive-modifiers($name, $values-map, $property) {
+  @each $key, $value in $values-map {
+    &--#{$name}-#{$key} {
+      #{$property}: #{$value};
+    }
+    @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+      @if $breakpoint != 'xs' {
+        &--#{$name}-#{$key}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            #{$property}: #{$value};
+          }
+        }
+      }
+    }
+  }
+}
+
+/// Generates `&--{key}` modifiers + responsive `&--{key}@{bp}` variants.
+/// Used when the map key IS the modifier name (e.g. flex-flow: wrap, col, row-wrap).
+///
+/// @param {Map} $values-map — Sass map of key → CSS value pairs
+/// @param {String} $property — CSS property to set
+@mixin responsive-shorthand-modifiers($values-map, $property) {
+  @each $key, $value in $values-map {
+    &--#{$key} {
+      #{$property}: #{$value};
+    }
+    @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+      @if $breakpoint != 'xs' {
+        &--#{$key}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            #{$property}: #{$value};
+          }
+        }
+      }
+    }
+  }
+}

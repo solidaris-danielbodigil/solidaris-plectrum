@@ -1,0 +1,772 @@
+{
+  "settingsBorders": [
+    {
+      "name": "$_border-props",
+      "value": "( border-width: ( default: var(--border-default), input: var(--border-default), button: var(--border-default), checkbox: var(--border-default), tag: var(--border-default), badge: var(--border-default), none: var(--none), big: var(--border-big), card: var(--border-default), alert: var(--border-default), ), box-shadow: ( input-focus: 0 0 var(--shadow-blur) var(--color--generic--shadow__focus), input-success-focus: 0 0 var(--shadow-blur) var(--color--status--success__border), input-warning-focus: 0 0 var(--shadow-blur) var(--color--status--warning__border), input-error-focus: 0 0 var(--shadow-blur) var(--color--status--error__border), tag-sticker: ( 0px 5.84789px 5.49347px rgba(0, 0, 0, 0.139073), 0px 2.86674px 2.693px rgba(0, 0, 0, 0.110927), 0px 1.13351px 1.06482px rgba(0, 0, 0, 0.0775046), ), card-elevated: (inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated)), accordion-header: 0px 4px 12px 0px var(--color--generic--shadow__default), card-clickable: 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated), divider-bottom: 0px 2px 1px -1px var(--color--palette--shadow__shade-4), divider-top: inset 0px 2px 1px -1px var(--color--palette--shadow__shade-4), divider-left: inset 2px 0px 1px -1px var(--color--palette--shadow__shade-4), divider-right: 2px 0px 1px -1px var(--color--palette--shadow__shade-4), divider-horizontal: ( 2px 0px 1px -1px var(--color--palette--shadow__shade-4), inset 2px 0px 1px -1px var(--color--palette--shadow__shade-4), ), divider-vertical: ( 0px 2px 1px -1px var(--color--palette--shadow__shade-4), inset 0px 2px 1px -1px var(--color--palette--shadow__shade-4), ), default: ( inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0px 2px 1px -1px var(--color--palette--shadow__shade-4), ), button-primary: ( inset 0px 2px 2px -1px var(--color--palette--shadow__shade-0-0), 0px 2px 1px -1px var(--color--palette--shadow__shade-0-0), ), default-bottom: 0px 2px 1px -1px var(--color--palette--shadow__shade-5), default-top: inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), default-left: inset 2px 0px 1px -1px var(--color--palette--shadow__shade-5), default-right: 2px 0px 1px -1px var(--color--palette--shadow__shade-5), default-horizontal: ( 2px 0px 1px -1px var(--color--palette--shadow__shade-5), inset 2px 0px 1px -1px var(--color--palette--shadow__shade-5), ), default-vertical: ( 0px 2px 1px -1px var(--color--palette--shadow__shade-5), inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), ), none: none, card-both: (inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated)), ), border-style: ( solid: solid, dotted: dotted, dashed: dashed, none: none, ), border-radius: ( small: var(--radius), regular: var(--radius--md), big: var(--radius--big), extra-big: var(--radius--xl), rounded: var(--radius--xxl), circle: var(--radius--circle), none: var(--none), ), border-radius-direction: ( all: all, left: left, right: right, bottom: bottom, top: top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4, ), border-direction: ( all: all, left: left, right: right, bottom: bottom, top: top, vertical: vertical, horizontal: horizontal, no-right: no-right, no-left: no-left, no-bottom: no-bottom, no-top: no-top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4, ), )",
+      "mapValue": [
+        {
+          "name": "border-width",
+          "value": "( default: var(--border-default)",
+          "mapValue": [
+            {
+              "name": "default",
+              "value": "var(--border-default)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "input",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "button",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "checkbox",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "tag",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "badge",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "none",
+          "value": "var(--none)",
+          "compiledValue": "var(--none)"
+        },
+        {
+          "name": "big",
+          "value": "var(--border-big)",
+          "compiledValue": "var(--border-big)"
+        },
+        {
+          "name": "card",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "alert",
+          "value": "var(--border-default)",
+          "compiledValue": "var(--border-default)"
+        },
+        {
+          "name": "box-shadow",
+          "value": "( input-focus: 0 0 var(--shadow-blur)",
+          "mapValue": [
+            {
+              "name": "input-focus",
+              "value": "0 0 var"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "input-success-focus",
+          "value": "0 0 var",
+          "compiledValue": "0 0 var"
+        },
+        {
+          "name": "input-warning-focus",
+          "value": "0 0 var",
+          "compiledValue": "0 0 var"
+        },
+        {
+          "name": "input-error-focus",
+          "value": "0 0 var",
+          "compiledValue": "0 0 var"
+        },
+        {
+          "name": "tag-sticker",
+          "value": "( 0px 5.84789px 5.49347px rgba(0, 0, 0, 0.139073)",
+          "compiledValue": ""
+        },
+        {
+          "name": "card-elevated",
+          "value": "(inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5)",
+          "compiledValue": ""
+        },
+        {
+          "name": "accordion-header",
+          "value": "0px 4px 12px 0px var",
+          "compiledValue": "0px 4px 12px 0px var"
+        },
+        {
+          "name": "card-clickable",
+          "value": "0 var",
+          "compiledValue": "0 var"
+        },
+        {
+          "name": "divider-bottom",
+          "value": "0px 2px 1px -1px var",
+          "compiledValue": "0px 2px 1px -1px var"
+        },
+        {
+          "name": "divider-top",
+          "value": "inset 0px 2px 1px -1px var",
+          "compiledValue": "inset 0px 2px 1px -1px var"
+        },
+        {
+          "name": "divider-left",
+          "value": "inset 2px 0px 1px -1px var",
+          "compiledValue": "inset 2px 0px 1px -1px var"
+        },
+        {
+          "name": "divider-right",
+          "value": "2px 0px 1px -1px var",
+          "compiledValue": "2px 0px 1px -1px var"
+        },
+        {
+          "name": "divider-horizontal",
+          "value": "( 2px 0px 1px -1px var(--color--palette--shadow__shade-4)",
+          "compiledValue": ""
+        },
+        {
+          "name": "divider-vertical",
+          "value": "( 0px 2px 1px -1px var(--color--palette--shadow__shade-4)",
+          "compiledValue": ""
+        },
+        {
+          "name": "default",
+          "value": "( inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5)",
+          "compiledValue": ""
+        },
+        {
+          "name": "button-primary",
+          "value": "( inset 0px 2px 2px -1px var(--color--palette--shadow__shade-0-0)",
+          "compiledValue": ""
+        },
+        {
+          "name": "default-bottom",
+          "value": "0px 2px 1px -1px var",
+          "compiledValue": "0px 2px 1px -1px var"
+        },
+        {
+          "name": "default-top",
+          "value": "inset 0px 2px 1px -1px var",
+          "compiledValue": "inset 0px 2px 1px -1px var"
+        },
+        {
+          "name": "default-left",
+          "value": "inset 2px 0px 1px -1px var",
+          "compiledValue": "inset 2px 0px 1px -1px var"
+        },
+        {
+          "name": "default-right",
+          "value": "2px 0px 1px -1px var",
+          "compiledValue": "2px 0px 1px -1px var"
+        },
+        {
+          "name": "default-horizontal",
+          "value": "( 2px 0px 1px -1px var(--color--palette--shadow__shade-5)",
+          "compiledValue": ""
+        },
+        {
+          "name": "default-vertical",
+          "value": "( 0px 2px 1px -1px var(--color--palette--shadow__shade-5)",
+          "compiledValue": ""
+        },
+        {
+          "name": "none",
+          "value": "none",
+          "compiledValue": "none"
+        },
+        {
+          "name": "card-both",
+          "value": "(inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5)",
+          "compiledValue": ""
+        },
+        {
+          "name": "border-style",
+          "value": "( solid: solid, dotted: dotted, dashed: dashed, none: none, )",
+          "mapValue": [
+            {
+              "name": "solid",
+              "value": "solid"
+            },
+            {
+              "name": "dotted",
+              "value": "dotted"
+            },
+            {
+              "name": "dashed",
+              "value": "dashed"
+            },
+            {
+              "name": "none",
+              "value": "none"
+            }
+          ],
+          "compiledValue": "(solid: solid, dotted: dotted, dashed: dashed, none: none)"
+        },
+        {
+          "name": "border-radius",
+          "value": "( small: var(--radius)",
+          "mapValue": [
+            {
+              "name": "small",
+              "value": "var(--radius)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "regular",
+          "value": "var(--radius--md)",
+          "compiledValue": "var(--radius--md)"
+        },
+        {
+          "name": "big",
+          "value": "var(--radius--big)",
+          "compiledValue": "var(--radius--big)"
+        },
+        {
+          "name": "extra-big",
+          "value": "var(--radius--xl)",
+          "compiledValue": "var(--radius--xl)"
+        },
+        {
+          "name": "rounded",
+          "value": "var(--radius--xxl)",
+          "compiledValue": "var(--radius--xxl)"
+        },
+        {
+          "name": "circle",
+          "value": "var(--radius--circle)",
+          "compiledValue": "var(--radius--circle)"
+        },
+        {
+          "name": "none",
+          "value": "var(--none)",
+          "compiledValue": "var(--none)"
+        },
+        {
+          "name": "border-radius-direction",
+          "value": "( all: all, left: left, right: right, bottom: bottom, top: top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4, )",
+          "mapValue": [
+            {
+              "name": "all",
+              "value": "all"
+            },
+            {
+              "name": "left",
+              "value": "left"
+            },
+            {
+              "name": "right",
+              "value": "right"
+            },
+            {
+              "name": "bottom",
+              "value": "bottom"
+            },
+            {
+              "name": "top",
+              "value": "top"
+            },
+            {
+              "name": "corner-1",
+              "value": "corner-1"
+            },
+            {
+              "name": "corner-2",
+              "value": "corner-2"
+            },
+            {
+              "name": "corner-3",
+              "value": "corner-3"
+            },
+            {
+              "name": "corner-4",
+              "value": "corner-4"
+            }
+          ],
+          "compiledValue": "(all: all, left: left, right: right, bottom: bottom, top: top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4)"
+        },
+        {
+          "name": "border-direction",
+          "value": "( all: all, left: left, right: right, bottom: bottom, top: top, vertical: vertical, horizontal: horizontal, no-right: no-right, no-left: no-left, no-bottom: no-bottom, no-top: no-top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4, )",
+          "mapValue": [
+            {
+              "name": "all",
+              "value": "all"
+            },
+            {
+              "name": "left",
+              "value": "left"
+            },
+            {
+              "name": "right",
+              "value": "right"
+            },
+            {
+              "name": "bottom",
+              "value": "bottom"
+            },
+            {
+              "name": "top",
+              "value": "top"
+            },
+            {
+              "name": "vertical",
+              "value": "vertical"
+            },
+            {
+              "name": "horizontal",
+              "value": "horizontal"
+            },
+            {
+              "name": "no-right",
+              "value": "no-right"
+            },
+            {
+              "name": "no-left",
+              "value": "no-left"
+            },
+            {
+              "name": "no-bottom",
+              "value": "no-bottom"
+            },
+            {
+              "name": "no-top",
+              "value": "no-top"
+            },
+            {
+              "name": "corner-1",
+              "value": "corner-1"
+            },
+            {
+              "name": "corner-2",
+              "value": "corner-2"
+            },
+            {
+              "name": "corner-3",
+              "value": "corner-3"
+            },
+            {
+              "name": "corner-4",
+              "value": "corner-4"
+            }
+          ],
+          "compiledValue": "(all: all, left: left, right: right, bottom: bottom, top: top, vertical: vertical, horizontal: horizontal, no-right: no-right, no-left: no-left, no-bottom: no-bottom, no-top: no-top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4)"
+        }
+      ],
+      "compiledValue": "(border-width: (default: var(--border-default), input: var(--border-default), button: var(--border-default), checkbox: var(--border-default), tag: var(--border-default), badge: var(--border-default), none: var(--none), big: var(--border-big), card: var(--border-default), alert: var(--border-default)), box-shadow: (input-focus: 0 0 var(--shadow-blur) var(--color--generic--shadow__focus), input-success-focus: 0 0 var(--shadow-blur) var(--color--status--success__border), input-warning-focus: 0 0 var(--shadow-blur) var(--color--status--warning__border), input-error-focus: 0 0 var(--shadow-blur) var(--color--status--error__border), tag-sticker: (0px 5.84789px 5.49347px rgba(0, 0, 0, 0.139073), 0px 2.86674px 2.693px rgba(0, 0, 0, 0.110927), 0px 1.13351px 1.06482px rgba(0, 0, 0, 0.0775046)), card-elevated: (inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated)), accordion-header: 0px 4px 12px 0px var(--color--generic--shadow__default), card-clickable: 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated), divider-bottom: 0px 2px 1px -1px var(--color--palette--shadow__shade-4), divider-top: inset 0px 2px 1px -1px var(--color--palette--shadow__shade-4), divider-left: inset 2px 0px 1px -1px var(--color--palette--shadow__shade-4), divider-right: 2px 0px 1px -1px var(--color--palette--shadow__shade-4), divider-horizontal: (2px 0px 1px -1px var(--color--palette--shadow__shade-4), inset 2px 0px 1px -1px var(--color--palette--shadow__shade-4)), divider-vertical: (0px 2px 1px -1px var(--color--palette--shadow__shade-4), inset 0px 2px 1px -1px var(--color--palette--shadow__shade-4)), default: (inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0px 2px 1px -1px var(--color--palette--shadow__shade-4)), button-primary: (inset 0px 2px 2px -1px var(--color--palette--shadow__shade-0-0), 0px 2px 1px -1px var(--color--palette--shadow__shade-0-0)), default-bottom: 0px 2px 1px -1px var(--color--palette--shadow__shade-5), default-top: inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), default-left: inset 2px 0px 1px -1px var(--color--palette--shadow__shade-5), default-right: 2px 0px 1px -1px var(--color--palette--shadow__shade-5), default-horizontal: (2px 0px 1px -1px var(--color--palette--shadow__shade-5), inset 2px 0px 1px -1px var(--color--palette--shadow__shade-5)), default-vertical: (0px 2px 1px -1px var(--color--palette--shadow__shade-5), inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5)), none: none, card-both: (inset 0px 2px 1px -1px var(--color--palette--shadow__shade-5), 0 var(--spacing-0-5) calc(var(--spacing-3) - 2px) var(--color--generic--shadow__card-elevated))), border-style: (solid: solid, dotted: dotted, dashed: dashed, none: none), border-radius: (small: var(--radius), regular: var(--radius--md), big: var(--radius--big), extra-big: var(--radius--xl), rounded: var(--radius--xxl), circle: var(--radius--circle), none: var(--none)), border-radius-direction: (all: all, left: left, right: right, bottom: bottom, top: top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4), border-direction: (all: all, left: left, right: right, bottom: bottom, top: top, vertical: vertical, horizontal: horizontal, no-right: no-right, no-left: no-left, no-bottom: no-bottom, no-top: no-top, corner-1: corner-1, corner-2: corner-2, corner-3: corner-3, corner-4: corner-4))"
+    },
+    {
+      "name": "$_border-types-props",
+      "value": "( default: ( divider: var(--color--generic--border__divider), default: var(--color--generic--border__default), dark: var(--color--generic--border__dark), divider-primary: var(--color--generic--border__divider-primary), divider-blue: var(--color--divider-blue-border), ), input: ( input: var(--color--generic--border__default), input-hover: var(--color--status--hover__border), input-focus: var(--color--status--active__border-input), input-disabled: var(--color--status--disabled__border-input), input-pressed: var(--color--status--active__border-input), input-success: var(--color--status--success__border), input-success-hover: var(--color--status--success__border-hover), input-success-focus: var(--color--status--success__border-focus), input-error: var(--color--status--error__border), input-error-hover: var(--color--status--error__border-hover), input-error-focus: var(--color--status--error__border-focus), input-warning: var(--color--status--warning__border), input-warning-hover: var(--color--status--warning__border-hover), input-warning-focus: var(--color--status--warning__border-focus), ), button: ( button: var(--color--generic--border__default), button-disabled: var(--color--generic--border__default), button-active: var(--color--status--active__border-button), button-danger: var(--color--component--button__border-danger), button-danger-hover: var(--color--status--hover__border-button-danger), button-primary: var(--color--component--button__border-primary), ), checkbox: ( checkbox: var(--color--generic--border__default), checkbox-checked: var(--color--status--active__border-checkbox), checkbox-hover: var(--color--status--hover__border), ), tag: ( tag: var(--color--generic--border__default), tag-success: var(--color--status--success__border), tag-error: var(--color--status--error__border), tag-dashed: var(--tag-dashed-border), tag-processing: var(--color--status--process__border), tag-warning: var(--color--status--warning__border), tag-magenta: var(--color--scheme--magenta__border), tag-volcano: var(--color--scheme--volcano__border), tag-orange: var(--color--scheme--orange__border), tag-gold: var(--color--scheme--gold__border), tag-lime: var(--color--scheme--lime__border), tag-cyan: var(--color--scheme--cyan__border), tag-blue: var(--color--scheme--blue__border), tag-purple: var(--color--scheme--purple__border), tag-selection: var(--color--status--active__border-input), ), badge: ( badge: var(--color--component--badge__border), badge-ghost-dark: var(--color--component--badge__border-ghost-dark), ), card: ( card: var(--color--component--card__background), card-outlined: var(--color--generic--border__default), card-elevated: var(--color--component--card__background), card-both: var(--color--generic--border__default), card-clickable: var(--color--status--hover__border), ), alert: ( alert-success: var(--color--status--success__border), alert-error: var(--color--status--error__border), alert-info: var(--color--status--process__border), alert-warning: var(--color--status--warning__border), alert-warning-empty: var(--color--generic--border__default), ), )",
+      "mapValue": [
+        {
+          "name": "default",
+          "value": "( divider: var(--color--generic--border__divider)",
+          "mapValue": [
+            {
+              "name": "divider",
+              "value": "var(--color--generic--border__divider)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "default",
+          "value": "var(--color--generic--border__default)",
+          "compiledValue": "var(--color--generic--border__default)"
+        },
+        {
+          "name": "dark",
+          "value": "var(--color--generic--border__dark)",
+          "compiledValue": "var(--color--generic--border__dark)"
+        },
+        {
+          "name": "divider-primary",
+          "value": "var(--color--generic--border__divider-primary)",
+          "compiledValue": "var(--color--generic--border__divider-primary)"
+        },
+        {
+          "name": "divider-blue",
+          "value": "var(--color--divider-blue-border)",
+          "compiledValue": "var(--color--divider-blue-border)"
+        },
+        {
+          "name": "input",
+          "value": "( input: var(--color--generic--border__default)",
+          "mapValue": [
+            {
+              "name": "input",
+              "value": "var(--color--generic--border__default)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "input-hover",
+          "value": "var(--color--status--hover__border)",
+          "compiledValue": "var(--color--status--hover__border)"
+        },
+        {
+          "name": "input-focus",
+          "value": "var(--color--status--active__border-input)",
+          "compiledValue": "var(--color--status--active__border-input)"
+        },
+        {
+          "name": "input-disabled",
+          "value": "var(--color--status--disabled__border-input)",
+          "compiledValue": "var(--color--status--disabled__border-input)"
+        },
+        {
+          "name": "input-pressed",
+          "value": "var(--color--status--active__border-input)",
+          "compiledValue": "var(--color--status--active__border-input)"
+        },
+        {
+          "name": "input-success",
+          "value": "var(--color--status--success__border)",
+          "compiledValue": "var(--color--status--success__border)"
+        },
+        {
+          "name": "input-success-hover",
+          "value": "var(--color--status--success__border-hover)",
+          "compiledValue": "var(--color--status--success__border-hover)"
+        },
+        {
+          "name": "input-success-focus",
+          "value": "var(--color--status--success__border-focus)",
+          "compiledValue": "var(--color--status--success__border-focus)"
+        },
+        {
+          "name": "input-error",
+          "value": "var(--color--status--error__border)",
+          "compiledValue": "var(--color--status--error__border)"
+        },
+        {
+          "name": "input-error-hover",
+          "value": "var(--color--status--error__border-hover)",
+          "compiledValue": "var(--color--status--error__border-hover)"
+        },
+        {
+          "name": "input-error-focus",
+          "value": "var(--color--status--error__border-focus)",
+          "compiledValue": "var(--color--status--error__border-focus)"
+        },
+        {
+          "name": "input-warning",
+          "value": "var(--color--status--warning__border)",
+          "compiledValue": "var(--color--status--warning__border)"
+        },
+        {
+          "name": "input-warning-hover",
+          "value": "var(--color--status--warning__border-hover)",
+          "compiledValue": "var(--color--status--warning__border-hover)"
+        },
+        {
+          "name": "input-warning-focus",
+          "value": "var(--color--status--warning__border-focus)",
+          "compiledValue": "var(--color--status--warning__border-focus)"
+        },
+        {
+          "name": "button",
+          "value": "( button: var(--color--generic--border__default)",
+          "mapValue": [
+            {
+              "name": "button",
+              "value": "var(--color--generic--border__default)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "button-disabled",
+          "value": "var(--color--generic--border__default)",
+          "compiledValue": "var(--color--generic--border__default)"
+        },
+        {
+          "name": "button-active",
+          "value": "var(--color--status--active__border-button)",
+          "compiledValue": "var(--color--status--active__border-button)"
+        },
+        {
+          "name": "button-danger",
+          "value": "var(--color--component--button__border-danger)",
+          "compiledValue": "var(--color--component--button__border-danger)"
+        },
+        {
+          "name": "button-danger-hover",
+          "value": "var(--color--status--hover__border-button-danger)",
+          "compiledValue": "var(--color--status--hover__border-button-danger)"
+        },
+        {
+          "name": "button-primary",
+          "value": "var(--color--component--button__border-primary)",
+          "compiledValue": "var(--color--component--button__border-primary)"
+        },
+        {
+          "name": "checkbox",
+          "value": "( checkbox: var(--color--generic--border__default)",
+          "mapValue": [
+            {
+              "name": "checkbox",
+              "value": "var(--color--generic--border__default)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "checkbox-checked",
+          "value": "var(--color--status--active__border-checkbox)",
+          "compiledValue": "var(--color--status--active__border-checkbox)"
+        },
+        {
+          "name": "checkbox-hover",
+          "value": "var(--color--status--hover__border)",
+          "compiledValue": "var(--color--status--hover__border)"
+        },
+        {
+          "name": "tag",
+          "value": "( tag: var(--color--generic--border__default)",
+          "mapValue": [
+            {
+              "name": "tag",
+              "value": "var(--color--generic--border__default)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "tag-success",
+          "value": "var(--color--status--success__border)",
+          "compiledValue": "var(--color--status--success__border)"
+        },
+        {
+          "name": "tag-error",
+          "value": "var(--color--status--error__border)",
+          "compiledValue": "var(--color--status--error__border)"
+        },
+        {
+          "name": "tag-dashed",
+          "value": "var(--tag-dashed-border)",
+          "compiledValue": "var(--tag-dashed-border)"
+        },
+        {
+          "name": "tag-processing",
+          "value": "var(--color--status--process__border)",
+          "compiledValue": "var(--color--status--process__border)"
+        },
+        {
+          "name": "tag-warning",
+          "value": "var(--color--status--warning__border)",
+          "compiledValue": "var(--color--status--warning__border)"
+        },
+        {
+          "name": "tag-magenta",
+          "value": "var(--color--scheme--magenta__border)",
+          "compiledValue": "var(--color--scheme--magenta__border)"
+        },
+        {
+          "name": "tag-volcano",
+          "value": "var(--color--scheme--volcano__border)",
+          "compiledValue": "var(--color--scheme--volcano__border)"
+        },
+        {
+          "name": "tag-orange",
+          "value": "var(--color--scheme--orange__border)",
+          "compiledValue": "var(--color--scheme--orange__border)"
+        },
+        {
+          "name": "tag-gold",
+          "value": "var(--color--scheme--gold__border)",
+          "compiledValue": "var(--color--scheme--gold__border)"
+        },
+        {
+          "name": "tag-lime",
+          "value": "var(--color--scheme--lime__border)",
+          "compiledValue": "var(--color--scheme--lime__border)"
+        },
+        {
+          "name": "tag-cyan",
+          "value": "var(--color--scheme--cyan__border)",
+          "compiledValue": "var(--color--scheme--cyan__border)"
+        },
+        {
+          "name": "tag-blue",
+          "value": "var(--color--scheme--blue__border)",
+          "compiledValue": "var(--color--scheme--blue__border)"
+        },
+        {
+          "name": "tag-purple",
+          "value": "var(--color--scheme--purple__border)",
+          "compiledValue": "var(--color--scheme--purple__border)"
+        },
+        {
+          "name": "tag-selection",
+          "value": "var(--color--status--active__border-input)",
+          "compiledValue": "var(--color--status--active__border-input)"
+        },
+        {
+          "name": "badge",
+          "value": "( badge: var(--color--component--badge__border)",
+          "mapValue": [
+            {
+              "name": "badge",
+              "value": "var(--color--component--badge__border)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "badge-ghost-dark",
+          "value": "var(--color--component--badge__border-ghost-dark)",
+          "compiledValue": "var(--color--component--badge__border-ghost-dark)"
+        },
+        {
+          "name": "card",
+          "value": "( card: var(--color--component--card__background)",
+          "mapValue": [
+            {
+              "name": "card",
+              "value": "var(--color--component--card__background)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "card-outlined",
+          "value": "var(--color--generic--border__default)",
+          "compiledValue": "var(--color--generic--border__default)"
+        },
+        {
+          "name": "card-elevated",
+          "value": "var(--color--component--card__background)",
+          "compiledValue": "var(--color--component--card__background)"
+        },
+        {
+          "name": "card-both",
+          "value": "var(--color--generic--border__default)",
+          "compiledValue": "var(--color--generic--border__default)"
+        },
+        {
+          "name": "card-clickable",
+          "value": "var(--color--status--hover__border)",
+          "compiledValue": "var(--color--status--hover__border)"
+        },
+        {
+          "name": "alert",
+          "value": "( alert-success: var(--color--status--success__border)",
+          "mapValue": [
+            {
+              "name": "alert-success",
+              "value": "var(--color--status--success__border)"
+            }
+          ],
+          "compiledValue": ""
+        },
+        {
+          "name": "alert-error",
+          "value": "var(--color--status--error__border)",
+          "compiledValue": "var(--color--status--error__border)"
+        },
+        {
+          "name": "alert-info",
+          "value": "var(--color--status--process__border)",
+          "compiledValue": "var(--color--status--process__border)"
+        },
+        {
+          "name": "alert-warning",
+          "value": "var(--color--status--warning__border)",
+          "compiledValue": "var(--color--status--warning__border)"
+        },
+        {
+          "name": "alert-warning-empty",
+          "value": "var(--color--generic--border__default)",
+          "compiledValue": "var(--color--generic--border__default)"
+        }
+      ],
+      "compiledValue": "(default: (divider: var(--color--generic--border__divider), default: var(--color--generic--border__default), dark: var(--color--generic--border__dark), divider-primary: var(--color--generic--border__divider-primary), divider-blue: var(--color--divider-blue-border)), input: (input: var(--color--generic--border__default), input-hover: var(--color--status--hover__border), input-focus: var(--color--status--active__border-input), input-disabled: var(--color--status--disabled__border-input), input-pressed: var(--color--status--active__border-input), input-success: var(--color--status--success__border), input-success-hover: var(--color--status--success__border-hover), input-success-focus: var(--color--status--success__border-focus), input-error: var(--color--status--error__border), input-error-hover: var(--color--status--error__border-hover), input-error-focus: var(--color--status--error__border-focus), input-warning: var(--color--status--warning__border), input-warning-hover: var(--color--status--warning__border-hover), input-warning-focus: var(--color--status--warning__border-focus)), button: (button: var(--color--generic--border__default), button-disabled: var(--color--generic--border__default), button-active: var(--color--status--active__border-button), button-danger: var(--color--component--button__border-danger), button-danger-hover: var(--color--status--hover__border-button-danger), button-primary: var(--color--component--button__border-primary)), checkbox: (checkbox: var(--color--generic--border__default), checkbox-checked: var(--color--status--active__border-checkbox), checkbox-hover: var(--color--status--hover__border)), tag: (tag: var(--color--generic--border__default), tag-success: var(--color--status--success__border), tag-error: var(--color--status--error__border), tag-dashed: var(--tag-dashed-border), tag-processing: var(--color--status--process__border), tag-warning: var(--color--status--warning__border), tag-magenta: var(--color--scheme--magenta__border), tag-volcano: var(--color--scheme--volcano__border), tag-orange: var(--color--scheme--orange__border), tag-gold: var(--color--scheme--gold__border), tag-lime: var(--color--scheme--lime__border), tag-cyan: var(--color--scheme--cyan__border), tag-blue: var(--color--scheme--blue__border), tag-purple: var(--color--scheme--purple__border), tag-selection: var(--color--status--active__border-input)), badge: (badge: var(--color--component--badge__border), badge-ghost-dark: var(--color--component--badge__border-ghost-dark)), card: (card: var(--color--component--card__background), card-outlined: var(--color--generic--border__default), card-elevated: var(--color--component--card__background), card-both: var(--color--generic--border__default), card-clickable: var(--color--status--hover__border)), alert: (alert-success: var(--color--status--success__border), alert-error: var(--color--status--error__border), alert-info: var(--color--status--process__border), alert-warning: var(--color--status--warning__border), alert-warning-empty: var(--color--generic--border__default)))"
+    },
+    {
+      "name": "$_width",
+      "value": "(none, default, input, button, checkbox, tag, big, card, alert)",
+      "compiledValue": "none, default, input, button, checkbox, tag, big, card, alert"
+    },
+    {
+      "name": "$_radius",
+      "value": "(small, big, extra-big, rounded, circle, none)",
+      "compiledValue": "small, big, extra-big, rounded, circle, none"
+    },
+    {
+      "name": "$_radius-direction",
+      "value": "( top, right, bottom, left, corner-1, corner-2, corner-3, corner-4, all )",
+      "compiledValue": "top, right, bottom, left, corner-1, corner-2, corner-3, corner-4, all"
+    },
+    {
+      "name": "$_shadow",
+      "value": "( input-focus, input-error-focus, input-success-focus, input-warning-focus, tag-sticker, card-elevated, card-both, accordion-header, card-clickable, divider-top, divider-bottom, divider-left, divider-right, divider-vertical, divider-horizontal, default, button-primary, default-top, default-bottom, default-left, default-right, default-vertical, default-horizontal, none, )",
+      "compiledValue": "input-focus, input-error-focus, input-success-focus, input-warning-focus, tag-sticker, card-elevated, card-both, accordion-header, card-clickable, divider-top, divider-bottom, divider-left, divider-right, divider-vertical, divider-horizontal, default, button-primary, default-top, default-bottom, default-left, default-right, default-vertical, default-horizontal, none"
+    },
+    {
+      "name": "$_style",
+      "value": "(solid, dotted, dashed, none)",
+      "compiledValue": "solid, dotted, dashed, none"
+    },
+    {
+      "name": "$_direction",
+      "value": "( horizontal, vertical, top, right, bottom, left, no-right, no-left, no-top, no-bottom, all, corner-1, corner-2, corner-3, corner-4 )",
+      "compiledValue": "horizontal, vertical, top, right, bottom, left, no-right, no-left, no-top, no-bottom, all, corner-1, corner-2, corner-3, corner-4"
+    },
+    {
+      "name": "$_default",
+      "value": "(divider, default, dark, divider-primary, divider-blue)",
+      "compiledValue": "divider, default, dark, divider-primary, divider-blue"
+    },
+    {
+      "name": "$_input",
+      "value": "( input, input-hover, input-focus, input-disabled, input-pressed, input-success, input-success-hover, input-success-focus, input-error, input-error-hover, input-error-focus, input-warning, input-warning-hover, input-warning-focus )",
+      "compiledValue": "input, input-hover, input-focus, input-disabled, input-pressed, input-success, input-success-hover, input-success-focus, input-error, input-error-hover, input-error-focus, input-warning, input-warning-hover, input-warning-focus"
+    },
+    {
+      "name": "$_button",
+      "value": "( button, button-disabled, button-active, button-danger, button-primary, button-danger-hover )",
+      "compiledValue": "button, button-disabled, button-active, button-danger, button-primary, button-danger-hover"
+    },
+    {
+      "name": "$_checkbox",
+      "value": "(checkbox, checkbox-checked, checkbox-hover)",
+      "compiledValue": "checkbox, checkbox-checked, checkbox-hover"
+    },
+    {
+      "name": "$_tag",
+      "value": "( tag, tag-sticker, tag-success, tag-error, tag-dashed, tag-processing, tag-warning, tag-magenta, tag-volcano, tag-orange, tag-lime, tag-cyan, tag-blue, tag-purple, tag-selection, tag-gold )",
+      "compiledValue": "tag, tag-sticker, tag-success, tag-error, tag-dashed, tag-processing, tag-warning, tag-magenta, tag-volcano, tag-orange, tag-lime, tag-cyan, tag-blue, tag-purple, tag-selection, tag-gold"
+    },
+    {
+      "name": "$_badge",
+      "value": "(badge, badge-ghost-dark)",
+      "compiledValue": "badge, badge-ghost-dark"
+    },
+    {
+      "name": "$_card",
+      "value": "(card, card-outlined, card-elevated, card-both, card-clickable)",
+      "compiledValue": "card, card-outlined, card-elevated, card-both, card-clickable"
+    },
+    {
+      "name": "$_alert",
+      "value": "( alert-error, alert-success, alert-info, alert-warning, alert-warning-empty )",
+      "compiledValue": "alert-error, alert-success, alert-info, alert-warning, alert-warning-empty"
+    },
+    {
+      "name": "$_types",
+      "value": "(default, input, button, checkbox, tag, badge, card, alert)",
+      "compiledValue": "default, input, button, checkbox, tag, badge, card, alert"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+// =============================================================================
+// 08-trumps/_trumps.storybook.scss
+// Storybook-only demo styles — NOT for production use.
+//
+// Applied exclusively via the `.sb-demo-wrapper` class, which is added by
+// componentWrapperDecorator in stories. Because this class never appears in
+// app HTML, these rules have zero impact on the apps.
+//
+// Provides:
+//   - CSS counter auto-numbering for all .o-flex__item children
+//   - Tinted cell backgrounds so grid demos are legible
+//   - Size modifiers (.o-flex__item--sm, --md, --big) for align/content demos
+//   - A tall wrapper variant (.o-flex--big) for align-content demos
+// =============================================================================
+
+.sb-demo-wrapper {
+  // ── Token aliases ──────────────────────────────────────────────────────────
+  // Bridge PrimeNG palette tokens to local aliases.
+  // Falls back to hardcoded values if the Plectrum theme is not yet resolved.
+  --_sb-cell-bg:        var(--p-primary-200, #90b8d4);
+  --_sb-cell-bg-odd:    color-mix(in srgb, var(--p-primary-200, #90b8d4), white 30%);
+  --_sb-cell-bg-nested: color-mix(in srgb, var(--p-primary-400, #4a90b8), transparent 70%);
+  --_sb-cell-bg-wrap:   color-mix(in srgb, var(--p-primary-200, #90b8d4), white 70%);
+  --_sb-cell-text:      var(--sds-color-text-default, #333);
+
+  // ── Flex container demo styles ─────────────────────────────────────────────
+  .o-flex {
+    margin-bottom: var(--sds-space-2, 1rem);
+    padding: calc(var(--sds-space-1, 0.5rem));
+    background: var(--_sb-cell-bg-wrap);
+    counter-reset: counter;   // each container restarts auto-numbering
+
+    // Tall variant — used by align-content stories
+    &--big {
+      height: 250px;
+    }
+
+    // Nested grid — inner cells get a different tint
+    & .o-flex {
+      background: none;
+
+      .o-flex__item {
+        background: var(--_sb-cell-bg-nested);
+      }
+    }
+
+    // Vertical flex — needs a fixed height to demonstrate cross-axis behaviour
+    &--y {
+      height: 500px;
+
+      // full-height variant overrides the fixed height
+      &.o-layout--full-height {
+        height: initial;
+      }
+    }
+  }
+
+  // ── Flex item demo styles ──────────────────────────────────────────────────
+  .o-flex__item {
+    background: var(--_sb-cell-bg);
+    padding: var(--sds-space-2, 1rem);
+    color: var(--_sb-cell-text);
+    counter-increment: counter;
+
+    &:nth-child(odd) {
+      background: var(--_sb-cell-bg-odd);
+    }
+
+    // Auto-number: shows which cell position this is without cluttering the HTML
+    &::before {
+      content: counter(counter);
+      display: flex;
+      justify-content: center;
+      align-content: center;
+    }
+
+    // Fixed-height helpers for alignment demos — justified because the visual
+    // demonstration of align-items / align-self requires items of unequal size.
+    &--sm  { height: 30px; }
+    &--md  { margin-top: var(--sds-space-2, 1rem); height: 70px; }
+    &--big { height: 100px; }
+  }
+
+  // Top-level modifier alias (used on containers, not elements)
+  .o-flex__item--big { height: 100px; }
+}

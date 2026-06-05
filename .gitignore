@@ -1,0 +1,43 @@
+# Dependencies
+/node_modules
+npm-debug.log*
+yarn-error.log
+
+# Build output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Angular / tooling caches
+/.angular/cache
+.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# Storybook
+/storybook-static
+/dist/storybook
+
+# IDE / OS
+.idea
+.project
+.classpath
+.c9
+*.launch
+.settings
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Misc
+*.log
+debug-storybook.log

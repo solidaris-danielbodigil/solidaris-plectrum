@@ -1,0 +1,497 @@
+<div class="o-flex o-flex--col o-layout o-layout--gap-2">
+  <h3 class="typo__h3">Combine Values</h3>
+  <fba-card class="o-flex o-flex--y o-layout o-layout--gap-3" elevated="true">
+    <fba-search-bar class="o-flex o-layout o-layout--gap-3">
+      <fba-form-field label="Type" class="o-flex__item">
+        <fba-autocomplete
+          (optionSelected)="elevationTypeValue = getElevationType($event)"
+          (removeSelectedOption)="removeTypeValue()"
+          [noClear]="false"
+          [options]="typesList"
+          [selectedOptions]="elevationTypeValue"
+          maxVisibleOptions="15"
+          placeholder="Enter an elevation type"
+        />
+      </fba-form-field>
+
+      <fba-form-field class="o-flex__item" label="Scale">
+        <fba-autocomplete
+          [disabled]="!elevationTypeValue || scaleList.length === 0"
+          (optionSelected)="elevationScaleValue = getElevationScale($event)"
+          [options]="scaleList"
+          placeholder="Enter an elevation scale"
+          [selectedOptions]="elevationScaleValue"
+          [noClear]="true"
+          maxVisibleOptions="15"
+          (removeSelectedOption)="removeScaleValue()"
+        />
+      </fba-form-field>
+
+      <fba-form-field label="Shadow" class="o-flex__item">
+        <fba-switch
+          [disabled]="!elevationTypeValue"
+          [toggled]="shadow"
+          (toggleClick)="isElevationShadow()"
+        />
+      </fba-form-field>
+
+      <fba-form-field
+        class="o-flex__item"
+        [fused]="true"
+        [validationMarker]="'optional-text'"
+        label="Direction"
+      >
+        <fba-autocomplete
+          class="autocomplete__borders-directions"
+          (optionSelected)="
+            elevationDirectionValue = getElevationDirection($event)
+          "
+          (removeSelectedOption)="removeDirectionValue()"
+          [disabled]="!shadow || !elevationTypeValue"
+          [options]="directionsList"
+          [selectedOptions]="elevationDirectionValue"
+          maxVisibleOptions="15"
+          placeholder="Enter a shadow direction"
+          [optionIcon]="true"
+        />
+      </fba-form-field>
+    </fba-search-bar>
+  </fba-card>
+
+  <!--<h3 class="typo__h3">Result</h3>-->
+
+  <fba-card
+    (click)="
+      copyElevationValue(
+        (elevationTypeValue ? '@extend %u-elevation--' : '') +
+          elevationClass +
+          (elevationTypeValue ? ';' : '')
+      )
+    "
+    [clickable]="true"
+    [outlined]="true"
+    class="foundations-tokens__item o-flex o-flex--col foundations-tokens__item--semantic"
+  >
+    <div class="foundations-tokens__elevation-example-card o-flex">
+      <label class="foundations-tokens__theme-label">Z index</label>
+      <svg
+        width="650"
+        viewBox="0 0 2052 331"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g class="storybook__elevation-example-under">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-under-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 237.968 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-under-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 270.968 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-under-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 303.968 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-under-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 336.968 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-under-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 369.968 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+        <path
+          d="M428.5 0.5H503.5C505.985 0.5 508 2.51472 508 5V27C508 29.4853 505.985 31.5 503.5 31.5H428.5C426.015 31.5 424 29.4853 424 27V5C424 2.51472 426.015 0.5 428.5 0.5Z"
+          stroke="#D9D9D9"
+        />
+        <path
+          d="M440.729 19.4062C440.729 19.0742 440.676 18.7812 440.572 18.5273C440.475 18.2669 440.299 18.0326 440.045 17.8242C439.798 17.6159 439.452 17.4173 439.01 17.2285C438.574 17.0397 438.02 16.8477 437.35 16.6523C436.646 16.444 436.012 16.2129 435.445 15.959C434.879 15.6986 434.394 15.4023 433.99 15.0703C433.587 14.7383 433.277 14.3574 433.062 13.9277C432.848 13.498 432.74 13.0065 432.74 12.4531C432.74 11.8997 432.854 11.3887 433.082 10.9199C433.31 10.4512 433.635 10.0443 434.059 9.69922C434.488 9.34766 434.999 9.07422 435.592 8.87891C436.184 8.68359 436.845 8.58594 437.574 8.58594C438.642 8.58594 439.547 8.79102 440.289 9.20117C441.038 9.60482 441.607 10.1354 441.998 10.793C442.389 11.444 442.584 12.1406 442.584 12.8828H440.709C440.709 12.349 440.595 11.877 440.367 11.4668C440.139 11.0501 439.794 10.7246 439.332 10.4902C438.87 10.2493 438.284 10.1289 437.574 10.1289C436.904 10.1289 436.35 10.2298 435.914 10.4316C435.478 10.6335 435.152 10.9069 434.938 11.252C434.729 11.597 434.625 11.9909 434.625 12.4336C434.625 12.7331 434.687 13.0065 434.811 13.2539C434.941 13.4948 435.139 13.7194 435.406 13.9277C435.68 14.1361 436.025 14.3281 436.441 14.5039C436.865 14.6797 437.369 14.849 437.955 15.0117C438.762 15.2396 439.459 15.4935 440.045 15.7734C440.631 16.0534 441.113 16.3691 441.49 16.7207C441.874 17.0658 442.158 17.4596 442.34 17.9023C442.529 18.3385 442.623 18.8333 442.623 19.3867C442.623 19.9661 442.506 20.4902 442.271 20.959C442.037 21.4277 441.702 21.8281 441.266 22.1602C440.829 22.4922 440.305 22.7493 439.693 22.9316C439.088 23.1074 438.411 23.1953 437.662 23.1953C437.005 23.1953 436.357 23.1042 435.719 22.9219C435.087 22.7396 434.511 22.4661 433.99 22.1016C433.476 21.737 433.062 21.2878 432.75 20.7539C432.444 20.2135 432.291 19.5885 432.291 18.8789H434.166C434.166 19.3672 434.26 19.7871 434.449 20.1387C434.638 20.4837 434.895 20.7702 435.221 20.998C435.553 21.2259 435.927 21.3952 436.344 21.5059C436.767 21.61 437.206 21.6621 437.662 21.6621C438.32 21.6621 438.876 21.571 439.332 21.3887C439.788 21.2064 440.133 20.946 440.367 20.6074C440.608 20.2689 440.729 19.8685 440.729 19.4062ZM451.217 20.5586V12.4336H453.033V23H451.305L451.217 20.5586ZM451.559 18.332L452.311 18.3125C452.311 19.0156 452.236 19.6667 452.086 20.2656C451.943 20.8581 451.708 21.3724 451.383 21.8086C451.057 22.2448 450.631 22.5866 450.104 22.834C449.576 23.0749 448.935 23.1953 448.18 23.1953C447.665 23.1953 447.193 23.1204 446.764 22.9707C446.34 22.821 445.976 22.5898 445.67 22.2773C445.364 21.9648 445.126 21.5579 444.957 21.0566C444.794 20.5553 444.713 19.9531 444.713 19.25V12.4336H446.52V19.2695C446.52 19.7448 446.572 20.1387 446.676 20.4512C446.786 20.7572 446.933 21.0013 447.115 21.1836C447.304 21.3594 447.512 21.4831 447.74 21.5547C447.975 21.6263 448.215 21.6621 448.463 21.6621C449.231 21.6621 449.84 21.5156 450.289 21.2227C450.738 20.9232 451.061 20.5228 451.256 20.0215C451.458 19.5137 451.559 18.9505 451.559 18.332ZM457.594 14.0938V23H455.787V12.4336H457.545L457.594 14.0938ZM460.895 12.375L460.885 14.0547C460.735 14.0221 460.592 14.0026 460.455 13.9961C460.325 13.9831 460.175 13.9766 460.006 13.9766C459.589 13.9766 459.221 14.0417 458.902 14.1719C458.583 14.3021 458.313 14.4844 458.092 14.7188C457.87 14.9531 457.695 15.2331 457.564 15.5586C457.441 15.8776 457.359 16.2292 457.32 16.6133L456.812 16.9062C456.812 16.2682 456.874 15.6693 456.998 15.1094C457.128 14.5495 457.327 14.0547 457.594 13.625C457.861 13.1888 458.199 12.8503 458.609 12.6094C459.026 12.362 459.521 12.2383 460.094 12.2383C460.224 12.2383 460.374 12.2546 460.543 12.2871C460.712 12.3132 460.829 12.3424 460.895 12.375ZM465.416 23H463.609V11.3203C463.609 10.5586 463.746 9.91732 464.02 9.39648C464.299 8.86914 464.7 8.47201 465.221 8.20508C465.742 7.93164 466.36 7.79492 467.076 7.79492C467.285 7.79492 467.493 7.80794 467.701 7.83398C467.916 7.86003 468.124 7.89909 468.326 7.95117L468.229 9.42578C468.092 9.39323 467.936 9.37044 467.76 9.35742C467.59 9.3444 467.421 9.33789 467.252 9.33789C466.868 9.33789 466.536 9.41602 466.256 9.57227C465.982 9.72201 465.774 9.94336 465.631 10.2363C465.488 10.5293 465.416 10.8906 465.416 11.3203V23ZM467.662 12.4336V13.8203H461.939V12.4336H467.662ZM475.904 21.1934V15.7539C475.904 15.3372 475.82 14.9759 475.65 14.6699C475.488 14.3574 475.24 14.1165 474.908 13.9473C474.576 13.778 474.166 13.6934 473.678 13.6934C473.222 13.6934 472.822 13.7715 472.477 13.9277C472.138 14.084 471.871 14.2891 471.676 14.543C471.487 14.7969 471.393 15.0703 471.393 15.3633H469.586C469.586 14.9857 469.684 14.6113 469.879 14.2402C470.074 13.8691 470.354 13.5339 470.719 13.2344C471.09 12.9284 471.533 12.6875 472.047 12.5117C472.568 12.3294 473.147 12.2383 473.785 12.2383C474.553 12.2383 475.23 12.3685 475.816 12.6289C476.409 12.8893 476.871 13.2832 477.203 13.8105C477.542 14.3314 477.711 14.9857 477.711 15.7734V20.6953C477.711 21.0469 477.74 21.4212 477.799 21.8184C477.864 22.2155 477.958 22.5573 478.082 22.8438V23H476.197C476.106 22.7917 476.035 22.515 475.982 22.1699C475.93 21.8184 475.904 21.4928 475.904 21.1934ZM476.217 16.5938L476.236 17.8633H474.41C473.896 17.8633 473.437 17.9056 473.033 17.9902C472.63 18.0684 472.291 18.1888 472.018 18.3516C471.744 18.5143 471.536 18.7194 471.393 18.9668C471.249 19.2077 471.178 19.4909 471.178 19.8164C471.178 20.1484 471.253 20.4512 471.402 20.7246C471.552 20.998 471.777 21.2161 472.076 21.3789C472.382 21.5352 472.757 21.6133 473.199 21.6133C473.753 21.6133 474.241 21.4961 474.664 21.2617C475.087 21.0273 475.423 20.7409 475.67 20.4023C475.924 20.0638 476.061 19.735 476.08 19.416L476.852 20.2852C476.806 20.5586 476.682 20.8613 476.48 21.1934C476.279 21.5254 476.008 21.8444 475.67 22.1504C475.338 22.4499 474.941 22.7005 474.479 22.9023C474.023 23.0977 473.508 23.1953 472.936 23.1953C472.219 23.1953 471.591 23.0553 471.051 22.7754C470.517 22.4954 470.1 22.1211 469.801 21.6523C469.508 21.1771 469.361 20.6465 469.361 20.0605C469.361 19.4941 469.472 18.9961 469.693 18.5664C469.915 18.1302 470.234 17.7689 470.65 17.4824C471.067 17.1895 471.568 16.9681 472.154 16.8184C472.74 16.6686 473.395 16.5938 474.117 16.5938H476.217ZM484.781 21.7109C485.211 21.7109 485.608 21.623 485.973 21.4473C486.337 21.2715 486.637 21.0306 486.871 20.7246C487.105 20.4121 487.239 20.0573 487.271 19.6602H488.99C488.958 20.2852 488.746 20.8678 488.355 21.4082C487.971 21.9421 487.467 22.375 486.842 22.707C486.217 23.0326 485.53 23.1953 484.781 23.1953C483.987 23.1953 483.294 23.0553 482.701 22.7754C482.115 22.4954 481.627 22.1113 481.236 21.623C480.852 21.1348 480.562 20.5749 480.367 19.9434C480.178 19.3053 480.084 18.6315 480.084 17.9219V17.5117C480.084 16.8021 480.178 16.1315 480.367 15.5C480.562 14.862 480.852 14.2988 481.236 13.8105C481.627 13.3223 482.115 12.9382 482.701 12.6582C483.294 12.3783 483.987 12.2383 484.781 12.2383C485.608 12.2383 486.331 12.4076 486.949 12.7461C487.568 13.0781 488.053 13.5339 488.404 14.1133C488.762 14.6862 488.958 15.3372 488.99 16.0664H487.271C487.239 15.6302 487.115 15.2363 486.9 14.8848C486.692 14.5332 486.406 14.2533 486.041 14.0449C485.683 13.8301 485.263 13.7227 484.781 13.7227C484.228 13.7227 483.762 13.8333 483.385 14.0547C483.014 14.2695 482.717 14.5625 482.496 14.9336C482.281 15.2982 482.125 15.7051 482.027 16.1543C481.936 16.597 481.891 17.0495 481.891 17.5117V17.9219C481.891 18.3841 481.936 18.8398 482.027 19.2891C482.118 19.7383 482.271 20.1452 482.486 20.5098C482.708 20.8743 483.004 21.1673 483.375 21.3887C483.753 21.6035 484.221 21.7109 484.781 21.7109ZM495.406 23.1953C494.671 23.1953 494.003 23.0716 493.404 22.8242C492.812 22.5703 492.301 22.2155 491.871 21.7598C491.448 21.304 491.122 20.7637 490.895 20.1387C490.667 19.5137 490.553 18.8301 490.553 18.0879V17.6777C490.553 16.8184 490.68 16.0534 490.934 15.3828C491.188 14.7057 491.533 14.1328 491.969 13.6641C492.405 13.1953 492.9 12.8405 493.453 12.5996C494.007 12.3587 494.579 12.2383 495.172 12.2383C495.927 12.2383 496.578 12.3685 497.125 12.6289C497.678 12.8893 498.131 13.2539 498.482 13.7227C498.834 14.1849 499.094 14.7318 499.264 15.3633C499.433 15.9883 499.518 16.6719 499.518 17.4141V18.2246H491.627V16.75H497.711V16.6133C497.685 16.1445 497.587 15.6888 497.418 15.2461C497.255 14.8034 496.995 14.4388 496.637 14.1523C496.279 13.8659 495.79 13.7227 495.172 13.7227C494.762 13.7227 494.384 13.8105 494.039 13.9863C493.694 14.1556 493.398 14.4095 493.15 14.748C492.903 15.0866 492.711 15.5 492.574 15.9883C492.438 16.4766 492.369 17.0397 492.369 17.6777V18.0879C492.369 18.5892 492.438 19.0612 492.574 19.5039C492.717 19.9401 492.923 20.3242 493.189 20.6562C493.463 20.9883 493.792 21.2487 494.176 21.4375C494.566 21.6263 495.009 21.7207 495.504 21.7207C496.142 21.7207 496.682 21.5905 497.125 21.3301C497.568 21.0697 497.955 20.7214 498.287 20.2852L499.381 21.1543C499.153 21.4993 498.863 21.8281 498.512 22.1406C498.16 22.4531 497.727 22.707 497.213 22.9023C496.705 23.0977 496.103 23.1953 495.406 23.1953Z"
+          fill="#262626"
+        />
+        <g class="storybook__elevation-example-surface">
+          <rect
+            x="462"
+            y="79"
+            width="8"
+            height="252"
+            fill="#E8E8E8"
+            class="storybook__elevation-example-item"
+            [ngClass]="{
+              'storybook__elevation-example-item--active': !elevationTypeValue,
+            }"
+          />
+        </g>
+        <g class="storybook__elevation-example-raised">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-raised-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 797.968 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-raised-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 830.968 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-raised-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 863.968 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-raised-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 896.968 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-raised-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 929.968 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+        <g class="storybook__elevation-example-sticky">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-sticky-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1077.97 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-sticky-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1110.97 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-sticky-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1143.97 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-sticky-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1176.97 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-sticky-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1209.97 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+        <g class="storybook__elevation-example-high-raised">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-high-raised-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1357.97 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-high-raised-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1390.97 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-high-raised-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1423.97 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-high-raised-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1456.97 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-high-raised-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1489.97 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+        <g class="storybook__elevation-example-overlays">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-overlays-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1637.97 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-overlays-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1670.97 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-overlays-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1703.97 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-overlays-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1736.97 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-overlays-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1769.97 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+        <g class="storybook__elevation-example-blocking-overlays">
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-blocking-overlays-1"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1917.97 200.023)"
+            fill="#E3E3E3"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-blocking-overlays-2"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1950.97 200.023)"
+            fill="#EAEAEA"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-blocking-overlays-3"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 1983.97 200.023)"
+            fill="#EDEDED"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-blocking-overlays-4"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 2016.97 200.023)"
+            fill="#F9F9F9"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+          <rect
+            class="storybook__elevation-example-item storybook__elevation-example-blocking-overlays-5"
+            x="-1.27014"
+            y="0.0315946"
+            width="165.587"
+            height="156.632"
+            transform="matrix(-0.615866 0.787851 -0.654275 -0.756257 2049.97 200.023)"
+            fill="white"
+            stroke="#D9D9D9"
+            stroke-width="2"
+          />
+        </g>
+      </svg>
+    </div>
+
+    @if (shadow && elevationTypeValue) {
+      <div class="o-flex o-layout o-layout--gap-3">
+        <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+          <label class="foundations-tokens__theme-label">Light</label>
+          <fba-card
+            [outlined]="true"
+            [elevated]="false"
+            class="foundations-tokens__value o-flex o-flex__item"
+          >
+            <fba-card
+              [outlined]="false"
+              [elevated]="false"
+              class="foundations-tokens__value o-flex__item"
+              [ngClass]="'foundations-tokens__elevation--' + elevationClass"
+          /></fba-card>
+        </div>
+        <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+          <label class="foundations-tokens__theme-label">Dark</label>
+          <fba-card
+            [outlined]="true"
+            [elevated]="false"
+            class="storybook-dark-theme foundations-tokens__value o-flex o-flex__item"
+          >
+            <fba-card
+              [outlined]="false"
+              [elevated]="false"
+              class="storybook-dark-theme foundations-tokens__value o-flex__item"
+              [ngClass]="'foundations-tokens__elevation--' + elevationClass"
+            />
+          </fba-card>
+        </div>
+      </div>
+    }
+    <button
+      [fbaButton]="'primary'"
+      [size]="'small'"
+      class="foundations-tokens__copy-btn"
+    >
+      <fba-icon icon="copy" />
+    </button>
+    <label class="foundations-tokens__token"
+      >{{
+        (elevationTypeValue ? '@extend %u-elevation--' : '') +
+          elevationClass +
+          (elevationTypeValue ? ';' : '')
+      }}
+    </label>
+  </fba-card>
+</div>

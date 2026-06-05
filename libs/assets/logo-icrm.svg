@@ -1,0 +1,16 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="logo/solidaris/icrm">
+<g id="Calque_4" clip-path="url(#clip0_18_7344)">
+<path id="Vector" d="M10.843 16.0443C15.2616 16.0443 18 12.1334 18 7.81622C18 3.49909 14.4186 0 10 0C5.58136 0 2 3.49909 2 7.81622C2 9.12453 2.20932 11.9877 4.10466 13.988C6.36416 16.9323 12.6896 21.073 13.3663 19.7479C13.7878 18.9242 9.76201 16.0443 10.8401 16.0443H10.843ZM9.91971 10.8335C8.11326 10.8335 6.64803 9.40188 6.64803 7.63692C6.64803 5.87197 8.11326 4.4404 9.91971 4.4404C11.7262 4.4404 13.1914 5.87197 13.1914 7.63692C13.1914 9.40188 11.7262 10.8335 9.91971 10.8335Z" fill="url(#paint0_linear_18_7344)"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_18_7344" x1="-1.20574" y1="0.983331" x2="17.6184" y2="14.4096" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF1D25"/>
+<stop offset="1" stop-color="#D4145A"/>
+</linearGradient>
+<clipPath id="clip0_18_7344">
+<rect width="16" height="20" fill="white" transform="translate(2)"/>
+</clipPath>
+</defs>
+</svg>

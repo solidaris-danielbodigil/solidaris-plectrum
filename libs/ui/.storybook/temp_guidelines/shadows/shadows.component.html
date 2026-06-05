@@ -1,0 +1,60 @@
+<div>
+  <h3 class="typo__h3">Default Shadows</h3>
+  <a class="link" data-sb-kind="Foundations Elevation"
+    >You will find shadows utility embedded inside the elevation utility
+    Elevation</a
+  >
+  <h3 class="typo__h3">Shadows without Elevation</h3>
+  <fba-card [elevated]="true" class="foundations-tokens__wrapper">
+    @for (shadow of shadowsList; track shadow) {
+      <fba-card
+        (click)="copyShadowValue('@extend %u-shadow--' + shadow.id + ';')"
+        [clickable]="true"
+        [outlined]="true"
+        class="foundations-tokens__item o-flex o-flex--col foundations-tokens__item--semantic"
+      >
+        <div class="o-flex o-layout o-layout--gap-3">
+          <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+            <label class="foundations-tokens__theme-label">Light</label>
+            <fba-card
+              [outlined]="false"
+              [elevated]="false"
+              class="foundations-tokens__value o-flex o-flex__item"
+            >
+              <fba-card
+                [outlined]="false"
+                [elevated]="false"
+                class="foundations-tokens__value o-flex__item"
+                [ngClass]="'foundations-tokens__shadow-value--' + shadow.label"
+            /></fba-card>
+          </div>
+          <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+            <label class="foundations-tokens__theme-label">Dark</label>
+            <fba-card
+              [outlined]="false"
+              [elevated]="false"
+              class="storybook-dark-theme foundations-tokens__value o-flex o-flex__item"
+            >
+              <fba-card
+                [outlined]="false"
+                [elevated]="false"
+                class="storybook-dark-theme foundations-tokens__value o-flex__item"
+                [ngClass]="'foundations-tokens__shadow-value--' + shadow.label"
+              />
+            </fba-card>
+          </div>
+        </div>
+        <button
+          [fbaButton]="'primary'"
+          [size]="'small'"
+          class="foundations-tokens__copy-btn"
+        >
+          <fba-icon icon="copy" />
+        </button>
+        <label class="foundations-tokens__token"
+          >{{ '@extend %u-shadow--' + shadow.id + ';' }}
+        </label>
+      </fba-card>
+    }
+  </fba-card>
+</div>

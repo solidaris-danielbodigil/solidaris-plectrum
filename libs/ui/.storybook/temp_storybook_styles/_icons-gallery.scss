@@ -1,0 +1,12 @@
+.icons-gallery {
+  @extend .o-flex;
+  @extend .o-flex--col;
+  @extend .o-layout;
+  @extend .o-layout--gap-3;
+}
+.icon-grid {
+  max-height: 50dvh;
+}
+.icon-name {
+  white-space: nowrap;
+}

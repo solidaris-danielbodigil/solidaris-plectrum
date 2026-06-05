@@ -1,0 +1,183 @@
+<div class="o-flex o-flex--col o-layout o-layout--gap-3 foundations-tokens">
+  <!-- Animation Controls -->
+  <h3 class="typo__h3">Animation Playground</h3>
+  <fba-card
+    [elevated]="true"
+    class="o-flex o-flex--col o-layout o-layout--gap-3 foundations-tokens__animation-controls"
+  >
+    <!-- Animation Category Filter -->
+    <div class="o-flex o-flex--col o-layout o-layout--gap-2">
+      <fba-form-field label="Animation Category" class="o-flex__item">
+        <fba-button-group
+          [buttons]="animationCategories()"
+          [selected]="selectedCategory()"
+          (selectedChange)="onCategorySelected($event)"
+          buttonSize="small"
+          [secondary]="true"
+          name="animation-categories"
+        />
+      </fba-form-field>
+    </div>
+
+    <!-- Animation Categories -->
+    <div class="o-flex o-flex--col o-layout o-layout--gap-2">
+      @if (!animationsLoaded()) {
+        <div
+          class="o-flex o-flex--col o-layout--align-center o-layout--align-center-y"
+        >
+          <p>
+            No animations loaded. Click the button below to load animations.
+          </p>
+          <button [fbaButton]="'primary'" (click)="manuallyLoadAnimations()">
+            Load Animations
+          </button>
+        </div>
+      } @else {
+        <div class="o-flex o-flex--wrap o-layout--gap-3">
+          @for (category of categoryOptions(); track category) {
+            <fba-form-field
+              [label]="category | titlecase"
+              class="animation-form-field o-flex__item o-flex__item--3"
+            >
+              <fba-autocomplete
+                [options]="
+                  category === 'type'
+                    ? filteredKeyframeOptions()
+                    : getPropertyOptions(category)
+                "
+                [placeholder]="'Select ' + category"
+                [selectedOptions]="getSelectedOptionForCategory(category)"
+                (optionSelected)="onPropertySelected(category, $event)"
+                (removeSelectedOption)="onPropertyRemoved(category)"
+                [noClear]="false"
+                maxVisibleOptions="100"
+              />
+            </fba-form-field>
+          }
+        </div>
+      }
+    </div>
+  </fba-card>
+  <fba-card
+    [elevated]="true"
+    class="o-flex o-flex--col o-layout o-layout--gap-3"
+  >
+    <!-- Animation Demo -->
+    @if (examples().length > 0) {
+      <h4 class="typo__h4">Animation Demo</h4>
+      <div class="o-flex o-flex--col o-flex--wrap o-layout--gap-3">
+        @for (example of examples(); track example.name) {
+          <fba-card
+            [outlined]="true"
+            class="animation-item o-flex o-flex--col o-layout o-layout--gap-2 animation-example-{{
+              example.name
+            }}"
+          >
+            <h4>{{ example.name }}</h4>
+
+            <!-- Animation Preview -->
+            <div class="animation-preview">
+              <div class="animation-preview__container">
+                <div
+                  class="animation-preview__object u-animate"
+                  [ngClass]="
+                    example.isPlaying ? example.cssClass.split(' ') : []
+                  "
+                  [style.--_local-animation-name]="
+                    example.isPlaying ? example.animationName : 'none'
+                  "
+                ></div>
+              </div>
+            </div>
+
+            <!-- Animation Controls -->
+            <div class="o-flex o-layout--gap-2 o-layout--justify-center">
+              <button
+                [fbaButton]="'primary'"
+                [size]="'small'"
+                (click)="toggleAnimation(example)"
+              >
+                <fba-icon [icon]="example.isPlaying ? 'undo' : 'play-circle'" />
+                {{ example.isPlaying ? 'Reset Animation' : 'Play Animation' }}
+              </button>
+            </div>
+          </fba-card>
+        }
+      </div>
+    } @else if (getSelections().length > 0) {
+      <h4 class="typo__h4">Animation Demo</h4>
+      <fba-alert
+        type="info"
+        banner="true"
+        title="Select animation type"
+        description="Please select at least an animation type (e.g., fade-in, rotate-360) to see a complete animation example. All other properties will use default values."
+        [width]="'full'"
+      />
+    } @else if (animationsLoaded()) {
+      <h4 class="typo__h4">Animation Demo</h4>
+      <fba-alert
+        type="info"
+        banner="true"
+        title="No Animation Demo"
+        description="Select animation properties from the dropdowns above to generate examples."
+        [width]="'full'"
+      />
+    }
+    <!-- Animation Output -->
+    @if (scssCode() || utilityCode()) {
+      <h4 class="typo__h4">Animation Code</h4>
+      <!-- Utility Classes -->
+      <div
+        class="foundations-tokens__code-snippet foundations-tokens__code-snippet--clickable"
+        (click)="copyToClipboard(utilityCode())"
+      >
+        <button
+          [fbaButton]="'primary'"
+          [size]="'small'"
+          class="foundations-tokens__copy-btn"
+          (click)="copyToClipboard(utilityCode())"
+        >
+          <fba-icon icon="copy" />
+        </button>
+        <div class="code-snippet__label">Utility Classes</div>
+        <div class="foundations-tokens__code-preview">
+          <pre><code>{{ utilityCode() }}</code></pre>
+        </div>
+      </div>
+      <!-- SCSS Mixin -->
+      <div
+        class="foundations-tokens__code-snippet foundations-tokens__code-snippet--clickable"
+        (click)="copyToClipboard(scssCode())"
+      >
+        <button
+          [fbaButton]="'primary'"
+          [size]="'small'"
+          class="foundations-tokens__copy-btn"
+          (click)="copyToClipboard(scssCode())"
+        >
+          <fba-icon icon="copy" />
+        </button>
+        <div class="code-snippet__label">SCSS Mixin</div>
+        <div class="foundations-tokens__code-preview">
+          <pre><code>{{ scssCode() }}</code></pre>
+        </div>
+      </div>
+      <!-- Keyframe Definition -->
+      <div class="foundations-tokens__code-snippet">
+        <div class="code-snippet__label">Keyframe Definition</div>
+        <div class="foundations-tokens__code-preview">
+          <pre><code>{{ keyframeCode() }}</code></pre>
+        </div>
+      </div>
+    } @else if (animationsLoaded()) {
+      <h4 class="typo__h4">Animation Code</h4>
+      <fba-alert
+        type="info"
+        title="No animations selected"
+        banner="true"
+        description="Please select animation properties from the dropdowns above to see code snippets and examples."
+        [width]="'full'"
+      />
+    }
+  </fba-card>
+</div>

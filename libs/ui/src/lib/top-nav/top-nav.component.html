@@ -1,0 +1,80 @@
+<header class="c-top-nav__surface o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--full-width">
+  <div class="c-top-nav__start o-flex o-flex__item o-flex__item--grow-12 o-flex--align-items-center o-layout--min-w-0 o-layout--gap-3">
+    @if (showSubNavToggle()) {
+      <button
+        pButton
+        type="button"
+        variant="text"
+        class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
+        [attr.aria-label]="subNavToggleLabel()"
+        [attr.aria-controls]="subNavControlsId()"
+        [attr.aria-pressed]="resolvedSubNavExpanded()"
+        (click)="toggleSubNav()"
+      >
+        <i class="bi bi-layout-sidebar c-top-nav__action-icon" aria-hidden="true"></i>
+      </button>
+    }
+
+    <div class="c-top-nav__breadcrumb o-layout--min-w-0 o-layout--overflow-hidden">
+      <p-breadcrumb
+        [model]="breadcrumbs()"
+        [home]="home() ?? undefined"
+        aria-label="Breadcrumb"
+      />
+    </div>
+  </div>
+
+  <div class="c-top-nav__end o-flex o-flex__item o-flex__item--shrink-0 o-flex--align-items-center o-layout--gap-1-5">
+    @if (resolvedSearchExpanded()) {
+      <p-iconField class="c-top-nav__search o-flex o-flex--align-items-center">
+        <p-inputIcon class="bi bi-search" />
+        <input
+          [id]="searchInputId"
+          class="c-top-nav__search-input o-layout--full-width"
+          pInputText
+          type="search"
+          autocomplete="off"
+          autofocus
+          [value]="resolvedSearchQuery()"
+          [placeholder]="searchPlaceholder()"
+          [attr.aria-label]="searchAriaLabel()"
+          (input)="onSearchInput($event)"
+          (blur)="onSearchBlur()"
+          (keydown)="onSearchKeydown($event)"
+        />
+      </p-iconField>
+    } @else {
+      <button
+        pButton
+        type="button"
+        variant="text"
+        class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
+        [attr.aria-label]="searchAriaLabel()"
+        [attr.aria-controls]="searchInputId"
+        [attr.aria-expanded]="resolvedSearchExpanded()"
+        (focus)="openSearch()"
+        (click)="openSearch()"
+      >
+        <i class="bi bi-search c-top-nav__action-icon" aria-hidden="true"></i>
+      </button>
+    }
+
+    <button
+      pButton
+      type="button"
+      variant="text"
+      class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
+      [attr.aria-label]="helpLabel()"
+      (click)="onHelpClick()"
+    >
+      <i class="bi bi-question-circle c-top-nav__action-icon" aria-hidden="true"></i>
+    </button>
+
+    <sds-plectrum-avatar
+      class="c-top-nav__avatar o-flex__item--shrink-0"
+      [initials]="avatarInitials()"
+      [state]="avatarState()"
+      [ariaLabel]="avatarAriaLabel()"
+    />
+  </div>
+</header>

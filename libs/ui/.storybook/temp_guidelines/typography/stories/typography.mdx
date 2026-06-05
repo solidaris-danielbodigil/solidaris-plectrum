@@ -1,0 +1,228 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import { Figma } from '@storybook/addon-designs/blocks';
+import * as Stories from './typography-docs.component.stories';
+
+<Meta of={Stories} />
+
+# Typography
+
+## Font Anatomy
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=39999-4052&t=rhwm7QxLsllqxWBP-1" />
+
+## Font-Family
+
+Bridgestone UI kit uses *DINPro* Fonts.
+```css
+@font-face {
+  font-family: DINPro-Light;
+  font-weight: var(--typo__font-weight--light);
+  src: url('https://fonts.cdnfonts.com/s/13728/DINPro-Light_13935.woff') format('woff');
+}
+
+@font-face {
+  font-family: DINPro-Regular;
+  font-weight: var(--typo__font-weight--regular);
+  src: url('https://fonts.cdnfonts.com/s/13727/DINPro-Regular_13937.woff') format('woff');
+}
+
+@font-face {
+  font-family: DINPro-Medium;
+  font-weight: var(--typo__font-weight--medium);
+  src: url('https://fonts.cdnfonts.com/s/13729/DINPro-Medium_13936.woff') format('woff');
+}
+
+@font-face {
+  font-family: DINPro-Bold;
+  font-weight: var(--typo__font-weight--bold);
+  src: url('https://fonts.cdnfonts.com/s/13730/DINPro-Bold_13934.woff') format('woff');
+}
+```
+
+## Font-Weight
+
+### Light
+
+<Story of={Stories.Light} />
+
+The "Light" weight is finest in our scale. It may be used in areas where we want to deemphasize text or for aesthetic effects.<br/>
+```css
+.typo__light--md--md
+```
+
+### Regular
+
+<Story of={Stories.Regular} />
+
+The "Regular" weight is the default font weight for text elements. It's used mainly for body text, providing good readability for long text sections.
+```css
+.typo__regular--md--md
+```
+
+### Medium
+
+<Story of={Stories.Medium} />
+
+The "Medium" weight is bolder than Regular, often used for sections where a slight emphasis is required, such as subordinate headings or emphasized text within a paragraph.
+```css
+.typo__medium--md--md
+```
+
+### Bold
+
+<Story of={Stories.Bold} />
+
+The "Bold" weight provides the strongest emphasis and is mainly used for titles, headings, or calls to action.
+```css
+.typo__bold--md--md
+```
+
+
+
+## Font-Size
+
+### Fluid Typography System
+
+Our application is designed with a fluid typography system:
+
+```scss
+/*
+***
+* CSS expression that calculates the root font size using four parameters which are defined in settings.typography.scss
+***
+* Based on css locks math (https://fvsch.com/css-locks)
+* Font-size is declared as clamp(minSize, preferredSize, maxSize)
+* var(--typo__minSize) : minimal font size in px
+* var(--typo__maxSize) : maximum font size in px
+* var(--typo__minDim) : minimal viewport in px
+* var(--typo__maxDim) : maximum font size in px
+***
+*/
+
+html,
+* {
+  font-family: var(--typo__font-primary);
+  @if $fluid-root-unit == true {
+    font-size:
+      clamp(
+        calc(var(--typo__minSize) * 1px),
+        calc(
+          var(--typo__minSize) * 1px
+          + (var(--typo__maxSize) - var(--typo__minSize))
+          * ((100vw - (var(--typo__minDim) * 1px)) / (var(--typo__maxDim) - var(--typo__minDim)))
+        ),
+        calc(var(--typo__maxSize) * 1px)
+      );
+  }
+  @else {
+    font-size: var(--font-size-default);
+  }
+}
+```
+In the heart of our fluid typography system lies the `clamp()` function.<br/>
+This powerful CSS function allows us to set a responsive font size with minimal, maximum and preferred values that adjust to the viewport's dimensions.
+
+As `REM` units are relative to the root (html) element's font-size, this allows all typography elements (and anything else using `REMs`, like spacing units) to scale uniformly in response to the viewport size.<br/>
+This ensures a consistent appearance and legibility across various display sizes.<br/>
+
+In conclusion, this fluid typography system provides a dynamic and responsive design that adjusts to the viewer's screen, ensuring a consistent and pleasing reading experience across all devices.
+
+For more information on fluid typography and css locks, check out [this article.](https://fvsch.com/css-locks)
+
+### Base Unit
+The starting point, or the "base" of our scale system (--base-unit) is 1rem, this unit will be relative to the root font-size.<br/>
+Using 1rem as the base has several advantages:
+- *Easier scaling:* Rems are scalable. They're based on the root font-size of the document (usually 16px), which means changing that root size will proportionally scale all typography in your site. <br/>This is useful for responsive design or accessibility tools that allow users to scale up font sizes for readability.
+- *Consistent design:* This helps to keep the typography consistent across the entire application.
+- *Relative unit:* Since rem is a relative unit, it maintains relative harmony with other parts of your layout that are designed using relative units (like %, vh, vw).
+
+```css
+--base-unit: 1rem;
+```
+
+### Scale
+Each successive level is approximately 1.25 times the previous level, following our Major Third scale ratio.
+
+```css
+--typo__font-scale--xs: calc(var(--typo__font-scale--sm) / var(--major-third-scale-ratio)); /* 0.64rem */
+--typo__font-scale--sm: calc(var(--base-unit) / var(--major-third-scale-ratio)); /* 0.8rem */
+--typo__font-scale--md: var(--base-unit); /* 1rem */
+--typo__font-scale--lg: calc(var(--base-unit) * var(--major-third-scale-ratio)); /* 1.25rem */
+--typo__font-scale--xl: calc(var(--typo__font-scale--lg) * var(--major-third-scale-ratio)); /* 1.562rem */
+--typo__font-scale--xxl: calc(var(--typo__font-scale--xl) * var(--major-third-scale-ratio)); /* 1.953rem */
+--typo__font-scale--xxxl: calc(var(--typo__font-scale--xxl) * var(--major-third-scale-ratio)); /* 2.441rem */
+```
+
+## Line-Height
+
+Line height can be understood as an invisible box wrapped outside the font, it plays a vital role in legibility and overall aesthetics of the typography in an application.<br/>
+In our typography system, we use an 8-point grid and use it as a multiplier for line height with respect to the font size.<br/>
+This ensures that text for all sizes has optimal readability.
+
+### Relationship between Font Size and Line Height
+The relationship between line height and font size can be expressed through a ratio: `line-height / font-size`.<br/>
+This ratio, often called the line height multiplier, decides the vertical space each line of text takes.
+The multiplier is different for each scale because the optimal line height tends to change with font size: smaller text usually needs a higher line height (in relation to its font size) for legibility, while larger text often requires a lower one to prevent it from appearing too loosely set.
+
+### 8-point Grid System
+Our line heights are also designed in conjunction with an 8-point grid system.<br/>
+By aligning the line heights to this grid, we ensure consistency and alignment across different parts of the layout, making it more harmonious and easier to work with.<br/>
+This is why you'll notice in the scale table that all our line heights are multiples of 8. Here is an example of how it's calculated:
+
+```css
+/* scale | font size in px | line height in px */
+/* xs    | 10.24           | 16                */
+/* sm    | 12.8            | 16                */
+/* md    | 16              | 24                */
+/* lg    | 20              | 32                */
+/* xl    | 24.9            | 40                */
+/* xxl   | 31.24           | 48                */
+/* xxxl  | 39.05           | 54                */
+/* line-height / font-size = line height multiplier */
+```
+
+### Lock on lower line-height scales
+The reason we have the line height for our xs and sm scales locked at 16px is primarily for legibility and ease of reading.<br/>
+- We want to avoid the risk of having text lines visually 'colliding' or seeming too compact, making it difficult to distinguish between separate lines of text.<br/>
+- With the smallest font size starting at 10.24px, having a line height lesser than 16px would cause this issue (as the smallest scale in an 8-point grid is 8).<br/>
+- Similarly, with the sm scale with 12.8px as the font size, keeping the line height at 16px ensures that the space around text lines is optimal.<br/>
+
+In summary, maintaining a line height that is higher than the font size, especially for smaller scales, is crucial for preserving readability and ensuring a visually balanced typographic hierarchy.
+
+### Scale
+
+```css
+--typo__line-height--xs: 1.5625;
+--typo__line-height--sm: 1.25;
+--typo__line-height--md: 1.5;
+--typo__line-height--lg: 1.6;
+--typo__line-height--xl: 1.606;
+--typo__line-height--xxl: 1.53;
+--typo__line-height--xxxl: 1.38;
+```
+
+## Using Generic and Semantic Classes
+
+Our typography system offers both generic and semantic classes. <br/>
+Understanding when and why to use these mechanical elements can significantly streamline your development process and produce more sustainable outcomes.
+
+### When to Use Generic Classes?
+
+- When creating a new, unique one-off style where no existing semantic class applies.
+- For one-time adjustments, deviations, or experimentations with typography style. <br/>
+
+### When to Use Semantic Classes?
+
+- For a majority of use cases, particularly when a type of text follows a consistent design pattern across the site or application.
+- When it is important to reflect the semantic structure of a web/app page <br/>
+This is particularly important for ensuring your website or application is accessible.
+
+
+### Why Semantic Classes Should Be Given Priority?
+Two main reasons why semantic classes are prioritized in most cases are maintainability and scalability.<br/>
+
+- *Maintainability:* Using semantic classes ties the typography to the meaning of the text rather than its appearance. If later, the design requirement changes, you can update the base generic class, and all instances of the semantic class will be updated. This reduces the chances of missing some instances, leading to more consistent UI and lesser code debt.
+- *Scalability:* As your project grows and other developers need to maintain or extend it, it's easier to understand what a `.typo__h1` class does compared to `.typo__bold--xxl--xxl`.<br/>
+Semantic classes not only make your codebase more readable but also help convey design intentions, easing collaboration between programmers and designers.<br/>
+
+In summary, while generic classes provide the flexibility necessary for unique design implementations, semantic classes promote readability, maintain uniformity, and improve design-discussion efficiencies, making them the choice of priority in a scalable and maintainable project.

@@ -1,0 +1,304 @@
+// =============================================================================
+// 01-settings/_settings.grid.scss
+// Grid configuration — Sass maps for flex-grid system.
+// No CSS output; values consumed by 05-objects/_objects.flex-grid.scss.
+// =============================================================================
+$grid-cols: 12 !default;
+
+:root {
+  --grid-cols: #{$grid-cols};
+}
+
+$overflow: (
+  overflow-hidden: (overflow, hidden),
+  overflow-auto: (overflow, auto),
+  overflow-overlay: (overflow, overlay),
+  overflow-scroll: (overflow, scroll),
+  overflow-unset: (overflow, unset),
+  overflow-visible: (overflow, visible),
+  overflow-initial: (overflow, initial),
+  overflow-inherit: (overflow, inherit),
+  overflow-x-hidden: (overflow-x, hidden),
+  overflow-x-auto: (overflow-x, auto),
+  overflow-x-overlay: (overflow-x, overlay),
+  overflow-x-scroll: (overflow-x, scroll),
+  overflow-x-unset: (overflow-x, unset),
+  overflow-x-visible: (overflow-x, visible),
+  overflow-x-initial: (overflow-x, initial),
+  overflow-x-inherit: (overflow-x, inherit),
+  overflow-y-hidden: (overflow-y, hidden),
+  overflow-y-auto: (overflow-y, auto),
+  overflow-y-overlay: (overflow-y, overlay),
+  overflow-y-scroll: (overflow-y, scroll),
+  overflow-y-unset: (overflow-y, unset),
+  overflow-y-visible: (overflow-y, visible),
+  overflow-y-initial: (overflow-y, initial),
+  overflow-y-inherit: (overflow-y, inherit),
+);
+
+// Display values — consumed by 05-objects/layout/_objects.layout.scss
+$display: (
+  block: block,
+  inline-block: inline-block,
+  inline: inline,
+  hidden: none,
+  grid: grid,
+  inline-flex: inline-flex,
+  contents: contents,
+);
+
+// Position values — consumed by 05-objects/layout/_objects.layout.scss
+$position: (
+  relative: relative,
+  absolute: absolute,
+  fixed: fixed,
+  sticky: sticky,
+  static: static,
+);
+
+$flex-flow: (
+  wrap: wrap,
+  nowrap: nowrap,
+  wrap-reverse: wrap-reverse,
+  row: row,
+  row-reverse: row-reverse,
+  col: column,
+  col-reverse: column-reverse,
+  row-wrap: row wrap,
+  row-nowrap: row nowrap,
+  col-wrap: column wrap,
+  col-nowrap: column nowrap,
+);
+
+$flex-wrap: (
+  wrap: wrap,
+  nowrap: nowrap,
+  wrap-reverse: wrap-reverse,
+);
+
+$flex-direction: (
+  row: row,
+  row-reverse: row-reverse,
+  column: column,
+  column-reverse: column-reverse,
+);
+
+$align-items: (
+  /* Basic keywords */
+  stretch: stretch,
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  /* Baseline alignment */
+  baseline: baseline,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  unset: unset,
+);
+$align-content: (
+  /* Basic positional alignment */
+  /* align-content does not take left and right values */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  /* Distributed alignment */
+  space-between: space-between, /* Distribute items evenly The first item is flush with the start, the last is flush with the end */
+  space-around: space-around, /* Distribute items evenly Items have a half-size space on either end */
+  space-evenly: space-evenly, /* Distribute items evenly Items have equal space around them */
+  stretch: stretch, /* Distribute items evenly Stretch 'auto'-sized items to fit the container */
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  unset: unset,
+);
+$justify-content: (
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  /* Distributed alignment */
+  space-between: space-between, /* Distribute items evenly The first item is flush with the start, the last is flush with the end */
+  space-around: space-around, /* Distribute items evenly Items have a half-size space on either end */
+  space-evenly: space-evenly, /* Distribute items evenly Items have equal space around them */
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  unset: unset,
+);
+
+$align-self: (
+  auto: auto,
+  /* Positional alignment */
+  /* align-self does not take left and right values */
+  center: center, /* Put the item around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  /* Baseline alignment */
+  baseline: baseline,
+  stretch: stretch, /* Stretch 'auto'-sized items to fit the container */
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  unset: unset,
+);
+
+$justify-items: (
+  /* Basic keywords */
+  stretch: stretch,
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  /* Baseline alignment */
+  baseline: baseline,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  unset: unset,
+);
+$place-items: (
+  /* Keyword values */
+  stretch: stretch,
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  end_start: end start,
+  end_center: end center,
+  end_stretch: end stretch,
+  start_end: start end,
+  start_center: start center,
+  start_stretch: start stretch,
+  center_start: center start,
+  center_end: center end,
+  center_stretch: center stretch,
+  self-start: self-start,
+  self-end: self-end,
+  left: left, /* Pack items from the left */
+  right: right, /* Pack items from the right */
+  normal_start: normal start,
+  /* Positional alignment */
+  center_normal: center normal,
+  start_legacy: start legacy,
+  end_normal: end normal,
+  self-start_legacy: self-start legacy,
+  self-end_normal: self-end normal,
+  left_legacy: left legacy,
+  right_normal: right normal,
+  /* Baseline alignment */
+  baseline: baseline normal,
+  first-baseline_legacy: first baseline legacy,
+  last-baseline_normal: last baseline normal,
+  stretch_legacy: stretch legacy,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  revert: revert,
+  revert-layer: revert-layer,
+  unset: unset,
+);
+$place-content: (
+  /* Positional alignment */
+  stretch: stretch,
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  self-start: self-start,
+  self-end: self-end,
+  left: left, /* Pack items from the left */
+  right: right, /* Pack items from the right */
+  /* align-content does not take left and right values */
+  end_start: end start,
+  end_center: end center,
+  end_stretch: end stretch,
+  start_end: start end,
+  start_center: start center,
+  start_stretch: start stretch,
+  center_start: center start,
+  center_end: center end,
+  center_stretch: center stretch,
+  /* Baseline alignment */
+  baseline: baseline center,
+  first-baseline_space-even: first baseline space-evenly,
+  last-baseline_right: last baseline right,
+  /* Distributed alignment */
+  space-between_space-evenly: space-between space-evenly,
+  space-around_space-evenly: space-around space-evenly,
+  space-evenly_stretch: space-evenly stretch,
+  stretch_space-evenly: stretch space-evenly,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  revert: revert,
+  revert-layer: revert-layer,
+  unset: unset,
+);
+$justify-self: (
+  /* Basic keywords */
+  auto: auto,
+  normal: normal,
+  stretch: stretch,
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  self-start: self-start,
+  self-end: self-end,
+  left: left, /* Pack items from the left */
+  right: right, /* Pack items from the right */
+
+  /* Baseline alignment */
+  baseline: baseline,
+  first-baseline: first baseline,
+  last-baseline: last baseline,
+  /* Overflow alignment (for positional alignment only) */
+  safe-center: safe center,
+  unsafe-center: unsafe center,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  revert: revert,
+  revert-layer: revert-layer,
+  unset: unset,
+);
+$place-self: (
+  stretch: stretch,
+  /* Positional alignment */
+  center: center, /* Pack items around the center */
+  flex-start: flex-start, /* Pack items from the start */
+  flex-end: flex-end, /* Pack items from the end */
+  self-start: self-start,
+  self-end: self-end,
+  left: left, /* Pack items from the left */
+  right: right, /* Pack items from the right */
+  end_start: end start,
+  end_center: end center,
+  end_stretch: end stretch,
+  start_end: start end,
+  start_center: start center,
+  start_stretch: start stretch,
+  center_start: center start,
+  center_end: center end,
+  center_stretch: center stretch,
+  /* Baseline alignment */
+  baseline: baseline center,
+  first-baseline_space-evenly: first baseline space-evenly,
+  last-baseline_right: last baseline right,
+  /* Distributed alignment */
+  space-between_space-evenly: space-between space-evenly,
+  space-around_space-evenly: space-around space-evenly,
+  space-evenly_stretch: space-evenly stretch,
+  stretch_space-evenly: stretch space-evenly,
+  stretch_center: stretch center,
+  /* Global values */
+  inherit: inherit,
+  initial: initial,
+  revert: revert,
+  revert-layer: revert-layer,
+  unset: unset,
+);
+
+
+

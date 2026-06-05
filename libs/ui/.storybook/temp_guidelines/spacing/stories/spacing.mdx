@@ -1,0 +1,102 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import { Figma } from '@storybook/addon-designs/blocks';
+import * as Stories from './spacing.component.stories';
+
+<Meta of={Stories} />
+
+# Spacing
+
+## Spacing Tokens
+<Story of={Stories.Playground} />
+
+## 8-point Grid System
+We're currently using a 8-point grid system.<br/>
+It involves sizing and lining up elements in multiples of 8 or factors of 8 (4, 2).
+
+## Applying Spacing
+
+- You can apply spacing by reusing the classes directly in your template:
+```html
+<div class=".o-layout .o-layout--[spacing-property]-[scale]"></div>
+```
+**Spacing properties:** <br/>
+`gap`,
+`row-gap`,
+`column-gap`,
+`padding`,
+`padding-top`,
+`padding-right`,
+`padding-bottom`,
+`padding-left`,
+`padding-inline`,
+`padding-inline-start`,
+`padding-inline-end`,
+`padding-block`,
+`padding-block-start`,
+`padding-block-end`,
+`margin`,
+`margin-top`,
+`margin-right`,
+`margin-bottom`,
+`margin-left`,
+`margin-inline`,
+`margin-inline-start`,
+`margin-inline-end`,
+`margin-block`,
+`margin-block-start`,
+`margin-block-end`,<br/>
+
+**Scale values (same as spacing tokens):** <br/>
+`0`,
+`0-25`,
+`0-5`,
+`1`,
+`1-5`,
+`2`,
+`3`,
+`4`,
+`5`,
+`6`,
+`7`,
+`auto`
+<Story of={Stories.UsingClassesInTemplateDevNote} />
+<br/>
+<Story of={Stories.SpacingUsageDevNote} />
+
+- Or reuse the variables in your `scss`:
+```css
+padding: var(--spacing-2) var(--spacing-1-5) var(--spacing-0) var(--spacing-2);
+```
+
+## Best Practices
+
+Every detail in a UI, including the empty space, counts.
+The distance between elements forms meaningful relationships and establishes a clear hierarchy.<br/>
+
+### Forming Relationships Through Spacing
+
+Elements positioned closer to each other create a stronger relation. The more the space between components, the weaker the relation seems.<br/>
+Consistent spacing across elements denotes them as interconnected pieces of equal importance.<br/>
+Furthermore, spacing is a powerful tool to group associated information together. It intuitively segments content on a page, eliminating the need for lines or graphics as separators.
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=41998-2532&t=4YmFPwpO3SxjTjUC-1" />
+
+### Establishing Hierarchy Using Spacing
+
+Greater spacing around an element implies its superior hierarchy. The more space encloses an element, the higher its prominence.<br/>
+With headers, for example, the top-level ones have more space, enhancing their prominence and focus. <br/>
+Headers of lesser importance have narrower spacing, signaling their secondary status.<br/>
+Elements that are set close to each other can be easily overlooked. Users may see the grouping but not process each individual item.<br/>
+Therefore, if you have an element or content of high importance on the page, consider giving it extra surrounding space to help it attract focus.
+
+### The Role of White Space
+
+White space, is as crucial as any other element. It serves as a visual rest area in the heavy traffic of information processing.<br/>
+An overload of dense information can cause disorientation or overwhelm. So, while sections of a UI can be dense, they should never overload the entire page.<br/>
+There should be adequate white space for the user's eyes to relax.
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=41998-3470&t=4YmFPwpO3SxjTjUC-1" />
+
+## Related
+
+[Check this related section to see how Spacing is used for building layouts](?path=/docs/foundations-layout--docs#spacing)

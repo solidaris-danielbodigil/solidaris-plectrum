@@ -1,0 +1,28 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import * as ShadowsStories from './shadows.component.stories';
+
+import { Markdown } from '@storybook/blocks';
+import { Figma } from '@storybook/addon-designs/blocks';
+import Definition from './definition.md?raw';
+import HowTo from './how-to.md?raw';
+import BestPractices from './best-practices.md?raw';
+
+<Meta of={ShadowsStories} />
+
+# Shadows
+
+<Markdown>{Definition}</Markdown>
+
+## Find your Shadow
+
+<Story of={ShadowsStories.Generate}></Story>
+
+## How to
+
+<Markdown>{HowTo}</Markdown>
+
+## Best Practices
+
+<Markdown>{BestPractices}</Markdown>
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=1012-4575" />

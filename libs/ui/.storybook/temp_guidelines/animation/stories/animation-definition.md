@@ -1,0 +1,1 @@
+The Fleetbridge animation system provides a set of consistent motion patterns that enhance the user experience. Animations are designed to be subtle, purposeful, and performant, helping users understand state changes and providing feedback for their actions. This system offers CSS variables, utility classes, and SCSS mixins to implement animations across the application.

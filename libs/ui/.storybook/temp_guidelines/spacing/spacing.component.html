@@ -1,0 +1,32 @@
+<div class="o-flex o-flex--col o-layout o-layout--gap-3">
+  <fba-card [elevated]="true" class="foundations-tokens__wrapper">
+    @for (className of spacingClasses; track className) {
+      <fba-card
+        (click)="copySpacingClassName('var(' + className + ')')"
+        [clickable]="true"
+        [outlined]="true"
+        class="foundations-tokens__item foundations-tokens__item--spacing o-flex o-flex--y"
+      >
+        <div>
+          <fba-card
+            [ngStyle]="{ padding: 'calc(var(' + className + ')/2)' }"
+            [outlined]="false"
+            class="foundations-tokens__value o-layout o-layout--padding-0"
+          />
+        </div>
+        <button
+          [fbaButton]="'primary'"
+          [size]="'small'"
+          class="foundations-tokens__copy-btn"
+        >
+          <fba-icon icon="copy" />
+        </button>
+        <label
+          class="foundations-tokens__token o-flex o-flex--align-items-flex-end"
+        >
+          var({{ className }})
+        </label>
+      </fba-card>
+    }
+  </fba-card>
+</div>

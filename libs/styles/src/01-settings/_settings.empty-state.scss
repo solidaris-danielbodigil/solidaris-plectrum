@@ -1,0 +1,15 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.empty-state.scss
+// Empty-state component tokens.
+//
+// Design ref: Figma node 441:7641 (iShare empty state illustration)
+// =============================================================================
+
+:root {
+  // Illustration frame — asset constraint: the SVG needs a stable frame so it
+  // keeps its proportions. Fixed by design (see rules §6 — asset constraints).
+  --#{$sds-prefix}-size-empty-state-art-w: 17rem;
+  --#{$sds-prefix}-size-empty-state-art-h: 16rem;
+}

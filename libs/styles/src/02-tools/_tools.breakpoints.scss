@@ -1,0 +1,14 @@
+// =============================================================================
+// 02-tools/_tools.breakpoints.scss
+// Breakpoint mixin — wraps content in a min-width media query.
+//
+// Usage:
+//   @use '02-tools/tools.breakpoints' as bp;
+//   @include bp.breakpoint(md) { ... }
+// =============================================================================
+@use 'sass:map';
+@use '../01-settings/settings.breakpoints' as *;
+
+@mixin breakpoint($breakpoint) {
+  @media (min-width: map.get($breakpoints, $breakpoint)) { @content; }
+}

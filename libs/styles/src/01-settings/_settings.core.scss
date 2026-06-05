@@ -1,0 +1,31 @@
+// =============================================================================
+// 01-settings/_settings.core.scss
+// Barrel — forwards all settings tokens in correct dependency order.
+// Import this single file instead of individual settings files.
+//
+// Usage:
+//   @use '01-settings/settings.core';
+// =============================================================================
+
+@forward 'settings.prefix';
+@forward 'settings.colors-primitive';
+@forward 'settings.typography-primitive';
+@forward 'settings.spacing';
+@forward 'settings.radius';
+@forward 'settings.colors-semantic';
+@forward 'settings.typography-semantic';
+@forward 'settings.shadows';
+@forward 'settings.transitions';
+@forward 'settings.focus';
+@forward 'settings.globals';
+@forward 'settings.grid';
+@forward 'settings.breakpoints';
+@forward 'settings.avatar';
+@forward 'settings.nav-shell';
+@forward 'settings.sub-nav-shell';
+@forward 'settings.top-nav';
+@forward 'settings.accordion';
+@forward 'settings.card';
+@forward 'settings.empty-state';
+@forward 'settings.iconography';
+@forward 'settings.doc-demo-box';

@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories / 5 - Adding unattached doc files'/>
+
+# Adding a doc page without attaching a story
+
+You can add a doc page without it being attached to a story.
+Simply create an `.mdx` file, import and use the `<Meta />` tag. <br/>
+Add a title, but don't use `of={...}` in the `<Meta />`:
+
+``` ts
+import { Meta } from '@storybook/addon-docs';
+// Add any decorator if you want to
+<Meta title='Add your title'/>
+// Your content here
+```

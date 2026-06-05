@@ -1,0 +1,127 @@
+import { Meta } from '@storybook/blocks';
+import { ArgTypes, Story } from '@storybook/addon-docs';
+import * as Stories from './Stories/elevation.component.stories';
+import * as PlaygroundStories from './elevation-playground.component.stories';
+import { Figma } from '@storybook/addon-designs/blocks';
+
+<Meta of={Stories} />
+
+# Elevation
+
+## Find Your Elevation
+
+<Story of={PlaygroundStories.Playground}></Story>
+
+## Documentation
+
+This utility placeholder needs to be `@extend` in your component class.
+"Elevation" refers to the simulated depth and shadow effects applied to user interface elements to create a sense of hierarchy and visual prominence.
+
+From a physical point of view, elevation in UI design can be thought of as the illusion of how objects interact with light and shadows in the real world.<br/>
+When we refer to elevating an element, we are implying that it appears to be above the surface it sits on, casting a shadow below it.
+
+By default, we choose to place the light source at the center top of the page. To be consistent, it is recommended to keep shadow direction to bottom in most of the cases.
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20588%3A138870&mode=design&t=M6YbDumhciwgF4H6-1" />
+
+## API
+
+<ArgTypes of={Stories} />
+
+## Stories
+
+### Under
+
+The "under" elevation context is used for elements that are placed below the main content or interface components. <br/>
+It represents the lower hierarchical level.
+
+The css output of this token would be in the range of : `z-index: [-1 to -5]`
+
+```css
+//default value
+@extend %u-elevation--under;
+//Elevation context scale
+@extend %u-elevation--under-[2-5];
+```
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20669%3A139217&mode=design&t=M6YbDumhciwgF4H6-1" />
+
+### Raised
+
+The "raised" elevation context is applied to elements that are elevated slightly above the surface to create a sense of depth and prominence.<br/>
+It is commonly used for active elements, like focused inputs, buttons or cards to make them stand out visually.
+
+The css output of this token would be in the range of : `z-index: [1 to 5]`
+
+```css
+//default value
+@extend %u-elevation--raised;
+//Elevation context scale
+@extend %u-elevation--raised-[2-5];
+```
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20669%3A139473&mode=design&t=M6YbDumhciwgF4H6-1" />
+
+### Sticky
+
+The "sticky" elevation context is used for elements that stay fixed or locked in position, even when the user scrolls the page<br/>
+It is often applied to elements like sticky headers, navigation bars, sticky table columns, table headers, ect...
+
+```css
+//default value
+@extend %u-elevation--sticky;
+//Elevation context scale
+@extend %u-elevation--sticky-[2-5];
+```
+
+The css output of this token would be in the range of : `z-index: [6 to 10]`
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20669%3A139600&mode=design&t=M6YbDumhciwgF4H6-1" />
+
+### High Raised
+
+The "high raised" elevation context is applied to elements that are elevated slightly above the surface to create a sense of depth and prominence and should be displayed above fixed items.<br/>
+It is used for elements that would be hidden by a sticky element if raised was used instead. Visually, hig raised shadows will look identical to raised shadows.
+
+The css output of this token would be in the range of : `z-index: [11 to 15]`
+
+```css
+//default value
+@extend %u-elevation--high-raised;
+//Elevation context scale
+@extend %u-elevation--high-raised-[2-5];
+```
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=45480-34509&t=HwL4mExz3y12QxXR-1" />
+
+### Overlays
+
+The "overlays" elevation context is used for elements that appear on top of other content without blocking it completely.<br/>
+This elevation context is suitable for tyres-dragging, tooltips, date-time-pickers, dropdowns, notifications, toasts, popover, ect...
+
+```css
+//default value
+@extend %u-elevation--overlays;
+//Elevation context scale
+@extend %u-elevation--overlays-[2-5];
+```
+
+The css output of this token would be in the range of : `z-index: [16 to 20]`
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20669%3A139727&mode=design&t=M6YbDumhciwgF4H6-1" />
+
+### Blocking Overlays
+
+The "blocking-overlays" elevation context is used for elements that appear on top of other content and completely block interaction with the content below.<br/>
+It is ideal for drawers or modals dialogs that require user attention before proceeding.
+
+```css
+//default value
+@extend %u-elevation--blocking-overlays;
+//Elevation context scale
+@extend %u-elevation--blocking-overlays-[2-5];
+```
+
+The css output of this token would be in the range of : `z-index: [21 to 25]`
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=20669%3A139854&mode=design&t=M6YbDumhciwgF4H6-1" />

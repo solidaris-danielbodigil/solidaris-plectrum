@@ -1,0 +1,17 @@
+// =============================================================================
+// 01-settings/_settings.prefix.scss
+// Single source of truth for the CSS custom property prefix.
+//
+// All Solidaris/Plectrum-owned tokens are emitted as --{$sds-prefix}-*.
+// To rename the prefix across the entire token system, change this one value.
+//
+// Usage in other settings files:
+//   @use '01-settings/settings.prefix' as *;
+//   --#{$sds-prefix}-color-primary-500: #527191;
+//
+// RULES:
+//   - Never hardcode --sds-* in component SCSS. Always @use this file.
+//   - PrimeNG variables keep their --p-* prefix — do not route them here.
+// =============================================================================
+
+$sds-prefix: 'sds' !default;

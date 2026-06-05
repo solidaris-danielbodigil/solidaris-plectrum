@@ -1,0 +1,205 @@
+# Solidaris — Cursor Rules
+
+## Project Overview
+
+Angular CLI multi-project workspace with two Angular apps (`iSHARE`, `iCRM`) sharing a single source of truth for components, styles, routes, and utilities.
+
+- **Workspace**: Angular CLI (`angular.json`)
+- **Framework**: Angular latest
+- **Component Library**: PrimeNG latest
+- **Design System**: Plectrum — https://plectrum.solidaris.be/5cba76f64/p/8028d1-plectrum-design-system
+- **Figma UI Kit**: https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390 (SSOT for all visual decisions)
+- **SCSS Architecture**: ITCSS (01-settings → 07-utilities)
+- **CSS Naming**: BEMIT (Block__Element--Modifier)
+- **Component Docs**: Storybook (global, shared)
+
+---
+
+## MCP Servers
+
+| Server | Purpose | URL |
+|---|---|---|
+| Figma | Inspect Plectrum UI Kit, extract tokens and specs | `http://127.0.0.1:3845/mcp` |
+| PrimeNG | Query PrimeNG component API, props and examples | `https://primeng.org/mcp` |
+
+**Always query these MCP servers before implementing any component:**
+1. Use **Figma MCP** to inspect the node in the Plectrum UI Kit and extract exact design tokens, spacing, colors, and typography
+2. Use **PrimeNG MCP** to confirm which PrimeNG component to use and its available props/variants
+3. Only write custom code when both MCPs confirm no existing solution covers the requirement
+
+---
+
+## Plectrum Installation References
+
+| Topic | URL |
+|---|---|
+| PrimeNG setup | https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/764648 |
+| Tailwind setup | https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/069866 |
+| Fonts | https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/414795 |
+| Icons | https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/391c00 |
+| Design tokens | https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/8143b5 |
+| Plectrum theme | https://plectrum.solidaris.be/5cba76f64/p/7529b0-plectrum-theme |
+
+### Typography (from Plectrum Fonts doc)
+- **Base font size**: `1rem = 14px`
+- **Display / Heading font**: `Agenda` (`--font-agenda`)
+- **Body / Label font**: `Open Sans` (`--font-open-sans`)
+- Font styles follow the pattern: `text-{category}-{size}` (e.g. `text-body-sm`, `text-heading-lg`)
+- Always use Plectrum text style tokens — never hardcode `font-size` or `font-family`
+
+### Design Tokens (from Plectrum tokens doc)
+- Tokens are automatically provided by implementing the Plectrum PrimeNG theme via `providePlectrum()`
+- Always reference semantic tokens (e.g. `{primary.color}`) — never hardcode hex values
+- Never reference primitive tokens (e.g. `{gray.600}`) when a component token exists
+- When in doubt about a token, inspect the Figma UI Kit via Figma MCP
+
+---
+
+## Workspace Structure
+
+```
+solidaris-nx/
+├── apps/
+│   ├── ishare/        # iSHARE app — no shared logic here
+│   └── icrm/          # iCRM app — no shared logic here
+├── libs/
+│   ├── ui/            # SSOT — all shared Angular components
+│   ├── styles/        # SSOT — all SCSS/ITCSS tokens and utilities
+│   └── plectrum/      # SSOT — design system integration
+├── storybook/         # Global Storybook for all libs/ui components
+└── tools/generators/  # Component scaffolding (npm run sds:component)
+```
+
+---
+
+## ITCSS Structure (`libs/styles/src/`)
+
+Every SCSS file is named `_{layer-folder}.{description}.scss`, and each layer has a
+barrel named `_{layer-folder}.core.scss` that `@forward`s the layer's files.
+
+```
+01-settings/   — _settings.core.scss, _settings.prefix.scss,
+                 _settings.colors-primitive.scss, _settings.colors-semantic.scss,
+                 _settings.typography-primitive.scss, _settings.typography-semantic.scss,
+                 _settings.spacing.scss, _settings.radius.scss, _settings.shadows.scss,
+                 _settings.transitions.scss, _settings.focus.scss, _settings.globals.scss,
+                 _settings.{primeng-component}.scss   (PrimeNG token bridge)
+02-tools/      — _tools.core.scss, _tools.mixins.scss, _tools.functions.scss, _tools.flex.scss, …
+03-generic/    — _generic.core.scss, _generic.reset.scss
+04-elements/   — _elements.core.scss, _elements.typography.scss, _elements.links.scss
+05-objects/    — _objects.core.scss, _objects.flex-grid.scss, layout/_objects.layout.scss  (prefix: o-)
+06-components/ — _components.core.scss, _components.{name}.scss per component             (prefix: c-)
+07-utilities/  — _utilities.core.scss, _utilities.utilities.scss                          (prefix: u-)
+08-trumps/     — _trumps.core.scss, _trumps.storybook.scss                                (overrides)
+```
+
+Every SCSS change must land in the correct ITCSS layer. Never write styles outside `libs/styles`.
+
+---
+
+## Rules
+
+### Rule — Quality Over Speed
+- Take the correct architectural path, never the shortcut
+- Prefer clean, debt-free solutions over quick fixes
+- Avoid wrappers, shims, or indirection unless truly necessary
+- Leave the codebase better than you found it
+
+### Rule — Single Source of Truth (SSOT)
+- All shared components → `libs/ui` (never duplicated in apps)
+- All SCSS tokens and utilities → `libs/styles` (never redefined at app level)
+- All design decisions → Plectrum DS + Figma UI Kit
+- All routes, utils, and services shared between apps → `libs/`
+- If a token is missing from `libs/styles`, add it there **first**
+
+### Rule — Storybook First
+- Every component in `libs/ui` **must** have a `.stories.ts` file
+- Develop and validate in Storybook **before** integrating into any app
+- Cover all states: default, hover, disabled, loading, error, empty
+- No component is "done" without a passing Storybook story
+
+### Rule — PrimeNG First
+- Always check PrimeNG before writing a custom component
+- Extend or wrap PrimeNG components with BEMIT classes when restyling
+- Never reimplement what PrimeNG already provides (tables, modals, dropdowns, etc.)
+
+### Rule — Custom Components: Semantic & Minimal
+When no PrimeNG equivalent exists:
+- Use semantic HTML elements (`<nav>`, `<article>`, `<section>`, `<button>`, etc.)
+- Apply ARIA roles and attributes for accessibility
+- Keep it generic — no app-specific logic inside `libs/ui`
+- Document the reason in the component's Storybook story
+
+### Rule — No Direct Tailwind on HTML
+Never apply utility classes directly in HTML templates. Always create a semantic BEM class.
+
+```scss
+// ✅ Correct — libs/styles/src/06-components/_components.card.scss
+.c-card {
+  @apply flex flex-col gap-4 p-6;
+
+  &__header { @apply text-lg font-semibold; }
+  &--highlighted { @apply border border-primary-500; }
+}
+```
+
+```html
+<!-- ✅ Correct -->
+<div class="c-card c-card--highlighted">
+  <div class="c-card__header">Title</div>
+</div>
+
+<!-- ❌ Wrong -->
+<div class="flex flex-col gap-4 p-6 border border-primary-500">
+```
+
+### Rule — BEMIT Naming
+| Type | Prefix | Example |
+|---|---|---|
+| Object (layout) | `o-` | `o-container`, `o-grid` |
+| Component | `c-` | `c-card`, `c-button` |
+| Utility | `u-` | `u-hidden`, `u-sr-only` |
+| JS hook | `js-` | `js-modal-trigger` |
+| State | `is-` / `has-` | `is-active`, `has-error` |
+
+### Rule — No Dead Code
+Remove unused functions, modules, commented-out code, and "kept for reference" logic.
+Use git history instead of leaving dead code in the repo.
+
+### Rule — Ask Questions Early
+If a decision is ambiguous, requirements conflict, or something feels off:
+- Create a question under `.ai/questions/` and surface it
+- Never guess on major architectural decisions
+
+### Rule — Before Starting Work
+1. Read the project overview and current phase
+2. Check recent logs and open questions
+3. Ensure all tests pass before making changes
+4. Only then begin implementation
+
+---
+
+## Component Checklist
+
+Before marking any component complete:
+
+- [ ] Built using PrimeNG where possible
+- [ ] Styled with BEMIT classes in `libs/styles/src/06-components/`
+- [ ] No Tailwind utility classes in HTML templates
+- [ ] Storybook story created and covers all states
+- [ ] No app-specific logic inside `libs/ui`
+- [ ] Design tokens sourced from `libs/styles/src/01-settings/`
+- [ ] Semantic HTML used throughout
+- [ ] ARIA attributes applied where needed
+- [ ] Exported from `libs/ui/src/index.ts`
+
+---
+
+## Component Naming Conventions
+
+- **File**: `kebab-case` — `button.component.ts`, `data-table.component.ts`
+- **Class**: `PascalCase` — `ButtonComponent`, `DataTableComponent`
+- **Template BEM block**: `c-` prefixed kebab — `c-button`, `c-data-table`
+- Elements: `c-button__icon`, `c-card__title`
+- Modifiers: `c-button--primary`, `c-card--featured`
+- Never use app-specific prefixes inside `libs/ui`

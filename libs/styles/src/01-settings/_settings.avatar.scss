@@ -1,0 +1,16 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.avatar.scss
+// Plectrum avatar component tokens.
+//
+// Design ref: Figma custom components node 1:1586
+// =============================================================================
+
+:root {
+  --#{$sds-prefix}-size-avatar: 32px;
+  --#{$sds-prefix}-color-avatar-shape-hover: #af052a; // Figma: avatar hover shape color
+  --#{$sds-prefix}-shadow-avatar-active:
+    0 0 0 2px var(--#{$sds-prefix}-color-surface-0),
+    0 0 0 4px var(--#{$sds-prefix}-color-blue-300);
+}

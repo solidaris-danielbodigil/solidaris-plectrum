@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "sds-component": {
+      "factory": "./tools/generators/sds-component/index",
+      "schema": "./tools/generators/sds-component/schema.json",
+      "description": "Scaffolds a Solidaris UI component with metadata contract, BEM SCSS, and Storybook story"
+    }
+  }
+}

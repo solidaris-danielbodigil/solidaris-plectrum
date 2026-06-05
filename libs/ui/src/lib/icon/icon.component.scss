@@ -1,0 +1,15 @@
+// Component SCSS is intentionally minimal.
+// All visual rules live in libs/styles/src/06-components/_components.icon.scss
+// following the ITCSS architecture.
+//
+// Only host-display is set here to avoid layout shifts — the :host display
+// must be set close to the element itself and cannot live in a global sheet
+// when Angular ViewEncapsulation is active.
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // Inherits colour from the parent so icons follow text colour by default.
+  color: currentcolor;
+}

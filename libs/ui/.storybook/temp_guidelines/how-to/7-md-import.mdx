@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories / 7 - Importing .md files in doc'/>
+
+# .md files import
+
+You might want to lighten your main `.mdx` file by importing smaller chunks of documentation in `.md` files. <br/>
+In order to do that, you'll need to import them like this:
+
+``` ts
+import BadgeStatusDescription from './BadgeStatusDescription.md?raw';
+import BadgeTypeDescription from './BadgeTypeDescription.md?raw';
+```
+Note that when importing markdown files, it’s important to use the `?raw` suffix on path to ensure the content is imported as-is.
+
+Call that import this way :
+``` ts
+<Markdown>{BadgeStatusDescription}</Markdown>
+```
+See more info here:<br/>
+https://storybook.js.org/docs/angular/api/doc-block-markdown
+
+

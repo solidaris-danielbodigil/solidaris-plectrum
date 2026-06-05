@@ -1,0 +1,9 @@
+@if (source() === 'svg') {
+  <!-- Custom SVG icon from the registry -->
+  @if (svgMarkup()) {
+    <span class="c-icon__svg" [innerHTML]="svgMarkup()"></span>
+  }
+} @else {
+  <!-- Bootstrap Icons — rendered as a font icon via class string -->
+  <i class="{{ icon() }}" aria-hidden="true"></i>
+}

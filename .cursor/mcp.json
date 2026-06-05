@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "figma": {
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "primeng": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "-p",
+        "@primeng/mcp@21.1.9",
+        "-p",
+        "@modelcontextprotocol/sdk@1.25.2",
+        "primeng-mcp"
+      ]
+    }
+  }
+}

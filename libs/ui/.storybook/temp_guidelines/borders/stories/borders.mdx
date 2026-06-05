@@ -1,0 +1,53 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import * as BordersStories from './borders.component.stories';
+
+
+import { Markdown } from '@storybook/blocks';
+import { Figma } from '@storybook/addon-designs/blocks';
+import BordersHowTo from './borders-how-to.md?raw';
+import BordersGenerationGuide from './borders-generation-guide.md?raw';
+import BordersExample from './borders-example.md?raw';
+import BordersDefinition from './borders-definition.md?raw';
+import BordersStructureSettings from './borders-structure-settings.md?raw';
+import BordersStructureMixins from './borders-structure-mixins.md?raw';
+import BordersStructureUtilities from './borders-structure-utilities.md?raw';
+import BordersList from './borders-list.md?raw';
+
+<Meta of={BordersStories} />
+
+# Borders
+
+<Markdown>{BordersDefinition}</Markdown>
+
+## Find your border
+
+<Story of={BordersStories.Generate}></Story>
+
+## How To
+
+<Markdown>{BordersHowTo}</Markdown>
+
+## Border List
+
+<Markdown>{BordersList}</Markdown>
+
+## Tool Files Structure
+
+  <Markdown>{BordersStructureSettings}</Markdown>
+  <Markdown>{BordersStructureMixins}</Markdown>
+  <Markdown>{BordersStructureUtilities}</Markdown>
+
+## Generation Guide
+
+<Markdown>{BordersGenerationGuide}</Markdown>
+
+## Example
+
+<Markdown>{BordersExample}</Markdown>
+
+## Best Practices
+
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=10351%3A148998&t=FXywYh4TDcB7CZ6q-1" />
+<Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=10446%3A149295&t=b7UMUyTCcPaqmT5S-1" />
+
+

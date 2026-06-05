@@ -1,0 +1,29 @@
+// =============================================================================
+// libs/styles/src/main.scss
+// ITCSS entry point — import order defines the cascade.
+// Each layer is loaded via its prefixed core barrel to avoid namespace collisions.
+// =============================================================================
+
+// 01 — Settings (design tokens, CSS custom properties)
+@use '01-settings/settings.core';
+
+// 02 — Tools (mixins, functions — no CSS output)
+@use '02-tools/tools.core';
+
+// 03 — Generic (reset, normalize)
+@use '03-generic/generic.core';
+
+// 04 — Elements (bare HTML element defaults)
+@use '04-elements/elements.core';
+
+// 05 — Objects (layout patterns, prefix: o-)
+@use '05-objects/objects.core';
+
+// 06 — Components (BEM components + PrimeNG wrappers, prefix: c-)
+@use '06-components/components.core';
+
+// 07 — Utilities (single-purpose helpers, prefix: u-)
+@use '07-utilities/utilities.core';
+
+// 08 — Trumps (utility classes that override other styles)
+@use '08-trumps/trumps.core';

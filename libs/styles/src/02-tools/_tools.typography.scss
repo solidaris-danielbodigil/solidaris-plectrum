@@ -1,0 +1,139 @@
+// =============================================================================
+// 02-tools/_tools.typography.scss
+// Typography mixins — SSOT for reusable text styles.
+//
+// Usage in 06-components:
+//   @use '../02-tools/tools.typography' as *;
+//   .c-card__title { @include text-heading-sm; }
+//
+// Each mixin sets: font-family, font-size, font-weight, line-height, letter-spacing.
+// Colour is NOT included — that's a component concern.
+// =============================================================================
+
+// ── Display ──────────────────────────────────────────────────────────────────
+
+@mixin text-display-xl {
+  font-family: var(--text-display-xl-family);
+  font-size: var(--text-display-xl-size);
+  font-weight: var(--text-display-xl-weight);
+  line-height: var(--text-display-xl-line-height);
+  letter-spacing: var(--text-display-xl-spacing);
+}
+
+@mixin text-display-lg {
+  font-family: var(--text-display-lg-family);
+  font-size: var(--text-display-lg-size);
+  font-weight: var(--text-display-lg-weight);
+  line-height: var(--text-display-lg-line-height);
+  letter-spacing: var(--text-display-lg-spacing);
+}
+
+@mixin text-display-md {
+  font-family: var(--text-display-md-family);
+  font-size: var(--text-display-md-size);
+  font-weight: var(--text-display-md-weight);
+  line-height: var(--text-display-md-line-height);
+  letter-spacing: var(--text-display-md-spacing);
+}
+
+// ── Heading ──────────────────────────────────────────────────────────────────
+
+@mixin text-heading-lg {
+  font-family: var(--text-heading-lg-family);
+  font-size: var(--text-heading-lg-size);
+  font-weight: var(--text-heading-lg-weight);
+  line-height: var(--text-heading-lg-line-height);
+  letter-spacing: var(--text-heading-lg-spacing);
+}
+
+@mixin text-heading-md {
+  font-family: var(--text-heading-md-family);
+  font-size: var(--text-heading-md-size);
+  font-weight: var(--text-heading-md-weight);
+  line-height: var(--text-heading-md-line-height);
+  letter-spacing: var(--text-heading-md-spacing);
+}
+
+@mixin text-heading-sm {
+  font-family: var(--text-heading-sm-family);
+  font-size: var(--text-heading-sm-size);
+  font-weight: var(--text-heading-sm-weight);
+  line-height: var(--text-heading-sm-line-height);
+  letter-spacing: var(--text-heading-sm-spacing);
+}
+
+@mixin text-heading-xs {
+  font-family: var(--text-heading-xs-family);
+  font-size: var(--text-heading-xs-size);
+  font-weight: var(--text-heading-xs-weight);
+  line-height: var(--text-heading-xs-line-height);
+  letter-spacing: var(--text-heading-xs-spacing);
+}
+
+// ── Label ────────────────────────────────────────────────────────────────────
+
+@mixin text-label-lg {
+  font-family: var(--text-label-lg-family);
+  font-size: var(--text-label-lg-size);
+  font-weight: var(--text-label-lg-weight);
+  line-height: var(--text-label-lg-line-height);
+  letter-spacing: var(--text-label-lg-spacing);
+}
+
+@mixin text-label-md {
+  font-family: var(--text-label-md-family);
+  font-size: var(--text-label-md-size);
+  font-weight: var(--text-label-md-weight);
+  line-height: var(--text-label-md-line-height);
+  letter-spacing: var(--text-label-md-spacing);
+}
+
+@mixin text-label-sm {
+  font-family: var(--text-label-sm-family);
+  font-size: var(--text-label-sm-size);
+  font-weight: var(--text-label-sm-weight);
+  line-height: var(--text-label-sm-line-height);
+  letter-spacing: var(--text-label-sm-spacing);
+}
+
+@mixin text-label-xs {
+  font-family: var(--text-label-xs-family);
+  font-size: var(--text-label-xs-size);
+  font-weight: var(--text-label-xs-weight);
+  line-height: var(--text-label-xs-line-height);
+  letter-spacing: var(--text-label-xs-spacing);
+}
+
+// ── Body ─────────────────────────────────────────────────────────────────────
+
+@mixin text-body-lg {
+  font-family: var(--text-body-lg-family);
+  font-size: var(--text-body-lg-size);
+  font-weight: var(--text-body-lg-weight);
+  line-height: var(--text-body-lg-line-height);
+  letter-spacing: var(--text-body-lg-spacing);
+}
+
+@mixin text-body-md {
+  font-family: var(--text-body-md-family);
+  font-size: var(--text-body-md-size);
+  font-weight: var(--text-body-md-weight);
+  line-height: var(--text-body-md-line-height);
+  letter-spacing: var(--text-body-md-spacing);
+}
+
+@mixin text-body-sm {
+  font-family: var(--text-body-sm-family);
+  font-size: var(--text-body-sm-size);
+  font-weight: var(--text-body-sm-weight);
+  line-height: var(--text-body-sm-line-height);
+  letter-spacing: var(--text-body-sm-spacing);
+}
+
+@mixin text-body-xs {
+  font-family: var(--text-body-xs-family);
+  font-size: var(--text-body-xs-size);
+  font-weight: var(--text-body-xs-weight);
+  line-height: var(--text-body-xs-line-height);
+  letter-spacing: var(--text-body-xs-spacing);
+}

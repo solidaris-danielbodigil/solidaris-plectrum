@@ -1,0 +1,16 @@
+// Breakpoints based on Bootstrap's
+// https://getbootstrap.com/docs/5.2/layout/breakpoints/
+// Sass map used here as custom properties can't be used in media-queries
+
+$breakpoints: (
+  // X-Small devices (portrait phones, less than 36rem/576px)
+  xs: 36rem,
+  // Small devices (tablets, 48rem/768px and up)
+  sm: 48rem,
+  // Medium devices (desktops, 62rem/992px and up)
+  md: 62rem,
+  // Large devices (large desktops, 75rem/1200px and up)
+  lg: 75rem,
+  // X-Large devices (larger desktops, 87.5rem/1400px and up)
+  xl: 87.5rem,
+) !default;

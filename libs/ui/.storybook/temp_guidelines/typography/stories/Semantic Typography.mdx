@@ -1,0 +1,18 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import * as Stories from './typography.component.stories';
+
+<Meta of={Stories} />
+
+# Typography: Semantic Classes
+
+Semantic typography classes define the purpose or meaning of the text in a design context (e.g., headings, subheadings, primary text, secondary text, etc.).<br/>
+It promotes reusability and ensures visual consistency throughout the application.<br/>
+These classes are intended to reflect the semantic structure of the content within the application and are created using mixins that extend the generic classes, like so:<br/>
+```css
+.typo__h1 {
+@extend .typo__bold--xxl--xxl;
+}
+```
+## Search Semantic classes
+
+<Story of={Stories.Semantic} />

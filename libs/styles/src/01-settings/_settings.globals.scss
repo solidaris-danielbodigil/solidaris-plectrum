@@ -1,0 +1,22 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.globals.scss
+// Miscellaneous global semantic tokens.
+// Source: libs/plectrum/src/Plectrum_v0.6/base.ts (semantic.*)
+// =============================================================================
+
+:root {
+
+  --#{$sds-prefix}-disabled-opacity:  0.6;
+  --#{$sds-prefix}-icon-size:         1rem;
+  --#{$sds-prefix}-anchor-gutter:     2px;
+
+  // Icon size scale — consumed by c-icon size modifiers
+  --#{$sds-prefix}-icon-size-xs:  0.75rem;   // ~10.5px
+  --#{$sds-prefix}-icon-size-sm:  0.875rem;  // ~12px
+  --#{$sds-prefix}-icon-size-md:  1rem;      //  14px  (base unit)
+  --#{$sds-prefix}-icon-size-lg:  1.25rem;   // ~17.5px
+  --#{$sds-prefix}-icon-size-xl:  1.5rem;    //  21px
+
+}

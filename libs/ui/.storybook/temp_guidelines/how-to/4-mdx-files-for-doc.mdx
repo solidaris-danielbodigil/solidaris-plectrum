@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories / 4 - Adding custom .mdx for documentation'/>
+
+# Using `.mdx` files for custom documentation to a story
+
+To replace the default autodoc attached to a story, simply add a new `.mdx` file, and declare the story you want to document.
+The key is using `of={...}`, this will attach the declared story and fetch all its props and data.
+
+  ``` ts
+  import { ArgTypes, Canvas, Meta } from '@storybook/addon-docs';
+  import * as BadgeStories from './Badge.component.stories';
+
+  <Meta of={BadgeStories}/>
+
+  // fetches the Primary story defined in the story.ts
+  <Canvas of={BadgeStories.Primary} />
+
+  // fetches Types from the ArgTypes declared in story.ts's Meta
+  <ArgTypes of={BadgeStories} />
+
+  // fetches the Type story defined in the story.ts
+  <Canvas of={BadgeStories.Type} />
+
+  // fetches the Status story defined in the story.ts
+  <Canvas of={BadgeStories.Status} />
+  ```
+
+See more info here: <br/>
+https://storybook.js.org/docs/angular/writing-docs/mdx <br/>
+Check all other API's from @storybook/blocks to know what markup can be used: <br/>
+https://storybook.js.org/docs/angular/api/doc-block-canvas

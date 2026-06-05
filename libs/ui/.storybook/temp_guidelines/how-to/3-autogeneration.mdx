@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories / 3 - Auto generate stories'/>
+
+
+# How to auto-generate stories for SB v7
+The easiest way to add a story to any `component.ts` is to auto-generate it.
+This will generate a file called `xx.component.stories.ts` with auto-docs and a primary story by fetching its inputs and controls witten in `CSF 3`. <br/>
+You can use this auto-generation as starting-point to add more complex and custom stories.
+
+```ts
+// example of an auto-generated file: autocomplete.component.stories.ts
+import { Meta } from '@storybook/angular';
+import { AutoCompleteComponent } from './autocomplete.component';
+
+export default {
+  title: 'Data Entry/AutoCompleteComponent',
+  component: AutoCompleteComponent,
+} as Meta<AutoCompleteComponent>;
+
+export const Primary = {
+  render: (args: AutoCompleteComponent) => ({
+    props: args,
+  }),
+  args: {
+    placeholder: 'TYPE_TO_START_SEARCH',
+    maxVisibleOptions: 5,
+    disabled: false,
+    showPostTabButton: false,
+  },
+};
+```
+Some details from that code:
+- default Meta is being exported
+- The stories need to be rendered with
+  ``` ts
+  // CSF 3
+  export const Primary = {
+    render: (args: AutoCompleteComponent) => ({
+      props: args,
+    }),
+    [...]
+  ```
+  instead of
+  ``` ts
+  // CSF 2
+  export const Primary: Story = (args) => ({
+    props: args,
+  });
+  ```
+- All stories are also being exported
+
+Cmd to auto-generate stories from a given project:
+``` console
+nx g @nx/angular:stories --project=<project-name>
+```
+See more info here: <br/>
+https://nx.dev/packages/storybook/documents/overview-angular#auto-generate-stories <br/>
+https://storybook.js.org/docs/angular/api/csf#upgrading-from-csf-2-to-csf-3

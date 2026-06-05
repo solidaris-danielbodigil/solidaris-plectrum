@@ -1,0 +1,485 @@
+<div class="sb-demo">
+  <h1 class="typo__h1 typo__h1--grey">Grid System</h1>
+  <h2 class="typo__h2">Mobile first responsive 12 columns grid</h2>
+  <h3 class="typo__h3">Full width cols</h3>
+  <p>
+    By default .o-grid children will occupy all the space from it's container
+  </p>
+  <div>
+    <!--Add the container's class inside a wrapper -->
+    <fba-tag>o-grid</fba-tag>
+    <div class="o-grid o-grid--resizable">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <h3 class="typo__h3">Auto Cols</h3>
+  <p>
+    Auto-fit will decide how many cols fit in the wrapper.<br />
+    With the minmax(0, 1fr) function, all columns will be equal width.
+  </p>
+  <fba-tag>o-grid o-grid--auto-cols</fba-tag>
+  <div class="o-grid o-grid--auto-cols o-grid--resizable">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <h3 class="typo__h3">Auto Cols with Min width defined</h3>
+  <p>
+    Auto-fit will decide how many cols fit in the wrapper.<br />
+    Also renders equal width cols but this time minmax(<\col>, 1fr) accepts a
+    min width.
+  </p>
+  <fba-tag>o-grid o-grid--auto-cols-md</fba-tag>
+  <div class="o-grid o-grid--auto-cols-md o-grid--resizable">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <h3 class="typo__h3">Cols width defined span values & grid responsiveness</h3>
+  <p>
+    This grid is mobile-first, meaning that the code is by default set for small
+    screens : .col-XX will cover all screens.<br />
+    As soon as a breakpoint is specified as suffix: &#64;xs &#64;sm &#64;md
+    &#64;lg &#64;xl, they will take the lead when their breakpoint is met.<br />
+    You can define different sizes, order, alignment and distribution on those
+    breakpoints.
+  </p>
+  <div class="o-grid">
+    <div class="col-12 col-3&#64;md col-6&#64;lg">
+      .col-12 .col-3&#64;md .col-6&#64;lg
+    </div>
+    <div class="col-12 col-3&#64;md col-6&#64;lg">
+      .col-12 .col-3&#64;md .col-6&#64;lg
+    </div>
+    <div class="col-12 col-3&#64;md">.col-12 .col-3&#64;md</div>
+    <div class="col-12 col-3&#64;md">.col-12 .col-3&#64;md</div>
+  </div>
+  <h3 class="typo__h3">Alignement</h3>
+  <h4 class="typo__h4">Justify-items: align items on the row axis</h4>
+  <p class="typo__h5">justify-items: stretch (default value)</p>
+  <fba-tag>o-grid o-grid--justify-items-stretch</fba-tag>
+  <div class="o-grid o-grid--justify-items-stretch">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">justify-items: start</p>
+  <fba-tag>o-grid o-grid--justify-items-start</fba-tag>
+  <div class="o-grid o-grid--justify-items-start">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">justify-items: center</p>
+  <fba-tag>o-grid o-grid--justify-items-center</fba-tag>
+  <div class="o-grid o-grid--justify-items-center">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">justify-items: end</p>
+  <fba-tag>o-grid o-grid--justify-items-end</fba-tag>
+  <div class="o-grid o-grid--justify-items-end">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">justify-items: baseline</p>
+  <fba-tag>o-grid o-grid--justify-items-baseline</fba-tag>
+  <div class="o-grid o-grid--justify-items-baseline">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <h4 class="typo__h4">Align-items: align items on the column axis</h4>
+  <p class="typo__h5">Align-items: stretch (default value)</p>
+  <fba-tag>o-grid o-grid--align-items-stretch</fba-tag>
+  <div class="o-grid o-grid--align-items-stretch">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Align-items: start</p>
+  <fba-tag>o-grid o-grid--align-items-start</fba-tag>
+  <div class="o-grid o-grid--align-items-start">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Align-items: center</p>
+  <fba-tag>o-grid o-grid--align-items-center</fba-tag>
+  <div class="o-grid o-grid--align-items-center">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">align-items: flex-end</p>
+  <fba-tag>o-grid o-grid--align-items-end</fba-tag>
+  <div class="o-grid o-grid--align-items-end">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Align-items: baseline</p>
+  <fba-tag>o-grid o-grid--align-items-baseline</fba-tag>
+  <div class="o-grid o-grid--align-items-baseline">
+    <div class="col-6 row-3">.col-6 .row-3</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <h4 class="typo__h4">
+    Justify-content: The total size of your grid might be less than the size of
+    its grid container. <br />
+    This could happen if all of your grid items are sized with non-flexible
+    units like px. In this case you can set the alignment of the grid within the
+    grid container.<br />
+    Justify-content aligns the grid on the row axis.
+  </h4>
+  <p class="flex flex--inline">
+    <fba-tag>stretch</fba-tag>
+    <fba-tag>start </fba-tag>
+    <fba-tag>end</fba-tag>
+    <fba-tag>center </fba-tag>
+    <fba-tag>space-around</fba-tag>
+    <fba-tag>space-between</fba-tag>
+    <fba-tag>space-evenly</fba-tag>
+  </p>
+
+  <p class="typo__h5">justify-content: stretch</p>
+  <fba-tag>o-grid o-grid--justify-content-stretch</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-stretch"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">justify-content: flex-start</p>
+  <fba-tag>o-grid o-grid--justify-content-start</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-start"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <p class="typo__h5">justify-content: center</p>
+  <fba-tag>o-grid o-grid--justify-content-center</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-center"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">justify-content: flex-end</p>
+  <fba-tag>o-grid o-grid--justify-content-end</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-end"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">justify-content: space-around</p>
+  <fba-tag>o-grid o-grid--justify-content-space-around</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-space-around"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">justify-content: space-between</p>
+  <fba-tag>o-grid o-grid--justify-content-space-between</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-space-between"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">justify-content: space-evenly</p>
+  <fba-tag>o-grid o-grid--justify-content-space-evenly</fba-tag>
+  <div
+    class="o-grid o-grid--auto-cols-xs o-grid--smaller-grid o-grid--justify-content-space-evenly"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <h4 class="typo__h4">
+    Align-content: Same as justify-contents does, but on the column axis.
+  </h4>
+  <p class="typo__h5">Align-content: stretch</p>
+  <fba-tag>o-grid o-grid--align-content-stretch</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-stretch">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: start</p>
+  <fba-tag>o-grid o-grid--align-content-start</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-start">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: center</p>
+  <fba-tag>o-grid o-grid--align-content-center</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-center">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: end</p>
+  <fba-tag>o-grid o-grid--align-content-end</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-end">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: space-around</p>
+  <fba-tag>o-grid o-grid--align-content--space-around</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-space-around">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: space-between</p>
+  <fba-tag>o-grid o-grid--align-content--space-between</fba-tag>
+  <div
+    class="o-grid o-grid--smaller-grid-y o-grid--align-content-space-between"
+  >
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-content: space-evenly</p>
+  <fba-tag>o-grid o-grid--align-content--space-evenly</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--align-content-space-evenly">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <h3 class="typo__h3">Place-items</h3>
+  <p>
+    The CSS place-items shorthand property allows you to align items along both
+    the block and inline directions at once (the align-items and justify-items
+    properties).<br />
+    If the second value is not set, the first value is also used for it.
+  </p>
+  <p class="typo__h5">place-items: stretch (default value)</p>
+  <fba-tag>o-grid o-grid--place-items-stretch</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-stretch">
+    <div class="col-6">.col-6</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">place-items: start</p>
+  <fba-tag>o-grid o-grid--place-items-start</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-start">
+    <div class="col-6">.col-6</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">place-items: center</p>
+  <fba-tag>o-grid o-grid--place-items-center</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col-6">.col-6</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">place-items: end</p>
+  <fba-tag>o-grid o-grid--place-items-end</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-end">
+    <div class="col-6">.col-6</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">place-items: baseline</p>
+  <fba-tag>o-grid o-grid--place-items-baseline</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-baseline">
+    <div class="col-6">.col-6</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+
+  <h3 class="typo__h3">Place-content</h3>
+  <p>
+    The total size of your grid might be less than the size of its grid
+    container. <br />
+    This could happen if all of your grid items are sized with non-flexible
+    units like px.<br />
+    Place-content sets both the align-content and justify-content properties in
+    a single declaration.
+    <br />
+    If the second value is not set, the first value is also used for it.
+  </p>
+  <p class="typo__h5">place-content: stretch (default value)</p>
+  <fba-tag>o-grid o-grid--place-content-stretch</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-content-stretch">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-content: start</p>
+  <fba-tag>o-grid o-grid--place-content-start</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-content-start">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-content: center</p>
+  <fba-tag>o-grid o-grid--place-content-center</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-content-center">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-content: end</p>
+  <fba-tag>o-grid o-grid--place-content-end</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-content-end">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-content: baseline</p>
+  <fba-tag>o-grid o-grid--place-content-baseline</fba-tag>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-content-baseline">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <h3 class="typo__h3">Align-self</h3>
+  <p>
+    Aligns a grid item inside a cell along the block (column) axis (as opposed
+    to justify-self which aligns along the inline (row) axis).<br />
+    This value applies to the content inside a single grid item.
+  </p>
+  <p class="typo__h5">Align-self: Stretch</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--align-self-stretch">.col--align-self-stretch</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-self: Start</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--align-self-start">.col--align-self-start</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-self: center</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--align-self-center">.col--align-self-center</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">Align-self: End</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--align-self-end">.col--align-self-end</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <h3 class="typo__h3">Justify-self</h3>
+  <p>
+    Aligns a grid item inside a cell along the inline (row) axis (as opposed to
+    align-self which aligns along the block (column) axis).<br />
+    This value applies to a grid item inside a single cell.
+  </p>
+  <p class="typo__h5">Justify-self: Stretch (default)</p>
+  <div class="o-grid o-grid--place-items-center">
+    <div class="col-6 col--justify-self-stretch">
+      .col-6 .col--justify-self-stretch
+    </div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Justify-self: Start</p>
+  <div class="o-grid o-grid--place-items-center">
+    <div class="col-6 col--justify-self-start">
+      .col-6 .col--justify-self-start
+    </div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Justify-self: center</p>
+  <div class="o-grid o-grid--place-items-center">
+    <div class="col-6 col--justify-self-center">
+      .col-6 .col--justify-self-center
+    </div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+  <p class="typo__h5">Justify-self: End</p>
+  <div class="o-grid o-grid--place-items-center">
+    <div class="col-6 col--justify-self-end">.col-6 .col--justify-self-end</div>
+    <div class="col-2">.col-2</div>
+    <div class="col-4">.col-4</div>
+  </div>
+
+  <h3 class="typo__h3">Place-self</h3>
+  <p>
+    Place-self sets both the align-self and justify-self properties in a single
+    declaration.<br />
+    The first value sets align-self, the second value justify-self. If the
+    second value is omitted, the first value is assigned to both properties.
+  </p>
+  <p class="typo__h5">place-self: Stretch</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--place-self-stretch">.col--place-self-stretch</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-self: Start</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--place-self-start">.col--place-self-start</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-self: stretch center</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--place-self-stretch_center">
+      .col--place-self-stretch_center
+    </div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-self: center</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--place-self-center">.col--place-self-center</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+  <p class="typo__h5">place-self: End</p>
+  <div class="o-grid o-grid--smaller-grid-y o-grid--place-items-center">
+    <div class="col--place-self-end">.col--place-self-end</div>
+    <div>2</div>
+    <div>3</div>
+  </div>
+
+  <!--<h3 class="typo__h3">Nested Grids</h3>-->
+</div>

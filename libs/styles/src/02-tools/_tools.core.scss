@@ -1,0 +1,15 @@
+// =============================================================================
+// 02-tools/_tools.core.scss
+// Barrel — forwards all tool mixins and functions in load order.
+//
+// Usage:
+//   @use '02-tools/tools.core';
+// =============================================================================
+
+@forward 'tools.functions';
+@forward 'tools.mixins';
+@forward 'tools.typography';
+@forward 'tools.responsive-modifiers';
+@forward 'tools.flex';
+@forward 'tools.breakpoints';
+@forward 'tools.spacing';

@@ -1,0 +1,14 @@
+// =============================================================================
+// 06-components/_components.core.scss
+// Barrel — forwards all component BEM styles (prefix: c-)
+// =============================================================================
+
+@forward 'components.icon';
+@forward 'components.empty-state';
+@forward 'components.plectrum-avatar';
+@forward 'components.nav-shell';
+@forward 'components.sub-nav-shell';
+@forward 'components.top-nav';
+@forward 'components.toolbar';
+@forward 'components.iconography';
+@forward 'components.doc-demo-box';

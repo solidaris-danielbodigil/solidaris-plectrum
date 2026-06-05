@@ -1,0 +1,36 @@
+// =============================================================================
+// 07-utilities/_utilities.typography.scss
+// Typography utility classes (prefix: u-text-)
+//
+// Generated from 02-tools/_tools.typography.scss mixins.
+// Use in templates for one-off text styling:
+//   <h2 class="u-text-heading-sm">Title</h2>
+//   <span class="u-text-label-sm">Label</span>
+//
+// For permanent component styles, prefer @include in 06-components/ SCSS.
+// =============================================================================
+
+@use '../02-tools/tools.typography' as *;
+
+// ── Display ──────────────────────────────────────────────────────────────────
+.u-text-display-xl { @include text-display-xl; }
+.u-text-display-lg { @include text-display-lg; }
+.u-text-display-md { @include text-display-md; }
+
+// ── Heading ──────────────────────────────────────────────────────────────────
+.u-text-heading-lg { @include text-heading-lg; }
+.u-text-heading-md { @include text-heading-md; }
+.u-text-heading-sm { @include text-heading-sm; }
+.u-text-heading-xs { @include text-heading-xs; }
+
+// ── Label ────────────────────────────────────────────────────────────────────
+.u-text-label-lg { @include text-label-lg; }
+.u-text-label-md { @include text-label-md; }
+.u-text-label-sm { @include text-label-sm; }
+.u-text-label-xs { @include text-label-xs; }
+
+// ── Body ─────────────────────────────────────────────────────────────────────
+.u-text-body-lg { @include text-body-lg; }
+.u-text-body-md { @include text-body-md; }
+.u-text-body-sm { @include text-body-sm; }
+.u-text-body-xs { @include text-body-xs; }

@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories/ Examples / Mdx2 doc'/>
+
+# MDX custom documentation file for Badge story
+
+```ts
+import { ArgTypes, Canvas, Meta } from '@storybook/addon-docs';
+import * as BadgeStories from './Badge.component.stories';
+
+
+import { Markdown } from '@storybook/blocks';
+import descriptionMd from './BadgeDescription.md?raw';
+import BadgeStatusDescription from './BadgeStatusDescription.md?raw';
+import BadgeTypeDescription from './BadgeTypeDescription.md?raw';
+
+  <Meta
+    decorators={[
+
+    ]}
+    of={BadgeStories}/>
+
+  # Badge
+
+  <Markdown>{descriptionMd}</Markdown>
+
+  #### Badge Default
+
+  <Canvas of={BadgeStories.Primary} />
+
+  ## Types
+
+  <ArgTypes of={BadgeStories} />
+
+  ## Figma Badge component
+
+  <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=399%3A0&t=hyI8pEDrZ7xWKcAj-1" />
+
+  ### Stories
+
+  #### Type
+
+  <Markdown>{BadgeTypeDescription}</Markdown>
+
+  <Canvas of={BadgeStories.Type} />
+
+  #### Status
+
+  <Markdown>{BadgeStatusDescription}</Markdown>
+
+  <Canvas of={BadgeStories.Status} />
+
+
+  <details>
+    <summary>
+      ### Best Practices
+    </summary>
+
+    ### Badges should not receive focus
+
+    <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=7695%3A140909&t=FPkmzKoTX5SU0UU8-1" />
+
+    ### Element + Badge + Tooltip
+
+    <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=7705%3A141235&t=FPkmzKoTX5SU0UU8-1" />
+
+    ### Text on Badge
+
+    <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?type=design&node-id=7695%3A140891&t=FPkmzKoTX5SU0UU8-1" />
+
+  </details>
+
+  ## Badge Anatomy
+
+  <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=7483%3A142569&t=xJymn2ovlqV6etbT-1" />
+
+  <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=7483%3A142401&t=xJymn2ovlqV6etbT-1" />
+
+  <Figma url="https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=7483%3A142286&t=xJymn2ovlqV6etbT-1" />
+
+  ## Related
+  TBA
+```

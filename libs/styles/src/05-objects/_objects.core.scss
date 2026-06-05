@@ -1,0 +1,7 @@
+// =============================================================================
+// 05-objects/_objects.core.scss
+// Barrel — forwards all layout object patterns (prefix: o-)
+// =============================================================================
+
+@forward 'layout/objects.layout';
+@forward 'objects.flex-grid';

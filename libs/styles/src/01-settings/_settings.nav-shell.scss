@@ -1,0 +1,45 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.nav-shell.scss
+// First-level navigation shell component tokens.
+//
+// Design ref: Figma iCRM Audit node 18:6419 (collapsed)
+// Figma isn't the SSOT — values map to existing primitive/semantic tokens
+// where they exist; only genuinely new component decisions are introduced here.
+// =============================================================================
+
+:root {
+  // --- Sizing (structural — icon-only layout depends on these) -------------
+  --#{$sds-prefix}-size-nav-shell-logomark:       24px;   // Figma: logomark height (24×32 natural ratio)
+  --#{$sds-prefix}-size-nav-shell-collapsed:      52px;   // Figma: collapsed shell width
+  --#{$sds-prefix}-size-nav-shell-expanded:       240px;  // Figma: expanded shell width
+  --#{$sds-prefix}-size-nav-shell-icon:           20px;   // Figma: nav icon
+  --#{$sds-prefix}-size-nav-shell-trailing-icon:  14px;   // Figma: external-link glyph
+
+  // --- Spacing -------------------------------------------------------------
+  --#{$sds-prefix}-space-nav-shell-section-gap:       14px;
+  --#{$sds-prefix}-space-nav-shell-list-gap:          16px;
+  --#{$sds-prefix}-space-nav-shell-list-px:           6px;
+  --#{$sds-prefix}-space-nav-shell-item-px:           10px;
+  --#{$sds-prefix}-space-nav-shell-item-py:           9px;   // Figma: py-9 expanded (9 + 22px label line-height + 9 = 40px)
+  --#{$sds-prefix}-space-nav-shell-item-gap-collapsed: 8px;
+  --#{$sds-prefix}-space-nav-shell-item-gap-inner:     10px; // Figma: gap-10 in expanded
+
+  // --- Colours (map to existing semantic/primitive tokens) -----------------
+  --#{$sds-prefix}-color-nav-shell-bg:          var(--#{$sds-prefix}-color-surface-50);          // Figma: surface/50
+  --#{$sds-prefix}-color-nav-shell-border:      var(--#{$sds-prefix}-color-black-alpha-100);     // Figma: transparent/black/100
+  --#{$sds-prefix}-color-nav-shell-text:        currentcolor;
+  --#{$sds-prefix}-color-nav-shell-label:       var(--#{$sds-prefix}-color-black-alpha-800);     // Figma: transparent/black/800
+  --#{$sds-prefix}-color-nav-shell-item-hover:  var(--#{$sds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
+  --#{$sds-prefix}-color-nav-shell-item-pressed: var(--#{$sds-prefix}-color-black-alpha-100);    // Figma: transparent/black/100
+  --#{$sds-prefix}-color-nav-shell-item-active: var(--#{$sds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
+
+  // --- Radius --------------------------------------------------------------
+  --#{$sds-prefix}-radius-nav-shell-item:  10px;  // Figma: item corner radius
+
+  // --- Transitions ---------------------------------------------------------
+  --#{$sds-prefix}-transition-nav-shell:     width 200ms ease;
+  --#{$sds-prefix}-transition-nav-label-in:  opacity 150ms ease 100ms;
+  --#{$sds-prefix}-transition-nav-label-out: opacity 100ms ease;
+}

@@ -1,0 +1,183 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.nav-shell.scss
+// First-level navigation shell — vertical sidebar.
+//
+// BEM mix pattern: o-flex classes are applied in the HTML template alongside
+// c-nav-shell* classes to compose flex layout (per BEM FAQ on mixes).
+// Component SCSS owns only non-layout properties: position, dimensions,
+// colours, tokens, transitions.
+//
+// Design ref:   Figma iCRM Audit node 18:6419 (collapsed)
+// Token source: libs/styles/src/01-settings/_settings.nav-shell.scss
+// =============================================================================
+
+// Shell — layout via o-flex o-flex--col in template
+.c-nav-shell {
+  position: relative;
+  z-index: 200;
+  gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
+  // Takes the width of its content (expanded items determine dynamic expanded size)
+  width: var(--#{$sds-prefix}-size-nav-shell-collapsed);
+  height: 100dvh;
+  background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
+  border-right: 1px solid var(--#{$sds-prefix}-color-nav-shell-border);
+  transition: var(--#{$sds-prefix}-transition-nav-shell);
+
+  &--expanded {
+    width: max-content;
+    min-width: var(--#{$sds-prefix}-size-nav-shell-expanded);
+    align-items: flex-start;
+  }
+}
+
+// Logo container — full width, fixed height matching the collapsed shell dimension
+.c-nav-shell__logo {
+  // Fixed height required — structural dimension matching the collapsed shell width
+  width: 100%;
+  height: var(--#{$sds-prefix}-size-nav-shell-collapsed);
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  // State override — the compound selector out-specifies the o-flex utility class,
+  // so no !important is needed.
+  .c-nav-shell--expanded & {
+    justify-content: flex-start;
+    padding-inline-start: calc(var(--#{$sds-prefix}-space-nav-shell-list-px) + var(--#{$sds-prefix}-space-nav-shell-item-px) + 2px);
+  }
+}
+
+// Logomark — shown when collapsed; constrained so the 24×32 SVG fits inside 52px container
+.c-nav-shell__logomark {
+  // Fixed size required — brand mark SVG collapses without explicit constraint
+  height: var(--#{$sds-prefix}-size-nav-shell-logomark);
+  width: auto;
+  object-fit: contain;
+}
+
+// Logotype (full logo with wordmark) — shown when expanded
+.c-nav-shell__logotype {
+  // Fixed height — preserves natural aspect ratio of the 79×32 logo SVG
+  height: var(--#{$sds-prefix}-size-nav-shell-logomark);
+  width: auto;
+  object-fit: contain;
+}
+
+// List — layout via o-flex o-flex--col o-flex--align-items-center in template
+.c-nav-shell__list {
+  flex: 1 0 0;
+  gap: var(--#{$sds-prefix}-space-nav-shell-list-gap);
+  margin: 0;
+  padding: 0 var(--#{$sds-prefix}-space-nav-shell-list-px);
+  list-style: none;
+  min-height: 0;
+
+  .c-nav-shell--expanded & {
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
+// Item — layout via o-flex in template
+.c-nav-shell__item {
+  .c-nav-shell--expanded & {
+    width: 100%;
+  }
+}
+
+// Link — layout via o-flex o-flex--align-items-center in template
+.c-nav-shell__link {
+  text-decoration: none;
+  cursor: pointer;
+  padding: var(--#{$sds-prefix}-space-nav-shell-item-px);
+  gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-collapsed);
+  border-radius: var(--#{$sds-prefix}-radius-nav-shell-item);
+  color: var(--#{$sds-prefix}-color-nav-shell-text);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background-color var(--#{$sds-prefix}-transition-duration-mask) ease;
+
+  .c-nav-shell--expanded & {
+    padding: var(--#{$sds-prefix}-space-nav-shell-item-py) var(--#{$sds-prefix}-space-nav-shell-item-px);
+    gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-inner);
+    width: 100%;
+  }
+
+  // Hover — Figma: transparent/black/50
+  &:hover   { background-color: var(--#{$sds-prefix}-color-nav-shell-item-hover); }
+  // Pressed — instant transition so the feedback is visible during the brief click
+  &:active  {
+    background-color: var(--#{$sds-prefix}-color-nav-shell-item-pressed);
+    transition: none;
+  }
+
+  // Active — Figma: transparent/black/50 bg; icon shows full brand colour
+  &.is-active {
+    background-color: var(--#{$sds-prefix}-color-nav-shell-item-active);
+    .c-nav-shell__icon { filter: none; opacity: 1; }
+  }
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
+}
+
+// Icon — grayscale by default; full brand colour when parent link is active
+.c-nav-shell__icon {
+  flex-shrink: 0;
+  // Fixed size required — icon fonts/SVGs collapse to 0 without an explicit constraint
+  width: var(--#{$sds-prefix}-size-nav-shell-icon);
+  height: var(--#{$sds-prefix}-size-nav-shell-icon);
+  color: inherit;
+  filter: grayscale(1) opacity(0.5);
+  transition: filter var(--#{$sds-prefix}-transition-duration-mask) ease;
+
+  i        { display: block; line-height: 1; font-size: var(--#{$sds-prefix}-size-nav-shell-icon); }
+  img, svg { display: block; width: var(--#{$sds-prefix}-size-nav-shell-icon); height: var(--#{$sds-prefix}-size-nav-shell-icon); object-fit: contain; }
+}
+
+// Label — hidden (width 0) in collapsed, fades in when expanded
+.c-nav-shell__label {
+  overflow: hidden;
+  flex: 1 0 0;
+  min-width: 0;
+  @include text-label-sm;
+  color: var(--#{$sds-prefix}-color-nav-shell-label); // Figma: transparent/black/800
+  text-overflow:  ellipsis;
+  white-space:    nowrap;
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+  transition: var(--#{$sds-prefix}-transition-nav-label-out), width 0ms 200ms;
+
+  .c-nav-shell--expanded & {
+    opacity: 1;
+    width: auto;
+    pointer-events: auto;
+    transition: var(--#{$sds-prefix}-transition-nav-label-in), width 0ms;
+  }
+}
+
+// Trailing icon — only visible in expanded mode
+.c-nav-shell__trailing-icon {
+  width: 0;
+  // Fixed height required — icon collapse prevention
+  height: var(--#{$sds-prefix}-size-nav-shell-trailing-icon);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, width 0ms 200ms;
+
+  i { display: block; line-height: 1; font-size: var(--#{$sds-prefix}-size-nav-shell-trailing-icon); color: currentcolor; }
+
+  .c-nav-shell--expanded & {
+    opacity: 1;
+    // Fixed width required — icon collapse prevention
+    width: var(--#{$sds-prefix}-size-nav-shell-trailing-icon);
+    pointer-events: auto;
+    transition: opacity 150ms ease 100ms, width 0ms;
+  }
+}

@@ -1,0 +1,63 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.top-nav.scss
+// Top navigation shell with breadcrumb, subnav toggle, search, help, and avatar.
+//
+// Design ref: Figma custom components node 1:1533
+// Token source: libs/styles/src/01-settings/
+//   _settings.colors-semantic.scss → --color-* semantic text/surface/content tokens
+//   _settings.top-nav.scss         → --sds-size-top-nav-*, breadcrumb bridge
+//   _settings.focus.scss           → --sds-focus-ring-*
+// =============================================================================
+
+.c-top-nav {
+  display: block;
+  background: var(--#{$sds-prefix}-color-content-bg);
+  border-bottom: 1px solid var(--#{$sds-prefix}-color-content-border);
+}
+
+.c-top-nav__surface {
+  // Structural padding belongs to the component token file so the bar keeps the Figma proportions.
+  padding-inline: var(--#{$sds-prefix}-space-top-nav-inline);
+  min-height: var(--#{$sds-prefix}-size-top-nav-height);
+}
+
+.c-top-nav__start {
+  min-width: 0;
+}
+
+.c-top-nav__breadcrumb {
+  min-width: 0;
+}
+
+.c-top-nav__end {
+  min-width: 0;
+}
+
+.c-top-nav__search {
+  // Fixed size required — the expanded search affordance is a structural control, not content-sized text.
+  inline-size: var(--#{$sds-prefix}-size-top-nav-search-width);
+}
+
+.c-top-nav__search-input {
+  min-width: 0;
+}
+
+// Visual styling (size, radius, colours, hover) is bridged via --p-button-*
+// tokens in 01-settings/_settings.top-nav.scss. Layout (flex/centering) comes
+// from o-flex classes on the element in the template.
+// Pressed-state background mirrors hover for the toggle button.
+.c-top-nav__action-button[aria-pressed='true'] {
+  --p-button-text-primary-color: var(--#{$sds-prefix}-color-text);
+  --p-button-text-primary-background: var(--#{$sds-prefix}-color-content-hover-bg);
+}
+
+.c-top-nav__action-icon {
+  font-size: var(--#{$sds-prefix}-size-top-nav-action-icon);
+  line-height: 1;
+}
+
+.c-top-nav__avatar {
+  flex-shrink: 0;
+}

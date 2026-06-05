@@ -1,0 +1,33 @@
+{
+  "id": "sds-component",
+  "title": "Solidaris UI Component Generator",
+  "description": "Scaffolds a component in libs/ui with metadata contract, Storybook story, and BEM SCSS.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Component name in kebab-case (e.g. 'data-card')",
+      "x-prompt": "Component name (kebab-case):"
+    },
+    "category": {
+      "type": "string",
+      "description": "Atomic design category",
+      "enum": ["atoms", "molecules", "organisms", "templates"],
+      "default": "atoms",
+      "x-prompt": "Category (atoms/molecules/organisms/templates):"
+    },
+    "type": {
+      "type": "string",
+      "description": "Component type",
+      "enum": ["interactive", "display", "container", "input", "navigation", "feedback"],
+      "default": "display",
+      "x-prompt": "Component type:"
+    },
+    "primeNg": {
+      "type": "string",
+      "description": "PrimeNG component this wraps (optional, e.g. 'Button', 'DataTable')",
+      "default": ""
+    }
+  },
+  "required": ["name", "category", "type"]
+}

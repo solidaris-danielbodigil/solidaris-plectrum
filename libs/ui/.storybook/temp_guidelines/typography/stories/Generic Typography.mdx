@@ -1,0 +1,27 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import * as Stories from './typography.component.stories';
+
+<Meta of={Stories} />
+
+# Typography: Extendable Classes
+
+Our generic typography classes refer to foundational building blocks, controlling visual aspects of the text, such as font size, line height, and font-weight. <br/>
+They follow this class naming nomenclature:
+```css
+.typo__<font-weight>--<font-scale>--<line-height>
+```
+
+They provide flexibility and full control over each aspect of typography, enabling unique and complex design implementations.<br/>
+Here is an example usage of a generic class:
+```css
+.typo__medium--lg--md
+```
+This class applies a medium font weight, a large font scale, and a medium line height to the text.
+<Story of={Stories.ExtendGenericClassesDevNote} />
+<br/>
+<Story of={Stories.GenericClassesDevNote} />
+<br/>
+
+## Search Generic classes
+
+<Story of={Stories.Generic} />

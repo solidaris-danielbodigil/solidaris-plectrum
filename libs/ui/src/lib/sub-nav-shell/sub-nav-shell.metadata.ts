@@ -1,0 +1,80 @@
+import { ComponentMetadata } from '@solidaris/contracts';
+
+export const SubNavShellMetadata: ComponentMetadata = {
+  component: {
+    name: 'SubNavShell',
+    category: 'organisms',
+    description: 'Second-level navigation sidebar with PrimeNG Accordion sections, Badge counters, and a version footer.',
+    type: 'navigation',
+    path: 'libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts',
+    primeNgComponent: 'Accordion, Badge',
+    bemBlock: 'c-sub-nav-shell',
+    itcssLayer: '06-components',
+    scssPath: 'libs/styles/src/06-components/_components.sub-nav-shell.scss',
+    created: '2026-05-26',
+    modified: '2026-05-31',
+  },
+  usage: {
+    useCases: [
+      'Second-level navigation alongside NavShell',
+      'Module-level grouped menu with collapsible accordion sections',
+    ],
+    commonPatterns: [
+      {
+        name: 'Paired with NavShell',
+        description: 'SubNavShell renders immediately to the right of NavShellComponent when a nav item is clicked.',
+        composition: '<sds-nav-shell /> <sds-sub-nav-shell />',
+      },
+    ],
+    antiPatterns: [
+      {
+        scenario: 'Standalone full-page navigation',
+        reason: 'SubNavShell is a sidebar companion, not a standalone page nav',
+        alternative: 'Pair with NavShellComponent for the correct two-level layout',
+      },
+    ],
+  },
+  accessibility: {
+    wcagLevel: 'AA',
+  },
+  tokens: {
+    consumed: [
+      '--sds-color-sub-nav-shell-bg',
+      '--sds-color-sub-nav-shell-border',
+      '--sds-color-sub-nav-shell-header-text',
+      '--sds-color-sub-nav-shell-section-text',
+      '--sds-color-sub-nav-shell-item-text',
+      '--sds-color-sub-nav-shell-item-hover-bg',
+      '--sds-color-sub-nav-shell-item-active-bg',
+      '--sds-color-sub-nav-shell-footer-muted',
+      '--sds-color-sub-nav-shell-footer-link',
+      '--sds-size-sub-nav-shell-width',
+      '--sds-space-sub-nav-shell-header-h',
+      '--sds-space-sub-nav-shell-header-px',
+      '--sds-space-sub-nav-shell-section-py',
+      '--sds-space-sub-nav-shell-section-px',
+      '--sds-space-sub-nav-shell-section-gap',
+      '--sds-space-sub-nav-shell-section-header-py',
+      '--sds-space-sub-nav-shell-section-header-px',
+      '--sds-space-sub-nav-shell-item-py',
+      '--sds-space-sub-nav-shell-item-px',
+      '--sds-space-sub-nav-shell-item-gap',
+      '--sds-size-sub-nav-shell-item-icon',
+      '--sds-space-sub-nav-shell-footer-py',
+      '--sds-space-sub-nav-shell-footer-px',
+      '--sds-radius-lg',
+      '--sds-disabled-opacity',
+      '--sds-focus-ring-width',
+      '--sds-focus-ring-style',
+      '--sds-focus-ring-color',
+      '--sds-focus-ring-offset',
+    ],
+  },
+  aiHints: {
+    priority: 'high',
+    context: 'Always used alongside NavShellComponent as the second navigation level. Uses PrimeNG Accordion for collapsible sections and PrimeNG Badge for counters.',
+    selectionCriteria: { useWhen: 'A module needs a grouped, collapsible secondary navigation panel' },
+    keywords: ['sub-nav', 'second-level', 'sidebar', 'navigation', 'menu', 'sections', 'accordion', 'badge'],
+  },
+  examples: [],
+};

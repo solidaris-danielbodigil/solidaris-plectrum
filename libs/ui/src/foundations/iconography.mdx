@@ -1,0 +1,39 @@
+import { Meta, Story, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './iconography.stories';
+
+<Meta of={Stories} />
+
+# Iconography
+
+The Solidaris Design System uses **Bootstrap Icons** as its default icon set.
+All icons are available via the `<sds-icon>` component:
+
+```html
+<!-- Bootstrap Icon (default) -->
+<sds-icon icon="bi bi-house" />
+<sds-icon icon="bi bi-house" size="lg" />
+
+<!-- Non-decorative (standalone) -->
+<sds-icon icon="bi bi-bell" label="Notifications" />
+
+<!-- Custom SVG from registry -->
+<sds-icon icon="logo-solidaris" source="svg" size="xl" />
+```
+
+Custom icons are exported from Figma as SVG and registered at app startup:
+
+```ts
+// app.config.ts
+const registry = inject(IconRegistry);
+registry.register('logo-solidaris', rawSvgString);
+```
+
+---
+
+## Icon browser
+
+Search by name, filter by variant, and **click any icon** to copy its class string to the clipboard.
+
+<Unstyled>
+  <Story of={Stories.AllIcons} />
+</Unstyled>

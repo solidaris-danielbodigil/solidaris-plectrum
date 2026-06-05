@@ -1,0 +1,13 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import * as ColorStories from './colors.component.stories';
+
+<Meta of={ColorStories} />
+
+# Semantic Palette
+
+## Best Practices
+- Use precise semantic variables if possible and be more generic if nothing matches.
+- status > component > typo / background / shadow / border > theme > color-mix > palette
+
+<Story of={ColorStories.Semantic} />
+

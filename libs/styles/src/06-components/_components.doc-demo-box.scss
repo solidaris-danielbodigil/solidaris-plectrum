@@ -1,0 +1,116 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.doc-demo-box.scss
+// <sds-doc-demo-box> — framed preview sandbox for Foundation doc pages.
+//
+// Token source: libs/styles/src/01-settings/
+//   _settings.doc-demo-box.scss     → --sds-color-doc-demo-*, --sds-size-doc-demo-*
+//   _settings.colors-semantic.scss  → --sds-color-surface-*, --sds-color-text-*, --sds-color-brand
+//   _settings.spacing.scss          → --spacing-*
+//   _settings.radius.scss           → --sds-radius-*
+// =============================================================================
+
+// ── Demo cell — the colored box used inside demos ────────────────────────────
+// Odd cells: muted blue-grey; Even cells: brand blue-purple accent.
+// NOTE: flex layout stays here — this is a doc primitive reused across many
+// inline story templates, so there is no single owning template (rules §5 exception).
+.c-demo-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-1);
+  border: 1px solid var(--#{$sds-prefix}-color-doc-demo-cell-border);
+  background: var(--#{$sds-prefix}-color-doc-demo-cell-bg);
+  @include text-body-xs;
+  color: var(--#{$sds-prefix}-color-doc-demo-cell-text);
+  min-height: var(--#{$sds-prefix}-size-doc-demo-cell-min-h);
+
+  &--accent {
+    background: var(--#{$sds-prefix}-color-doc-demo-cell-accent-bg);
+    color: var(--#{$sds-prefix}-color-surface-0);
+    border-color: var(--#{$sds-prefix}-color-doc-demo-cell-accent-border);
+  }
+}
+
+// ── Outer frame ──────────────────────────────────────────────────────────────
+.c-doc-demo-box {
+  border: 1px solid var(--#{$sds-prefix}-color-surface-border);
+  border-radius: var(--#{$sds-prefix}-radius-md);
+  overflow: hidden;
+  margin-block: var(--spacing-2);
+}
+
+// ── Preview area ─────────────────────────────────────────────────────────────
+.c-doc-demo-box__preview {
+  padding: var(--spacing-2);
+  background: var(--#{$sds-prefix}-color-surface-default);
+}
+
+// ── Footer — "Show code" toggle ───────────────────────────────────────────────
+.c-doc-demo-box__footer {
+  padding: var(--spacing-0-5) var(--spacing-1);
+  background: var(--#{$sds-prefix}-color-surface-subtle);
+  border-top: 1px solid var(--#{$sds-prefix}-color-surface-border);
+}
+
+.c-doc-demo-box__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  @include text-body-xs;
+  color: var(--#{$sds-prefix}-color-text-muted);
+  padding: 0;
+
+  &:hover {
+    color: var(--#{$sds-prefix}-color-brand);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
+}
+
+// ── Code panel ───────────────────────────────────────────────────────────────
+.c-doc-demo-box__code {
+  margin: 0;
+  padding: var(--spacing-2);
+  background: var(--#{$sds-prefix}-color-surface-subtle);
+  border-top: 1px solid var(--#{$sds-prefix}-color-surface-border);
+  @include text-body-xs;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--#{$sds-prefix}-color-text);
+}
+
+// ── Spacing token swatch ─────────────────────────────────────────────────────
+// NOTE: flex layout stays here — doc primitive reused across many inline story
+// templates (rules §5 exception).
+.c-spacing-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-0-5);
+  padding: var(--spacing-1);
+  border: 1px solid var(--#{$sds-prefix}-color-surface-border);
+  border-radius: var(--#{$sds-prefix}-radius-md);
+  background: var(--#{$sds-prefix}-color-surface-default);
+  @include text-body-xs;
+  color: var(--#{$sds-prefix}-color-text-muted);
+}
+
+.c-spacing-swatch__bar {
+  background: var(--#{$sds-prefix}-color-brand);
+  height: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
+  width: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
+  flex-shrink: 0;
+}
+
+.c-spacing-swatch__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-1);
+}

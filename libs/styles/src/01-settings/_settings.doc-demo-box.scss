@@ -1,0 +1,23 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.doc-demo-box.scss
+// Doc-demo-box tokens — Storybook Foundation sandbox chrome.
+//
+// The demo-cell palette is intentionally OFF-BRAND (Material indigo) so demo
+// fillers are never mistaken for product UI. They live here (not inline in
+// 06-components) so the component layer stays free of raw values.
+// =============================================================================
+
+:root {
+  // Demo filler cells (documentation-only palette)
+  --#{$sds-prefix}-color-doc-demo-cell-bg:            #e8eaf6;
+  --#{$sds-prefix}-color-doc-demo-cell-border:        #c5cae9;
+  --#{$sds-prefix}-color-doc-demo-cell-text:          #3949ab;
+  --#{$sds-prefix}-color-doc-demo-cell-accent-bg:     #9fa8da;
+  --#{$sds-prefix}-color-doc-demo-cell-accent-border: #7986cb;
+
+  // Structural
+  --#{$sds-prefix}-size-doc-demo-cell-min-h:  2.5rem;
+  --#{$sds-prefix}-size-doc-demo-swatch:      var(--spacing-1);  // default swatch bar size (8px)
+}

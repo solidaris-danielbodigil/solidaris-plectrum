@@ -1,0 +1,80 @@
+<div class="o-flex o-flex--col o-layout o-layout--gap-3">
+  <fba-search-bar>
+    <fba-input-search>
+      <fba-search
+        (valueChange)="search$.next($event)"
+        [value]="search$.asObservable() | async"
+        placeHolderText="Search for a Typography"
+      />
+    </fba-input-search>
+  </fba-search-bar>
+  @for (category of categories | keyvalue; track category) {
+    <div>
+      <h3 class="typo__h3">{{ category.key }}</h3>
+      <fba-card
+        [elevated]="true"
+        class="foundations-tokens__wrapper foundations-tokens__wrapper--typography fba-card"
+      >
+        @for (typoClass of category.value; track typoClass) {
+          @if (typoClass.type === typoType) {
+            <fba-card
+              (click)="copyTypoClassName(typoClass.key)"
+              [clickable]="true"
+              [outlined]="true"
+              class="foundations-tokens__item o-flex o-flex--col"
+              [ngClass]="{
+                'foundations-tokens__item--semantic':
+                  typoClass.type === 'semantic',
+              }"
+            >
+              <div class="o-flex o-layout o-layout--gap-3">
+                <div
+                  class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1"
+                >
+                  <label class="foundations-tokens__theme-label">Light</label>
+                  <fba-card
+                    [ngClass]="
+                      typoClass.type === 'semantic'
+                        ? getBemBlock(typoClass.key.substring(1))
+                        : typoClass.key.substring(1)
+                    "
+                    [outlined]="true"
+                    class="foundations-tokens__value o-flex__item"
+                  >
+                    A visual type scale
+                  </fba-card>
+                </div>
+                <div
+                  class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1"
+                >
+                  <label class="foundations-tokens__theme-label">Dark</label>
+                  <fba-card
+                    [ngClass]="
+                      typoClass.type === 'semantic'
+                        ? getBemBlock(typoClass.key.substring(1))
+                        : typoClass.key.substring(1)
+                    "
+                    [outlined]="true"
+                    class="storybook-dark-theme foundations-tokens__value o-flex__item"
+                  >
+                    A visual type scale
+                  </fba-card>
+                </div>
+              </div>
+              <button
+                [fbaButton]="'primary'"
+                [size]="'small'"
+                class="foundations-tokens__copy-btn"
+              >
+                <fba-icon icon="copy" />
+              </button>
+              <label class="foundations-tokens__token"
+                >{{ typoClass.key }}
+              </label>
+            </fba-card>
+          }
+        }
+      </fba-card>
+    </div>
+  }
+</div>

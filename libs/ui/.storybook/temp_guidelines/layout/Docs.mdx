@@ -1,0 +1,94 @@
+import { Meta } from '@storybook/blocks';
+import * as Stories from './layout.component.stories';
+import { Canvas } from '@storybook/addon-docs';
+
+<Meta of={Stories} />
+
+# Layout Object Documentation
+
+The layout object `.o-layout`, provides classes to improve and create faster and consistent layouts.<br/>
+This block has `3 modifiers`:
+
+## Full Height
+`.o-layout--full-height` <br/>
+In order to use a vertical grid with `.o-flex--y`, it's ancestor needs to have a height set. <br/>
+As fixing container's height is not recommended, `.o-layout--full-height` will set it to a relative value :`height: 100%`.<br/>
+
+> **`.o-layout--full-height` needs to be added to all `.o-flex__item` ancestors until a container with a height is reached, or in the contrary up to the `html` tag.**
+
+```html
+<html class="o-layout o-layout--full-height">
+  <body class="o-layout o-layout--full-height">
+    <main class="o-layout o-layout--full-height">
+      <section class="o-layout o-layout--full-height">
+        <div class="o-flex o-flex--y o-layout o-layout--full-height">
+          <div class="o-flex__item"></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+```
+
+## Overflow
+
+`.o-layout--overflow-[overflow-property?]-[value]`<br/>
+
+**Overflow properties:** <br/>
+`.o-layout--overflow-[value]` for the shorthand, `.o-layout--overflow-x-[value]`, `.o-layout--overflow-y-[value]`.<br/>
+**Overflow values:** <br/>
+`.o-layout--overflow-[overflow-property?]-hidden`,
+`.o-layout--overflow-[overflow-property?]-auto`,
+`.o-layout--overflow-[overflow-property?]-overlay`,
+`.o-layout--overflow-[overflow-property?]-scroll`,
+`.o-layout--overflow-[overflow-property?]-unset`,
+`.o-layout--overflow-[overflow-property?]-visible`,
+`.o-layout--overflow-[overflow-property?]-initial`,
+`.o-layout--overflow-[overflow-property?]-inherit`,
+
+<Canvas of={Stories.Overflow}></Canvas>
+
+## Spacing
+
+`.o-layout--[spacing-property]-[scale]`
+
+**Spacing properties:** <br/>
+`gap`,
+`row-gap`,
+`column-gap`,
+`padding`,
+`padding-top`,
+`padding-right`,
+`padding-bottom`,
+`padding-left`,
+`padding-inline`,
+`padding-inline-start`,
+`padding-inline-end`,
+`padding-block`,
+`padding-block-start`,
+`padding-block-end`,
+`margin`,
+`margin-top`,
+`margin-right`,
+`margin-bottom`,
+`margin-left`,
+`margin-inline`,
+`margin-inline-start`,
+`margin-inline-end`,
+`margin-block`,
+`margin-block-start`,
+`margin-block-end`,<br/>
+
+**Scale values (same as spacing tokens):** <br/>
+`0-25`,
+`0-5`,
+`1`,
+`1-5`,
+`2`,
+`3`,
+`4`,
+`5`,
+`6`,
+`7`
+
+<Canvas of={Stories.Spacing}></Canvas>

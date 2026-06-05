@@ -1,0 +1,74 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.plectrum-avatar.scss
+// PlectrumAvatar — initials-based identity avatar.
+//
+// Design ref: Figma custom components node 1:1586
+// Token source: libs/styles/src/01-settings/_settings.avatar.scss
+// =============================================================================
+
+.c-plectrum-avatar {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--#{$sds-prefix}-size-avatar);
+  height: var(--#{$sds-prefix}-size-avatar);
+  border-radius: var(--#{$sds-prefix}-radius-md);
+  overflow: visible;
+  background-color: transparent;
+  color: var(--#{$sds-prefix}-color-solidaris-red-500);
+  user-select: none;
+  transition: box-shadow var(--#{$sds-prefix}-transition-duration-mask) ease, color var(--#{$sds-prefix}-transition-duration-mask) ease;
+
+  &:hover,
+  &:focus-visible,
+  &:active,
+  &[data-state='active'] {
+    cursor: pointer;
+  }
+
+  &:hover {
+    color: var(--#{$sds-prefix}-color-avatar-shape-hover);
+  }
+
+  &:focus-visible,
+  &[data-state='active'] {
+    box-shadow: var(--#{$sds-prefix}-shadow-avatar-active);
+  }
+
+  &:active {
+    color: var(--#{$sds-prefix}-color-avatar-shape-hover);
+  }
+
+  &[data-state='active'] {
+    color: var(--#{$sds-prefix}-color-solidaris-red-500);
+  }
+}
+
+.c-plectrum-avatar__shape,
+.c-plectrum-avatar__initials {
+  grid-area: 1 / 1;
+}
+
+.c-plectrum-avatar__shape {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.c-plectrum-avatar__shape-path {
+  fill: currentColor;
+}
+
+.c-plectrum-avatar__initials {
+  position: relative;
+  z-index: 1;
+  @include text-heading-xs;
+  color: var(--#{$sds-prefix}-color-surface-0);
+  text-align: center;
+  letter-spacing: var(--letter-spacing-0);
+  pointer-events: none;
+}

@@ -1,0 +1,126 @@
+// =============================================================================
+// 05-objects/layout/_objects.layout.scss
+// Layout utility classes — generates o-layout modifiers for spacing, overflow,
+// dimensions, display, and position.
+//
+// ⛔ ENFORCEMENT CONTRACT — read before editing any component SCSS ⛔
+//
+// These classes are the ONLY permitted way to express spacing and overflow
+// when the value is on the global --spacing-* scale.
+// The following CSS properties are FORBIDDEN in 06-components/ SCSS files
+// unless the value references a var(--sds-*) component token:
+//
+//   overflow / overflow-x / overflow-y → use  o-layout--overflow-{key}
+//   gap / row-gap / column-gap         → use  o-layout--gap-{scale}
+//   padding / padding-*                → use  o-layout--padding[-*]-{scale}
+//   margin / margin-*                  → use  o-layout--margin[-*]-{scale}
+//   display                            → use  o-layout--{display}
+//   position                           → use  o-layout--{position}
+//   min-height: 0 / min-width: 0      → use  o-layout--min-h-0 / o-layout--min-w-0
+//
+// Exception: spacing values that MUST reference a var(--sds-*) token
+// (component-specific sizing, form padding) stay in component SCSS as var() calls.
+//
+// Apply these classes as BEM mixes directly in HTML templates.
+// See: .ai/rules/08-object-classes.md
+// =============================================================================
+@use 'sass:list';
+@use 'sass:map';
+@use '../../01-settings/settings.grid' as grid;
+@use '../../01-settings/settings.breakpoints' as bp-settings;
+@use '../../02-tools/tools.breakpoints' as bp;
+@use '../../02-tools/tools.spacing' as spacing-tools;
+
+.o-layout {
+  // ── Dimensional helpers ──────────────────────────────────────────────────
+  &--full-height {
+    height: 100%;
+  }
+  &--full-width {
+    width: 100%;
+  }
+  &--full-dvh {
+    height: 100dvh;
+  }
+  &--min-h-0 {
+    min-height: 0;
+  }
+  &--min-w-0 {
+    min-width: 0;
+  }
+
+  // ── Overflow (with responsive variants) ──────────────────────────────────
+  @each $modifier-key, $tuple in grid.$overflow {
+    $property: list.nth($tuple, 1);
+    $css-value: list.nth($tuple, 2);
+
+    &--#{$modifier-key} {
+      #{$property}: $css-value;
+    }
+    @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+      @if $breakpoint != 'xs' {
+        &--#{$modifier-key}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            #{$property}: $css-value;
+          }
+        }
+      }
+    }
+  }
+
+  // ── Display (with responsive variants) ───────────────────────────────────
+  @each $key, $value in grid.$display {
+    &--#{$key} {
+      display: $value;
+    }
+    @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+      @if $breakpoint != 'xs' {
+        &--#{$key}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            display: $value;
+          }
+        }
+      }
+    }
+  }
+
+  // ── Position (with responsive variants) ──────────────────────────────────
+  @each $key, $value in grid.$position {
+    &--#{$key} {
+      position: $value;
+    }
+    @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+      @if $breakpoint != 'xs' {
+        &--#{$key}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            position: $value;
+          }
+        }
+      }
+    }
+  }
+
+  // ── Sticky with top: 0 shorthand ────────────────────────────────────────
+  &--sticky-top {
+    position: sticky;
+    top: 0;
+  }
+
+  // ── Spacing (gap, padding, margin — with responsive variants) ────────────
+  @each $_layout-spacing-key, $_layout-spacing-value in spacing-tools.$layout-spacing {
+    @each $key, $value in $_layout-spacing-value {
+      &--#{$_layout-spacing-key}-#{$key} {
+        #{$_layout-spacing-key}: $value;
+      }
+      @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+        @if $breakpoint != 'xs' {
+          &--#{$_layout-spacing-key}-#{$key}\@#{$breakpoint} {
+            @include bp.breakpoint($breakpoint) {
+              #{$_layout-spacing-key}: $value;
+            }
+          }
+        }
+      }
+    }
+  }
+}

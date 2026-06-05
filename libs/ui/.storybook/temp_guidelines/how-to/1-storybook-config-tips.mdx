@@ -1,0 +1,71 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories/ 1 - Config tips'/>
+
+# Storybook 7 configuration tips
+
+With Storybook 7, you'll need to specify a project (this refers to a lib, ex: `ui-event`) in order to install it. Meaning that there is no project root `.storybook/` folder anymore.
+You'll obviously find it in your project root:
+
+``` console
+nx g @nx/storybook:configuration project-name
+```
+
+``` console
+<project root>/
+  ├── .storybook/
+  │   ├── main.js
+  │   ├── preview.js
+  │   ├── tsconfig.json
+  ├── src/
+  ├── tsconfig.json
+  └── etc...
+```
+More details on how to install SB in this link : https://nx.dev/packages/storybook/documents/overview-angular
+
+Once you've installed and launched SB, depending on your project structure, you might want to check in your `.storybook/` folder `main.js` and `tsconfig.json` files if the references and paths are targeting the desired files.
+
+### `main.js` file :
+
+  ```jsx
+  stories: [
+    '../../**/*.stories.@(js|ts)',
+    '../../**/*.mdx'
+  ],
+  ```
+  Adapt these paths according to your project
+
+  ```jsx
+  docs: {
+    autodocs: true
+  }
+  ```
+  Whether you want to automatically add a docs page for your `xx.component.stories.ts`
+
+### `tsconfig.json` file :
+  ```json
+  "include": [
+    "../../**/src/**/*.stories.ts",
+    "../../**/src/**/*.stories.js",
+    "../../**/src/**/*.stories.jsx",
+    "../../**/src/**/*.stories.tsx",
+    "../../**/src/**/*.stories.mdx",
+    "../../**/*.js"
+  ]
+  ```
+  Again, make sure that you include the correct paths
+
+### Adding your CSS files
+
+The simpler way to add your custom css file for Storybook, is to declare it in your `project.json` file:
+
+```json
+"storybook": {
+  "executor": "@storybook/angular:start-storybook",
+  "options": {
+    [...]
+    "styles": ["libs/styles/styles.scss"]
+  },
+  [...]
+},
+```

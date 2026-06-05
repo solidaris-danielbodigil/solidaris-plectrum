@@ -1,0 +1,40 @@
+{
+  "git.ignoreLimitWarning": true,
+
+  // ─── GitHub Copilot — knowledge files ───────────────────────────────────────
+  // Each file listed here is loaded automatically by Copilot / VS Code agents.
+  // Rules  → enforce hard architectural constraints.
+  // Skills → describe HOW to accomplish tasks correctly.
+  // Contracts → machine-readable schemas and AI protocols.
+  "github.copilot.chat.codeGeneration.instructions": [
+    // ── Rules ──────────────────────────────────────────────────────────────────
+    { "file": ".ai/rules/01-architecture.md" },
+    { "file": ".ai/rules/02-scss-tokens.md" },
+    { "file": ".ai/rules/03-storybook.md" },
+    { "file": ".ai/rules/04-primeng.md" },
+    { "file": ".ai/rules/05-bemit-naming.md" },
+    { "file": ".ai/rules/06-accessibility.md" },
+    { "file": ".ai/rules/07-version-control.md" },
+
+    // ── Skills ─────────────────────────────────────────────────────────────────
+    { "file": ".ai/skills/01-design-system.md" },
+    { "file": ".ai/skills/02-scss-architecture.md" },
+    { "file": ".ai/skills/03-component-workflow.md" },
+    { "file": ".ai/skills/04-token-checklist.md" },
+
+    // ── Contracts / Protocols ──────────────────────────────────────────────────
+    { "file": ".ai/contracts/protocols/component-creation.md" },
+    { "file": ".ai/contracts/protocols/token-audit.md" },
+    { "file": ".ai/contracts/protocols/query-protocol.md" },
+    { "file": ".ai/contracts/protocols/ai-prompts.md" }
+  ],
+  "github.copilot.chat.responsesApiReasoningEffort": "medium",
+  "chat.mcp.serverSampling": {
+    "solidaris-nx/.vscode/mcp.json: primeng": {
+      "allowedModels": [
+        "copilot/auto",
+        "copilotcli/claude-sonnet-4.6"
+      ]
+    }
+  }
+}

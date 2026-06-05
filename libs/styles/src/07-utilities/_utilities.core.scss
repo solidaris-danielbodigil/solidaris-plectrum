@@ -1,0 +1,7 @@
+// =============================================================================
+// 07-utilities/_utilities.core.scss
+// Barrel — forwards all single-purpose utility helpers (prefix: u-)
+// =============================================================================
+
+@forward 'utilities.utilities';
+@forward 'utilities.typography';

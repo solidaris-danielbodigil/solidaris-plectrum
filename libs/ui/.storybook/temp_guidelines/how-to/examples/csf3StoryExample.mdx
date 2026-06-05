@@ -1,0 +1,144 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories/ Examples / CSF3 story'/>
+
+# CSF3 Badge component story
+
+```jsx
+import { componentWrapperDecorator, Meta } from '@storybook/angular';
+
+import { BadgeComponent } from '../badge.component';
+
+const statusOptions = {
+  success: 'success',
+  error: 'error',
+  processing: 'processing',
+  warning: 'warning',
+  inactive: 'inactive',
+  active: 'active',
+  default: 'default',
+  darkerGrey: 'darkerGrey',
+  ghostDark: 'ghostDark',
+  ghostLight: 'ghostLight',
+};
+
+const typeOptions = {
+  dot: 'dot',
+  small: 'small',
+  default: 'default',
+  status: 'status',
+};
+
+export default {
+  title: 'Components/Data Display/Badge',
+  component: BadgeComponent,
+  argTypes: {
+    status: {
+      name: 'status',
+      description: 'Available Statuses to the Badge',
+      control: {
+        type: 'select',
+        options: statusOptions,
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: {
+          summary: 'default',
+        },
+      },
+    },
+    type: {
+      name: 'size',
+      description: 'Available size to the Badge',
+      control: {
+        type: 'select',
+        options: typeOptions,
+      },
+      table: {
+        defaultValue: {
+          summary: 'default',
+        },
+        type: { summary: 'string' },
+      },
+    },
+    text: {
+      name: 'content',
+      description: 'Text shown by the Badge',
+      control: {
+        type: 'text',
+      },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+  },
+  decorators: [
+
+    componentWrapperDecorator(
+      (story) =>
+        `<div class="test" style="display: flex; alignItems: center; gap: 1rem;">${story}</div>`,
+    ),
+  ],
+} as Meta<BadgeComponent>;
+
+export const Primary = {
+  render: (args: BadgeComponent) => ({
+    props: args,
+  }),
+  args: {
+    status: statusOptions.success,
+    type: typeOptions.default,
+    text: '1',
+  },
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/file/Serp13JTly74R6PiDPBuT9/Bridgestone-UI?node-id=399%3A0&t=hyI8pEDrZ7xWKcAj-1',
+    },
+  },
+};
+
+export const Status = {
+  render: (args: BadgeComponent) => ({
+    props: args,
+    template: `
+    <fba-badge type="default" status="default" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="error" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="success" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="processing" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="warning" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="active" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="inactive" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="darkerGrey" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="ghostDark" text="1">
+    </fba-badge>
+    <fba-badge type="default" status="ghostLight" text="1">
+    </fba-badge>
+  `,
+  }),
+};
+
+export const Type = {
+  render: (args: BadgeComponent) => ({
+    props: args,
+    template: `
+    <fba-badge status="success" type="dot" text="1">
+    </fba-badge>
+    <fba-badge status="processing" type="small" text="1">
+    </fba-badge>
+    <fba-badge status="warning" type="default" text="1">
+    </fba-badge>
+    <fba-badge status="error" type="status" text="1">
+    </fba-badge>
+  `,
+  }),
+};
+```

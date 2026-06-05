@@ -1,0 +1,12 @@
+// =============================================================================
+// 08-trumps/_trumps.core.scss
+// Barrel — forwards all trump-layer styles.
+//
+// Trumps sit at the top of the ITCSS cascade.
+// Only context-scoped overrides belong here — nothing that belongs to a
+// lower layer, and nothing that affects production app styles directly.
+// =============================================================================
+
+// Storybook-only demo wrapper (`.sb-demo-wrapper`) — safe to forward here
+// because the class is never used in app templates.
+@forward 'trumps.storybook';

@@ -1,0 +1,206 @@
+<div class="o-flex o-flex--col o-layout o-layout--gap-2">
+  <h3 class="typo__h3">Combine Values</h3>
+  <fba-card class="o-flex o-flex--y o-layout o-layout--gap-3" elevated="true">
+    <fba-search-bar class="o-flex o-layout o-layout--gap-3">
+      <fba-form-field label="Type" class="o-flex__item">
+        <fba-autocomplete
+          (optionSelected)="borderTypeValue = getBorderStatus($event)"
+          (removeSelectedOption)="removeTypeValue($event)"
+          [noClear]="false"
+          [options]="typesList"
+          [selectedOptions]="borderTypeValue"
+          maxVisibleOptions="15"
+          placeholder="Enter a border type"
+        />
+      </fba-form-field>
+
+      <fba-form-field
+        class="o-flex__item"
+        label="Status"
+        [validationMarker]="
+          borderTypeValue === 'special' ? 'required-star' : 'optional-text'
+        "
+      >
+        <fba-autocomplete
+          [disabled]="!borderTypeValue || statusList.length === 0"
+          (optionSelected)="borderStatusValue = getBorderStatusValue($event)"
+          [options]="statusList"
+          placeholder="Enter a border status"
+          [selectedOptions]="borderStatusValue"
+          [noClear]="true"
+          maxVisibleOptions="15"
+          (removeSelectedOption)="removeStatusValue($event)"
+        />
+      </fba-form-field>
+
+      <fba-form-field label="Direction Type" class="o-flex__item">
+        <fba-button-group
+          (selectedChange)="radiusValue($event)"
+          [buttons]="radiusOptions"
+          [disabled]="!isDirectional || borderTypeValue === 'divider'"
+          [secondary]="true"
+          [selected]="isDirectional ? 1 : ''"
+          buttonSize="small"
+          name="direction type"
+        />
+      </fba-form-field>
+
+      <fba-form-field
+        class="o-flex__item"
+        [fused]="true"
+        [validationMarker]="
+          borderTypeValue === 'divider' ? 'required-star' : 'optional-text'
+        "
+        label="Direction"
+      >
+        <fba-autocomplete
+          class="autocomplete__borders-directions"
+          (optionSelected)="borderDirectionValue = $event"
+          (removeSelectedOption)="removeDirectionValue($event)"
+          [disabled]="!isDirectional"
+          [options]="directionsList"
+          [selectedOptions]="borderDirectionValue"
+          maxVisibleOptions="15"
+          placeholder="Enter a border direction"
+          [optionIcon]="true"
+        />
+      </fba-form-field>
+    </fba-search-bar>
+  </fba-card>
+
+  <h3 class="typo__h3">Result</h3>
+  <fba-card
+    (click)="
+      copyBorderValue(
+        '@extend %u-border' +
+          (borderTypeValue && borderTypeValue !== 'special'
+            ? '--' + borderTypeValue
+            : '') +
+          (borderStatusValue && borderTypeValue !== 'special'
+            ? '-' + borderStatusValue
+            : '') +
+          (borderStatusValue && borderTypeValue === 'special'
+            ? '--' + borderStatusValue
+            : '') +
+          (borderRadiusValue && !borderTypeValue && borderDirectionValue
+            ? '--radius-' + borderDirectionValue
+            : '') +
+          (borderRadiusValue && borderTypeValue && borderDirectionValue
+            ? '-radius-' + borderDirectionValue
+            : '') +
+          (borderDirectionValue && !borderTypeValue && !borderRadiusValue
+            ? '--' + borderDirectionValue
+            : '') +
+          (borderDirectionValue && borderTypeValue && !borderRadiusValue
+            ? '-' + borderDirectionValue
+            : '') +
+          ';'
+      )
+    "
+    class="foundations-tokens__wrapper o-flex o-flex--y"
+    elevated="true"
+  >
+    <fba-card
+      [clickable]="true"
+      [outlined]="true"
+      class="foundations-tokens__item o-flex o-flex--col"
+    >
+      <div class="o-flex o-layout o-layout--gap-3">
+        <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+          <label class="foundations-tokens__theme-label">Light</label>
+          <div
+            [ngClass]="[
+              'foundations-tokens__example--border' +
+                (borderTypeValue && borderTypeValue !== 'special'
+                  ? '--' + borderTypeValue
+                  : '') +
+                (borderStatusValue && borderTypeValue !== 'special'
+                  ? '-' + borderStatusValue
+                  : '') +
+                (borderStatusValue && borderTypeValue === 'special'
+                  ? '--' + borderStatusValue
+                  : '') +
+                (borderRadiusValue && !borderTypeValue && borderDirectionValue
+                  ? '--radius-' + borderDirectionValue
+                  : '') +
+                (borderRadiusValue && borderTypeValue && borderDirectionValue
+                  ? '-radius-' + borderDirectionValue
+                  : '') +
+                (borderDirectionValue && !borderTypeValue && !borderRadiusValue
+                  ? '--' + borderDirectionValue
+                  : '') +
+                (borderDirectionValue && borderTypeValue && !borderRadiusValue
+                  ? '-' + borderDirectionValue
+                  : ''),
+            ]"
+            class="foundations-tokens__value o-flex__item o-layout o-layout--padding-3"
+          ></div>
+        </div>
+        <div class="o-flex o-flex--y o-flex__item o-layout o-layout--gap-1">
+          <label class="foundations-tokens__theme-label">Dark</label>
+          <div
+            [ngClass]="[
+              'foundations-tokens__example--border' +
+                (borderTypeValue && borderTypeValue !== 'special'
+                  ? '--' + borderTypeValue
+                  : '') +
+                (borderStatusValue && borderTypeValue !== 'special'
+                  ? '-' + borderStatusValue
+                  : '') +
+                (borderStatusValue && borderTypeValue === 'special'
+                  ? '--' + borderStatusValue
+                  : '') +
+                (borderRadiusValue && !borderTypeValue && borderDirectionValue
+                  ? '--radius-' + borderDirectionValue
+                  : '') +
+                (borderRadiusValue && borderTypeValue && borderDirectionValue
+                  ? '-radius-' + borderDirectionValue
+                  : '') +
+                (borderDirectionValue && !borderTypeValue && !borderRadiusValue
+                  ? '--' + borderDirectionValue
+                  : '') +
+                (borderDirectionValue && borderTypeValue && !borderRadiusValue
+                  ? '-' + borderDirectionValue
+                  : ''),
+            ]"
+            class="storybook-dark-theme foundations-tokens__value o-flex__item o-layout o-layout--padding-3"
+          ></div>
+        </div>
+      </div>
+      <button
+        [fbaButton]="'primary'"
+        [size]="'small'"
+        class="foundations-tokens__copy-btn"
+      >
+        <fba-icon icon="copy" />
+      </button>
+      <label class="foundations-tokens__token">
+        {{
+          '@extend %u-border' +
+            (borderTypeValue && borderTypeValue !== 'special'
+              ? '--' + borderTypeValue
+              : '') +
+            (borderStatusValue && borderTypeValue !== 'special'
+              ? '-' + borderStatusValue
+              : '') +
+            (borderStatusValue && borderTypeValue === 'special'
+              ? '--' + borderStatusValue
+              : '') +
+            (borderRadiusValue && !borderTypeValue && borderDirectionValue
+              ? '--radius-' + borderDirectionValue
+              : '') +
+            (borderRadiusValue && borderTypeValue && borderDirectionValue
+              ? '-radius-' + borderDirectionValue
+              : '') +
+            (borderDirectionValue && !borderTypeValue && !borderRadiusValue
+              ? '--' + borderDirectionValue
+              : '') +
+            (borderDirectionValue && borderTypeValue && !borderRadiusValue
+              ? '-' + borderDirectionValue
+              : '') +
+            ';'
+        }}
+      </label>
+    </fba-card>
+  </fba-card>
+</div>

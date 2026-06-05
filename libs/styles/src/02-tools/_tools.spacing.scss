@@ -1,0 +1,9 @@
+@use 'sass:map';
+@use '../01-settings/settings.spacing' as spacing;
+
+// Builds the full layout-spacing map: { 'gap': (scale), 'padding': (scale), … }
+// Public — consumed by _objects.layout.scss
+$layout-spacing: ();
+@each $key in spacing.$spacing-keys {
+  $layout-spacing: map.merge($layout-spacing, ($key: spacing.$spacing-scale));
+}

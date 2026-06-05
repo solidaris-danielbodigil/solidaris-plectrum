@@ -1,0 +1,35 @@
+import { Meta, Description, Story, Controls, ArgTypes } from '@storybook/blocks';
+import { Figma } from '@storybook/addon-designs/blocks';
+import * as AnimationStories from './animation.component.stories';
+import { Markdown } from '@storybook/blocks';
+import AnimationHowTo from './animation-how-to.md?raw';
+import AnimationDefinition from './animation-definition.md?raw';
+import AnimationStructureSettings from './animation-structure-settings.md?raw';
+import AnimationStructureMixins from './animation-structure-mixins.md?raw';
+import AnimationStructureUtilities from './animation-structure-utilities.md?raw';
+import AnimationBestPractices from './animation-best-practices.md?raw';
+import AnimationDonts from './animation-donts.md?raw';
+
+<Meta of={AnimationStories} />
+
+
+# Animation Guidelines
+
+Animations bring our interfaces to life and help users understand state changes. Properly used animations improve the user experience by providing visual feedback, guiding attention, and creating smooth transitions.
+
+## Overview and Demo
+
+Our animation system is built on CSS custom properties and organized into categories:
+
+- **Duration**: How long an animation takes to complete
+- **Timing**: The easing curve that controls the animation's progression
+- **Delay**: How long to wait before starting the animation
+- **Iteration**: How many times an animation should repeat
+- **Direction**: The direction in which an animation plays
+- **Type**: Specific transformation or effect types
+
+<Story of={AnimationStories.Playground} />
+<ArgTypes of={AnimationStories} />
+<Markdown>{AnimationHowTo}</Markdown>
+
+

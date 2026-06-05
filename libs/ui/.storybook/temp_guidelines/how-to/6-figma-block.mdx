@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title='Get Started/ How to write stories / 6 - Adding Figma blocks'/>
+
+# Figma block
+
+In order to be able to use Figma blocks you'll need to import its plugin, and call their corresponding `withDesign` decorator:
+``` ts
+
+
+```
+
+- For `.mdx`:
+  ``` ts
+  <Meta
+    decorators={[
+
+    ]}
+    of={BadgeStories}/>
+  ```
+- For `.stories.ts`:
+  ``` ts
+    export default {
+      title: 'Components/Data Display/Badge',
+      component: BadgeComponent,
+      [...],
+      decorators: [
+
+        [...],
+      ],
+    } as Meta<BadgeComponent>;
+  ```
+
+Then you'll need add the block itself:
+
+- For `.mdx` documentation:
+  ``` ts
+  <Figma url="figma-url-here" />
+  ```
+- For `.stories.ts`:
+  ``` ts
+  export const Primary = {
+    render: (args: BadgeComponent) => ({
+      props: args,
+    }),
+    args: {
+      [...]
+    },
+    parameters: {
+      design: {
+        type: 'figma',
+        url: 'figma-url-here',
+      },
+    },
+  };
+  ```
+  Note that for `.stories.ts`, the figma block will be added as new tab called *Design*
+
+See more info here:<br/>
+https://storybook.js.org/addons/storybook-addon-designs/ <br/>
+Demo here :<br/>
+https://storybookjs.github.io/addon-designs/?path=/story/docs-quick-start--page
