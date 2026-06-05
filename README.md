@@ -1,6 +1,6 @@
-# Solidaris Monorepo
+# Solidaris Plectrum Monorepo
 
-Welcome to the Solidaris Monorepo! This repository is an Angular CLI multi-project workspace containing two Angular applications, iSHARE and iCRM, built using the latest technologies and design systems.
+Welcome to the Solidaris Plectrum Monorepo! This repository is an Angular CLI multi-project workspace containing two Angular applications, iSHARE and iCRM, built using the latest technologies and design systems.
 
 ## Project Structure
 
