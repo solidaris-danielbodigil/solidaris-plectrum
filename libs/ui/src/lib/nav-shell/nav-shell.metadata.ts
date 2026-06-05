@@ -58,7 +58,7 @@ export const NavShellMetadata: ComponentMetadata = {
 
   accessibility: {
     role: 'navigation',
-    ariaAttributes: ['aria-label', 'aria-current="page"', 'aria-expanded', 'aria-hidden (decorative icons)'],
+    ariaAttributes: ['aria-label', 'aria-current="page"', 'aria-hidden (decorative logo)'],
     keyboardSupport: ['Tab / Shift+Tab — move between items', 'Enter / Space — activate item'],
     wcagLevel: 'AA',
   },
@@ -72,8 +72,9 @@ export const NavShellMetadata: ComponentMetadata = {
       '--sds-color-nav-shell-item-hover',
       '--sds-color-nav-shell-item-pressed',
       '--sds-color-nav-shell-item-active',
-      '--sds-size-nav-shell-collapsed',
-      '--sds-size-nav-shell-expanded',
+      '--sds-size-nav-shell-footprint',
+      '--sds-size-nav-shell-logomark',
+      '--sds-size-nav-shell-wordmark',
       '--sds-size-nav-shell-icon',
       '--sds-size-nav-shell-trailing-icon',
       '--sds-space-nav-shell-section-gap',
@@ -81,13 +82,12 @@ export const NavShellMetadata: ComponentMetadata = {
       '--sds-space-nav-shell-list-px',
       '--sds-space-nav-shell-item-px',
       '--sds-space-nav-shell-item-py',
-      '--sds-space-nav-shell-item-gap-collapsed',
       '--sds-space-nav-shell-item-gap-inner',
+      '--sds-size-nav-shell-label-max',
       '--sds-radius-nav-shell-item',
       '--sds-shadow-overlay-navigation',
       '--sds-transition-nav-shell',
-      '--sds-transition-nav-label-in',
-      '--sds-transition-nav-label-out',
+      '--sds-transition-nav-reveal',
       '--sds-focus-ring-color',
       '--sds-focus-ring-width',
       '--sds-focus-ring-style',
@@ -105,7 +105,7 @@ export const NavShellMetadata: ComponentMetadata = {
     priority: 'high',
     context:
       'First-level nav sidebar used across all Solidaris apps. Collapsed by default (icon-only). ' +
-      'Expands on hover — slides over content, no document-flow push. ' +
+      'Expands on hover / focus-within (CSS only) — slides over content, no document-flow push. ' +
       'Figma: https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=1-1433',
     selectionCriteria: {
       'first-level navigation': 'use NavShell',

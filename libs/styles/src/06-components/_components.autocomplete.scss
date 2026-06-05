@@ -4,7 +4,118 @@
 //
 // PrimeNG wraps the remove glyph in .p-chip-remove-icon > .p-autocomplete-chip-icon.
 // Inherited line-height offsets the SVG vertically inside an otherwise centered chip.
+//
+// Size variants — multiple mode exposes size on data-p but PrimeNG ships no matching
+// CSS (unlike multiselect’s .p-multiselect-sm). Mirror multiselect sizing here.
 // =============================================================================
+
+.p-autocomplete-input-multiple[data-p~='small'] {
+  font-size: var(--p-autocomplete-sm-font-size);
+  padding-block: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  padding-inline: var(--p-autocomplete-sm-padding-x);
+  gap: calc(var(--p-autocomplete-sm-padding-y) / 2);
+
+  &:has(.p-autocomplete-chip) {
+    padding-inline-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
+    padding-inline-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  }
+
+  .p-autocomplete-chip.p-chip {
+    padding-block-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
+    padding-block-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  }
+
+  .p-autocomplete-input-chip {
+    padding-block-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
+    padding-block-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  }
+
+  .p-autocomplete-input-chip input {
+    font-size: inherit;
+  }
+}
+
+.p-autocomplete-input-multiple[data-p~='large'] {
+  font-size: var(--p-autocomplete-lg-font-size);
+  padding-block: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  padding-inline: var(--p-autocomplete-lg-padding-x);
+  gap: calc(var(--p-autocomplete-lg-padding-y) / 2);
+
+  &:has(.p-autocomplete-chip) {
+    padding-inline-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
+    padding-inline-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  }
+
+  .p-autocomplete-chip.p-chip {
+    padding-block-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
+    padding-block-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  }
+
+  .p-autocomplete-input-chip {
+    padding-block-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
+    padding-block-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  }
+
+  .p-autocomplete-input-chip input {
+    font-size: inherit;
+  }
+}
+
+.p-autocomplete:has(.p-autocomplete-input-multiple[data-p~='small']) {
+  .p-autocomplete-dropdown {
+    width: var(--p-autocomplete-dropdown-sm-width);
+
+    .p-icon {
+      font-size: var(--p-autocomplete-sm-font-size);
+      width: var(--p-autocomplete-sm-font-size);
+      height: var(--p-autocomplete-sm-font-size);
+    }
+  }
+
+  .p-autocomplete-loader {
+    inset-inline-end: var(--p-autocomplete-sm-padding-x);
+  }
+
+  &:has(.p-autocomplete-dropdown) .p-autocomplete-loader {
+    inset-inline-end: calc(var(--p-autocomplete-dropdown-sm-width) + var(--p-autocomplete-sm-padding-x));
+  }
+
+  .p-autocomplete-clear-icon {
+    inset-inline-end: var(--p-autocomplete-sm-padding-x);
+  }
+
+  &:has(.p-autocomplete-dropdown) .p-autocomplete-clear-icon {
+    inset-inline-end: calc(var(--p-autocomplete-sm-padding-x) + var(--p-autocomplete-dropdown-sm-width));
+  }
+}
+
+.p-autocomplete:has(.p-autocomplete-input-multiple[data-p~='large']) {
+  .p-autocomplete-dropdown {
+    width: var(--p-autocomplete-dropdown-lg-width);
+
+    .p-icon {
+      font-size: var(--p-autocomplete-lg-font-size);
+      width: var(--p-autocomplete-lg-font-size);
+      height: var(--p-autocomplete-lg-font-size);
+    }
+  }
+
+  .p-autocomplete-loader {
+    inset-inline-end: var(--p-autocomplete-lg-padding-x);
+  }
+
+  &:has(.p-autocomplete-dropdown) .p-autocomplete-loader {
+    inset-inline-end: calc(var(--p-autocomplete-dropdown-lg-width) + var(--p-autocomplete-lg-padding-x));
+  }
+
+  .p-autocomplete-clear-icon {
+    inset-inline-end: var(--p-autocomplete-lg-padding-x);
+  }
+
+  &:has(.p-autocomplete-dropdown) .p-autocomplete-clear-icon {
+    inset-inline-end: calc(var(--p-autocomplete-lg-padding-x) + var(--p-autocomplete-dropdown-lg-width));
+  }
+}
 
 .p-autocomplete-chip {
   .p-chip-remove-icon {

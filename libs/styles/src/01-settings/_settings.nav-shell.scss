@@ -12,8 +12,7 @@
 :root {
   // --- Sizing (structural — icon-only layout depends on these) -------------
   --#{$sds-prefix}-size-nav-shell-logomark:       24px;   // Figma: logomark height (24×32 natural ratio)
-  --#{$sds-prefix}-size-nav-shell-collapsed:      52px;   // Figma: collapsed shell width
-  --#{$sds-prefix}-size-nav-shell-expanded:       240px;  // Figma: expanded shell width
+  --#{$sds-prefix}-size-nav-shell-wordmark:       var(--font-size-4xl); // 2.286rem = 32px @ 14px rem base
   --#{$sds-prefix}-size-nav-shell-icon:           20px;   // Figma: nav icon
   --#{$sds-prefix}-size-nav-shell-trailing-icon:  14px;   // Figma: external-link glyph
 
@@ -23,8 +22,17 @@
   --#{$sds-prefix}-space-nav-shell-list-px:           6px;
   --#{$sds-prefix}-space-nav-shell-item-px:           10px;
   --#{$sds-prefix}-space-nav-shell-item-py:           9px;   // Figma: py-9 expanded (9 + 22px label line-height + 9 = 40px)
-  --#{$sds-prefix}-space-nav-shell-item-gap-collapsed: 8px;
-  --#{$sds-prefix}-space-nav-shell-item-gap-inner:     10px; // Figma: gap-10 in expanded
+  --#{$sds-prefix}-space-nav-shell-item-gap-inner:     10px; // Figma: gap-10 (icon ↔ label / logomark ↔ wordmark)
+
+  // Collapsed in-flow slot — icon column + horizontal padding (no fixed shell width)
+  --#{$sds-prefix}-size-nav-shell-footprint: calc(
+    (var(--#{$sds-prefix}-space-nav-shell-list-px) * 2) +
+    (var(--#{$sds-prefix}-space-nav-shell-item-px) * 2) +
+    var(--#{$sds-prefix}-size-nav-shell-icon)
+  );
+
+  // Caps expanded width so an unusually long label can't stretch the panel.
+  --#{$sds-prefix}-size-nav-shell-label-max: 12rem;
 
   // --- Colours (map to existing semantic/primitive tokens) -----------------
   --#{$sds-prefix}-color-nav-shell-bg:          var(--#{$sds-prefix}-color-surface-50);          // Figma: surface/50
@@ -39,7 +47,10 @@
   --#{$sds-prefix}-radius-nav-shell-item:  10px;  // Figma: item corner radius
 
   // --- Transitions ---------------------------------------------------------
-  --#{$sds-prefix}-transition-nav-shell:     width 200ms ease;
-  --#{$sds-prefix}-transition-nav-label-in:  opacity 150ms ease 100ms;
-  --#{$sds-prefix}-transition-nav-label-out: opacity 100ms ease;
+  // Panel — width tweens between the collapsed footprint and `max-content`
+  // (needs interpolate-size: allow-keywords on an ancestor; set on .c-nav-shell).
+  --#{$sds-prefix}-transition-nav-shell:  width 200ms ease, box-shadow 200ms ease;
+  // Reveal — fades opacity while flipping `display` via discrete transition
+  // (transition-behavior: allow-discrete). Shared by labels, wordmark, trailing icon.
+  --#{$sds-prefix}-transition-nav-reveal: opacity 150ms ease, display 150ms allow-discrete;
 }

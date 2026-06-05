@@ -136,7 +136,7 @@ Only two categories justify a fixed size, and both require a comment:
 | Category | Example | Why it's justified |
 |---|---|---|
 | Icon / asset constraints | `.c-nav-shell__icon { width: 20px; height: 20px; }` | Icon fonts and SVGs must be constrained or they collapse to 0 |
-| Collapsed/icon-only structural state | `.c-nav-shell { width: var(--sds-size-nav-shell-collapsed); }` | The entire layout depends on this fixed dimension |
+| Reserved in-flow slot (overlay layouts) | `.c-nav-shell { width: var(--sds-size-nav-shell-footprint); }` | An absolutely-positioned panel can't size its in-flow slot, so the slot reserves the collapsed footprint (itself derived from icon + padding tokens) |
 
 Everything else — container heights, item heights, expanded widths — must emerge from `padding` + `line-height` + `gap`.
 
@@ -158,8 +158,9 @@ Everything else — container heights, item heights, expanded widths — must em
   height: var(--sds-size-nav-shell-icon);
 }
 .c-nav-shell {
-  // Fixed collapsed width required — icon-only layout depends on this structural dimension
-  width: var(--sds-size-nav-shell-collapsed);
+  // Reserved slot — the absolutely-positioned panel can't size its in-flow slot,
+  // so reserve the collapsed footprint (derived from icon + padding tokens)
+  width: var(--sds-size-nav-shell-footprint);
 }
 ```
 

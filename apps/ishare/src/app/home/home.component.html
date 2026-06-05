@@ -21,22 +21,21 @@
               <p-autocomplete
                 #office="ngModel"
                 name="office"
-                [(ngModel)]="selectedOffices"
+                [(ngModel)]="selectedOffice"
                 [suggestions]="officeSuggestions"
                 (completeMethod)="filterOffices($event)"
                 optionLabel="label"
                 dataKey="value"
                 [dropdown]="true"
                 [forceSelection]="true"
-                [multiple]="true"
                 [showClear]="true"
                 [invalid]="office.invalid && (office.touched || searchForm.submitted)"
-                placeholder="Selectionnez une ou plusieurs O.A."
+                placeholder="Selectionnez une O.A."
                 required
                 fluid
               ></p-autocomplete>
               @if (office.invalid && (office.touched || searchForm.submitted)) {
-                <p-message severity="error" size="small" variant="simple">Sélectionnez au moins une O.A.</p-message>
+                <p-message severity="error" size="small" variant="simple">Sélectionnez une O.A.</p-message>
               }
             </label>
 

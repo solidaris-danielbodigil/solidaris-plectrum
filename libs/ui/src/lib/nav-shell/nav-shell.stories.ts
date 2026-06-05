@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
+import { applicationConfig, componentWrapperDecorator } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
 import { inject, provideAppInitializer } from '@angular/core';
 import { NavShellComponent } from './nav-shell.component';
@@ -50,15 +50,22 @@ const SVG_ISHARE = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" 
 // ---------------------------------------------------------------------------
 // Sample items — exactly two, mirroring Figma node 18:6419
 // ---------------------------------------------------------------------------
+// routerLink is set so the rendered <a> elements are keyboard-focusable, which
+// lets the Expanded story trigger the CSS :focus-within reveal via .focus().
 const SAMPLE_ITEMS: NavItem[] = [
-  { id: 'icrm',   label: 'iCRM',   icon: 'logo-icrm',   iconSource: 'svg' },
-  { id: 'ishare', label: 'iShare', icon: 'logo-ishare', iconSource: 'svg' },
+  { id: 'icrm',   label: 'iCRM',   icon: 'logo-icrm',   iconSource: 'svg', routerLink: '/icrm' },
+  { id: 'ishare', label: 'iShare', icon: 'logo-ishare', iconSource: 'svg', routerLink: '/ishare' },
 ];
 
 const meta: Meta<NavShellComponent> = {
-  title: 'Shell / NavShell',
+  title: 'Navigation/NavShell',
   component: NavShellComponent,
   decorators: [
+    // Match app shell layout — nav-shell stretches via height: 100% inside a full-viewport flex row.
+    componentWrapperDecorator(
+      (story) =>
+        `<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
+    ),
     applicationConfig({
       providers: [
         provideRouter([]),
@@ -78,8 +85,8 @@ const meta: Meta<NavShellComponent> = {
         component: `
 **First-level navigation shell** — vertical sidebar for the Solidaris ecosystem.
 
-- **Collapsed** (default): icon-only, 52px wide
-- **Expanded**: hover-triggered slide-out showing brand mark + label. Overlays content — no document-flow push.
+- **Collapsed** (default): icon-only; width follows the icon column + padding
+- **Expanded**: revealed on \`:hover\` / \`:focus-within\` (CSS only) — labels + wordmark fade in via a discrete \`display\` transition and the panel grows to its widest item. Overlays content — no document-flow push.
 - No PrimeNG equivalent; uses semantic \`<ul>\` with ARIA attributes.
 - Generic API — pass any items via \`[items]\`. No app-specific logic inside the component.
 - Figma: [iCRM Audit node 18:6419](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=18-6419)
@@ -102,29 +109,31 @@ type Story = StoryObj<NavShellComponent>;
 // Stories
 // ---------------------------------------------------------------------------
 
-/** Default collapsed state — icon-only, 52px wide. */
+/** Default collapsed state — icon-only sidebar at rest. */
 export const Collapsed: Story = {
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
   },
   parameters: {
-    docs: { description: { story: 'Icon-only sidebar at rest (52px wide).' } },
+    docs: { description: { story: 'Icon-only sidebar at rest.' } },
   },
 };
 
-/** Expanded hover state — slides over content showing labels. */
+/** Expanded state — focusing an item triggers the CSS :focus-within reveal. */
 export const Expanded: Story = {
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
   },
+  // Expansion is pure CSS (:hover / :focus-within). Focus the first link so the
+  // static story renders the expanded state without needing a real pointer hover.
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const nav = canvasElement.querySelector('.c-nav-shell') as HTMLElement | null;
-    nav?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    const link = canvasElement.querySelector('.c-nav-shell__link') as HTMLElement | null;
+    link?.focus();
   },
   parameters: {
-    docs: { description: { story: 'Expanded on hover — slides over content, no push-out.' } },
+    docs: { description: { story: 'Expanded via :hover / :focus-within — labels + wordmark reveal, panel grows to its widest item, overlaying content.' } },
   },
 };
 

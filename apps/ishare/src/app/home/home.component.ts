@@ -75,7 +75,7 @@ export class HomeComponent {
     { label: '507', value: '507' },
   ];
 
-  selectedOffices: OfficeOption[] = [this.officeOptions[0]];
+  selectedOffice: OfficeOption | null = this.officeOptions[0];
   officeSuggestions: OfficeOption[] = [...this.officeOptions];
   selectedSearchType = this.searchTypes[0].value;
   searchIdentifier = '';

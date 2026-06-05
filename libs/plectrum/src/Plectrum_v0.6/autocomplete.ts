@@ -9,6 +9,16 @@ import type { AutoCompleteDesignTokens } from '@primeuix/themes/types/autocomple
         padding: "{list.padding}"
     },
     root: {
+        lg: {
+            fontSize: "{form.field.lg.font.size}",
+            paddingX: "{form.field.lg.padding.x}",
+            paddingY: "{form.field.lg.padding.y}"
+        },
+        sm: {
+            fontSize: "{form.field.sm.font.size}",
+            paddingX: "{form.field.sm.padding.x}",
+            paddingY: "{form.field.sm.padding.y}"
+        },
         color: "{form.field.color}",
         shadow: "{form.field.shadow}",
         paddingX: "{form.field.padding.x}",
@@ -112,4 +122,4 @@ import type { AutoCompleteDesignTokens } from '@primeuix/themes/types/autocomple
     emptyMessage: {
         padding: "{list.option.padding}"
     }
-} satisfies AutoCompleteDesignTokens;
+} as AutoCompleteDesignTokens;

@@ -1,12 +1,11 @@
 <!-- Visible nav panel — absolutely positioned so expansion overlays content
      instead of pushing it; the host element stays a fixed-width in-flow slot. -->
-<div class="c-nav-shell__panel o-flex o-flex--col o-flex--align-items-center">
-<!-- Logo — inline logo SVG dynamically showing Logomark on collapsed, and both Lettermark + Logomark on expanded -->
-<div class="c-nav-shell__logo o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0" aria-hidden="true">
-  <svg [attr.width]="expanded() ? 79 : 24" height="32" [attr.viewBox]="expanded() ? '0 0 79 32' : '0 0 24 32'" fill="none" xmlns="http://www.w3.org/2000/svg" class="c-nav-shell__logo-svg" style="transition: width 0.3s ease;">
-    <g id="Logo">
-      @if (expanded()) {
-        <g id="Lettermark">
+<div class="c-nav-shell__panel o-flex o-flex--col">
+<!-- Logo — logomark always visible; wordmark revealed (with the labels) on hover/focus -->
+<div class="c-nav-shell__logo o-flex o-flex--align-items-center o-flex__item--shrink-0" aria-hidden="true">
+  <!-- Wordmark — hidden when collapsed, revealed on hover/focus via CSS -->
+  <svg class="c-nav-shell__wordmark" height="32" viewBox="22 0 56 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Lettermark">
           <path id="Vector"
               d="M27.1076 12.1403C25.7977 11.9536 24.9878 11.688 24.9878 10.9463C24.9878 10.2047 25.7717 9.67606 26.9826 9.67606C27.9175 9.68921 28.7482 10.0627 29.1493 10.6544L29.2274 10.7675L30.5685 9.85753L30.4982 9.74444C29.8159 8.64511 28.6519 8.11123 26.9461 8.11123C25.7144 8.11123 24.592 8.50309 23.9435 9.16322C23.48 9.63398 23.2482 10.2257 23.2534 10.9227C23.2534 12.9793 25.0269 13.5079 26.9409 13.7735C28.5086 13.9839 29.1779 14.3995 29.1779 15.1648C29.1779 16.4666 27.4982 16.5692 26.9852 16.5692C26.2743 16.5692 24.9722 16.3798 24.2326 15.1069L24.1597 14.9807L22.8289 15.8775L22.8888 15.988C23.6909 17.4792 24.9878 18.1735 26.9722 18.1735C28.9566 18.1735 30.9149 17.3819 30.9279 15.1622C30.9279 12.9714 28.9982 12.4033 27.1102 12.1403H27.1076Z"
               fill="#DA002F" />
@@ -34,9 +33,12 @@
           <path id="Vector_11"
               d="M74.6729 13.7472C73.5453 13.6394 73.3942 13.3133 73.389 13.0477C73.389 12.9083 73.4359 12.7952 73.5348 12.6979C73.7354 12.498 74.126 12.3954 74.6338 12.4033C75.3369 12.4033 75.8213 12.5743 76.2536 12.9793L76.3578 13.0766L77.3005 11.9589L77.2015 11.8694C76.4906 11.2303 75.7145 10.9568 74.6078 10.9568C73.1963 10.9568 71.7718 11.617 71.7718 13.0924C71.7822 14.31 72.7145 15.0175 74.5426 15.1963C75.5296 15.291 75.9307 15.5119 75.9203 15.959C75.9072 16.5245 75.1312 16.6744 74.6781 16.6744C73.8187 16.6586 73.0036 16.3141 72.4984 15.7486L72.3864 15.6224L71.5088 16.819L71.5817 16.9032C72.5739 18.0288 73.8057 18.1603 74.6468 18.1603C76.3682 18.1603 77.5348 17.2714 77.5505 15.9485C77.5661 14.005 75.613 13.8314 74.6755 13.7472H74.6729Z"
               fill="#DA002F" />
-        </g>
-      }
-      <g id="Logomark">
+    </g>
+  </svg>
+
+  <!-- Logomark — always visible -->
+  <svg class="c-nav-shell__logomark" width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="Logomark">
         <g id="Clip path group">
             <mask id="mask0_1_1465" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
                 height="23">
@@ -92,7 +94,6 @@
                 </g>
             </g>
         </g>
-      </g>/g>
     </g>
     <defs>
         <linearGradient id="paint0_linear_1_1465" x1="13.8771" y1="10.2861" x2="2.55035" y2="12.3898"
@@ -137,15 +138,13 @@
 </div>
 
 <!-- Nav item list -->
-<ul class="c-nav-shell__list o-flex o-flex--col o-flex--align-items-center o-layout--overflow-y-auto" role="list">
+<ul class="c-nav-shell__list o-flex o-flex--col o-layout--overflow-y-auto" role="list">
   @for (item of items(); track item.id) {
     <li class="c-nav-shell__item o-flex o-flex__item--shrink-0">
       <a
         class="c-nav-shell__link o-flex o-flex--align-items-center"
         [class.is-active]="item.id === activeId()"
         [routerLink]="item.routerLink ?? null"
-        [pTooltip]="expanded() ? undefined : item.label"
-        tooltipPosition="right"
         [attr.aria-label]="item.label"
         [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
         (click)="onItemClick(item)"

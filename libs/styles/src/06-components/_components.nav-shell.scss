@@ -5,12 +5,18 @@
 // 06-components/_components.nav-shell.scss
 // First-level navigation shell — vertical sidebar.
 //
-// Overlay-on-expand pattern (matches the iSHARE reference):
-//   .c-nav-shell        host = a fixed-width (collapsed) in-flow SLOT. It never
-//                       changes width, so expanding never pushes page content.
-//   .c-nav-shell__panel the visible nav, absolutely positioned over the slot.
-//                       On hover it widens and casts a shadow, floating over the
-//                       adjacent content instead of reflowing it.
+// Overlay-on-expand pattern (CSS-only, no JS state):
+//   .c-nav-shell        host = an in-flow SLOT sized to the collapsed footprint.
+//                       It never changes width, so expanding never pushes content.
+//   .c-nav-shell__panel the visible nav, absolutely positioned over the slot and
+//                       sized to its content (width: max-content). Collapsed it
+//                       hides labels/wordmark so it shrinks to the icon column;
+//                       on :hover / :focus-within it reveals them and grows to the
+//                       widest item, floating above adjacent content.
+//
+// Reveal animation uses `display` + `opacity` with transition-behavior:
+// allow-discrete (via --sds-transition-nav-reveal) plus @starting-style — no
+// width/scale hacks.
 //
 // BEM mix pattern: o-flex classes are applied in the template on the panel.
 //
@@ -18,23 +24,27 @@
 // Token source: libs/styles/src/01-settings/_settings.nav-shell.scss
 // =============================================================================
 
-// Host — fixed-width in-flow slot that reserves the collapsed footprint.
+// Host — in-flow slot that reserves the collapsed footprint (derived from padding + icon).
 .c-nav-shell {
   display: block;
   position: relative;
   flex-shrink: 0;
-  width: var(--#{$sds-prefix}-size-nav-shell-collapsed);
+  width: var(--#{$sds-prefix}-size-nav-shell-footprint);
   height: 100%;
+  // Inherited — lets the panel's width tween to/from the `max-content` keyword.
+  interpolate-size: allow-keywords;
 }
 
-// Panel — the visible nav. Absolute so expansion overlays content.
+// Panel — absolute so expansion overlays content; width tweens collapsed ↔ content.
 .c-nav-shell__panel {
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
   z-index: 200;
-  width: var(--#{$sds-prefix}-size-nav-shell-collapsed);
+  // Collapsed — match the reserved footprint; grows to content on hover/focus.
+  width: var(--#{$sds-prefix}-size-nav-shell-footprint);
   height: 100%;
+  align-items: flex-start;
   gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
   background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
   border-right: 1px solid var(--#{$sds-prefix}-color-nav-shell-border);
@@ -42,86 +52,86 @@
   overflow-y: auto;
   transition: var(--#{$sds-prefix}-transition-nav-shell);
 
-  // Expanded — widen and float above content (compound selector out-specifies
-  // the o-flex--align-items-center utility, so no !important needed).
-  .c-nav-shell--expanded & {
-    width: var(--#{$sds-prefix}-size-nav-shell-expanded);
-    align-items: flex-start;
-    box-shadow: var(--#{$sds-prefix}-shadow-overlay-navigation);
+  // Expanded — grow to the widest item and float above adjacent layout without reflow.
+  .c-nav-shell:is(:hover, :focus-within) & {
+    width: max-content;
+    box-shadow: var(--#{$sds-prefix}-shadow-overlay-select);
   }
 }
 
-// Logo container — full width, fixed height matching the collapsed shell dimension
+// Logo — left-aligned in both states so the logomark lines up with item icons.
 .c-nav-shell__logo {
-  // Fixed height required — structural dimension matching the collapsed shell width
-  width: 100%;
-  height: var(--#{$sds-prefix}-size-nav-shell-collapsed);
   flex-shrink: 0;
+  min-height: var(--#{$sds-prefix}-size-nav-shell-footprint);
   box-sizing: border-box;
-
-  // State override — the compound selector out-specifies the o-flex utility class,
-  // so no !important is needed.
-  .c-nav-shell--expanded & {
-    justify-content: flex-start;
-    padding-inline-start: calc(var(--#{$sds-prefix}-space-nav-shell-list-px) + var(--#{$sds-prefix}-space-nav-shell-item-px) + 2px);
-  }
+  // Match the icon's left inset: list padding + item padding.
+  padding-inline-start: calc(
+    var(--#{$sds-prefix}-space-nav-shell-list-px) + var(--#{$sds-prefix}-space-nav-shell-item-px)
+  );
 }
 
-// Logomark — shown when collapsed; constrained so the 24×32 SVG fits inside 52px container
+// Logomark — always visible; constrained so the 24×32 SVG fits the footprint.
 .c-nav-shell__logomark {
   // Fixed size required — brand mark SVG collapses without explicit constraint
   height: var(--#{$sds-prefix}-size-nav-shell-logomark);
   width: auto;
+  flex-shrink: 0;
   object-fit: contain;
 }
 
-// Logotype (full logo with wordmark) — shown when expanded
-.c-nav-shell__logotype {
-  // Fixed height — preserves natural aspect ratio of the 79×32 logo SVG
-  height: var(--#{$sds-prefix}-size-nav-shell-logomark);
+// Wordmark — hidden when collapsed; revealed alongside the labels when expanded.
+.c-nav-shell__wordmark {
+  display: none;
+  opacity: 0;
+  order: 1; // render after the logomark (decorative; DOM groups it with the logo)
+  // Fixed height — preserves the natural aspect ratio of the wordmark SVG
+  height: var(--#{$sds-prefix}-size-nav-shell-wordmark);
   width: auto;
+  flex-shrink: 0;
   object-fit: contain;
+  transition: var(--#{$sds-prefix}-transition-nav-reveal);
+
+  .c-nav-shell:is(:hover, :focus-within) & {
+    display: block;
+    opacity: 1;
+
+    @starting-style { opacity: 0; }
+  }
 }
 
-// List — layout via o-flex o-flex--col o-flex--align-items-center in template
+// List — layout via o-flex o-flex--col in template
 .c-nav-shell__list {
   flex: 1 0 0;
+  align-self: stretch;
+  align-items: flex-start;
   gap: var(--#{$sds-prefix}-space-nav-shell-list-gap);
   margin: 0;
   padding: 0 var(--#{$sds-prefix}-space-nav-shell-list-px);
   list-style: none;
   min-height: 0;
-
-  .c-nav-shell--expanded & {
-    align-items: flex-start;
-    width: 100%;
-  }
 }
 
 // Item — layout via o-flex in template
 .c-nav-shell__item {
-  .c-nav-shell--expanded & {
-    width: 100%;
-  }
+  align-self: stretch;
 }
 
 // Link — layout via o-flex o-flex--align-items-center in template
 .c-nav-shell__link {
   text-decoration: none;
   cursor: pointer;
-  padding: var(--#{$sds-prefix}-space-nav-shell-item-px);
-  gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-collapsed);
+  width: 100%;
+  padding: var(--#{$sds-prefix}-space-nav-shell-item-py) var(--#{$sds-prefix}-space-nav-shell-item-px);
+  // Match expanded row height (label line-height) so label reveal does not jump item height
+  min-height: calc(
+    (var(--#{$sds-prefix}-space-nav-shell-item-py) * 2) + var(--text-label-sm-line-height)
+  );
+  gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-inner);
   border-radius: var(--#{$sds-prefix}-radius-nav-shell-item);
   color: var(--#{$sds-prefix}-color-nav-shell-text);
   white-space: nowrap;
   overflow: hidden;
   transition: background-color var(--#{$sds-prefix}-transition-duration-mask) ease;
-
-  .c-nav-shell--expanded & {
-    padding: var(--#{$sds-prefix}-space-nav-shell-item-py) var(--#{$sds-prefix}-space-nav-shell-item-px);
-    gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-inner);
-    width: 100%;
-  }
 
   // Hover — Figma: transparent/black/50
   &:hover   { background-color: var(--#{$sds-prefix}-color-nav-shell-item-hover); }
@@ -157,45 +167,47 @@
   img, svg { display: block; width: var(--#{$sds-prefix}-size-nav-shell-icon); height: var(--#{$sds-prefix}-size-nav-shell-icon); object-fit: contain; }
 }
 
-// Label — hidden (width 0) in collapsed, fades in when expanded
+// Label — hidden when collapsed; revealed on hover/focus via discrete display transition
 .c-nav-shell__label {
-  overflow: hidden;
-  flex: 1 0 0;
+  display: none;
+  opacity: 0;
+  flex: 0 1 auto;
   min-width: 0;
+  max-width: var(--#{$sds-prefix}-size-nav-shell-label-max);
   @include text-label-sm;
   color: var(--#{$sds-prefix}-color-nav-shell-label); // Figma: transparent/black/800
-  text-overflow:  ellipsis;
-  white-space:    nowrap;
-  opacity: 0;
-  width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   pointer-events: none;
-  transition: var(--#{$sds-prefix}-transition-nav-label-out), width 0ms 200ms;
+  transition: var(--#{$sds-prefix}-transition-nav-reveal);
 
-  .c-nav-shell--expanded & {
+  .c-nav-shell:is(:hover, :focus-within) & {
+    display: block;
     opacity: 1;
-    width: auto;
     pointer-events: auto;
-    transition: var(--#{$sds-prefix}-transition-nav-label-in), width 0ms;
+
+    @starting-style { opacity: 0; }
   }
 }
 
-// Trailing icon — only visible in expanded mode
+// Trailing icon — hidden when collapsed; revealed on hover/focus
 .c-nav-shell__trailing-icon {
-  width: 0;
+  display: none;
+  opacity: 0;
   // Fixed height required — icon collapse prevention
   height: var(--#{$sds-prefix}-size-nav-shell-trailing-icon);
-  overflow: hidden;
-  opacity: 0;
+  flex-shrink: 0;
   pointer-events: none;
-  transition: opacity 150ms ease, width 0ms 200ms;
+  transition: var(--#{$sds-prefix}-transition-nav-reveal);
 
   i { display: block; line-height: 1; font-size: var(--#{$sds-prefix}-size-nav-shell-trailing-icon); color: currentcolor; }
 
-  .c-nav-shell--expanded & {
+  .c-nav-shell:is(:hover, :focus-within) & {
+    display: block;
     opacity: 1;
-    // Fixed width required — icon collapse prevention
-    width: var(--#{$sds-prefix}-size-nav-shell-trailing-icon);
     pointer-events: auto;
-    transition: opacity 150ms ease 100ms, width 0ms;
+
+    @starting-style { opacity: 0; }
   }
 }

@@ -66,7 +66,7 @@ Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
 | Border radius | `--sds-radius-{size}` | `--sds-radius-lg` |
 | Shadow | `--sds-shadow-*` | `--sds-shadow-overlay-navigation` |
 | Icon size | `--sds-size-{component}-icon` or `--sds-globals-icon-size` | `--sds-size-nav-shell-icon` |
-| Fixed structural width | `--sds-size-{component}-{state}` | `--sds-size-nav-shell-collapsed` |
+| Fixed structural width | `--sds-size-{component}-{descriptor}` | `--sds-size-nav-shell-footprint` |
 | Fixed structural height | `--sds-space-{component}-header-h` | `--sds-space-nav-shell-header-h` |
 
 ---
