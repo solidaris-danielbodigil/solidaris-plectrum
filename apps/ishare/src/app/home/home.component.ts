@@ -3,8 +3,9 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { IconFieldModule } from 'primeng/iconfield';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import type { MenuItem } from 'primeng/api';
 import { MessageModule } from 'primeng/message';
@@ -35,8 +36,9 @@ interface OfficeOption {
     AutoCompleteModule,
     ButtonModule,
     CardModule,
-    InputGroupAddonModule,
+    IconFieldModule,
     InputGroupModule,
+    InputIconModule,
     InputTextModule,
     MessageModule,
     SelectButtonModule,

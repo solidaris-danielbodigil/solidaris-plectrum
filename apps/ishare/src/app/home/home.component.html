@@ -60,32 +60,34 @@
             <label class="o-flex o-flex--y o-layout--gap-1">
               <span class="color-text-muted">{{ searchIdentifierLabel }}</span>
               <p-inputgroup class="c-affiliate-search-panel__query o-layout--full-width">
-                <input
-                  #identifier="ngModel"
-                  pInputText
-                  name="identifier"
-                  [(ngModel)]="searchIdentifier"
-                  [invalid]="identifier.invalid && (identifier.touched || searchForm.submitted)"
-                  [placeholder]="searchIdentifierPlaceholder"
-                  required
-                />
-                @if (searchIdentifier) {
-                  <p-inputgroup-addon>
+                <p-iconfield class="c-affiliate-search-panel__query-field">
+                  <input
+                    #identifier="ngModel"
+                    pInputText
+                    name="identifier"
+                    [(ngModel)]="searchIdentifier"
+                    [invalid]="identifier.invalid && (identifier.touched || searchForm.submitted)"
+                    [placeholder]="searchIdentifierPlaceholder"
+                    required
+                  />
+                  <p-inputicon>
                     <button
                       type="button"
-                      pButton
-                      text
-                      severity="secondary"
                       class="c-affiliate-search-panel__query-clear"
-                      icon="bi bi-x-lg"
+                      [class.is-hidden]="!searchIdentifier"
+                      [attr.aria-hidden]="!searchIdentifier ? true : null"
+                      [tabindex]="searchIdentifier ? 0 : -1"
                       aria-label="Effacer la référence"
                       (click)="clearSearchIdentifier()"
-                    ></button>
-                  </p-inputgroup-addon>
-                }
+                    >
+                      <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                  </p-inputicon>
+                </p-iconfield>
                 <button
                   pButton
                   type="submit"
+                  class="c-affiliate-search-panel__query-submit"
                   label="Chercher"
                   icon="bi bi-search"
                   [disabled]="searchForm.invalid"
