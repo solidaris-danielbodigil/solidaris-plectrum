@@ -4,7 +4,9 @@
       <button
         pButton
         type="button"
-        variant="text"
+        text
+        severity="secondary"
+        pRipple
         class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
         [attr.aria-label]="subNavToggleLabel()"
         [attr.aria-controls]="subNavControlsId()"
@@ -47,7 +49,9 @@
       <button
         pButton
         type="button"
-        variant="text"
+        text
+        severity="secondary"
+        pRipple
         class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
         [attr.aria-label]="searchAriaLabel()"
         [attr.aria-controls]="searchInputId"
@@ -62,7 +66,9 @@
     <button
       pButton
       type="button"
-      variant="text"
+      text
+      severity="secondary"
+      pRipple
       class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
       [attr.aria-label]="helpLabel()"
       (click)="onHelpClick()"

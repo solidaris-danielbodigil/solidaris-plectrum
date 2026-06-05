@@ -1,0 +1,17 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-search-panel.scss
+// c-affiliate-search-panel — width cap for the iShare affiliate lookup card.
+//
+// Token source: 01-settings/_settings.affiliate-search.scss
+// =============================================================================
+
+.c-affiliate-search-panel {
+  max-width: var(--#{$sds-prefix}-size-affiliate-search-panel-max);
+}
+
+.c-affiliate-search-panel__query-clear {
+  // Keep the clear control compact inside the grouped field row.
+  flex-shrink: 0;
+}

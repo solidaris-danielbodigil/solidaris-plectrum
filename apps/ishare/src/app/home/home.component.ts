@@ -1,16 +1,25 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import type { MenuItem } from 'primeng/api';
+import { MessageModule } from 'primeng/message';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { EmptyStateComponent, NavItem, NavShellComponent, TopNavComponent } from '@solidaris/ui';
+import {
+  EmptyStateComponent,
+  NavItem,
+  NavShellComponent,
+  TopNavComponent,
+} from '@solidaris/ui';
 
 interface SearchType {
   label: string;
   value: string;
+  placeholder: string;
 }
 
 interface OfficeOption {
@@ -26,7 +35,10 @@ interface OfficeOption {
     AutoCompleteModule,
     ButtonModule,
     CardModule,
+    InputGroupAddonModule,
+    InputGroupModule,
     InputTextModule,
+    MessageModule,
     SelectButtonModule,
     EmptyStateComponent,
     NavShellComponent,
@@ -46,12 +58,15 @@ export class HomeComponent {
     routerLink: '/home',
   };
 
-  readonly breadcrumbs: MenuItem[] = [{ label: 'iShare' }, { label: 'Recherche d\'affilié' }];
+  readonly breadcrumbs: MenuItem[] = [
+    { label: 'iShare' },
+    { label: "Recherche d'affilié" },
+  ];
 
   readonly searchTypes: SearchType[] = [
-    { label: 'NISS', value: 'niss' },
-    { label: 'Nom', value: 'name' },
-    { label: 'Dossier', value: 'file' },
+    { label: 'NISS', value: 'niss', placeholder: 'Numéro NISS' },
+    { label: 'NSI', value: 'nsi', placeholder: 'Numéro NSI' },
+    { label: 'Nom', value: 'nom', placeholder: 'Nom de l\'affilié' },
   ];
 
   readonly officeOptions: OfficeOption[] = [
@@ -60,20 +75,44 @@ export class HomeComponent {
     { label: '507', value: '507' },
   ];
 
-  selectedOffice: OfficeOption | null = this.officeOptions[0];
+  selectedOffices: OfficeOption[] = [this.officeOptions[0]];
   officeSuggestions: OfficeOption[] = [...this.officeOptions];
   selectedSearchType = this.searchTypes[0].value;
   searchIdentifier = '';
+
+  clearSearchIdentifier(): void {
+    this.searchIdentifier = '';
+  }
+
+  get searchIdentifierLabel(): string {
+    return `Recherchez par ${this.selectedSearchTypeOption.label}`;
+  }
+
+  get searchIdentifierPlaceholder(): string {
+    return this.selectedSearchTypeOption.placeholder;
+  }
+
+  private get selectedSearchTypeOption(): SearchType {
+    return this.searchTypes.find((type) => type.value === this.selectedSearchType) ?? this.searchTypes[0];
+  }
 
   filterOffices(event: { query: string }): void {
     const query = event.query.trim().toLowerCase();
 
     this.officeSuggestions = query
-      ? this.officeOptions.filter((option) => option.label.toLowerCase().includes(query) || option.value.includes(query))
+      ? this.officeOptions.filter(
+          (option) =>
+            option.label.toLowerCase().includes(query) ||
+            option.value.includes(query),
+        )
       : [...this.officeOptions];
   }
 
-  submitSearch(): void {
+  submitSearch(form: NgForm): void {
+    if (!form.valid) {
+      return;
+    }
+
     // The first iShare page is a shell; the search action is wired for the next iteration.
   }
 }

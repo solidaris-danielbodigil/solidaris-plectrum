@@ -15,6 +15,7 @@ import PlectrumPreset from '../Plectrum_v0.6';
 export function providePlectrum(): EnvironmentProviders {
   return makeEnvironmentProviders([
     providePrimeNG({
+      ripple: true,
       theme: {
         preset: PlectrumPreset,
         options: {

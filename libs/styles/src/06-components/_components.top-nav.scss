@@ -6,8 +6,8 @@
 //
 // Design ref: Figma custom components node 1:1533
 // Token source: libs/styles/src/01-settings/
-//   _settings.colors-semantic.scss → --color-* semantic text/surface/content tokens
-//   _settings.top-nav.scss         → --sds-size-top-nav-*, breadcrumb bridge
+//   _settings.colors-semantic.scss → --sds-color-* semantic text/surface/content tokens
+//   _settings.top-nav.scss         → --sds-size-top-nav-*, breadcrumb + button bridges
 //   _settings.focus.scss           → --sds-focus-ring-*
 // =============================================================================
 
@@ -47,10 +47,9 @@
 // Visual styling (size, radius, colours, hover) is bridged via --p-button-*
 // tokens in 01-settings/_settings.top-nav.scss. Layout (flex/centering) comes
 // from o-flex classes on the element in the template.
-// Pressed-state background mirrors hover for the toggle button.
+// Pressed (toggle-open) state: darken the icon to signal the active state.
 .c-top-nav__action-button[aria-pressed='true'] {
-  --p-button-text-primary-color: var(--#{$sds-prefix}-color-text);
-  --p-button-text-primary-background: var(--#{$sds-prefix}-color-content-hover-bg);
+  --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text);
 }
 
 .c-top-nav__action-icon {

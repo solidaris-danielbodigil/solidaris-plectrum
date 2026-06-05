@@ -5,31 +5,49 @@
 // 06-components/_components.nav-shell.scss
 // First-level navigation shell — vertical sidebar.
 //
-// BEM mix pattern: o-flex classes are applied in the HTML template alongside
-// c-nav-shell* classes to compose flex layout (per BEM FAQ on mixes).
-// Component SCSS owns only non-layout properties: position, dimensions,
-// colours, tokens, transitions.
+// Overlay-on-expand pattern (matches the iSHARE reference):
+//   .c-nav-shell        host = a fixed-width (collapsed) in-flow SLOT. It never
+//                       changes width, so expanding never pushes page content.
+//   .c-nav-shell__panel the visible nav, absolutely positioned over the slot.
+//                       On hover it widens and casts a shadow, floating over the
+//                       adjacent content instead of reflowing it.
 //
-// Design ref:   Figma iCRM Audit node 18:6419 (collapsed)
+// BEM mix pattern: o-flex classes are applied in the template on the panel.
+//
+// Design ref:   Figma iSHARE Audit node 354:5909
 // Token source: libs/styles/src/01-settings/_settings.nav-shell.scss
 // =============================================================================
 
-// Shell — layout via o-flex o-flex--col in template
+// Host — fixed-width in-flow slot that reserves the collapsed footprint.
 .c-nav-shell {
+  display: block;
   position: relative;
-  z-index: 200;
-  gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
-  // Takes the width of its content (expanded items determine dynamic expanded size)
+  flex-shrink: 0;
   width: var(--#{$sds-prefix}-size-nav-shell-collapsed);
-  height: 100dvh;
+  height: 100%;
+}
+
+// Panel — the visible nav. Absolute so expansion overlays content.
+.c-nav-shell__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 200;
+  width: var(--#{$sds-prefix}-size-nav-shell-collapsed);
+  height: 100%;
+  gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
   background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
   border-right: 1px solid var(--#{$sds-prefix}-color-nav-shell-border);
+  overflow-x: clip;
+  overflow-y: auto;
   transition: var(--#{$sds-prefix}-transition-nav-shell);
 
-  &--expanded {
-    width: max-content;
-    min-width: var(--#{$sds-prefix}-size-nav-shell-expanded);
+  // Expanded — widen and float above content (compound selector out-specifies
+  // the o-flex--align-items-center utility, so no !important needed).
+  .c-nav-shell--expanded & {
+    width: var(--#{$sds-prefix}-size-nav-shell-expanded);
     align-items: flex-start;
+    box-shadow: var(--#{$sds-prefix}-shadow-overlay-navigation);
   }
 }
 

@@ -1,5 +1,6 @@
 {
   "git.ignoreLimitWarning": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
 
   // ─── GitHub Copilot — knowledge files ───────────────────────────────────────
   // Each file listed here is loaded automatically by Copilot / VS Code agents.

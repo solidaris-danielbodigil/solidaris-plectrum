@@ -1,3 +1,6 @@
+<!-- Visible nav panel — absolutely positioned so expansion overlays content
+     instead of pushing it; the host element stays a fixed-width in-flow slot. -->
+<div class="c-nav-shell__panel o-flex o-flex--col o-flex--align-items-center">
 <!-- Logo — inline logo SVG dynamically showing Logomark on collapsed, and both Lettermark + Logomark on expanded -->
 <div class="c-nav-shell__logo o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0" aria-hidden="true">
   <svg [attr.width]="expanded() ? 79 : 24" height="32" [attr.viewBox]="expanded() ? '0 0 79 32' : '0 0 24 32'" fill="none" xmlns="http://www.w3.org/2000/svg" class="c-nav-shell__logo-svg" style="transition: width 0.3s ease;">
@@ -141,7 +144,7 @@
         class="c-nav-shell__link o-flex o-flex--align-items-center"
         [class.is-active]="item.id === activeId()"
         [routerLink]="item.routerLink ?? null"
-        [pTooltip]="expanded() ? null : item.label"
+        [pTooltip]="expanded() ? undefined : item.label"
         tooltipPosition="right"
         [attr.aria-label]="item.label"
         [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
@@ -171,3 +174,4 @@
     </li>
   }
 </ul>
+</div>

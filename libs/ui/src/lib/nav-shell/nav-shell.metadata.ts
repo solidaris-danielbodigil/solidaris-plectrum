@@ -84,6 +84,7 @@ export const NavShellMetadata: ComponentMetadata = {
       '--sds-space-nav-shell-item-gap-collapsed',
       '--sds-space-nav-shell-item-gap-inner',
       '--sds-radius-nav-shell-item',
+      '--sds-shadow-overlay-navigation',
       '--sds-transition-nav-shell',
       '--sds-transition-nav-label-in',
       '--sds-transition-nav-label-out',

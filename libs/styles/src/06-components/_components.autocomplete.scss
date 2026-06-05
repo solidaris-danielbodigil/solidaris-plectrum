@@ -1,0 +1,29 @@
+// =============================================================================
+// 06-components/_components.autocomplete.scss
+// PrimeNG AutoComplete — chip remove icon alignment in multiple mode.
+//
+// PrimeNG wraps the remove glyph in .p-chip-remove-icon > .p-autocomplete-chip-icon.
+// Inherited line-height offsets the SVG vertically inside an otherwise centered chip.
+// =============================================================================
+
+.p-autocomplete-chip {
+  .p-chip-remove-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+  }
+
+  .p-autocomplete-chip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+  }
+
+  .p-autocomplete-chip-icon svg,
+  svg.p-autocomplete-chip-icon {
+    display: block;
+  }
+}

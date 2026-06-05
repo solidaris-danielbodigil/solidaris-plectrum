@@ -13,6 +13,7 @@
   --#{$sds-prefix}-space-top-nav-inline: 20px;           // Figma: horizontal inset
   --#{$sds-prefix}-size-top-nav-action-button: 40px;     // Figma: icon button hit target
   --#{$sds-prefix}-size-top-nav-action-icon: 20px;       // Figma: Bootstrap icon glyph size
+  --#{$sds-prefix}-space-top-nav-action-padding: 10px;   // (40px box - 20px icon) / 2 → square hit target
   --#{$sds-prefix}-size-top-nav-search-width: 240px;      // Figma: expanded search field width
 }
 
@@ -36,21 +37,22 @@
   --p-breadcrumb-separator-color: var(--#{$sds-prefix}-color-text-muted);
 }
 
-// PrimeNG Button token bridge — top-nav icon-only action buttons (variant="text").
-// Replaces hardcoded property + !important overrides: PrimeNG consumes these vars
-// directly, so no specificity battle is needed.
-// NOTE: verify exact token names + visual result in Storybook (PrimeNG MCP unavailable).
+// PrimeNG Button token bridge — top-nav icon action buttons.
+// Template renders <button pButton variant="text" severity="secondary"> so these
+// map the *secondary text* tokens (the neutral/grey set). PrimeNG consumes the
+// vars directly — no property overrides or !important needed.
+//
+// Square 40px box: icon-only-width covers the icon-only case; equal padding covers
+// the directive-with-projected-icon case (20px icon + 2×10px = 40px).
 .c-top-nav__action-button {
   --p-button-icon-only-width: var(--#{$sds-prefix}-size-top-nav-action-button);
+  --p-button-padding-x: var(--#{$sds-prefix}-space-top-nav-action-padding);
+  --p-button-padding-y: var(--#{$sds-prefix}-space-top-nav-action-padding);
   --p-button-border-radius: var(--#{$sds-prefix}-radius-lg);
-  --p-button-padding-x: 0;
-  --p-button-padding-y: 0;
   --p-button-transition-duration: var(--#{$sds-prefix}-transition-duration);
 
-  // text-variant (default/primary severity) colour mapping → muted, hover darkens
-  --p-button-text-primary-color: var(--#{$sds-prefix}-color-text-muted);
-  --p-button-text-primary-hover-color: var(--#{$sds-prefix}-color-text);
-  --p-button-text-primary-active-color: var(--#{$sds-prefix}-color-text);
-  --p-button-text-primary-hover-background: var(--#{$sds-prefix}-color-content-hover-bg);
-  --p-button-text-primary-active-background: var(--#{$sds-prefix}-color-content-hover-bg);
+  // Muted icon by default; clear grey box on hover/active.
+  --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text-muted);
+  --p-button-text-secondary-hover-background: var(--#{$sds-prefix}-color-content-hover-bg);
+  --p-button-text-secondary-active-background: var(--#{$sds-prefix}-color-content-hover-bg);
 }

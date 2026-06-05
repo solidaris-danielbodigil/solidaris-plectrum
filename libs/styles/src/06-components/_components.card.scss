@@ -1,0 +1,11 @@
+// =============================================================================
+// 06-components/_components.card.scss
+// PrimeNG Card — shared layout overrides for internal PrimeNG sections.
+//
+// PrimeNG renders .p-card-title internally; apply spacing via the global scale
+// (equivalent to o-layout--padding-block-3 in templates).
+// =============================================================================
+
+.p-card-title {
+  padding-block-end: var(--spacing-2);
+}

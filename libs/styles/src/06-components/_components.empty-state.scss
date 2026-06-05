@@ -12,6 +12,9 @@
 
 .c-empty-state {
   text-align: center;
+  // Fill the parent flex container so the section can center itself vertically.
+  // flex: 1 1 auto has no o-flex equivalent — structural grow constraint (rules §5 exception).
+  flex: 1 1 auto;
 }
 
 .c-empty-state__art {

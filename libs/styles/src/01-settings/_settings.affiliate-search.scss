@@ -1,0 +1,11 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.affiliate-search.scss
+// iShare affiliate search layout tokens.
+// =============================================================================
+
+:root {
+  // Search form card width cap on the home lookup panel.
+  --#{$sds-prefix}-size-affiliate-search-panel-max: 27.5rem; // 385px @ 14px base
+}

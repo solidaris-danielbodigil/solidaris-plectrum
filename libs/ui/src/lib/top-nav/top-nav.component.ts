@@ -13,6 +13,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { RippleModule } from 'primeng/ripple';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
 
@@ -32,7 +33,7 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
 @Component({
   selector: 'sds-top-nav',
   standalone: true,
-  imports: [ButtonModule, BreadcrumbModule, IconField, InputIcon, InputText, PlectrumAvatarComponent],
+  imports: [ButtonModule, BreadcrumbModule, IconField, InputIcon, InputText, RippleModule, PlectrumAvatarComponent],
   templateUrl: './top-nav.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

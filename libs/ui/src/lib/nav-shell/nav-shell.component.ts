@@ -25,7 +25,7 @@ import { NavItem } from './nav-item.model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-nav-shell o-flex o-flex--col o-flex--align-items-center',
+    class: 'c-nav-shell',
     '[class.c-nav-shell--expanded]': 'expanded()',
     '[attr.aria-expanded]': 'expanded()',
     role: 'navigation',

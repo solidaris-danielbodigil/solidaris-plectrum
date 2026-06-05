@@ -14,56 +14,95 @@
 
     <main class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2">
       <div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
-        <p-card class="o-flex o-flex__item--12 o-flex__item--4@lg o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
-          <form class="o-flex o-flex--y o-layout--gap-4 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch()" novalidate>
-            <label class="o-flex o-flex--y o-layout--gap-2">
-              <span class="color-text-muted">Bureau</span>
+        <p-card class="c-affiliate-search-panel o-flex o-flex__item--shrink-0 o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
+          <form class="o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
+            <label class="o-flex o-flex--y o-layout--gap-1">
+              <span class="color-text-muted">O.A.</span>
               <p-autocomplete
+                #office="ngModel"
                 name="office"
-                [(ngModel)]="selectedOffice"
+                [(ngModel)]="selectedOffices"
                 [suggestions]="officeSuggestions"
                 (completeMethod)="filterOffices($event)"
                 optionLabel="label"
+                dataKey="value"
                 [dropdown]="true"
                 [forceSelection]="true"
-                placeholder="319"
+                [multiple]="true"
+                [showClear]="true"
+                [invalid]="office.invalid && (office.touched || searchForm.submitted)"
+                placeholder="Selectionnez une ou plusieurs O.A."
+                required
                 fluid
               ></p-autocomplete>
+              @if (office.invalid && (office.touched || searchForm.submitted)) {
+                <p-message severity="error" size="small" variant="simple">Sélectionnez au moins une O.A.</p-message>
+              }
             </label>
 
-            <label class="o-flex o-flex--y o-layout--gap-2">
+            <label class="o-flex o-flex--y o-layout--gap-1">
               <span class="color-text-muted">Type de recherche</span>
               <p-selectbutton
+                #searchType="ngModel"
                 name="searchType"
                 [(ngModel)]="selectedSearchType"
                 [options]="searchTypes"
                 optionLabel="label"
                 optionValue="value"
-                fluid
-              ></p-selectbutton>
-            </label>
-
-            <label class="o-flex o-flex--y o-layout--gap-2">
-              <span class="color-text-muted">Référence</span>
-              <input
-                pInputText
-                name="identifier"
-                [(ngModel)]="searchIdentifier"
+                [invalid]="searchType.invalid && (searchType.touched || searchForm.submitted)"
                 required
                 fluid
-                placeholder="Numéro d'affilié"
-              />
+              ></p-selectbutton>
+              @if (searchType.invalid && (searchType.touched || searchForm.submitted)) {
+                <p-message severity="error" size="small" variant="simple">Sélectionnez un type de recherche.</p-message>
+              }
             </label>
 
-            <div class="o-flex o-flex--justify-content-flex-end o-layout--padding-top-2">
-              <button pButton type="submit" label="Rechercher" icon="bi bi-search" [disabled]="searchForm.invalid"></button>
-            </div>
+            <label class="o-flex o-flex--y o-layout--gap-1">
+              <span class="color-text-muted">{{ searchIdentifierLabel }}</span>
+              <p-inputgroup class="c-affiliate-search-panel__query o-layout--full-width">
+                <input
+                  #identifier="ngModel"
+                  pInputText
+                  name="identifier"
+                  [(ngModel)]="searchIdentifier"
+                  [invalid]="identifier.invalid && (identifier.touched || searchForm.submitted)"
+                  [placeholder]="searchIdentifierPlaceholder"
+                  required
+                />
+                @if (searchIdentifier) {
+                  <p-inputgroup-addon>
+                    <button
+                      type="button"
+                      pButton
+                      text
+                      severity="secondary"
+                      class="c-affiliate-search-panel__query-clear"
+                      icon="bi bi-x-lg"
+                      aria-label="Effacer la référence"
+                      (click)="clearSearchIdentifier()"
+                    ></button>
+                  </p-inputgroup-addon>
+                }
+                <button
+                  pButton
+                  type="submit"
+                  label="Chercher"
+                  icon="bi bi-search"
+                  [disabled]="searchForm.invalid"
+                ></button>
+              </p-inputgroup>
+              @if (identifier.invalid && (identifier.touched || searchForm.submitted)) {
+                <p-message severity="error" size="small" variant="simple">Ce champ est obligatoire.</p-message>
+              }
+            </label>
           </form>
         </p-card>
 
-        <p-card class="o-flex o-flex__item--12 o-flex__item--8@lg o-layout--full-height o-layout--min-w-0" header="Détails du document">
+        <p-card class="o-flex o-flex__item--grow-1 o-layout--full-height o-layout--min-w-0" header="Détails du document">
           <sds-empty-state
-            title="Aucun résultat pour l’instant"
+            class="o-flex o-flex--col o-flex__item--grow-1"
+            title="Aucun résultat pour l'instant"
             description="Lancez une recherche pour afficher le détail du document et les actions disponibles."
           ></sds-empty-state>
         </p-card>
