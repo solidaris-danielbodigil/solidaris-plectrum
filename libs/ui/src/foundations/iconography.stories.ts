@@ -29,6 +29,7 @@ import { Card } from 'primeng/card';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
+import { InputClearComponent } from '../lib/input-clear';
 
 // ── Build-time icon list ──────────────────────────────────────────────────────
 const ALL_ICON_NAMES: string[] = (() => {
@@ -74,6 +75,7 @@ const SIZE_OPTIONS = [
     IconField,
     InputIcon,
     InputText,
+    InputClearComponent,
     SelectButton,
     Badge,
     Card,
@@ -92,6 +94,10 @@ class IconographyPageComponent {
   readonly variantFilter = signal('all');
   readonly iconSize      = signal('1.5rem');
   readonly hoveredIcon   = signal<string | null>(null);
+
+  clearSearchQuery(): void {
+    this.searchQuery.set('');
+  }
 
   readonly filteredIcons = computed(() => {
     const q = this.searchQuery().toLowerCase().trim();

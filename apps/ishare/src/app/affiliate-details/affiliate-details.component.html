@@ -17,7 +17,9 @@
               </p-inputicon>
               <input
                 pInputText
-                type="search"
+                type="text"
+                role="searchbox"
+                autocomplete="off"
                 id="document-search"
                 name="documentSearch"
                 [ngModel]="documentSearch()"
@@ -26,6 +28,13 @@
                 placeholder="Rechercher document..."
                 class="c-affiliate-documents-toolbar__field-input"
               />
+              <p-inputicon>
+                <sds-input-clear
+                  [visible]="!!documentSearch()"
+                  ariaLabel="Effacer la recherche"
+                  (clear)="clearDocumentSearch()"
+                />
+              </p-inputicon>
             </p-iconfield>
           </sds-form-field>
         </div>
@@ -42,6 +51,8 @@
               dataKey="value"
               [dropdown]="true"
               [forceSelection]="true"
+              [showClear]="true"
+              placeholder="Sélectionnez un secteur"
               size="small"
               fluid
             ></p-autocomplete>
@@ -61,6 +72,8 @@
               dataKey="value"
               [dropdown]="true"
               [forceSelection]="true"
+              [showClear]="true"
+              placeholder="Sélectionnez un tri"
               size="small"
               fluid
             ></p-autocomplete>

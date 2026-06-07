@@ -18,6 +18,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {
   EmptyStateComponent,
   FormFieldComponent,
+  InputClearComponent,
   ListComponent,
   ToolbarComponent,
 } from '@solidaris/ui';
@@ -169,6 +170,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
     ToggleSwitchModule,
     ToolbarComponent,
     FormFieldComponent,
+    InputClearComponent,
     EmptyStateComponent,
     ListComponent,
     AffiliateDocumentDetailComponent,
@@ -261,6 +263,11 @@ export class AffiliateDetailsComponent {
   ];
 
   readonly documentSearch = signal('');
+
+  clearDocumentSearch(): void {
+    this.documentSearch.set('');
+  }
+
   selectedSector: SectorOption | null = this.sectorOptions[0];
   sectorSuggestions: SectorOption[] = [...this.sectorOptions];
   readonly selectedSort = signal<SortOption | null>(this.sortOptions[0]);

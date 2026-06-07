@@ -20,6 +20,7 @@ export const InputClearMetadata: ComponentMetadata = {
       'Clearable pInputText fields',
       'Search inputs with inline clear',
       'Input group query fields',
+      'Toolbar filter search fields with a leading icon',
     ],
     commonPatterns: [
       {
@@ -27,9 +28,21 @@ export const InputClearMetadata: ComponentMetadata = {
         description:
           'Wrap the input in p-iconfield, place sds-input-clear inside p-inputicon after the input.',
         composition: `<p-iconfield>
-  <input pInputText [(ngModel)]="value" />
+  <input pInputText type="text" role="searchbox" autocomplete="off" [(ngModel)]="value" />
   <p-inputicon>
-    <sds-input-clear [visible]="!!value" (clear)="value = ''" />
+    <sds-input-clear [visible]="!!value" ariaLabel="Clear" (clear)="value = ''" />
+  </p-inputicon>
+</p-iconfield>`,
+      },
+      {
+        name: 'Search field with leading icon',
+        description:
+          'Leading search icon in the first p-inputicon; sds-input-clear in a second p-inputicon after the input. Never use type="search".',
+        composition: `<p-iconfield>
+  <p-inputicon><i class="bi bi-search" aria-hidden="true"></i></p-inputicon>
+  <input pInputText type="text" role="searchbox" autocomplete="off" [(ngModel)]="query" />
+  <p-inputicon>
+    <sds-input-clear [visible]="!!query" ariaLabel="Clear search" (clear)="query = ''" />
   </p-inputicon>
 </p-iconfield>`,
       },
@@ -39,7 +52,7 @@ export const InputClearMetadata: ComponentMetadata = {
           'Use the same pattern as the first child of p-inputgroup when a trailing button is required.',
         composition: `<p-inputgroup>
   <p-iconfield>
-    <input pInputText [(ngModel)]="value" />
+    <input pInputText type="text" [(ngModel)]="value" />
     <p-inputicon>
       <sds-input-clear [visible]="!!value" (clear)="value = ''" />
     </p-inputicon>
@@ -59,6 +72,12 @@ export const InputClearMetadata: ComponentMetadata = {
         reason: 'Browsers render a native clear control alongside the PrimeNG times icon.',
         alternative: 'Use type="text" with role="searchbox" and sds-input-clear only.',
       },
+      {
+        scenario: 'Clearable pInputText without sds-input-clear',
+        reason: 'Leaves browser-native search clears or no clear affordance; inconsistent with home and top-nav.',
+        alternative:
+          'Add sds-input-clear in p-inputicon after the input. Use showClear only on PrimeNG components that support it natively (autocomplete, select, multiselect).',
+      },
     ],
   },
   accessibility: {
@@ -75,9 +94,9 @@ export const InputClearMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Use for custom clear affordances on pInputText. Prefer native showClear on PrimeNG components that support it.',
+      'Required for every clearable pInputText field in apps and Storybook demos. Use type="text" (not search) with role="searchbox" when the field filters content. Prefer native showClear on PrimeNG components that support it (autocomplete, select, multiselect). Reference implementations: home affiliate search, top-nav search, affiliate-details document toolbar.',
     selectionCriteria: {},
-    keywords: ['input clear', 'showClear', 'times icon', 'iconfield'],
+    keywords: ['input clear', 'showClear', 'times icon', 'iconfield', 'searchbox'],
   },
   examples: [],
 };

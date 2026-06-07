@@ -1,0 +1,12 @@
+// =============================================================================
+// 01-settings/_settings.button.scss
+// PrimeNG Button parity — structural fixes not covered by design tokens.
+//
+// @primeuix/styles/button does not set line-height (browser default: normal).
+// SDS body sets line-height: var(--line-height-22) which inherits into labels
+// and inflates p-button-sm outer height.
+// =============================================================================
+
+.p-button {
+  line-height: normal;
+}

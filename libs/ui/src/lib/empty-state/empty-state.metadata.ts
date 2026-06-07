@@ -4,7 +4,8 @@ export const EmptyStateMetadata: ComponentMetadata = {
   component: {
     name: 'EmptyState',
     category: 'molecules',
-    description: 'Reusable empty-state placeholder with an illustrated hero and message text.',
+    description:
+      'Reusable empty-state placeholder with a randomly selected illustrated hero and message text.',
     type: 'feedback',
     path: 'libs/ui/src/lib/empty-state/empty-state.component.ts',
     primeNgComponent: undefined,

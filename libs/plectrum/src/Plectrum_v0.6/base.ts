@@ -303,7 +303,7 @@ export default {
         },
         option: {
             padding: "0.5rem 0.75rem",
-            borderRadius: "{border.radius.md}"
+            borderRadius: "{border.radius.sm}"
         },
         padding: "0.25rem 0.25rem",
         optionGroup: {
@@ -324,8 +324,8 @@ export default {
             borderRadius: "{border.radius.lg}"
         },
         select: {
-            shadow: "0px 2px 8px 0px rgba(0, 0, 0, 0.18)",
-            borderRadius: "{border.radius.xl}"
+            shadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+            borderRadius: "{border.radius.md}"
         },
         popover: {
             shadow: "0 9px 29px 0 rgba(0,0,0,0.06), 0 6px 17px 0 rgba(0,0,0,0.05)",

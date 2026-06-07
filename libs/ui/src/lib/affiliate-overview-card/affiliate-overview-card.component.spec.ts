@@ -279,6 +279,20 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(button.getAttribute('aria-keyshortcuts')).toBe('Alt+A');
   });
 
+  it('should render the primary action as a PrimeNG small button', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__primary-action',
+    ) as HTMLButtonElement;
+
+    expect(button.classList.contains('p-button-sm')).toBe(true);
+  });
+
   it('should not emit primaryActionClick for shortcut when loading', () => {
     const onPrimary = jasmine.createSpy('primaryActionClick');
     component.primaryActionClick.subscribe(onPrimary);

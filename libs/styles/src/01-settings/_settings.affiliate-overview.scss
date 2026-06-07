@@ -109,7 +109,8 @@
 
   --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-weight: var(--font-weight-bold);
 
-  --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height: var(--line-height-16);
+  // Unitless — must fit inside p-button-sm without stretching the button row.
+  --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height: 1;
 
 
 

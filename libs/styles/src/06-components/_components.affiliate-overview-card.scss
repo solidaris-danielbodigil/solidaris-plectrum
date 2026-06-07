@@ -64,6 +64,15 @@
   font-weight: var(--font-weight-bold);
 }
 
+// Primary header action — PrimeNG secondary small; badge must not outgrow sm padding.
+.c-affiliate-overview-card__primary-action {
+  line-height: normal;
+
+  .c-affiliate-overview-card__shortcut-badge {
+    flex-shrink: 0;
+  }
+}
+
 .c-affiliate-overview-card__shortcut-badge {
   font-family: var(--font-family-label);
   font-size: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-size);

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
@@ -104,14 +106,83 @@ describe('AffiliateDetailsComponent', () => {
     expect(searchIcon?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('should render search input with placeholder and type search', () => {
+  it('should render search input as a clearable text searchbox', () => {
     const searchInput = fixture.nativeElement.querySelector(
       '#document-search',
     ) as HTMLInputElement;
 
-    expect(searchInput.type).toBe('search');
+    expect(searchInput.type).toBe('text');
+    expect(searchInput.getAttribute('role')).toBe('searchbox');
     expect(searchInput.placeholder).toBe('Rechercher document...');
     expect(searchInput.value).toBe('');
+    expect(fixture.nativeElement.querySelector('sds-input-clear')).toBeTruthy();
+  });
+
+  it('should enable showClear on sector and sort autocompletes', () => {
+    const autocompletes = fixture.debugElement.queryAll(By.directive(AutoComplete));
+
+    expect(autocompletes.length).toBe(2);
+    autocompletes.forEach((autocomplete) => {
+      expect(autocomplete.componentInstance.showClear).toBe(true);
+      expect(
+        autocomplete.nativeElement.classList.contains('p-autocomplete-clearable'),
+      ).toBe(true);
+    });
+  });
+
+  it('should render placeholders on sector and sort autocompletes', () => {
+    const sectorInput = fixture.nativeElement.querySelector(
+      '#document-sector',
+    ) as HTMLInputElement;
+    const sortInput = fixture.nativeElement.querySelector(
+      '#document-sort',
+    ) as HTMLInputElement;
+
+    expect(sectorInput.placeholder).toBe('Sélectionnez un secteur');
+    expect(sortInput.placeholder).toBe('Sélectionnez un tri');
+  });
+
+  it('should clear sector autocomplete via showClear', () => {
+    const sectorAutocomplete = fixture.debugElement
+      .queryAll(By.directive(AutoComplete))
+      .find((autocomplete) =>
+        autocomplete.nativeElement.querySelector('#document-sector'),
+      );
+
+    sectorAutocomplete?.componentInstance.clear();
+    fixture.detectChanges();
+
+    expect(component.selectedSector).toBeNull();
+  });
+
+  it('should clear sort autocomplete via showClear', () => {
+    const sortAutocomplete = fixture.debugElement
+      .queryAll(By.directive(AutoComplete))
+      .find((autocomplete) =>
+        autocomplete.nativeElement.querySelector('#document-sort'),
+      );
+
+    sortAutocomplete?.componentInstance.clear();
+    fixture.detectChanges();
+
+    expect(component.selectedSort()).toBeNull();
+  });
+
+  it('should clear document search via sds-input-clear', () => {
+    component.documentSearch.set('rechute');
+    fixture.detectChanges();
+
+    const clearButton = fixture.nativeElement.querySelector(
+      'sds-input-clear button',
+    ) as HTMLButtonElement;
+    clearButton.click();
+    fixture.detectChanges();
+
+    expect(component.documentSearch()).toBe('');
+    expect(
+      (fixture.nativeElement.querySelector('#document-search') as HTMLInputElement)
+        .value,
+    ).toBe('');
   });
 
   it('should filter sector suggestions by query', () => {

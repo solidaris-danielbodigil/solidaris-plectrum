@@ -12,13 +12,22 @@
         <p-inputIcon styleClass="bi bi-search" />
         <input
           pInputText
-          type="search"
+          type="text"
+          role="searchbox"
+          autocomplete="off"
           placeholder="Search icons…"
           [value]="searchQuery()"
           (input)="searchQuery.set($any($event.target).value)"
           aria-label="Search icons"
           class="c-iconography-toolbar__search-input"
         />
+        <p-inputicon>
+          <sds-input-clear
+            [visible]="!!searchQuery()"
+            ariaLabel="Clear search"
+            (clear)="clearSearchQuery()"
+          />
+        </p-inputicon>
       </p-iconField>
 
       <!-- Variant filter — p-selectButton -->

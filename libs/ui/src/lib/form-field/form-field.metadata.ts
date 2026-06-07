@@ -23,6 +23,20 @@ export const FormFieldMetadata: ComponentMetadata = {
     ],
     commonPatterns: [
       {
+        name: 'Clearable text field',
+        description:
+          'Pair sds-form-field with p-iconfield + sds-input-clear for filter/search pInputText. See InputClear metadata.',
+        composition: `<sds-form-field label="Rechercher" inputId="query">
+  <p-iconfield>
+    <p-inputicon><i class="bi bi-search" aria-hidden="true"></i></p-inputicon>
+    <input pInputText type="text" role="searchbox" id="query" [(ngModel)]="query" />
+    <p-inputicon>
+      <sds-input-clear [visible]="!!query" ariaLabel="Clear" (clear)="query = ''" />
+    </p-inputicon>
+  </p-iconfield>
+</sds-form-field>`,
+      },
+      {
         name: 'Vertical field',
         description:
           'Default layout. Wraps the control in a native label for implicit association.',
@@ -48,6 +62,11 @@ export const FormFieldMetadata: ComponentMetadata = {
         scenario: 'Horizontal layout without inputId',
         reason: 'The label cannot be associated with the control for assistive tech.',
         alternative: 'Pass matching inputId and id attributes.',
+      },
+      {
+        scenario: 'Clearable pInputText with type="search"',
+        reason: 'Browser-native clear buttons conflict with sds-input-clear.',
+        alternative: 'Use type="text", role="searchbox", and sds-input-clear inside p-inputicon.',
       },
     ],
   },

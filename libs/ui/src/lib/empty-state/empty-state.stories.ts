@@ -10,7 +10,7 @@ const meta: Meta<EmptyStateComponent> = {
         component: `
 Reusable placeholder for empty results, document details, or onboarding states.
 - Figma: [Empty state illustration](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641)
-- The illustration layers are rendered from the exported Figma SVG assets and are decorative; the title and description carry the message.
+- One illustration is picked at random from the exported Figma SVG assets on each render; the art is decorative and the title and description carry the message.
         `,
       },
     },

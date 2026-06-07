@@ -68,6 +68,45 @@ export const IconField: Story = {
   },
 };
 
+export const SearchWithLeadingIcon: Story = {
+  render: (args) => ({
+    props: { ...args, query: 'Document' },
+    moduleMetadata: {
+      imports: [
+        FormsModule,
+        IconFieldModule,
+        InputIconModule,
+        InputTextModule,
+        InputClearComponent,
+      ],
+    },
+    template: `
+      <p-iconfield class="o-layout--full-width">
+        <p-inputicon><i class="bi bi-search" aria-hidden="true"></i></p-inputicon>
+        <input
+          pInputText
+          type="text"
+          role="searchbox"
+          autocomplete="off"
+          class="o-layout--full-width"
+          [(ngModel)]="query"
+          placeholder="Rechercher document..."
+        />
+        <p-inputicon>
+          <sds-input-clear
+            [visible]="!!query"
+            [ariaLabel]="ariaLabel"
+            (clear)="query = ''"
+          />
+        </p-inputicon>
+      </p-iconfield>
+    `,
+  }),
+  args: {
+    ariaLabel: 'Effacer la recherche',
+  },
+};
+
 export const InInputGroup: Story = {
   render: (args) => ({
     props: { ...args, value: '888' },
