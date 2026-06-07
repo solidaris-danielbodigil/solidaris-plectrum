@@ -1,0 +1,64 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.affiliate-document-detail.scss
+// Affiliate document detail viewer tokens (second column).
+//
+// Design ref: Figma node 324:5860 (Dossier Affilié — second column: accordion + stepper + nested accordion)
+// https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
+// =============================================================================
+
+:root {
+  // ── Header chrome ───────────────────────────────────────────────────────────
+  // Figma: #f5f7fa → primary/50 (#f6f8fa)
+  --#{$sds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$sds-prefix}-color-primary-50);
+  // Figma: 20px padding
+  --#{$sds-prefix}-space-affiliate-document-detail-header-padding: calc(20 / 14 * var(--base-unit));
+  // Figma: heading-md #666 → surface/600 (#717171)
+  --#{$sds-prefix}-color-affiliate-document-detail-title-text: var(--#{$sds-prefix}-color-surface-600);
+
+  // ── Section card shell ──────────────────────────────────────────────────────
+  --#{$sds-prefix}-color-affiliate-document-detail-section-bg: var(--#{$sds-prefix}-color-content-bg);
+  --#{$sds-prefix}-color-affiliate-document-detail-section-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-radius-affiliate-document-detail-section: var(--#{$sds-prefix}-radius-xl);
+
+  // ── Nested accordion panels ─────────────────────────────────────────────────
+  // Figma: 17px panel padding
+  --#{$sds-prefix}-space-affiliate-document-detail-accordion-padding: calc(17 / 14 * var(--base-unit));
+  --#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text: var(--#{$sds-prefix}-color-text);
+  --#{$sds-prefix}-color-affiliate-document-detail-accordion-border: var(--#{$sds-prefix}-color-drawer-border);
+
+  // ── Detail metadata rows ────────────────────────────────────────────────────
+  // Figma: label column width 124px
+  --#{$sds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
+  --#{$sds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$sds-prefix}-color-text-muted);
+  --#{$sds-prefix}-color-affiliate-document-detail-detail-value-text: var(--#{$sds-prefix}-color-text);
+  --#{$sds-prefix}-space-affiliate-document-detail-detail-row-gap: var(--spacing-1);
+
+  // ── Status tag (success) ────────────────────────────────────────────────────
+  --#{$sds-prefix}-color-affiliate-document-detail-status-tag-bg: var(--#{$sds-prefix}-color-success-subtle);
+  --#{$sds-prefix}-color-affiliate-document-detail-status-tag-text: var(--#{$sds-prefix}-color-green-700);
+  --#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-inline: var(--spacing-1);
+  --#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-block: var(--spacing-0-25);
+
+  // ── Metadata chips ──────────────────────────────────────────────────────────
+  --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg: var(--#{$sds-prefix}-color-primary-75);
+  --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-text: var(--#{$sds-prefix}-color-metadata-chip-text);
+  --#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-inline: var(--spacing-1);
+  --#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-block: var(--spacing-0-25);
+
+  // ── Certificate header & step footer ────────────────────────────────────────
+  --#{$sds-prefix}-color-affiliate-document-detail-cert-header-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap: var(--spacing-1-5);
+  --#{$sds-prefix}-color-affiliate-document-detail-step-footer-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start: var(--spacing-2);
+
+  // ── Stepper (structural — bridge in _settings.stepper.scss) ─────────────────
+  // Figma: 32px step numbers, active #487395 → primary/500 (#527191)
+  --#{$sds-prefix}-size-affiliate-document-detail-step-number: calc(32 / 14 * var(--base-unit));
+  --#{$sds-prefix}-text-affiliate-document-detail-step-number-size: var(--font-size-md);
+  --#{$sds-prefix}-color-affiliate-document-detail-step-active: var(--#{$sds-prefix}-color-primary-500);
+  --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text: var(--#{$sds-prefix}-color-text-muted);
+  --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-size-affiliate-document-detail-step-separator: var(--spacing-0-25);
+}

@@ -1,0 +1,12 @@
+<button
+  type="button"
+  class="c-input-clear"
+  [class.is-hidden]="!visible()"
+  [attr.aria-hidden]="!visible() ? true : null"
+  [tabindex]="visible() ? 0 : -1"
+  [attr.aria-label]="ariaLabel()"
+  (mousedown)="onPointerDown($event)"
+  (click)="onClear($event)"
+>
+  <svg data-p-icon="times" aria-hidden="true"></svg>
+</button>

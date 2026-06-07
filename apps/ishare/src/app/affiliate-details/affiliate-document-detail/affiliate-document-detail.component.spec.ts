@@ -1,0 +1,230 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { ListDocumentItem } from '@solidaris/ui';
+import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
+
+const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
+  {
+    id: 'doc-demande-primaire',
+    title: 'Demande primaire -',
+    titleLine2: 'Régime général',
+    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+  },
+  {
+    id: 'doc-incapacite',
+    title: 'Incapacité',
+    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+  },
+  {
+    id: 'doc-rechute',
+    title: 'Rechute',
+    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+  },
+];
+
+function findButtonByLabel(
+  root: ParentNode,
+  label: string,
+): HTMLButtonElement | undefined {
+  return [...root.querySelectorAll('button')].find((button) =>
+    button.textContent?.includes(label),
+  ) as HTMLButtonElement | undefined;
+}
+
+describe('AffiliateDocumentDetailComponent', () => {
+  let fixture: ComponentFixture<AffiliateDocumentDetailComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AffiliateDocumentDetailComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AffiliateDocumentDetailComponent);
+    fixture.componentRef.setInput('selectedDocumentId', 'doc-demande-primaire');
+    fixture.componentRef.setInput('visibleDocuments', VISIBLE_DOCUMENTS);
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should apply BEM host class', () => {
+    const host = fixture.nativeElement as HTMLElement;
+
+    expect(host.classList.contains('c-affiliate-document-detail')).toBe(true);
+  });
+
+  it('should render the selected document title from mock data', () => {
+    const title = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__title',
+    );
+
+    expect(title?.textContent?.trim()).toBe('Demande Primaire - Régime général');
+    expect(title?.tagName).toBe('H2');
+  });
+
+  it('should disable previous document navigation on the first visible document', () => {
+    const previousButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document précédent"]',
+    ) as HTMLButtonElement;
+
+    expect(previousButton.disabled).toBe(true);
+  });
+
+  it('should enable next document navigation when another document is visible', () => {
+    const nextButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document suivant"]',
+    ) as HTMLButtonElement;
+
+    expect(nextButton.disabled).toBe(false);
+  });
+
+  it('should disable next document navigation on the last visible document', () => {
+    fixture.componentRef.setInput('selectedDocumentId', 'doc-rechute');
+    fixture.detectChanges();
+
+    const nextButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document suivant"]',
+    ) as HTMLButtonElement;
+
+    expect(nextButton.disabled).toBe(true);
+  });
+
+  it('should emit selectedDocumentIdChange when next document is clicked', () => {
+    const emitSpy = spyOn(
+      fixture.componentInstance.selectedDocumentIdChange,
+      'emit',
+    );
+    const nextButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document suivant"]',
+    ) as HTMLButtonElement;
+
+    nextButton.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith('doc-incapacite');
+  });
+
+  it('should emit selectedDocumentIdChange when previous document is clicked', () => {
+    fixture.componentRef.setInput('selectedDocumentId', 'doc-incapacite');
+    fixture.detectChanges();
+
+    const emitSpy = spyOn(
+      fixture.componentInstance.selectedDocumentIdChange,
+      'emit',
+    );
+    const previousButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document précédent"]',
+    ) as HTMLButtonElement;
+
+    previousButton.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith('doc-demande-primaire');
+  });
+
+  it('should disable both document nav buttons when selected document is not in visibleDocuments', () => {
+    fixture.componentRef.setInput('selectedDocumentId', 'doc-rechute');
+    fixture.componentRef.setInput('visibleDocuments', [
+      VISIBLE_DOCUMENTS[0],
+      VISIBLE_DOCUMENTS[1],
+    ]);
+    fixture.detectChanges();
+
+    const previousButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document précédent"]',
+    ) as HTMLButtonElement;
+    const nextButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Document suivant"]',
+    ) as HTMLButtonElement;
+
+    expect(previousButton.disabled).toBe(true);
+    expect(nextButton.disabled).toBe(true);
+  });
+
+  it('should expose aria-label on icon-only document navigation buttons', () => {
+    expect(
+      fixture.nativeElement.querySelector('button[aria-label="Document précédent"]'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('button[aria-label="Document suivant"]'),
+    ).toBeTruthy();
+  });
+
+  it('should expose aria-label on certificate action buttons', () => {
+    expect(fixture.nativeElement.querySelector('button[aria-label="Iris"]')).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('button[aria-label="Transactions CICS"]'),
+    ).toBeTruthy();
+  });
+
+  it('should render Certificat ITT panel with Accepté status for Eva Martinez demo doc', () => {
+    const statusTag = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__status-tag',
+    );
+
+    expect(statusTag?.textContent).toContain('Accepté');
+    expect(
+      fixture.nativeElement.textContent,
+    ).toContain('Certificat ITT');
+  });
+
+  it('should render certificate metadata rows from Figma mock data', () => {
+    const content = fixture.nativeElement.textContent ?? '';
+
+    expect(content).toContain('Date de réception');
+    expect(content).toContain('24/11/2025');
+    expect(content).toContain('Numéro de certificat');
+    expect(content).toContain('25/1256332');
+    expect(content).toContain('Période');
+  });
+
+  it('should disable Etape précédente on the first step', () => {
+    const previousStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape précédente',
+    );
+
+    expect(previousStepButton?.disabled).toBe(true);
+  });
+
+  it('should disable Etape suivante on the last step', () => {
+    fixture.componentInstance.activeStep.set(3);
+    fixture.detectChanges();
+
+    const nextStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape suivante',
+    );
+
+    expect(nextStepButton?.disabled).toBe(true);
+  });
+
+  it('should advance to the next step when Etape suivante is clicked', () => {
+    const nextStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape suivante',
+    );
+
+    nextStepButton?.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.activeStep()).toBe(2);
+  });
+
+  it('should return to the previous step when Etape précédente is clicked', () => {
+    fixture.componentInstance.activeStep.set(2);
+    fixture.detectChanges();
+
+    const previousStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape précédente',
+    );
+
+    previousStepButton?.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.activeStep()).toBe(1);
+  });
+});
+

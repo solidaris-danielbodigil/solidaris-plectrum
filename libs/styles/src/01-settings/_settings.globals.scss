@@ -19,4 +19,7 @@
   --#{$sds-prefix}-icon-size-lg:  1.25rem;   // ~17.5px
   --#{$sds-prefix}-icon-size-xl:  1.5rem;    //  21px
 
+  // Z-index scale — sticky toolbars, filter rows
+  --#{$sds-prefix}-z-sticky: 10;
+
 }

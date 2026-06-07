@@ -1,0 +1,32 @@
+<div
+  class="c-form-field"
+  [class.c-form-field--vertical]="layout() === 'vertical'"
+  [class.c-form-field--horizontal]="layout() === 'horizontal'"
+  [class.is-invalid]="invalid()"
+>
+  <label
+    class="c-form-field__label"
+    [attr.for]="inputId() ?? null"
+    [id]="labelId"
+  >
+    <span class="c-form-field__label-text">{{ label() }}</span>
+    @if (required()) {
+      <span class="c-form-field__required" aria-hidden="true">*</span>
+      <span class="u-sr-only">({{ requiredLabel() }})</span>
+    }
+  </label>
+
+  <div class="c-form-field__content">
+    <div class="c-form-field__control">
+      <ng-content />
+    </div>
+
+    @if (invalid()) {
+      @if (errorMessage()) {
+        <p-message severity="error" size="small" variant="simple">{{ errorMessage() }}</p-message>
+      } @else {
+        <ng-content select="[sdsFormFieldError]" />
+      }
+    }
+  </div>
+</div>

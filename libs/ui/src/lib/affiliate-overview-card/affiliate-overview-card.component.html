@@ -1,0 +1,178 @@
+<p-card [styleClass]="cardStyleClass()">
+  <article
+    class="c-affiliate-overview-card__content o-flex o-flex--align-items-flex-start o-flex--wrap o-layout--gap-1-5"
+    [attr.aria-labelledby]="loading() ? null : titleId"
+    [attr.aria-label]="loading() ? title() : null"
+    [attr.aria-busy]="loading() || null"
+  >
+    @if (loading()) {
+      <span
+        class="c-affiliate-overview-card__skeleton-avatar"
+        aria-hidden="true"
+      ></span>
+    } @else {
+      <sds-plectrum-avatar
+        class="c-affiliate-overview-card__avatar o-flex__item--shrink-0"
+        size="large"
+        [initials]="avatarInitials()"
+        [gender]="avatarGender()"
+        [variant]="avatarVariant()"
+        [ariaLabel]="title()"
+      />
+    }
+
+    <div
+      class="c-affiliate-overview-card__body o-flex o-flex--y o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+    >
+      <div
+        class="c-affiliate-overview-card__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--row-wrap o-layout--gap-1-5"
+      >
+        @if (loading()) {
+          <span
+            class="c-affiliate-overview-card__skeleton-line c-affiliate-overview-card__skeleton-line--title"
+            aria-hidden="true"
+          ></span>
+        } @else {
+          <div
+            class="c-affiliate-overview-card__header-main o-flex o-flex--align-items-center o-layout--gap-1-5 o-flex--wrap o-flex__item--grow-1 o-layout--min-w-0"
+          >
+            <h2 [id]="titleId" class="c-affiliate-overview-card__title">{{ title() }}</h2>
+
+            @if (showStatusAction() && statusAction(); as action) {
+              <p-splitButton
+                class="c-affiliate-overview-card__status-action"
+                [label]="action.label"
+                [icon]="action.icon"
+                [model]="statusActionMenuItems()"
+                [severity]="statusActionSeverity()!"
+                [expandAriaLabel]="statusActionExpandAriaLabel()"
+                size="small"
+                [outlined]="true"
+                (onClick)="onStatusActionClick()"
+                (onMenuItemClick)="onStatusMenuItemClick($event.item)"
+              />
+            }
+
+            @if (infoTags().length > 0) {
+              <div
+                class="c-affiliate-overview-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+              >
+                @for (tag of infoTags(); track tag.label) {
+                  @if (tag.filterKey) {
+                    <p-togglebutton
+                      class="c-affiliate-overview-card__info-tag c-affiliate-overview-card__info-tag--filterable"
+                      [size]="'small'"
+                      [ngModel]="tag.active ?? false"
+                      [ariaLabel]="infoTagAriaLabel(tag)"
+                      [disabled]="loading()"
+                      (onChange)="onInfoTagClick(tag)"
+                    >
+                      <ng-template #content>
+                        <span class="c-affiliate-overview-card__info-tag-label">{{ tag.label }}</span>
+                        <strong class="c-affiliate-overview-card__info-tag-value">{{
+                          tag.value
+                        }}</strong>
+                      </ng-template>
+                    </p-togglebutton>
+                  } @else {
+                    <button
+                      pButton
+                      type="button"
+                      severity="secondary"
+                      size="small"
+                      class="c-affiliate-overview-card__info-tag"
+                      [attr.aria-label]="infoTagAriaLabel(tag)"
+                      tabindex="-1"
+                      [disabled]="loading()"
+                    >
+                      <span class="c-affiliate-overview-card__info-tag-label">{{ tag.label }}</span>
+                      <strong class="c-affiliate-overview-card__info-tag-value">{{
+                        tag.value
+                      }}</strong>
+                    </button>
+                  }
+                }
+              </div>
+            }
+          </div>
+
+          @if (primaryAction(); as action) {
+            <button
+              pButton
+              type="button"
+              class="c-affiliate-overview-card__primary-action o-flex__item--shrink-0"
+              [icon]="action.icon"
+              severity="secondary"
+              size="small"
+              [disabled]="loading()"
+              (click)="onPrimaryActionClick()"
+            >
+              <span class="c-affiliate-overview-card__primary-action-label">{{
+                action.label
+              }}</span>
+              @if (action.shortcut) {
+                <span
+                  class="c-affiliate-overview-card__shortcut-badge"
+                  aria-hidden="true"
+                  >{{ action.shortcut }}</span
+                >
+              }
+            </button>
+          }
+        }
+      </div>
+
+      @if (loading()) {
+        <div
+          class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1"
+          aria-hidden="true"
+        >
+          @for (identifier of identifiers(); track identifier.label) {
+            <span
+              class="c-affiliate-overview-card__skeleton-line c-affiliate-overview-card__skeleton-line--chip"
+            ></span>
+          }
+        </div>
+      } @else if (identifiers().length > 0) {
+        <div
+          class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+        >
+          @for (identifier of identifiers(); track identifier.label; let last = $last) {
+            <button
+              pButton
+              type="button"
+              text
+              [rounded]="true"
+              severity="secondary"
+              size="small"
+              class="c-affiliate-overview-card__identifier o-flex o-flex--align-items-center o-layout--gap-0-75"
+              [attr.aria-label]="identifierCopyAriaLabel(identifier)"
+              (click)="onIdentifierCopy(identifier)"
+            >
+              <sds-icon
+                class="c-affiliate-overview-card__identifier-icon"
+                icon="copy-content-LEGACY"
+                source="svg"
+                size="sm"
+              />
+              <span class="c-affiliate-overview-card__identifier-label">{{
+                identifier.label
+              }}</span>
+              <span class="c-affiliate-overview-card__identifier-value">{{
+                identifier.value
+              }}</span>
+            </button>
+
+            @if (!last) {
+              <span
+                class="c-affiliate-overview-card__identifier-separator"
+                aria-hidden="true"
+                >•</span
+              >
+            }
+          }
+        </div>
+      }
+    </div>
+  </article>
+</p-card>

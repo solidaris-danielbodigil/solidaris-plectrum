@@ -3,9 +3,10 @@
 
 // =============================================================================
 // 06-components/_components.plectrum-avatar.scss
-// PlectrumAvatar — initials-based identity avatar.
+// PlectrumAvatar — initials-based and illustrated identity avatar.
 //
-// Design ref: Figma custom components node 1:1586
+// Design ref: Figma custom components node 1:1586 (initials)
+//             Figma illustrated avatar node 507:7915 (large)
 // Token source: libs/styles/src/01-settings/_settings.avatar.scss
 // =============================================================================
 
@@ -47,8 +48,23 @@
   }
 }
 
+// ── Large illustrated variant (affiliate overview card) ───────────────────────
+
+.c-plectrum-avatar--large {
+  width: var(--#{$sds-prefix}-size-avatar-large-w);
+  height: var(--#{$sds-prefix}-size-avatar-large-h);
+  border-radius: var(--#{$sds-prefix}-radius-none);
+  overflow: hidden;
+
+  .c-plectrum-avatar__shape,
+  .c-plectrum-avatar__initials {
+    display: none;
+  }
+}
+
 .c-plectrum-avatar__shape,
-.c-plectrum-avatar__initials {
+.c-plectrum-avatar__initials,
+.c-plectrum-avatar__illustration {
   grid-area: 1 / 1;
 }
 
@@ -70,5 +86,13 @@
   color: var(--#{$sds-prefix}-color-surface-0);
   text-align: center;
   letter-spacing: var(--letter-spacing-0);
+  pointer-events: none;
+}
+
+.c-plectrum-avatar__illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }

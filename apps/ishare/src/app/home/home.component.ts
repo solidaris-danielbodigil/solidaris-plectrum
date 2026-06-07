@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import type { AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -7,15 +9,14 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import type { MenuItem } from 'primeng/api';
-import { MessageModule } from 'primeng/message';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {
   EmptyStateComponent,
-  NavItem,
-  NavShellComponent,
-  TopNavComponent,
+  FormFieldComponent,
+  InputClearComponent,
 } from '@solidaris/ui';
+import { AffiliateHeaderService } from '../layout/affiliate-header.service';
+import { BreadcrumbService } from '../layout/breadcrumb.service';
 
 interface SearchType {
   label: string;
@@ -40,30 +41,26 @@ interface OfficeOption {
     InputGroupModule,
     InputIconModule,
     InputTextModule,
-    MessageModule,
     SelectButtonModule,
+    FormFieldComponent,
+    InputClearComponent,
     EmptyStateComponent,
-    NavShellComponent,
-    TopNavComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-  readonly navItems: NavItem[] = [
-    { id: 'icrm', label: 'iCRM', icon: 'logo-icrm', iconSource: 'svg' },
-    { id: 'ishare', label: 'iShare', icon: 'logo-ishare', iconSource: 'svg' },
-  ];
+export class HomeComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly affiliateHeaderService = inject(AffiliateHeaderService);
 
-  readonly homeBreadcrumb: MenuItem = {
-    icon: 'bi bi-house',
-    routerLink: '/home',
-  };
-
-  readonly breadcrumbs: MenuItem[] = [
-    { label: 'iShare' },
-    { label: "Recherche d'affilié" },
-  ];
+  ngOnInit(): void {
+    this.affiliateHeaderService.clearHeader();
+    this.breadcrumbService.setBreadcrumbs([
+      { label: 'iShare' },
+      { label: "Recherche d'affilié" },
+    ]);
+  }
 
   readonly searchTypes: SearchType[] = [
     { label: 'NISS', value: 'niss', placeholder: 'Numéro NISS' },
@@ -110,11 +107,31 @@ export class HomeComponent {
       : [...this.officeOptions];
   }
 
+  isFieldInvalid(form: NgForm, name: string): boolean {
+    const control = form.controls[name] as AbstractControl | undefined;
+
+    if (!control?.invalid) {
+      return false;
+    }
+
+    // SelectButton marks ngModel dirty on click but not touched — include dirty so
+    // label + control invalid styling matches other fields before submit.
+    return control.touched || control.dirty || form.submitted;
+  }
+
   submitSearch(form: NgForm): void {
     if (!form.valid) {
       return;
     }
 
-    // The first iShare page is a shell; the search action is wired for the next iteration.
+    // Navigate to the affiliate details page, passing the searched identifier as the
+    // route param. Real lookup/resolution of the affiliate happens in a later iteration.
+    const identifier = this.searchIdentifier.trim();
+
+    if (!identifier) {
+      return;
+    }
+
+    this.router.navigate(['/affiliate', identifier]);
   }
 }

@@ -30,4 +30,22 @@
     0 0 #0000,
     0 1px 2px 0 rgba(18, 18, 23, 0.05);
 
+  // Figma: Shadows/Shadow sm — 6-layer drop shadow (node 324:5772 card chrome)
+  --#{$sds-prefix}-shadow-sm:
+    0 7px 3.5px rgba(0, 0, 0, 0.04),
+    0 4.537px 2.05px rgba(0, 0, 0, 0.03),
+    0 2.696px 1.115px rgba(0, 0, 0, 0.02),
+    0 1.4px 0.569px rgba(0, 0, 0, 0.02),
+    0 0.57px 0.285px rgba(0, 0, 0, 0.02),
+    0 0.13px 0.138px rgba(0, 0, 0, 0.01);
+
+  // Figma: Shadows/Shadow md — 6-layer drop shadow (nodes 435:7387, 324:5827)
+  --#{$sds-prefix}-shadow-md:
+    0 9px 29px 0 rgba(0, 0, 0, 0.06),
+    0 5.833px 16.984px 0 rgba(0, 0, 0, 0.05),
+    0 3.467px 9.237px 0 rgba(0, 0, 0, 0.04),
+    0 1.8px 4.713px 0 rgba(0, 0, 0, 0.03),
+    0 0.733px 2.363px 0 rgba(0, 0, 0, 0.02),
+    0 0.167px 1.141px 0 rgba(0, 0, 0, 0.01);
+
 }

@@ -1,2 +1,11 @@
 export { PlectrumAvatarComponent } from './plectrum-avatar.component';
-export type { PlectrumAvatarState } from './plectrum-avatar.types';
+export {
+  getPlectrumAvatarIllustrationSrc,
+  resolvePlectrumAvatarVariant,
+} from './plectrum-avatar.assets';
+export type {
+  PlectrumAvatarGender,
+  PlectrumAvatarSize,
+  PlectrumAvatarState,
+  PlectrumAvatarVariant,
+} from './plectrum-avatar.types';

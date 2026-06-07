@@ -24,6 +24,7 @@
   --#{$sds-prefix}-color-surface-0:     #ffffff;
   --#{$sds-prefix}-color-surface-50:    #f6f6f6;
   --#{$sds-prefix}-color-surface-100:   #eeeeee;
+  --#{$sds-prefix}-color-surface-border-drawer: #e7e7e7;  // Figma: drawer/border/color — iSHARE Audit 507:7910
   --#{$sds-prefix}-color-surface-200:   #d8d8d8;
   --#{$sds-prefix}-color-surface-300:   #c2c2c2;
   --#{$sds-prefix}-color-surface-400:   #ababab;
@@ -33,6 +34,9 @@
   --#{$sds-prefix}-color-surface-800:   #2c2c2c;
   --#{$sds-prefix}-color-surface-900:   #090909;
   --#{$sds-prefix}-color-surface-950:   #040404;
+
+  // Plectrum: neutral.800 — Figma label text (#262626)
+  --#{$sds-prefix}-color-neutral-800:   #262626;
 
   --#{$sds-prefix}-color-transparent-black-5:   rgba(0, 0, 0, 0.05);
   --#{$sds-prefix}-color-transparent-black-10:  rgba(0, 0, 0, 0.10);
@@ -62,6 +66,7 @@
   --#{$sds-prefix}-color-green-700:  #166534;
 
   --#{$sds-prefix}-color-orange-75:   #ffedd5;
+  --#{$sds-prefix}-color-orange-50:  #fffaeb;  // Figma: warning gradient start — iSHARE Audit 507:7910
   --#{$sds-prefix}-color-orange-400:  #f97316;
   --#{$sds-prefix}-color-orange-500:  #ea580c;
   --#{$sds-prefix}-color-orange-700:  #9a3412;

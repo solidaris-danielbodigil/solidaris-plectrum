@@ -14,6 +14,7 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
+import { InputClearComponent } from '../input-clear';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
 
@@ -33,7 +34,16 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
 @Component({
   selector: 'sds-top-nav',
   standalone: true,
-  imports: [ButtonModule, BreadcrumbModule, IconField, InputIcon, InputText, RippleModule, PlectrumAvatarComponent],
+  imports: [
+    ButtonModule,
+    BreadcrumbModule,
+    IconField,
+    InputClearComponent,
+    InputIcon,
+    InputText,
+    RippleModule,
+    PlectrumAvatarComponent,
+  ],
   templateUrl: './top-nav.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,6 +76,9 @@ export class TopNavComponent {
 
   /** Accessible label for the search toggle and input. */
   readonly searchAriaLabel = input<string>('Search');
+
+  /** Accessible label for the inline search clear control. */
+  readonly searchClearLabel = input<string>('Clear search');
 
   /** Accessible label for the sub-navigation toggle button. */
   readonly subNavToggleLabel = input<string>('Toggle sub-navigation');
@@ -151,6 +164,14 @@ export class TopNavComponent {
     this.searchQueryChange.emit(target.value);
   }
 
+  clearSearch(): void {
+    this._searchQuery.set('');
+    this.searchQueryChange.emit('');
+
+    const el = document.getElementById(this.searchInputId) as HTMLInputElement | null;
+    el?.focus();
+  }
+
   onSearchKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
       event.preventDefault();
@@ -163,7 +184,14 @@ export class TopNavComponent {
     }
   }
 
-  onSearchBlur(): void {
+  onSearchBlur(event: FocusEvent): void {
+    const related = event.relatedTarget;
+    const searchField = (event.target as HTMLElement | null)?.closest('.c-top-nav__search');
+
+    if (related instanceof Node && searchField?.contains(related)) {
+      return;
+    }
+
     this.closeSearch();
   }
 

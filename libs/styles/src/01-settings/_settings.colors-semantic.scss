@@ -53,6 +53,11 @@
   --#{$sds-prefix}-color-surface-subtle:   var(--#{$sds-prefix}-color-surface-50);
   --#{$sds-prefix}-color-surface-muted:    var(--#{$sds-prefix}-color-surface-75);
   --#{$sds-prefix}-color-surface-border:   var(--#{$sds-prefix}-color-surface-100);
+  --#{$sds-prefix}-color-drawer-border:    var(--#{$sds-prefix}-color-surface-border-drawer);  // Figma: drawer/border/color — 507:7910
+
+  // iSHARE Audit affiliate overview — Figma 507:7910 text roles
+  --#{$sds-prefix}-color-info-tag-text:      var(--#{$sds-prefix}-color-surface-700);   // Figma: #454545 → surface/700
+  --#{$sds-prefix}-color-metadata-chip-text: var(--#{$sds-prefix}-color-primary-700);   // Figma: #30495c → primary/700
 
   // ===========================================================================
   // TEXT  (base.ts: semantic.colorScheme.light.text)

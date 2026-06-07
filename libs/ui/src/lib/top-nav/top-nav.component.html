@@ -34,16 +34,24 @@
           [id]="searchInputId"
           class="c-top-nav__search-input o-layout--full-width"
           pInputText
-          type="search"
+          type="text"
+          role="searchbox"
           autocomplete="off"
           autofocus
           [value]="resolvedSearchQuery()"
           [placeholder]="searchPlaceholder()"
           [attr.aria-label]="searchAriaLabel()"
           (input)="onSearchInput($event)"
-          (blur)="onSearchBlur()"
+          (blur)="onSearchBlur($event)"
           (keydown)="onSearchKeydown($event)"
         />
+        <p-inputicon>
+          <sds-input-clear
+            [visible]="!!resolvedSearchQuery()"
+            [ariaLabel]="searchClearLabel()"
+            (clear)="clearSearch()"
+          />
+        </p-inputicon>
       </p-iconField>
     } @else {
       <button

@@ -1,0 +1,135 @@
+<div
+  class="c-affiliate-details o-flex o-flex--y o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
+>
+  <sds-toolbar
+    class="c-affiliate-details__toolbar c-affiliate-documents-toolbar o-layout--full-width o-flex__item--shrink-0"
+    [sticky]="true"
+  >
+    <ng-container slot="start">
+      <div
+        class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-end o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
+      >
+        <div class="c-affiliate-documents-toolbar__field">
+          <sds-form-field label="Rechercher" inputId="document-search">
+            <p-iconfield class="c-affiliate-documents-toolbar__field-input">
+              <p-inputicon>
+                <i class="bi bi-search" aria-hidden="true"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="search"
+                id="document-search"
+                name="documentSearch"
+                [ngModel]="documentSearch()"
+                (ngModelChange)="documentSearch.set($event)"
+                pSize="small"
+                placeholder="Rechercher document..."
+                class="c-affiliate-documents-toolbar__field-input"
+              />
+            </p-iconfield>
+          </sds-form-field>
+        </div>
+
+        <div class="c-affiliate-documents-toolbar__field">
+          <sds-form-field label="Secteur" inputId="document-sector">
+            <p-autocomplete
+              inputId="document-sector"
+              name="documentSector"
+              [(ngModel)]="selectedSector"
+              [suggestions]="sectorSuggestions"
+              (completeMethod)="filterSectors($event)"
+              optionLabel="label"
+              dataKey="value"
+              [dropdown]="true"
+              [forceSelection]="true"
+              size="small"
+              fluid
+            ></p-autocomplete>
+          </sds-form-field>
+        </div>
+
+        <div class="c-affiliate-documents-toolbar__field">
+          <sds-form-field label="Trier par" inputId="document-sort">
+            <p-autocomplete
+              inputId="document-sort"
+              name="documentSort"
+              [ngModel]="selectedSort()"
+              (ngModelChange)="selectedSort.set($event)"
+              [suggestions]="sortSuggestions"
+              (completeMethod)="filterSortOptions($event)"
+              optionLabel="label"
+              dataKey="value"
+              [dropdown]="true"
+              [forceSelection]="true"
+              size="small"
+              fluid
+            ></p-autocomplete>
+          </sds-form-field>
+        </div>
+
+        <div
+          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--auto"
+        >
+          <sds-form-field label="Vue parcours" inputId="journey-view">
+            <p-toggleswitch
+              inputId="journey-view"
+              name="journeyView"
+              [(ngModel)]="journeyView"
+            />
+          </sds-form-field>
+        </div>
+
+        <div
+          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--auto"
+        >
+          <sds-form-field
+            label="Documents archivés seulement"
+            inputId="archived-only"
+          >
+            <p-toggleswitch
+              inputId="archived-only"
+              name="archivedOnly"
+              [ngModel]="archivedOnly()"
+              (ngModelChange)="archivedOnly.set($event)"
+            />
+          </sds-form-field>
+        </div>
+      </div>
+    </ng-container>
+  </sds-toolbar>
+
+  <div
+    class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+  >
+    <div
+      class="c-affiliate-details__documents o-flex o-flex--y o-layout--gap-2 o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-auto o-flex__item--grow-1"
+    >
+      @if (hasListResults) {
+        <sds-list
+          class="o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
+          [groups]="listGroups"
+          [items]="listItems"
+          [expandedGroupIds]="expandedGroupIds()"
+          [selectedItemId]="selectedDocumentId()"
+          (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
+          (itemClick)="onDocumentClick($event)"
+        />
+      } @else {
+        <sds-empty-state
+          class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
+          title="Aucun document trouvé"
+          description="Aucun document ne correspond aux filtres sélectionnés."
+        />
+      }
+    </div>
+
+    @if (visibleDocuments().length > 0) {
+      <app-affiliate-document-detail
+        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+        [selectedDocumentId]="selectedDocumentId()"
+        [visibleDocuments]="visibleDocuments()"
+        (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
+      />
+    }
+  </div>
+</div>

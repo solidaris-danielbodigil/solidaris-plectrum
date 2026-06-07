@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-06-05T13:14:48.999Z",
+    "generated": "2026-06-07T14:44:04.561Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -69,6 +69,19 @@
     }
   },
   "components": {
+    "AffiliateOverviewCard": {
+      "path": "libs\\ui\\src\\lib\\affiliate-overview-card\\affiliate-overview-card.component.ts",
+      "category": "molecules",
+      "metadata": true,
+      "bemBlock": "c-affiliate-overview-card",
+      "primeNg": "Api",
+      "scssPath": "libs/styles/src/06-components/_components.affiliate-overview-card.scss",
+      "uses": [
+        "PlectrumAvatar",
+        "Icon"
+      ],
+      "usedBy": []
+    },
     "DocDemoBox": {
       "path": "libs\\ui\\src\\lib\\doc-demo-box\\doc-demo-box.component.ts",
       "category": "uncategorized",
@@ -89,6 +102,16 @@
       "uses": [],
       "usedBy": []
     },
+    "FormField": {
+      "path": "libs\\ui\\src\\lib\\form-field\\form-field.component.ts",
+      "category": "molecules",
+      "metadata": true,
+      "bemBlock": "c-form-field",
+      "primeNg": "Message",
+      "scssPath": "libs/styles/src/06-components/_components.form-field.scss",
+      "uses": [],
+      "usedBy": []
+    },
     "Icon": {
       "path": "libs\\ui\\src\\lib\\icon\\icon.component.ts",
       "category": "atoms",
@@ -98,15 +121,38 @@
       "scssPath": "libs/styles/src/06-components/_components.icon.scss",
       "uses": [],
       "usedBy": [
+        "AffiliateOverviewCard",
         "NavShell"
       ]
+    },
+    "InputClear": {
+      "path": "libs\\ui\\src\\lib\\input-clear\\input-clear.component.ts",
+      "category": "atoms",
+      "metadata": true,
+      "bemBlock": "c-input-clear",
+      "primeNg": "Icons",
+      "scssPath": "libs/styles/src/06-components/_components.input-clear.scss",
+      "uses": [],
+      "usedBy": [
+        "TopNav"
+      ]
+    },
+    "List": {
+      "path": "libs\\ui\\src\\lib\\list\\list.component.ts",
+      "category": "molecules",
+      "metadata": true,
+      "bemBlock": "c-list",
+      "primeNg": "Tag",
+      "scssPath": "libs/styles/src/06-components/_components.list.scss",
+      "uses": [],
+      "usedBy": []
     },
     "NavShell": {
       "path": "libs\\ui\\src\\lib\\nav-shell\\nav-shell.component.ts",
       "category": "organisms",
       "metadata": true,
       "bemBlock": "c-nav-shell",
-      "primeNg": "Tooltip",
+      "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.nav-shell.scss",
       "uses": [
         "Icon"
@@ -122,6 +168,7 @@
       "scssPath": "libs/styles/src/06-components/_components.plectrum-avatar.scss",
       "uses": [],
       "usedBy": [
+        "AffiliateOverviewCard",
         "TopNav"
       ]
     },
@@ -153,12 +200,20 @@
       "primeNg": "Api",
       "scssPath": "libs/styles/src/06-components/_components.top-nav.scss",
       "uses": [
+        "InputClear",
         "PlectrumAvatar"
       ],
       "usedBy": []
     }
   },
   "relationships": {
+    "AffiliateOverviewCard": {
+      "uses": [
+        "PlectrumAvatar",
+        "Icon"
+      ],
+      "usedBy": []
+    },
     "DocDemoBox": {
       "uses": [],
       "usedBy": []
@@ -167,11 +222,26 @@
       "uses": [],
       "usedBy": []
     },
+    "FormField": {
+      "uses": [],
+      "usedBy": []
+    },
     "Icon": {
       "uses": [],
       "usedBy": [
+        "AffiliateOverviewCard",
         "NavShell"
       ]
+    },
+    "InputClear": {
+      "uses": [],
+      "usedBy": [
+        "TopNav"
+      ]
+    },
+    "List": {
+      "uses": [],
+      "usedBy": []
     },
     "NavShell": {
       "uses": [
@@ -182,6 +252,7 @@
     "PlectrumAvatar": {
       "uses": [],
       "usedBy": [
+        "AffiliateOverviewCard",
         "TopNav"
       ]
     },
@@ -195,16 +266,17 @@
     },
     "TopNav": {
       "uses": [
+        "InputClear",
         "PlectrumAvatar"
       ],
       "usedBy": []
     }
   },
   "summary": {
-    "totalComponents": 8,
-    "componentsWithMetadata": 6,
-    "relationshipsMapped": 4,
+    "totalComponents": 12,
+    "componentsWithMetadata": 10,
+    "relationshipsMapped": 10,
     "tokenFiles": 11,
-    "primeNgMappings": 4
+    "primeNgMappings": 7
   }
 }

@@ -9,6 +9,9 @@
 
 :root {
   --#{$sds-prefix}-size-avatar: 32px;
+  // Figma: illustrated avatar node 507:7915 — affiliate overview card
+  --#{$sds-prefix}-size-avatar-large-w: 51.333px;
+  --#{$sds-prefix}-size-avatar-large-h: 56px;
   --#{$sds-prefix}-color-avatar-shape-hover: #af052a; // Figma: avatar hover shape color
   --#{$sds-prefix}-shadow-avatar-active:
     0 0 0 2px var(--#{$sds-prefix}-color-surface-0),

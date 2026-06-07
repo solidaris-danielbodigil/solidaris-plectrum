@@ -1,0 +1,45 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-details.scss
+// c-affiliate-details — full-width filter toolbar + two-column content row.
+//
+// Layout (flex, gap, grow/shrink) via o-flex / o-layout BEM mixes in the template.
+// Only page canvas background and structural min-widths live here.
+//
+// Design ref:   Figma node 324:5739 (Dossier Affilié — page layout)
+//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5739
+// Token source: libs/styles/src/01-settings/_settings.affiliate-details.scss
+// =============================================================================
+
+// Page canvas — contrast behind white cards so ring shadow + radii stay visible.
+.c-affiliate-details {
+  background: var(--#{$sds-prefix}-color-affiliate-details-page-bg);
+  min-height: 0;
+}
+
+// Full-width document filter toolbar — sticky within the main content scroll area.
+.c-affiliate-details__toolbar {
+  flex-shrink: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+// Two-column row — documents list (left) + detail viewer (right) at @lg.
+.c-affiliate-details__columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+// First column — Suivi des documents list only (header inside sds-list).
+.c-affiliate-details__documents {
+  min-width: 0;
+  min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-documents-column-min);
+}
+
+// Second column — document detail viewer
+.c-affiliate-details__detail {
+  min-width: 0;
+  min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-detail-column-min);
+}

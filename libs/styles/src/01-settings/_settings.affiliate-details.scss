@@ -1,0 +1,18 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.affiliate-details.scss
+// Affiliate details page shell tokens — two-column documents + detail layout.
+//
+// Design ref: Figma node 324:5739 (Dossier Affilié — page layout)
+// https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5739
+// =============================================================================
+
+:root {
+  // Page canvas — contrast behind white section cards (moved from c-affiliate-documents)
+  --#{$sds-prefix}-color-affiliate-details-page-bg: var(--#{$sds-prefix}-color-surface-subtle);
+
+  // Column structural min-widths — layout flex/grow via o-flex in template
+  --#{$sds-prefix}-size-affiliate-details-documents-column-min: calc(320 / 14 * var(--base-unit));
+  --#{$sds-prefix}-size-affiliate-details-detail-column-min: calc(360 / 14 * var(--base-unit));
+}

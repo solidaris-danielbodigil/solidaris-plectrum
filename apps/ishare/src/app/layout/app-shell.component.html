@@ -1,0 +1,44 @@
+<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">
+  <sds-nav-shell
+    class="o-layout--relative o-flex__item--shrink-0"
+    [items]="navItems"
+    activeItemId="ishare"
+  ></sds-nav-shell>
+
+  <div class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0">
+    <sds-top-nav
+      class="o-layout--full-width"
+      [home]="homeBreadcrumb"
+      [breadcrumbs]="breadcrumbs()"
+      [showSubNavToggle]="false"
+      avatarInitials="IS"
+      avatarState="initials"
+      avatarAriaLabel="Profil iShare"
+    ></sds-top-nav>
+
+    @if (affiliateHeader(); as header) {
+      <sds-affiliate-overview-card
+        class="o-layout--full-width"
+        [title]="header.title"
+        [variant]="header.variant"
+        [avatarGender]="header.avatarGender"
+        [avatarVariant]="header.avatarVariant"
+        [avatarInitials]="header.avatarInitials"
+        [statusAction]="header.statusAction"
+        [infoTags]="header.infoTags"
+        [identifiers]="header.identifiers"
+        [primaryAction]="header.primaryAction"
+        (identifierCopy)="onIdentifierCopy($event)"
+        (primaryActionClick)="onPrimaryActionClick(header)"
+        (statusActionClick)="onStatusActionClick(header)"
+        (infoTagClick)="onInfoTagClick(header, $event)"
+      ></sds-affiliate-overview-card>
+    }
+
+    <main
+      class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2"
+    >
+      <router-outlet />
+    </main>
+  </div>
+</div>

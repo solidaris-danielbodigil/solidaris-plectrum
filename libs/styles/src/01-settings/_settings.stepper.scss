@@ -1,0 +1,33 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.stepper.scss
+// PrimeNG Stepper token bridge
+//
+// Maps --p-stepper-* variables to Solidaris design tokens.
+// Scoped by BEM wrapper class so overrides apply only where intended.
+// =============================================================================
+
+// ── Affiliate document detail context ────────────────────────────────────────
+// Design ref: Figma iSHARE-Audit node 324:5860 — second column stepper
+// https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
+.c-affiliate-document-detail__stepper {
+  --p-stepper-step-number-size: var(--#{$sds-prefix}-size-affiliate-document-detail-step-number);
+  --p-stepper-step-number-font-size: var(--#{$sds-prefix}-text-affiliate-document-detail-step-number-size);
+  --p-stepper-step-number-font-weight: var(--font-weight-semibold);
+  --p-stepper-step-number-border-radius: var(--#{$sds-prefix}-radius-pill);
+  --p-stepper-step-number-background: var(--#{$sds-prefix}-color-content-bg);
+  --p-stepper-step-number-color: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text);
+  --p-stepper-step-number-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border);
+  --p-stepper-step-number-active-background: var(--#{$sds-prefix}-color-affiliate-document-detail-step-active);
+  --p-stepper-step-number-active-color: var(--#{$sds-prefix}-color-content-bg);
+  --p-stepper-step-number-active-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-step-active);
+  --p-stepper-separator-size: var(--#{$sds-prefix}-size-affiliate-document-detail-step-separator);
+  --p-stepper-separator-background: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border);
+  --p-stepper-separator-active-background: var(--#{$sds-prefix}-color-affiliate-document-detail-step-active);
+  --p-stepper-step-title-color: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text);
+  --p-stepper-step-title-active-color: var(--#{$sds-prefix}-color-text);
+  --p-stepper-steppanels-padding: 0;
+  --p-stepper-steppanel-padding: 0;
+  --p-stepper-steppanel-background: transparent;
+}

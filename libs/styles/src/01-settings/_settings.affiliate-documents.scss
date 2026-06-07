@@ -1,0 +1,40 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.affiliate-documents.scss
+// Affiliate documents filter toolbar tokens.
+//
+// Design ref: Figma node 324:5772 (Dossier Affilié — document filter toolbar)
+// =============================================================================
+
+:root {
+  // Fixed control width — Figma: 250px @ 14px base
+  --#{$sds-prefix}-size-affiliate-documents-filter-field: calc(250 / 14 * var(--base-unit));
+
+  // Toolbar chrome
+  --#{$sds-prefix}-color-affiliate-documents-toolbar-bg: var(--#{$sds-prefix}-color-content-bg);
+  --#{$sds-prefix}-space-affiliate-documents-toolbar-padding: var(--spacing-2); // 16px — Figma px-[16px]
+  --#{$sds-prefix}-space-affiliate-documents-toolbar-inner-padding: 0; // cancel o-layout--padding-3 on shared toolbar inner
+
+  // Vertical label above control — Figma: label-xs semibold #262626 (Plectrum neutral.800)
+  --#{$sds-prefix}-color-affiliate-documents-filter-label: var(--#{$sds-prefix}-color-neutral-800);
+
+  // Card chrome — 1px ring (Figma #d1d1d1 → surface-200) + sm elevation (node 324:5772)
+  --#{$sds-prefix}-shadow-affiliate-documents-toolbar:
+    0 0 0 1px var(--#{$sds-prefix}-color-surface-200),
+    var(--#{$sds-prefix}-shadow-sm);
+}
+
+// ── PrimeNG Card token bridge — scoped to affiliate documents toolbar wrapper ─
+.c-affiliate-documents-toolbar {
+  --p-card-body-padding: var(--#{$sds-prefix}-space-affiliate-documents-toolbar-padding);
+  --p-card-background: var(--#{$sds-prefix}-color-affiliate-documents-toolbar-bg);
+  --p-card-border-color: var(--#{$sds-prefix}-color-surface-200); // Figma: #d1d1d1 — closest semantic
+  --p-card-border-radius: var(--#{$sds-prefix}-radius-xl);
+  --p-card-shadow: var(--#{$sds-prefix}-shadow-affiliate-documents-toolbar);
+
+  // Shared sds-toolbar inner ships o-layout--padding-3 (24px); card body owns 16px inset.
+  .c-toolbar__inner {
+    padding: var(--#{$sds-prefix}-space-affiliate-documents-toolbar-inner-padding);
+  }
+}

@@ -1,0 +1,84 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-documents.scss
+// c-affiliate-documents-toolbar — document filter row on affiliate details page.
+// Page canvas background lives on c-affiliate-details (see _components.affiliate-details.scss).
+//
+// Layout (flex, gap, wrap) via o-flex / o-layout BEM mixes in the template.
+// Only structural width constraints and label chrome live here.
+//
+// Design ref:   Figma node 324:5772 (Dossier Affilié — document filter toolbar)
+// Token source: libs/styles/src/01-settings/_settings.affiliate-documents.scss
+// Reference:    _components.iconography.scss (search field sizing pattern)
+// =============================================================================
+
+// Affiliate toolbar: no end-slot actions — hide empty end so flex-basis:100% cannot shrink start.
+.c-affiliate-documents-toolbar .c-toolbar__end:empty {
+  display: none;
+}
+
+// Start slot is a single full-width row — avoid nested flex on __start.
+.c-affiliate-documents-toolbar .c-toolbar__start {
+  display: block;
+  flex: 1 1 100%;
+  width: 100%;
+  max-width: 100%;
+}
+
+// Sticky filter bar — spans full content width above columns; bottom edge stays visible on scroll.
+.c-affiliate-documents-toolbar.c-toolbar--sticky {
+  // Structural — ring shadow must not clip at rounded corners.
+  .p-card {
+    overflow: visible;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--#{$sds-prefix}-color-surface-200);
+    pointer-events: none;
+  }
+}
+
+// Row wrapper — full-width horizontal flex row for the five filter groups.
+.c-affiliate-documents-toolbar__row {
+  min-width: 0;
+  width: 100%;
+}
+
+// Fixed-width field shell (search, autocomplete) — mirrors c-iconography-toolbar__search sizing.
+.c-affiliate-documents-toolbar__field,
+.c-affiliate-documents-toolbar__field--auto {
+  min-width: 0;
+
+  // Label-xs above control — Figma: 12px semibold, 7px label-to-control gap via --gap-xs modifier.
+  &.c-form-field--vertical,
+  .c-form-field--vertical {
+    gap: var(--#{$sds-prefix}-space-form-field-gap-xs);
+  }
+
+  .c-form-field__label {
+    @include text-label-xs;
+    color: var(--#{$sds-prefix}-color-affiliate-documents-filter-label);
+  }
+}
+
+.c-affiliate-documents-toolbar__field {
+  flex: 0 0 var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
+  width: var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
+}
+
+// Toggle fields — auto width; layout via o-flex in template.
+.c-affiliate-documents-toolbar__field--auto {
+  flex: 0 1 auto;
+  width: auto;
+}
+
+.c-affiliate-documents-toolbar__field-input {
+  width: 100%;
+}

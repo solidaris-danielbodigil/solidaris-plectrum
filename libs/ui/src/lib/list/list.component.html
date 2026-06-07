@@ -1,0 +1,173 @@
+<div
+  class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+>
+  <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
+    <h2 class="c-list__title">Suivi des documents</h2>
+    <span
+      class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
+      >{{ documentCount() }}</span
+    >
+  </div>
+  <i class="bi bi-sort-down" aria-hidden="true"></i>
+</div>
+
+@if (loading()) {
+  <div class="c-list__body o-flex o-flex--col o-layout--gap-1-5">
+    @for (row of [1, 2, 3]; track row) {
+      <article class="c-list__item c-list__item--document">
+        <div
+          class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-block-1-5 o-layout--padding-inline-2"
+        >
+          <div class="o-flex o-layout--gap-3">
+            <span class="c-list__skeleton-icon"></span>
+            <span class="c-list__skeleton-line c-list__skeleton-line--title"></span>
+          </div>
+          <span class="c-list__skeleton-line c-list__skeleton-line--subtitle"></span>
+          <span class="c-list__skeleton-line c-list__skeleton-line--tag"></span>
+        </div>
+      </article>
+    }
+  </div>
+} @else if (isJourneyMode()) {
+  <div
+    class="c-list__body o-flex o-flex--col o-layout--gap-2"
+    role="list"
+    aria-label="Parcours documents"
+  >
+    @for (group of groups()!; track group.id) {
+      <div
+        class="c-list__group o-flex o-flex--col o-layout--gap-1-5"
+        role="listitem"
+        [class.is-collapsed]="!isGroupExpanded(group.id)"
+      >
+        <article class="c-list__item c-list__item--group">
+          <div
+            class="o-flex o-flex--align-items-start"
+            role="button"
+            tabindex="0"
+            [attr.aria-expanded]="isGroupExpanded(group.id)"
+            [attr.aria-label]="groupHeaderAriaLabel(group)"
+            (click)="onGroupHeaderClick(group.id)"
+            (keydown)="onGroupHeaderKeydown($event, group.id)"
+          >
+            <div
+              class="c-list__chevron o-flex o-flex--align-items-center o-flex--justify-content-center"
+              [class.c-list__chevron--collapsed]="!isGroupExpanded(group.id)"
+            >
+              <i class="c-list__chevron-icon bi bi-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+              <div class="c-list__header-row o-flex o-layout--gap-3">
+                <i class="c-list__icon bi bi-folder2-open" aria-hidden="true"></i>
+                <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
+                  <p class="c-list__title">
+                    {{ group.title }}
+                    @if (group.titleAccent) {
+                      <span class="c-list__title-accent">{{ group.titleAccent }}</span>
+                    }
+                  </p>
+                  <hr class="c-list__divider" />
+                </div>
+              </div>
+              <div class="c-list__dates o-flex o-layout--gap-0-25">
+                <p class="c-list__date o-flex__item--grow-1">
+                  Date de début :
+                  <span class="c-list__date-value">{{ group.startDate }}</span>
+                </p>
+                <p class="c-list__date c-list__date--end o-flex__item--grow-1">
+                  Date de fin :
+                  <span class="c-list__date-value">{{ group.endDate }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        @if (isGroupExpanded(group.id)) {
+          <div class="c-list__group-documents" role="list" aria-label="Documents du parcours">
+            @for (doc of group.documents; track doc.id) {
+              <div class="o-flex o-flex--align-items-stretch o-layout--gap-0" role="listitem">
+                <div class="c-list__timeline">
+                  <span class="c-list__timeline-marker" aria-hidden="true"></span>
+                </div>
+                <article
+                  class="c-list__item c-list__item--document o-flex__item--grow-1 o-layout--min-w-0"
+                  [class.c-list__item--selected]="isDocumentSelected(doc)"
+                  role="button"
+                  tabindex="0"
+                  [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
+                  (click)="onDocumentClick(doc)"
+                  (keydown)="onDocumentKeydown($event, doc)"
+                >
+                  <ng-container *ngTemplateOutlet="documentRow; context: { $implicit: doc }" />
+                </article>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+} @else {
+  <div
+    class="c-list__body o-flex o-flex--col o-layout--gap-1-5"
+    role="list"
+    aria-label="Documents"
+  >
+    @for (doc of flatDocuments(); track doc.id) {
+      <div role="listitem">
+        <article
+          class="c-list__item c-list__item--document"
+          [class.c-list__item--selected]="isDocumentSelected(doc)"
+          role="button"
+          tabindex="0"
+          [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
+          (click)="onDocumentClick(doc)"
+          (keydown)="onDocumentKeydown($event, doc)"
+        >
+          <ng-container *ngTemplateOutlet="documentRow; context: { $implicit: doc }" />
+        </article>
+      </div>
+    }
+  </div>
+}
+
+<ng-template #documentRow let-doc>
+  <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
+    <div
+      class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
+    >
+      <div class="o-flex o-layout--gap-3 o-layout--min-w-0">
+        <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
+        <p class="c-list__title">
+          {{ doc.title }}
+          @if (doc.titleLine2) {
+            <br />
+            {{ doc.titleLine2 }}
+          }
+        </p>
+      </div>
+      @if (doc.status) {
+        <div class="c-list__status">
+          <p-tag [severity]="doc.status.severity" [value]="doc.status.label">
+            @if (doc.status.icon) {
+              <i [class]="doc.status.icon" aria-hidden="true"></i>
+            }
+          </p-tag>
+        </div>
+      }
+    </div>
+    <hr class="c-list__divider" />
+    @if (doc.tags?.length) {
+      <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+        @for (tag of doc.tags; track tag.label + tag.severity) {
+          <p-tag [severity]="tag.severity" [value]="tag.label">
+            @if (tag.icon) {
+              <i [class]="tag.icon" aria-hidden="true"></i>
+            }
+          </p-tag>
+        }
+      </div>
+    }
+  </div>
+</ng-template>

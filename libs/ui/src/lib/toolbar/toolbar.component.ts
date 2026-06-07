@@ -20,6 +20,13 @@ import { Card } from 'primeng/card';
  * All styles live in `libs/styles/src/06-components/_components.toolbar.scss`.
  * `ViewEncapsulation.None` is required because styles are in the global ITCSS sheet.
  *
+ * ## Domain variants
+ * Apply a BEM block class on `<sds-toolbar>` for page-specific chrome overrides.
+ * - `c-affiliate-documents-toolbar` — affiliate document filter row (Figma 324:5772).
+ *   Tokens: `libs/styles/src/01-settings/_settings.affiliate-documents.scss`
+ *   Styles: `libs/styles/src/06-components/_components.affiliate-documents.scss`
+ *   Reference: `apps/ishare/src/app/affiliate-details/affiliate-details.component.html`
+ *
  * ## Usage
  * ```html
  * <sds-toolbar [sticky]="true">

@@ -1,0 +1,128 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-document-detail.scss
+// c-affiliate-document-detail — iSHARE affiliate document detail viewer.
+//
+// Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
+//
+// Design ref:   Figma node 324:5860 (Dossier Affilié — second column: accordion + stepper + nested accordion)
+//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
+// Token source: libs/styles/src/01-settings/_settings.affiliate-document-detail.scss
+//               libs/styles/src/01-settings/_settings.stepper.scss
+//               libs/styles/src/01-settings/_settings.accordion.scss
+// Reference:    _components.affiliate-overview-card.scss, _components.sub-nav-shell.scss
+// =============================================================================
+
+.c-affiliate-document-detail {
+  background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
+  border: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-section-border);
+  border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+  min-width: 0;
+  overflow: hidden;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+
+.c-affiliate-document-detail__header {
+  background: var(--#{$sds-prefix}-color-affiliate-document-detail-header-bg);
+  padding: var(--#{$sds-prefix}-space-affiliate-document-detail-header-padding);
+}
+
+.c-affiliate-document-detail__title {
+  @include text-heading-md;
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-title-text);
+  margin: 0;
+}
+
+.c-affiliate-document-detail__nav {
+  min-width: 0;
+}
+
+// ── Body & stepper ───────────────────────────────────────────────────────────
+
+.c-affiliate-document-detail__body {
+  min-width: 0;
+}
+
+// Stepper token bridge in 01-settings — structural panel reset only
+.c-affiliate-document-detail__stepper {
+  min-width: 0;
+}
+
+// ── Nested accordions (token bridge in 01-settings) ──────────────────────────
+
+.c-affiliate-document-detail__documents-accordion,
+.c-affiliate-document-detail__details-accordion {
+  min-width: 0;
+
+  .p-accordionpanel {
+    border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+    overflow: hidden;
+  }
+}
+
+// ── Certificate header row ───────────────────────────────────────────────────
+
+.c-affiliate-document-detail__cert-header {
+  min-width: 0;
+  padding-block-end: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-cert-header-border);
+}
+
+.c-affiliate-document-detail__status-tag {
+  @include text-label-sm;
+  background: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-bg);
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-text);
+  border-radius: var(--#{$sds-prefix}-radius-pill);
+  padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-block);
+  padding-inline: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-inline);
+}
+
+.c-affiliate-document-detail__actions {
+  min-width: 0;
+}
+
+// ── Detail metadata rows ─────────────────────────────────────────────────────
+
+.c-affiliate-document-detail__details {
+  min-width: 0;
+}
+
+.c-affiliate-document-detail__detail-row {
+  min-width: 0;
+}
+
+.c-affiliate-document-detail__detail-label {
+  @include text-label-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-label-text);
+  // Fixed label column — Figma: 124px
+  inline-size: var(--#{$sds-prefix}-size-affiliate-document-detail-detail-label-width);
+  flex-shrink: 0;
+}
+
+.c-affiliate-document-detail__detail-value {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-value-text);
+  min-width: 0;
+  word-break: break-word;
+}
+
+// Metadata chips — Figma: primary/75 background
+.c-affiliate-document-detail__detail-value--chip {
+  @include text-label-sm;
+  display: inline-block;
+  background: var(--#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg);
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-text);
+  border-radius: var(--#{$sds-prefix}-radius-pill);
+  padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-block);
+  padding-inline: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-inline);
+}
+
+// ── Step footer ──────────────────────────────────────────────────────────────
+
+.c-affiliate-document-detail__step-footer {
+  padding-block-start: var(--#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start);
+  border-block-start: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-step-footer-border);
+}

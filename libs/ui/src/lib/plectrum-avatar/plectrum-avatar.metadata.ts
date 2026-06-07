@@ -13,7 +13,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.plectrum-avatar.scss',
     created: '2026-06-04',
-    modified: '2026-06-04',
+    modified: '2026-06-06',
   },
   usage: {
     useCases: [
@@ -50,7 +50,10 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     states: ['default', 'hover', 'focus-visible', 'active'],
   },
   props: [
-    { name: 'initials', type: 'string', required: true, description: 'Initials rendered in the center of the avatar' },
+    { name: 'initials', type: 'string', required: true, description: 'Initials rendered in the center of the small avatar' },
+    { name: 'size', type: 'PlectrumAvatarSize', required: false, default: 'small', description: 'Small initials or large illustrated treatment' },
+    { name: 'gender', type: 'PlectrumAvatarGender', required: false, default: 'female', description: 'Illustrated avatar gender (large variant)' },
+    { name: 'variant', type: 'PlectrumAvatarVariant', required: false, default: '1', description: 'Illustrated avatar style variant 1–3 (other clamps to 1)' },
     { name: 'state', type: 'PlectrumAvatarState', required: false, default: 'default', description: 'Persistent visual state from the Figma component (default or active)' },
     { name: 'ariaLabel', type: 'string', required: false, default: 'null', description: 'Optional accessible label for screen readers' },
   ],

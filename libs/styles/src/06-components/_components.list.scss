@@ -1,0 +1,252 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.list.scss
+// c-list — iSHARE document list with journey (grouped timeline) and flat modes.
+//
+// Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
+//
+// Design ref:   Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7387,
+//               Custom-components node 2:125 (document row default / hover / selected)
+// Token source: libs/styles/src/01-settings/_settings.list.scss
+//               libs/styles/src/01-settings/_settings.accordion.scss (p-accordion bridge)
+// Reference:    _components.affiliate-overview-card.scss
+// =============================================================================
+
+.c-list {
+  background: var(--#{$sds-prefix}-color-list-bg);
+  border: var(--#{$sds-prefix}-border-width-list-row) solid var(--#{$sds-prefix}-color-list-border);
+  border-radius: var(--#{$sds-prefix}-radius-xl);
+  overflow: hidden;
+}
+
+// ── Section header (Suivi des documents) ────────────────────────────────────
+
+.c-list__header-row {
+  padding: var(--#{$sds-prefix}-space-list-section-header-padding);
+}
+
+.c-list > .c-list__header-row .c-list__title {
+  @include text-heading-md;
+  color: var(--#{$sds-prefix}-color-list-section-title);
+  margin: 0;
+}
+
+.c-list__count-badge {
+  @include text-label-xs;
+  font-weight: var(--font-weight-bold);
+  min-inline-size: var(--#{$sds-prefix}-size-list-count-badge-min);
+  min-block-size: var(--#{$sds-prefix}-size-list-count-badge-min);
+  border-radius: calc(10.5 / 14 * var(--base-unit));
+  background: var(--#{$sds-prefix}-color-list-count-badge-bg);
+  color: var(--#{$sds-prefix}-color-list-count-badge-text);
+  text-align: center;
+}
+
+// ── List body ───────────────────────────────────────────────────────────────
+
+.c-list__body {
+  padding-inline: var(--#{$sds-prefix}-space-list-body-padding-inline);
+  padding-block-end: var(--#{$sds-prefix}-space-list-body-padding-inline);
+}
+
+// ── Row cards ───────────────────────────────────────────────────────────────
+
+.c-list__item {
+  background: var(--#{$sds-prefix}-color-list-row-bg);
+  border: var(--#{$sds-prefix}-border-width-list-row) solid var(--#{$sds-prefix}-color-list-row-border);
+  border-radius: var(--#{$sds-prefix}-radius-xl);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.c-list__item--selected {
+  border-width: var(--#{$sds-prefix}-border-width-list-selected);
+  border-color: var(--#{$sds-prefix}-color-list-row-selected-border);
+  box-shadow: var(--#{$sds-prefix}-shadow-list-row-selected);
+}
+
+.c-list__item--group [role='button'],
+.c-list__item--document[role='button'] {
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
+      var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
+}
+
+.c-list__item--document[role='button'] {
+  transition: var(--#{$sds-prefix}-transition-list-row);
+
+  &:hover:not(.c-list__item--selected) {
+    border-color: var(--#{$sds-prefix}-color-list-row-hover-border);
+  }
+}
+
+.c-list__container {
+  min-width: 0;
+  padding-block: var(--#{$sds-prefix}-space-list-row-padding-block);
+  padding-inline: var(--#{$sds-prefix}-space-list-row-padding-inline);
+}
+
+// Item header row — title + status (label-md scale)
+.c-list__item .c-list__header-row .c-list__title {
+  @include text-label-md;
+  color: var(--#{$sds-prefix}-color-list-title-text);
+  margin: 0;
+  word-break: break-word;
+}
+
+.c-list__title-accent {
+  color: var(--#{$sds-prefix}-color-list-title-accent);
+}
+
+// ── Chevron column (journey group headers only) ─────────────────────────────
+
+.c-list__chevron {
+  inline-size: var(--#{$sds-prefix}-size-list-chevron-column);
+  flex-shrink: 0;
+  padding-block: var(--#{$sds-prefix}-space-list-row-padding-block);
+  padding-inline-start: var(--#{$sds-prefix}-space-list-chevron-padding-inline-start);
+  color: var(--#{$sds-prefix}-color-list-chevron);
+  transition: transform var(--#{$sds-prefix}-transition-duration, 200ms) ease;
+}
+
+.c-list__chevron-icon {
+  font-size: var(--#{$sds-prefix}-size-list-icon);
+  line-height: 1;
+}
+
+.c-list__group.is-collapsed .c-list__chevron,
+.c-list__chevron--collapsed {
+  transform: rotate(-90deg);
+}
+
+// ── Icons ───────────────────────────────────────────────────────────────────
+
+.c-list__icon {
+  font-size: var(--#{$sds-prefix}-size-list-icon);
+  line-height: 1;
+  color: var(--#{$sds-prefix}-color-list-icon);
+  flex-shrink: 0;
+}
+
+// ── Divider ─────────────────────────────────────────────────────────────────
+
+.c-list__divider {
+  display: block;
+  inline-size: 100%;
+  block-size: 1px;
+  border: none;
+  margin: 0;
+  padding-block: var(--#{$sds-prefix}-radius-xs);
+  background: var(--#{$sds-prefix}-color-list-divider);
+  opacity: var(--#{$sds-prefix}-opacity-list-divider);
+}
+
+// ── Dates (group rows) ──────────────────────────────────────────────────────
+
+.c-list__dates {
+  min-width: 0;
+}
+
+.c-list__date {
+  @include text-label-xs;
+  color: var(--#{$sds-prefix}-color-list-date-label);
+  margin: 0;
+}
+
+.c-list__date-value {
+  color: var(--#{$sds-prefix}-color-list-date-value);
+}
+
+.c-list__date--end {
+  text-align: end;
+}
+
+// ── Timeline gutter (journey document rows) ─────────────────────────────────
+
+.c-list__timeline {
+  position: relative;
+  inline-size: var(--#{$sds-prefix}-size-list-timeline-gutter);
+  flex-shrink: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    inline-size: 1px;
+    background: var(--#{$sds-prefix}-color-list-timeline-line);
+    transform: translateX(-50%);
+  }
+}
+
+.c-list__timeline-marker {
+  position: absolute;
+  inset-block-start: var(--#{$sds-prefix}-space-list-timeline-marker-offset);
+  inset-inline-start: 50%;
+  inline-size: var(--#{$sds-prefix}-size-list-timeline-marker);
+  block-size: var(--#{$sds-prefix}-size-list-timeline-marker);
+  border-radius: var(--#{$sds-prefix}-radius-pill);
+  background: var(--#{$sds-prefix}-color-list-timeline-marker);
+  border: 1px solid var(--#{$sds-prefix}-color-list-timeline-marker-border);
+  transform: translateX(-50%);
+}
+
+// ── Mode modifiers ──────────────────────────────────────────────────────────
+
+.c-list--flat {
+  .c-list__chevron,
+  .c-list__timeline {
+    display: none;
+  }
+}
+
+// ── Accordion structural overrides ────────────────────────────────────────────
+
+.c-list__accordion {
+  .p-accordionheader-toggle-icon {
+    display: none;
+  }
+}
+
+// ── Loading state ───────────────────────────────────────────────────────────
+
+.c-list.is-loading {
+  pointer-events: none;
+  opacity: var(--#{$sds-prefix}-disabled-opacity);
+}
+
+.c-list__skeleton-line {
+  display: block;
+  border-radius: var(--#{$sds-prefix}-radius-sm);
+  background: var(--#{$sds-prefix}-color-list-skeleton-bg);
+  block-size: var(--spacing-1);
+}
+
+.c-list__skeleton-line--title {
+  inline-size: 55%;
+  block-size: var(--spacing-2);
+}
+
+.c-list__skeleton-line--subtitle {
+  inline-size: 35%;
+}
+
+.c-list__skeleton-line--tag {
+  inline-size: var(--spacing-5);
+  block-size: var(--spacing-1-5);
+}
+
+.c-list__skeleton-icon {
+  display: block;
+  inline-size: var(--#{$sds-prefix}-size-list-icon);
+  block-size: var(--#{$sds-prefix}-size-list-icon);
+  border-radius: var(--#{$sds-prefix}-radius-sm);
+  background: var(--#{$sds-prefix}-color-list-skeleton-bg);
+  flex-shrink: 0;
+}

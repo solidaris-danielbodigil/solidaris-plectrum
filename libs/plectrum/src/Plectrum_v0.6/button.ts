@@ -454,10 +454,10 @@ import type { ButtonDesignTokens } from '@primeuix/themes/types/button';
                     activeBackground: "{surface.50}"
                 },
                 warn: {
-                    color: "{surface.50}",
-                    borderColor: "{surface.50}",
-                    hoverBackground: "{surface.50}",
-                    activeBackground: "{surface.50}"
+                    color: "{orange.600}",
+                    borderColor: "{orange.600}",
+                    hoverBackground: "{orange.75}",
+                    activeBackground: "{orange.100}"
                 },
                 plain: {
                     color: "{surface.50}",

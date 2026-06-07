@@ -1,0 +1,153 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-overview-card.scss
+// c-affiliate-overview-card — iSHARE affiliate audit summary card.
+//
+// Horizontal layout: avatar | body (header row + metadata chips).
+// Layout (flex, gap, wrap, grow/shrink) via o-flex / o-layout BEM mixes in the template.
+//
+// Design ref:   Figma node 507:7910 / 507:7915 / 324:5745 (Dossier Affilié) — iSHARE-Audit
+// Token source: libs/styles/src/01-settings/_settings.affiliate-overview.scss
+// Reference:    _components.empty-state.scss, _components.toolbar.scss
+// =============================================================================
+
+// Modifiers are applied via p-card styleClass so rules match the rendered .p-card root.
+.c-affiliate-overview-card {
+  box-shadow: none;
+  border-bottom: 1px solid var(--#{$sds-prefix}-color-affiliate-overview-card-border);
+}
+
+// ── Variant modifiers ───────────────────────────────────────────────────────
+
+.c-affiliate-overview-card--default {
+  // Standard card — PrimeNG card bridge tokens only.
+}
+
+.c-affiliate-overview-card--in-order {
+  border-inline-start: var(--#{$sds-prefix}-size-affiliate-overview-card-accent-width) solid
+    var(--#{$sds-prefix}-color-affiliate-overview-card-accent-success);
+}
+
+// Variant backgrounds owned by --p-card-background in 01-settings (88deg subtle gradients).
+
+// ── Header row ──────────────────────────────────────────────────────────────
+
+.c-affiliate-overview-card__header-main {
+  // Growing left group (title + status + tags) — layout via o-flex__item--grow-1 in template.
+  min-width: 0;
+}
+
+.c-affiliate-overview-card__title {
+  @include text-heading-lg;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+// Display-only chips (no filterKey) render as a non-interactive pButton.
+.c-affiliate-overview-card__info-tag:not(.c-affiliate-overview-card__info-tag--filterable) {
+  font-family: var(--text-label-sm-family);
+  font-weight: var(--text-label-sm-weight);
+  line-height: normal;
+  cursor: default;
+  pointer-events: none;
+}
+
+// Filterable chips are p-togglebutton — line-height reset in 01-settings.togglebutton.
+.c-affiliate-overview-card__info-tag--filterable {
+  font-family: var(--text-label-sm-family);
+  cursor: pointer;
+}
+
+.c-affiliate-overview-card__info-tag-value {
+  font-weight: var(--font-weight-bold);
+}
+
+.c-affiliate-overview-card__shortcut-badge {
+  font-family: var(--font-family-label);
+  font-size: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-size);
+  font-weight: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-weight);
+  line-height: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height);
+  background: var(--#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-bg);
+  color: var(--#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-text);
+  border-radius: var(--#{$sds-prefix}-radius-sm);
+  padding-block: var(--#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-block);
+  padding-inline: var(--#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline);
+}
+
+// ── Identifier chips ─────────────────────────────────────────────────────────
+
+.c-affiliate-overview-card__identifier {
+  // font-size + line-height owned by PrimeNG size (p-button-sm).
+  font-family: var(--text-label-sm-family);
+  font-weight: var(--text-label-sm-weight);
+
+  &:hover {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-hover);
+  }
+
+  // Pressed — stronger fill than hover; instant transition so feedback is visible during click.
+  &:active {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-active);
+    background-color: var(--#{$sds-prefix}-color-primary-100);
+    transition: none;
+  }
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
+      var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
+}
+
+.c-affiliate-overview-card__identifier-icon {
+  font-size: var(--#{$sds-prefix}-size-affiliate-overview-card-metadata-icon);
+  line-height: 1;
+  color: currentcolor;
+}
+
+.c-affiliate-overview-card__identifier-value {
+  font-weight: var(--font-weight-bold);
+}
+
+.c-affiliate-overview-card__identifier-separator {
+  color: var(--#{$sds-prefix}-color-affiliate-overview-card-metadata-separator);
+  user-select: none;
+}
+
+// ── Loading state ───────────────────────────────────────────────────────────
+
+.c-affiliate-overview-card.is-loading {
+  pointer-events: none;
+  opacity: var(--#{$sds-prefix}-disabled-opacity);
+}
+
+.c-affiliate-overview-card__skeleton-avatar {
+  display: block;
+  inline-size: var(--#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-w);
+  block-size: var(--#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-h);
+  border-radius: var(--#{$sds-prefix}-radius-pill);
+  background: var(--#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg);
+}
+
+.c-affiliate-overview-card__skeleton-line {
+  display: block;
+  border-radius: var(--#{$sds-prefix}-radius-sm);
+  background: var(--#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg);
+  block-size: var(--spacing-1);
+}
+
+.c-affiliate-overview-card__skeleton-line--title {
+  inline-size: 60%;
+  block-size: var(--spacing-2);
+}
+
+.c-affiliate-overview-card__skeleton-line--tag {
+  inline-size: var(--spacing-4);
+  block-size: var(--spacing-1-5);
+}
+
+.c-affiliate-overview-card__skeleton-line--chip {
+  inline-size: var(--spacing-5);
+}

@@ -1,45 +1,47 @@
 import type { ToggleButtonDesignTokens } from '@primeuix/themes/types/togglebutton';
 
+// Sizing + structure aligned with @primeuix/themes Aura togglebutton (PrimeNG docs SSOT).
+// Color scheme remains Plectrum-branded.
  export default {
     icon: {
         disabledColor: "{form.field.disabled.color}"
     },
     root: {
-        lg: {
-            padding: "0.25rem",
-            fontSize: "{form.field.lg.font.size}"
-        },
-        sm: {
-            padding: "0.25rem",
-            fontSize: "{form.field.sm.font.size}"
-        },
-        gap: "0.5rem",
         padding: "0.25rem",
+        borderRadius: "{content.border.radius}",
+        gap: "0.5rem",
+        fontWeight: "500",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "{focus.ring.shadow}"
         },
-        fontWeight: "600",
-        borderRadius: "{border.radius.xl}",
-        disabledColor: "{form.field.disabled.color}",
-        disabledBackground: "{form.field.disabled.background}",
-        invalidBorderColor: "{form.field.invalid.border.color}",
         transitionDuration: "{form.field.transition.duration}",
-        disabledBorderColor: "{form.field.disabled.background}"
+        disabledBackground: "{form.field.disabled.background}",
+        disabledBorderColor: "{form.field.disabled.background}",
+        disabledColor: "{form.field.disabled.color}",
+        invalidBorderColor: "{form.field.invalid.border.color}",
+        sm: {
+            fontSize: "{form.field.sm.font.size}",
+            padding: "0.25rem"
+        },
+        lg: {
+            fontSize: "{form.field.lg.font.size}",
+            padding: "0.25rem"
+        }
     },
     content: {
-        lg: {
-            padding: "0.25rem 0.75rem"
-        },
+        padding: "0.25rem 0.75rem",
+        borderRadius: "{content.border.radius}",
+        checkedShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04)",
         sm: {
             padding: "0.25rem 0.75rem"
         },
-        padding: "0.25rem 0.75rem",
-        borderRadius: "{border.radius.md}",
-        checkedShadow: "0"
+        lg: {
+            padding: "0.25rem 0.75rem"
+        }
     },
     colorScheme: {
         dark: {

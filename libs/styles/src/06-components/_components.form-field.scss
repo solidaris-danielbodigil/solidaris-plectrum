@@ -1,0 +1,75 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.form-field.scss
+// sds-form-field — custom field label, required marker, and validation layout.
+//
+// Token source: 01-settings/_settings.form-field.scss
+// =============================================================================
+
+.c-form-field {
+  min-width: 0;
+
+  &--vertical,
+  &--horizontal {
+    display: flex;
+    gap: var(--#{$sds-prefix}-space-form-field-gap);
+  }
+
+  &--vertical {
+    flex-direction: column;
+  }
+
+  &--horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--#{$sds-prefix}-space-form-field-gap-horizontal);
+  }
+}
+
+.c-form-field--horizontal .c-form-field__content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--#{$sds-prefix}-space-form-field-gap);
+  min-width: 0;
+}
+
+.c-form-field__label {
+  @include text-label-sm;
+  color: var(--#{$sds-prefix}-color-text-muted);
+}
+
+.c-form-field__label-text {
+  display: inline;
+}
+
+.c-form-field__required {
+  color: var(--#{$sds-prefix}-color-form-float-label-invalid);
+  margin-inline-start: var(--spacing-0-25);
+}
+
+.c-form-field.is-invalid .c-form-field__label {
+  color: var(--#{$sds-prefix}-color-form-float-label-invalid);
+}
+
+.c-form-field--horizontal .c-form-field__label {
+  flex-shrink: 0;
+  min-width: var(--#{$sds-prefix}-size-form-field-label-min-width);
+  padding-block-start: var(--p-form-field-padding-y);
+}
+
+.c-form-field__content {
+  min-width: 0;
+}
+
+.c-form-field--vertical .c-form-field__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--#{$sds-prefix}-space-form-field-gap);
+}
+
+.c-form-field__control {
+  min-width: 0;
+}
