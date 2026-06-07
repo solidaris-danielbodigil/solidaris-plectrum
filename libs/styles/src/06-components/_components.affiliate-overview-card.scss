@@ -85,46 +85,6 @@
   padding-inline: var(--#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline);
 }
 
-// ── Identifier chips ─────────────────────────────────────────────────────────
-
-.c-affiliate-overview-card__identifier {
-  // font-size + line-height owned by PrimeNG size (p-button-sm).
-  font-family: var(--text-label-sm-family);
-  font-weight: var(--text-label-sm-weight);
-
-  &:hover {
-    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-hover);
-  }
-
-  // Pressed — stronger fill than hover; instant transition so feedback is visible during click.
-  &:active {
-    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-active);
-    background-color: var(--#{$sds-prefix}-color-primary-100);
-    transition: none;
-  }
-
-  &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
-      var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
-  }
-}
-
-.c-affiliate-overview-card__identifier-icon {
-  font-size: var(--#{$sds-prefix}-size-affiliate-overview-card-metadata-icon);
-  line-height: 1;
-  color: currentcolor;
-}
-
-.c-affiliate-overview-card__identifier-value {
-  font-weight: var(--font-weight-bold);
-}
-
-.c-affiliate-overview-card__identifier-separator {
-  color: var(--#{$sds-prefix}-color-affiliate-overview-card-metadata-separator);
-  user-select: none;
-}
-
 // ── Loading state ───────────────────────────────────────────────────────────
 
 .c-affiliate-overview-card.is-loading {

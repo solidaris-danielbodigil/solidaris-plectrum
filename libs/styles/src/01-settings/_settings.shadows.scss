@@ -49,4 +49,13 @@
     0 0.733px 2.363px 0 rgba(0, 0, 0, 0.02),
     0 0.167px 1.141px 0 rgba(0, 0, 0, 0.01);
 
+  // Figma: Shadows/Shadow xl — 6-layer drop shadow (node 7:1012 — Carte affilié drawer)
+  --#{$sds-prefix}-shadow-xl:
+    0 60px 40px 0 rgba(0, 0, 0, 0.07),
+    0 38.889px 23.426px 0 rgba(0, 0, 0, 0.05),
+    0 23.111px 12.741px 0 rgba(0, 0, 0, 0.04),
+    0 12px 6.5px 0 rgba(0, 0, 0, 0.04),
+    0 4.889px 3.259px 0 rgba(0, 0, 0, 0.03),
+    0 1.111px 1.574px 0 rgba(0, 0, 0, 0.02);
+
 }

@@ -79,6 +79,50 @@
   fill: currentColor;
 }
 
+// ── Named colour variants (small shield) ─────────────────────────────────────
+// `color` input adds a --color-{name} modifier. The host `color` drives the
+// shield fill (currentColor); hover/active stay on the named colour so the
+// shield does not flip back to the default red interactive treatment.
+.c-plectrum-avatar--color-red {
+  &,
+  &:hover,
+  &:active,
+  &[data-state='active'] {
+    color: var(--#{$sds-prefix}-color-avatar-color-red);
+  }
+}
+
+.c-plectrum-avatar--color-blue {
+  &,
+  &:hover,
+  &:active,
+  &[data-state='active'] {
+    color: var(--#{$sds-prefix}-color-avatar-color-blue);
+  }
+}
+
+.c-plectrum-avatar--color-green {
+  &,
+  &:hover,
+  &:active,
+  &[data-state='active'] {
+    color: var(--#{$sds-prefix}-color-avatar-color-green);
+  }
+}
+
+.c-plectrum-avatar--color-yellow {
+  &,
+  &:hover,
+  &:active,
+  &[data-state='active'] {
+    color: var(--#{$sds-prefix}-color-avatar-color-yellow);
+  }
+
+  .c-plectrum-avatar__initials {
+    color: var(--#{$sds-prefix}-color-avatar-initials-on-yellow);
+  }
+}
+
 .c-plectrum-avatar__initials {
   position: relative;
   z-index: 1;

@@ -20,6 +20,7 @@ export interface AffiliateHeaderData {
   identifiers: AffiliateOverviewIdentifier[];
   primaryAction: AffiliateOverviewPrimaryAction | null;
   onInfoTagClick?: (tag: AffiliateOverviewInfoTag) => void;
+  onPrimaryActionClick?: () => void;
 }
 
 @Injectable({ providedIn: 'root' })

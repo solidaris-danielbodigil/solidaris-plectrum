@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
@@ -13,6 +14,7 @@ describe('AffiliateDetailsComponent', () => {
   let fixture: ComponentFixture<AffiliateDetailsComponent>;
   let breadcrumbService: BreadcrumbService;
   let affiliateHeaderService: AffiliateHeaderService;
+  let messageService: MessageService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +22,7 @@ describe('AffiliateDetailsComponent', () => {
       providers: [
         BreadcrumbService,
         AffiliateHeaderService,
+        MessageService,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -34,6 +37,7 @@ describe('AffiliateDetailsComponent', () => {
     component = fixture.componentInstance;
     breadcrumbService = TestBed.inject(BreadcrumbService);
     affiliateHeaderService = TestBed.inject(AffiliateHeaderService);
+    messageService = TestBed.inject(MessageService);
     fixture.detectChanges();
   });
 
@@ -249,6 +253,31 @@ describe('AffiliateDetailsComponent', () => {
       }),
     ]);
     expect(header?.onInfoTagClick).toEqual(jasmine.any(Function));
+    expect(header?.onPrimaryActionClick).toEqual(jasmine.any(Function));
+  });
+
+  it('should open affiliate detail drawer when primary action callback runs', () => {
+    expect(component.affiliateDetailDrawerVisible()).toBe(false);
+
+    affiliateHeaderService.header()?.onPrimaryActionClick?.();
+    fixture.detectChanges();
+
+    expect(component.affiliateDetailDrawerVisible()).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('sds-affiliate-detail-drawer'),
+    ).toBeTruthy();
+  });
+
+  it('should show a success toast when a drawer identifier is copied', () => {
+    const addSpy = spyOn(messageService, 'add');
+
+    component.onDrawerIdentifierCopy({ label: 'Territoire', value: '319' });
+
+    expect(addSpy).toHaveBeenCalledOnceWith({
+      severity: 'success',
+      summary: 'Copié !',
+      detail: 'Territoire: 319',
+    });
   });
 
   it('should clear affiliate header on destroy', () => {

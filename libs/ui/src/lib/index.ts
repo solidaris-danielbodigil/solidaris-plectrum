@@ -1,5 +1,6 @@
 export * from './icon';
 export * from './input-clear';
+export * from './copyable-text';
 export * from './form-field';
 export * from './empty-state';
 export * from './plectrum-avatar';
@@ -8,4 +9,5 @@ export * from './sub-nav-shell';
 export * from './top-nav';
 export * from './toolbar';
 export * from './affiliate-overview-card';
+export * from './affiliate-detail-drawer';
 export * from './list';

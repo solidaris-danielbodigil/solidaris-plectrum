@@ -142,4 +142,54 @@ describe('PlectrumAvatarComponent', () => {
     expect(shape?.getAttribute('focusable')).toBe('false');
     expect(initials?.getAttribute('aria-hidden')).toBe('true');
   });
+
+  it('should not apply any colour modifier class by default', () => {
+    const classes = fixture.nativeElement.classList;
+    expect(classes.contains('c-plectrum-avatar--color-blue')).toBe(false);
+    expect(classes.contains('c-plectrum-avatar--color-green')).toBe(false);
+    expect(classes.contains('c-plectrum-avatar--color-yellow')).toBe(false);
+    expect(classes.contains('c-plectrum-avatar--color-red')).toBe(false);
+  });
+
+  it('should apply the colour modifier class matching the color input', () => {
+    fixture.componentRef.setInput('color', 'blue');
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.classList.contains('c-plectrum-avatar--color-blue'),
+    ).toBe(true);
+  });
+
+  it('should swap the colour modifier class when the color input changes', () => {
+    fixture.componentRef.setInput('color', 'green');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.classList.contains('c-plectrum-avatar--color-green'),
+    ).toBe(true);
+
+    fixture.componentRef.setInput('color', 'yellow');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.classList.contains('c-plectrum-avatar--color-green'),
+    ).toBe(false);
+    expect(
+      fixture.nativeElement.classList.contains(
+        'c-plectrum-avatar--color-yellow',
+      ),
+    ).toBe(true);
+  });
+
+  it('should remove the colour modifier class when color is reset to null', () => {
+    fixture.componentRef.setInput('color', 'red');
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.classList.contains('c-plectrum-avatar--color-red'),
+    ).toBe(true);
+
+    fixture.componentRef.setInput('color', null);
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.classList.contains('c-plectrum-avatar--color-red'),
+    ).toBe(false);
+  });
 });

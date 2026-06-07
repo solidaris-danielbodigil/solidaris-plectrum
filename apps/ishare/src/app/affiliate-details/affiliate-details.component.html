@@ -145,4 +145,12 @@
       />
     }
   </div>
+
+  <sds-affiliate-detail-drawer
+    [(visible)]="affiliateDetailDrawerVisible"
+    [data]="affiliateDetailDrawerData()"
+    (identifierCopy)="onDrawerIdentifierCopy($event)"
+    (menuClick)="onDrawerMenuClick()"
+    (quickActionsClick)="onDrawerQuickActionsClick()"
+  />
 </div>

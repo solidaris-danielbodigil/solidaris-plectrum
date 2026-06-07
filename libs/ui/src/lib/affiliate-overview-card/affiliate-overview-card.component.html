@@ -139,37 +139,16 @@
           class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
         >
           @for (identifier of identifiers(); track identifier.label; let last = $last) {
-            <button
-              pButton
-              type="button"
-              text
-              [rounded]="true"
-              severity="secondary"
-              size="small"
-              class="c-affiliate-overview-card__identifier o-flex o-flex--align-items-center o-layout--gap-0-75"
-              [attr.aria-label]="identifierCopyAriaLabel(identifier)"
-              (click)="onIdentifierCopy(identifier)"
-            >
-              <sds-icon
-                class="c-affiliate-overview-card__identifier-icon"
-                icon="copy-content-LEGACY"
-                source="svg"
-                size="sm"
-              />
-              <span class="c-affiliate-overview-card__identifier-label">{{
-                identifier.label
-              }}</span>
-              <span class="c-affiliate-overview-card__identifier-value">{{
-                identifier.value
-              }}</span>
-            </button>
+            <sds-copyable-text
+              [label]="identifier.label"
+              [value]="identifier.value"
+              iconSize="sm"
+              [disabled]="loading()"
+              (copied)="onIdentifierCopy(identifier)"
+            />
 
             @if (!last) {
-              <span
-                class="c-affiliate-overview-card__identifier-separator"
-                aria-hidden="true"
-                >•</span
-              >
+              <span class="c-copyable-text__separator" aria-hidden="true">•</span>
             }
           }
         </div>

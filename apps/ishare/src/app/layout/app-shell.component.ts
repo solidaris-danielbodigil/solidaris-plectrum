@@ -35,31 +35,15 @@ export class AppShellComponent {
   readonly affiliateHeader = this.affiliateHeaderService.header;
 
   onIdentifierCopy(identifier: AffiliateOverviewIdentifier): void {
-    navigator.clipboard
-      .writeText(identifier.value)
-      .then(() => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Copié !',
-          detail: `${identifier.label}: ${identifier.value}`,
-        });
-      })
-      .catch(() => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Échec de la copie',
-          detail: identifier.label,
-        });
-      });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Copié !',
+      detail: `${identifier.label}: ${identifier.value}`,
+    });
   }
 
   onPrimaryActionClick(header: AffiliateHeaderData): void {
-    // PLACEHOLDER — affiliate card navigation is wired in a later iteration.
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Carte affilié',
-      detail: 'Action disponible prochainement.',
-    });
+    header.onPrimaryActionClick?.();
   }
 
   onStatusActionClick(header: AffiliateHeaderData): void {

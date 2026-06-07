@@ -95,13 +95,11 @@ class AffiliateOverviewCardCopyDemoComponent {
   readonly loading = input<boolean>(false);
 
   onIdentifierCopy(identifier: AffiliateOverviewIdentifier): void {
-    navigator.clipboard.writeText(identifier.value).then(() => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Copié !',
-        detail: `${identifier.label}: ${identifier.value}`,
-        life: 2000,
-      });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Copié !',
+      detail: `${identifier.label}: ${identifier.value}`,
+      life: 2000,
     });
   }
 }

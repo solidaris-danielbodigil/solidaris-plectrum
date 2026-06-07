@@ -10,17 +10,20 @@ import {
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {
+  AffiliateDetailDrawerComponent,
   EmptyStateComponent,
   FormFieldComponent,
   InputClearComponent,
   ListComponent,
   ToolbarComponent,
+  type AffiliateDetailDrawerData,
 } from '@solidaris/ui';
 import type {
   AffiliateOverviewIdentifier,
@@ -158,6 +161,70 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
   },
 ];
 
+const EVA_MARTINEZ_DRAWER_STATIC: Omit<
+  AffiliateDetailDrawerData,
+  'name' | 'identifiers'
+> = {
+  avatarInitials: 'EM',
+  avatarGender: 'female',
+  avatarVariant: 1,
+  generalInfo: [
+    { label: 'NSI', value: '00004212182' },
+    { label: 'Date de naissance', value: '14/08/1989 (36 ans)' },
+    { label: 'Nationalité', value: 'Espagnol (ES)' },
+    { label: 'Langue de contact', value: 'Espagnol (ES)' },
+  ],
+  contactInfo: [
+    { label: 'Adresse officielle', value: 'Solidariteitsstraat 5, 2500 Lier' },
+    { label: 'E-mail', value: 'lies.verhoeven@gmail.com' },
+    { label: 'Numéro de téléphone', value: '+32 89 123 004' },
+    { label: 'Numéro de portable', value: '+32 472 987 567' },
+  ],
+  family: [
+    {
+      initials: 'Q',
+      name: 'Quinten Mota',
+      relationship: 'partenaire',
+      color: 'blue',
+    },
+    {
+      initials: 'S',
+      name: 'Shiloh Mota',
+      relationship: 'enfant à charge',
+      color: 'green',
+    },
+    {
+      initials: 'J',
+      name: 'Jack Mota',
+      relationship: 'enfant à charge',
+      color: 'yellow',
+    },
+  ],
+  notes: [
+    {
+      author: 'Eva de Moyer',
+      timestamp: '11/11/2022, 09:10',
+      body: 'Personne agressive',
+      tagLabel: 'Informations sensibles',
+      severity: 'sensitive',
+    },
+    {
+      author: 'Bert Luyckx',
+      timestamp: '02/12/2023, 16:18',
+      body: 'L’affilié est de langue étrangère.',
+      tagLabel: 'Remarque libre',
+      severity: 'neutral',
+    },
+    {
+      author: 'Bert Luyckx',
+      timestamp: '02/12/2023, 16:18',
+      body: 'Lorem ipsum',
+      tagLabel: 'Informations sensibles',
+      severity: 'sensitive',
+    },
+  ],
+};
+
 @Component({
   selector: 'app-affiliate-details',
   standalone: true,
@@ -174,6 +241,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
     EmptyStateComponent,
     ListComponent,
     AffiliateDocumentDetailComponent,
+    AffiliateDetailDrawerComponent,
   ],
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
@@ -183,6 +251,7 @@ export class AffiliateDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly affiliateHeaderService = inject(AffiliateHeaderService);
+  private readonly messageService = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
 
   // PLACEHOLDER affiliate data — real data binding (lookup by route id) comes in
@@ -248,6 +317,19 @@ export class AffiliateDetailsComponent {
     icon: 'bi bi-eye',
     shortcut: 'ALT + A',
   };
+
+  readonly affiliateDetailDrawerVisible = signal(false);
+
+  readonly affiliateDetailDrawerData = computed<AffiliateDetailDrawerData>(
+    () => ({
+      name: this.affiliateName,
+      ...EVA_MARTINEZ_DRAWER_STATIC,
+      identifiers: this.identifiers().map(({ label, value }) => ({
+        label,
+        value,
+      })),
+    }),
+  );
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
   readonly sectorOptions: SectorOption[] = [
@@ -372,6 +454,29 @@ export class AffiliateDetailsComponent {
     this.documentInfoFilter.set(
       current === tag.filterKey ? null : tag.filterKey,
     );
+  }
+
+  onPrimaryActionClick(): void {
+    this.affiliateDetailDrawerVisible.set(true);
+  }
+
+  onDrawerMenuClick(): void {
+    // PLACEHOLDER — drawer menu actions wired in a later iteration.
+  }
+
+  onDrawerQuickActionsClick(): void {
+    // PLACEHOLDER — drawer quick actions wired in a later iteration.
+  }
+
+  onDrawerIdentifierCopy(identifier: {
+    label: string;
+    value: string;
+  }): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Copié !',
+      detail: `${identifier.label}: ${identifier.value}`,
+    });
   }
 
   private lastActionLabel(): string {
@@ -502,6 +607,7 @@ export class AffiliateDetailsComponent {
         identifiers: this.identifiers(),
         primaryAction: this.primaryAction,
         onInfoTagClick: (tag) => this.onInfoTagClick(tag),
+        onPrimaryActionClick: () => this.onPrimaryActionClick(),
       });
     });
 

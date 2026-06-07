@@ -16,4 +16,14 @@
   --#{$sds-prefix}-shadow-avatar-active:
     0 0 0 2px var(--#{$sds-prefix}-color-surface-0),
     0 0 0 4px var(--#{$sds-prefix}-color-blue-300);
+
+  // ── Named colour variants (small shield) ───────────────────────────────────
+  // Figma family avatars (nodes 7:1160 / 7:1170 / 7:1180). The shield uses the
+  // host `color` (fill: currentColor); initials flip to dark on the light yellow.
+  --#{$sds-prefix}-color-avatar-color-red:    var(--#{$sds-prefix}-color-solidaris-red-500);
+  --#{$sds-prefix}-color-avatar-color-blue:   var(--#{$sds-prefix}-color-blue-500);
+  --#{$sds-prefix}-color-avatar-color-green:  var(--#{$sds-prefix}-color-green-500);
+  --#{$sds-prefix}-color-avatar-color-yellow: var(--#{$sds-prefix}-color-yellow-400);
+  --#{$sds-prefix}-color-avatar-initials-on-color:  var(--#{$sds-prefix}-color-surface-0);       // Figma: white initials (blue/green)
+  --#{$sds-prefix}-color-avatar-initials-on-yellow: var(--#{$sds-prefix}-color-black-alpha-900); // Figma: rgba(0,0,0,0.9) initials
 }

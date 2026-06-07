@@ -35,6 +35,14 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.componentRef.setInput('title', 'Dupont, Marie');
     fixture.componentRef.setInput('avatarInitials', 'DM');
     fixture.componentRef.setInput('identifiers', SAMPLE_IDENTIFIERS);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: jasmine
+          .createSpy('writeText')
+          .and.returnValue(Promise.resolve()),
+      },
+    });
     fixture.detectChanges();
   });
 
@@ -81,7 +89,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should render copy icon in identifier buttons', () => {
     const icons = fixture.nativeElement.querySelectorAll(
-      'sds-icon.c-affiliate-overview-card__identifier-icon',
+      'sds-icon.c-copyable-text__icon',
     );
 
     expect(icons.length).toBe(SAMPLE_IDENTIFIERS.length);
@@ -89,7 +97,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should mark copy icons as decorative aria-hidden', () => {
     const icons = fixture.nativeElement.querySelectorAll(
-      'sds-icon.c-affiliate-overview-card__identifier-icon',
+      'sds-icon.c-copyable-text__icon',
     );
 
     icons.forEach((icon: Element) => {
@@ -143,7 +151,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should render identifier copy buttons with values', () => {
     const buttons = fixture.nativeElement.querySelectorAll(
-      '.c-affiliate-overview-card__identifier',
+      '.c-copyable-text',
     );
 
     expect(buttons.length).toBe(SAMPLE_IDENTIFIERS.length);
@@ -153,7 +161,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should render bullet separators between identifier chips', () => {
     const separators = fixture.nativeElement.querySelectorAll(
-      '.c-affiliate-overview-card__identifier-separator',
+      '.c-copyable-text__separator',
     );
 
     expect(separators.length).toBe(SAMPLE_IDENTIFIERS.length - 1);
@@ -162,20 +170,21 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should set copy button aria-label', () => {
     const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__identifier',
+      '.c-copyable-text',
     ) as HTMLButtonElement;
 
     expect(button.getAttribute('aria-label')).toBe('Copier NISS');
   });
 
-  it('should emit identifierCopy when an identifier chip is clicked', () => {
+  it('should emit identifierCopy when an identifier chip is clicked', async () => {
     const onCopy = jasmine.createSpy('identifierCopy');
     component.identifierCopy.subscribe(onCopy);
 
     const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__identifier',
+      '.c-copyable-text',
     ) as HTMLButtonElement;
     button.click();
+    await fixture.whenStable();
 
     expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_IDENTIFIERS[0]);
   });

@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { SplitButton } from 'primeng/splitbutton';
 import { ToggleButton } from 'primeng/togglebutton';
+import { CopyableTextComponent } from '../copyable-text';
 import { IconComponent } from '../icon';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import type {
@@ -145,6 +146,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
   imports: [
     ButtonModule,
     Card,
+    CopyableTextComponent,
     FormsModule,
     IconComponent,
     PlectrumAvatarComponent,
@@ -278,10 +280,6 @@ export class AffiliateOverviewCardComponent {
 
   infoTagAriaLabel(tag: AffiliateOverviewInfoTag): string {
     return `${tag.label} ${tag.value}`.trim();
-  }
-
-  identifierCopyAriaLabel(identifier: AffiliateOverviewIdentifier): string {
-    return `Copier ${identifier.label}`;
   }
 
   statusActionExpandAriaLabel(): string {

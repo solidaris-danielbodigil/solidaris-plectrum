@@ -1,0 +1,191 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.affiliate-detail-drawer.scss
+// c-affiliate-detail-drawer — iSHARE "Carte affilié" detail drawer.
+//
+// Wraps PrimeNG p-drawer (headless). Layout (flex, gap, wrap) via o-flex /
+// o-layout mixes in the template; chrome + spacing owned here.
+//
+// Design ref:   Figma node 7:1012 (iSHARE-Audit) — Carte affilié
+// Token source: libs/styles/src/01-settings/_settings.affiliate-detail-drawer.scss
+// Reference:    _components.affiliate-overview-card.scss, _components.affiliate-document-detail.scss
+// =============================================================================
+
+// ── Drawer root (styleClass on the .p-drawer container) ──────────────────────
+.c-affiliate-detail-drawer.p-drawer {
+  width: var(--#{$sds-prefix}-size-affiliate-detail-drawer-width);
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-bg);
+  box-shadow: var(--#{$sds-prefix}-shadow-affiliate-detail-drawer);
+  padding: 0;
+}
+
+.c-affiliate-detail-drawer__panel {
+  height: 100%;
+  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-bg);
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+.c-affiliate-detail-drawer__header {
+  padding-block: var(--#{$sds-prefix}-space-affiliate-detail-drawer-header-padding-block-start)
+    var(--#{$sds-prefix}-space-affiliate-detail-drawer-header-padding-block-end);
+  padding-inline: var(--#{$sds-prefix}-space-affiliate-detail-drawer-padding-inline);
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
+}
+
+.c-affiliate-detail-drawer__name {
+  @include text-heading-lg;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+// ── Content (scroll region) ──────────────────────────────────────────────────
+.c-affiliate-detail-drawer__content {
+  overflow-y: auto;
+  row-gap: var(--#{$sds-prefix}-space-affiliate-detail-drawer-content-gap);
+  padding-block-end: var(--#{$sds-prefix}-space-affiliate-detail-drawer-content-padding-block);
+}
+
+.c-affiliate-detail-drawer__toolbar {
+  padding: var(--#{$sds-prefix}-space-affiliate-detail-drawer-padding-inline);
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
+}
+
+.c-affiliate-detail-drawer__section {
+  padding-inline: var(--#{$sds-prefix}-space-affiliate-detail-drawer-padding-inline);
+}
+
+.c-affiliate-detail-drawer__section-title {
+  @include text-heading-sm;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+// ── Label / value information rows ───────────────────────────────────────────
+.c-affiliate-detail-drawer__info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--#{$sds-prefix}-space-affiliate-detail-drawer-section-gap);
+  margin: 0;
+}
+
+.c-affiliate-detail-drawer__info-row {
+  margin: 0;
+}
+
+.c-affiliate-detail-drawer__info-label {
+  @include text-label-sm;
+  flex: 0 0 var(--#{$sds-prefix}-size-affiliate-detail-drawer-info-label);
+  width: var(--#{$sds-prefix}-size-affiliate-detail-drawer-info-label);
+  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-info-label);
+}
+
+.c-affiliate-detail-drawer__info-value {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-info-value);
+  margin: 0;
+}
+
+.c-affiliate-detail-drawer__divider {
+  inline-size: 100%;
+  block-size: 0;
+  margin: 0;
+  border: 0;
+  border-block-start: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
+}
+
+// ── Accordion (Famille + Notes) — chrome-free ────────────────────────────────
+.c-affiliate-detail-drawer__accordion {
+  --p-accordion-panel-border-width: 0;
+  --p-accordion-panel-border-color: transparent;
+  --p-accordion-header-background: transparent;
+  --p-accordion-header-hover-background: transparent;
+  --p-accordion-header-active-background: transparent;
+  --p-accordion-header-color: var(--#{$sds-prefix}-color-text);
+  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-text);
+  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-text);
+  --p-accordion-header-padding: 0;
+  --p-accordion-content-background: transparent;
+  --p-accordion-content-padding: var(--#{$sds-prefix}-space-affiliate-detail-drawer-section-gap) 0 0 0;
+  --p-accordion-content-border-width: 0;
+  --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-text-muted);
+  --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-text);
+  --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-text);
+}
+
+// ── Famille tiles (p-card) ───────────────────────────────────────────────────
+.c-affiliate-detail-drawer__family-tile .p-card {
+  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg);
+  border: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-border);
+  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-tile);
+  box-shadow: none;
+}
+
+.c-affiliate-detail-drawer__family-tile .p-card-body {
+  padding: var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-block)
+    var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-end)
+    var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-block)
+    var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-start);
+}
+
+.c-affiliate-detail-drawer__family-tile .p-card-content {
+  padding: 0;
+}
+
+.c-affiliate-detail-drawer__family-name {
+  @include text-label-sm;
+  color: var(--#{$sds-prefix}-color-text);
+}
+
+.c-affiliate-detail-drawer__family-relationship {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-relationship);
+}
+
+.c-affiliate-detail-drawer__family-text {
+  margin: 0;
+}
+
+// ── Notes ────────────────────────────────────────────────────────────────────
+.c-affiliate-detail-drawer__note {
+  inline-size: 100%;
+  padding: var(--#{$sds-prefix}-space-affiliate-detail-drawer-note-padding);
+  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-bg);
+  border: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-border);
+  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-note);
+}
+
+.c-affiliate-detail-drawer__note-author {
+  @include text-label-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-author);
+}
+
+.c-affiliate-detail-drawer__note-timestamp {
+  @include text-body-xs;
+  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-timestamp);
+}
+
+.c-affiliate-detail-drawer__note-body {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+// Sensitive note tag — Figma: subtle red bg #fff2f1 + #a8160c text (not solid danger).
+.c-affiliate-detail-drawer__note-tag--sensitive {
+  --p-tag-danger-background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-bg);
+  --p-tag-danger-color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-text);
+}
+
+// ── Icon buttons (header menu / close, family arrow) ─────────────────────────
+.c-affiliate-detail-drawer__icon-button {
+  --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text-muted);
+
+  &:hover {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text);
+  }
+}

@@ -4,6 +4,7 @@ export {
   resolvePlectrumAvatarVariant,
 } from './plectrum-avatar.assets';
 export type {
+  PlectrumAvatarColor,
   PlectrumAvatarGender,
   PlectrumAvatarSize,
   PlectrumAvatarState,

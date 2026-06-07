@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { getPlectrumAvatarIllustrationSrc } from './plectrum-avatar.assets';
 import {
+  PlectrumAvatarColor,
   PlectrumAvatarGender,
   PlectrumAvatarSize,
   PlectrumAvatarState,
@@ -23,6 +24,10 @@ import {
   host: {
     class: 'c-plectrum-avatar',
     '[class.c-plectrum-avatar--large]': 'size() === "large"',
+    '[class.c-plectrum-avatar--color-blue]': 'color() === "blue"',
+    '[class.c-plectrum-avatar--color-green]': 'color() === "green"',
+    '[class.c-plectrum-avatar--color-yellow]': 'color() === "yellow"',
+    '[class.c-plectrum-avatar--color-red]': 'color() === "red"',
     '[attr.data-state]': 'state() === "active" ? "active" : null',
     tabindex: '0',
     role: 'img',
@@ -41,6 +46,12 @@ export class PlectrumAvatarComponent {
 
   /** Illustrated avatar style variant (large variant). */
   readonly variant = input<PlectrumAvatarVariant>(1);
+
+  /**
+   * Optional named colour for the small shield. When unset the default
+   * Solidaris red treatment is preserved (backward compatible).
+   */
+  readonly color = input<PlectrumAvatarColor | null>(null);
 
   /** Visual state shown in the Figma component. */
   readonly state = input<PlectrumAvatarState>('default');

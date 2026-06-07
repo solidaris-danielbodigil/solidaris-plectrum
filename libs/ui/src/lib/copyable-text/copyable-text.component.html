@@ -1,0 +1,21 @@
+<button
+  pButton
+  type="button"
+  text
+  [rounded]="true"
+  severity="secondary"
+  size="small"
+  class="c-copyable-text o-flex o-flex--align-items-center o-layout--gap-0-75"
+  [attr.aria-label]="resolvedAriaLabel()"
+  [disabled]="disabled()"
+  (click)="onCopy($event)"
+>
+  <sds-icon
+    class="c-copyable-text__icon"
+    icon="copy-content-LEGACY"
+    source="svg"
+    [size]="iconSize()"
+  />
+  <span class="c-copyable-text__label">{{ label() }}</span>
+  <span class="c-copyable-text__value">{{ value() }}</span>
+</button>

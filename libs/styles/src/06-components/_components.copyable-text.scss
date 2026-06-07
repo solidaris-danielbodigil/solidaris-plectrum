@@ -1,0 +1,41 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.copyable-text.scss
+// sds-copyable-text — copyable metadata chip (icon + label + value).
+// =============================================================================
+
+.c-copyable-text {
+  font-family: var(--text-label-sm-family);
+  font-weight: var(--text-label-sm-weight);
+
+  &:hover {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-hover);
+  }
+
+  &:active {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-active);
+    background-color: var(--#{$sds-prefix}-color-primary-100);
+    transition: none;
+  }
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
+      var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
+}
+
+.c-copyable-text__icon {
+  line-height: 1;
+  color: currentcolor;
+}
+
+.c-copyable-text__value {
+  font-weight: var(--font-weight-bold);
+}
+
+.c-copyable-text__separator {
+  color: var(--#{$sds-prefix}-color-text-muted);
+  user-select: none;
+}

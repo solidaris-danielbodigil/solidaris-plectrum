@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-06-07T21:29:47.004Z",
+    "generated": "2026-06-07T23:03:51.805Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -69,6 +69,19 @@
     }
   },
   "components": {
+    "AffiliateDetailDrawer": {
+      "path": "libs\\ui\\src\\lib\\affiliate-detail-drawer\\affiliate-detail-drawer.component.ts",
+      "category": "organisms",
+      "metadata": true,
+      "bemBlock": "c-affiliate-detail-drawer",
+      "primeNg": "Accordion",
+      "scssPath": "libs/styles/src/06-components/_components.affiliate-detail-drawer.scss",
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
+    },
     "AffiliateOverviewCard": {
       "path": "libs\\ui\\src\\lib\\affiliate-overview-card\\affiliate-overview-card.component.ts",
       "category": "molecules",
@@ -78,9 +91,24 @@
       "scssPath": "libs/styles/src/06-components/_components.affiliate-overview-card.scss",
       "uses": [
         "PlectrumAvatar",
-        "Icon"
+        "CopyableText"
       ],
       "usedBy": []
+    },
+    "CopyableText": {
+      "path": "libs\\ui\\src\\lib\\copyable-text\\copyable-text.component.ts",
+      "category": "molecules",
+      "metadata": true,
+      "bemBlock": "c-copyable-text",
+      "primeNg": "Button",
+      "scssPath": "libs/styles/src/06-components/_components.copyable-text.scss",
+      "uses": [
+        "Icon"
+      ],
+      "usedBy": [
+        "AffiliateDetailDrawer",
+        "AffiliateOverviewCard"
+      ]
     },
     "DocDemoBox": {
       "path": "libs\\ui\\src\\lib\\doc-demo-box\\doc-demo-box.component.ts",
@@ -121,7 +149,7 @@
       "scssPath": "libs/styles/src/06-components/_components.icon.scss",
       "uses": [],
       "usedBy": [
-        "AffiliateOverviewCard",
+        "CopyableText",
         "NavShell"
       ]
     },
@@ -168,6 +196,7 @@
       "scssPath": "libs/styles/src/06-components/_components.plectrum-avatar.scss",
       "uses": [],
       "usedBy": [
+        "AffiliateDetailDrawer",
         "AffiliateOverviewCard",
         "TopNav"
       ]
@@ -207,12 +236,28 @@
     }
   },
   "relationships": {
+    "AffiliateDetailDrawer": {
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
+    },
     "AffiliateOverviewCard": {
       "uses": [
         "PlectrumAvatar",
-        "Icon"
+        "CopyableText"
       ],
       "usedBy": []
+    },
+    "CopyableText": {
+      "uses": [
+        "Icon"
+      ],
+      "usedBy": [
+        "AffiliateDetailDrawer",
+        "AffiliateOverviewCard"
+      ]
     },
     "DocDemoBox": {
       "uses": [],
@@ -229,7 +274,7 @@
     "Icon": {
       "uses": [],
       "usedBy": [
-        "AffiliateOverviewCard",
+        "CopyableText",
         "NavShell"
       ]
     },
@@ -252,6 +297,7 @@
     "PlectrumAvatar": {
       "uses": [],
       "usedBy": [
+        "AffiliateDetailDrawer",
         "AffiliateOverviewCard",
         "TopNav"
       ]
@@ -273,10 +319,10 @@
     }
   },
   "summary": {
-    "totalComponents": 12,
-    "componentsWithMetadata": 10,
-    "relationshipsMapped": 10,
+    "totalComponents": 14,
+    "componentsWithMetadata": 12,
+    "relationshipsMapped": 16,
     "tokenFiles": 11,
-    "primeNgMappings": 7
+    "primeNgMappings": 9
   }
 }
