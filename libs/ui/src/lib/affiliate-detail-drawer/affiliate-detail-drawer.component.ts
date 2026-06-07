@@ -16,7 +16,6 @@ import { Drawer } from 'primeng/drawer';
 import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
-import { IconComponent } from '../icon';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import type {
   PlectrumAvatarColor,
@@ -132,7 +131,6 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
     CopyableTextComponent,
     Drawer,
     FormsModule,
-    IconComponent,
     PlectrumAvatarComponent,
     SelectButton,
     TagModule,

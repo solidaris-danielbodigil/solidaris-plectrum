@@ -14,7 +14,6 @@ import { Card } from 'primeng/card';
 import { SplitButton } from 'primeng/splitbutton';
 import { ToggleButton } from 'primeng/togglebutton';
 import { CopyableTextComponent } from '../copyable-text';
-import { IconComponent } from '../icon';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import type {
   PlectrumAvatarGender,
@@ -148,7 +147,6 @@ function toAriaKeyShortcuts(shortcut: string): string {
     Card,
     CopyableTextComponent,
     FormsModule,
-    IconComponent,
     PlectrumAvatarComponent,
     SplitButton,
     ToggleButton,
