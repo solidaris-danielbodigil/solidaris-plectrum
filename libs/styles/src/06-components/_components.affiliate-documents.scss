@@ -66,6 +66,32 @@
     @include text-label-xs;
     color: var(--#{$sds-prefix}-color-affiliate-documents-filter-label);
   }
+
+  // Uniform control row — labels align at row top; inputs and switches share one baseline height.
+  .c-form-field__control {
+    display: flex;
+    align-items: center;
+    min-height: var(--#{$sds-prefix}-size-affiliate-documents-filter-control);
+    line-height: 0;
+  }
+
+  p-iconfield,
+  p-autocomplete {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  p-toggleswitch {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 0;
+  }
+
+  .p-toggleswitch {
+    line-height: normal;
+  }
 }
 
 .c-affiliate-documents-toolbar__field {

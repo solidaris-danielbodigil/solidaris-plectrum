@@ -11,6 +11,9 @@
   // Fixed control width — Figma: 250px @ 14px base
   --#{$sds-prefix}-size-affiliate-documents-filter-field: calc(250 / 14 * var(--base-unit));
 
+  // Shared control row height — matches p-inputtext / p-autocomplete size="small" (~31px @ 14px base)
+  --#{$sds-prefix}-size-affiliate-documents-filter-control: calc(31 / 14 * var(--base-unit));
+
   // Toolbar chrome
   --#{$sds-prefix}-color-affiliate-documents-toolbar-bg: var(--#{$sds-prefix}-color-content-bg);
   --#{$sds-prefix}-space-affiliate-documents-toolbar-padding: var(--spacing-2); // 16px — Figma px-[16px]

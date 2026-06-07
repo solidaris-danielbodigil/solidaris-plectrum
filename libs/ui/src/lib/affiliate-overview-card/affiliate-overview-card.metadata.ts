@@ -56,6 +56,8 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       'aria-labelledby on article (title h2) when loaded',
       'aria-label + aria-busy on article when loading',
       'aria-pressed on filterable info-tag toggle buttons (p-togglebutton, native role=button)',
+      'Alt+A — trigger primary action when primaryAction.shortcut is set (skipped in editable fields)',
+      'aria-keyshortcuts on primary action button when shortcut badge is shown',
       'aria-label on copy identifier buttons (Copier {label})',
       'expandAriaLabel on status split button menu toggle (Afficher le menu pour {label})',
       'aria-hidden on bullet separators, shortcut badge, and skeleton lines',

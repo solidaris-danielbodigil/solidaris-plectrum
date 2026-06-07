@@ -249,6 +249,72 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onPrimary).toHaveBeenCalledTimes(1);
   });
 
+  it('should emit primaryActionClick when the primary action shortcut is pressed', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+    );
+
+    expect(onPrimary).toHaveBeenCalledTimes(1);
+  });
+
+  it('should expose aria-keyshortcuts on the primary action button', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__primary-action',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-keyshortcuts')).toBe('Alt+A');
+  });
+
+  it('should not emit primaryActionClick for shortcut when loading', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+    );
+
+    expect(onPrimary).not.toHaveBeenCalled();
+  });
+
+  it('should not emit primaryActionClick for shortcut while typing in an input', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+    );
+    document.body.removeChild(input);
+
+    expect(onPrimary).not.toHaveBeenCalled();
+  });
+
   it('should hide primary action when loading', () => {
     fixture.componentRef.setInput('primaryAction', { label: 'Voir carte affilié' });
     fixture.componentRef.setInput('loading', true);

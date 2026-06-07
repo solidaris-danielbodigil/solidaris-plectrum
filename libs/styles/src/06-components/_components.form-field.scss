@@ -72,4 +72,11 @@
 
 .c-form-field__control {
   min-width: 0;
+
+  // p-toggleswitch is inline-block; inherited body line-height leaves a strut taller than the track.
+  &:has(p-toggleswitch) {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
 }

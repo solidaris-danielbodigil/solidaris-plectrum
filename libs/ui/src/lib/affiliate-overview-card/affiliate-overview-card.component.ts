@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  HostListener,
   ViewEncapsulation,
   computed,
   input,
@@ -61,6 +62,76 @@ const VARIANT_STATUS_ACTION_SEVERITY: Record<
 };
 
 let nextTitleId = 0;
+
+const SHORTCUT_MODIFIER_KEYS = ['ALT', 'CTRL', 'SHIFT', 'META'] as const;
+
+function isEditableShortcutTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  const tag = target.tagName;
+
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
+}
+
+function matchesKeyboardShortcut(event: KeyboardEvent, shortcut: string): boolean {
+  const parts = shortcut.split('+').map((part) => part.trim().toUpperCase());
+
+  if (parts.length < 2) {
+    return false;
+  }
+
+  const key = parts[parts.length - 1];
+  const modifiers = parts.slice(0, -1);
+  const needsAlt = modifiers.includes('ALT');
+  const needsCtrl = modifiers.includes('CTRL');
+  const needsShift = modifiers.includes('SHIFT');
+  const needsMeta = modifiers.includes('META');
+
+  if (
+    event.altKey !== needsAlt ||
+    event.ctrlKey !== needsCtrl ||
+    event.shiftKey !== needsShift ||
+    event.metaKey !== needsMeta
+  ) {
+    return false;
+  }
+
+  if (modifiers.some((modifier) => !SHORTCUT_MODIFIER_KEYS.includes(modifier as (typeof SHORTCUT_MODIFIER_KEYS)[number]))) {
+    return false;
+  }
+
+  return event.code === `Key${key}` || event.key.toUpperCase() === key;
+}
+
+function toAriaKeyShortcuts(shortcut: string): string {
+  return shortcut
+    .split('+')
+    .map((part) => part.trim())
+    .map((part) => {
+      const upper = part.toUpperCase();
+
+      if (upper === 'ALT') {
+        return 'Alt';
+      }
+
+      if (upper === 'CTRL') {
+        return 'Control';
+      }
+
+      if (upper === 'SHIFT') {
+        return 'Shift';
+      }
+
+      if (upper === 'META') {
+        return 'Meta';
+      }
+
+      return part.length === 1 ? part.toUpperCase() : part;
+    })
+    .join('+');
+}
 
 /**
  * AffiliateOverviewCardComponent — iSHARE affiliate audit summary card.
@@ -173,6 +244,28 @@ export class AffiliateOverviewCardComponent {
     }
 
     this.primaryActionClick.emit();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onDocumentKeydown(event: KeyboardEvent): void {
+    const shortcut = this.primaryAction()?.shortcut;
+
+    if (!shortcut || this.loading() || isEditableShortcutTarget(event.target)) {
+      return;
+    }
+
+    if (!matchesKeyboardShortcut(event, shortcut)) {
+      return;
+    }
+
+    event.preventDefault();
+    this.onPrimaryActionClick();
+  }
+
+  primaryActionAriaKeyShortcuts(): string | null {
+    const shortcut = this.primaryAction()?.shortcut;
+
+    return shortcut ? toAriaKeyShortcuts(shortcut) : null;
   }
 
   onInfoTagClick(tag: AffiliateOverviewInfoTag): void {
