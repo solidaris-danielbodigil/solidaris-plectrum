@@ -10,11 +10,13 @@ import {
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {
   AffiliateDetailDrawerComponent,
@@ -230,10 +232,13 @@ const EVA_MARTINEZ_DRAWER_STATIC: Omit<
   standalone: true,
   imports: [
     FormsModule,
+    PrimeTemplate,
+    ButtonModule,
     AutoCompleteModule,
     IconFieldModule,
     InputIconModule,
     InputTextModule,
+    CardModule,
     ToggleSwitchModule,
     ToolbarComponent,
     FormFieldComponent,
@@ -409,6 +414,17 @@ export class AffiliateDetailsComponent {
     }
 
     return this.listItems.length > 0;
+  }
+
+  get documentCount(): number {
+    if (this.journeyView) {
+      return (this.listGroups ?? []).reduce(
+        (sum, group) => sum + group.documents.length,
+        0,
+      );
+    }
+
+    return this.listItems.length;
   }
 
   filterSectors(event: { query: string }): void {

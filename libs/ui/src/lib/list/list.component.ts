@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,14 +6,26 @@ import {
   input,
   output,
 } from '@angular/core';
+import { PrimeTemplate } from 'primeng/api';
+import type { TreeNode } from 'primeng/api';
 import { Tag } from 'primeng/tag';
+import { Tree } from 'primeng/tree';
 import type { ListDocumentItem, ListGroup, ListItem } from './list.types';
 import { isListGroup } from './list.types';
+
+export interface ListGroupNodeData {
+  group: ListGroup;
+}
+
+export interface ListDocumentNodeData {
+  doc: ListDocumentItem;
+  showTimeline: boolean;
+}
 
 @Component({
   selector: 'sds-list',
   standalone: true,
-  imports: [NgTemplateOutlet, Tag],
+  imports: [PrimeTemplate, Tag, Tree],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -30,9 +41,12 @@ import { isListGroup } from './list.types';
   },
 })
 export class ListComponent {
+  readonly timelineSrc = 'assets/timeline.svg';
+
   readonly groups = input<ListGroup[] | null>(null);
   readonly items = input<ListItem[]>([]);
   readonly loading = input(false);
+  readonly showHeader = input(true);
   readonly expandedGroupIds = input<string[]>([]);
   readonly selectedItemId = input<string | null>(null);
 
@@ -56,6 +70,18 @@ export class ListComponent {
     this.items().filter((item): item is ListDocumentItem => !isListGroup(item)),
   );
 
+  readonly treeNodes = computed((): TreeNode[] => {
+    if (this.loading()) {
+      return [];
+    }
+
+    if (this.isJourneyMode()) {
+      return (this.groups() ?? []).map((group) => this.toGroupTreeNode(group));
+    }
+
+    return this.flatDocuments().map((doc) => this.toDocumentTreeNode(doc, false));
+  });
+
   isGroupExpanded(groupId: string): boolean {
     return this.expandedGroupIds().includes(groupId);
   }
@@ -69,28 +95,16 @@ export class ListComponent {
     return doc.selected === true;
   }
 
-  onGroupHeaderClick(groupId: string): void {
-    if (this.loading()) {
-      return;
-    }
-
-    const expanded = [...this.expandedGroupIds()];
-    const index = expanded.indexOf(groupId);
-
-    if (index >= 0) {
-      expanded.splice(index, 1);
-    } else {
-      expanded.push(groupId);
-    }
-
-    this.expandedGroupIdsChange.emit(expanded);
+  groupFromNode(node: TreeNode): ListGroup {
+    return (node.data as ListGroupNodeData).group;
   }
 
-  onGroupHeaderKeydown(event: KeyboardEvent, groupId: string): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.onGroupHeaderClick(groupId);
-    }
+  documentFromNode(node: TreeNode): ListDocumentNodeData {
+    return node.data as ListDocumentNodeData;
+  }
+
+  documentDisplayTitle(doc: ListDocumentItem): string {
+    return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
   }
 
   onDocumentClick(doc: ListDocumentItem): void {
@@ -108,8 +122,63 @@ export class ListComponent {
     }
   }
 
-  groupHeaderAriaLabel(group: ListGroup): string {
-    const state = this.isGroupExpanded(group.id) ? 'développé' : 'réduit';
-    return `${group.title}${group.titleAccent ?? ''}, ${state}`;
+  onTreeNodeExpand(event: { node: TreeNode }): void {
+    const groupId = event.node.key;
+    if (event.node.type !== 'group' || !groupId) {
+      return;
+    }
+
+    this.syncExpandedGroupId(groupId, true);
+  }
+
+  onTreeNodeCollapse(event: { node: TreeNode }): void {
+    const groupId = event.node.key;
+    if (event.node.type !== 'group' || !groupId) {
+      return;
+    }
+
+    this.syncExpandedGroupId(groupId, false);
+  }
+
+  private toGroupTreeNode(group: ListGroup): TreeNode {
+    return {
+      key: group.id,
+      type: 'group',
+      label: `${group.title}${group.titleAccent ?? ''}`,
+      data: { group },
+      expanded: this.isGroupExpanded(group.id),
+      selectable: false,
+      children: group.documents.map((doc) => this.toDocumentTreeNode(doc, true)),
+    };
+  }
+
+  private toDocumentTreeNode(doc: ListDocumentItem, showTimeline: boolean): TreeNode {
+    return {
+      key: doc.id,
+      type: 'document',
+      data: { doc, showTimeline },
+      leaf: true,
+      selectable: false,
+    };
+  }
+
+  private syncExpandedGroupId(groupId: string, expand: boolean): void {
+    if (this.loading()) {
+      return;
+    }
+
+    const expanded = [...this.expandedGroupIds()];
+    const index = expanded.indexOf(groupId);
+
+    if (expand && index < 0) {
+      expanded.push(groupId);
+      this.expandedGroupIdsChange.emit(expanded);
+      return;
+    }
+
+    if (!expand && index >= 0) {
+      expanded.splice(index, 1);
+      this.expandedGroupIdsChange.emit(expanded);
+    }
   }
 }

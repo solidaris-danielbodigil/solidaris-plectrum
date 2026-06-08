@@ -7,28 +7,19 @@
 //
 // Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
 //
-// Design ref:   Figma node 324:5860 (Dossier Affilié — second column: accordion + stepper + nested accordion)
+// Design ref:   Figma node 324:5860 (Dossier Affilié — second column: card header + stepper + sections)
 //               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
 // Token source: libs/styles/src/01-settings/_settings.affiliate-document-detail.scss
 //               libs/styles/src/01-settings/_settings.stepper.scss
-//               libs/styles/src/01-settings/_settings.accordion.scss
 // Reference:    _components.affiliate-overview-card.scss, _components.sub-nav-shell.scss
 // =============================================================================
 
 .c-affiliate-document-detail {
-  background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-section-border);
-  border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+  // Panel surface owned by parent p-card.c-affiliate-details__detail (see _components.affiliate-details.scss).
   min-width: 0;
-  overflow: hidden;
 }
 
-// ── Header ───────────────────────────────────────────────────────────────────
-
-.c-affiliate-document-detail__header {
-  background: var(--#{$sds-prefix}-color-affiliate-document-detail-header-bg);
-  padding: var(--#{$sds-prefix}-space-affiliate-document-detail-header-padding);
-}
+// ── Header (rendered in parent p-card header slot via c-affiliate-details__card-header) ─
 
 .c-affiliate-document-detail__title {
   @include text-heading-md;
@@ -51,22 +42,31 @@
   min-width: 0;
 }
 
-// ── Nested accordions (token bridge in 01-settings) ──────────────────────────
+// ── Stacked certificate / metadata sections ──────────────────────────────────
 
-.c-affiliate-document-detail__documents-accordion,
-.c-affiliate-document-detail__details-accordion {
+.c-affiliate-document-detail__sections {
   min-width: 0;
+}
 
-  .p-accordionpanel {
-    border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
-    overflow: hidden;
-  }
+.c-affiliate-document-detail__section {
+  background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
+  border: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-section-border);
+  border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.c-affiliate-document-detail__section-body {
+  padding: 0 var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding)
+    var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
+  min-width: 0;
 }
 
 // ── Certificate header row ───────────────────────────────────────────────────
 
 .c-affiliate-document-detail__cert-header {
   min-width: 0;
+  padding: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
   padding-block-end: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
   border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-cert-header-border);
 }

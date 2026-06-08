@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-06-07T23:03:51.805Z",
+    "generated": "2026-06-08T21:43:31.481Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -170,7 +170,7 @@
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-list",
-      "primeNg": "Tag",
+      "primeNg": "Api",
       "scssPath": "libs/styles/src/06-components/_components.list.scss",
       "uses": [],
       "usedBy": []

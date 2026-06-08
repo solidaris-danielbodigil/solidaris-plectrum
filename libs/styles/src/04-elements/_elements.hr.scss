@@ -1,0 +1,17 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 04-elements/_elements.hr.scss
+// Canonical horizontal divider — bare <hr> element.
+// Uses semantic divider tokens from 01-settings/_settings.colors-semantic.scss.
+// =============================================================================
+
+hr {
+  display: block;
+  inline-size: 100%;
+  block-size: 1px;
+  border: none;
+  margin: 0;
+  background: var(--#{$sds-prefix}-color-divider);
+  opacity: var(--#{$sds-prefix}-opacity-divider);
+}

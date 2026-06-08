@@ -1,4 +1,5 @@
 @use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
 
 // =============================================================================
 // 06-components/_components.affiliate-details.scss
@@ -32,14 +33,46 @@
   min-width: 0;
 }
 
-// First column — Suivi des documents list only (header inside sds-list).
+// Shared p-card header slot — padding via --p-card-header-padding; flex via o-flex in template.
+.c-affiliate-details__card-header {
+  min-width: 0;
+  width: 100%;
+}
+
+// First column — p-card shell; section header in p-card header slot.
 .c-affiliate-details__documents {
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-documents-column-min);
+
+  // sds-list body only — p-card owns panel surface and section header.
+  .c-list {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
 }
 
-// Second column — document detail viewer
+.c-affiliate-details__documents-title {
+  @include text-heading-md;
+  color: var(--#{$sds-prefix}-color-list-section-title);
+  margin: 0;
+}
+
+.c-affiliate-details__documents-count {
+  @include text-label-xs;
+  font-weight: var(--font-weight-bold);
+  min-inline-size: var(--#{$sds-prefix}-size-list-count-badge-min);
+  min-block-size: var(--#{$sds-prefix}-size-list-count-badge-min);
+  border-radius: calc(10.5 / 14 * var(--base-unit));
+  background: var(--#{$sds-prefix}-color-list-count-badge-bg);
+  color: var(--#{$sds-prefix}-color-list-count-badge-text);
+  text-align: center;
+}
+
+// Second column — p-card shell; document title + nav in p-card header slot.
 .c-affiliate-details__detail {
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-detail-column-min);
+  overflow: hidden;
 }

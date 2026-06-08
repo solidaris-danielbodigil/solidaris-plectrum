@@ -12,8 +12,7 @@
   // ── Header chrome ───────────────────────────────────────────────────────────
   // Figma: #f5f7fa → primary/50 (#f6f8fa)
   --#{$sds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$sds-prefix}-color-primary-50);
-  // Figma: 20px padding
-  --#{$sds-prefix}-space-affiliate-document-detail-header-padding: calc(20 / 14 * var(--base-unit));
+  // Header padding owned by parent p-card — see --sds-space-affiliate-details-card-header-padding
   // Figma: heading-md #666 → surface/600 (#717171)
   --#{$sds-prefix}-color-affiliate-document-detail-title-text: var(--#{$sds-prefix}-color-surface-600);
 

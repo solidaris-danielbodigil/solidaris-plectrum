@@ -55,6 +55,13 @@
   --#{$sds-prefix}-color-surface-border:   var(--#{$sds-prefix}-color-surface-100);
   --#{$sds-prefix}-color-drawer-border:    var(--#{$sds-prefix}-color-surface-border-drawer);  // Figma: drawer/border/color — 507:7910
 
+  // ===========================================================================
+  // DIVIDER  (consumed by 04-elements/_elements.hr.scss)
+  // Canonical horizontal rule — surface-200 at 50% opacity (list group header).
+  // ===========================================================================
+  --#{$sds-prefix}-color-divider:    var(--#{$sds-prefix}-color-surface-200);
+  --#{$sds-prefix}-opacity-divider:  0.5;
+
   // iSHARE Audit affiliate overview — Figma 507:7910 text roles
   --#{$sds-prefix}-color-info-tag-text:      var(--#{$sds-prefix}-color-surface-700);   // Figma: #454545 → surface/700
   --#{$sds-prefix}-color-metadata-chip-text: var(--#{$sds-prefix}-color-primary-700);   // Figma: #30495c → primary/700

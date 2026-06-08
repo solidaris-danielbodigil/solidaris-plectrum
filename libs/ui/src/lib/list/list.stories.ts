@@ -5,8 +5,8 @@ import type { ListDocumentItem, ListGroup } from './list.types';
 
 // =============================================================================
 // List (sds-list)
-// Design ref: Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7387,
-//             Custom-components node 2:125 (document row default / hover / selected)
+// Design ref: Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7384,
+//             435:7387, Custom-components node 2:125 (document row default / hover / selected)
 // =============================================================================
 
 const EVA_MARTINEZ_GROUPS: ListGroup[] = [
@@ -98,6 +98,7 @@ iSHARE affiliate document list with **journey** (grouped timeline) and **flat** 
 - **Journey OFF**: full-width document cards — no chevron, no timeline
 - **Selected document**: 1px primary border + shadow-md (Figma node 2:125)
 - **Hover document**: 1px primary border, no shadow (Figma node 2:125)
+- **Row chrome**: \`c-list__item--document\` card with default/hover/selected states (Figma 2:125)
 - **Layout**: flex/gap via \`o-flex\` / \`o-layout\` — chrome in \`06-components/_components.list.scss\`
 - **PrimeNG**: \`p-tag\` for status/footer tags
         `,
@@ -340,7 +341,7 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
         <div class="o-flex o-layout--gap-3 o-layout--min-w-0">
           <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
           <p class="c-list__title">
-            ${ROW_STATE_DOCUMENT.title}<br />${ROW_STATE_DOCUMENT.titleLine2}
+            ${ROW_STATE_DOCUMENT.title} ${ROW_STATE_DOCUMENT.titleLine2}
           </p>
         </div>
         <div class="c-list__status">
@@ -349,7 +350,7 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
           </p-tag>
         </div>
       </div>
-      <hr class="c-list__divider" />
+      <hr />
       <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
         <p-tag severity="info" value="1">
           <i class="bi bi-chat-right-text-fill" aria-hidden="true"></i>

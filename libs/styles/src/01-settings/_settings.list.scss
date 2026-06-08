@@ -5,7 +5,8 @@
 // sds-list component tokens — document/journey list for iSHARE affiliate audit.
 //
 // Design ref: Figma iSHARE-Audit nodes 324:5827 (journey ON), 518:48833 (journey OFF),
-//             324:5840 (group header), 435:7387 (selected document row),
+//             324:5840 (group header), 435:7384 (journey timeline connector),
+//             435:7387 (selected document row),
 //             Custom-components node 2:125 (document row default / hover / selected)
 // =============================================================================
 
@@ -17,14 +18,12 @@
   --#{$sds-prefix}-color-list-count-badge-bg: var(--#{$sds-prefix}-color-primary-75);
   --#{$sds-prefix}-color-list-count-badge-text: var(--#{$sds-prefix}-color-neutral-800);
   --#{$sds-prefix}-color-list-row-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-row-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-color-list-row-border: var(--#{$sds-prefix}-color-surface-200); // Figma 2:125 #d1d1d1
   --#{$sds-prefix}-color-list-row-hover-border: var(--#{$sds-prefix}-color-primary-interactive);
   --#{$sds-prefix}-color-list-row-selected-border: var(--#{$sds-prefix}-color-primary-interactive);
   --#{$sds-prefix}-color-list-title-text: var(--#{$sds-prefix}-color-surface-700);
   --#{$sds-prefix}-color-list-title-accent: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-chevron: var(--#{$sds-prefix}-color-text-muted);
   --#{$sds-prefix}-color-list-icon: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-divider: var(--#{$sds-prefix}-color-surface-200);
   --#{$sds-prefix}-color-list-date-label: var(--#{$sds-prefix}-color-surface-500);
   --#{$sds-prefix}-color-list-date-value: var(--#{$sds-prefix}-color-surface-700);
   --#{$sds-prefix}-color-list-timeline-line: var(--#{$sds-prefix}-color-surface-200);
@@ -33,30 +32,23 @@
   --#{$sds-prefix}-color-list-skeleton-bg: var(--#{$sds-prefix}-color-surface-muted);
 
   // ── Spacing ─────────────────────────────────────────────────────────────────
-  // Figma spacing-400 = 20px @ 14px base
   --#{$sds-prefix}-space-list-section-header-padding: calc(20 / 14 * var(--base-unit));
   --#{$sds-prefix}-space-list-body-padding-inline: var(--spacing-1-5);
-  --#{$sds-prefix}-space-list-group-gap: calc(20 / 14 * var(--base-unit));
   --#{$sds-prefix}-space-list-row-gap: var(--spacing-1-5);
   --#{$sds-prefix}-space-list-row-padding-block: var(--spacing-1-5);
   --#{$sds-prefix}-space-list-row-padding-inline: calc(20 / 14 * var(--base-unit));
-  --#{$sds-prefix}-space-list-inner-gap: var(--spacing-1);
-  --#{$sds-prefix}-space-list-icon-gap: var(--spacing-3);
-  --#{$sds-prefix}-space-list-chevron-padding-inline-start: calc(20 / 14 * var(--base-unit));
-  --#{$sds-prefix}-space-list-header-status-gap: var(--spacing-4);
   --#{$sds-prefix}-space-list-timeline-marker-offset: var(--spacing-2);
 
   // ── Sizes ───────────────────────────────────────────────────────────────────
   --#{$sds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));
-  --#{$sds-prefix}-size-list-chevron-column: calc(44 / 14 * var(--base-unit));
   --#{$sds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--base-unit));
   --#{$sds-prefix}-size-list-timeline-marker: var(--spacing-1);
   --#{$sds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--base-unit));
+  --#{$sds-prefix}-border-width-list: 1px;
   --#{$sds-prefix}-border-width-list-row: 1px;
   --#{$sds-prefix}-border-width-list-selected: var(--#{$sds-prefix}-border-width-list-row);
 
   // ── Effects ─────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-opacity-list-divider: 0.5;
   --#{$sds-prefix}-shadow-list-row-selected: var(--#{$sds-prefix}-shadow-md);
   --#{$sds-prefix}-transition-list-row: border-color var(--#{$sds-prefix}-transition-duration) ease,
     box-shadow var(--#{$sds-prefix}-transition-duration) ease;

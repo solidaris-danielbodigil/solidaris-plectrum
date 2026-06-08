@@ -297,18 +297,22 @@ describe('AffiliateDetailsComponent', () => {
       fixture.nativeElement.querySelectorAll('.c-list__item--group').length,
     ).toBe(3);
     expect(
-      fixture.nativeElement.querySelector('.c-list__chevron'),
+      fixture.nativeElement.querySelector(
+        '.p-tree-node-content:has(.c-list__item--group) > .p-tree-node-toggle-button',
+      ),
     ).toBeTruthy();
   });
 
-  it('should render flat sds-list without chevrons when journey view is disabled', () => {
+  it('should render flat sds-list without group togglers when journey view is disabled', () => {
     component.journeyView = false;
     fixture.detectChanges();
 
     const list = fixture.nativeElement.querySelector('sds-list');
     expect(list).toBeTruthy();
     expect(list.classList.contains('c-list--flat')).toBe(true);
-    expect(fixture.nativeElement.querySelector('.c-list__chevron')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelectorAll('.p-tree-node:not(.p-tree-node-leaf)').length,
+    ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
     ).toBe(6);
@@ -324,7 +328,9 @@ describe('AffiliateDetailsComponent', () => {
       fixture.nativeElement.querySelector('sds-list.c-list--journey'),
     ).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector('.c-list__chevron'),
+      fixture.nativeElement.querySelector(
+        '.p-tree-node-content:has(.c-list__item--group) > .p-tree-node-toggle-button',
+      ),
     ).toBeTruthy();
 
     journeyToggle.click();
@@ -333,7 +339,9 @@ describe('AffiliateDetailsComponent', () => {
     expect(
       fixture.nativeElement.querySelector('sds-list.c-list--flat'),
     ).toBeTruthy();
-    expect(fixture.nativeElement.querySelector('.c-list__chevron')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelectorAll('.p-tree-node:not(.p-tree-node-leaf)').length,
+    ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
     ).toBe(6);
@@ -392,7 +400,7 @@ describe('AffiliateDetailsComponent', () => {
       '.c-affiliate-details__columns .c-affiliate-details__documents',
     );
     const detailColumn = fixture.nativeElement.querySelector(
-      'app-affiliate-document-detail.c-affiliate-details__detail',
+      '.c-affiliate-details__detail app-affiliate-document-detail',
     );
 
     expect(shell).toBeTruthy();

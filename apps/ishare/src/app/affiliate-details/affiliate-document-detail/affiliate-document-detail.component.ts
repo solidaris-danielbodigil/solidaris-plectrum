@@ -8,7 +8,6 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { StepperModule } from 'primeng/stepper';
@@ -20,28 +19,20 @@ import {
   type DocumentDetailField,
 } from './affiliate-document-detail.types';
 
-const OUTER_PANEL_VALUE = 'document';
-
 /**
  * AffiliateDocumentDetailComponent — iSHARE second-column document detail viewer.
  *
- * Renders outer accordion with header navigation, PrimeNG stepper, and nested
- * accordions for certificate panels and expandable detail rows.
+ * Renders PrimeNG stepper and stacked certificate/metadata sections. Document title
+ * and prev/next navigation live in the parent p-card header slot.
  *
  * ## Figma
- * Node 324:5860 — second column (accordion + stepper + nested accordion)
+ * Node 324:5860 — second column (card header + stepper + sections)
  * https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
  */
 @Component({
   selector: 'app-affiliate-document-detail',
   standalone: true,
-  imports: [
-    AccordionModule,
-    ButtonModule,
-    DividerModule,
-    StepperModule,
-    TagModule,
-  ],
+  imports: [ButtonModule, DividerModule, StepperModule, TagModule],
   templateUrl: './affiliate-document-detail.component.html',
   styleUrl: './affiliate-document-detail.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -57,13 +48,7 @@ export class AffiliateDocumentDetailComponent {
 
   readonly selectedDocumentIdChange = output<string>();
 
-  readonly outerPanelValue = signal<string | string[] | undefined>(
-    OUTER_PANEL_VALUE,
-  );
   readonly activeStep = signal(1);
-  readonly certPanelValue = signal<string | string[] | undefined>(
-    'certificat-itt',
-  );
 
   readonly documentDetail = computed(() => {
     const id = this.selectedDocumentId();
@@ -113,9 +98,6 @@ export class AffiliateDocumentDetailComponent {
     effect(() => {
       const detail = this.documentDetail();
       this.activeStep.set(detail?.activeStep ?? 1);
-
-      const firstPanelId = detail?.steps[0]?.panels?.[0]?.id;
-      this.certPanelValue.set(firstPanelId ?? undefined);
     });
   }
 
@@ -142,14 +124,6 @@ export class AffiliateDocumentDetailComponent {
     }
 
     this.selectedDocumentIdChange.emit(documents[index + 1].id);
-  }
-
-  onOuterPanelValueChange(value: string | string[] | undefined): void {
-    this.outerPanelValue.set(value);
-  }
-
-  onCertPanelValueChange(value: string | string[] | undefined): void {
-    this.certPanelValue.set(value);
   }
 
   goToPreviousStep(activateCallback: (index: number) => void): void {

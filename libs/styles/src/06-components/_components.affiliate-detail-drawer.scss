@@ -90,14 +90,6 @@
   margin: 0;
 }
 
-.c-affiliate-detail-drawer__divider {
-  inline-size: 100%;
-  block-size: 0;
-  margin: 0;
-  border: 0;
-  border-block-start: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
-}
-
 // ── Accordion (Famille + Notes) — chrome-free ────────────────────────────────
 .c-affiliate-detail-drawer__accordion {
   --p-accordion-panel-border-width: 0;

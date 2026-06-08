@@ -15,4 +15,28 @@
   // Column structural min-widths — layout flex/grow via o-flex in template
   --#{$sds-prefix}-size-affiliate-details-documents-column-min: calc(320 / 14 * var(--base-unit));
   --#{$sds-prefix}-size-affiliate-details-detail-column-min: calc(360 / 14 * var(--base-unit));
+
+  // Panel card chrome — 1px ring + sm elevation (Figma node 324:5739; mirrors toolbar)
+  --#{$sds-prefix}-shadow-affiliate-details-panel:
+    0 0 0 1px var(--#{$sds-prefix}-color-surface-200),
+    var(--#{$sds-prefix}-shadow-sm);
+
+  // Shared p-card header/body spacing — both column panels (Figma: 20px header padding)
+  --#{$sds-prefix}-space-affiliate-details-card-header-padding: calc(20 / 14 * var(--base-unit));
+}
+
+// ── PrimeNG Card token bridge — two-column content panels ────────────────────
+.c-affiliate-details__documents,
+.c-affiliate-details__detail {
+  --p-card-body-padding: 0;
+  --p-card-content-padding: 0;
+  --p-card-header-padding: var(--#{$sds-prefix}-space-affiliate-details-card-header-padding);
+  --p-card-background: var(--#{$sds-prefix}-color-content-bg);
+  --p-card-border-color: var(--#{$sds-prefix}-color-surface-200);
+  --p-card-border-radius: var(--#{$sds-prefix}-radius-xl);
+  --p-card-shadow: var(--#{$sds-prefix}-shadow-affiliate-details-panel);
+}
+
+.c-affiliate-details__detail {
+  --p-card-header-background: var(--#{$sds-prefix}-color-affiliate-document-detail-header-bg);
 }
