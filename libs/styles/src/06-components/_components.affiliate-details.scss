@@ -1,5 +1,6 @@
 @use '../01-settings/settings.prefix' as *;
 @use '../02-tools/tools.typography' as *;
+@use '../02-tools/tools.scroll-shadow' as *;
 
 // =============================================================================
 // 06-components/_components.affiliate-details.scss
@@ -75,4 +76,17 @@
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-detail-column-min);
   overflow: hidden;
+}
+
+// Keep card headers fixed while only the body/content area scrolls, with a
+// scroll-driven edge-shadow affordance (shared o-scroll-shadow pattern).
+// PrimeNG's base sets `.p-card-body { display: flex; flex-direction: column }`,
+// and sticky-bottom does not pin reliably on the last child of a flex column.
+// The doubled wrapper class raises specificity above PrimeNG's single-class
+// rule (injected after our stylesheet) so the block context wins and the bottom
+// shadow stays pinned to the scrollport edge.
+.c-affiliate-details__documents.c-affiliate-details__documents .p-card-body,
+.c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {
+  display: block;
+  @include scroll-shadow;
 }

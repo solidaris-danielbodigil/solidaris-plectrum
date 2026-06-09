@@ -48,6 +48,7 @@ interface OfficeOption {
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  host: { class: 'o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0' },
 })
 export class HomeComponent implements OnInit {
   private readonly router = inject(Router);

@@ -115,7 +115,7 @@
     class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
   >
     <p-card
-      class="c-affiliate-details__documents o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-auto o-flex__item--grow-1 o-layout--padding-3 o-layout--gap-3"
+      class="c-affiliate-details__documents o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1 o-layout--padding-3 o-layout--gap-3"
     >
       <ng-template pTemplate="header">
         <div
@@ -212,11 +212,12 @@
     }
   </div>
 
-  <sds-affiliate-detail-drawer
-    [(visible)]="affiliateDetailDrawerVisible"
-    [data]="affiliateDetailDrawerData()"
-    (identifierCopy)="onDrawerIdentifierCopy($event)"
-    (menuClick)="onDrawerMenuClick()"
-    (quickActionsClick)="onDrawerQuickActionsClick()"
-  />
 </div>
+
+<sds-affiliate-detail-drawer
+  [(visible)]="affiliateDetailDrawerVisible"
+  [data]="affiliateDetailDrawerData()"
+  (identifierCopy)="onDrawerIdentifierCopy($event)"
+  (menuClick)="onDrawerMenuClick()"
+  (quickActionsClick)="onDrawerQuickActionsClick()"
+/>

@@ -251,6 +251,7 @@ const EVA_MARTINEZ_DRAWER_STATIC: Omit<
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0' },
 })
 export class AffiliateDetailsComponent {
   private readonly route = inject(ActivatedRoute);

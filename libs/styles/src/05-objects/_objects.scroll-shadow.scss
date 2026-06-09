@@ -1,0 +1,49 @@
+@use '../02-tools/tools.scroll-shadow' as *;
+
+// =============================================================================
+// 05-objects/_objects.scroll-shadow.scss
+// .o-scroll-shadow — drop-in scroll-driven edge-shadow affordance (prefix: o-).
+//
+// Apply to any element you own that should scroll on the block axis. The
+// element becomes the scroll container and gains a top/bottom fade that tracks
+// scroll progress: bottom-only at the start, both edges mid-scroll, top-only at
+// the end.
+//
+//   <div class="o-scroll-shadow" style="max-height: 20rem">…tall content…</div>
+//
+// For scroll containers you DON'T own (e.g. PrimeNG's `.p-card-body`), apply the
+// `scroll-shadow()` tool mixin to the internal selector instead of this class.
+//
+// This file owns the shared keyframes referenced by every `scroll-shadow()`
+// usage, so it must stay loaded (forwarded from 05-objects/_objects.core.scss).
+//
+// Tunable via tokens (01-settings/_settings.scroll-shadow.scss):
+//   --sds-size-scroll-shadow-height · --sds-color-scroll-shadow
+// =============================================================================
+
+.o-scroll-shadow {
+  // Block formatting context — the sticky bottom edge does not pin reliably on
+  // the last child of a flex/grid column, so force block here.
+  display: block;
+  @include scroll-shadow;
+}
+
+@keyframes o-scroll-shadow-top {
+  0% {
+    opacity: 0;
+  }
+  8%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes o-scroll-shadow-bottom {
+  0%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

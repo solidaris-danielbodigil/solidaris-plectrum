@@ -1,0 +1,73 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 02-tools/_tools.scroll-shadow.scss
+// scroll-shadow() — emits a scroll-driven edge-shadow affordance on a scroll
+// container. As the element scrolls, a top fade appears once scrolled away from
+// the start and a bottom fade fades out as the end is reached.
+//
+// Mechanism: pure CSS scroll-timeline + animation-timeline (no JS).
+// The keyframes (`o-scroll-shadow-top` / `o-scroll-shadow-bottom`) are defined
+// once in 05-objects/_objects.scroll-shadow.scss, which is always loaded.
+//
+// Requirements:
+//   • The target element must be the scroll container (this mixin sets
+//     overflow + the named scroll timeline on it).
+//   • It must establish a block formatting context for the sticky bottom edge
+//     to pin reliably. A plain block element already does; flex/grid scrollers
+//     must also set `display: block` (e.g. PrimeNG's `.p-card-body`).
+//
+// Support: scroll-driven animations are Chromium-only today — degrades to no
+// shadow elsewhere (the base `opacity: 0` simply stays).
+//
+// @param $timeline  Name of the scroll timeline. Reusing the same name across
+//                   different scrollers is safe — lookup is scoped per subtree.
+// =============================================================================
+
+@mixin scroll-shadow($timeline: --o-scroll-shadow) {
+  position: relative;
+  overflow: auto;
+  scroll-timeline-name: $timeline;
+  scroll-timeline-axis: block;
+
+  // Sticky edge fades — overlay content; negative block margin collapses their
+  // flow size to zero so they never shift the content.
+  &::before,
+  &::after {
+    content: '';
+    position: sticky;
+    z-index: 1;
+    display: block;
+    block-size: var(--#{$sds-prefix}-size-scroll-shadow-height);
+    opacity: 0;
+    pointer-events: none;
+    animation-timeline: $timeline;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+
+  // Top edge — hidden at the start of the scroll, visible once scrolled down.
+  &::before {
+    inset-block-start: 0;
+    margin-block-end: calc(-1 * var(--#{$sds-prefix}-size-scroll-shadow-height));
+    background: linear-gradient(
+      to bottom,
+      var(--#{$sds-prefix}-color-scroll-shadow),
+      transparent
+    );
+    animation-name: o-scroll-shadow-top;
+  }
+
+  // Bottom edge — visible at the start, fades out at the end of the scroll.
+  &::after {
+    inset-block-end: 0;
+    margin-block-start: calc(-1 * var(--#{$sds-prefix}-size-scroll-shadow-height));
+    background: linear-gradient(
+      to top,
+      var(--#{$sds-prefix}-color-scroll-shadow),
+      transparent
+    );
+    animation-name: o-scroll-shadow-bottom;
+  }
+}

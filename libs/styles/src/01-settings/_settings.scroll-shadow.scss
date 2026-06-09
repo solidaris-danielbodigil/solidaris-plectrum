@@ -1,0 +1,15 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.scroll-shadow.scss
+// Scroll-edge shadow affordance tokens — consumed by the `scroll-shadow()` tool
+// mixin and the `.o-scroll-shadow` object. Rendered with CSS scroll-timeline.
+// =============================================================================
+
+:root {
+  // Depth of each edge fade — drives both pseudo-element height and negative margin.
+  --#{$sds-prefix}-size-scroll-shadow-height: var(--spacing-3);
+
+  // Fade colour — white scrim by default (softens content under the edge).
+  --#{$sds-prefix}-color-scroll-shadow: var(--#{$sds-prefix}-color-transparent-white-80);
+}
