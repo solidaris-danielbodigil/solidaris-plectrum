@@ -7,8 +7,8 @@
 //
 // Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
 //
-// Design ref:   Figma node 324:5860 / 530:6471 (card header + stepper + nested accordion)
-//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=530-6471
+// Design ref:   Figma node 324:5860 / 544:6474 (card header + stepper + nested accordion)
+//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474
 // Token source: libs/styles/src/01-settings/_settings.affiliate-document-detail.scss
 //               libs/styles/src/01-settings/_settings.stepper.scss
 //               libs/styles/src/01-settings/_settings.accordion.scss
@@ -48,28 +48,109 @@
 .c-affiliate-document-detail__documents-accordion {
   min-width: 0;
 
+  // Figma 544:6474 — panel radii adapt to sibling-count() (MDN CSS Values L5).
+  // sibling-count() = 1 (:only-child) → full radius-xl on panel, header top, content bottom.
+  // sibling-count() > 1 → first: flat bottom; last: flat top; middle (count > 2): flat all sides.
   .p-accordionpanel {
     overflow: hidden;
-  }
+    border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
 
-  // Figma 530:6471 — radius-md header top, radius-lg content/collapsed bottom
-  .p-accordionheader {
-    border-start-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
-    border-start-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+    @supports (width: calc(1px * sibling-count())) {
+      // Expose sibling count per panel for sibling-count()-aware radius logic below.
+      --_accordion-panel-sibling-count: sibling-count();
+    }
 
-    &[aria-expanded='false'] {
+    .p-accordionheader {
+      // Figma 544:6474 — 16px gap between header slot content and chevron toggle
+      gap: var(--#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap);
+      border-start-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+      border-start-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+
+      &[aria-expanded='true'] {
+        border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-border);
+      }
+
+      &[aria-expanded='false'] {
+        border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+        border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+      }
+    }
+
+    .p-accordioncontent {
       border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
       border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
     }
+
+    // ── Multi-panel overrides (sibling-count() > 1, i.e. :not(:only-child)) ───
+
+    &:not(:only-child) {
+      border-radius: var(--#{$sds-prefix}-radius-none);
+
+      // First panel — keep top radii and bottom border (sibling-count() ≥ 2)
+      &:first-child {
+        border-start-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+        border-start-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+
+        .p-accordionheader {
+          border-start-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+          border-start-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+
+          &[aria-expanded='false'] {
+            border-end-start-radius: var(--#{$sds-prefix}-radius-none);
+            border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+          }
+        }
+
+        .p-accordioncontent {
+          border-end-start-radius: var(--#{$sds-prefix}-radius-none);
+          border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+        }
+      }
+
+      // Last panel — keep bottom radii and top border (sibling-count() ≥ 2)
+      &:last-child {
+        border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+        border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
+
+        .p-accordionheader {
+          border-start-start-radius: var(--#{$sds-prefix}-radius-none);
+          border-start-end-radius: var(--#{$sds-prefix}-radius-none);
+
+          &[aria-expanded='false'] {
+            border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+            border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+          }
+        }
+
+        .p-accordioncontent {
+          border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+          border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+        }
+      }
+
+      // Middle panels — zero all radii; inline borders only (sibling-count() > 2)
+      &:not(:first-child):not(:last-child) {
+        border-radius: var(--#{$sds-prefix}-radius-none);
+        border-block-start-width: 0;
+        border-block-end-width: 0;
+
+        .p-accordionheader {
+          border-radius: var(--#{$sds-prefix}-radius-none);
+
+          &[aria-expanded='false'] {
+            border-radius: var(--#{$sds-prefix}-radius-none);
+          }
+        }
+
+        .p-accordioncontent {
+          border-radius: var(--#{$sds-prefix}-radius-none);
+        }
+      }
+    }
   }
 
-  .p-accordioncontent {
-    border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
-    border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
-  }
-
-  .p-divider {
-    margin-block: var(--#{$sds-prefix}-space-affiliate-document-detail-divider-padding-block);
+  .c-affiliate-document-detail__divider {
+    padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-divider-padding-block);
   }
 }
 
@@ -110,11 +191,16 @@
 }
 
 .c-affiliate-document-detail__detail-label {
-  @include text-label-sm;
+  @include text-label-xs;
   color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-label-text);
   // Fixed label column — Figma: 124px
   inline-size: var(--#{$sds-prefix}-size-affiliate-document-detail-detail-label-width);
   flex-shrink: 0;
+
+  &--inline {
+    inline-size: auto;
+    flex-shrink: 1;
+  }
 }
 
 // Figma 530:6471 — all metadata values rendered as primary-75 chips
@@ -138,27 +224,9 @@
   min-width: 0;
 }
 
-// Certificate status tag — center Bootstrap Icons inside PrimeNG fixed icon box
-.c-affiliate-document-detail__status-tag {
-  align-items: center;
-
-  .p-tag-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
-}
-
-.c-affiliate-document-detail__add-panel-button,
-.c-affiliate-document-detail__add-button {
-  min-width: 0;
-  margin-block-start: var(--#{$sds-prefix}-space-affiliate-document-detail-details-gap);
+.c-affiliate-document-detail__message {
+  margin-block-end: var(--#{$sds-prefix}-space-affiliate-document-detail-message-margin-block-end);
 }
 
 // ── Step footer ──────────────────────────────────────────────────────────────
 
-.c-affiliate-document-detail__step-footer {
-  padding-block-start: var(--#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start);
-  border-block-start: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-step-footer-border);
-}

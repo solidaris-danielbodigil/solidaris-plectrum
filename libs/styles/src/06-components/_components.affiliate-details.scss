@@ -32,6 +32,7 @@
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
+  width: 100%;
 }
 
 // Shared p-card header slot — padding via --p-card-header-padding; flex via o-flex in template.
@@ -41,6 +42,7 @@
 }
 
 // First column — p-card shell; section header in p-card header slot.
+// flex-shrink via o-flex__item--shrink-1 in template so 5/7 basis can absorb row gap.
 .c-affiliate-details__documents {
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-documents-column-min);

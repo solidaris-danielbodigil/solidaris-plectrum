@@ -11,6 +11,7 @@ import {
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
+import { MessageModule } from 'primeng/message';
 import { StepperModule } from 'primeng/stepper';
 import { TagModule } from 'primeng/tag';
 import type { ListDocumentItem } from '@solidaris/ui';
@@ -37,6 +38,7 @@ import {
     AccordionModule,
     ButtonModule,
     DividerModule,
+    MessageModule,
     StepperModule,
     TagModule,
   ],
@@ -166,6 +168,7 @@ export class AffiliateDocumentDetailComponent {
     }
 
     this.activeStep.update((value) => value - 1);
+    this.openFirstPanelOfActiveStep();
   }
 
   goToNextStep(): void {
@@ -174,5 +177,13 @@ export class AffiliateDocumentDetailComponent {
     }
 
     this.activeStep.update((value) => value + 1);
+    this.openFirstPanelOfActiveStep();
+  }
+
+  private openFirstPanelOfActiveStep(): void {
+    const step = this.steps().find(
+      (documentStep) => documentStep.value === this.activeStep(),
+    );
+    this.certPanelValue.set(step?.panels?.[0]?.id ?? undefined);
   }
 }

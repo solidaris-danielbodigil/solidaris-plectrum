@@ -49,9 +49,9 @@
 }
 
 // ── Affiliate document detail — certificate panels accordion ───────────────
-// Design ref: Figma iSHARE-Audit node 530:6471 — bordered nested panels, 17px padding
+// Design ref: Figma iSHARE-Audit node 544:6474 — bordered nested panels, 17px padding, radius-xl
 .c-affiliate-document-detail__documents-accordion {
-  // Panel radii — split header/content radii applied in 06-components (Figma 530:6471)
+  // Panel radii — unified section/card radius applied in 06-components (Figma 544:6474)
   --#{$sds-prefix}-radius-affiliate-document-detail-accordion-panel-header: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
   --#{$sds-prefix}-radius-affiliate-document-detail-accordion-panel-content: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
   --p-accordion-panel-border-width: 1px;

@@ -112,10 +112,10 @@
   </sds-toolbar>
 
   <div
-    class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+    class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
   >
     <p-card
-      class="c-affiliate-details__documents o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1 o-layout--padding-3 o-layout--gap-3"
+      class="c-affiliate-details__documents o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--5 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
     >
       <ng-template pTemplate="header">
         <div
@@ -156,7 +156,7 @@
 
     @if (visibleDocuments().length > 0) {
       <p-card
-        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1 o-layout--padding-3 o-layout--gap-3"
+        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
       >
         <ng-template pTemplate="header">
           @if (documentDetail.documentDetail(); as detail) {

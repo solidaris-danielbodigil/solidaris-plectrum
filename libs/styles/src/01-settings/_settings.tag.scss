@@ -1,0 +1,16 @@
+// =============================================================================
+// 01-settings/_settings.tag.scss
+// PrimeNG Tag parity — structural fixes not covered by design tokens.
+//
+// @primeuix/styles/tag does not set line-height (browser default: normal).
+// SDS body sets line-height: var(--line-height-22) which inherits into .p-tag-icon
+// and vertically offsets Bootstrap Icons inside the tag's fixed icon box.
+// =============================================================================
+
+.p-tag {
+  line-height: normal;
+}
+
+.p-tag-icon {
+  line-height: 1;
+}

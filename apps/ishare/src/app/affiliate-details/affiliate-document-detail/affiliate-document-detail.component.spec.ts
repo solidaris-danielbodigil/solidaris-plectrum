@@ -129,23 +129,69 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(heading?.textContent?.trim()).toBe('Détails');
   });
 
-  it('should expose aria-label on the add certificate panel button', () => {
-    expect(
-      fixture.nativeElement.querySelector(
-        'button.c-affiliate-document-detail__add-panel-button[aria-label="Ajouter un certificat"]',
-      ),
-    ).toBeTruthy();
-  });
-
   it('should render Certificat ITT panel with Accepté status for Eva Martinez demo doc', () => {
     const statusTag = fixture.nativeElement.querySelector(
-      '.c-affiliate-document-detail__status-tag',
+      '.c-affiliate-document-detail__cert-header-meta p-tag',
     );
 
     expect(statusTag?.textContent).toContain('Accepté');
     expect(
       fixture.nativeElement.textContent,
     ).toContain('Certificat ITT');
+  });
+
+  it('should render the data-driven status icon on the certificate panel', () => {
+    const statusTagIcon = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__cert-header-meta p-tag .p-tag-icon',
+    );
+
+    expect(statusTagIcon?.classList.contains('bi-check-lg')).toBe(true);
+  });
+
+  it('should render step 2 Feuilles de renseignement panels from mock data', () => {
+    fixture.componentInstance.goToNextStep();
+    fixture.detectChanges();
+
+    const content = fixture.nativeElement.textContent ?? '';
+
+    expect(content).toContain('F.D.R. employeur');
+    expect(content).toContain('F.D.R. affilié - Incapacité de travail');
+    expect(content).toContain('Compte financier - Liasse');
+    expect(content).toContain('Clôturé');
+    expect(content).toContain('Date du risque');
+    expect(content).toContain('06/01/2026');
+  });
+
+  it('should render count tag on Compte financier - Liasse panel', () => {
+    fixture.componentInstance.activeStep.set(2);
+    fixture.componentInstance.certPanelValue.set('compte-financier-liasse');
+    fixture.detectChanges();
+
+    const countTag = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    );
+
+    expect(countTag?.textContent).toContain('1');
+  });
+
+  it('should render step 3 Calcul panel with warn message and En attente status', () => {
+    fixture.componentInstance.activeStep.set(3);
+    fixture.componentInstance.certPanelValue.set('calcul');
+    fixture.detectChanges();
+
+    const content = fixture.nativeElement.textContent ?? '';
+
+    expect(content).toContain('Calcul');
+    expect(content).toContain('En attente');
+    expect(content).toContain('Veuillez nous faire parvenir une copie de votre C4');
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-document-detail__message'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+      ),
+    ).toBeTruthy();
   });
 
   it('should render certificate metadata rows from Figma mock data', () => {
@@ -156,6 +202,16 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('Numéro de certificat');
     expect(content).toContain('25/1256332');
     expect(content).toContain('Période');
+  });
+
+  it('should apply inline detail-label modifier to period sub-labels Du and Au', () => {
+    const inlineLabels = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-document-detail__detail-label--inline',
+      ),
+    ] as HTMLElement[];
+
+    expect(inlineLabels.map((el) => el.textContent?.trim())).toEqual(['Du', 'Au']);
   });
 
   it('should always render both step navigation buttons in the footer', () => {

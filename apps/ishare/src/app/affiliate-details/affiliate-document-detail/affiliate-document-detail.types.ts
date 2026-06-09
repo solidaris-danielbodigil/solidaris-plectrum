@@ -17,12 +17,30 @@ export interface DocumentCertificatAction {
   href?: string;
 }
 
+export type DocumentCertificatPanelStatusSeverity =
+  | 'success'
+  | 'warn'
+  | 'danger'
+  | 'info'
+  | 'secondary'
+  | 'contrast';
+
 export interface DocumentCertificatPanel {
   id: string;
   title: string;
   status: {
     label: string;
-    severity: 'success' | 'warn' | 'danger' | 'info' | 'secondary' | 'contrast';
+    severity: DocumentCertificatPanelStatusSeverity;
+    icon?: string;
+  };
+  countTag?: {
+    label: string;
+    severity: DocumentCertificatPanelStatusSeverity;
+    icon?: string;
+  };
+  message?: {
+    severity: 'warn' | 'info' | 'success' | 'error';
+    text: string;
   };
   actions: DocumentCertificatAction[];
   details: DocumentDetailField[];
@@ -33,7 +51,6 @@ export interface DocumentStep {
   value: number;
   label: string;
   panels?: DocumentCertificatPanel[];
-  addActionLabel?: string;
 }
 
 export interface AffiliateDocumentDetail {

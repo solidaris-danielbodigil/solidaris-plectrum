@@ -37,14 +37,20 @@
                             class="c-affiliate-document-detail__cert-header-slot o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-2 o-layout--min-w-0"
                           >
                             <div
-                              class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--min-w-0"
+                              class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-1 o-layout--min-w-0"
                             >
                               <p-tag
-                                class="c-affiliate-document-detail__status-tag"
                                 [severity]="panel.status.severity"
                                 [value]="panel.status.label"
-                                icon="bi bi-check-lg"
+                                [icon]="panel.status.icon"
                               />
+                              @if (panel.countTag) {
+                                <p-tag
+                                  [severity]="panel.countTag.severity"
+                                  [value]="panel.countTag.label"
+                                  [icon]="panel.countTag.icon"
+                                />
+                              }
                             </div>
                             <div
                               class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
@@ -68,6 +74,12 @@
                       </p-accordion-header>
 
                       <p-accordion-content>
+                        @if (panel.message) {
+                          <p-message
+                            class="c-affiliate-document-detail__message"
+                            [severity]="panel.message.severity"
+                          >{{ panel.message.text }}</p-message>
+                        }
                         <h3
                           class="c-affiliate-document-detail__details-heading"
                         >
@@ -89,7 +101,7 @@
                                   class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
                                 >
                                   <span
-                                    class="c-affiliate-document-detail__detail-label"
+                                    class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
                                     >Du</span
                                   >
                                   <span
@@ -97,7 +109,7 @@
                                     >{{ field.value.from }}</span
                                   >
                                   <span
-                                    class="c-affiliate-document-detail__detail-label"
+                                    class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
                                     >Au</span
                                   >
                                   <span
@@ -133,19 +145,6 @@
                     </p-accordion-panel>
                   }
                 </p-accordion>
-
-                @if (step.addActionLabel) {
-                  <button
-                    pButton
-                    type="button"
-                    class="c-affiliate-document-detail__add-panel-button"
-                    severity="secondary"
-                    size="small"
-                    [outlined]="true"
-                    icon="bi bi-plus-lg"
-                    [attr.aria-label]="step.addActionLabel"
-                  ></button>
-                }
               }
             </ng-template>
           </p-step-panel>
@@ -161,7 +160,7 @@
         type="button"
         class="c-affiliate-document-detail__step-nav-button"
         severity="secondary"
-        size="small"
+        size="large"
         [outlined]="true"
         icon="bi bi-arrow-left"
         iconPos="right"
@@ -172,7 +171,7 @@
       <button
         pButton
         type="button"
-        size="small"
+        size="large"
         icon="bi bi-arrow-right"
         iconPos="right"
         label="Etape suivante"
