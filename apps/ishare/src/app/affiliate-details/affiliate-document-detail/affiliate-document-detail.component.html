@@ -15,48 +15,66 @@
       <p-step-panels>
         @for (step of steps(); track step.value) {
           <p-step-panel [value]="step.value">
-            <ng-template #content let-activateCallback="activateCallback">
+            <ng-template #content>
               @if (step.panels && step.panels.length > 0) {
-                <div
-                  class="c-affiliate-document-detail__sections o-flex o-flex--y o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+                <p-accordion
+                  class="c-affiliate-document-detail__documents-accordion o-layout--full-width o-layout--min-w-0"
+                  [value]="certPanelValue()"
+                  (valueChange)="onCertPanelValueChange($event)"
+                  expandIcon="bi bi-chevron-down"
+                  collapseIcon="bi bi-chevron-up"
                 >
                   @for (panel of step.panels; track panel.id) {
-                    <section
-                      class="c-affiliate-document-detail__section o-layout--full-width o-layout--min-w-0"
-                    >
-                      <div
-                        class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
-                      >
-                        <span>{{ panel.title }}</span>
-                        <p-tag
-                          class="c-affiliate-document-detail__status-tag"
-                          [severity]="panel.status.severity"
-                          [value]="panel.status.label"
-                          icon="bi bi-check-lg"
-                        />
+                    <p-accordion-panel [value]="panel.id">
+                      <p-accordion-header>
                         <div
-                          class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+                          class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
                         >
-                          @for (action of panel.actions; track action.label) {
-                            <button
-                              pButton
-                              type="button"
-                              severity="secondary"
-                              size="small"
-                              [outlined]="true"
-                              [icon]="action.icon"
-                              [label]="action.label"
-                              [attr.aria-label]="action.label"
-                            ></button>
-                          }
+                          <span class="c-affiliate-document-detail__cert-title">{{
+                            panel.title
+                          }}</span>
+                          <div
+                            class="c-affiliate-document-detail__cert-header-slot o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-2 o-layout--min-w-0"
+                          >
+                            <div
+                              class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--min-w-0"
+                            >
+                              <p-tag
+                                class="c-affiliate-document-detail__status-tag"
+                                [severity]="panel.status.severity"
+                                [value]="panel.status.label"
+                                icon="bi bi-check-lg"
+                              />
+                            </div>
+                            <div
+                              class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+                            >
+                              @for (action of panel.actions; track action.label) {
+                                <button
+                                  pButton
+                                  type="button"
+                                  class="c-affiliate-document-detail__action-button"
+                                  severity="secondary"
+                                  size="small"
+                                  [outlined]="true"
+                                  [icon]="action.icon"
+                                  [label]="action.label"
+                                  [attr.aria-label]="action.label"
+                                ></button>
+                              }
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      </p-accordion-header>
 
-                      <div
-                        class="c-affiliate-document-detail__section-body o-flex o-flex--y o-layout--gap-2 o-layout--min-w-0"
-                      >
+                      <p-accordion-content>
+                        <h3
+                          class="c-affiliate-document-detail__details-heading"
+                        >
+                          Détails
+                        </h3>
                         <div
-                          class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-2 o-layout--min-w-0"
+                          class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
                         >
                           @for (field of panel.details; track field.label) {
                             <div
@@ -89,7 +107,7 @@
                                 </div>
                               } @else {
                                 <span
-                                  class="c-affiliate-document-detail__detail-value"
+                                  class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
                                   >{{ field.value }}</span
                                 >
                               }
@@ -97,52 +115,70 @@
                           }
                         </div>
 
-                        <p-divider layout="horizontal" />
+                        <div class="c-affiliate-document-detail__divider">
+                          <p-divider layout="horizontal" />
+                        </div>
 
                         <button
                           pButton
                           type="button"
+                          class="c-affiliate-document-detail__more-details-button"
                           severity="secondary"
                           size="small"
                           [outlined]="true"
                           icon="bi bi-eye"
                           [label]="panel.moreDetailsLabel"
                         ></button>
-                      </div>
-                    </section>
+                      </p-accordion-content>
+                    </p-accordion-panel>
                   }
-                </div>
-              }
+                </p-accordion>
 
-              <div
-                class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1"
-              >
-                <button
-                  pButton
-                  type="button"
-                  severity="secondary"
-                  size="small"
-                  [outlined]="true"
-                  icon="bi bi-arrow-left"
-                  label="Etape précédente"
-                  [disabled]="isFirstStep()"
-                  (click)="goToPreviousStep(activateCallback)"
-                ></button>
-                <button
-                  pButton
-                  type="button"
-                  size="small"
-                  icon="bi bi-arrow-right"
-                  iconPos="right"
-                  label="Etape suivante"
-                  [disabled]="isLastStep()"
-                  (click)="goToNextStep(activateCallback)"
-                ></button>
-              </div>
+                @if (step.addActionLabel) {
+                  <button
+                    pButton
+                    type="button"
+                    class="c-affiliate-document-detail__add-panel-button"
+                    severity="secondary"
+                    size="small"
+                    [outlined]="true"
+                    icon="bi bi-plus-lg"
+                    [attr.aria-label]="step.addActionLabel"
+                  ></button>
+                }
+              }
             </ng-template>
           </p-step-panel>
         }
       </p-step-panels>
     </p-stepper>
+
+    <div
+      class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1"
+    >
+      <button
+        pButton
+        type="button"
+        class="c-affiliate-document-detail__step-nav-button"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        icon="bi bi-arrow-left"
+        iconPos="right"
+        label="Etape précédente"
+        [disabled]="previousDisabled()"
+        (click)="goToPreviousStep()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        size="small"
+        icon="bi bi-arrow-right"
+        iconPos="right"
+        label="Etape suivante"
+        [disabled]="nextDisabled()"
+        (click)="goToNextStep()"
+      ></button>
+    </div>
   </div>
 }

@@ -235,26 +235,30 @@
 // ── Timeline gutter (journey document rows) ─────────────────────────────────
 
 // Journey document row timeline — libs/assets/timeline.svg (vertical connector + top marker)
+// Absolute positioning keeps the SVG out of flex flow so row height follows the card only.
+.c-list__document-row {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding-inline-start: var(--#{$sds-prefix}-size-list-timeline-gutter);
+}
+
 .c-list__timeline {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
   inline-size: var(--#{$sds-prefix}-size-list-timeline-gutter);
-  flex-shrink: 0;
-  align-self: stretch;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
+  pointer-events: none;
 }
 
 .c-list__timeline-img {
   display: block;
   inline-size: calc(6 / 14 * var(--base-unit));
   block-size: 100%;
-  flex-shrink: 0;
-}
-
-.c-list__document-row {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
+  object-fit: fill;
 }
 
 // ── Mode modifiers ──────────────────────────────────────────────────────────

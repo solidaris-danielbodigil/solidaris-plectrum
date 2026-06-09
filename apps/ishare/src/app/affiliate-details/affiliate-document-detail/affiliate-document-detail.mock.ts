@@ -12,6 +12,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
       {
         value: 1,
         label: 'Certificat médical',
+        addActionLabel: 'Ajouter un certificat',
         panels: [
           {
             id: 'certificat-itt',

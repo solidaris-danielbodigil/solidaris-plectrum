@@ -7,10 +7,11 @@
 //
 // Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
 //
-// Design ref:   Figma node 324:5860 (Dossier Affilié — second column: card header + stepper + sections)
-//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
+// Design ref:   Figma node 324:5860 / 530:6471 (card header + stepper + nested accordion)
+//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=530-6471
 // Token source: libs/styles/src/01-settings/_settings.affiliate-document-detail.scss
 //               libs/styles/src/01-settings/_settings.stepper.scss
+//               libs/styles/src/01-settings/_settings.accordion.scss
 // Reference:    _components.affiliate-overview-card.scss, _components.sub-nav-shell.scss
 // =============================================================================
 
@@ -42,42 +43,48 @@
   min-width: 0;
 }
 
-// ── Stacked certificate / metadata sections ──────────────────────────────────
+// ── Nested certificate accordion (token bridge in 01-settings) ───────────────
 
-.c-affiliate-document-detail__sections {
+.c-affiliate-document-detail__documents-accordion {
   min-width: 0;
-}
 
-.c-affiliate-document-detail__section {
-  background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-section-border);
-  border-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
-  overflow: hidden;
-  min-width: 0;
-}
+  .p-accordionpanel {
+    overflow: hidden;
+  }
 
-.c-affiliate-document-detail__section-body {
-  padding: 0 var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding)
-    var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
-  min-width: 0;
+  // Figma 530:6471 — radius-md header top, radius-lg content/collapsed bottom
+  .p-accordionheader {
+    border-start-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+    border-start-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
+
+    &[aria-expanded='false'] {
+      border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+      border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+    }
+  }
+
+  .p-accordioncontent {
+    border-end-start-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+    border-end-end-radius: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+  }
+
+  .p-divider {
+    margin-block: var(--#{$sds-prefix}-space-affiliate-document-detail-divider-padding-block);
+  }
 }
 
 // ── Certificate header row ───────────────────────────────────────────────────
 
 .c-affiliate-document-detail__cert-header {
   min-width: 0;
-  padding: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
-  padding-block-end: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
-  border-block-end: 1px solid var(--#{$sds-prefix}-color-affiliate-document-detail-cert-header-border);
 }
 
-.c-affiliate-document-detail__status-tag {
+.c-affiliate-document-detail__cert-title,
+.c-affiliate-document-detail__cert-header > span:first-child {
   @include text-label-sm;
-  background: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-bg);
-  color: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-text);
-  border-radius: var(--#{$sds-prefix}-radius-pill);
-  padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-block);
-  padding-inline: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-inline);
+  line-height: var(--#{$sds-prefix}-text-affiliate-document-detail-cert-title-line-height);
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text);
+  margin: 0;
 }
 
 .c-affiliate-document-detail__actions {
@@ -88,6 +95,14 @@
 
 .c-affiliate-document-detail__details {
   min-width: 0;
+}
+
+.c-affiliate-document-detail__details-title,
+.c-affiliate-document-detail__details-heading {
+  @include text-label-sm;
+  line-height: var(--#{$sds-prefix}-text-affiliate-document-detail-details-title-line-height);
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0 0 var(--#{$sds-prefix}-space-affiliate-document-detail-details-gap);
 }
 
 .c-affiliate-document-detail__detail-row {
@@ -102,15 +117,8 @@
   flex-shrink: 0;
 }
 
+// Figma 530:6471 — all metadata values rendered as primary-75 chips
 .c-affiliate-document-detail__detail-value {
-  @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-value-text);
-  min-width: 0;
-  word-break: break-word;
-}
-
-// Metadata chips — Figma: primary/75 background
-.c-affiliate-document-detail__detail-value--chip {
   @include text-label-sm;
   display: inline-block;
   background: var(--#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg);
@@ -118,6 +126,22 @@
   border-radius: var(--#{$sds-prefix}-radius-pill);
   padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-block);
   padding-inline: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-inline);
+  min-width: 0;
+  word-break: break-word;
+}
+
+.c-affiliate-document-detail__detail-value--chip {
+  // Modifier retained for period-field markup; base value styles already apply chip chrome.
+}
+
+.c-affiliate-document-detail__cert-header-meta {
+  min-width: 0;
+}
+
+.c-affiliate-document-detail__add-panel-button,
+.c-affiliate-document-detail__add-button {
+  min-width: 0;
+  margin-block-start: var(--#{$sds-prefix}-space-affiliate-document-detail-details-gap);
 }
 
 // ── Step footer ──────────────────────────────────────────────────────────────

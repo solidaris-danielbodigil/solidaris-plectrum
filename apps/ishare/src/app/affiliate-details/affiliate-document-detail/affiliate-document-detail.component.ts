@@ -8,6 +8,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { StepperModule } from 'primeng/stepper';
@@ -22,8 +23,8 @@ import {
 /**
  * AffiliateDocumentDetailComponent — iSHARE second-column document detail viewer.
  *
- * Renders PrimeNG stepper and stacked certificate/metadata sections. Document title
- * and prev/next navigation live in the parent p-card header slot.
+ * Renders PrimeNG stepper and nested accordions for certificate panels. Document
+ * title and prev/next navigation live in the parent p-card header slot.
  *
  * ## Figma
  * Node 324:5860 — second column (card header + stepper + sections)
@@ -32,7 +33,13 @@ import {
 @Component({
   selector: 'app-affiliate-document-detail',
   standalone: true,
-  imports: [ButtonModule, DividerModule, StepperModule, TagModule],
+  imports: [
+    AccordionModule,
+    ButtonModule,
+    DividerModule,
+    StepperModule,
+    TagModule,
+  ],
   templateUrl: './affiliate-document-detail.component.html',
   styleUrl: './affiliate-document-detail.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -49,6 +56,9 @@ export class AffiliateDocumentDetailComponent {
   readonly selectedDocumentIdChange = output<string>();
 
   readonly activeStep = signal(1);
+  readonly certPanelValue = signal<string | string[] | undefined>(
+    'certificat-itt',
+  );
 
   readonly documentDetail = computed(() => {
     const id = this.selectedDocumentId();
@@ -76,28 +86,31 @@ export class AffiliateDocumentDetailComponent {
     return index >= 0 && index < this.visibleDocuments().length - 1;
   });
 
-  readonly isFirstStep = computed(() => {
+  readonly activeStepIndex = computed(() => {
     const steps = this.steps();
     if (steps.length === 0) {
-      return true;
+      return -1;
     }
 
-    return this.activeStep() === steps[0].value;
+    return steps.findIndex((step) => step.value === this.activeStep());
   });
 
-  readonly isLastStep = computed(() => {
-    const steps = this.steps();
-    if (steps.length === 0) {
-      return true;
-    }
+  readonly previousDisabled = computed(() => this.activeStepIndex() <= 0);
 
-    return this.activeStep() === steps[steps.length - 1].value;
+  readonly nextDisabled = computed(() => {
+    const steps = this.steps();
+    const index = this.activeStepIndex();
+
+    return index < 0 || index >= steps.length - 1;
   });
 
   constructor() {
     effect(() => {
       const detail = this.documentDetail();
       this.activeStep.set(detail?.activeStep ?? 1);
+
+      const firstPanelId = detail?.steps[0]?.panels?.[0]?.id;
+      this.certPanelValue.set(firstPanelId ?? undefined);
     });
   }
 
@@ -126,19 +139,40 @@ export class AffiliateDocumentDetailComponent {
     this.selectedDocumentIdChange.emit(documents[index + 1].id);
   }
 
-  goToPreviousStep(activateCallback: (index: number) => void): void {
-    if (this.isFirstStep()) {
+  onCertPanelValueChange(
+    value: string | number | string[] | number[] | null | undefined,
+  ): void {
+    if (value === null || value === undefined) {
+      this.certPanelValue.set(undefined);
       return;
     }
 
-    activateCallback(this.activeStep() - 1);
+    if (typeof value === 'number') {
+      this.certPanelValue.set(String(value));
+      return;
+    }
+
+    if (Array.isArray(value) && typeof value[0] === 'number') {
+      this.certPanelValue.set(value.map(String));
+      return;
+    }
+
+    this.certPanelValue.set(value as string | string[]);
   }
 
-  goToNextStep(activateCallback: (index: number) => void): void {
-    if (this.isLastStep()) {
+  goToPreviousStep(): void {
+    if (this.previousDisabled()) {
       return;
     }
 
-    activateCallback(this.activeStep() + 1);
+    this.activeStep.update((value) => value - 1);
+  }
+
+  goToNextStep(): void {
+    if (this.nextDisabled()) {
+      return;
+    }
+
+    this.activeStep.update((value) => value + 1);
   }
 }

@@ -121,6 +121,22 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).toBeTruthy();
   });
 
+  it('should render the Détails heading in the certificate panel body', () => {
+    const heading = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__details-heading',
+    );
+
+    expect(heading?.textContent?.trim()).toBe('Détails');
+  });
+
+  it('should expose aria-label on the add certificate panel button', () => {
+    expect(
+      fixture.nativeElement.querySelector(
+        'button.c-affiliate-document-detail__add-panel-button[aria-label="Ajouter un certificat"]',
+      ),
+    ).toBeTruthy();
+  });
+
   it('should render Certificat ITT panel with Accepté status for Eva Martinez demo doc', () => {
     const statusTag = fixture.nativeElement.querySelector(
       '.c-affiliate-document-detail__status-tag',
@@ -142,7 +158,23 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('Période');
   });
 
+  it('should always render both step navigation buttons in the footer', () => {
+    const previousStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape précédente',
+    );
+    const nextStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape suivante',
+    );
+
+    expect(previousStepButton).toBeTruthy();
+    expect(nextStepButton).toBeTruthy();
+  });
+
   it('should disable Etape précédente on the first step', () => {
+    expect(fixture.componentInstance.previousDisabled()).toBe(true);
+
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
       'Etape précédente',
@@ -151,9 +183,25 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(previousStepButton?.disabled).toBe(true);
   });
 
+  it('should enable Etape précédente when not on the first step', () => {
+    fixture.componentInstance.activeStep.set(2);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.previousDisabled()).toBe(false);
+
+    const previousStepButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Etape précédente',
+    );
+
+    expect(previousStepButton?.disabled).toBe(false);
+  });
+
   it('should disable Etape suivante on the last step', () => {
     fixture.componentInstance.activeStep.set(3);
     fixture.detectChanges();
+
+    expect(fixture.componentInstance.nextDisabled()).toBe(true);
 
     const nextStepButton = findButtonByLabel(
       fixture.nativeElement,

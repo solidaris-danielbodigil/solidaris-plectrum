@@ -25,9 +25,15 @@
   --p-stepper-separator-size: var(--#{$sds-prefix}-size-affiliate-document-detail-step-separator);
   --p-stepper-separator-background: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border);
   --p-stepper-separator-active-background: var(--#{$sds-prefix}-color-affiliate-document-detail-step-active);
+  --p-stepper-step-gap: var(--#{$sds-prefix}-space-affiliate-document-detail-step-gap);
+  --p-stepper-step-header-gap: var(--#{$sds-prefix}-space-affiliate-document-detail-step-header-gap);
   --p-stepper-step-title-color: var(--#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text);
   --p-stepper-step-title-active-color: var(--#{$sds-prefix}-color-text);
-  --p-stepper-steppanels-padding: 0;
+  --p-stepper-steppanels-padding:
+    var(--#{$sds-prefix}-space-affiliate-document-detail-step-panels-padding-block-start)
+    var(--#{$sds-prefix}-space-affiliate-document-detail-step-panels-padding-inline)
+    0
+    var(--#{$sds-prefix}-space-affiliate-document-detail-step-panels-padding-inline);
   --p-stepper-steppanel-padding: 0;
   --p-stepper-steppanel-background: transparent;
 }

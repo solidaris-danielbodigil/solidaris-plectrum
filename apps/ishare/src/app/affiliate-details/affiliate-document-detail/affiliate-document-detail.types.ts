@@ -33,6 +33,7 @@ export interface DocumentStep {
   value: number;
   label: string;
   panels?: DocumentCertificatPanel[];
+  addActionLabel?: string;
 }
 
 export interface AffiliateDocumentDetail {
