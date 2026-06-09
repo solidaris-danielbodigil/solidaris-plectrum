@@ -144,6 +144,7 @@
           [selectedItemId]="selectedDocumentId()"
           (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
           (itemClick)="onDocumentClick($event)"
+          (tagTargetClick)="onTagTargetClick($event)"
         />
       } @else {
         <sds-empty-state
@@ -175,10 +176,8 @@
                 <button
                   pButton
                   type="button"
-                  class="c-affiliate-document-detail__nav-button"
                   severity="secondary"
                   size="small"
-                  [outlined]="true"
                   icon="bi bi-skip-backward"
                   [disabled]="!documentDetail.canGoToPreviousDocument()"
                   aria-label="Document précédent"
@@ -187,10 +186,8 @@
                 <button
                   pButton
                   type="button"
-                  class="c-affiliate-document-detail__nav-button"
                   severity="secondary"
                   size="small"
-                  [outlined]="true"
                   icon="bi bi-skip-forward"
                   [disabled]="!documentDetail.canGoToNextDocument()"
                   aria-label="Document suivant"
@@ -206,6 +203,7 @@
           class="o-layout--full-width o-layout--min-w-0"
           [selectedDocumentId]="selectedDocumentId()"
           [visibleDocuments]="visibleDocuments()"
+          [focusTarget]="documentFocus()"
           (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
         />
       </p-card>

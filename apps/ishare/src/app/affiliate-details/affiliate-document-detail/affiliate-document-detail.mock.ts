@@ -2,6 +2,7 @@
 // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
 
 import type { AffiliateDocumentDetail } from './affiliate-document-detail.types';
+import { COMMENT_ICONS } from './affiliate-document-detail.types';
 
 const FDR_PANEL_DETAILS = [
   { label: 'Date de réception', value: '26/01/2026' },
@@ -71,6 +72,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
               severity: 'secondary',
               icon: 'bi bi-clock-history',
             },
+            workerComment: {
+              severity: 'info',
+              text: 'Commentaire du gestionnaire : merci de fournir le certificat médical complémentaire.',
+              icon: COMMENT_ICONS.info,
+            },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
             moreDetailsLabel: 'Voir plus de details',
@@ -86,7 +92,12 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
             countTag: {
               label: '1',
               severity: 'info',
-              icon: 'bi bi-chat',
+              icon: COMMENT_ICONS.info,
+            },
+            workerComment: {
+              severity: 'info',
+              text: 'Commentaire du gestionnaire : la liasse comptable doit être complétée avec le bilan annuel.',
+              icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
@@ -109,11 +120,12 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
             countTag: {
               label: '1',
               severity: 'warn',
-              icon: 'bi bi-exclamation-triangle',
+              icon: COMMENT_ICONS.warn,
             },
-            message: {
+            workerComment: {
               severity: 'warn',
               text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité.",
+              icon: COMMENT_ICONS.warn,
             },
             actions: [
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },

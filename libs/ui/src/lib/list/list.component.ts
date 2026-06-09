@@ -5,12 +5,22 @@ import {
   computed,
   input,
   output,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { PrimeTemplate } from 'primeng/api';
 import type { TreeNode } from 'primeng/api';
+import { ButtonDirective } from 'primeng/button';
+import { Popover } from 'primeng/popover';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
-import type { ListDocumentItem, ListGroup, ListItem } from './list.types';
+import type {
+  ListDocumentItem,
+  ListDocumentTag,
+  ListDocumentTagTarget,
+  ListGroup,
+  ListItem,
+} from './list.types';
 import { isListGroup } from './list.types';
 
 export interface ListGroupNodeData {
@@ -25,7 +35,7 @@ export interface ListDocumentNodeData {
 @Component({
   selector: 'sds-list',
   standalone: true,
-  imports: [PrimeTemplate, Tag, Tree],
+  imports: [ButtonDirective, PrimeTemplate, Popover, Tag, Tree],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -52,6 +62,16 @@ export class ListComponent {
 
   readonly expandedGroupIdsChange = output<string[]>();
   readonly itemClick = output<ListItem>();
+  readonly tagTargetClick = output<{
+    doc: ListDocumentItem;
+    tag: ListDocumentTag;
+    target: ListDocumentTagTarget;
+  }>();
+
+  private readonly tagPopover = viewChild<Popover>('tagPopover');
+  readonly activeTag = signal<{ doc: ListDocumentItem; tag: ListDocumentTag } | null>(
+    null,
+  );
 
   readonly isJourneyMode = computed(() => this.groups() !== null);
 
@@ -107,6 +127,15 @@ export class ListComponent {
     return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
   }
 
+  onDocumentRowClick(event: MouseEvent, doc: ListDocumentItem): void {
+    const target = event.target;
+    if (target instanceof Element && target.closest('.c-list__tags')) {
+      return;
+    }
+
+    this.onDocumentClick(doc);
+  }
+
   onDocumentClick(doc: ListDocumentItem): void {
     if (this.loading()) {
       return;
@@ -119,6 +148,74 @@ export class ListComponent {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.onDocumentClick(doc);
+    }
+  }
+
+  onTagClick(
+    event: MouseEvent | KeyboardEvent,
+    doc: ListDocumentItem,
+    tag: ListDocumentTag,
+  ): void {
+    const targets = tag.targets ?? [];
+    event.stopPropagation();
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    if (targets.length === 1) {
+      this.tagTargetClick.emit({ doc, tag, target: targets[0] });
+      return;
+    }
+
+    this.activeTag.set({ doc, tag });
+    const anchor = this.tagAnchorFromEvent(event);
+    this.tagPopover()?.toggle(event, anchor);
+  }
+
+  private tagAnchorFromEvent(event: MouseEvent | KeyboardEvent): HTMLElement | undefined {
+    return event.currentTarget instanceof HTMLElement
+      ? event.currentTarget
+      : event.target instanceof HTMLElement
+        ? event.target
+        : undefined;
+  }
+
+  onTagKeydown(event: KeyboardEvent, doc: ListDocumentItem, tag: ListDocumentTag): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onTagClick(event, doc, tag);
+    }
+  }
+
+  onTagTargetSelect(event: MouseEvent, target: ListDocumentTagTarget): void {
+    event.stopPropagation();
+    const active = this.activeTag();
+    if (!active) {
+      return;
+    }
+
+    this.tagTargetClick.emit({ doc: active.doc, tag: active.tag, target });
+    this.tagPopover()?.hide();
+  }
+
+  onGroupClick(event: MouseEvent, group: ListGroup): void {
+    if (this.loading()) {
+      return;
+    }
+
+    event.stopPropagation();
+    this.toggleGroupExpanded(group.id);
+  }
+
+  onGroupKeydown(event: KeyboardEvent, group: ListGroup): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (this.loading()) {
+        return;
+      }
+
+      this.toggleGroupExpanded(group.id);
     }
   }
 
@@ -160,6 +257,10 @@ export class ListComponent {
       leaf: true,
       selectable: false,
     };
+  }
+
+  private toggleGroupExpanded(groupId: string): void {
+    this.syncExpandedGroupId(groupId, !this.isGroupExpanded(groupId));
   }
 
   private syncExpandedGroupId(groupId: string, expand: boolean): void {

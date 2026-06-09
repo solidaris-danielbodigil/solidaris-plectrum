@@ -39,10 +39,22 @@
     >
       <ng-template let-node pTemplate="group">
         @let group = groupFromNode(node);
-        <article class="c-list__item c-list__item--group">
+        <article
+          class="c-list__item c-list__item--group"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="isGroupExpanded(group.id) ? 'true' : 'false'"
+          (click)="onGroupClick($event, group)"
+          (keydown)="onGroupKeydown($event, group)"
+        >
           <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
             <div class="c-list__header-row o-flex o-layout--gap-3">
-              <i class="c-list__icon bi bi-folder2-open" aria-hidden="true"></i>
+              <i
+                class="c-list__icon bi"
+                [class.bi-folder2-open]="isGroupExpanded(group.id)"
+                [class.bi-folder]="!isGroupExpanded(group.id)"
+                aria-hidden="true"
+              ></i>
               <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
                 <p class="c-list__title">
                   {{ group.title }}
@@ -81,7 +93,7 @@
               role="button"
               tabindex="0"
               [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
-              (click)="onDocumentClick(doc)"
+              (click)="onDocumentRowClick($event, doc)"
               (keydown)="onDocumentKeydown($event, doc)"
             >
               <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
@@ -106,13 +118,32 @@
                 </div>
                 <hr />
                 @if (doc.tags?.length) {
-                  <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+                  <div
+                    class="c-list__tags o-flex o-flex--wrap o-layout--gap-1"
+                    (click)="$event.stopPropagation()"
+                  >
                     @for (tag of doc.tags; track tag.label + tag.severity) {
-                      <p-tag [severity]="tag.severity" [value]="tag.label">
-                        @if (tag.icon) {
-                          <i [class]="tag.icon" aria-hidden="true"></i>
-                        }
-                      </p-tag>
+                      @if (tag.targets?.length) {
+                        <button
+                          type="button"
+                          pButton
+                          [severity]="tag.severity"
+                          outlined
+                          rounded
+                          size="small"
+                          [label]="tag.label"
+                          [icon]="tag.icon"
+                          [attr.aria-label]="tag.ariaLabel"
+                          (click)="onTagClick($event, doc, tag)"
+                          (keydown)="onTagKeydown($event, doc, tag)"
+                        ></button>
+                      } @else {
+                        <p-tag [severity]="tag.severity" [value]="tag.label">
+                          @if (tag.icon) {
+                            <i [class]="tag.icon" aria-hidden="true"></i>
+                          }
+                        </p-tag>
+                      }
                     }
                   </div>
                 }
@@ -126,7 +157,7 @@
             role="button"
             tabindex="0"
             [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
-            (click)="onDocumentClick(doc)"
+            (click)="onDocumentRowClick($event, doc)"
             (keydown)="onDocumentKeydown($event, doc)"
           >
             <div class="c-list__container o-flex o-flex--col o-layout--gap-1  o-layout--padding-2">
@@ -151,13 +182,32 @@
               </div>
               <hr />
               @if (doc.tags?.length) {
-                <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+                <div
+                  class="c-list__tags o-flex o-flex--wrap o-layout--gap-1"
+                  (click)="$event.stopPropagation()"
+                >
                   @for (tag of doc.tags; track tag.label + tag.severity) {
-                    <p-tag [severity]="tag.severity" [value]="tag.label">
-                      @if (tag.icon) {
-                        <i [class]="tag.icon" aria-hidden="true"></i>
-                      }
-                    </p-tag>
+                    @if (tag.targets?.length) {
+                      <button
+                        type="button"
+                        pButton
+                        [severity]="tag.severity"
+                        outlined
+                        rounded
+                        size="small"
+                        [label]="tag.label"
+                        [icon]="tag.icon"
+                        [attr.aria-label]="tag.ariaLabel"
+                        (click)="onTagClick($event, doc, tag)"
+                        (keydown)="onTagKeydown($event, doc, tag)"
+                      ></button>
+                    } @else {
+                      <p-tag [severity]="tag.severity" [value]="tag.label">
+                        @if (tag.icon) {
+                          <i [class]="tag.icon" aria-hidden="true"></i>
+                        }
+                      </p-tag>
+                    }
                   }
                 </div>
               }
@@ -168,3 +218,23 @@
     </p-tree>
   </div>
 }
+
+<p-popover #tagPopover [focusOnShow]="false" appendTo="body">
+  @let active = activeTag();
+  @if (active) {
+    <ul class="c-list__tag-targets o-flex o-flex--col o-layout--gap-1" role="list">
+      @for (target of active.tag.targets; track target.id) {
+        <li>
+          <button
+            type="button"
+            class="c-list__tag-target"
+            (click)="onTagTargetSelect($event, target)"
+          >
+            {{ target.label }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</p-popover>
+

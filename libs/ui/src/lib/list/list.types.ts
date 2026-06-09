@@ -5,11 +5,19 @@ export interface ListDocumentStatus {
   icon?: string;
 }
 
+/** Opaque deep-link target a count tag can jump to (consumer-resolved). */
+export interface ListDocumentTagTarget {
+  id: string;
+  label: string;
+}
+
 /** Footer count tag on document rows (comments, warnings, …). */
 export interface ListDocumentTag {
   label: string;
   severity: 'info' | 'warn' | 'success' | 'danger' | 'secondary';
   icon?: string;
+  ariaLabel?: string;
+  targets?: ListDocumentTagTarget[];
 }
 
 /** Single document row in flat or journey mode. */

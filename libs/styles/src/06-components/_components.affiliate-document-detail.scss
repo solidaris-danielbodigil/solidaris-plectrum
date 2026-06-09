@@ -224,8 +224,12 @@
   min-width: 0;
 }
 
-.c-affiliate-document-detail__message {
-  margin-block-end: var(--#{$sds-prefix}-space-affiliate-document-detail-message-margin-block-end);
+// ── Deep-link panel highlight (transient) ────────────────────────────────────
+// Bespoke flash toggled when a list count tag deep-links to a panel comment.
+// Not a PrimeNG restyle — a short-lived ring on the accordion panel wrapper.
+.c-affiliate-document-detail__panel--highlighted {
+  transition: var(--#{$sds-prefix}-transition-affiliate-document-detail-panel-highlight);
+  box-shadow: var(--#{$sds-prefix}-shadow-affiliate-document-detail-panel-highlight);
 }
 
 // ── Step footer ──────────────────────────────────────────────────────────────

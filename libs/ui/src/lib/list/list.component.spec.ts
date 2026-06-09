@@ -82,6 +82,40 @@ const FLAT_DOCUMENTS: ListDocumentItem[] = JOURNEY_GROUPS.flatMap(
 
 
 
+const DOCS_WITH_TAG_TARGETS: ListDocumentItem[] = [
+  {
+    id: 'doc-single-target',
+    title: 'Document à une cible',
+    tags: [
+      {
+        label: '1',
+        severity: 'info',
+        icon: 'bi bi-chat-right-text-fill',
+        ariaLabel: '1 commentaire',
+        targets: [{ id: 'step-1::panel-a', label: 'Étape 1 — Panneau A' }],
+      },
+    ],
+  },
+  {
+    id: 'doc-multi-target',
+    title: 'Document à plusieurs cibles',
+    tags: [
+      {
+        label: '2',
+        severity: 'warn',
+        icon: 'bi bi-exclamation-triangle-fill',
+        ariaLabel: '2 commentaires',
+        targets: [
+          { id: 'step-1::panel-a', label: 'Étape 1 — Panneau A' },
+          { id: 'step-2::panel-b', label: 'Étape 2 — Panneau B' },
+        ],
+      },
+    ],
+  },
+];
+
+
+
 describe('ListComponent', () => {
 
   let component: ListComponent;
@@ -356,6 +390,99 @@ describe('ListComponent', () => {
 
     expect(emitSpy).toHaveBeenCalledWith([]);
 
+  });
+
+
+
+  it('should emit expandedGroupIdsChange when a group header is clicked', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    component.expandedGroupIdsChange.subscribe(emitSpy);
+
+    const groupHeader = fixture.nativeElement.querySelector(
+      '.c-list__item--group',
+    ) as HTMLElement;
+    groupHeader.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith([]);
+  });
+
+
+
+  it('should expand a collapsed group when its header is clicked', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', []);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    component.expandedGroupIdsChange.subscribe(emitSpy);
+
+    const groupHeader = fixture.nativeElement.querySelector(
+      '.c-list__item--group',
+    ) as HTMLElement;
+    groupHeader.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith(['parcours-demande-primaire']);
+  });
+
+
+
+  it('should toggle group expansion via keyboard Enter on group header', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    component.expandedGroupIdsChange.subscribe(emitSpy);
+
+    const groupHeader = fixture.nativeElement.querySelector(
+      '.c-list__item--group',
+    ) as HTMLElement;
+    groupHeader.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith([]);
+  });
+
+
+
+  it('should toggle group expansion via keyboard Space on group header', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', []);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    component.expandedGroupIdsChange.subscribe(emitSpy);
+
+    const groupHeader = fixture.nativeElement.querySelector(
+      '.c-list__item--group',
+    ) as HTMLElement;
+    groupHeader.dispatchEvent(
+      new KeyboardEvent('keydown', { key: ' ', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith(['parcours-demande-primaire']);
+  });
+
+
+
+  it('should expose aria-expanded on group header button', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.detectChanges();
+
+    const groupHeaders = fixture.nativeElement.querySelectorAll('.c-list__item--group');
+
+    expect(groupHeaders[0].getAttribute('aria-expanded')).toBe('true');
+    expect(groupHeaders[1].getAttribute('aria-expanded')).toBe('false');
   });
 
 
@@ -748,6 +875,106 @@ describe('ListComponent', () => {
 
     expect(tree).toBeTruthy();
     expect(treeItems.length).toBe(FLAT_DOCUMENTS.length);
+  });
+
+
+
+  it('should render interactive count tags as outlined rounded p-buttons with aria-label', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    const tagButton = fixture.nativeElement.querySelector(
+      '.c-list__tags button.p-button',
+    ) as HTMLButtonElement;
+
+    expect(tagButton).toBeTruthy();
+    expect(tagButton.getAttribute('aria-label')).toBe('1 commentaire');
+    expect(tagButton.classList.contains('p-button-outlined')).toBe(true);
+    expect(tagButton.classList.contains('p-button-rounded')).toBe(true);
+    expect(tagButton.classList.contains('p-button-sm')).toBe(true);
+    expect(tagButton.classList.contains('p-button-info')).toBe(true);
+  });
+
+
+
+  it('should emit tagTargetClick directly for a single-target tag', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('tagTargetClick');
+    component.tagTargetClick.subscribe(emitSpy);
+
+    const tagButton = fixture.nativeElement.querySelector(
+      '.c-list__tags button.p-button',
+    ) as HTMLButtonElement;
+    tagButton.click();
+
+    expect(emitSpy).toHaveBeenCalledWith({
+      doc: DOCS_WITH_TAG_TARGETS[0],
+      tag: DOCS_WITH_TAG_TARGETS[0].tags![0],
+      target: DOCS_WITH_TAG_TARGETS[0].tags![0].targets![0],
+    });
+  });
+
+
+
+  it('should not fire row select when a tag is clicked', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    const itemSpy = jasmine.createSpy('itemClick');
+    component.itemClick.subscribe(itemSpy);
+
+    const tagButton = fixture.nativeElement.querySelector(
+      '.c-list__tags button.p-button',
+    ) as HTMLButtonElement;
+    tagButton.click();
+
+    expect(itemSpy).not.toHaveBeenCalled();
+  });
+
+
+
+  it('should open a popover for a multi-target tag and emit on jump-link click', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('tagTargetClick');
+    component.tagTargetClick.subscribe(emitSpy);
+
+    const tagButtons = fixture.nativeElement.querySelectorAll(
+      '.c-list__tags button.p-button',
+    ) as NodeListOf<HTMLButtonElement>;
+    const multiTagButton = tagButtons[1];
+    multiTagButton.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).not.toHaveBeenCalled();
+    expect(component.activeTag()?.doc).toBe(DOCS_WITH_TAG_TARGETS[1]);
+
+    // Popover overlay must escape the (overflow-clipping) list/card by being
+    // appended to the document body, otherwise it is invisible in the app.
+    const popoverPanel = document.body.querySelector('.p-popover');
+    expect(popoverPanel).withContext('popover appended to body').toBeTruthy();
+    expect(popoverPanel?.contains(fixture.nativeElement)).toBe(false);
+
+    const jumpLinks = document.querySelectorAll(
+      '.c-list__tag-target',
+    ) as NodeListOf<HTMLButtonElement>;
+
+    expect(jumpLinks.length).toBe(2);
+
+    jumpLinks[0].click();
+
+    expect(emitSpy).toHaveBeenCalledWith({
+      doc: DOCS_WITH_TAG_TARGETS[1],
+      tag: DOCS_WITH_TAG_TARGETS[1].tags![0],
+      target: DOCS_WITH_TAG_TARGETS[1].tags![0].targets![0],
+    });
   });
 
 });

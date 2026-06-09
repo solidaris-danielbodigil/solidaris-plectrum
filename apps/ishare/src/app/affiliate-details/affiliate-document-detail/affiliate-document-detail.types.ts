@@ -25,6 +25,12 @@ export type DocumentCertificatPanelStatusSeverity =
   | 'secondary'
   | 'contrast';
 
+/** Filled Bootstrap icons for comment / warning severities (list tags, accordion, p-message). */
+export const COMMENT_ICONS = {
+  info: 'bi bi-chat-right-text-fill',
+  warn: 'bi bi-exclamation-triangle-fill',
+} as const satisfies Record<'info' | 'warn', string>;
+
 export interface DocumentCertificatPanel {
   id: string;
   title: string;
@@ -38,9 +44,10 @@ export interface DocumentCertificatPanel {
     severity: DocumentCertificatPanelStatusSeverity;
     icon?: string;
   };
-  message?: {
-    severity: 'warn' | 'info' | 'success' | 'error';
+  workerComment?: {
+    severity: DocumentCertificatPanelStatusSeverity;
     text: string;
+    icon?: string;
   };
   actions: DocumentCertificatAction[];
   details: DocumentDetailField[];

@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   ViewEncapsulation,
   computed,
   effect,
+  inject,
   input,
   output,
   signal,
@@ -52,8 +54,23 @@ import {
   },
 })
 export class AffiliateDocumentDetailComponent {
+  /** How long the transient panel highlight stays applied, in milliseconds. */
+  private static readonly HIGHLIGHT_DURATION_MS = 2000;
+
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+
   readonly selectedDocumentId = input.required<string>();
   readonly visibleDocuments = input.required<ListDocumentItem[]>();
+
+  /**
+   * Programmatic deep-link target. When set, the document-change effect jumps to
+   * `stepValue` / `panelId` instead of resetting to the document defaults. The
+   * `panelId` is already decoded by the parent (the list encodes it as
+   * `` `${stepValue}::${panelId}` `` and decodes before passing it here).
+   */
+  readonly focusTarget = input<{ stepValue: number; panelId: string } | null>(
+    null,
+  );
 
   readonly selectedDocumentIdChange = output<string>();
 
@@ -61,6 +78,9 @@ export class AffiliateDocumentDetailComponent {
   readonly certPanelValue = signal<string | string[] | undefined>(
     'certificat-itt',
   );
+
+  /** Panel id currently flashing the transient deep-link highlight, if any. */
+  readonly highlightedPanelId = signal<string | null>(null);
 
   readonly documentDetail = computed(() => {
     const id = this.selectedDocumentId();
@@ -109,6 +129,17 @@ export class AffiliateDocumentDetailComponent {
   constructor() {
     effect(() => {
       const detail = this.documentDetail();
+      const target = this.focusTarget();
+
+      // Prefer a programmatic deep-link target so the document-change reset does
+      // not override a jump requested by the parent (list tag click).
+      if (target) {
+        this.activeStep.set(target.stepValue);
+        this.certPanelValue.set(target.panelId);
+        this.focusPanel(target.panelId);
+        return;
+      }
+
       this.activeStep.set(detail?.activeStep ?? 1);
 
       const firstPanelId = detail?.steps[0]?.panels?.[0]?.id;
@@ -185,5 +216,31 @@ export class AffiliateDocumentDetailComponent {
       (documentStep) => documentStep.value === this.activeStep(),
     );
     this.certPanelValue.set(step?.panels?.[0]?.id ?? undefined);
+  }
+
+  /**
+   * Scrolls the target panel's worker-comment message into view and applies a
+   * transient highlight class, cleared after {@link HIGHLIGHT_DURATION_MS}.
+   * Deferred via `setTimeout` so the panel content has rendered (the effect that
+   * calls this also opens the panel by setting `certPanelValue`).
+   */
+  private focusPanel(panelId: string): void {
+    setTimeout(() => {
+      const host = this.elementRef.nativeElement as HTMLElement;
+      const panelElement = host.querySelector(
+        `[data-panel-id="${panelId}"]`,
+      );
+      panelElement
+        ?.querySelector('p-message')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      this.highlightedPanelId.set(panelId);
+
+      setTimeout(() => {
+        if (this.highlightedPanelId() === panelId) {
+          this.highlightedPanelId.set(null);
+        }
+      }, AffiliateDocumentDetailComponent.HIGHLIGHT_DURATION_MS);
+    });
   }
 }

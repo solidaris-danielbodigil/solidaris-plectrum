@@ -34,11 +34,18 @@ import type {
   AffiliateOverviewPrimaryAction,
   AffiliateOverviewStatusAction,
   ListDocumentItem,
+  ListDocumentTag,
+  ListDocumentTagTarget,
   ListGroup,
 } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
+import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail/affiliate-document-detail.mock';
+import {
+  COMMENT_ICONS,
+  type DocumentCertificatPanelStatusSeverity,
+} from './affiliate-document-detail/affiliate-document-detail.types';
 
 interface SectorOption {
   label: string;
@@ -50,7 +57,102 @@ interface SortOption {
   value: string;
 }
 
-const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
+type ListTagSeverity = ListDocumentTag['severity'];
+
+/** Severities that {@link ListDocumentTag} accepts (panel comments add `contrast`). */
+const LIST_TAG_SEVERITIES: readonly ListTagSeverity[] = [
+  'info',
+  'warn',
+  'success',
+  'danger',
+  'secondary',
+];
+
+/** Icon shown on a derived comment-count tag, keyed by mapped severity. */
+const COMMENT_TAG_ICONS: Record<ListTagSeverity, string> = {
+  info: COMMENT_ICONS.info,
+  warn: COMMENT_ICONS.warn,
+  success: 'bi bi-check-circle-fill',
+  danger: 'bi bi-exclamation-octagon-fill',
+  secondary: COMMENT_ICONS.info,
+};
+
+/** Singular noun used to build the tag `ariaLabel`, keyed by mapped severity. */
+const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
+  info: 'commentaire',
+  warn: 'avertissement',
+  success: 'confirmation',
+  danger: 'alerte',
+  secondary: 'note',
+};
+
+/**
+ * Maps a panel comment severity onto a {@link ListDocumentTag} severity. Panel
+ * comments may carry `contrast`, which the list tag does not support, so any
+ * value outside the supported set falls back to `secondary`.
+ */
+function toListTagSeverity(
+  severity: DocumentCertificatPanelStatusSeverity,
+): ListTagSeverity {
+  return LIST_TAG_SEVERITIES.includes(severity as ListTagSeverity)
+    ? (severity as ListTagSeverity)
+    : 'secondary';
+}
+
+function commentTagAriaLabel(severity: ListTagSeverity, count: number): string {
+  const noun = COMMENT_TAG_NOUNS[severity];
+  return `${count} ${noun}${count > 1 ? 's' : ''}`;
+}
+
+/**
+ * Derives a document's count tags from the detail mock so the row badges and the
+ * deep-link jump targets share one source of truth. Scans every panel's
+ * `workerComment`, groups them by (mapped) severity, and emits one tag per
+ * severity whose `targets` point at each commented step/panel. The target `id`
+ * is encoded as `` `${stepValue}::${panelId}` `` for the detail component to
+ * decode.
+ */
+export function deriveDocumentTags(documentId: string): ListDocumentTag[] {
+  const detail = EVA_MARTINEZ_DOCUMENT_DETAILS[documentId];
+  if (!detail) {
+    return [];
+  }
+
+  const targetsBySeverity = new Map<ListTagSeverity, ListDocumentTagTarget[]>();
+
+  for (const step of detail.steps) {
+    for (const panel of step.panels ?? []) {
+      if (!panel.workerComment) {
+        continue;
+      }
+
+      const severity = toListTagSeverity(panel.workerComment.severity);
+      const targets = targetsBySeverity.get(severity) ?? [];
+      targets.push({
+        id: `${step.value}::${panel.id}`,
+        label: `${step.label} - ${panel.title}`,
+      });
+      targetsBySeverity.set(severity, targets);
+    }
+  }
+
+  return [...targetsBySeverity.entries()].map(([severity, targets]) => ({
+    label: String(targets.length),
+    severity,
+    icon: COMMENT_TAG_ICONS[severity],
+    ariaLabel: commentTagAriaLabel(severity, targets.length),
+    targets,
+  }));
+}
+
+function withDerivedTags(document: ListDocumentItem): ListDocumentItem {
+  const tags = deriveDocumentTags(document.id);
+  return tags.length > 0 ? { ...document, tags } : document;
+}
+
+// Row count tags are derived from the detail mock (see `withDerivedTags`) so the
+// badge counts and the deep-link jump targets always stay in sync.
+const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
   {
     id: 'parcours-demande-primaire',
     title: 'Parcours Indemnités -',
@@ -68,14 +170,6 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
           severity: 'warn',
           icon: 'bi bi-hourglass-split',
         },
-        tags: [
-          { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          {
-            label: '1',
-            severity: 'warn',
-            icon: 'bi bi-exclamation-triangle-fill',
-          },
-        ],
       },
       {
         id: 'doc-incapacite',
@@ -85,14 +179,6 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
           severity: 'warn',
           icon: 'bi bi-hourglass-split',
         },
-        tags: [
-          { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          {
-            label: '1',
-            severity: 'warn',
-            icon: 'bi bi-exclamation-triangle-fill',
-          },
-        ],
       },
     ],
   },
@@ -112,14 +198,6 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
           severity: 'warn',
           icon: 'bi bi-hourglass-split',
         },
-        tags: [
-          { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          {
-            label: '1',
-            severity: 'warn',
-            icon: 'bi bi-exclamation-triangle-fill',
-          },
-        ],
       },
     ],
   },
@@ -161,7 +239,10 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = [
       },
     ],
   },
-];
+] as ListGroup[]).map((group) => ({
+  ...group,
+  documents: group.documents.map(withDerivedTags),
+}));
 
 const EVA_MARTINEZ_DRAWER_STATIC: Omit<
   AffiliateDetailDrawerData,
@@ -373,6 +454,13 @@ export class AffiliateDetailsComponent {
   // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
   readonly selectedDocumentId = signal('doc-demande-primaire');
 
+  // Deep-link target forwarded to the detail card when a row count tag is
+  // clicked. Reset to null on a plain row select so a later click does not keep
+  // forcing a stale step/panel jump.
+  readonly documentFocus = signal<{ stepValue: number; panelId: string } | null>(
+    null,
+  );
+
   readonly visibleDocuments = computed(() =>
     this.filterDocuments(
       EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
@@ -455,10 +543,39 @@ export class AffiliateDetailsComponent {
   }
 
   onDocumentClick(document: ListDocumentItem): void {
+    // A plain row select clears any prior deep-link focus so the detail card
+    // resets to the document defaults instead of re-jumping to the old panel.
+    this.documentFocus.set(null);
     this.selectedDocumentId.set(document.id);
   }
 
+  onTagTargetClick({
+    doc,
+    target,
+  }: {
+    doc: ListDocumentItem;
+    tag: ListDocumentTag;
+    target: ListDocumentTagTarget;
+  }): void {
+    const separator = target.id.indexOf('::');
+    if (separator < 0) {
+      return;
+    }
+
+    const stepValue = Number(target.id.slice(0, separator));
+    const panelId = target.id.slice(separator + 2);
+    if (Number.isNaN(stepValue) || panelId.length === 0) {
+      return;
+    }
+
+    this.selectedDocumentId.set(doc.id);
+    this.documentFocus.set({ stepValue, panelId });
+  }
+
   onSelectedDocumentIdChange(documentId: string): void {
+    // Prev/next document navigation is a plain selection, so drop any deep-link
+    // focus from an earlier tag click.
+    this.documentFocus.set(null);
     this.selectedDocumentId.set(documentId);
   }
 

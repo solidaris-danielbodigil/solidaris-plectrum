@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import type { ListDocumentItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 
@@ -174,6 +174,23 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(countTag?.textContent).toContain('1');
   });
 
+  it('should render info worker comment on Compte financier - Liasse panel', () => {
+    fixture.componentInstance.activeStep.set(2);
+    fixture.componentInstance.certPanelValue.set('compte-financier-liasse');
+    fixture.detectChanges();
+
+    const workerComment = fixture.nativeElement.querySelector('p-message');
+
+    expect(workerComment).toBeTruthy();
+    expect(workerComment?.textContent).toContain('Commentaire du gestionnaire');
+    expect(workerComment?.classList.contains('p-message-info')).toBe(true);
+    expect(
+      workerComment
+        ?.querySelector('.p-message-icon')
+        ?.classList.contains('bi-chat-right-text-fill'),
+    ).toBe(true);
+  });
+
   it('should render step 3 Calcul panel with warn message and En attente status', () => {
     fixture.componentInstance.activeStep.set(3);
     fixture.componentInstance.certPanelValue.set('calcul');
@@ -184,9 +201,14 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('Calcul');
     expect(content).toContain('En attente');
     expect(content).toContain('Veuillez nous faire parvenir une copie de votre C4');
+    const workerComment = fixture.nativeElement.querySelector('p-message');
+    expect(workerComment).toBeTruthy();
+    expect(workerComment?.classList.contains('p-message-warn')).toBe(true);
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-document-detail__message'),
-    ).toBeTruthy();
+      workerComment
+        ?.querySelector('.p-message-icon')
+        ?.classList.contains('bi-exclamation-triangle-fill'),
+    ).toBe(true);
     expect(
       fixture.nativeElement.querySelector(
         '.c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
@@ -293,5 +315,52 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(fixture.componentInstance.activeStep()).toBe(1);
   });
+
+  it('should jump to the focusTarget step and panel instead of resetting to defaults', () => {
+    fixture.componentRef.setInput('focusTarget', {
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.activeStep()).toBe(2);
+    expect(fixture.componentInstance.certPanelValue()).toBe(
+      'compte-financier-liasse',
+    );
+  });
+
+  it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {
+    fixture.componentRef.setInput('focusTarget', {
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
+    fixture.detectChanges();
+
+    tick();
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"]',
+    ) as HTMLElement | null;
+
+    expect(fixture.componentInstance.highlightedPanelId()).toBe(
+      'compte-financier-liasse',
+    );
+    expect(
+      panel?.classList.contains(
+        'c-affiliate-document-detail__panel--highlighted',
+      ),
+    ).toBe(true);
+
+    tick(2000);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.highlightedPanelId()).toBeNull();
+    expect(
+      panel?.classList.contains(
+        'c-affiliate-document-detail__panel--highlighted',
+      ),
+    ).toBe(false);
+  }));
 });
 

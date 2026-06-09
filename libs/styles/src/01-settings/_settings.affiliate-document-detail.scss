@@ -34,7 +34,6 @@
   --#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap: var(--spacing-2);
   --#{$sds-prefix}-text-affiliate-document-detail-cert-title-line-height: 1;
   --#{$sds-prefix}-space-affiliate-document-detail-cert-header-actions-gap: var(--spacing-1);
-  --#{$sds-prefix}-size-affiliate-document-detail-action-button-icon: var(--font-size-s);
 
   // ── Detail metadata rows ────────────────────────────────────────────────────
   // Figma 530:6471 — Détails title 14px semibold; 16px to fields; rows 8px; label-value 12px
@@ -45,12 +44,6 @@
   --#{$sds-prefix}-space-affiliate-document-detail-details-gap: var(--spacing-2);
   --#{$sds-prefix}-space-affiliate-document-detail-detail-rows-gap: var(--spacing-1);
   --#{$sds-prefix}-space-affiliate-document-detail-detail-label-value-gap: var(--spacing-1-5);
-
-  // ── Panel message ───────────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-affiliate-document-detail-message-warn-bg: var(--#{$sds-prefix}-color-warning-subtle);
-  --#{$sds-prefix}-color-affiliate-document-detail-message-warn-text: var(--#{$sds-prefix}-color-warning);
-  --#{$sds-prefix}-color-affiliate-document-detail-message-warn-border: var(--#{$sds-prefix}-color-warning);
-  --#{$sds-prefix}-space-affiliate-document-detail-message-margin-block-end: var(--spacing-2);
 
   // ── Metadata chips ──────────────────────────────────────────────────────────
   // Figma 530:6471 — all metadata values as primary-75 chips
@@ -65,6 +58,12 @@
   // ── Step footer ─────────────────────────────────────────────────────────────
   --#{$sds-prefix}-color-affiliate-document-detail-step-footer-border: var(--#{$sds-prefix}-color-drawer-border);
   --#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start: var(--spacing-2);
+
+  // ── Deep-link panel highlight (transient) ───────────────────────────────────
+  // Bespoke flash applied when a list count tag deep-links to a panel comment.
+  --#{$sds-prefix}-color-affiliate-document-detail-panel-highlight-ring: var(--#{$sds-prefix}-color-focus);
+  --#{$sds-prefix}-shadow-affiliate-document-detail-panel-highlight: 0 0 0 var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-color-affiliate-document-detail-panel-highlight-ring);
+  --#{$sds-prefix}-transition-affiliate-document-detail-panel-highlight: box-shadow var(--#{$sds-prefix}-transition-duration) ease;
 
   // ── Stepper spacing (bridge in _settings.stepper.scss) ─────────────────────
   // Figma: 16px step gap (step ↔ separator), 8px header gap (number ↔ title)
@@ -82,75 +81,4 @@
   --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text: var(--#{$sds-prefix}-color-text-muted);
   --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border: var(--#{$sds-prefix}-color-drawer-border);
   --#{$sds-prefix}-size-affiliate-document-detail-step-separator: var(--spacing-0-25);
-
-  // ── Outlined secondary nav buttons (header + step footer) ───────────────────
-  // Figma 530:6471 / 324:5860 — body text + icon; visible border on white/content bg
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-text: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-text-disabled: var(--#{$sds-prefix}-color-text-muted);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-border: var(--#{$sds-prefix}-color-surface-200);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-hover-bg: var(--#{$sds-prefix}-color-content-hover-bg);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-hover-border: var(--#{$sds-prefix}-color-primary-500);
-  --#{$sds-prefix}-color-affiliate-document-detail-nav-button-active-bg: var(--#{$sds-prefix}-color-primary-75);
-}
-
-@mixin affiliate-document-detail-outlined-nav-button-tokens {
-  // Match overview card secondary small button — Plectrum defaults label to 600 / sm to 0.875rem.
-  --p-button-label-font-weight: var(--font-weight-regular);
-  --p-button-outlined-secondary-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-text);
-  --p-button-outlined-secondary-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-border);
-  --p-button-outlined-secondary-background: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-bg);
-  --p-button-outlined-secondary-hover-background: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-hover-bg);
-  --p-button-outlined-secondary-hover-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-hover-border);
-  --p-button-outlined-secondary-active-background: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-active-bg);
-  --p-button-outlined-secondary-active-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-hover-border);
-}
-
-@mixin affiliate-document-detail-outlined-nav-button-disabled-tokens {
-  --p-button-outlined-secondary-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-text-disabled);
-  --p-disabled-opacity: 1;
-  opacity: 1;
-}
-
-@mixin affiliate-document-detail-message-warn-tokens {
-  --p-message-warn-background: var(--#{$sds-prefix}-color-affiliate-document-detail-message-warn-bg);
-  --p-message-warn-color: var(--#{$sds-prefix}-color-affiliate-document-detail-message-warn-text);
-  --p-message-warn-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-message-warn-border);
-}
-
-// PrimeNG Button token bridge — icon-only prev/next on primary/50 card header
-.c-affiliate-details__detail .c-affiliate-document-detail__nav-button {
-  @include affiliate-document-detail-outlined-nav-button-tokens;
-
-  &:disabled {
-    @include affiliate-document-detail-outlined-nav-button-disabled-tokens;
-  }
-}
-
-// Panel warn message (Figma 372:7166)
-.c-affiliate-document-detail__message.p-message-warn {
-  @include affiliate-document-detail-message-warn-tokens;
-}
-
-// Certificate accordion — outlined secondary header actions (Figma 530:6471)
-.c-affiliate-document-detail__action-button {
-  @include affiliate-document-detail-outlined-nav-button-tokens;
-
-  .p-button-icon {
-    font-size: var(--#{$sds-prefix}-size-affiliate-document-detail-action-button-icon);
-  }
-}
-
-// Outlined secondary — more-details (Figma 530:6471)
-.c-affiliate-document-detail__more-details-button {
-  @include affiliate-document-detail-outlined-nav-button-tokens;
-}
-
-// Step footer — outlined secondary prev; keep visible when disabled (Figma 324:5860)
-.c-affiliate-document-detail__step-footer .c-affiliate-document-detail__step-nav-button {
-  @include affiliate-document-detail-outlined-nav-button-tokens;
-
-  &:disabled {
-    @include affiliate-document-detail-outlined-nav-button-disabled-tokens;
-  }
 }

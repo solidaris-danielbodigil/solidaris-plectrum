@@ -448,10 +448,10 @@ import type { ButtonDesignTokens } from '@primeuix/themes/types/button';
                     activeBackground: "{surface.50}"
                 },
                 info: {
-                    color: "{surface.50}",
-                    borderColor: "{surface.50}",
-                    hoverBackground: "{surface.50}",
-                    activeBackground: "{surface.50}"
+                    color: "{blue.600}",
+                    borderColor: "{blue.600}",
+                    hoverBackground: "{blue.75}",
+                    activeBackground: "{blue.100}"
                 },
                 warn: {
                     color: "{orange.600}",
@@ -478,10 +478,10 @@ import type { ButtonDesignTokens } from '@primeuix/themes/types/button';
                     activeBackground: "{surface.50}"
                 },
                 success: {
-                    color: "{surface.50}",
-                    borderColor: "{surface.50}",
-                    hoverBackground: "{surface.50}",
-                    activeBackground: "{surface.50}"
+                    color: "{green.600}",
+                    borderColor: "{green.600}",
+                    hoverBackground: "{green.75}",
+                    activeBackground: "{green.100}"
                 },
                 contrast: {
                     color: "{surface.50}",
@@ -490,10 +490,10 @@ import type { ButtonDesignTokens } from '@primeuix/themes/types/button';
                     activeBackground: "{surface.50}"
                 },
                 secondary: {
-                    color: "{surface.50}",
-                    borderColor: "{surface.50}",
+                    color: "{surface.700}",
+                    borderColor: "{surface.300}",
                     hoverBackground: "{surface.50}",
-                    activeBackground: "{surface.50}"
+                    activeBackground: "{surface.100}"
                 }
             }
         }

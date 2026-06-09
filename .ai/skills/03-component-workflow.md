@@ -17,10 +17,11 @@ Follow this sequence **every time** before writing any code:
 
 1. **Query PrimeNG MCP** → does an existing component cover the need?
 2. **Query Figma MCP** → inspect the Plectrum UI Kit node, extract tokens and states
-3. **Check `contracts/index.json`** → does a similar component already exist in `libs/ui`?
-4. **Check `01-settings/`** → which required tokens already exist? Which are missing?
-5. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
-6. Only then → scaffold and implement
+3. **If Figma maps to a PrimeNG primitive** → use `p-*` with default theme styles; layout via `o-layout`/`o-flex` only (see `.ai/rules/04-primeng.md` §5)
+4. **Check `contracts/index.json`** → does a similar component already exist in `libs/ui`?
+5. **Check `01-settings/`** → which required tokens already exist? Which are missing?
+6. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
+7. Only then → scaffold and implement
 
 ---
 

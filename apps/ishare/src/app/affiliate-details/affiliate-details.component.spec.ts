@@ -5,9 +5,14 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
+import type { ListDocumentItem, ListDocumentTag, ListDocumentTagTarget } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
-import { AffiliateDetailsComponent } from './affiliate-details.component';
+import {
+  AffiliateDetailsComponent,
+  deriveDocumentTags,
+} from './affiliate-details.component';
+import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
 
 describe('AffiliateDetailsComponent', () => {
   let component: AffiliateDetailsComponent;
@@ -468,6 +473,143 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
+  });
+
+  it('should decode tag target id and set selectedDocumentId + documentFocus on tag target click', () => {
+    const doc: ListDocumentItem = {
+      id: 'doc-incapacite',
+      title: 'Incapacité',
+    };
+    const target: ListDocumentTagTarget = {
+      id: '2::compte-financier-liasse',
+      label: 'Feuilles de renseignement - Compte financier - Liasse',
+    };
+    const tag: ListDocumentTag = {
+      label: '1',
+      severity: 'info',
+      targets: [target],
+    };
+
+    component.onTagTargetClick({ doc, tag, target });
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+    expect(component.documentFocus()).toEqual({
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
+  });
+
+  it('should ignore a tag target whose id is not encoded as `${stepValue}::${panelId}`', () => {
+    component.documentFocus.set(null);
+
+    component.onTagTargetClick({
+      doc: { id: 'doc-incapacite', title: 'Incapacité' },
+      tag: { label: '1', severity: 'info' },
+      target: { id: 'not-encoded', label: 'Cible invalide' },
+    });
+
+    expect(component.documentFocus()).toBeNull();
+  });
+
+  it('should clear documentFocus on a plain row click so an old focus is not re-applied', () => {
+    component.documentFocus.set({ stepValue: 2, panelId: 'compte-financier-liasse' });
+
+    component.onDocumentClick({ id: 'doc-incapacite', title: 'Incapacité' });
+
+    expect(component.documentFocus()).toBeNull();
+    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+  });
+
+  it('should derive count tags with deep-link targets from the detail mock for a known doc', () => {
+    const tags = deriveDocumentTags('doc-demande-primaire');
+
+    expect(tags).toEqual([
+      jasmine.objectContaining({
+        label: '2',
+        severity: 'info',
+        icon: 'bi bi-chat-right-text-fill',
+        ariaLabel: '2 commentaires',
+        targets: [
+          {
+            id: '2::fdr-affilie-incapacite',
+            label: 'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+          },
+          {
+            id: '2::compte-financier-liasse',
+            label: 'Feuilles de renseignement - Compte financier - Liasse',
+          },
+        ],
+      }),
+      jasmine.objectContaining({
+        label: '1',
+        severity: 'warn',
+        icon: 'bi bi-exclamation-triangle-fill',
+        ariaLabel: '1 avertissement',
+        targets: [{ id: '3::calcul', label: 'Calcul - Calcul' }],
+      }),
+    ]);
+  });
+
+  it('should apply the derived tags to the visible documents', () => {
+    const primaire = component
+      .visibleDocuments()
+      .find((document) => document.id === 'doc-demande-primaire');
+
+    expect(primaire?.tags).toEqual(deriveDocumentTags('doc-demande-primaire'));
+  });
+
+  it('should return no derived tags for a document without panel comments', () => {
+    expect(deriveDocumentTags('doc-cloture-primaire')).toEqual([]);
+  });
+
+  it('should jump detail to tag target step when a single-target count tag button is clicked', () => {
+    const detail = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance as AffiliateDocumentDetailComponent;
+
+    expect(detail.activeStep()).toBe(1);
+
+    const warnTagButton = fixture.nativeElement.querySelector(
+      '.c-list__tags button[aria-label="1 avertissement"]',
+    ) as HTMLButtonElement;
+    expect(warnTagButton).withContext('single-target warn tag button').toBeTruthy();
+
+    warnTagButton.click();
+    fixture.detectChanges();
+
+    expect(component.documentFocus()).toEqual({ stepValue: 3, panelId: 'calcul' });
+    expect(detail.activeStep()).toBe(3);
+    expect(detail.certPanelValue()).toBe('calcul');
+  });
+
+  it('should open the popover and jump the detail when a multi-target count tag jump link is clicked', () => {
+    const detail = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance as AffiliateDocumentDetailComponent;
+
+    const infoTagButton = fixture.nativeElement.querySelector(
+      '.c-list__tags button[aria-label="2 commentaires"]',
+    ) as HTMLButtonElement;
+    expect(infoTagButton).withContext('multi-target info tag button').toBeTruthy();
+
+    infoTagButton.click();
+    fixture.detectChanges();
+
+    const jumpLinks = document.body.querySelectorAll(
+      '.c-list__tag-target',
+    ) as NodeListOf<HTMLButtonElement>;
+    expect(jumpLinks.length).toBe(2);
+
+    jumpLinks[0].click();
+    fixture.detectChanges();
+
+    expect(component.documentFocus()).toEqual({
+      stepValue: 2,
+      panelId: 'fdr-affilie-incapacite',
+    });
+    expect(detail.activeStep()).toBe(2);
+    expect(detail.certPanelValue()).toBe('fdr-affilie-incapacite');
   });
 
   it('should wire document detail navigation to selectedDocumentId', () => {

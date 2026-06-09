@@ -23,9 +23,16 @@
                   (valueChange)="onCertPanelValueChange($event)"
                   expandIcon="bi bi-chevron-down"
                   collapseIcon="bi bi-chevron-up"
+                  [multiple]="true"
                 >
                   @for (panel of step.panels; track panel.id) {
-                    <p-accordion-panel [value]="panel.id">
+                    <p-accordion-panel
+                      [value]="panel.id"
+                      [attr.data-panel-id]="panel.id"
+                      [class.c-affiliate-document-detail__panel--highlighted]="
+                        highlightedPanelId() === panel.id
+                      "
+                    >
                       <p-accordion-header>
                         <div
                           class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
@@ -59,10 +66,8 @@
                                 <button
                                   pButton
                                   type="button"
-                                  class="c-affiliate-document-detail__action-button"
                                   severity="secondary"
                                   size="small"
-                                  [outlined]="true"
                                   [icon]="action.icon"
                                   [label]="action.label"
                                   [attr.aria-label]="action.label"
@@ -74,11 +79,13 @@
                       </p-accordion-header>
 
                       <p-accordion-content>
-                        @if (panel.message) {
+                        @if (panel.workerComment) {
                           <p-message
-                            class="c-affiliate-document-detail__message"
-                            [severity]="panel.message.severity"
-                          >{{ panel.message.text }}</p-message>
+                            class="o-layout--margin-block-end-3"
+                            [severity]="panel.workerComment.severity"
+                            [text]="panel.workerComment.text"
+                            [icon]="panel.workerComment.icon"
+                          />
                         }
                         <h3
                           class="c-affiliate-document-detail__details-heading"
@@ -134,10 +141,8 @@
                         <button
                           pButton
                           type="button"
-                          class="c-affiliate-document-detail__more-details-button"
                           severity="secondary"
                           size="small"
-                          [outlined]="true"
                           icon="bi bi-eye"
                           [label]="panel.moreDetailsLabel"
                         ></button>
@@ -158,10 +163,7 @@
       <button
         pButton
         type="button"
-        class="c-affiliate-document-detail__step-nav-button"
         severity="secondary"
-        size="large"
-        [outlined]="true"
         icon="bi bi-arrow-left"
         iconPos="right"
         label="Etape précédente"
@@ -171,7 +173,6 @@
       <button
         pButton
         type="button"
-        size="large"
         icon="bi bi-arrow-right"
         iconPos="right"
         label="Etape suivante"
