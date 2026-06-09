@@ -47,9 +47,11 @@
   --#{$sds-prefix}-space-affiliate-document-detail-detail-label-value-gap: var(--spacing-1-5);
 
   // ── Status tag (success) ────────────────────────────────────────────────────
-  // Figma 530:6471 — success-subtle bg, green-700 text, px 8px py 4px, gap 4px, pill
+  // Figma 530:6471 — success-subtle bg, green-700 text, label-xs, px 8px py 4px, gap 4px, pill
   --#{$sds-prefix}-color-affiliate-document-detail-status-tag-bg: var(--#{$sds-prefix}-color-success-subtle);
   --#{$sds-prefix}-color-affiliate-document-detail-status-tag-text: var(--#{$sds-prefix}-color-green-700);
+  --#{$sds-prefix}-text-affiliate-document-detail-status-tag-size: var(--text-label-xs-size);
+  --#{$sds-prefix}-size-affiliate-document-detail-status-tag-icon: var(--text-label-xs-size);
   --#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-inline: var(--spacing-1);
   --#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-block: var(--spacing-0-25);
   --#{$sds-prefix}-space-affiliate-document-detail-status-tag-gap: var(--spacing-0-5);
@@ -98,6 +100,9 @@
 }
 
 @mixin affiliate-document-detail-outlined-nav-button-tokens {
+  // Match overview card secondary small button — Plectrum defaults label to 600 / sm to 0.875rem.
+  --p-button-label-font-weight: var(--font-weight-regular);
+  --p-button-sm-font-size: var(--font-size-s);
   --p-button-outlined-secondary-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-text);
   --p-button-outlined-secondary-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-border);
   --p-button-outlined-secondary-background: var(--#{$sds-prefix}-color-affiliate-document-detail-nav-button-bg);
@@ -116,7 +121,6 @@
 // Figma 530:6471 — outlined secondary header actions + icon-only add button (~40px)
 @mixin affiliate-document-detail-outlined-action-button-tokens {
   @include affiliate-document-detail-outlined-nav-button-tokens;
-  --p-button-sm-font-size: var(--font-size-s);
   --p-button-icon-only-width: var(--#{$sds-prefix}-size-affiliate-document-detail-add-button);
   --p-button-icon-only-height: var(--#{$sds-prefix}-size-affiliate-document-detail-add-button);
 }
@@ -124,6 +128,8 @@
 @mixin affiliate-document-detail-status-tag-tokens {
   --p-tag-success-background: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-bg);
   --p-tag-success-color: var(--#{$sds-prefix}-color-affiliate-document-detail-status-tag-text);
+  --p-tag-font-size: var(--#{$sds-prefix}-text-affiliate-document-detail-status-tag-size);
+  --p-tag-icon-size: var(--#{$sds-prefix}-size-affiliate-document-detail-status-tag-icon);
   --p-tag-padding-x: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-inline);
   --p-tag-padding-y: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-padding-block);
   --p-tag-gap: var(--#{$sds-prefix}-space-affiliate-document-detail-status-tag-gap);

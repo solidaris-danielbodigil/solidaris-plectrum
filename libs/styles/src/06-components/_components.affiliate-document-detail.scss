@@ -138,6 +138,18 @@
   min-width: 0;
 }
 
+// Certificate status tag — center Bootstrap Icons inside PrimeNG fixed icon box
+.c-affiliate-document-detail__status-tag {
+  align-items: center;
+
+  .p-tag-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+}
+
 .c-affiliate-document-detail__add-panel-button,
 .c-affiliate-document-detail__add-button {
   min-width: 0;
