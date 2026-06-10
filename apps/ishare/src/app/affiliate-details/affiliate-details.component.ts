@@ -161,7 +161,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
     titleAccent: 'Demande primaire',
     startDate: '24/11/2025',
     endDate: '27/12/25',
-    expanded: true,
+    expanded: false,
     documents: [
       {
         id: 'doc-demande-primaire',
@@ -190,7 +190,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
     titleAccent: 'Rechute',
     startDate: '01/01/2026',
     endDate: '15/01/2026',
-    expanded: true,
+    expanded: false,
     documents: [
       {
         id: 'doc-rechute',
@@ -227,6 +227,14 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
   ...group,
   documents: group.documents.map(withDerivedTags),
 }));
+
+const DOCUMENT_START_DATE_BY_ID = new Map(
+  EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
+    group.documents.map(
+      (document) => [document.id, group.startDate ?? ''] as const,
+    ),
+  ),
+);
 
 const EVA_MARTINEZ_DRAWER_STATIC: Omit<
   AffiliateDetailDrawerData,
@@ -433,15 +441,24 @@ export class AffiliateDetailsComponent {
   journeyView = true;
   readonly archivedOnly = signal(false);
 
-  readonly expandedGroupIds = signal(
-    EVA_MARTINEZ_DOCUMENT_GROUPS.filter((group) => group.expanded).map(
-      (group) => group.id,
-    ),
+  readonly expandedGroupIds = signal<string[]>([]);
+
+  /** `false` = newest start date first; `true` = oldest start date first. */
+  readonly startDateSortAscending = signal(false);
+
+  readonly startDateSortIcon = computed(() =>
+    this.startDateSortAscending() ? 'bi bi-sort-up' : 'bi bi-sort-down',
+  );
+
+  readonly startDateSortAriaLabel = computed(() =>
+    this.startDateSortAscending()
+      ? 'Trier du plus ancien au plus récent'
+      : 'Trier du plus récent au plus ancien',
   );
 
   // Second-column document detail viewer — Figma iSHARE-Audit node 324:5860.
   // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
-  readonly selectedDocumentId = signal('doc-demande-primaire');
+  readonly selectedDocumentId = signal<string | null>(null);
 
   // Deep-link target forwarded to the detail card when a row count tag is
   // clicked. Reset to null on a plain row select so a later click does not keep
@@ -468,12 +485,14 @@ export class AffiliateDetailsComponent {
       groups = groups.filter((group) => group.id === latestGroupId);
     }
 
-    return groups
-      .map((group) => ({
-        ...group,
-        documents: this.filterDocuments(group.documents),
-      }))
-      .filter((group) => group.documents.length > 0);
+    return this.sortGroupsByStartDate(
+      groups
+        .map((group) => ({
+          ...group,
+          documents: this.filterDocuments(group.documents),
+        }))
+        .filter((group) => group.documents.length > 0),
+    );
   }
 
   get listItems(): ListDocumentItem[] {
@@ -481,8 +500,10 @@ export class AffiliateDetailsComponent {
       return [];
     }
 
-    return this.filterDocuments(
-      EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
+    return this.sortDocumentsByStartDate(
+      this.filterDocuments(
+        EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
+      ),
     );
   }
 
@@ -527,8 +548,27 @@ export class AffiliateDetailsComponent {
       : [...this.sortOptions];
   }
 
+  toggleStartDateSort(): void {
+    this.startDateSortAscending.update((ascending) => !ascending);
+  }
+
   onExpandedGroupIdsChange(expandedGroupIds: string[]): void {
+    const previous = this.expandedGroupIds();
     this.expandedGroupIds.set(expandedGroupIds);
+
+    const newlyExpandedId = expandedGroupIds.find((id) => !previous.includes(id));
+    if (!newlyExpandedId || !this.journeyView) {
+      return;
+    }
+
+    const group = this.listGroups?.find((item) => item.id === newlyExpandedId);
+    const firstDocument = group?.documents[0];
+    if (!firstDocument) {
+      return;
+    }
+
+    this.documentFocus.set(null);
+    this.selectedDocumentId.set(firstDocument.id);
   }
 
   onDocumentClick(document: ListDocumentItem): void {
@@ -675,9 +715,33 @@ export class AffiliateDetailsComponent {
       filtered = [...filtered].sort((left, right) =>
         left.title.localeCompare(right.title),
       );
+    } else {
+      filtered = this.sortDocumentsByStartDate(filtered);
     }
 
     return filtered;
+  }
+
+  private sortGroupsByStartDate(groups: ListGroup[]): ListGroup[] {
+    const ascending = this.startDateSortAscending();
+
+    return [...groups].sort((left, right) =>
+      compareStartDates(left.startDate, right.startDate, ascending),
+    );
+  }
+
+  private sortDocumentsByStartDate(
+    documents: ListDocumentItem[],
+  ): ListDocumentItem[] {
+    const ascending = this.startDateSortAscending();
+
+    return [...documents].sort((left, right) =>
+      compareStartDates(
+        DOCUMENT_START_DATE_BY_ID.get(left.id),
+        DOCUMENT_START_DATE_BY_ID.get(right.id),
+        ascending,
+      ),
+    );
   }
 
   constructor() {
@@ -686,10 +750,10 @@ export class AffiliateDetailsComponent {
       const selected = this.selectedDocumentId();
 
       if (
-        visible.length > 0 &&
+        selected !== null &&
         !visible.some((document) => document.id === selected)
       ) {
-        this.selectedDocumentId.set(visible[0].id);
+        this.selectedDocumentId.set(null);
       }
     });
 
@@ -757,4 +821,15 @@ function parseFrenchDate(value: string): number {
   const [day, month, year] = value.split('/').map(Number);
 
   return new Date(year, month - 1, day).getTime();
+}
+
+function compareStartDates(
+  left: string | undefined,
+  right: string | undefined,
+  ascending: boolean,
+): number {
+  const leftTime = left ? parseFrenchDate(left) : 0;
+  const rightTime = right ? parseFrenchDate(right) : 0;
+
+  return ascending ? leftTime - rightTime : rightTime - leftTime;
 }

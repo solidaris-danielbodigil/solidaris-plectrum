@@ -130,7 +130,16 @@
               >{{ documentCount }}</span
             >
           </div>
-          <i class="bi bi-sort-down" aria-hidden="true"></i>
+          <button
+            pButton
+            type="button"
+            text
+            severity="secondary"
+            class="c-affiliate-details__documents-sort"
+            [icon]="startDateSortIcon()"
+            [attr.aria-label]="startDateSortAriaLabel()"
+            (click)="toggleStartDateSort()"
+          ></button>
         </div>
       </ng-template>
 
@@ -158,55 +167,64 @@
     @if (visibleDocuments().length > 0) {
       <p-card
         class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
+        [class.c-affiliate-details__detail--empty]="!selectedDocumentId()"
       >
-        <ng-template pTemplate="header">
-          @if (documentDetail.documentDetail(); as detail) {
-            <div
-              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2"
-            >
-              <h2
-                class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0"
-              >
-                {{ documentDetail.documentTitle() }}
-              </h2>
-
+        @if (selectedDocumentId(); as documentId) {
+          <ng-template pTemplate="header">
+            @if (documentDetail.documentDetail(); as detail) {
               <div
-                class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+                class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2"
               >
-                <button
-                  pButton
-                  type="button"
-                  severity="secondary"
-                  size="small"
-                  icon="bi bi-skip-backward"
-                  [disabled]="!documentDetail.canGoToPreviousDocument()"
-                  aria-label="Document précédent"
-                  (click)="documentDetail.goToPreviousDocument()"
-                ></button>
-                <button
-                  pButton
-                  type="button"
-                  severity="secondary"
-                  size="small"
-                  icon="bi bi-skip-forward"
-                  [disabled]="!documentDetail.canGoToNextDocument()"
-                  aria-label="Document suivant"
-                  (click)="documentDetail.goToNextDocument()"
-                ></button>
-              </div>
-            </div>
-          }
-        </ng-template>
+                <h2
+                  class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0"
+                >
+                  {{ documentDetail.documentTitle() }}
+                </h2>
 
-        <app-affiliate-document-detail
-          #documentDetail
-          class="o-layout--full-width o-layout--min-w-0"
-          [selectedDocumentId]="selectedDocumentId()"
-          [visibleDocuments]="visibleDocuments()"
-          [focusTarget]="documentFocus()"
-          (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
-          (moreDetailsOpen)="onMoreDetailsOpen($event)"
-        />
+                <div
+                  class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+                >
+                  <button
+                    pButton
+                    type="button"
+                    severity="secondary"
+                    size="small"
+                    icon="bi bi-skip-backward"
+                    [disabled]="!documentDetail.canGoToPreviousDocument()"
+                    aria-label="Document précédent"
+                    (click)="documentDetail.goToPreviousDocument()"
+                  ></button>
+                  <button
+                    pButton
+                    type="button"
+                    severity="secondary"
+                    size="small"
+                    icon="bi bi-skip-forward"
+                    [disabled]="!documentDetail.canGoToNextDocument()"
+                    aria-label="Document suivant"
+                    (click)="documentDetail.goToNextDocument()"
+                  ></button>
+                </div>
+              </div>
+            }
+          </ng-template>
+
+          <app-affiliate-document-detail
+            #documentDetail
+            class="o-layout--full-width o-layout--min-w-0"
+            [selectedDocumentId]="documentId"
+            [visibleDocuments]="visibleDocuments()"
+            [focusTarget]="documentFocus()"
+            (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
+            (moreDetailsOpen)="onMoreDetailsOpen($event)"
+          />
+        } @else {
+          <sds-empty-state
+            class="c-affiliate-details__detail-empty o-layout--full-width o-layout--min-w-0"
+            title="Aucun document sélectionné"
+            description="Développez un parcours et sélectionnez un document pour afficher son détail."
+          />
+        }
       </p-card>
     }
   </div>

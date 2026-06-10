@@ -14,6 +14,15 @@ import {
 } from './affiliate-details.component';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
 
+function expandJourneyGroup(
+  component: AffiliateDetailsComponent,
+  fixture: ComponentFixture<AffiliateDetailsComponent>,
+  groupId: string,
+): void {
+  component.onExpandedGroupIdsChange([groupId]);
+  fixture.detectChanges();
+}
+
 describe('AffiliateDetailsComponent', () => {
   let component: AffiliateDetailsComponent;
   let fixture: ComponentFixture<AffiliateDetailsComponent>;
@@ -61,7 +70,11 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should initialize document filter state from Figma defaults', () => {
     expect(component.documentSearch()).toBe('');
-    expect(component.selectedSector).toEqual({ label: '319', value: '319' });
+    expect(component.selectedSector).toEqual({
+      label: 'indémnités',
+      value: 'indemnites',
+    });
+    expect(component.selectedDocumentId()).toBeNull();
     expect(component.selectedSort()).toEqual({
       label: 'Actions en cours',
       value: 'actions-en-cours',
@@ -195,15 +208,15 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should filter sector suggestions by query', () => {
-    component.filterSectors({ query: '41' });
+    component.filterSectors({ query: 'med' });
 
     expect(component.sectorSuggestions).toEqual([
-      { label: '412', value: '412' },
+      { label: 'médical', value: 'medical' },
     ]);
   });
 
   it('should reset sector suggestions when query is empty', () => {
-    component.filterSectors({ query: '41' });
+    component.filterSectors({ query: 'med' });
     component.filterSectors({ query: '   ' });
 
     expect(component.sectorSuggestions).toEqual(component.sectorOptions);
@@ -243,17 +256,17 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.infoTags).toEqual([
       jasmine.objectContaining({
         label: 'Dernière action:',
-        value: 'Document reçu 12/04/2026',
+        value: 'Document reçu 15/01/2026',
         filterKey: 'last-action',
       }),
       jasmine.objectContaining({
         label: 'Documents actifs:',
-        value: '3',
+        value: '4',
         filterKey: 'active-documents',
       }),
       jasmine.objectContaining({
         label: 'Documents clôturés:',
-        value: '3',
+        value: '0',
         filterKey: 'closed-documents',
       }),
     ]);
@@ -320,7 +333,7 @@ describe('AffiliateDetailsComponent', () => {
     ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
-    ).toBe(6);
+    ).toBe(4);
   });
 
   it('should switch between grouped and flat list when journey view toggle changes', () => {
@@ -349,7 +362,7 @@ describe('AffiliateDetailsComponent', () => {
     ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
-    ).toBe(6);
+    ).toBe(4);
 
     journeyToggle.click();
     fixture.detectChanges();
@@ -368,10 +381,10 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
-    ).toBe(3);
+    ).toBe(0);
     expect(
-      fixture.nativeElement.querySelector('app-affiliate-document-detail'),
-    ).toBeTruthy();
+      fixture.nativeElement.querySelector('.c-affiliate-details__detail'),
+    ).toBeNull();
   });
 
   it('should filter documents by search query in flat mode', () => {
@@ -404,8 +417,8 @@ describe('AffiliateDetailsComponent', () => {
     const documentsColumn = fixture.nativeElement.querySelector(
       '.c-affiliate-details__columns .c-affiliate-details__documents',
     );
-    const detailColumn = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__detail app-affiliate-document-detail',
+    const detailEmptyState = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__detail sds-empty-state',
     );
 
     expect(shell).toBeTruthy();
@@ -414,24 +427,65 @@ describe('AffiliateDetailsComponent', () => {
     expect(
       documentsColumn?.querySelector('sds-list, sds-empty-state'),
     ).toBeTruthy();
-    expect(detailColumn).toBeTruthy();
+    expect(detailEmptyState).toBeTruthy();
   });
 
-  it('should expose six visible documents by default', () => {
-    expect(component.visibleDocuments().length).toBe(6);
-    expect(component.visibleDocuments()[0].id).toBe('doc-demande-primaire');
+  it('should render a text secondary sort button in the documents card header', () => {
+    const sortButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents-sort',
+    ) as HTMLButtonElement;
+
+    expect(sortButton).toBeTruthy();
+    expect(sortButton.classList.contains('p-button-secondary')).toBe(true);
+    expect(sortButton.getAttribute('aria-label')).toBe(
+      'Trier du plus récent au plus ancien',
+    );
+    expect(sortButton.querySelector('.bi-sort-down')).toBeTruthy();
+  });
+
+  it('should toggle journey group order by start date when the sort button is clicked', () => {
+    const initialGroupIds = (component.listGroups ?? []).map((group) => group.id);
+
+    const sortButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents-sort',
+    ) as HTMLButtonElement;
+    sortButton.click();
+    fixture.detectChanges();
+
+    const toggledGroupIds = (component.listGroups ?? []).map((group) => group.id);
+
+    expect(component.startDateSortAscending()).toBe(true);
+    expect(toggledGroupIds).not.toEqual(initialGroupIds);
+    expect(sortButton.getAttribute('aria-label')).toBe(
+      'Trier du plus ancien au plus récent',
+    );
+    expect(sortButton.querySelector('.bi-sort-up')).toBeTruthy();
+  });
+
+  it('should select the first document when a journey group is expanded', () => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(
+      fixture.nativeElement.querySelector('app-affiliate-document-detail'),
+    ).toBeTruthy();
+  });
+
+  it('should expose four visible documents sorted by newest start date by default', () => {
+    expect(component.visibleDocuments().length).toBe(4);
+    expect(component.visibleDocuments()[0].id).toBe('doc-rechute');
   });
 
   it('should filter documents when an info tag filter is applied', () => {
     component.onInfoTagClick({
       label: 'Documents actifs:',
-      value: '3',
+      value: '4',
       filterKey: 'active-documents',
     });
     fixture.detectChanges();
 
     expect(component.documentInfoFilter()).toBe('active-documents');
-    expect(component.visibleDocuments().length).toBe(3);
+    expect(component.visibleDocuments().length).toBe(4);
     expect(
       component.visibleDocuments().every((document) => document.status?.label !== 'Clôturé'),
     ).toBe(true);
@@ -440,12 +494,12 @@ describe('AffiliateDetailsComponent', () => {
   it('should clear info tag filter when the same tag is clicked again', () => {
     component.onInfoTagClick({
       label: 'Documents clôturés:',
-      value: '3',
+      value: '0',
       filterKey: 'closed-documents',
     });
     component.onInfoTagClick({
       label: 'Documents clôturés:',
-      value: '3',
+      value: '0',
       filterKey: 'closed-documents',
     });
 
@@ -455,7 +509,7 @@ describe('AffiliateDetailsComponent', () => {
   it('should update header info tag active state when filter changes', () => {
     component.onInfoTagClick({
       label: 'Documents actifs:',
-      value: '3',
+      value: '4',
       filterKey: 'active-documents',
     });
     fixture.detectChanges();
@@ -472,7 +526,7 @@ describe('AffiliateDetailsComponent', () => {
     component.documentSearch.set('incapacité');
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+    expect(component.selectedDocumentId()).toBeNull();
   });
 
   it('should decode tag target id and set selectedDocumentId + documentFocus on tag target click', () => {
@@ -564,6 +618,8 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should jump detail to tag target step when a single-target count tag button is clicked', () => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+
     const detail = fixture.debugElement.query(
       By.directive(AffiliateDocumentDetailComponent),
     ).componentInstance as AffiliateDocumentDetailComponent;
@@ -584,6 +640,8 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should open the popover and jump the detail when a multi-target count tag option is clicked', () => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+
     const detail = fixture.debugElement.query(
       By.directive(AffiliateDocumentDetailComponent),
     ).componentInstance as AffiliateDocumentDetailComponent;
@@ -613,15 +671,13 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should wire document detail navigation to selectedDocumentId', () => {
-    const detail = fixture.nativeElement.querySelector(
-      'app-affiliate-document-detail',
-    );
-    expect(detail).toBeTruthy();
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
 
-    const nextButton = fixture.nativeElement.querySelector(
-      'button[aria-label="Document suivant"]',
-    ) as HTMLButtonElement;
-    nextButton.click();
+    const detail = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance as AffiliateDocumentDetailComponent;
+
+    detail.goToNextDocument();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-incapacite');

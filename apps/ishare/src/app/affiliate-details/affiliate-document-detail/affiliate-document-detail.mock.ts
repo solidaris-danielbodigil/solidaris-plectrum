@@ -201,7 +201,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'warn',
-              text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité.",
+              text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité. - 10/06/2026 15:56",
               icon: COMMENT_ICONS.warn,
             },
             actions: [

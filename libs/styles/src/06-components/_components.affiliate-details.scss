@@ -73,6 +73,10 @@
   text-align: center;
 }
 
+.c-affiliate-details__documents-sort {
+  flex-shrink: 0;
+}
+
 // Second column — p-card shell; document title + nav in p-card header slot.
 .c-affiliate-details__detail {
   min-width: 0;
@@ -91,4 +95,39 @@
 .c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {
   display: block;
   @include scroll-shadow;
+}
+
+// Detail placeholder — fill the panel and vertically center the empty state block.
+.c-affiliate-details__detail.c-affiliate-details__detail--empty {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  block-size: 100%;
+
+  &.c-affiliate-details__detail .p-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-block-size: 0;
+    block-size: 100%;
+  }
+
+  .p-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+}
+
+.c-affiliate-details__detail-empty {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  min-inline-size: 0;
+
+  .c-empty-state {
+    flex: 1 1 auto;
+    min-block-size: 0;
+  }
 }

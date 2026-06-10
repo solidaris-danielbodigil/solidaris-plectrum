@@ -118,10 +118,7 @@
                 </div>
                 <hr />
                 @if (doc.tags?.length) {
-                  <div
-                    class="c-list__tags o-flex o-flex--wrap o-layout--gap-1"
-                    (click)="$event.stopPropagation()"
-                  >
+                  <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
                     @for (tag of doc.tags; track tag.label + tag.severity) {
                       @if (tag.targets?.length) {
                         <button
@@ -182,10 +179,7 @@
               </div>
               <hr />
               @if (doc.tags?.length) {
-                <div
-                  class="c-list__tags o-flex o-flex--wrap o-layout--gap-1"
-                  (click)="$event.stopPropagation()"
-                >
+                <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
                   @for (tag of doc.tags; track tag.label + tag.severity) {
                     @if (tag.targets?.length) {
                       <button

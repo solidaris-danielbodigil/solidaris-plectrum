@@ -936,6 +936,22 @@ describe('ListComponent', () => {
     expect(itemSpy).not.toHaveBeenCalled();
   });
 
+  it('should emit itemClick when the tags row padding is clicked', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    const itemSpy = jasmine.createSpy('itemClick');
+    component.itemClick.subscribe(itemSpy);
+
+    const tagsRow = fixture.nativeElement.querySelector(
+      '.c-list__tags',
+    ) as HTMLElement;
+    tagsRow.click();
+
+    expect(itemSpy).toHaveBeenCalledWith(DOCS_WITH_TAG_TARGETS[0]);
+  });
+
 
 
   it('should open a popover for a multi-target tag and emit on option click', () => {

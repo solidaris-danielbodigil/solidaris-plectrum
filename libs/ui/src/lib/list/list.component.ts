@@ -133,7 +133,7 @@ export class ListComponent {
 
   onDocumentRowClick(event: MouseEvent, doc: ListDocumentItem): void {
     const target = event.target;
-    if (target instanceof Element && target.closest('.c-list__tags')) {
+    if (target instanceof Element && target.closest('.c-list__tags button')) {
       return;
     }
 
