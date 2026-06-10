@@ -938,7 +938,7 @@ describe('ListComponent', () => {
 
 
 
-  it('should open a popover for a multi-target tag and emit on jump-link click', () => {
+  it('should open a popover for a multi-target tag and emit on option click', () => {
     fixture.componentRef.setInput('groups', null);
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
@@ -954,7 +954,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     expect(emitSpy).not.toHaveBeenCalled();
-    expect(component.activeTag()?.doc).toBe(DOCS_WITH_TAG_TARGETS[1]);
+    expect(component.activeTagContext()?.doc).toBe(DOCS_WITH_TAG_TARGETS[1]);
 
     // Popover overlay must escape the (overflow-clipping) list/card by being
     // appended to the document body, otherwise it is invisible in the app.
@@ -962,13 +962,13 @@ describe('ListComponent', () => {
     expect(popoverPanel).withContext('popover appended to body').toBeTruthy();
     expect(popoverPanel?.contains(fixture.nativeElement)).toBe(false);
 
-    const jumpLinks = document.querySelectorAll(
-      '.c-list__tag-target',
-    ) as NodeListOf<HTMLButtonElement>;
+    const options = document.querySelectorAll(
+      '.p-autocomplete-option',
+    ) as NodeListOf<HTMLElement>;
 
-    expect(jumpLinks.length).toBe(2);
+    expect(options.length).toBe(2);
 
-    jumpLinks[0].click();
+    options[0].click();
 
     expect(emitSpy).toHaveBeenCalledWith({
       doc: DOCS_WITH_TAG_TARGETS[1],

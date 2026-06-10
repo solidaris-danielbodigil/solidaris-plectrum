@@ -1,0 +1,40 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.document-more-details-drawer.scss
+// Document more-details audit drawer tokens.
+//
+// Design ref: Figma node 382:10723 (iSHARE-Audit) — drawer plus de details certif ITT
+//             https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=382-10723
+// Token source consumed by: libs/styles/src/06-components/_components.document-more-details-drawer.scss
+// =============================================================================
+
+:root {
+  // ── Structure ───────────────────────────────────────────────────────────────
+  // Content-driven width — panel grows with table columns, capped at viewport.
+  --#{$sds-prefix}-size-document-more-details-drawer-min-width: 20rem;
+  --#{$sds-prefix}-size-document-more-details-drawer-max-width: calc(100vw - var(--spacing-4));
+  --#{$sds-prefix}-color-document-more-details-drawer-bg: var(--#{$sds-prefix}-color-surface-0);
+  --#{$sds-prefix}-shadow-document-more-details-drawer: var(--#{$sds-prefix}-shadow-xl);
+  --#{$sds-prefix}-color-document-more-details-drawer-border: var(--#{$sds-prefix}-color-drawer-border);
+
+  // Figma: header padding 20px inline, 16px block-start
+  --#{$sds-prefix}-space-document-more-details-drawer-header-padding-block: var(--spacing-2);
+  --#{$sds-prefix}-space-document-more-details-drawer-padding-inline: calc(var(--spacing-2) + var(--spacing-0-5));
+  --#{$sds-prefix}-space-document-more-details-drawer-body-padding-block-end: calc(var(--spacing-2) + var(--spacing-0-5));
+  --#{$sds-prefix}-space-document-more-details-drawer-content-gap: calc(14 / 14 * var(--base-unit));
+
+  // ── Timeline markers ───────────────────────────────────────────────────────
+  --#{$sds-prefix}-size-document-more-details-drawer-marker: calc(28 / 14 * var(--base-unit));
+  --#{$sds-prefix}-radius-document-more-details-drawer-marker: calc(14 / 14 * var(--base-unit));
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-info-bg: #eefaff;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-info-icon: #145494;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-warn-bg: #fff9eb;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-warn-icon: #431305;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-success-bg: #f1fcf4;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-success-icon: #196234;
+
+  // ── Event header date chip ───────────────────────────────────────────────────
+  --#{$sds-prefix}-color-document-more-details-drawer-date-tag-bg: #eaeff4;
+  --#{$sds-prefix}-color-document-more-details-drawer-date-tag-text: var(--#{$sds-prefix}-color-metadata-chip-text);
+}

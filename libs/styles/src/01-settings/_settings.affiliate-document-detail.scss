@@ -21,17 +21,16 @@
   --#{$sds-prefix}-color-affiliate-document-detail-section-border: var(--#{$sds-prefix}-color-drawer-border);
   --#{$sds-prefix}-radius-affiliate-document-detail-section: var(--#{$sds-prefix}-radius-xl);
 
-  // ── Nested accordion panels ─────────────────────────────────────────────────
-  // Figma 544:6474 — 17px header/content padding; panel radius matches Card (radius-xl)
-  --#{$sds-prefix}-space-affiliate-document-detail-accordion-padding: calc(17 / 14 * var(--base-unit));
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-header: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-content: var(--#{$sds-prefix}-radius-affiliate-document-detail-section);
-  --#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-affiliate-document-detail-accordion-border: var(--#{$sds-prefix}-color-drawer-border);
+  // ── Nested accordion panels (aliases — canonical tokens in settings.audit-accordion) ─
+  --#{$sds-prefix}-space-affiliate-document-detail-accordion-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
+  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-header: var(--#{$sds-prefix}-radius-audit-accordion-header);
+  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-content: var(--#{$sds-prefix}-radius-audit-accordion-content);
+  --#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text: var(--#{$sds-prefix}-color-audit-accordion-header-text);
+  --#{$sds-prefix}-color-affiliate-document-detail-accordion-border: var(--#{$sds-prefix}-color-audit-accordion-border);
 
   // ── Certificate accordion header row ────────────────────────────────────────
-  // Figma 530:6471 — 16px gap title/slot/chevron; title 14px semibold leading-none
-  --#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap: var(--spacing-2);
+  // Figma 530:6471 — title 14px semibold leading-none
+  --#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap: var(--#{$sds-prefix}-space-audit-accordion-header-gap);
   --#{$sds-prefix}-text-affiliate-document-detail-cert-title-line-height: 1;
   --#{$sds-prefix}-space-affiliate-document-detail-cert-header-actions-gap: var(--spacing-1);
 

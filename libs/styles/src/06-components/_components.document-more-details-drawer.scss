@@ -1,0 +1,142 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.document-more-details-drawer.scss
+// c-document-more-details-drawer — iSHARE audit trail drawer for certificate panels.
+//
+// Wraps PrimeNG p-drawer (headless). Layout via o-flex / o-layout in template.
+//
+// Design ref:   Figma node 382:10723 (iSHARE-Audit) — drawer plus de details certif ITT
+// Token source: libs/styles/src/01-settings/_settings.document-more-details-drawer.scss
+// Reference:    _components.affiliate-detail-drawer.scss
+// =============================================================================
+
+// ── Drawer root (styleClass on the .p-drawer container) ──────────────────────
+.c-document-more-details-drawer.p-drawer {
+  width: max-content;
+  min-width: var(--#{$sds-prefix}-size-document-more-details-drawer-min-width);
+  max-width: var(--#{$sds-prefix}-size-document-more-details-drawer-max-width);
+  display: flex;
+  flex-direction: column;
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-bg);
+  box-shadow: var(--#{$sds-prefix}-shadow-document-more-details-drawer);
+  padding: 0;
+}
+
+.c-document-more-details-drawer__panel {
+  height: 100%;
+  width: max-content;
+  min-width: 100%;
+  max-width: inherit;
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-bg);
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+.c-document-more-details-drawer__header {
+  padding-block: var(--#{$sds-prefix}-space-document-more-details-drawer-header-padding-block);
+  padding-inline: var(--#{$sds-prefix}-space-document-more-details-drawer-padding-inline);
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-document-more-details-drawer-border);
+}
+
+.c-document-more-details-drawer__title {
+  @include text-heading-lg;
+  color: var(--#{$sds-prefix}-color-text);
+  margin: 0;
+}
+
+.c-document-more-details-drawer__close-button {
+  --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text-muted);
+
+  &:hover {
+    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text);
+  }
+}
+
+// ── Body (scroll region) ─────────────────────────────────────────────────────
+.c-document-more-details-drawer__body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-inline: var(--#{$sds-prefix}-space-document-more-details-drawer-padding-inline);
+  padding-block-end: var(--#{$sds-prefix}-space-document-more-details-drawer-body-padding-block-end);
+  row-gap: var(--#{$sds-prefix}-space-document-more-details-drawer-content-gap);
+}
+
+// ── Timeline markers ─────────────────────────────────────────────────────────
+.c-document-more-details-drawer__marker {
+  inline-size: var(--#{$sds-prefix}-size-document-more-details-drawer-marker);
+  block-size: var(--#{$sds-prefix}-size-document-more-details-drawer-marker);
+  border-radius: var(--#{$sds-prefix}-radius-document-more-details-drawer-marker);
+  font-size: calc(14 / 14 * var(--base-unit));
+}
+
+.c-document-more-details-drawer__marker--info {
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-info-bg);
+  color: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-info-icon);
+}
+
+.c-document-more-details-drawer__marker--warn {
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-warn-bg);
+  color: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-warn-icon);
+}
+
+.c-document-more-details-drawer__marker--success {
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-success-bg);
+  color: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-success-icon);
+}
+
+// ── Timeline PrimeNG bridge ──────────────────────────────────────────────────
+.c-document-more-details-drawer__timeline {
+  --p-timeline-event-connector-color: var(--#{$sds-prefix}-color-document-more-details-drawer-border);
+  --p-timeline-event-marker-border-color: transparent;
+  --p-timeline-event-marker-background: transparent;
+  gap: var(--#{$sds-prefix}-space-document-more-details-drawer-content-gap);
+
+  // PrimeNG always renders an opposite column (flex: 1) even without #opposite.
+  .p-timeline-event-opposite {
+    display: none;
+  }
+
+  .p-timeline-event-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  // Timeline context — let nested audit accordion content drive table width
+  .c-audit-accordion .p-accordioncontent-content {
+    overflow: visible;
+  }
+}
+
+.c-document-more-details-drawer__date-tag {
+  --p-tag-secondary-background: var(--#{$sds-prefix}-color-document-more-details-drawer-date-tag-bg);
+  --p-tag-secondary-color: var(--#{$sds-prefix}-color-document-more-details-drawer-date-tag-text);
+}
+
+// ── Audit table PrimeNG bridge ───────────────────────────────────────────────
+.c-document-more-details-drawer__table {
+  --p-datatable-header-cell-background: var(--#{$sds-prefix}-color-surface-0);
+  --p-datatable-header-cell-color: var(--#{$sds-prefix}-color-text);
+  --p-datatable-header-cell-border-color: var(--#{$sds-prefix}-color-document-more-details-drawer-border);
+  --p-datatable-body-cell-border-color: var(--#{$sds-prefix}-color-document-more-details-drawer-border);
+  --p-datatable-row-color: var(--#{$sds-prefix}-color-text);
+
+  .p-datatable-table-container,
+  .p-datatable-wrapper {
+    // PrimeNG sets inline `overflow: auto` on the container — override so the drawer
+    // panel (width: max-content) absorbs table width instead of trapping scroll.
+    overflow: visible !important;
+  }
+
+  .p-datatable-table {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+  }
+}
+
+.c-document-more-details-drawer__multiline {
+  row-gap: 0;
+  white-space: pre-line;
+}

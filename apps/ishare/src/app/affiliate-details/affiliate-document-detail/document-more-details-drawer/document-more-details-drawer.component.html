@@ -1,0 +1,156 @@
+<p-drawer
+  [visible]="visible()"
+  (visibleChange)="visible.set($event)"
+  position="right"
+  [modal]="true"
+  [dismissible]="true"
+  [closable]="false"
+  styleClass="c-document-more-details-drawer"
+>
+  <ng-template #headless>
+    <div
+      class="c-document-more-details-drawer__panel o-flex o-flex--y o-layout--full-height"
+    >
+      <header
+        class="c-document-more-details-drawer__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0"
+      >
+        <h2 class="c-document-more-details-drawer__title">{{ drawerTitle() }}</h2>
+        <button
+          pButton
+          type="button"
+          text
+          [rounded]="true"
+          severity="secondary"
+          size="small"
+          class="c-document-more-details-drawer__close-button"
+          icon="bi bi-x-lg"
+          aria-label="Fermer"
+          (click)="onClose()"
+        ></button>
+      </header>
+
+      <div
+        class="c-document-more-details-drawer__body o-flex o-flex--y o-flex__item--grow-1"
+      >
+        @if (hasEvents()) {
+          <p-timeline
+            class="c-document-more-details-drawer__timeline o-layout--full-width"
+            [value]="events()"
+            align="left"
+          >
+            <ng-template #marker let-event>
+              <span
+                class="c-document-more-details-drawer__marker o-flex o-flex--align-items-center o-flex--justify-content-center"
+                [class.c-document-more-details-drawer__marker--info]="
+                  event.markerTone === 'info'
+                "
+                [class.c-document-more-details-drawer__marker--warn]="
+                  event.markerTone === 'warn'
+                "
+                [class.c-document-more-details-drawer__marker--success]="
+                  event.markerTone === 'success'
+                "
+              >
+                <i [class]="event.markerIcon" aria-hidden="true"></i>
+              </span>
+            </ng-template>
+
+            <ng-template #content let-event>
+              <p-accordion
+                class="c-audit-accordion o-layout--full-width"
+                [value]="expandedEventIds()"
+                (valueChange)="onExpandedEventIdsChange($event)"
+                [multiple]="true"
+                expandIcon="bi bi-chevron-down"
+                collapseIcon="bi bi-chevron-up"
+              >
+                <p-accordion-panel [value]="event.id">
+                  <p-accordion-header>
+                    <div
+                      class="c-document-more-details-drawer__event-header o-flex o-flex--align-items-center o-layout--gap-2"
+                    >
+                      <p-tag
+                        class="c-document-more-details-drawer__date-tag"
+                        severity="secondary"
+                        [value]="event.dateLabel"
+                      />
+                      <p-tag
+                        [severity]="event.status.severity"
+                        [value]="event.status.label"
+                        [icon]="event.status.icon"
+                      />
+                    </div>
+                  </p-accordion-header>
+
+                  <p-accordion-content>
+                    <p-table
+                      class="c-document-more-details-drawer__table"
+                      [value]="event.rows"
+                    >
+                      <ng-template #header>
+                        <tr>
+                          <th pSortableColumn="date">
+                            Date
+                            <p-sortIcon field="date" />
+                          </th>
+                          <th pSortableColumn="description">
+                            Description
+                            <p-sortIcon field="description" />
+                          </th>
+                          <th pSortableColumn="application">
+                            Applications
+                            <p-sortIcon field="application" />
+                          </th>
+                          <th pSortableColumn="source">
+                            Sources
+                            <p-sortIcon field="source" />
+                          </th>
+                        </tr>
+                      </ng-template>
+
+                      <ng-template #body let-row>
+                        <tr>
+                          <td>{{ row.date }}</td>
+                          <td>
+                            @if (isAuditTag(row.description)) {
+                              <p-tag
+                                [severity]="row.description.severity"
+                                [value]="row.description.label"
+                                [icon]="row.description.icon"
+                              />
+                            } @else if (isAuditMultiline(row.description)) {
+                              <div
+                                class="c-document-more-details-drawer__multiline o-flex o-flex--y"
+                              >
+                                @for (
+                                  line of row.description.lines;
+                                  track line
+                                ) {
+                                  <span>{{ line }}</span>
+                                }
+                              </div>
+                            } @else {
+                              {{ row.description }}
+                            }
+                          </td>
+                          <td>{{ row.application }}</td>
+                          <td>{{ row.source }}</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </ng-template>
+          </p-timeline>
+        } @else {
+          <sds-empty-state
+            class="c-document-more-details-drawer__empty o-flex__item--grow-1"
+            title="Aucun historique disponible"
+            description="Aucun événement d'audit n'est enregistré pour ce document."
+          />
+        }
+      </div>
+    </div>
+  </ng-template>
+</p-drawer>

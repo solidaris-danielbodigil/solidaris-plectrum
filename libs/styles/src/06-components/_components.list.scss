@@ -306,3 +306,12 @@
   background: var(--#{$sds-prefix}-color-list-skeleton-bg);
   flex-shrink: 0;
 }
+
+// ── Tag target popover (PrimeNG Select Data pattern) ───────────────────────
+
+.c-list__tag-target-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-inline-size: 100%;
+}

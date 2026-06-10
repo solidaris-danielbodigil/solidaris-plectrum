@@ -20,6 +20,7 @@ import type { ListDocumentItem } from '@solidaris/ui';
 import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail.mock';
 import {
   isDocumentDetailPeriod,
+  type DocumentCertificatPanel,
   type DocumentDetailField,
 } from './affiliate-document-detail.types';
 
@@ -73,6 +74,8 @@ export class AffiliateDocumentDetailComponent {
   );
 
   readonly selectedDocumentIdChange = output<string>();
+
+  readonly moreDetailsOpen = output<DocumentCertificatPanel>();
 
   readonly activeStep = signal(1);
   readonly certPanelValue = signal<string | string[] | undefined>(
@@ -149,6 +152,10 @@ export class AffiliateDocumentDetailComponent {
 
   isPeriodField(field: DocumentDetailField): boolean {
     return isDocumentDetailPeriod(field.value);
+  }
+
+  openMoreDetails(panel: DocumentCertificatPanel): void {
+    this.moreDetailsOpen.emit(panel);
   }
 
   goToPreviousDocument(): void {

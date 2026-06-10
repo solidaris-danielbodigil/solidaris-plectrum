@@ -42,8 +42,10 @@ import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
 import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail/affiliate-document-detail.mock';
+import { DocumentMoreDetailsDrawerComponent } from './affiliate-document-detail/document-more-details-drawer/document-more-details-drawer.component';
 import {
   COMMENT_ICONS,
+  type DocumentCertificatPanel,
   type DocumentCertificatPanelStatusSeverity,
 } from './affiliate-document-detail/affiliate-document-detail.types';
 
@@ -328,6 +330,7 @@ const EVA_MARTINEZ_DRAWER_STATIC: Omit<
     ListComponent,
     AffiliateDocumentDetailComponent,
     AffiliateDetailDrawerComponent,
+    DocumentMoreDetailsDrawerComponent,
   ],
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
@@ -406,6 +409,9 @@ export class AffiliateDetailsComponent {
   };
 
   readonly affiliateDetailDrawerVisible = signal(false);
+
+  readonly moreDetailsDrawerVisible = signal(false);
+  readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
 
   readonly affiliateDetailDrawerData = computed<AffiliateDetailDrawerData>(
     () => ({
@@ -592,6 +598,11 @@ export class AffiliateDetailsComponent {
 
   onPrimaryActionClick(): void {
     this.affiliateDetailDrawerVisible.set(true);
+  }
+
+  onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
+    this.moreDetailsPanel.set(panel);
+    this.moreDetailsDrawerVisible.set(true);
   }
 
   onDrawerMenuClick(): void {

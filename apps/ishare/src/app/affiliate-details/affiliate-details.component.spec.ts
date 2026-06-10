@@ -583,7 +583,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(detail.certPanelValue()).toBe('calcul');
   });
 
-  it('should open the popover and jump the detail when a multi-target count tag jump link is clicked', () => {
+  it('should open the popover and jump the detail when a multi-target count tag option is clicked', () => {
     const detail = fixture.debugElement.query(
       By.directive(AffiliateDocumentDetailComponent),
     ).componentInstance as AffiliateDocumentDetailComponent;
@@ -596,12 +596,12 @@ describe('AffiliateDetailsComponent', () => {
     infoTagButton.click();
     fixture.detectChanges();
 
-    const jumpLinks = document.body.querySelectorAll(
-      '.c-list__tag-target',
-    ) as NodeListOf<HTMLButtonElement>;
-    expect(jumpLinks.length).toBe(2);
+    const options = document.body.querySelectorAll(
+      '.p-autocomplete-option',
+    ) as NodeListOf<HTMLElement>;
+    expect(options.length).toBe(2);
 
-    jumpLinks[0].click();
+    options[0].click();
     fixture.detectChanges();
 
     expect(component.documentFocus()).toEqual({

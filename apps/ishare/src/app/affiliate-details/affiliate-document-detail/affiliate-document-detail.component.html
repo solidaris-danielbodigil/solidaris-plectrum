@@ -18,7 +18,7 @@
             <ng-template #content>
               @if (step.panels && step.panels.length > 0) {
                 <p-accordion
-                  class="c-affiliate-document-detail__documents-accordion o-layout--full-width o-layout--min-w-0"
+                  class="c-audit-accordion o-layout--full-width o-layout--min-w-0"
                   [value]="certPanelValue()"
                   (valueChange)="onCertPanelValueChange($event)"
                   expandIcon="bi bi-chevron-down"
@@ -51,11 +51,11 @@
                                 [value]="panel.status.label"
                                 [icon]="panel.status.icon"
                               />
-                              @if (panel.countTag) {
+                              @if (panel.workerComment) {
                                 <p-tag
-                                  [severity]="panel.countTag.severity"
-                                  [value]="panel.countTag.label"
-                                  [icon]="panel.countTag.icon"
+                                  [severity]="panel.workerComment.severity"
+                                  value="1"
+                                  [icon]="panel.workerComment.icon"
                                 />
                               }
                             </div>
@@ -142,9 +142,9 @@
                           pButton
                           type="button"
                           severity="secondary"
-                          size="small"
                           icon="bi bi-eye"
                           [label]="panel.moreDetailsLabel"
+                          (click)="openMoreDetails(panel)"
                         ></button>
                       </p-accordion-content>
                     </p-accordion-panel>

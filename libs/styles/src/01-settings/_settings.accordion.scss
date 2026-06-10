@@ -48,23 +48,20 @@
   --p-accordion-toggle-icon-active-color: transparent;
 }
 
-// ── Affiliate document detail — certificate panels accordion ───────────────
+// ── iSHARE audit accordion — certificate panels + drawer timeline events ─────
 // Design ref: Figma iSHARE-Audit node 544:6474 — bordered nested panels, 17px padding, radius-xl
-.c-affiliate-document-detail__documents-accordion {
-  // Panel radii — unified section/card radius applied in 06-components (Figma 544:6474)
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-panel-header: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-header);
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-panel-content: var(--#{$sds-prefix}-radius-affiliate-document-detail-accordion-content);
+.c-audit-accordion {
   --p-accordion-panel-border-width: 1px;
-  --p-accordion-panel-border-color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-border);
-  --p-accordion-header-background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  --p-accordion-header-hover-background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  --p-accordion-header-active-background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  --p-accordion-header-color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text);
-  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text);
-  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
-  --p-accordion-content-background: var(--#{$sds-prefix}-color-affiliate-document-detail-section-bg);
-  --p-accordion-content-padding: var(--#{$sds-prefix}-space-affiliate-document-detail-accordion-padding);
+  --p-accordion-panel-border-color: var(--#{$sds-prefix}-color-audit-accordion-border);
+  --p-accordion-header-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
+  --p-accordion-header-hover-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
+  --p-accordion-header-active-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
+  --p-accordion-header-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
+  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
+  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
+  --p-accordion-header-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
+  --p-accordion-content-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
+  --p-accordion-content-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
   --p-accordion-content-border-width: 0;
   --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-text-muted);
   --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-text);

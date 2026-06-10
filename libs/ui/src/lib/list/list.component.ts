@@ -8,10 +8,11 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { PrimeTemplate } from 'primeng/api';
 import type { TreeNode } from 'primeng/api';
+import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Popover } from 'primeng/popover';
+import { Ripple } from 'primeng/ripple';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
 import type {
@@ -35,7 +36,7 @@ export interface ListDocumentNodeData {
 @Component({
   selector: 'sds-list',
   standalone: true,
-  imports: [ButtonDirective, PrimeTemplate, Popover, Tag, Tree],
+  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, Tag, Tree],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -69,9 +70,12 @@ export class ListComponent {
   }>();
 
   private readonly tagPopover = viewChild<Popover>('tagPopover');
-  readonly activeTag = signal<{ doc: ListDocumentItem; tag: ListDocumentTag } | null>(
-    null,
-  );
+  private readonly tagAnchorRect = signal<DOMRectReadOnly | null>(null);
+  readonly tagPopoverStyle = signal<Record<string, string> | undefined>(undefined);
+  readonly activeTagContext = signal<{
+    doc: ListDocumentItem;
+    tag: ListDocumentTag;
+  } | null>(null);
 
   readonly isJourneyMode = computed(() => this.groups() !== null);
 
@@ -168,17 +172,105 @@ export class ListComponent {
       return;
     }
 
-    this.activeTag.set({ doc, tag });
-    const anchor = this.tagAnchorFromEvent(event);
-    this.tagPopover()?.toggle(event, anchor);
+    const anchor = this.resolveTagAnchor(event);
+    if (!anchor) {
+      return;
+    }
+
+    const rect = anchor.getBoundingClientRect();
+    this.tagAnchorRect.set(rect);
+    this.tagPopoverStyle.set(this.popoverStyleFromRect(rect));
+    this.activeTagContext.set({ doc, tag });
+    this.tagPopover()?.show(event, anchor);
+    this.scheduleTagPopoverReposition();
   }
 
-  private tagAnchorFromEvent(event: MouseEvent | KeyboardEvent): HTMLElement | undefined {
-    return event.currentTarget instanceof HTMLElement
-      ? event.currentTarget
-      : event.target instanceof HTMLElement
-        ? event.target
-        : undefined;
+  onTagPopoverShow(): void {
+    this.scheduleTagPopoverReposition();
+  }
+
+  onTagPopoverHide(): void {
+    this.tagAnchorRect.set(null);
+    this.tagPopoverStyle.set(undefined);
+  }
+
+  private resolveTagAnchor(
+    event: MouseEvent | KeyboardEvent,
+  ): HTMLElement | undefined {
+    if (event.currentTarget instanceof HTMLElement) {
+      return event.currentTarget;
+    }
+
+    const target = event.target;
+    if (target instanceof Element) {
+      return (
+        target.closest<HTMLButtonElement>('.c-list__tags button.p-button') ??
+        undefined
+      );
+    }
+
+    return undefined;
+  }
+
+  private scheduleTagPopoverReposition(): void {
+    const apply = () => this.repositionTagPopover();
+
+    requestAnimationFrame(() => {
+      apply();
+      requestAnimationFrame(() => {
+        apply();
+        setTimeout(apply, 0);
+        setTimeout(apply, 50);
+      });
+    });
+  }
+
+  private popoverStyleFromRect(rect: DOMRectReadOnly): Record<string, string> {
+    const gutter = 4;
+
+    return {
+      position: 'fixed',
+      top: `${rect.bottom + gutter}px`,
+      left: `${rect.left}px`,
+      insetInlineStart: `${rect.left}px`,
+      marginTop: '0',
+      transform: 'none',
+    };
+  }
+
+  private repositionTagPopover(): void {
+    const rect = this.tagAnchorRect();
+    if (!rect) {
+      return;
+    }
+
+    const style = this.popoverStyleFromRect(rect);
+    this.tagPopoverStyle.set(style);
+
+    const panel = document.body.querySelector('.p-popover') as HTMLElement | null;
+    if (!panel) {
+      return;
+    }
+
+    Object.assign(panel.style, style);
+  }
+
+  onTagTargetSelect(event: Event, target: ListDocumentTagTarget): void {
+    event.stopPropagation();
+    const active = this.activeTagContext();
+    if (!active) {
+      return;
+    }
+
+    this.tagTargetClick.emit({ doc: active.doc, tag: active.tag, target });
+    this.tagPopover()?.hide();
+  }
+
+  onTagTargetKeydown(event: KeyboardEvent, target: ListDocumentTagTarget): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onTagTargetSelect(event, target);
+    }
   }
 
   onTagKeydown(event: KeyboardEvent, doc: ListDocumentItem, tag: ListDocumentTag): void {
@@ -186,17 +278,6 @@ export class ListComponent {
       event.preventDefault();
       this.onTagClick(event, doc, tag);
     }
-  }
-
-  onTagTargetSelect(event: MouseEvent, target: ListDocumentTagTarget): void {
-    event.stopPropagation();
-    const active = this.activeTag();
-    if (!active) {
-      return;
-    }
-
-    this.tagTargetClick.emit({ doc: active.doc, tag: active.tag, target });
-    this.tagPopover()?.hide();
   }
 
   onGroupClick(event: MouseEvent, group: ListGroup): void {

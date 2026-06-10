@@ -1,8 +1,91 @@
 // Eva Martinez demo document detail data — Figma iSHARE-Audit node 324:5860.
 // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
 
-import type { AffiliateDocumentDetail } from './affiliate-document-detail.types';
+import type {
+  AffiliateDocumentDetail,
+  DocumentMoreDetails,
+} from './affiliate-document-detail.types';
 import { COMMENT_ICONS } from './affiliate-document-detail.types';
+
+// Figma iSHARE-Audit node 382:10723 — drawer plus de details certif ITT.
+// https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=382-10723
+
+const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-24-11-2025',
+      dateLabel: '24/11/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '24/11/2025 14:30:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-25-11-2025',
+      dateLabel: '25/11/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '25/11/2025 12:30:00',
+          description: 'Dossier verrouillé pour traitement',
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+        {
+          date: '25/11/2025 14:30:00',
+          description: {
+            kind: 'multiline',
+            lines: [
+              'UCIT encodé Accepté',
+              'Numéro de CIT:',
+              '25/1256332',
+              'Incapacité',
+            ],
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'accepte-27-11-2025',
+      dateLabel: '27/11/2025',
+      status: { label: 'Accepté', severity: 'success', icon: 'bi bi-check-all' },
+      markerIcon: 'bi bi-check-all',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '2023-07-24 14:30:00',
+          description: {
+            kind: 'tag',
+            label: 'Accepté - Auto',
+            severity: 'success',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+  ],
+};
 
 const FDR_PANEL_DETAILS = [
   { label: 'Date de réception', value: '26/01/2026' },
@@ -14,7 +97,10 @@ const FDR_PANEL_ACTIONS = [
   { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
 ];
 
-export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDetail> = {
+export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
+  string,
+  AffiliateDocumentDetail
+> = {
   'doc-demande-primaire': {
     documentId: 'doc-demande-primaire',
     title: 'Demande Primaire - Régime général',
@@ -45,6 +131,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
               },
             ],
             moreDetailsLabel: 'Voir plus de details',
+            moreDetails: CERTIFICAT_ITT_MORE_DETAILS,
           },
         ],
       },
@@ -89,11 +176,6 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
               severity: 'secondary',
               icon: 'bi bi-clock-history',
             },
-            countTag: {
-              label: '1',
-              severity: 'info',
-              icon: COMMENT_ICONS.info,
-            },
             workerComment: {
               severity: 'info',
               text: 'Commentaire du gestionnaire : la liasse comptable doit être complétée avec le bilan annuel.',
@@ -116,11 +198,6 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDeta
               label: 'En attente',
               severity: 'info',
               icon: 'bi bi-clock',
-            },
-            countTag: {
-              label: '1',
-              severity: 'warn',
-              icon: COMMENT_ICONS.warn,
             },
             workerComment: {
               severity: 'warn',

@@ -1,0 +1,21 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.audit-accordion.scss
+// Shared iSHARE audit accordion tokens — bordered nested panels.
+//
+// Design ref: Figma iSHARE-Audit node 544:6474 — 17px padding, radius-xl
+// Consumed by: c-audit-accordion (document detail + audit drawer timelines)
+// =============================================================================
+
+:root {
+  --#{$sds-prefix}-color-audit-accordion-section-bg: var(--#{$sds-prefix}-color-content-bg);
+  --#{$sds-prefix}-color-audit-accordion-border: var(--#{$sds-prefix}-color-drawer-border);
+  --#{$sds-prefix}-radius-audit-accordion-section: var(--#{$sds-prefix}-radius-xl);
+  --#{$sds-prefix}-space-audit-accordion-padding: calc(17 / 14 * var(--base-unit));
+  --#{$sds-prefix}-radius-audit-accordion-header: var(--#{$sds-prefix}-radius-audit-accordion-section);
+  --#{$sds-prefix}-radius-audit-accordion-content: var(--#{$sds-prefix}-radius-audit-accordion-section);
+  --#{$sds-prefix}-color-audit-accordion-header-text: var(--#{$sds-prefix}-color-text);
+  // Figma 544:6474 — 16px gap between header slot content and chevron toggle
+  --#{$sds-prefix}-space-audit-accordion-header-gap: var(--spacing-2);
+}

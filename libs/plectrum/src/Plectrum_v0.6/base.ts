@@ -546,7 +546,7 @@ export default {
             },
             mask: {
                 color: "{surface.200}",
-                background: "{transparant.black.50}"
+                background: "rgba(0,0,0,0.4)"
             },
             text: {
                 color: "{surface.900}",

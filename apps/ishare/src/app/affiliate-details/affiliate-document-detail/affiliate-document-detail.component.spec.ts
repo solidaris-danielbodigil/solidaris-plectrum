@@ -1,6 +1,10 @@
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import type { ListDocumentItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
+import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
+import { DocumentMoreDetailsDrawerComponent } from './document-more-details-drawer/document-more-details-drawer.component';
 
 const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
   {
@@ -30,88 +34,116 @@ function findButtonByLabel(
   ) as HTMLButtonElement | undefined;
 }
 
+@Component({
+  template: `
+    <app-affiliate-document-detail
+      [selectedDocumentId]="selectedDocumentId()"
+      [visibleDocuments]="visibleDocuments"
+      [focusTarget]="focusTarget()"
+      (moreDetailsOpen)="onMoreDetailsOpen($event)"
+    />
+    <app-document-more-details-drawer
+      [(visible)]="moreDetailsDrawerVisible"
+      [panel]="moreDetailsPanel()"
+    />
+  `,
+  imports: [AffiliateDocumentDetailComponent, DocumentMoreDetailsDrawerComponent],
+})
+class DocumentDetailDrawerTestHostComponent {
+  readonly selectedDocumentId = signal('doc-demande-primaire');
+  visibleDocuments: ListDocumentItem[] = VISIBLE_DOCUMENTS;
+  readonly focusTarget = signal<{ stepValue: number; panelId: string } | null>(
+    null,
+  );
+  readonly moreDetailsDrawerVisible = signal(false);
+  readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
+
+  onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
+    this.moreDetailsPanel.set(panel);
+    this.moreDetailsDrawerVisible.set(true);
+  }
+}
+
 describe('AffiliateDocumentDetailComponent', () => {
-  let fixture: ComponentFixture<AffiliateDocumentDetailComponent>;
+  let fixture: ComponentFixture<DocumentDetailDrawerTestHostComponent>;
+  let component: AffiliateDocumentDetailComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AffiliateDocumentDetailComponent],
+      imports: [DocumentDetailDrawerTestHostComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AffiliateDocumentDetailComponent);
-    fixture.componentRef.setInput('selectedDocumentId', 'doc-demande-primaire');
-    fixture.componentRef.setInput('visibleDocuments', VISIBLE_DOCUMENTS);
+    fixture = TestBed.createComponent(DocumentDetailDrawerTestHostComponent);
     fixture.detectChanges();
+    component = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance;
   });
 
   it('should create', () => {
-    expect(fixture.componentInstance).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   it('should apply BEM host class', () => {
-    const host = fixture.nativeElement as HTMLElement;
+    const host = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).nativeElement as HTMLElement;
 
     expect(host.classList.contains('c-affiliate-document-detail')).toBe(true);
   });
 
   it('should expose the selected document title from mock data', () => {
-    expect(fixture.componentInstance.documentTitle()).toBe(
+    expect(component.documentTitle()).toBe(
       'Demande Primaire - Régime général',
     );
   });
 
   it('should disable previous document navigation on the first visible document', () => {
-    expect(fixture.componentInstance.canGoToPreviousDocument()).toBe(false);
+    expect(component.canGoToPreviousDocument()).toBe(false);
   });
 
   it('should enable next document navigation when another document is visible', () => {
-    expect(fixture.componentInstance.canGoToNextDocument()).toBe(true);
+    expect(component.canGoToNextDocument()).toBe(true);
   });
 
   it('should disable next document navigation on the last visible document', () => {
-    fixture.componentRef.setInput('selectedDocumentId', 'doc-rechute');
+    fixture.componentInstance.selectedDocumentId.set('doc-rechute');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.canGoToNextDocument()).toBe(false);
+    expect(component.canGoToNextDocument()).toBe(false);
   });
 
   it('should emit selectedDocumentIdChange when navigating to the next document', () => {
-    const emitSpy = spyOn(
-      fixture.componentInstance.selectedDocumentIdChange,
-      'emit',
-    );
+    const emitSpy = spyOn(component.selectedDocumentIdChange, 'emit');
 
-    fixture.componentInstance.goToNextDocument();
+    component.goToNextDocument();
     fixture.detectChanges();
 
     expect(emitSpy).toHaveBeenCalledWith('doc-incapacite');
   });
 
   it('should emit selectedDocumentIdChange when navigating to the previous document', () => {
-    fixture.componentRef.setInput('selectedDocumentId', 'doc-incapacite');
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    const emitSpy = spyOn(
-      fixture.componentInstance.selectedDocumentIdChange,
-      'emit',
-    );
+    const emitSpy = spyOn(component.selectedDocumentIdChange, 'emit');
 
-    fixture.componentInstance.goToPreviousDocument();
+    component.goToPreviousDocument();
     fixture.detectChanges();
 
     expect(emitSpy).toHaveBeenCalledWith('doc-demande-primaire');
   });
 
   it('should disable both document nav directions when selected document is not in visibleDocuments', () => {
-    fixture.componentRef.setInput('selectedDocumentId', 'doc-rechute');
-    fixture.componentRef.setInput('visibleDocuments', [
+    fixture.componentInstance.selectedDocumentId.set('doc-rechute');
+    fixture.componentInstance.visibleDocuments = [
       VISIBLE_DOCUMENTS[0],
       VISIBLE_DOCUMENTS[1],
-    ]);
+    ];
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.canGoToPreviousDocument()).toBe(false);
-    expect(fixture.componentInstance.canGoToNextDocument()).toBe(false);
+    expect(component.canGoToPreviousDocument()).toBe(false);
+    expect(component.canGoToNextDocument()).toBe(false);
   });
 
   it('should expose aria-label on certificate action buttons', () => {
@@ -149,7 +181,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should render step 2 Feuilles de renseignement panels from mock data', () => {
-    fixture.componentInstance.goToNextStep();
+    component.goToNextStep();
     fixture.detectChanges();
 
     const content = fixture.nativeElement.textContent ?? '';
@@ -162,21 +194,28 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('06/01/2026');
   });
 
-  it('should render count tag on Compte financier - Liasse panel', () => {
-    fixture.componentInstance.activeStep.set(2);
-    fixture.componentInstance.certPanelValue.set('compte-financier-liasse');
+  it('should render comment tag on panels with a worker comment', () => {
+    component.activeStep.set(2);
+    component.certPanelValue.set('fdr-affilie-incapacite');
     fixture.detectChanges();
 
-    const countTag = fixture.nativeElement.querySelector(
-      '.c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    const fdrAffilieTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="fdr-affilie-incapacite"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
     );
+    expect(fdrAffilieTag?.textContent).toContain('1');
 
-    expect(countTag?.textContent).toContain('1');
+    component.certPanelValue.set('compte-financier-liasse');
+    fixture.detectChanges();
+
+    const liasseTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    );
+    expect(liasseTag?.textContent).toContain('1');
   });
 
   it('should render info worker comment on Compte financier - Liasse panel', () => {
-    fixture.componentInstance.activeStep.set(2);
-    fixture.componentInstance.certPanelValue.set('compte-financier-liasse');
+    component.activeStep.set(2);
+    component.certPanelValue.set('compte-financier-liasse');
     fixture.detectChanges();
 
     const workerComment = fixture.nativeElement.querySelector('p-message');
@@ -192,8 +231,8 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should render step 3 Calcul panel with warn message and En attente status', () => {
-    fixture.componentInstance.activeStep.set(3);
-    fixture.componentInstance.certPanelValue.set('calcul');
+    component.activeStep.set(3);
+    component.certPanelValue.set('calcul');
     fixture.detectChanges();
 
     const content = fixture.nativeElement.textContent ?? '';
@@ -251,7 +290,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should disable Etape précédente on the first step', () => {
-    expect(fixture.componentInstance.previousDisabled()).toBe(true);
+    expect(component.previousDisabled()).toBe(true);
 
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
@@ -262,10 +301,10 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should enable Etape précédente when not on the first step', () => {
-    fixture.componentInstance.activeStep.set(2);
+    component.activeStep.set(2);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.previousDisabled()).toBe(false);
+    expect(component.previousDisabled()).toBe(false);
 
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
@@ -276,10 +315,10 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should disable Etape suivante on the last step', () => {
-    fixture.componentInstance.activeStep.set(3);
+    component.activeStep.set(3);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.nextDisabled()).toBe(true);
+    expect(component.nextDisabled()).toBe(true);
 
     const nextStepButton = findButtonByLabel(
       fixture.nativeElement,
@@ -298,11 +337,11 @@ describe('AffiliateDocumentDetailComponent', () => {
     nextStepButton?.click();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.activeStep()).toBe(2);
+    expect(component.activeStep()).toBe(2);
   });
 
   it('should return to the previous step when Etape précédente is clicked', () => {
-    fixture.componentInstance.activeStep.set(2);
+    component.activeStep.set(2);
     fixture.detectChanges();
 
     const previousStepButton = findButtonByLabel(
@@ -313,24 +352,186 @@ describe('AffiliateDocumentDetailComponent', () => {
     previousStepButton?.click();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.activeStep()).toBe(1);
+    expect(component.activeStep()).toBe(1);
   });
 
   it('should jump to the focusTarget step and panel instead of resetting to defaults', () => {
-    fixture.componentRef.setInput('focusTarget', {
+    fixture.componentInstance.focusTarget.set({
       stepValue: 2,
       panelId: 'compte-financier-liasse',
     });
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.activeStep()).toBe(2);
-    expect(fixture.componentInstance.certPanelValue()).toBe(
+    expect(component.activeStep()).toBe(2);
+    expect(component.certPanelValue()).toBe(
       'compte-financier-liasse',
     );
   });
 
+  it('should open the more-details drawer with Certificat ITT timeline when Voir plus de details is clicked', async () => {
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('certificat-itt');
+
+    expect(document.body.querySelector('.p-drawer-mask.p-overlay-mask')).toBeTruthy();
+
+    const drawerTitle = document.body.querySelector(
+      '.c-document-more-details-drawer__title',
+    );
+    expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
+
+    expect(document.body.querySelector('.p-timeline')).toBeTruthy();
+    expect(
+      document.body.querySelectorAll(
+        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+      ).length,
+    ).toBe(3);
+
+    const tableHeaders = [
+      ...document.body.querySelectorAll(
+        '.c-document-more-details-drawer__table th',
+      ),
+    ].map((cell) => cell.textContent?.trim());
+
+    expect(tableHeaders).toEqual(
+      jasmine.arrayContaining(['Date', 'Description', 'Applications', 'Sources']),
+    );
+  });
+
+  it('should hide the more-details drawer when the close button is clicked', async () => {
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const closeButton = document.body.querySelector(
+      '.c-document-more-details-drawer__close-button',
+    ) as HTMLButtonElement | null;
+
+    closeButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
+  });
+
+  it('should show an empty state in the more-details drawer for panels without moreDetails', async () => {
+    component.goToNextStep();
+    fixture.detectChanges();
+
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
+    expect(
+      document.body.querySelector('.c-document-more-details-drawer__empty'),
+    ).toBeTruthy();
+    expect(document.body.textContent).toContain('Aucun historique disponible');
+    expect(document.body.querySelector('.p-timeline')).toBeFalsy();
+  });
+
+  it('should open the more-details drawer when Voir plus de details is clicked for Certificat ITT', async () => {
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('certificat-itt');
+
+    const drawerTitle = document.querySelector(
+      '.c-document-more-details-drawer__title',
+    );
+    expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
+
+    expect(document.querySelector('.p-timeline')).toBeTruthy();
+
+    const accordions = document.querySelectorAll(
+      '.c-document-more-details-drawer .c-audit-accordion',
+    );
+    expect(accordions.length).toBe(3);
+
+    const tableHeaders = [
+      ...document.querySelectorAll(
+        '.c-document-more-details-drawer__table th',
+      ),
+    ].map((header) => header.textContent?.trim());
+    expect(tableHeaders).toContain('Date');
+    expect(tableHeaders).toContain('Description');
+    expect(tableHeaders).toContain('Applications');
+    expect(tableHeaders).toContain('Sources');
+  });
+
+  it('should hide the more-details drawer when the close button is clicked', async () => {
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const closeButton = document.querySelector(
+      '.c-document-more-details-drawer__close-button',
+    ) as HTMLButtonElement | null;
+    closeButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
+  });
+
+  it('should show an empty state in the drawer for panels without moreDetails', async () => {
+    component.goToNextStep();
+    fixture.detectChanges();
+
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('fdr-employeur');
+    expect(document.querySelector('sds-empty-state')).toBeTruthy();
+    expect(document.querySelector('.p-timeline')).toBeFalsy();
+  });
+
   it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {
-    fixture.componentRef.setInput('focusTarget', {
+    fixture.componentInstance.focusTarget.set({
       stepValue: 2,
       panelId: 'compte-financier-liasse',
     });
@@ -343,7 +544,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       '[data-panel-id="compte-financier-liasse"]',
     ) as HTMLElement | null;
 
-    expect(fixture.componentInstance.highlightedPanelId()).toBe(
+    expect(component.highlightedPanelId()).toBe(
       'compte-financier-liasse',
     );
     expect(
@@ -355,7 +556,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     tick(2000);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.highlightedPanelId()).toBeNull();
+    expect(component.highlightedPanelId()).toBeNull();
     expect(
       panel?.classList.contains(
         'c-affiliate-document-detail__panel--highlighted',

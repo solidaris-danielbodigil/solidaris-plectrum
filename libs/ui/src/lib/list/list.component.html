@@ -219,19 +219,31 @@
   </div>
 }
 
-<p-popover #tagPopover [focusOnShow]="false" appendTo="body">
-  @let active = activeTag();
+<p-popover
+  #tagPopover
+  [focusOnShow]="false"
+  [style]="tagPopoverStyle()"
+  appendTo="body"
+  (onShow)="onTagPopoverShow()"
+  (onHide)="onTagPopoverHide()"
+>
+  @let active = activeTagContext();
   @if (active) {
-    <ul class="c-list__tag-targets o-flex o-flex--col o-layout--gap-1" role="list">
+    <ul
+      class="p-autocomplete-list c-list__tag-target-list"
+      role="listbox"
+      [attr.aria-label]="active.tag.ariaLabel"
+    >
       @for (target of active.tag.targets; track target.id) {
-        <li>
-          <button
-            type="button"
-            class="c-list__tag-target"
-            (click)="onTagTargetSelect($event, target)"
-          >
-            {{ target.label }}
-          </button>
+        <li
+          role="option"
+          class="p-autocomplete-option"
+          tabindex="0"
+          pRipple
+          (click)="onTagTargetSelect($event, target)"
+          (keydown)="onTagTargetKeydown($event, target)"
+        >
+          {{ target.label }}
         </li>
       }
     </ul>

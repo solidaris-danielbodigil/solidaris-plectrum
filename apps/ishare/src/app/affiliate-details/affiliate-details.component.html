@@ -205,6 +205,7 @@
           [visibleDocuments]="visibleDocuments()"
           [focusTarget]="documentFocus()"
           (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
+          (moreDetailsOpen)="onMoreDetailsOpen($event)"
         />
       </p-card>
     }
@@ -218,4 +219,9 @@
   (identifierCopy)="onDrawerIdentifierCopy($event)"
   (menuClick)="onDrawerMenuClick()"
   (quickActionsClick)="onDrawerQuickActionsClick()"
+/>
+
+<app-document-more-details-drawer
+  [(visible)]="moreDetailsDrawerVisible"
+  [panel]="moreDetailsPanel()"
 />
