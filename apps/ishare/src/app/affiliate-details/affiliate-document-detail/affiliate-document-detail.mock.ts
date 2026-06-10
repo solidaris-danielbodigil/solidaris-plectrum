@@ -123,11 +123,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '24/11/2025' },
+              { label: 'Date de réception', value: '27/01/26' },
               { label: 'Numéro de certificat', value: '25/1256332' },
               {
                 label: 'Période',
-                value: { from: '24/11/2025', to: '24/12/2025' },
+                value: { from: '27/01/26', to: '12/06/26' },
               },
             ],
             moreDetailsLabel: 'Voir plus de details',
@@ -161,7 +161,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'info',
-              text: 'Commentaire du gestionnaire : merci de fournir le certificat médical complémentaire.',
+              text: 'En attente du flux employeur - 10/06/2026 15:56',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -178,7 +178,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'info',
-              text: 'Commentaire du gestionnaire : la liasse comptable doit être complétée avec le bilan annuel.',
+              text: 'UOPV encodé en 9M à la réception - 10/06/2026 15:56',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -208,7 +208,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '24/11/2025' },
+              { label: 'Date de réception', value: '26/01/26' },
               { label: 'Numéro de certificat', value: '25/1256332' },
             ],
             moreDetailsLabel: 'Voir plus de details',

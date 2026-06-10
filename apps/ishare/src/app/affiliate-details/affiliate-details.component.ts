@@ -160,7 +160,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
     title: 'Parcours Indemnités -',
     titleAccent: 'Demande primaire',
     startDate: '24/11/2025',
-    endDate: '24/12/2025',
+    endDate: '27/12/25',
     expanded: true,
     documents: [
       {
@@ -168,9 +168,9 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
         title: 'Demande primaire -',
         titleLine2: 'Régime général',
         status: {
-          label: 'En traitement',
-          severity: 'warn',
-          icon: 'bi bi-hourglass-split',
+          label: 'En attente',
+          severity: 'info',
+          icon: 'bi bi-clock',
         },
       },
       {
@@ -206,9 +206,9 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
   {
     id: 'parcours-clotures',
     title: 'Parcours Indemnités -',
-    titleAccent: 'Documents clôturés',
+    titleAccent: 'Demande primaire',
     startDate: '01/06/2025',
-    endDate: '12/04/2026',
+    endDate: '12/06/26',
     expanded: false,
     documents: [
       {
@@ -216,27 +216,9 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
         title: 'Demande primaire -',
         titleLine2: 'Régime général',
         status: {
-          label: 'Clôturé',
-          severity: 'success',
-          icon: 'bi bi-check-lg',
-        },
-      },
-      {
-        id: 'doc-cloture-incapacite',
-        title: 'Incapacité',
-        status: {
-          label: 'Clôturé',
-          severity: 'success',
-          icon: 'bi bi-check-lg',
-        },
-      },
-      {
-        id: 'doc-cloture-indemnites',
-        title: 'Indemnités',
-        status: {
-          label: 'Clôturé',
-          severity: 'success',
-          icon: 'bi bi-check-lg',
+          label: 'En attente',
+          severity: 'info',
+          icon: 'bi bi-clock',
         },
       },
     ],
@@ -426,9 +408,10 @@ export class AffiliateDetailsComponent {
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
   readonly sectorOptions: SectorOption[] = [
-    { label: '319', value: '319' },
-    { label: '412', value: '412' },
-    { label: '507', value: '507' },
+    { label: 'indémnités', value: 'indemnites' },
+    { label: 'front-office', value: 'front-office' },
+    { label: 'médical', value: 'medical' },
+    { label: 'population', value: 'population' },
   ];
 
   readonly sortOptions: SortOption[] = [
