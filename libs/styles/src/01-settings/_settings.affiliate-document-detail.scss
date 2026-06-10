@@ -58,11 +58,11 @@
   --#{$sds-prefix}-color-affiliate-document-detail-step-footer-border: var(--#{$sds-prefix}-color-drawer-border);
   --#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start: var(--spacing-2);
 
-  // ── Deep-link panel highlight (transient) ───────────────────────────────────
-  // Bespoke flash applied when a list count tag deep-links to a panel comment.
-  --#{$sds-prefix}-color-affiliate-document-detail-panel-highlight-ring: var(--#{$sds-prefix}-color-focus);
-  --#{$sds-prefix}-shadow-affiliate-document-detail-panel-highlight: 0 0 0 var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-color-affiliate-document-detail-panel-highlight-ring);
-  --#{$sds-prefix}-transition-affiliate-document-detail-panel-highlight: box-shadow var(--#{$sds-prefix}-transition-duration) ease;
+  // ── Deep-link message pulse (transient) ─────────────────────────────────────
+  // Bespoke wave on worker-comment p-message when a list count tag deep-links.
+  // Severity color is set per .p-message-{severity} in the component layer.
+  --#{$sds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
+  --#{$sds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
 
   // ── Stepper spacing (bridge in _settings.stepper.scss) ─────────────────────
   // Figma: 16px step gap (step ↔ separator), 8px header gap (number ↔ title)

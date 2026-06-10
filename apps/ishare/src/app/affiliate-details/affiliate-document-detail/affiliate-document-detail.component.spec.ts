@@ -540,16 +540,16 @@ describe('AffiliateDocumentDetailComponent', () => {
     tick();
     fixture.detectChanges();
 
-    const panel = fixture.nativeElement.querySelector(
-      '[data-panel-id="compte-financier-liasse"]',
+    const message = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] p-message',
     ) as HTMLElement | null;
 
     expect(component.highlightedPanelId()).toBe(
       'compte-financier-liasse',
     );
     expect(
-      panel?.classList.contains(
-        'c-affiliate-document-detail__panel--highlighted',
+      message?.classList.contains(
+        'c-affiliate-document-detail__message--highlighted',
       ),
     ).toBe(true);
 
@@ -558,8 +558,8 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(component.highlightedPanelId()).toBeNull();
     expect(
-      panel?.classList.contains(
-        'c-affiliate-document-detail__panel--highlighted',
+      message?.classList.contains(
+        'c-affiliate-document-detail__message--highlighted',
       ),
     ).toBe(false);
   }));

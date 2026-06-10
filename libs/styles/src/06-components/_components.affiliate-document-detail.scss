@@ -119,12 +119,54 @@
   min-width: 0;
 }
 
-// ── Deep-link panel highlight (transient) ────────────────────────────────────
-// Bespoke flash toggled when a list count tag deep-links to a panel comment.
-// Not a PrimeNG restyle — a short-lived ring on the accordion panel wrapper.
-.c-affiliate-document-detail__panel--highlighted {
-  transition: var(--#{$sds-prefix}-transition-affiliate-document-detail-panel-highlight);
-  box-shadow: var(--#{$sds-prefix}-shadow-affiliate-document-detail-panel-highlight);
+// ── Deep-link message pulse (transient) ──────────────────────────────────────
+// Bespoke wave on worker-comment p-message when a list count tag deep-links.
+// Not a PrimeNG restyle — short-lived expanding ring on the message host only.
+@keyframes c-affiliate-document-detail-message-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--_pulse) 55%, transparent);
+  }
+
+  70% {
+    box-shadow: 0 0 0 var(--_spread)
+      color-mix(in srgb, var(--_pulse) 0%, transparent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--_pulse) 0%, transparent);
+  }
+}
+
+// Pulse runs on the PrimeNG root (.p-message) so the wave follows message corners.
+.c-affiliate-document-detail__message--highlighted:is(.p-message),
+.c-affiliate-document-detail__message--highlighted :where(.p-message) {
+  --_pulse: var(--#{$sds-prefix}-color-info);
+  --_spread: var(--#{$sds-prefix}-size-affiliate-document-detail-message-pulse-spread);
+  border-radius: var(--p-message-border-radius);
+  animation: c-affiliate-document-detail-message-pulse
+    var(--#{$sds-prefix}-duration-affiliate-document-detail-message-pulse) ease-out
+    3;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    box-shadow: 0 0 0 var(--_spread)
+      color-mix(in srgb, var(--_pulse) 45%, transparent);
+  }
+}
+
+.c-affiliate-document-detail__message--highlighted:is(.p-message-warn),
+.c-affiliate-document-detail__message--highlighted :where(.p-message-warn) {
+  --_pulse: var(--#{$sds-prefix}-color-warning);
+}
+
+.c-affiliate-document-detail__message--highlighted:is(.p-message-success),
+.c-affiliate-document-detail__message--highlighted :where(.p-message-success) {
+  --_pulse: var(--#{$sds-prefix}-color-success);
+}
+
+.c-affiliate-document-detail__message--highlighted:is(.p-message-error),
+.c-affiliate-document-detail__message--highlighted :where(.p-message-error) {
+  --_pulse: var(--#{$sds-prefix}-color-danger);
 }
 
 // ── Step footer ──────────────────────────────────────────────────────────────

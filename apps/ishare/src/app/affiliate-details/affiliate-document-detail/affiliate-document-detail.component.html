@@ -29,9 +29,6 @@
                     <p-accordion-panel
                       [value]="panel.id"
                       [attr.data-panel-id]="panel.id"
-                      [class.c-affiliate-document-detail__panel--highlighted]="
-                        highlightedPanelId() === panel.id
-                      "
                     >
                       <p-accordion-header>
                         <div
@@ -82,6 +79,9 @@
                         @if (panel.workerComment) {
                           <p-message
                             class="o-layout--margin-block-end-3"
+                            [class.c-affiliate-document-detail__message--highlighted]="
+                              highlightedPanelId() === panel.id
+                            "
                             [severity]="panel.workerComment.severity"
                             [text]="panel.workerComment.text"
                             [icon]="panel.workerComment.icon"
