@@ -1,12 +1,12 @@
 ---
 name: User testing scenarios
-overview: "A user-testing plan for the iSHARE app: 5 validated task scenarios grounded in the actual app (including legacy Transactions CICS), incapacity domain logic and operator-guide document taxonomy for mock data, additional use-case suggestions, and options for capturing behavioral data (clicks, timing, idle). Includes which scenarios are completable today versus blocked by placeholders."
+overview: "A user-testing plan for the iSHARE app: 4 validated task scenarios grounded in the actual app (including legacy Transactions CICS), incapacity domain logic and operator-guide document taxonomy for mock data, additional use-case suggestions, and options for capturing behavioral data (clicks, timing, idle). Includes which scenarios are completable today versus blocked by placeholders."
 todos:
   - id: decide-scope
     content: "Confirm deliverable scope: protocol doc only / + in-app data capture / capture only"
     status: pending
   - id: decide-placeholders
-    content: "Decide placeholder handling: test-as-is (reframe Scenario 2, drop/rewrite Scenario 4) / build missing flows / mock stubs"
+    content: "Decide placeholder handling: test-as-is (reframe Scenario 1, drop/rewrite Scenario 3) / build missing flows / mock stubs"
     status: pending
   - id: write-protocol
     content: "Write the moderated test script: intro, consent, tasks with success criteria, post-task questions, debrief"
@@ -92,8 +92,8 @@ Plus **Rechute - Régime général** (same structure as primaire) and **Rechute 
 | 2. Feuilles de renseignement | **F.D.R. employeur** ou chômage | Yes | Date réception, date du risque, statut, worker comment if incomplete |
 | | **F.D.R. affilié** | Yes | Idem; link to incapacité de travail variant |
 | | **Compte financier** | Yes | Idem; liasse variant |
-| | C4, déclarations d'accidents, questionnaires TI | Conditional | Appear as extra panels or **alerte** / worker comments when missing (Scenario 3 already uses C4 on Calcul) |
-| 3. Calcul | **CALC** | Yes — verification + indemnity amount | Date réception, statut (En attente / Accepté), worker comment for missing docs, indemnité outcome for Scenario 2 |
+| | C4, déclarations d'accidents, questionnaires TI | Conditional | Appear as extra panels or **alerte** / worker comments when missing (Scenario 2 already uses C4 on Calcul) |
+| 3. Calcul | **CALC** | Yes — verification + indemnity amount | Date réception, statut (En attente / Accepté), worker comment for missing docs, indemnité outcome for Scenario 1 |
 
 Already partially mocked in `doc-demande-primaire`: CIT, three F.D.R. panels, Calcul with C4 warn comment. Gaps: CIT **refus** variant, chômage F.D.R. variant, déclaration accident / questionnaire TI panels, explicit **délai de traitement** and **indemnité** fields.
 
@@ -110,7 +110,7 @@ Flux starts when any qualifying document is received. **Payments always sort chr
 | **Fiche 225** | F225 form | Date réception, statut |
 | **CIT** (prolongation cert.) | New/extended certificate | Same as primaire CIT panel |
 
-Currently `doc-incapacite` has **empty** stepper panels — this is the highest-priority mock fill for Scenario 2.
+Currently `doc-incapacite` has **empty** stepper panels — this is the highest-priority mock fill for Scenario 1.
 
 #### Rechute — same taxonomy, different parcours
 
@@ -122,7 +122,7 @@ Currently `doc-incapacite` has **empty** stepper panels — this is the highest-
 
 | Guide concept | Meaning | New app mapping | Mock idea |
 |---|---|---|---|
-| **Message d'alerte** | Document incomplete in IGED; action needed from affilié, employeur, or chômage | Worker comment (`severity: warn`) + deep-link count tag | Scenario 3 (C4 missing on Calcul); add alerte on F.D.R. panel for missing employeur doc |
+| **Message d'alerte** | Document incomplete in IGED; action needed from affilié, employeur, or chômage | Worker comment (`severity: warn`) + deep-link count tag | Scenario 2 (C4 missing on Calcul); add alerte on F.D.R. panel for missing employeur doc |
 | **Puce d'information** | Document linked by deduction — data unreliable or mis-filed | Info worker comment or info tag on list item | Add one panel with info comment: "document lié par déduction — vérifier le rangement" |
 | **Réidentification affilié** | Scan filed under wrong person | First audit event in timeline | Rare scenario; optional mock on a closed doc |
 | **Réidentification document** | Wrong barcode, correct affilié | First activity in detail timeline | e.g. "Reçu Gestion certificats ITT → Réidentifié → Reçu Gestion cartes de reprise" (guide p.17) |
@@ -133,36 +133,35 @@ Currently `doc-incapacite` has **empty** stepper panels — this is the highest-
 |---|---|
 | Nom titulaire (bleu) / personnes à charge (noir) | Drawer Famille list — titulaire vs dependents styling |
 | Composition du carnet mutualiste | Famille accordion entries |
-| Notes / alertes | Notes accordion (Scenario 1 — "Personne agressive") |
+| Notes / alertes | Notes accordion (sensitive notes, e.g. "Personne agressive") |
 
 ### Map guide content → current mock coverage
 
 | Guide area | In new mock today? | Priority for test data |
 |---|---|---|
 | Demande primaire CIT + F.D.R. + CALC | Partial (`doc-demande-primaire`) | Medium — add refus variant, délai traitement, indemnité status |
-| Demande incapacité ongoing docs | No (`doc-incapacite` empty) | **High** — Scenario 2 |
+| Demande incapacité ongoing docs | No (`doc-incapacite` empty) | **High** — Scenario 1 |
 | Rechute régime général + incapacité | No (`doc-rechute` empty, not split) | **High** |
-| Paiements (chronological top) | No | **High** for Scenario 2 |
-| Message d'alerte / incomplete | Partial (C4 on Calcul) | Medium — extend to F.D.R. |
+| Paiements (chronological top) | No | **High** for Scenario 1 |
+| Message d'alerte / incomplete | Partial (C4 on Calcul — Scenario 2) | Medium — extend to F.D.R. |
 | Puce d'information (deduction) | No | Low — good edge-case task |
 | Réidentification timeline | Partial (CERTIFICAT_ITT_MORE_DETAILS has generic audit) | Low |
-| IRIS / Transactions CICS actions | Buttons rendered, no handler | Scenario 5 |
+| IRIS / Transactions CICS actions | Buttons rendered, no handler | Scenario 4 |
 | Archived vs en cours (1-month rule) | Partial (`parcours-clotures` + archive toggle) | Medium |
 | Secteur / date / action filters | UI exists | Additional use-case #2 |
 
-## The 5 proposed scenarios - feasibility
+## The 4 proposed scenarios - feasibility
 
-- Scenario 1 - Aggressivity / "personne agressive": COMPLETABLE. Header "Voir carte affilie" -> drawer Notes -> sensitive note "Personne agressive" with "Informations sensibles" tag (eye icon, danger styling). Clean success path.
-- Scenario 2 - Dec 2025 incapacity, not yet paid: PARTIAL. Anchored in the **demande primaire** parcours: Certificat ITT period ends 24/12/2025; `doc-incapacite` exists in the list but has no detail content yet. Per the operator guide, unpaid indemnity should surface as a **paiement** panel at the top of the incapacité flux (chronological payments first). No payment/indemnité status UI today. The "why not paid" answer only exists as worker comments (e.g. missing C4 on Calcul — a conditional doc per guide), not an explicit payment state. Either reframe the task ("where would you look for the status of this incapacity?") or enrich mock data + add a payment/status indicator.
-- Scenario 3 - C4 in the workflows: COMPLETABLE as a discovery task. C4 is a conditional document in the F.D.R. step (guide: "pourra s'ajouter aux flux") — not a standalone document type. Mocked as a **message d'alerte** / warn worker comment on the Calcul step, reachable via the "1" warning count tag that deep-links to the panel ([mock L202-206](apps/ishare/src/app/affiliate-details/affiliate-document-detail/affiliate-document-detail.mock.ts)). Good "find the information" task.
-- Scenario 4 - Find child Jack's iShare dossier without affiliate search: NOT COMPLETABLE today. Jack Mota exists in the drawer Famille list (`enfant a charge`), but the family arrow button's `familyMemberSelect` output is not bound in the app, and all data is hard-coded to Eva Martinez, so there is no child dossier to navigate to. Requires building family-member navigation (real or mocked) before this can be tested.
-- Scenario 5 - Launch a CICS transaction from the dossier: NOT COMPLETABLE today. Legacy iShare exposes a header **Transactions CICS** button that opens a modal with a warning banner, a searchable transaction table (columns: Transaction / Description / Actions), and per-row external-link CTAs to open the transaction in CICS (see legacy screenshot in `assets/image-d7c6548b-a00c-4a0d-8bd1-51212dac2701.png`). The new app shows **Transactions CICS** as panel action buttons on document detail panels (Certificat ITT, F.D.R. panels, Calcul) but they have no click handler and no modal/drawer exists. Task idea: *"The affiliate asks about their ONVA vacation days — find and open the right CICS transaction."* Success = open modal, search (e.g. `UA38`), launch CICS CTA. Requires building the modal/drawer + wiring actions (header-level entry point optional but matches legacy mental model).
+- Scenario 1 - Dec 2025 incapacity, not yet paid: PARTIAL. Anchored in the **demande primaire** parcours: Certificat ITT period ends 24/12/2025; `doc-incapacite` exists in the list but has no detail content yet. Per the operator guide, unpaid indemnity should surface as a **paiement** panel at the top of the incapacité flux (chronological payments first). No payment/indemnité status UI today. The "why not paid" answer only exists as worker comments (e.g. missing C4 on Calcul — a conditional doc per guide), not an explicit payment state. Either reframe the task ("where would you look for the status of this incapacity?") or enrich mock data + add a payment/status indicator.
+- Scenario 2 - C4 in the workflows: COMPLETABLE as a discovery task. C4 is a conditional document in the F.D.R. step (guide: "pourra s'ajouter aux flux") — not a standalone document type. Mocked as a **message d'alerte** / warn worker comment on the Calcul step, reachable via the "1" warning count tag that deep-links to the panel ([mock L202-206](apps/ishare/src/app/affiliate-details/affiliate-document-detail/affiliate-document-detail.mock.ts)). Good "find the information" task.
+- Scenario 3 - Find child Jack's iShare dossier without affiliate search: NOT COMPLETABLE today. Jack Mota exists in the drawer Famille list (`enfant a charge`), but the family arrow button's `familyMemberSelect` output is not bound in the app, and all data is hard-coded to Eva Martinez, so there is no child dossier to navigate to. Requires building family-member navigation (real or mocked) before this can be tested.
+- Scenario 4 - Launch a CICS transaction from the dossier: NOT COMPLETABLE today. Legacy iShare exposes a header **Transactions CICS** button that opens a modal with a warning banner, a searchable transaction table (columns: Transaction / Description / Actions), and per-row external-link CTAs to open the transaction in CICS (see legacy screenshot in `assets/image-d7c6548b-a00c-4a0d-8bd1-51212dac2701.png`). The new app shows **Transactions CICS** as panel action buttons on document detail panels (Certificat ITT, F.D.R. panels, Calcul) but they have no click handler and no modal/drawer exists. Task idea: *"The affiliate asks about their ONVA vacation days — find and open the right CICS transaction."* Success = open modal, search (e.g. `UA38`), launch CICS CTA. Requires building the modal/drawer + wiring actions (header-level entry point optional but matches legacy mental model).
 
 ## Incapacity domain logic (mock data guide)
 
 Reference diagram: `assets/image-5ddebb37-1406-4045-8b1d-bf89d91e683e.png`
 
-The indemnities parcours follows a fixed lifecycle. Mock data for Eva Martinez should reflect these rules so scenarios (especially Scenario 2) tell a coherent story.
+The indemnities parcours follows a fixed lifecycle. Mock data for Eva Martinez should reflect these rules so scenarios (especially Scenario 1) tell a coherent story.
 
 ### Parcours structure
 
@@ -192,7 +191,7 @@ What exists today in `EVA_MARTINEZ_DOCUMENT_GROUPS` / `EVA_MARTINEZ_DOCUMENT_DET
 
 Aligned with the operator guide taxonomy (see section above):
 
-1. **Fill `doc-incapacite`** (demande primaire parcours): stepper panels for ongoing incapacity — **paiement** panel at top (not yet paid / en attente for Scenario 2), then prolongation or attestation VA, optional carte de reprise. Include date réception, date traitement, période, audit events per guide.
+1. **Fill `doc-incapacite`** (demande primaire parcours): stepper panels for ongoing incapacity — **paiement** panel at top (not yet paid / en attente for Scenario 1), then prolongation or attestation VA, optional carte de reprise. Include date réception, date traitement, période, audit events per guide.
 2. **Split rechute parcours** into `doc-rechute-regime-general` (CIT → F.D.R. employeur/affilié/compte financier → CALC, mirror primaire) + `doc-rechute-incapacite` (paiements + VA/prolongation). Dates respect the 14-day rechute rule.
 3. **Enrich `doc-demande-primaire`**: add `délai de traitement` field on detail header; one **refus CIT** example in closed parcours; optional chômage F.D.R. variant; explicit **indemnité** outcome on Calcul ("non versée — C4 manquant").
 4. **Operator signals**: one **alerte** on an F.D.R. panel (incomplete — action employeur); one **puce d'information** panel (lié par déduction); optional **réidentification** audit event on a secondary panel.
@@ -227,9 +226,8 @@ Metrics worth capturing per task:
 - Click/interaction count and the path of clicks (which sections they explored before finding the answer).
 - Misclicks / dead-ends: clicks on placeholders (Actions rapides, drawer menu, status button) signal where users expect functionality that is not there.
 - Idle / hesitation time on specific zones (e.g. time hovering the document list before first click) - signals confusion.
-- Drawer open/close and which accordion (Famille / Notes) they open first for Scenario 1.
 - Deep-link tag usage: did they discover the count tags, or scroll manually?
-- Transactions CICS (Scenario 5): modal open, search used, which transaction launched.
+- Transactions CICS (Scenario 4): modal open, search used, which transaction launched.
 
 Capture options (lightweight -> heavier):
 
@@ -242,7 +240,7 @@ Recommendation: B for quantitative signals if we want data, layered on top of A 
 ## Open decisions (asked, not yet answered)
 
 1. Deliverable scope: protocol document only, protocol + in-app data capture, or data capture only.
-2. Placeholder handling: test only what exists (rewrite/drop Scenario 4 + reframe Scenario 2, skip Scenario 5), build the missing flows (family navigation + payment status + Transactions CICS modal + enriched incapacity mock data) so all scenarios are completable, or add mock-only stubs just for testing.
+2. Placeholder handling: test only what exists (rewrite/drop Scenario 3 + reframe Scenario 1, skip Scenario 4), build the missing flows (family navigation + payment status + Transactions CICS modal + enriched incapacity mock data) so all scenarios are completable, or add mock-only stubs just for testing.
 
 ## Suggested next steps once decisions are made
 
