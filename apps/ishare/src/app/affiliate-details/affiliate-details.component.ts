@@ -160,7 +160,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
     title: 'Parcours Indemnités -',
     titleAccent: 'Demande primaire',
     startDate: '24/11/2025',
-    endDate: '27/12/25',
+    endDate: '27/12/2025',
     expanded: false,
     documents: [
       {
@@ -207,8 +207,8 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
     id: 'parcours-clotures',
     title: 'Parcours Indemnités -',
     titleAccent: 'Demande primaire',
-    startDate: '01/06/2025',
-    endDate: '12/06/26',
+    startDate: '20/01/2026',
+    endDate: '12/06/2026',
     expanded: false,
     documents: [
       {
@@ -443,8 +443,11 @@ export class AffiliateDetailsComponent {
 
   readonly expandedGroupIds = signal<string[]>([]);
 
+  /** Ensures the first journey group is expanded only once on initial load. */
+  private defaultJourneyExpansionApplied = false;
+
   /** `false` = newest start date first; `true` = oldest start date first. */
-  readonly startDateSortAscending = signal(false);
+  readonly startDateSortAscending = signal(true);
 
   readonly startDateSortIcon = computed(() =>
     this.startDateSortAscending() ? 'bi bi-sort-up' : 'bi bi-sort-down',
@@ -779,6 +782,35 @@ export class AffiliateDetailsComponent {
       if (missing.length > 0) {
         this.expandedGroupIds.set([...current, ...missing]);
       }
+    });
+
+    effect(() => {
+      if (this.defaultJourneyExpansionApplied || !this.journeyView) {
+        return;
+      }
+
+      // List-shaping signals — re-run when filters/sort change before first expand.
+      this.startDateSortAscending();
+      this.archivedOnly();
+      this.documentInfoFilter();
+      this.documentSearch();
+      this.selectedSort();
+
+      const groups = this.listGroups;
+      if (!groups?.length) {
+        return;
+      }
+
+      const firstGroup = groups[0];
+      this.expandedGroupIds.set([firstGroup.id]);
+
+      const firstDocument = firstGroup.documents[0];
+      if (firstDocument) {
+        this.documentFocus.set(null);
+        this.selectedDocumentId.set(firstDocument.id);
+      }
+
+      this.defaultJourneyExpansionApplied = true;
     });
 
     effect(() => {

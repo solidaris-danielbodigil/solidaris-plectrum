@@ -73,7 +73,7 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
       markerTone: 'success',
       rows: [
         {
-          date: '2023-07-24 14:30:00',
+          date: '27/11/2025 14:30:00',
           description: {
             kind: 'tag',
             label: 'Accepté - Auto',
@@ -88,8 +88,8 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
 };
 
 const FDR_PANEL_DETAILS = [
-  { label: 'Date de réception', value: '26/01/2026' },
-  { label: 'Date du risque', value: '06/01/2026' },
+  { label: 'Date de réception', value: '05/12/2025' },
+  { label: 'Date du risque', value: '24/11/2025' },
 ];
 
 const FDR_PANEL_ACTIONS = [
@@ -123,11 +123,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '27/01/26' },
+              { label: 'Date de réception', value: '24/11/2025' },
               { label: 'Numéro de certificat', value: '25/1256332' },
               {
                 label: 'Période',
-                value: { from: '27/01/26', to: '12/06/26' },
+                value: { from: '24/11/2025', to: '27/12/2025' },
               },
             ],
             moreDetailsLabel: 'Voir plus de details',
@@ -161,7 +161,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'info',
-              text: 'En attente du flux employeur - 10/06/2026 15:56',
+              text: 'En attente du flux employeur - 10/12/2025 15:56',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -178,7 +178,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'info',
-              text: 'UOPV encodé en 9M à la réception - 10/06/2026 15:56',
+              text: 'UOPV encodé en 9M à la réception - 10/12/2025 15:56',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -201,14 +201,14 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'warn',
-              text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité. - 10/06/2026 15:56",
+              text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité. - 15/12/2025 15:56",
               icon: COMMENT_ICONS.warn,
             },
             actions: [
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '26/01/26' },
+              { label: 'Date de réception', value: '10/12/2025' },
               { label: 'Numéro de certificat', value: '25/1256332' },
             ],
             moreDetailsLabel: 'Voir plus de details',
@@ -232,9 +232,102 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     title: 'Rechute',
     activeStep: 1,
     steps: [
-      { value: 1, label: 'Certificat médical', panels: [] },
+      {
+        value: 1,
+        label: 'Certificat médical',
+        panels: [
+          {
+            id: 'certificat-rechute',
+            title: 'Certificat ITT',
+            status: {
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
+            },
+            actions: [],
+            details: [
+              { label: 'Date de réception', value: '02/01/2026' },
+              {
+                label: 'Période',
+                value: { from: '01/01/2026', to: '15/01/2026' },
+              },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+          },
+        ],
+      },
       { value: 2, label: 'Feuilles de renseignement', panels: [] },
       { value: 3, label: 'Calcul', panels: [] },
+    ],
+  },
+  'doc-cloture-primaire': {
+    documentId: 'doc-cloture-primaire',
+    title: 'Demande Primaire - Régime général',
+    activeStep: 3,
+    steps: [
+      {
+        value: 1,
+        label: 'Certificat médical',
+        panels: [
+          {
+            id: 'certificat-cloture',
+            title: 'Certificat ITT',
+            status: {
+              label: 'Clôturé',
+              severity: 'secondary',
+              icon: 'bi bi-clock-history',
+            },
+            actions: [],
+            details: [
+              { label: 'Date de réception', value: '20/01/2026' },
+              {
+                label: 'Période',
+                value: { from: '20/01/2026', to: '12/06/2026' },
+              },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+          },
+        ],
+      },
+      {
+        value: 2,
+        label: 'Feuilles de renseignement',
+        panels: [
+          {
+            id: 'fdr-cloture',
+            title: 'F.D.R. employeur',
+            status: {
+              label: 'Clôturé',
+              severity: 'secondary',
+              icon: 'bi bi-clock-history',
+            },
+            actions: FDR_PANEL_ACTIONS,
+            details: [
+              { label: 'Date de réception', value: '28/01/2026' },
+              { label: 'Date du risque', value: '20/01/2026' },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+          },
+        ],
+      },
+      {
+        value: 3,
+        label: 'Calcul',
+        panels: [
+          {
+            id: 'calcul-cloture',
+            title: 'Calcul',
+            status: {
+              label: 'Clôturé',
+              severity: 'secondary',
+              icon: 'bi bi-clock-history',
+            },
+            actions: [],
+            details: [{ label: 'Date de clôture', value: '12/06/2026' }],
+            moreDetailsLabel: 'Voir plus de details',
+          },
+        ],
+      },
     ],
   },
 };

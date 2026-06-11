@@ -74,7 +74,8 @@ describe('AffiliateDetailsComponent', () => {
       label: 'indémnités',
       value: 'indemnites',
     });
-    expect(component.selectedDocumentId()).toBeNull();
+    expect(component.expandedGroupIds()).toEqual(['parcours-demande-primaire']);
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
     expect(component.selectedSort()).toEqual({
       label: 'Actions en cours',
       value: 'actions-en-cours',
@@ -256,7 +257,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.infoTags).toEqual([
       jasmine.objectContaining({
         label: 'Dernière action:',
-        value: 'Document reçu 15/01/2026',
+        value: 'Document reçu 12/06/2026',
         filterKey: 'last-action',
       }),
       jasmine.objectContaining({
@@ -417,8 +418,8 @@ describe('AffiliateDetailsComponent', () => {
     const documentsColumn = fixture.nativeElement.querySelector(
       '.c-affiliate-details__columns .c-affiliate-details__documents',
     );
-    const detailEmptyState = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__detail sds-empty-state',
+    const detailPanel = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__detail app-affiliate-document-detail',
     );
 
     expect(shell).toBeTruthy();
@@ -427,7 +428,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(
       documentsColumn?.querySelector('sds-list, sds-empty-state'),
     ).toBeTruthy();
-    expect(detailEmptyState).toBeTruthy();
+    expect(detailPanel).toBeTruthy();
   });
 
   it('should render a text secondary sort button in the documents card header', () => {
@@ -438,9 +439,9 @@ describe('AffiliateDetailsComponent', () => {
     expect(sortButton).toBeTruthy();
     expect(sortButton.classList.contains('p-button-secondary')).toBe(true);
     expect(sortButton.getAttribute('aria-label')).toBe(
-      'Trier du plus récent au plus ancien',
+      'Trier du plus ancien au plus récent',
     );
-    expect(sortButton.querySelector('.bi-sort-down')).toBeTruthy();
+    expect(sortButton.querySelector('.bi-sort-up')).toBeTruthy();
   });
 
   it('should toggle journey group order by start date when the sort button is clicked', () => {
@@ -454,12 +455,12 @@ describe('AffiliateDetailsComponent', () => {
 
     const toggledGroupIds = (component.listGroups ?? []).map((group) => group.id);
 
-    expect(component.startDateSortAscending()).toBe(true);
+    expect(component.startDateSortAscending()).toBe(false);
     expect(toggledGroupIds).not.toEqual(initialGroupIds);
     expect(sortButton.getAttribute('aria-label')).toBe(
-      'Trier du plus ancien au plus récent',
+      'Trier du plus récent au plus ancien',
     );
-    expect(sortButton.querySelector('.bi-sort-up')).toBeTruthy();
+    expect(sortButton.querySelector('.bi-sort-down')).toBeTruthy();
   });
 
   it('should select the first document when a journey group is expanded', () => {
@@ -471,9 +472,9 @@ describe('AffiliateDetailsComponent', () => {
     ).toBeTruthy();
   });
 
-  it('should expose four visible documents sorted by newest start date by default', () => {
+  it('should expose four visible documents sorted by oldest start date by default', () => {
     expect(component.visibleDocuments().length).toBe(4);
-    expect(component.visibleDocuments()[0].id).toBe('doc-rechute');
+    expect(component.visibleDocuments()[0].id).toBe('doc-demande-primaire');
   });
 
   it('should filter documents when an info tag filter is applied', () => {

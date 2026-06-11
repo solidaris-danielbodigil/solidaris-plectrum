@@ -191,7 +191,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('Compte financier - Liasse');
     expect(content).toContain('Clôturé');
     expect(content).toContain('Date du risque');
-    expect(content).toContain('06/01/2026');
+    expect(content).toContain('24/11/2025');
   });
 
   it('should render comment tag on panels with a worker comment', () => {
@@ -218,10 +218,14 @@ describe('AffiliateDocumentDetailComponent', () => {
     component.certPanelValue.set('compte-financier-liasse');
     fixture.detectChanges();
 
-    const workerComment = fixture.nativeElement.querySelector('p-message');
+    const workerComment = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] p-message',
+    );
 
     expect(workerComment).toBeTruthy();
-    expect(workerComment?.textContent).toContain('Commentaire du gestionnaire');
+    expect(workerComment?.textContent).toContain(
+      'UOPV encodé en 9M à la réception - 10/12/2025 15:56',
+    );
     expect(workerComment?.classList.contains('p-message-info')).toBe(true);
     expect(
       workerComment

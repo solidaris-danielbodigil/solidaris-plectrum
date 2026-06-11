@@ -58,6 +58,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-inline: var(--#{$sds-prefix}-space-document-more-details-drawer-padding-inline);
+  padding-block-start: var(--#{$sds-prefix}-space-document-more-details-drawer-body-padding-block-start);
   padding-block-end: var(--#{$sds-prefix}-space-document-more-details-drawer-body-padding-block-end);
   row-gap: var(--#{$sds-prefix}-space-document-more-details-drawer-content-gap);
 }
@@ -90,6 +91,7 @@
   --p-timeline-event-connector-color: var(--#{$sds-prefix}-color-document-more-details-drawer-border);
   --p-timeline-event-marker-border-color: transparent;
   --p-timeline-event-marker-background: transparent;
+  --p-timeline-vertical-event-content-padding: 0;
   gap: var(--#{$sds-prefix}-space-document-more-details-drawer-content-gap);
 
   // PrimeNG always renders an opposite column (flex: 1) even without #opposite.
