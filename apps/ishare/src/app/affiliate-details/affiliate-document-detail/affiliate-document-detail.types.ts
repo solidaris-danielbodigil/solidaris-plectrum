@@ -76,6 +76,14 @@ export interface DocumentMoreDetails {
   events: DocumentTimelineEvent[];
 }
 
+/** Deep-link to another document panel (e.g. incapacité → primaire Calcul). */
+export interface DocumentCrossReference {
+  label: string;
+  documentId: string;
+  stepValue: number;
+  panelId: string;
+}
+
 export interface DocumentCertificatPanel {
   id: string;
   title: string;
@@ -89,6 +97,7 @@ export interface DocumentCertificatPanel {
     text: string;
     icon?: string;
   };
+  crossReference?: DocumentCrossReference;
   actions: DocumentCertificatAction[];
   details: DocumentDetailField[];
   moreDetailsLabel: string;
@@ -114,6 +123,12 @@ export interface AffiliateDocumentDetail {
    * that render a single accordion panel without stepper chrome.
    */
   layout?: AffiliateDocumentDetailLayout;
+  /** Optional banner above panel content (e.g. hors-parcours C4). */
+  banner?: {
+    severity: DocumentCertificatPanelStatusSeverity;
+    text: string;
+    icon?: string;
+  };
   steps: DocumentStep[];
 }
 

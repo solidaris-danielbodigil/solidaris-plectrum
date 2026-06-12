@@ -1,7 +1,10 @@
 // Eva Martinez demo document detail data — Figma iSHARE-Audit node 324:5860.
 // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
 
-import { isEvaMartinezAffiliate } from '../affiliate-mock.constants';
+import {
+  isEvaMartinezAffiliate,
+  JACK_MOTA_NISS,
+} from '../affiliate-mock.constants';
 import type {
   AffiliateDocumentDetail,
   DocumentMoreDetails,
@@ -413,6 +416,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     documentId: 'doc-incapacite',
     title: 'Incapacité',
     activeStep: 1,
+    stepNumbered: false,
     steps: [
       {
         value: 1,
@@ -425,6 +429,17 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               label: 'En attente',
               severity: 'info',
               icon: 'bi bi-clock',
+            },
+            workerComment: {
+              severity: 'warn',
+              text: 'Pas de paiement reçu pour le moment - 28/12/2025 09:00',
+              icon: COMMENT_ICONS.warn,
+            },
+            crossReference: {
+              label: 'Calcul primaire bloqué — C4 manquant',
+              documentId: 'doc-demande-primaire',
+              stepValue: 3,
+              panelId: 'calcul',
             },
             actions: [],
             details: [
@@ -617,6 +632,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     title: 'Attestation C4',
     activeStep: 1,
     layout: 'standalone',
+    banner: {
+      severity: 'warn',
+      text: 'Document reçu mais non rattaché au parcours',
+      icon: COMMENT_ICONS.warn,
+    },
     steps: [
       {
         value: 1,
@@ -745,10 +765,45 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
   },
 };
 
+export const JACK_MOTA_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDetail> =
+  {
+    'doc-jack-certificat': {
+      documentId: 'doc-jack-certificat',
+      title: 'Certificat médical',
+      activeStep: 1,
+      steps: [
+        {
+          value: 1,
+          label: 'Certificat',
+          panels: [
+            {
+              id: 'certificat-jack',
+              title: 'Certificat médical',
+              status: {
+                label: 'En traitement',
+                severity: 'warn',
+                icon: 'bi bi-hourglass-split',
+              },
+              actions: [],
+              details: [{ label: 'Date de réception', value: '01/03/2026' }],
+              moreDetailsLabel: 'Voir plus de details',
+            },
+          ],
+        },
+      ],
+    },
+  };
+
 export function getDocumentDetailsForAffiliate(
   affiliateRouteId: string,
 ): Record<string, AffiliateDocumentDetail> {
-  return isEvaMartinezAffiliate(affiliateRouteId)
-    ? EVA_MARTINEZ_DOCUMENT_DETAILS
-    : {};
+  if (isEvaMartinezAffiliate(affiliateRouteId)) {
+    return EVA_MARTINEZ_DOCUMENT_DETAILS;
+  }
+
+  if (affiliateRouteId === JACK_MOTA_NISS) {
+    return JACK_MOTA_DOCUMENT_DETAILS;
+  }
+
+  return {};
 }

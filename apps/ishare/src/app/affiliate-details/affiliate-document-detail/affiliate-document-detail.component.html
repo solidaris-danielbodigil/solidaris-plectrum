@@ -16,7 +16,7 @@
 
             certPanelsAccordion;
 
-            context: { panels: standalonePanels() }
+            context: { panels: standalonePanels(), banner: detail.banner }
 
           "
 
@@ -138,7 +138,7 @@
 
 
 
-<ng-template #certPanelsAccordion let-panels="panels">
+<ng-template #certPanelsAccordion let-panels="panels" let-banner="banner">
 
   <p-accordion
 
@@ -156,7 +156,7 @@
 
   >
 
-    @for (panel of panels; track panel.id) {
+    @for (panel of panels; track panel.id; let isFirst = $first) {
 
       <p-accordion-panel
 
@@ -222,6 +222,10 @@
 
                 class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
 
+                (click)="$event.stopPropagation()"
+
+                (mousedown)="$event.stopPropagation()"
+
               >
 
                 @for (action of panel.actions; track action.label) {
@@ -260,6 +264,15 @@
 
         <p-accordion-content>
 
+          @if (banner && isFirst) {
+            <p-message
+              class="c-affiliate-document-detail__banner o-layout--margin-block-end-3"
+              [severity]="banner.severity"
+              [text]="banner.text"
+              [icon]="banner.icon"
+            />
+          }
+
           @if (panel.workerComment) {
 
             <p-message
@@ -280,6 +293,19 @@
 
             />
 
+          }
+
+          @if (panel.crossReference; as reference) {
+            <button
+              pButton
+              type="button"
+              class="c-affiliate-document-detail__cross-reference o-layout--margin-block-end-3"
+              severity="secondary"
+              size="small"
+              icon="bi bi-link-45deg"
+              [label]="reference.label"
+              (click)="onCrossReferenceClick(reference)"
+            ></button>
           }
 
           <h3 class="c-affiliate-document-detail__details-heading">

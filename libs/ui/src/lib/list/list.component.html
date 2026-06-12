@@ -210,6 +210,16 @@
         }
       </ng-template>
     </p-tree>
+
+    @if (footnote()) {
+      <button
+        type="button"
+        class="c-list__footnote"
+        (click)="footnoteClick.emit()"
+      >
+        {{ footnote() }}
+      </button>
+    }
   </div>
 }
 

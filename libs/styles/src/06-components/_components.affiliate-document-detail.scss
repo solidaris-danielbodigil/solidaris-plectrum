@@ -127,7 +127,7 @@
 
 // ── Deep-link message pulse (transient) ──────────────────────────────────────
 // Bespoke wave on worker-comment p-message when a list count tag deep-links.
-// Not a PrimeNG restyle — short-lived expanding ring on the message host only.
+// Not a PrimeNG restyle — short-lived expanding ring on the message.
 @keyframes c-affiliate-document-detail-message-pulse {
   0% {
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--_pulse) 55%, transparent);
@@ -143,20 +143,38 @@
   }
 }
 
-// Pulse runs on the PrimeNG root (.p-message) so the wave follows message corners.
+// The pulse must NOT set `animation` on the `.p-message` element itself: PrimeNG
+// drives the message enter/leave with Angular's native animations API
+// (`animate.enter="p-message-enter-active"`), and `.p-message-enter-active` sets
+// its own `animation` on the same element. A pulse `animation` on `.p-message`
+// has higher specificity and suppresses the enter keyframe while highlighted;
+// when the highlight clears, the enter `animation` reverts and re-plays — a
+// spurious second "refresh" of the message. Running the pulse on a positioned
+// `::after` overlay keeps the wave on the message corners without ever touching
+// the host's `animation`, so the enter animation runs once and is cleaned up.
 .c-affiliate-document-detail__message--highlighted:is(.p-message),
 .c-affiliate-document-detail__message--highlighted :where(.p-message) {
   --_pulse: var(--#{$sds-prefix}-color-info);
   --_spread: var(--#{$sds-prefix}-size-affiliate-document-detail-message-pulse-spread);
-  border-radius: var(--p-message-border-radius);
-  animation: c-affiliate-document-detail-message-pulse
-    var(--#{$sds-prefix}-duration-affiliate-document-detail-message-pulse) ease-out
-    3;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--p-message-border-radius);
+    pointer-events: none;
+    animation: c-affiliate-document-detail-message-pulse
+      var(--#{$sds-prefix}-duration-affiliate-document-detail-message-pulse)
+      ease-out 3;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    animation: none;
-    box-shadow: 0 0 0 var(--_spread)
-      color-mix(in srgb, var(--_pulse) 45%, transparent);
+    &::after {
+      animation: none;
+      box-shadow: 0 0 0 var(--_spread)
+        color-mix(in srgb, var(--_pulse) 45%, transparent);
+    }
   }
 }
 

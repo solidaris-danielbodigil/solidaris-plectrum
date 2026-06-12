@@ -47,12 +47,7 @@ export class AppShellComponent {
   }
 
   onStatusActionClick(header: AffiliateHeaderData): void {
-    // PLACEHOLDER — status workflow is wired in a later iteration.
-    this.messageService.add({
-      severity: 'warn',
-      summary: header.statusAction?.label ?? 'Action',
-      detail: 'Action disponible prochainement.',
-    });
+    header.onStatusActionClick?.();
   }
 
   onInfoTagClick(header: AffiliateHeaderData, tag: AffiliateOverviewInfoTag): void {

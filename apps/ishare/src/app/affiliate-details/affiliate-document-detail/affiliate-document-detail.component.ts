@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';
 import { StepperModule } from 'primeng/stepper';
+import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import type { ListDocumentItem } from '@solidaris/ui';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
@@ -24,6 +25,7 @@ import {
   isDocumentDetailPeriod,
   type DocumentCertificatAction,
   type DocumentCertificatPanel,
+  type DocumentCrossReference,
   type DocumentDetailField,
 } from './affiliate-document-detail.types';
 
@@ -63,6 +65,7 @@ export class AffiliateDocumentDetailComponent {
   private static readonly HIGHLIGHT_DURATION_MS = 2000;
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly messageService = inject(MessageService);
 
   /**
    * Header comment-count tag severity, aligned with the document list rows:
@@ -74,7 +77,7 @@ export class AffiliateDocumentDetailComponent {
 
   readonly selectedDocumentId = input.required<string>();
   readonly affiliateRouteId = input('');
-  readonly visibleDocuments = input.required<ListDocumentItem[]>();
+  readonly navigableDocuments = input.required<ListDocumentItem[]>();
 
   /**
    * Programmatic deep-link target. When set, the document-change effect jumps to
@@ -91,6 +94,8 @@ export class AffiliateDocumentDetailComponent {
   readonly moreDetailsOpen = output<DocumentCertificatPanel>();
 
   readonly transactionsCicsOpen = output<void>();
+
+  readonly crossReferenceNavigate = output<DocumentCrossReference>();
 
   readonly activeStep = signal(1);
   readonly certPanelValue = signal<string | string[] | undefined>(
@@ -134,7 +139,7 @@ export class AffiliateDocumentDetailComponent {
   });
 
   readonly selectedDocumentIndex = computed(() =>
-    this.visibleDocuments().findIndex(
+    this.navigableDocuments().findIndex(
       (document) => document.id === this.selectedDocumentId(),
     ),
   );
@@ -145,7 +150,7 @@ export class AffiliateDocumentDetailComponent {
 
   readonly canGoToNextDocument = computed(() => {
     const index = this.selectedDocumentIndex();
-    return index >= 0 && index < this.visibleDocuments().length - 1;
+    return index >= 0 && index < this.navigableDocuments().length - 1;
   });
 
   readonly activeStepIndex = computed(() => {
@@ -201,7 +206,20 @@ export class AffiliateDocumentDetailComponent {
   onPanelActionClick(action: DocumentCertificatAction): void {
     if (action.label === 'Transactions CICS') {
       this.transactionsCicsOpen.emit();
+      return;
     }
+
+    if (action.label === 'Iris') {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Iris',
+        detail: "Ouverture d'Iris…",
+      });
+    }
+  }
+
+  onCrossReferenceClick(reference: DocumentCrossReference): void {
+    this.crossReferenceNavigate.emit(reference);
   }
 
   goToPreviousDocument(): void {
@@ -211,13 +229,13 @@ export class AffiliateDocumentDetailComponent {
     }
 
     this.selectedDocumentIdChange.emit(
-      this.visibleDocuments()[index - 1].id,
+      this.navigableDocuments()[index - 1].id,
     );
   }
 
   goToNextDocument(): void {
     const index = this.selectedDocumentIndex();
-    const documents = this.visibleDocuments();
+    const documents = this.navigableDocuments();
     if (index < 0 || index >= documents.length - 1) {
       return;
     }

@@ -61,8 +61,11 @@ export class ListComponent {
   readonly showHeader = input(true);
   readonly expandedGroupIds = input<string[]>([]);
   readonly selectedItemId = input<string | null>(null);
+  /** Optional footnote rendered below the tree (e.g. hors-parcours hint). */
+  readonly footnote = input<string | null>(null);
 
   readonly expandedGroupIdsChange = output<string[]>();
+  readonly footnoteClick = output<void>();
   readonly itemClick = output<ListItem>();
   readonly tagTargetClick = output<{
     doc: ListDocumentItem;

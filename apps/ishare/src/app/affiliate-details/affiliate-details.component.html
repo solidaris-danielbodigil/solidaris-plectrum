@@ -44,7 +44,8 @@
             <p-autocomplete
               inputId="document-sector"
               name="documentSector"
-              [(ngModel)]="selectedSector"
+              [ngModel]="selectedSector()"
+              (ngModelChange)="onSectorChange($event)"
               [suggestions]="sectorSuggestions"
               (completeMethod)="filterSectors($event)"
               optionLabel="label"
@@ -65,7 +66,7 @@
               inputId="document-sort"
               name="documentSort"
               [ngModel]="selectedSort()"
-              (ngModelChange)="selectedSort.set($event)"
+              (ngModelChange)="onSortChange($event)"
               [suggestions]="sortSuggestions"
               (completeMethod)="filterSortOptions($event)"
               optionLabel="label"
@@ -87,7 +88,10 @@
             <p-toggleswitch
               inputId="journey-view"
               name="journeyView"
-              [(ngModel)]="journeyView"
+              [ngModel]="journeyView()"
+              (ngModelChange)="onJourneyViewChange($event)"
+              [pTooltip]="journeyViewTooltip()"
+              tooltipPosition="bottom"
             />
           </sds-form-field>
         </div>
@@ -127,8 +131,21 @@
             </h2>
             <span
               class="c-affiliate-details__documents-count o-flex o-flex--align-items-center o-flex--justify-content-center"
-              >{{ documentCount }}</span
+              >{{ documentCount() }}</span
             >
+            @if (showHorsParcoursChip()) {
+              <button
+                pButton
+                type="button"
+                class="c-affiliate-details__hors-parcours-chip"
+                severity="warn"
+                size="small"
+                [outlined]="true"
+                icon="bi bi-exclamation-triangle-fill"
+                [label]="horsParcoursChipLabel()"
+                (click)="disableJourneyView()"
+              ></button>
+            }
           </div>
           <button
             pButton
@@ -143,12 +160,12 @@
         </div>
       </ng-template>
 
-      @if (hasListResults) {
+      @if (hasListResults()) {
         <sds-list
           class="o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
           [showHeader]="false"
-          [groups]="listGroups"
-          [items]="listItems"
+          [groups]="listGroups()"
+          [items]="listItems()"
           [expandedGroupIds]="expandedGroupIds()"
           [selectedItemId]="selectedDocumentId()"
           (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
@@ -158,8 +175,8 @@
       } @else {
         <sds-empty-state
           class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
-          title="Aucun document trouvé"
-          description="Aucun document ne correspond aux filtres sélectionnés."
+          [title]="emptyListTitle()"
+          [description]="emptyListDescription()"
         />
       }
     </p-card>
@@ -214,11 +231,12 @@
             class="o-layout--full-width o-layout--min-w-0"
             [selectedDocumentId]="documentId"
             [affiliateRouteId]="affiliateId()"
-            [visibleDocuments]="visibleDocuments()"
+            [navigableDocuments]="navigableDocuments()"
             [focusTarget]="documentFocus()"
             (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
             (moreDetailsOpen)="onMoreDetailsOpen($event)"
             (transactionsCicsOpen)="onTransactionsCicsOpen()"
+            (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
           />
         } @else {
           <sds-empty-state

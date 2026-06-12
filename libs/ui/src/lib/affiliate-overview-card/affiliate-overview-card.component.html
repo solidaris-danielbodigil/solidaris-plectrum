@@ -39,18 +39,20 @@
             <h2 [id]="titleId" class="c-affiliate-overview-card__title">{{ title() }}</h2>
 
             @if (showStatusAction() && statusAction(); as action) {
-              <p-splitButton
+              <button
+                pButton
+                type="button"
                 class="c-affiliate-overview-card__status-action"
                 [label]="action.label"
                 [icon]="action.icon"
-                [model]="statusActionMenuItems()"
                 [severity]="statusActionSeverity()!"
-                [expandAriaLabel]="statusActionExpandAriaLabel()"
                 size="small"
                 [outlined]="true"
-                (onClick)="onStatusActionClick()"
-                (onMenuItemClick)="onStatusMenuItemClick($event.item)"
-              />
+                [disabled]="action.disabled ?? false"
+                [attr.aria-disabled]="action.disabled ? 'true' : null"
+                [attr.aria-label]="statusActionAriaLabel()"
+                (click)="onStatusActionClick()"
+              ></button>
             }
 
             @if (infoTags().length > 0) {

@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
+import type { DocumentCrossReference } from './affiliate-document-detail.types';
 import type { ListDocumentItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
@@ -40,7 +41,7 @@ function findButtonByLabel(
   template: `
     <app-affiliate-document-detail
       [selectedDocumentId]="selectedDocumentId()"
-      [visibleDocuments]="visibleDocuments"
+      [navigableDocuments]="navigableDocuments"
       [focusTarget]="focusTarget()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
@@ -59,7 +60,7 @@ function findButtonByLabel(
 })
 class DocumentDetailDrawerTestHostComponent {
   readonly selectedDocumentId = signal('doc-demande-primaire');
-  visibleDocuments: ListDocumentItem[] = VISIBLE_DOCUMENTS;
+  navigableDocuments: ListDocumentItem[] = VISIBLE_DOCUMENTS;
   readonly focusTarget = signal<{ stepValue: number; panelId: string } | null>(
     null,
   );
@@ -144,9 +145,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(emitSpy).toHaveBeenCalledWith('doc-demande-primaire');
   });
 
-  it('should disable both document nav directions when selected document is not in visibleDocuments', () => {
+  it('should disable both document nav directions when selected document is not in navigableDocuments', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-rechute');
-    fixture.componentInstance.visibleDocuments = [
+    fixture.componentInstance.navigableDocuments = [
       VISIBLE_DOCUMENTS[0],
       VISIBLE_DOCUMENTS[1],
     ];
@@ -174,6 +175,106 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(true);
   });
 
+  it('should not toggle accordion when certificate header action buttons are clicked', () => {
+    component.certPanelValue.set(['certificat-itt']);
+    fixture.detectChanges();
+
+    const irisButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Iris"]',
+    ) as HTMLButtonElement;
+    irisButton.click();
+    fixture.detectChanges();
+
+    expect(component.certPanelValue()).toEqual(['certificat-itt']);
+
+    const cicsButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Transactions CICS"]',
+    ) as HTMLButtonElement;
+    cicsButton.click();
+    fixture.detectChanges();
+
+    expect(component.certPanelValue()).toEqual(['certificat-itt']);
+    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(true);
+  });
+
+  it('should still toggle accordion when certificate header title is clicked', () => {
+    component.certPanelValue.set(['certificat-itt']);
+    fixture.detectChanges();
+
+    const title = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__cert-title',
+    ) as HTMLSpanElement;
+    title.click();
+    fixture.detectChanges();
+
+    expect(component.certPanelValue()).toEqual([]);
+  });
+
+  it('should show toast when Iris action is clicked', () => {
+    const messageService = TestBed.inject(MessageService);
+    const addSpy = spyOn(messageService, 'add').and.callThrough();
+
+    const irisButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Iris"]',
+    ) as HTMLButtonElement;
+    irisButton.click();
+
+    expect(addSpy).toHaveBeenCalledWith({
+      severity: 'info',
+      summary: 'Iris',
+      detail: "Ouverture d'Iris…",
+    });
+  });
+
+  it('should render incapacité with unnumbered stepper and warn paiement worker comment', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    expect(component.stepNumbered()).toBe(false);
+    expect(fixture.nativeElement.textContent).toContain(
+      'Pas de paiement reçu pour le moment',
+    );
+    expect(fixture.nativeElement.textContent).toContain('28/12/2025 09:00');
+    expect(
+      findButtonByLabel(fixture.nativeElement, 'Calcul primaire bloqué — C4 manquant'),
+    ).toBeTruthy();
+
+    const workerComment = fixture.nativeElement.querySelector(
+      '[data-panel-id="paiement-incapacite"] p-message',
+    );
+    expect(workerComment).toBeTruthy();
+    expect(workerComment?.classList.contains('p-message-warn')).toBe(true);
+    expect(
+      workerComment
+        ?.querySelector('.p-message-icon')
+        ?.classList.contains('bi-exclamation-triangle-fill'),
+    ).toBe(true);
+
+    const warnCommentTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="paiement-incapacite"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    ) as HTMLElement | null;
+    expect(warnCommentTag).toBeTruthy();
+    expect(warnCommentTag?.classList.contains('p-tag-warn')).toBe(true);
+    expect(warnCommentTag?.classList.contains('p-tag-secondary')).toBe(false);
+  });
+
+  it('should emit crossReferenceNavigate when cross-reference is clicked', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    const emitSpy = spyOn(component.crossReferenceNavigate, 'emit');
+    const reference: DocumentCrossReference = {
+      label: 'Calcul primaire bloqué — C4 manquant',
+      documentId: 'doc-demande-primaire',
+      stepValue: 3,
+      panelId: 'calcul',
+    };
+
+    component.onCrossReferenceClick(reference);
+
+    expect(emitSpy).toHaveBeenCalledWith(reference);
+  });
+
   it('should render standalone doc-c4 as audit accordion without stepper footer', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-c4');
     fixture.detectChanges();
@@ -188,6 +289,23 @@ describe('AffiliateDocumentDetailComponent', () => {
       fixture.nativeElement.querySelector('[data-panel-id="c4-isolated"]'),
     ).toBeTruthy();
     expect(fixture.nativeElement.textContent).toContain('16/12/2025');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Document reçu mais non rattaché au parcours',
+    );
+    const banner = fixture.nativeElement.querySelector(
+      '[data-panel-id="c4-isolated"] .c-affiliate-document-detail__banner',
+    );
+    expect(banner).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-document-detail__body > .c-affiliate-document-detail__banner',
+      ),
+    ).toBeFalsy();
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-panel-id="c4-isolated"] p-message.p-message-info',
+      ),
+    ).toBeFalsy();
     expect(
       findButtonByLabel(fixture.nativeElement, 'Voir plus de details'),
     ).toBeTruthy();
@@ -692,6 +810,64 @@ describe('AffiliateDocumentDetailComponent', () => {
         'c-affiliate-document-detail__message--highlighted',
       ),
     ).toBe(false);
+  }));
+
+  it('should run the deep-link pulse on the message ::after overlay, never on the p-message host', fakeAsync(() => {
+    fixture.componentInstance.focusTarget.set({
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
+    fixture.detectChanges();
+
+    tick();
+    fixture.detectChanges();
+
+    const message = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] p-message',
+    ) as HTMLElement;
+    expect(message).toBeTruthy();
+    expect(
+      message.classList.contains(
+        'c-affiliate-document-detail__message--highlighted',
+      ),
+    ).toBe(true);
+
+    // The pulse must live on the ::after overlay. If it set `animation` on the
+    // host it would override PrimeNG's `p-message-enter-active` animation while
+    // highlighted, and the enter keyframe would replay when the highlight clears.
+    const pulseName = 'c-affiliate-document-detail-message-pulse';
+    expect(getComputedStyle(message).animationName).not.toContain(pulseName);
+    expect(getComputedStyle(message, '::after').animationName).toContain(
+      pulseName,
+    );
+
+    tick(2000);
+    fixture.detectChanges();
+  }));
+
+  it('should keep the same p-message element across the highlight lifecycle (no recreation)', fakeAsync(() => {
+    fixture.componentInstance.focusTarget.set({
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
+    fixture.detectChanges();
+
+    tick();
+    fixture.detectChanges();
+
+    const messageDuringHighlight = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] p-message',
+    );
+    expect(messageDuringHighlight).toBeTruthy();
+
+    tick(2000);
+    fixture.detectChanges();
+
+    const messageAfterHighlight = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"] p-message',
+    );
+
+    expect(messageAfterHighlight).toBe(messageDuringHighlight);
   }));
 });
 

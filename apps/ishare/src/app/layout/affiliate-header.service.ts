@@ -21,6 +21,7 @@ export interface AffiliateHeaderData {
   primaryAction: AffiliateOverviewPrimaryAction | null;
   onInfoTagClick?: (tag: AffiliateOverviewInfoTag) => void;
   onPrimaryActionClick?: () => void;
+  onStatusActionClick?: () => void;
 }
 
 @Injectable({ providedIn: 'root' })

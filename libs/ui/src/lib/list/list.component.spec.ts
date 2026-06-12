@@ -900,4 +900,27 @@ describe('ListComponent', () => {
       target: DOCS_WITH_TAG_TARGETS[1].tags![0].targets![0],
     });
   });
+
+  it('should render footnote below the tree and emit footnoteClick', () => {
+    const footnoteSpy = jasmine.createSpy('footnoteClick');
+    component.footnoteClick.subscribe(footnoteSpy);
+
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput(
+      'footnote',
+      '2 documents hors parcours — désactivez Vue parcours ou cliquez ici',
+    );
+    fixture.detectChanges();
+
+    const footnote = fixture.nativeElement.querySelector(
+      '.c-list__footnote',
+    ) as HTMLButtonElement;
+
+    expect(footnote).toBeTruthy();
+    expect(footnote.textContent).toContain('2 documents hors parcours');
+
+    footnote.click();
+
+    expect(footnoteSpy).toHaveBeenCalledTimes(1);
+  });
 });

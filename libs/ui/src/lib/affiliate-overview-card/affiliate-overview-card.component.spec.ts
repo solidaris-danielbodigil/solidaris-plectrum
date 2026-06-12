@@ -189,46 +189,88 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_IDENTIFIERS[0]);
   });
 
-  it('should show status split button for warning variant with statusAction', () => {
+  it('should show status action button for warning variant with statusAction', () => {
     fixture.componentRef.setInput('variant', 'warning');
     fixture.componentRef.setInput('statusAction', {
-      label: 'Action requise',
+      label: 'Paiement non versé',
       icon: 'bi bi-exclamation-triangle-fill',
     });
     fixture.detectChanges();
 
-    const splitButton = fixture.nativeElement.querySelector('p-splitbutton');
-    expect(splitButton).toBeTruthy();
-  });
-
-  it('should not show status split button for default variant', () => {
-    fixture.componentRef.setInput('statusAction', { label: 'Action requise' });
-    fixture.detectChanges();
-
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
     expect(fixture.nativeElement.querySelector('p-splitbutton')).toBeFalsy();
   });
 
-  it('should hide status split button when loading', () => {
-    fixture.componentRef.setInput('variant', 'warning');
-    fixture.componentRef.setInput('statusAction', { label: 'Action requise' });
+  it('should not show status action button for default variant', () => {
+    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p-splitbutton')).toBeTruthy();
+
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+    ).toBeFalsy();
+  });
+
+  it('should hide status action button when loading', () => {
+    fixture.componentRef.setInput('variant', 'warning');
+    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+    ).toBeTruthy();
 
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p-splitbutton')).toBeFalsy();
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+    ).toBeFalsy();
   });
 
-  it('should emit statusActionClick when split button main action fires', () => {
+  it('should emit statusActionClick when status action button fires', () => {
     const onStatusAction = jasmine.createSpy('statusActionClick');
     component.statusActionClick.subscribe(onStatusAction);
     fixture.componentRef.setInput('variant', 'warning');
-    fixture.componentRef.setInput('statusAction', { label: 'Action requise' });
+    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
     fixture.detectChanges();
 
     component.onStatusActionClick();
 
     expect(onStatusAction).toHaveBeenCalledTimes(1);
+  });
+
+  it('should expose aria-label on status action from ariaLabel input', () => {
+    fixture.componentRef.setInput('variant', 'warning');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      ariaLabel: 'Voir le détail — paiement non versé',
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    ) as HTMLButtonElement;
+
+    expect(statusButton.getAttribute('aria-label')).toBe(
+      'Voir le détail — paiement non versé',
+    );
+    expect(statusButton.disabled).toBe(false);
+  });
+
+  it('should not emit statusActionClick when status action is disabled', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('variant', 'warning');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      disabled: true,
+    });
+    fixture.detectChanges();
+
+    component.onStatusActionClick();
+
+    expect(onStatusAction).not.toHaveBeenCalled();
   });
 
   it('should emit statusMenuSelect when a menu item is selected', () => {
@@ -490,25 +532,7 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(heading.id).toBeTruthy();
   });
 
-  it('should set French expand aria-label on status split button menu toggle', () => {
-    fixture.componentRef.setInput('variant', 'warning');
-    fixture.componentRef.setInput('statusAction', {
-      label: 'Action requise',
-      icon: 'bi bi-exclamation-triangle-fill',
-    });
-    fixture.detectChanges();
-
-    const menuToggle = fixture.nativeElement.querySelector(
-      '.p-splitbutton-dropdown',
-    ) as HTMLButtonElement;
-
-    expect(menuToggle.getAttribute('aria-label')).toBe(
-      'Afficher le menu pour Action requise',
-    );
-    expect(menuToggle.getAttribute('aria-haspopup')).toBe('true');
-  });
-
-  it('should show danger split button for danger variant with statusAction', () => {
+  it('should show danger status action button for danger variant with statusAction', () => {
     fixture.componentRef.setInput('variant', 'danger');
     fixture.componentRef.setInput('statusAction', {
       label: 'Critique',
@@ -516,11 +540,11 @@ describe('AffiliateOverviewCardComponent', () => {
     });
     fixture.detectChanges();
 
-    const splitButton = fixture.nativeElement.querySelector('p-splitbutton');
-    expect(splitButton).toBeTruthy();
-    expect(
-      fixture.nativeElement.querySelector('.p-splitbutton-dropdown')?.getAttribute('aria-label'),
-    ).toBe('Afficher le menu pour Critique');
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.classList.contains('p-button-danger')).toBe(true);
   });
 
   it('should not emit identifierCopy when loading', () => {

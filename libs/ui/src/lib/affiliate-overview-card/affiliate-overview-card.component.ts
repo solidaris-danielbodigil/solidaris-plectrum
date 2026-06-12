@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
-import { SplitButton } from 'primeng/splitbutton';
 import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
@@ -43,6 +42,10 @@ export interface AffiliateOverviewIdentifier {
 export interface AffiliateOverviewStatusAction {
   label: string;
   icon?: string;
+  /** Accessible name for deep-link controls; falls back to {@link label}. */
+  ariaLabel?: string;
+  /** When true, renders as a non-interactive status chip (no menu). */
+  disabled?: boolean;
   menuItems?: MenuItem[];
 }
 
@@ -150,7 +153,6 @@ function toAriaKeyShortcuts(shortcut: string): string {
     FormsModule,
     PlectrumAvatarComponent,
     SelectButton,
-    SplitButton,
   ],
   templateUrl: './affiliate-overview-card.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -249,7 +251,7 @@ export class AffiliateOverviewCardComponent {
   }
 
   onStatusActionClick(): void {
-    if (this.loading()) {
+    if (this.loading() || this.statusAction()?.disabled) {
       return;
     }
 
@@ -336,6 +338,12 @@ export class AffiliateOverviewCardComponent {
 
   infoTagAriaLabel(tag: AffiliateOverviewInfoTag): string {
     return `${tag.label} ${tag.value}`.trim();
+  }
+
+  statusActionAriaLabel(): string {
+    const action = this.statusAction();
+
+    return action?.ariaLabel ?? action?.label ?? 'Action';
   }
 
   statusActionExpandAriaLabel(): string {

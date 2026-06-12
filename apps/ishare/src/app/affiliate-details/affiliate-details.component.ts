@@ -17,6 +17,8 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {
   AffiliateDetailDrawerComponent,
@@ -52,13 +54,18 @@ import {
   resolveAffiliateProfile,
   resolveFamilyMemberNiss,
 } from './affiliate-family-mock';
-import { isEvaMartinezAffiliate } from './affiliate-mock.constants';
+import {
+  isEvaMartinezAffiliate,
+  isKnownFamilyMember,
+  JACK_MOTA_NISS,
+} from './affiliate-mock.constants';
 import {
   COMMENT_ICONS,
   commentCountTagSeverity,
   type AffiliateDocumentDetail,
   type DocumentCertificatPanel,
   type DocumentCertificatPanelStatusSeverity,
+  type DocumentCrossReference,
 } from './affiliate-document-detail/affiliate-document-detail.types';
 
 interface SectorOption {
@@ -329,6 +336,42 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
   withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
 );
 
+const STANDALONE_DOCUMENT_IDS = new Set(
+  EVA_MARTINEZ_STANDALONE_DOCUMENTS.map((document) => document.id),
+);
+
+type DocumentSector = SectorOption['value'];
+
+const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
+  ['doc-demande-primaire', 'indemnites'],
+  ['doc-incapacite', 'indemnites'],
+  ['doc-rechute', 'indemnites'],
+  ['doc-cloture-primaire', 'indemnites'],
+  ['doc-c4', 'indemnites'],
+  ['doc-attestation-pedicure', 'front-office'],
+  ['doc-jack-certificat', 'medical'],
+]);
+
+const STATUS_SORT_PRIORITY: Record<string, number> = {
+  'En attente': 0,
+  'En traitement': 1,
+  Reçu: 2,
+  Accepté: 3,
+  Clôturé: 4,
+};
+
+const JACK_MOTA_DOCUMENTS: ListDocumentItem[] = [
+  {
+    id: 'doc-jack-certificat',
+    title: 'Certificat médical',
+    status: {
+      label: 'En traitement',
+      severity: 'warn',
+      icon: 'bi bi-hourglass-split',
+    },
+  },
+];
+
 const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
     group.documents.map((document) => {
@@ -346,6 +389,7 @@ const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ),
   ['doc-c4', '16/12/2025'],
   ['doc-attestation-pedicure', '09/06/2026'],
+  ['doc-jack-certificat', '01/03/2026'],
 ]);
 
 function allEvaMartinezDocuments(): ListDocumentItem[] {
@@ -367,7 +411,9 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     InputIconModule,
     InputTextModule,
     CardModule,
+    TagModule,
     ToggleSwitchModule,
+    TooltipModule,
     ToolbarComponent,
     FormFieldComponent,
     InputClearComponent,
@@ -409,10 +455,25 @@ export class AffiliateDetailsComponent {
 
   readonly affiliateName = computed(() => this.affiliateProfile().name);
 
-  readonly statusAction: AffiliateOverviewStatusAction = {
-    label: 'Action requise',
-    icon: 'bi bi-exclamation-triangle-fill',
-  };
+  private static readonly EVA_INCAPACITY_PAYMENT_STATUS_ACTION: AffiliateOverviewStatusAction =
+    {
+      label: 'Paiement non versé',
+      icon: 'bi bi-exclamation-triangle-fill',
+      ariaLabel: 'Voir le détail — paiement non versé',
+    };
+
+  private static readonly EVA_INCAPACITY_PAYMENT_DEEP_LINK = {
+    documentId: 'doc-incapacite',
+    groupId: 'parcours-demande-primaire',
+    stepValue: 1,
+    panelId: 'paiement-incapacite',
+  } as const;
+
+  readonly statusAction = computed((): AffiliateOverviewStatusAction | null =>
+    this.isEvaDossier()
+      ? AffiliateDetailsComponent.EVA_INCAPACITY_PAYMENT_STATUS_ACTION
+      : null,
+  );
 
   readonly documentInfoFilter =
     signal<AffiliateOverviewInfoTagFilterKey | null>(null);
@@ -426,26 +487,33 @@ export class AffiliateDetailsComponent {
     const filter = this.documentInfoFilter();
     const tags: AffiliateOverviewInfoTag[] = [];
 
-    tags.push(
-      {
+    const lastActionDate = this.lastActionDateValue(allDocuments);
+    if (lastActionDate) {
+      tags.push({
         label: 'Dernière action:',
-        value: this.lastActionLabel(),
+        value: lastActionDate,
         filterKey: 'last-action',
         active: filter === 'last-action',
-      },
-      {
+      });
+    }
+
+    if (activeCount > 0) {
+      tags.push({
         label: 'Documents actifs:',
         value: String(activeCount),
         filterKey: 'active-documents',
         active: filter === 'active-documents',
-      },
-      {
+      });
+    }
+
+    if (closedCount > 0) {
+      tags.push({
         label: 'Documents clôturés:',
         value: String(closedCount),
         filterKey: 'closed-documents',
         active: filter === 'closed-documents',
-      },
-    );
+      });
+    }
 
     return tags;
   });
@@ -496,6 +564,7 @@ export class AffiliateDetailsComponent {
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
   readonly sectorOptions: SectorOption[] = [
+    { label: 'Tous', value: '' },
     { label: 'indémnités', value: 'indemnites' },
     { label: 'front-office', value: 'front-office' },
     { label: 'médical', value: 'medical' },
@@ -514,11 +583,11 @@ export class AffiliateDetailsComponent {
     this.documentSearch.set('');
   }
 
-  selectedSector: SectorOption | null = this.sectorOptions[0];
+  readonly selectedSector = signal<SectorOption | null>(null);
   sectorSuggestions: SectorOption[] = [...this.sectorOptions];
-  readonly selectedSort = signal<SortOption | null>(this.sortOptions[0]);
+  readonly selectedSort = signal<SortOption | null>(this.sortOptions[1]);
   sortSuggestions: SortOption[] = [...this.sortOptions];
-  journeyView = true;
+  readonly journeyView = signal(true);
   readonly archivedOnly = signal(false);
 
   readonly expandedGroupIds = signal<string[]>([]);
@@ -526,18 +595,79 @@ export class AffiliateDetailsComponent {
   /** Ensures the first journey group is expanded only once on initial load. */
   private defaultJourneyExpansionApplied = false;
 
-  /** `false` = newest start date first; `true` = oldest start date first. */
+  /** Journey groups: `true` = oldest start date first. */
   readonly startDateSortAscending = signal(true);
 
+  /** Flat list: `false` = newest reception date first (default). */
+  readonly flatListSortAscending = signal(false);
+
+  readonly isFlatListMode = computed(() => !this.journeyView());
+
+  readonly activeSortAscending = computed(() =>
+    this.isFlatListMode()
+      ? this.flatListSortAscending()
+      : this.startDateSortAscending(),
+  );
+
   readonly startDateSortIcon = computed(() =>
-    this.startDateSortAscending() ? 'bi bi-sort-up' : 'bi bi-sort-down',
+    this.activeSortAscending() ? 'bi bi-sort-up' : 'bi bi-sort-down',
   );
 
   readonly startDateSortAriaLabel = computed(() =>
-    this.startDateSortAscending()
+    this.activeSortAscending()
       ? 'Trier du plus ancien au plus récent'
       : 'Trier du plus récent au plus ancien',
   );
+
+  readonly standaloneDocumentCount = computed(() =>
+    this.isEvaDossier() ? EVA_MARTINEZ_STANDALONE_DOCUMENTS.length : 0,
+  );
+
+  readonly showHorsParcoursChip = computed(
+    () =>
+      this.isEvaDossier() &&
+      this.journeyView() &&
+      this.standaloneDocumentCount() > 0,
+  );
+
+  readonly horsParcoursChipLabel = computed(() => {
+    const count = this.standaloneDocumentCount();
+    return `+ ${count} hors parcours`;
+  });
+
+  readonly journeyViewTooltip = computed(() =>
+    this.journeyView()
+      ? 'Masque les documents hors parcours'
+      : 'Affiche les documents par parcours',
+  );
+
+  readonly emptyListTitle = computed(() => {
+    const hasDocuments = this.allDocumentsForContext().length > 0;
+    const isFilteredEmpty =
+      hasDocuments && this.visibleDocuments().length === 0;
+
+    if (!hasDocuments && isKnownFamilyMember(this.affiliateId())) {
+      return 'Aucun document actif pour cet affilié';
+    }
+
+    return isFilteredEmpty
+      ? 'Aucun document trouvé'
+      : 'Aucun document actif pour cet affilié';
+  });
+
+  readonly emptyListDescription = computed(() => {
+    const hasDocuments = this.allDocumentsForContext().length > 0;
+    const isFilteredEmpty =
+      hasDocuments && this.visibleDocuments().length === 0;
+
+    if (!hasDocuments && isKnownFamilyMember(this.affiliateId())) {
+      return 'Aucun document en cours pour cet affilié.';
+    }
+
+    return isFilteredEmpty
+      ? 'Aucun document ne correspond aux filtres sélectionnés.'
+      : 'Aucun document en cours pour cet affilié.';
+  });
 
   // Second-column document detail viewer — Figma iSHARE-Audit node 324:5860.
   // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
@@ -550,18 +680,46 @@ export class AffiliateDetailsComponent {
     null,
   );
 
-  readonly visibleDocuments = computed(() =>
-    this.filterDocuments(this.allDocumentsForContext()),
+  readonly filteredDocuments = computed(() =>
+    this.applyDocumentFilters(this.allDocumentsForContext()),
   );
 
-  get listGroups(): ListGroup[] | null {
-    if (!this.journeyView) {
+  readonly visibleDocuments = computed(() =>
+    this.sortDocuments(this.filteredDocuments()),
+  );
+
+  /**
+   * Journey view hides hors-parcours rows in grouped mode. When filters narrow
+   * results to standalone documents only, switch the list to flat presentation.
+   */
+  readonly shouldUseFlatListPresentation = computed(() => {
+    if (!this.journeyView() || !this.isEvaDossier()) {
+      return !this.journeyView();
+    }
+
+    const filtered = this.filteredDocuments();
+    const hasStandalone = filtered.some((document) =>
+      STANDALONE_DOCUMENT_IDS.has(document.id),
+    );
+    const hasGrouped = filtered.some(
+      (document) => !STANDALONE_DOCUMENT_IDS.has(document.id),
+    );
+
+    return hasStandalone && !hasGrouped;
+  });
+
+  readonly listGroups = computed((): ListGroup[] | null => {
+    if (
+      !this.journeyView() ||
+      !this.isEvaDossier() ||
+      this.shouldUseFlatListPresentation()
+    ) {
       return null;
     }
 
-    let groups = this.isEvaDossier()
-      ? EVA_MARTINEZ_DOCUMENT_GROUPS
-      : [];
+    const visibleIds = new Set(this.filteredDocuments().map((doc) => doc.id));
+
+    let groups = EVA_MARTINEZ_DOCUMENT_GROUPS;
 
     if (this.documentInfoFilter() === 'last-action') {
       const latestGroupId = this.latestJourneyGroupId();
@@ -572,39 +730,77 @@ export class AffiliateDetailsComponent {
       groups
         .map((group) => ({
           ...group,
-          documents: this.filterDocuments(group.documents),
+          documents: this.sortDocuments(
+            group.documents.filter((document) => visibleIds.has(document.id)),
+          ),
         }))
         .filter((group) => group.documents.length > 0),
     );
-  }
+  });
 
-  get listItems(): ListDocumentItem[] {
-    if (this.journeyView) {
+  readonly listItems = computed((): ListDocumentItem[] => {
+    if (
+      this.journeyView() &&
+      this.isEvaDossier() &&
+      !this.shouldUseFlatListPresentation()
+    ) {
       return [];
     }
 
-    return this.sortDocumentsByReceptionDate(
-      this.filterDocuments(this.allDocumentsForContext()),
-    );
-  }
+    return this.visibleDocuments();
+  });
 
-  get hasListResults(): boolean {
-    if (this.journeyView) {
-      return (this.listGroups ?? []).length > 0;
+  readonly hasListResults = computed(() => {
+    if (
+      this.journeyView() &&
+      this.isEvaDossier() &&
+      !this.shouldUseFlatListPresentation()
+    ) {
+      return (this.listGroups() ?? []).length > 0;
     }
 
-    return this.listItems.length > 0;
-  }
+    return this.listItems().length > 0;
+  });
 
-  get documentCount(): number {
-    if (this.journeyView) {
-      return (this.listGroups ?? []).reduce(
+  readonly documentCount = computed(() => {
+    if (
+      this.journeyView() &&
+      this.isEvaDossier() &&
+      !this.shouldUseFlatListPresentation()
+    ) {
+      return (this.listGroups() ?? []).reduce(
         (sum, group) => sum + group.documents.length,
         0,
       );
     }
 
-    return this.listItems.length;
+    return this.listItems().length;
+  });
+
+  /** Documents cycled by detail prev/next — parcours-only when journey view is on. */
+  readonly navigableDocuments = computed(() => {
+    if (
+      this.journeyView() &&
+      this.isEvaDossier() &&
+      !this.shouldUseFlatListPresentation()
+    ) {
+      return (this.listGroups() ?? []).flatMap((group) => group.documents);
+    }
+
+    return this.visibleDocuments();
+  });
+
+  onSectorChange(option: SectorOption | null): void {
+    if (!option?.value) {
+      this.selectedSector.set(null);
+      return;
+    }
+
+    this.selectedSector.set(option);
+  }
+
+  onSortChange(option: SortOption | null): void {
+    this.selectedSort.set(option);
   }
 
   filterSectors(event: { query: string }): void {
@@ -630,7 +826,53 @@ export class AffiliateDetailsComponent {
   }
 
   toggleStartDateSort(): void {
-    this.startDateSortAscending.update((ascending) => !ascending);
+    if (this.journeyView()) {
+      this.startDateSortAscending.update((ascending) => !ascending);
+      return;
+    }
+
+    this.flatListSortAscending.update((ascending) => !ascending);
+  }
+
+  onJourneyViewChange(
+    enabled: boolean,
+    source: 'toggle' | 'hors-parcours-hint' = 'toggle',
+  ): void {
+    if (this.journeyView() === enabled) {
+      return;
+    }
+
+    this.journeyView.set(enabled);
+
+    if (!enabled) {
+      const items = this.listItems();
+      if (items.length > 0) {
+        this.documentFocus.set(null);
+        this.selectedDocumentId.set(items[0].id);
+      }
+
+      this.recordTelemetry('journey_view_off', source);
+      return;
+    }
+
+    this.recordTelemetry('journey_view_on', source);
+  }
+
+  disableJourneyView(): void {
+    this.onJourneyViewChange(false, 'hors-parcours-hint');
+  }
+
+  onCrossReferenceNavigate(reference: DocumentCrossReference): void {
+    this.journeyView.set(true);
+    this.documentFocus.set({
+      stepValue: reference.stepValue,
+      panelId: reference.panelId,
+    });
+    this.selectedDocumentId.set(reference.documentId);
+    this.recordTelemetry(
+      'cross_reference',
+      `${reference.documentId}::${reference.stepValue}::${reference.panelId}`,
+    );
   }
 
   onExpandedGroupIdsChange(expandedGroupIds: string[]): void {
@@ -638,11 +880,11 @@ export class AffiliateDetailsComponent {
     this.expandedGroupIds.set(expandedGroupIds);
 
     const newlyExpandedId = expandedGroupIds.find((id) => !previous.includes(id));
-    if (!newlyExpandedId || !this.journeyView) {
+    if (!newlyExpandedId || !this.journeyView()) {
       return;
     }
 
-    const group = this.listGroups?.find((item) => item.id === newlyExpandedId);
+    const group = this.listGroups()?.find((item) => item.id === newlyExpandedId);
     if (!group?.documents.length) {
       return;
     }
@@ -697,6 +939,16 @@ export class AffiliateDetailsComponent {
     // focus from an earlier tag click.
     this.documentFocus.set(null);
     this.selectedDocumentId.set(documentId);
+
+    if (this.journeyView() && this.isEvaDossier()) {
+      const group = this.listGroups()?.find((item) =>
+        item.documents.some((document) => document.id === documentId),
+      );
+
+      if (group) {
+        this.ensureGroupExpanded(group.id);
+      }
+    }
   }
 
   onInfoTagClick(tag: AffiliateOverviewInfoTag): void {
@@ -713,6 +965,24 @@ export class AffiliateDetailsComponent {
   onPrimaryActionClick(): void {
     this.affiliateDetailDrawerVisible.set(true);
     this.recordTelemetry('drawer_open', 'affiliate-detail');
+  }
+
+  onStatusActionClick(): void {
+    if (!this.isEvaDossier()) {
+      return;
+    }
+
+    const { documentId, groupId, stepValue, panelId } =
+      AffiliateDetailsComponent.EVA_INCAPACITY_PAYMENT_DEEP_LINK;
+
+    this.journeyView.set(true);
+    this.ensureGroupExpanded(groupId);
+    this.selectedDocumentId.set(documentId);
+    this.documentFocus.set({ stepValue, panelId });
+    this.recordTelemetry(
+      'deep_link_status_action',
+      `${documentId}::${stepValue}::${panelId}`,
+    );
   }
 
   onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
@@ -761,11 +1031,27 @@ export class AffiliateDetailsComponent {
   }
 
   private allDocumentsForContext(): ListDocumentItem[] {
-    return this.isEvaDossier() ? allEvaMartinezDocuments() : [];
+    if (this.isEvaDossier()) {
+      return allEvaMartinezDocuments();
+    }
+
+    if (this.affiliateId() === JACK_MOTA_NISS) {
+      return JACK_MOTA_DOCUMENTS;
+    }
+
+    return [];
   }
 
   private receptionDateById(documentId: string): string | undefined {
     return DOCUMENT_RECEPTION_DATE_BY_ID.get(documentId);
+  }
+
+  private ensureGroupExpanded(groupId: string): void {
+    const current = this.expandedGroupIds();
+
+    if (!current.includes(groupId)) {
+      this.expandedGroupIds.set([...current, groupId]);
+    }
   }
 
   private recordTelemetry(event: string, target?: string): void {
@@ -774,26 +1060,23 @@ export class AffiliateDetailsComponent {
     }
   }
 
-  private lastActionLabel(): string {
-    if (!this.isEvaDossier()) {
-      return '—';
-    }
-
+  /** Latest réception date among documents in the current dossier (parcours + hors parcours). */
+  private lastActionDateValue(documents: ListDocumentItem[]): string | null {
     let latestReceptionDate = '';
-    for (const date of DOCUMENT_RECEPTION_DATE_BY_ID.values()) {
+
+    for (const document of documents) {
+      const date = this.receptionDateById(document.id);
+
       if (
-        !latestReceptionDate ||
-        parseFrenchDate(date) > parseFrenchDate(latestReceptionDate)
+        date &&
+        (!latestReceptionDate ||
+          parseFrenchDate(date) > parseFrenchDate(latestReceptionDate))
       ) {
         latestReceptionDate = date;
       }
     }
 
-    if (!latestReceptionDate) {
-      return '—';
-    }
-
-    return `Document reçu ${latestReceptionDate}`;
+    return latestReceptionDate || null;
   }
 
   private latestJourneyGroup(): ListGroup | null {
@@ -821,7 +1104,9 @@ export class AffiliateDetailsComponent {
     ).id;
   }
 
-  private filterDocuments(documents: ListDocumentItem[]): ListDocumentItem[] {
+  private applyDocumentFilters(
+    documents: ListDocumentItem[],
+  ): ListDocumentItem[] {
     if (this.archivedOnly()) {
       return documents.filter(isClosedDocument);
     }
@@ -835,6 +1120,13 @@ export class AffiliateDetailsComponent {
         )
       : [...documents];
 
+    const sector = this.selectedSector()?.value;
+    if (sector) {
+      filtered = filtered.filter(
+        (document) => DOCUMENT_SECTOR_BY_ID.get(document.id) === sector,
+      );
+    }
+
     const infoFilter = this.documentInfoFilter();
     if (infoFilter === 'active-documents') {
       filtered = filtered.filter(isActiveDocument);
@@ -845,15 +1137,38 @@ export class AffiliateDetailsComponent {
       filtered = filtered.filter((document) => document.id === latestDocumentId);
     }
 
-    if (this.selectedSort()?.value === 'nom-document') {
-      filtered = [...filtered].sort((left, right) =>
+    return filtered;
+  }
+
+  private sortDocuments(documents: ListDocumentItem[]): ListDocumentItem[] {
+    const sortValue = this.selectedSort()?.value;
+
+    if (sortValue === 'nom-document') {
+      return [...documents].sort((left, right) =>
         left.title.localeCompare(right.title),
       );
-    } else {
-      filtered = this.sortDocumentsByReceptionDate(filtered);
     }
 
-    return filtered;
+    if (sortValue === 'actions-en-cours') {
+      return [...documents].sort((left, right) => {
+        const leftPriority =
+          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+        const rightPriority =
+          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+
+        if (leftPriority !== rightPriority) {
+          return leftPriority - rightPriority;
+        }
+
+        return compareStartDates(
+          this.receptionDateById(left.id),
+          this.receptionDateById(right.id),
+          false,
+        );
+      });
+    }
+
+    return this.sortDocumentsByReceptionDate(documents);
   }
 
   private sortGroupsByStartDate(groups: ListGroup[]): ListGroup[] {
@@ -867,7 +1182,7 @@ export class AffiliateDetailsComponent {
   private sortDocumentsByReceptionDate(
     documents: ListDocumentItem[],
   ): ListDocumentItem[] {
-    const ascending = this.startDateSortAscending();
+    const ascending = this.activeSortAscending();
 
     return [...documents].sort((left, right) =>
       compareStartDates(
@@ -879,11 +1194,21 @@ export class AffiliateDetailsComponent {
   }
 
   private latestReceptionDocumentId(): string {
-    return [...DOCUMENT_RECEPTION_DATE_BY_ID.entries()].reduce(
-      (latest, [documentId, date]) =>
-        parseFrenchDate(date) > parseFrenchDate(latest.date)
-          ? { documentId, date }
-          : latest,
+    const documents = this.allDocumentsForContext();
+
+    return documents.reduce(
+      (latest, document) => {
+        const date = this.receptionDateById(document.id);
+
+        if (
+          date &&
+          (!latest.date || parseFrenchDate(date) > parseFrenchDate(latest.date))
+        ) {
+          return { documentId: document.id, date };
+        }
+
+        return latest;
+      },
       { documentId: '', date: '' },
     ).documentId;
   }
@@ -925,14 +1250,46 @@ export class AffiliateDetailsComponent {
     });
 
     effect(() => {
+      const filter = this.documentInfoFilter();
+
+      if (!filter) {
+        return;
+      }
+
+      const availableFilters = new Set(
+        this.infoTags()
+          .map((tag) => tag.filterKey)
+          .filter((key): key is AffiliateOverviewInfoTagFilterKey => !!key),
+      );
+
+      if (!availableFilters.has(filter)) {
+        this.documentInfoFilter.set(null);
+      }
+    });
+
+    effect(() => {
+      if (this.isEvaDossier() && this.journeyView()) {
+        return;
+      }
+
+      const visible = this.visibleDocuments();
+      if (visible.length === 0 || this.selectedDocumentId() !== null) {
+        return;
+      }
+
+      this.documentFocus.set(null);
+      this.selectedDocumentId.set(visible[0].id);
+    });
+
+    effect(() => {
       this.archivedOnly();
 
-      if (!this.journeyView || !this.archivedOnly()) {
+      if (!this.journeyView() || !this.archivedOnly()) {
         return;
       }
 
       const groupIds =
-        this.listGroups
+        this.listGroups()
           ?.filter((group) => group.documents.length > 0)
           .map((group) => group.id) ?? [];
 
@@ -949,18 +1306,21 @@ export class AffiliateDetailsComponent {
     });
 
     effect(() => {
-      if (this.defaultJourneyExpansionApplied || !this.journeyView) {
+      if (this.defaultJourneyExpansionApplied || !this.journeyView()) {
         return;
       }
 
       // List-shaping signals — re-run when filters/sort change before first expand.
+      this.journeyView();
       this.startDateSortAscending();
+      this.flatListSortAscending();
       this.archivedOnly();
       this.documentInfoFilter();
       this.documentSearch();
       this.selectedSort();
+      this.selectedSector();
 
-      const groups = this.listGroups;
+      const groups = this.listGroups();
       if (!groups?.length) {
         return;
       }
@@ -992,12 +1352,13 @@ export class AffiliateDetailsComponent {
         avatarGender: profile.avatarGender,
         avatarVariant: profile.avatarVariant,
         avatarInitials: profile.avatarInitials,
-        statusAction: this.statusAction,
+        statusAction: this.statusAction(),
         infoTags: this.infoTags(),
         identifiers: this.identifiers(),
         primaryAction: this.primaryAction,
         onInfoTagClick: (tag) => this.onInfoTagClick(tag),
         onPrimaryActionClick: () => this.onPrimaryActionClick(),
+        onStatusActionClick: () => this.onStatusActionClick(),
       });
     });
 
