@@ -365,26 +365,30 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(article.getAttribute('aria-busy')).toBe('true');
   });
 
-  it('should render filterable info tags as toggle buttons', () => {
+  it('should render filterable info tags as a select button group', () => {
     fixture.componentRef.setInput('infoTags', [
       { label: 'Documents actifs:', value: '3', filterKey: 'active-documents' },
     ]);
     fixture.detectChanges();
 
+    const selectButton = fixture.nativeElement.querySelector(
+      'p-selectbutton.c-affiliate-overview-card__info-tags-filter',
+    ) as HTMLElement;
     const toggle = fixture.nativeElement.querySelector(
-      'p-togglebutton.c-affiliate-overview-card__info-tag',
+      '.c-affiliate-overview-card__info-tags-filter .p-togglebutton',
     ) as HTMLElement;
     const value = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__info-tag-value',
     );
 
+    expect(selectButton).toBeTruthy();
+    expect(selectButton.classList.contains('p-selectbutton')).toBe(true);
     expect(toggle).toBeTruthy();
-    expect(toggle.classList.contains('p-togglebutton')).toBe(true);
     expect(toggle.classList.contains('p-togglebutton-sm')).toBe(true);
-    expect(toggle.classList.contains('c-affiliate-overview-card__info-tag--filterable')).toBe(true);
     expect(toggle.getAttribute('role')).toBe('button');
     expect(toggle.getAttribute('aria-pressed')).toBe('false');
-    expect(toggle.getAttribute('aria-label')).toBe('Documents actifs: 3');
+    expect(toggle.textContent).toContain('Documents actifs:');
+    expect(toggle.textContent).toContain('3');
     expect(value?.textContent?.trim()).toBe('3');
   });
 
@@ -400,9 +404,8 @@ describe('AffiliateOverviewCardComponent', () => {
 
     expect(button.getAttribute('tabindex')).toBe('-1');
     expect(button.classList.contains('c-affiliate-overview-card__info-tag--filterable')).toBe(false);
-    expect(button.getAttribute('aria-pressed')).toBeNull();
     expect(
-      fixture.nativeElement.querySelector('p-togglebutton'),
+      fixture.nativeElement.querySelector('p-selectbutton'),
     ).toBeFalsy();
   });
 
@@ -419,14 +422,14 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     const toggle = fixture.nativeElement.querySelector(
-      'p-togglebutton.c-affiliate-overview-card__info-tag',
+      '.c-affiliate-overview-card__info-tags-filter .p-togglebutton',
     ) as HTMLElement;
     toggle.click();
 
     expect(onInfoTagClick).toHaveBeenCalledOnceWith(tag);
   });
 
-  it('should mark active info tags as checked toggle buttons', async () => {
+  it('should bind active info tags to the select button model', async () => {
     fixture.componentRef.setInput('infoTags', [
       {
         label: 'Documents clôturés:',
@@ -436,16 +439,10 @@ describe('AffiliateOverviewCardComponent', () => {
       },
     ]);
     fixture.detectChanges();
-    // ngModel writes the control value to the toggle on a microtask.
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const toggle = fixture.nativeElement.querySelector(
-      'p-togglebutton.c-affiliate-overview-card__info-tag',
-    ) as HTMLElement;
-
-    expect(toggle.classList.contains('p-togglebutton-checked')).toBe(true);
-    expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    expect(component['selectedInfoTagFilterKey']).toBe('closed-documents');
   });
 
   it('should not emit infoTagClick when loading', () => {

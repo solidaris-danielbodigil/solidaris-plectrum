@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,9 +18,11 @@ import { MessageModule } from 'primeng/message';
 import { StepperModule } from 'primeng/stepper';
 import { TagModule } from 'primeng/tag';
 import type { ListDocumentItem } from '@solidaris/ui';
-import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail.mock';
+import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
+  commentCountTagSeverity,
   isDocumentDetailPeriod,
+  type DocumentCertificatAction,
   type DocumentCertificatPanel,
   type DocumentDetailField,
 } from './affiliate-document-detail.types';
@@ -42,6 +45,7 @@ import {
     ButtonModule,
     DividerModule,
     MessageModule,
+    NgTemplateOutlet,
     StepperModule,
     TagModule,
   ],
@@ -60,7 +64,16 @@ export class AffiliateDocumentDetailComponent {
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
+  /**
+   * Header comment-count tag severity, aligned with the document list rows:
+   * info-origin comments render as `secondary`, warn-origin as `warn`. The
+   * inline `p-message` keeps the raw comment severity (it reflects the actual
+   * comment tone, not the count badge).
+   */
+  readonly commentCountTagSeverity = commentCountTagSeverity;
+
   readonly selectedDocumentId = input.required<string>();
+  readonly affiliateRouteId = input('');
   readonly visibleDocuments = input.required<ListDocumentItem[]>();
 
   /**
@@ -77,6 +90,8 @@ export class AffiliateDocumentDetailComponent {
 
   readonly moreDetailsOpen = output<DocumentCertificatPanel>();
 
+  readonly transactionsCicsOpen = output<void>();
+
   readonly activeStep = signal(1);
   readonly certPanelValue = signal<string | string[] | undefined>(
     'certificat-itt',
@@ -87,7 +102,8 @@ export class AffiliateDocumentDetailComponent {
 
   readonly documentDetail = computed(() => {
     const id = this.selectedDocumentId();
-    return EVA_MARTINEZ_DOCUMENT_DETAILS[id] ?? null;
+    const details = getDocumentDetailsForAffiliate(this.affiliateRouteId());
+    return details[id] ?? null;
   });
 
   readonly documentTitle = computed(
@@ -95,6 +111,27 @@ export class AffiliateDocumentDetailComponent {
   );
 
   readonly steps = computed(() => this.documentDetail()?.steps ?? []);
+
+  readonly stepNumbered = computed(
+    () => this.documentDetail()?.stepNumbered ?? true,
+  );
+
+  readonly isStandaloneLayout = computed(
+    () => this.documentDetail()?.layout === 'standalone',
+  );
+
+  readonly standalonePanels = computed(() => {
+    const detail = this.documentDetail();
+    if (detail?.layout !== 'standalone') {
+      return [];
+    }
+
+    const step =
+      detail.steps.find((documentStep) => documentStep.value === detail.activeStep) ??
+      detail.steps[0];
+
+    return step?.panels ?? [];
+  });
 
   readonly selectedDocumentIndex = computed(() =>
     this.visibleDocuments().findIndex(
@@ -137,7 +174,10 @@ export class AffiliateDocumentDetailComponent {
       // Prefer a programmatic deep-link target so the document-change reset does
       // not override a jump requested by the parent (list tag click).
       if (target) {
-        this.activeStep.set(target.stepValue);
+        if (detail?.layout !== 'standalone') {
+          this.activeStep.set(target.stepValue);
+        }
+
         this.certPanelValue.set(target.panelId);
         this.focusPanel(target.panelId);
         return;
@@ -156,6 +196,12 @@ export class AffiliateDocumentDetailComponent {
 
   openMoreDetails(panel: DocumentCertificatPanel): void {
     this.moreDetailsOpen.emit(panel);
+  }
+
+  onPanelActionClick(action: DocumentCertificatAction): void {
+    if (action.label === 'Transactions CICS') {
+      this.transactionsCicsOpen.emit();
+    }
   }
 
   goToPreviousDocument(): void {

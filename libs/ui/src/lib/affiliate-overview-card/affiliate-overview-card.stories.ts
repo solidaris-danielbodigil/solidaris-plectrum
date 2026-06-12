@@ -31,7 +31,7 @@ const DEFAULT_IDENTIFIERS: AffiliateOverviewIdentifier[] = [
   { label: 'Statut affilié', value: 'Actif' },
 ];
 
-// Filterable tags (filterKey set) render as p-togglebutton chips bound to their active state;
+// Filterable tags (filterKey set) render as a single p-selectbutton group bound to the active filter;
 // display-only tags (no filterKey) render as non-interactive pButton chips.
 const DEFAULT_INFO_TAGS: AffiliateOverviewInfoTag[] = [
   { label: 'Dernière action:', value: 'Consultation 02/06/2026', filterKey: 'last-action' },
@@ -137,7 +137,7 @@ iSHARE affiliate audit summary card with four severity-driven variants.
 - **Avatar**: large illustrated avatar (51.333 × 56px) via \`c-plectrum-avatar--large\`; small initials variant remains 32px
 - **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--sds-icon-size-xs\`) on identifier chips
 - **Layout**: horizontal avatar + stacked header / identifier rows via \`o-flex\` / \`o-layout\` with flex-wrap
-- **PrimeNG**: \`p-card\`, \`p-splitButton\`, \`p-button\`, \`p-togglebutton\` (filterable info tags), \`sds-plectrum-avatar\`
+- **PrimeNG**: \`p-card\`, \`p-splitButton\`, \`p-button\`, \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
 
 | Variant | Status action | Card treatment |
 |---|---|---|
@@ -177,7 +177,7 @@ iSHARE affiliate audit summary card with four severity-driven variants.
     infoTags: {
       control: 'object',
       description:
-        'Header info tags. Filterable tags (filterKey set) render as p-togglebutton chips bound to active state; display-only tags render as non-interactive pButton chips.',
+        'Header info tags. Filterable tags (filterKey set) render as a single p-selectbutton group bound to the active filter; display-only tags render as non-interactive pButton chips.',
     },
     identifiers: {
       control: 'object',
@@ -290,7 +290,7 @@ export const Warning: Story = {
     docs: {
       description: {
         story:
-          'Action-required audit state — orange-50 → surface gradient (88deg) with warn split button. The "Documents actifs" info tag is shown as a checked p-togglebutton filter. Figma node 507:7910.',
+          'Action-required audit state — orange-50 → surface gradient (88deg) with warn split button. The "Documents actifs" info tag is shown as a checked p-selectbutton filter. Figma node 507:7910.',
       },
     },
   },

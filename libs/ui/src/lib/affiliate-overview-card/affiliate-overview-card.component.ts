@@ -4,6 +4,7 @@ import {
   HostListener,
   ViewEncapsulation,
   computed,
+  effect,
   input,
   output,
 } from '@angular/core';
@@ -12,7 +13,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { SplitButton } from 'primeng/splitbutton';
-import { ToggleButton } from 'primeng/togglebutton';
+import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import type {
@@ -148,8 +149,8 @@ function toAriaKeyShortcuts(shortcut: string): string {
     CopyableTextComponent,
     FormsModule,
     PlectrumAvatarComponent,
+    SelectButton,
     SplitButton,
-    ToggleButton,
   ],
   templateUrl: './affiliate-overview-card.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -214,6 +215,39 @@ export class AffiliateOverviewCardComponent {
     () => this.statusAction()?.menuItems ?? [],
   );
 
+  readonly firstFilterableInfoTagIndex = computed(() =>
+    this.infoTags().findIndex((tag) => !!tag.filterKey),
+  );
+
+  readonly filterableInfoTagOptions = computed(() =>
+    this.infoTags()
+      .filter(
+        (
+          tag,
+        ): tag is AffiliateOverviewInfoTag & {
+          filterKey: AffiliateOverviewInfoTagFilterKey;
+        } => !!tag.filterKey,
+      )
+      .map((tag) => ({
+        ...tag,
+        ariaLabel: this.infoTagAriaLabel(tag),
+      })),
+  );
+
+  readonly activeInfoTagFilterKey = computed((): AffiliateOverviewInfoTagFilterKey | null => {
+    const activeTag = this.filterableInfoTagOptions().find((tag) => tag.active);
+
+    return activeTag?.filterKey ?? null;
+  });
+
+  protected selectedInfoTagFilterKey: AffiliateOverviewInfoTagFilterKey | null = null;
+
+  constructor() {
+    effect(() => {
+      this.selectedInfoTagFilterKey = this.activeInfoTagFilterKey();
+    });
+  }
+
   onStatusActionClick(): void {
     if (this.loading()) {
       return;
@@ -266,6 +300,30 @@ export class AffiliateOverviewCardComponent {
     const shortcut = this.primaryAction()?.shortcut;
 
     return shortcut ? toAriaKeyShortcuts(shortcut) : null;
+  }
+
+  onInfoTagFilterChange(event: SelectButtonChangeEvent): void {
+    if (this.loading()) {
+      return;
+    }
+
+    const value = event.value as AffiliateOverviewInfoTagFilterKey | null;
+
+    if (value) {
+      const tag = this.infoTags().find((option) => option.filterKey === value);
+
+      if (tag) {
+        this.infoTagClick.emit(tag);
+      }
+
+      return;
+    }
+
+    const previouslyActive = this.infoTags().find((tag) => tag.active && tag.filterKey);
+
+    if (previouslyActive) {
+      this.infoTagClick.emit(previouslyActive);
+    }
   }
 
   onInfoTagClick(tag: AffiliateOverviewInfoTag): void {

@@ -199,8 +199,8 @@
 
 // PrimeNG Button token bridge — display-only header info tag chips (filled secondary, small, rounded).
 // Template renders <button pButton severity="secondary" size="small"> for tags without a filterKey.
-// Scoped with :not(--filterable) so --p-button-* vars never bleed into p-togglebutton hosts.
-.c-affiliate-overview-card__info-tag:not(.c-affiliate-overview-card__info-tag--filterable) {
+// Scoped to display-only chips so --p-button-* vars never bleed into p-selectbutton filter group.
+.c-affiliate-overview-card__info-tag {
   --p-button-secondary-background: var(--#{$sds-prefix}-color-affiliate-overview-card-info-tag-bg);
   --p-button-secondary-color: var(--#{$sds-prefix}-color-affiliate-overview-card-info-tag-text);
   --p-button-secondary-border-color: transparent;

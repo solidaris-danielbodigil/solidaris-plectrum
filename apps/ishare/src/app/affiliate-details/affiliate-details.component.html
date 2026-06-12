@@ -213,10 +213,12 @@
             #documentDetail
             class="o-layout--full-width o-layout--min-w-0"
             [selectedDocumentId]="documentId"
+            [affiliateRouteId]="affiliateId()"
             [visibleDocuments]="visibleDocuments()"
             [focusTarget]="documentFocus()"
             (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
             (moreDetailsOpen)="onMoreDetailsOpen($event)"
+            (transactionsCicsOpen)="onTransactionsCicsOpen()"
           />
         } @else {
           <sds-empty-state
@@ -234,12 +236,19 @@
 <sds-affiliate-detail-drawer
   [(visible)]="affiliateDetailDrawerVisible"
   [data]="affiliateDetailDrawerData()"
+  [showNotes]="false"
   (identifierCopy)="onDrawerIdentifierCopy($event)"
   (menuClick)="onDrawerMenuClick()"
   (quickActionsClick)="onDrawerQuickActionsClick()"
+  (familyMemberSelect)="onFamilyMemberSelect($event)"
 />
 
 <app-document-more-details-drawer
   [(visible)]="moreDetailsDrawerVisible"
   [panel]="moreDetailsPanel()"
+/>
+
+<sds-transactions-cics-modal
+  [(visible)]="transactionsCicsDialogVisible"
+  (transactionLaunch)="onCicsTransactionLaunch($event.code)"
 />

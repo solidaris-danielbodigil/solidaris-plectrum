@@ -1,0 +1,22 @@
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.transactions-cics-modal.scss
+// c-transactions-cics-modal — legacy iShare Transactions CICS dialog (Scenario 4)
+// =============================================================================
+
+.c-transactions-cics-modal__dialog.p-dialog {
+  width: min(48rem, 92vw);
+}
+
+.c-transactions-cics-modal__content {
+  min-width: 0;
+}
+
+.c-transactions-cics-modal__search-input {
+  width: 100%;
+}
+
+.c-transactions-cics-modal__table {
+  width: 100%;
+}

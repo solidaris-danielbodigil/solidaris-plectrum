@@ -109,23 +109,39 @@
   --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-text);
 }
 
-// ── Famille tiles (p-card) ───────────────────────────────────────────────────
-.c-affiliate-detail-drawer__family-tile .p-card {
-  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-border);
-  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-tile);
-  box-shadow: none;
-}
-
-.c-affiliate-detail-drawer__family-tile .p-card-body {
+// ── Famille tiles (full-width selectable row) ────────────────────────────────
+.c-affiliate-detail-drawer__family-tile {
+  appearance: none;
+  margin: 0;
   padding: var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-block)
     var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-end)
     var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-block)
     var(--#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-start);
+  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg);
+  border: 1px solid var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-border);
+  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-tile);
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--#{$sds-prefix}-color-text-muted);
+  }
+
+  &:focus-visible {
+    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
+      var(--#{$sds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+  }
 }
 
-.c-affiliate-detail-drawer__family-tile .p-card-content {
-  padding: 0;
+.c-affiliate-detail-drawer__family-chevron {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-text-muted);
+  line-height: 1;
 }
 
 .c-affiliate-detail-drawer__family-name {
@@ -173,7 +189,7 @@
   --p-tag-danger-color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-text);
 }
 
-// ── Icon buttons (header menu / close, family arrow) ─────────────────────────
+// ── Icon buttons (header menu / close) ─────────────────────────────────────
 .c-affiliate-detail-drawer__icon-button {
   --p-button-text-secondary-color: var(--#{$sds-prefix}-color-text-muted);
 

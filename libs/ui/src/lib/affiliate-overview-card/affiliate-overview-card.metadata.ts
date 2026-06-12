@@ -8,7 +8,7 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       'iSHARE affiliate audit summary card with horizontal avatar layout, status split button, info tags, copyable identifiers, and primary action.',
     type: 'display',
     path: 'libs/ui/src/lib/affiliate-overview-card/affiliate-overview-card.component.ts',
-    primeNgComponent: 'Card, SplitButton, Button, ToggleButton',
+    primeNgComponent: 'Card, SplitButton, Button, SelectButton',
     bemBlock: 'c-affiliate-overview-card',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.affiliate-overview-card.scss',
@@ -55,7 +55,7 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     ariaAttributes: [
       'aria-labelledby on article (title h2) when loaded',
       'aria-label + aria-busy on article when loading',
-      'aria-pressed on filterable info-tag toggle buttons (p-togglebutton, native role=button)',
+      'aria-pressed on filterable info-tag select button options (p-selectbutton inner toggle buttons, native role=button)',
       'Alt+A — trigger primary action when primaryAction.shortcut is set (skipped in editable fields)',
       'aria-keyshortcuts on primary action button when shortcut badge is shown',
       'aria-label on copy identifier buttons (Copier {label})',

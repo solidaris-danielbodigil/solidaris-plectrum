@@ -46,7 +46,7 @@
 }
 
 // Display-only chips (no filterKey) render as a non-interactive pButton.
-.c-affiliate-overview-card__info-tag:not(.c-affiliate-overview-card__info-tag--filterable) {
+.c-affiliate-overview-card__info-tag {
   font-family: var(--text-label-sm-family);
   font-weight: var(--text-label-sm-weight);
   line-height: normal;
@@ -54,10 +54,14 @@
   pointer-events: none;
 }
 
-// Filterable chips are p-togglebutton — line-height reset in 01-settings.togglebutton.
-.c-affiliate-overview-card__info-tag--filterable {
-  font-family: var(--text-label-sm-family);
-  cursor: pointer;
+// Filterable chips are a single p-selectbutton group — inner toggle buttons styled in 01-settings.
+.c-affiliate-overview-card__info-tags-filter {
+  line-height: normal;
+
+  .p-togglebutton {
+    font-family: var(--text-label-sm-family);
+    cursor: pointer;
+  }
 }
 
 .c-affiliate-overview-card__info-tag-value {

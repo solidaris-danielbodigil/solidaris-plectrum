@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
@@ -13,6 +13,12 @@ import {
   deriveDocumentTags,
 } from './affiliate-details.component';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
+import {
+  EVA_MARTINEZ_NISS,
+  JACK_MOTA_NISS,
+  QUINTEN_MOTA_NISS,
+  SHILOH_MOTA_NISS,
+} from './affiliate-mock.constants';
 
 function expandJourneyGroup(
   component: AffiliateDetailsComponent,
@@ -29,6 +35,7 @@ describe('AffiliateDetailsComponent', () => {
   let breadcrumbService: BreadcrumbService;
   let affiliateHeaderService: AffiliateHeaderService;
   let messageService: MessageService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,10 +45,16 @@ describe('AffiliateDetailsComponent', () => {
         AffiliateHeaderService,
         MessageService,
         {
+          provide: Router,
+          useValue: { navigate: jasmine.createSpy('navigate') },
+        },
+        {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of(convertToParamMap({ id: '63092814612' })),
-            snapshot: { paramMap: convertToParamMap({ id: '63092814612' }) },
+            paramMap: of(convertToParamMap({ id: EVA_MARTINEZ_NISS })),
+            snapshot: {
+              paramMap: convertToParamMap({ id: EVA_MARTINEZ_NISS }),
+            },
           },
         },
       ],
@@ -52,6 +65,7 @@ describe('AffiliateDetailsComponent', () => {
     breadcrumbService = TestBed.inject(BreadcrumbService);
     affiliateHeaderService = TestBed.inject(AffiliateHeaderService);
     messageService = TestBed.inject(MessageService);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -257,12 +271,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.infoTags).toEqual([
       jasmine.objectContaining({
         label: 'Dernière action:',
-        value: 'Document reçu 12/06/2026',
+        value: 'Document reçu 09/06/2026',
         filterKey: 'last-action',
       }),
       jasmine.objectContaining({
         label: 'Documents actifs:',
-        value: '4',
+        value: '6',
         filterKey: 'active-documents',
       }),
       jasmine.objectContaining({
@@ -285,6 +299,27 @@ describe('AffiliateDetailsComponent', () => {
     expect(
       fixture.nativeElement.querySelector('sds-affiliate-detail-drawer'),
     ).toBeTruthy();
+  });
+
+  it('should hide the Notes section in the affiliate detail drawer', () => {
+    component.affiliateDetailDrawerVisible.set(true);
+    fixture.detectChanges();
+
+    const drawer = fixture.nativeElement.querySelector(
+      'sds-affiliate-detail-drawer',
+    );
+    expect(drawer).toBeTruthy();
+
+    const sectionTitles = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-detail-drawer__section-title',
+      ),
+    ].map((title) => (title as Element).textContent?.trim());
+
+    expect(sectionTitles).not.toContain('Notes');
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-detail-drawer__notes'),
+    ).toBeNull();
   });
 
   it('should show a success toast when a drawer identifier is copied', () => {
@@ -334,7 +369,7 @@ describe('AffiliateDetailsComponent', () => {
     ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
-    ).toBe(4);
+    ).toBe(6);
   });
 
   it('should switch between grouped and flat list when journey view toggle changes', () => {
@@ -363,7 +398,7 @@ describe('AffiliateDetailsComponent', () => {
     ).toBe(0);
     expect(
       fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
-    ).toBe(4);
+    ).toBe(6);
 
     journeyToggle.click();
     fixture.detectChanges();
@@ -472,21 +507,24 @@ describe('AffiliateDetailsComponent', () => {
     ).toBeTruthy();
   });
 
-  it('should expose four visible documents sorted by oldest start date by default', () => {
-    expect(component.visibleDocuments().length).toBe(4);
+  it('should expose six visible documents sorted by oldest reception date by default', () => {
+    expect(component.visibleDocuments().length).toBe(6);
     expect(component.visibleDocuments()[0].id).toBe('doc-demande-primaire');
+    expect(component.visibleDocuments().at(-1)?.id).toBe(
+      'doc-attestation-pedicure',
+    );
   });
 
   it('should filter documents when an info tag filter is applied', () => {
     component.onInfoTagClick({
       label: 'Documents actifs:',
-      value: '4',
+      value: '6',
       filterKey: 'active-documents',
     });
     fixture.detectChanges();
 
     expect(component.documentInfoFilter()).toBe('active-documents');
-    expect(component.visibleDocuments().length).toBe(4);
+    expect(component.visibleDocuments().length).toBe(6);
     expect(
       component.visibleDocuments().every((document) => document.status?.label !== 'Clôturé'),
     ).toBe(true);
@@ -510,7 +548,7 @@ describe('AffiliateDetailsComponent', () => {
   it('should update header info tag active state when filter changes', () => {
     component.onInfoTagClick({
       label: 'Documents actifs:',
-      value: '4',
+      value: '6',
       filterKey: 'active-documents',
     });
     fixture.detectChanges();
@@ -579,10 +617,11 @@ describe('AffiliateDetailsComponent', () => {
   it('should derive count tags with deep-link targets from the detail mock for a known doc', () => {
     const tags = deriveDocumentTags('doc-demande-primaire');
 
-    expect(tags).toEqual([
+    expect(tags.length).toBe(2);
+    expect(tags).toContain(
       jasmine.objectContaining({
         label: '2',
-        severity: 'info',
+        severity: 'secondary',
         icon: 'bi bi-chat-right-text-fill',
         ariaLabel: '2 commentaires',
         targets: [
@@ -596,6 +635,8 @@ describe('AffiliateDetailsComponent', () => {
           },
         ],
       }),
+    );
+    expect(tags).toContain(
       jasmine.objectContaining({
         label: '1',
         severity: 'warn',
@@ -603,7 +644,7 @@ describe('AffiliateDetailsComponent', () => {
         ariaLabel: '1 avertissement',
         targets: [{ id: '3::calcul', label: 'Calcul - Calcul' }],
       }),
-    ]);
+    );
   });
 
   it('should apply the derived tags to the visible documents', () => {
@@ -618,7 +659,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(deriveDocumentTags('doc-cloture-primaire')).toEqual([]);
   });
 
-  it('should jump detail to tag target step when a single-target count tag button is clicked', () => {
+  it('should jump detail to Calcul when the single-target warn tag is clicked', () => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
 
     const detail = fixture.debugElement.query(
@@ -682,5 +723,225 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
+  });
+
+  it('should expand collapsed parcours group when navigating to a document in another group', () => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    const detail = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance as AffiliateDocumentDetailComponent;
+
+    detail.goToNextDocument();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-rechute');
+    expect(component.expandedGroupIds()).toContain('parcours-rechute');
+
+    const selectedInTree = fixture.nativeElement.querySelector(
+      '.c-list__item--document.c-list__item--selected',
+    ) as HTMLElement | null;
+
+    expect(selectedInTree?.textContent).toContain('Rechute');
+  });
+
+  it('should preserve selectedDocumentId when expanding a group that already contains the selection', () => {
+    component.selectedDocumentId.set('doc-rechute');
+    component.onExpandedGroupIdsChange([
+      'parcours-demande-primaire',
+      'parcours-rechute',
+    ]);
+
+    expect(component.selectedDocumentId()).toBe('doc-rechute');
+  });
+
+  it('should exclude standalone documents from journey groups but include them in flat list items', () => {
+    const groupDocumentIds = (component.listGroups ?? []).flatMap((group) =>
+      group.documents.map((document) => document.id),
+    );
+
+    expect(groupDocumentIds).not.toContain('doc-c4');
+    expect(groupDocumentIds).not.toContain('doc-attestation-pedicure');
+
+    component.journeyView = false;
+    fixture.detectChanges();
+
+    expect(component.listItems.map((document) => document.id)).toContain('doc-c4');
+    expect(component.listItems.map((document) => document.id)).toContain(
+      'doc-attestation-pedicure',
+    );
+  });
+
+  it('should omit standalone hors-parcours documents from journey view list items', () => {
+    component.journeyView = true;
+    fixture.detectChanges();
+
+    expect(component.listItems).toEqual([]);
+
+    const list = fixture.nativeElement.querySelector('sds-list');
+    expect(list.textContent).not.toContain('Attestation C4');
+    expect(list.textContent).not.toContain('Attestation de soin pédicure');
+  });
+
+  it('should find isolated C4 by search in flat mode (Scenario 2)', () => {
+    component.journeyView = false;
+    component.documentSearch.set('c4');
+    fixture.detectChanges();
+
+    expect(component.listItems.length).toBe(1);
+    expect(component.listItems[0].id).toBe('doc-c4');
+  });
+
+  it('should open Transactions CICS dialog when panel action emits', () => {
+    expect(component.transactionsCicsDialogVisible()).toBe(false);
+
+    component.onTransactionsCicsOpen();
+    fixture.detectChanges();
+
+    expect(component.transactionsCicsDialogVisible()).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('sds-transactions-cics-modal'),
+    ).toBeTruthy();
+  });
+
+  it('should derive no comment-count tags for standalone doc-c4 without worker comment', () => {
+    expect(deriveDocumentTags('doc-c4')).toEqual([]);
+  });
+
+  describe('family member navigation', () => {
+    it('should navigate to the selected family member dossier by NISS', () => {
+      component.onFamilyMemberSelect({
+        id: JACK_MOTA_NISS,
+        initials: 'J',
+        name: 'Jack Mota',
+        relationship: 'enfant à charge',
+      });
+
+      expect(router.navigate).toHaveBeenCalledOnceWith([
+        '/affiliate',
+        JACK_MOTA_NISS,
+      ]);
+      expect(component.affiliateDetailDrawerVisible()).toBe(false);
+    });
+
+    it('should navigate to Quinten and Shiloh dossiers', () => {
+      component.onFamilyMemberSelect({
+        id: QUINTEN_MOTA_NISS,
+        initials: 'Q',
+        name: 'Quinten Mota',
+        relationship: 'partenaire',
+      });
+      component.onFamilyMemberSelect({
+        id: SHILOH_MOTA_NISS,
+        initials: 'S',
+        name: 'Shiloh Mota',
+        relationship: 'enfant à charge',
+      });
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        '/affiliate',
+        QUINTEN_MOTA_NISS,
+      ]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        '/affiliate',
+        SHILOH_MOTA_NISS,
+      ]);
+    });
+
+    it('should list all family members except self in Eva drawer data', () => {
+      const family = component.affiliateDetailDrawerData().family;
+
+      expect(family.map((member) => member.name)).toEqual([
+        'Quinten Mota',
+        'Shiloh Mota',
+        'Jack Mota',
+      ]);
+      expect(family.every((member) => member.id)).toBe(true);
+    });
+  });
+});
+
+describe('AffiliateDetailsComponent — family dossiers', () => {
+  async function createFixtureForAffiliate(
+    affiliateId: string,
+  ): Promise<ComponentFixture<AffiliateDetailsComponent>> {
+    await TestBed.configureTestingModule({
+      imports: [AffiliateDetailsComponent, FormsModule],
+      providers: [
+        BreadcrumbService,
+        AffiliateHeaderService,
+        MessageService,
+        {
+          provide: Router,
+          useValue: { navigate: jasmine.createSpy('navigate') },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of(convertToParamMap({ id: affiliateId })),
+            snapshot: { paramMap: convertToParamMap({ id: affiliateId }) },
+          },
+        },
+      ],
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(AffiliateDetailsComponent);
+    fixture.detectChanges();
+    return fixture;
+  }
+
+  it('should show empty documents on Jack Mota dossier', async () => {
+    const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
+    const component = fixture.componentInstance;
+
+    expect(component.affiliateName()).toBe('Jack Mota');
+    expect(component.visibleDocuments()).toEqual([]);
+    expect(component.hasListResults).toBe(false);
+    expect(
+      fixture.nativeElement.querySelector('sds-empty-state'),
+    ).toBeTruthy();
+  });
+
+  it('should show other family members in Jack drawer (excluding self)', async () => {
+    const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
+    const component = fixture.componentInstance;
+
+    expect(component.affiliateDetailDrawerData().family.map((m) => m.name)).toEqual(
+      ['Eva Martinez', 'Quinten Mota', 'Shiloh Mota'],
+    );
+  });
+
+  it('should show parent and sibling labels in Jack drawer', async () => {
+    const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
+    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const byName = Object.fromEntries(
+      family.map((member) => [member.name, member.relationship]),
+    );
+
+    expect(byName['Eva Martinez']).toBe('mère');
+    expect(byName['Quinten Mota']).toBe('père');
+    expect(byName['Shiloh Mota']).toBe('sœur');
+  });
+
+  it('should show parent and sibling labels in Shiloh drawer', async () => {
+    const fixture = await createFixtureForAffiliate(SHILOH_MOTA_NISS);
+    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const byName = Object.fromEntries(
+      family.map((member) => [member.name, member.relationship]),
+    );
+
+    expect(byName['Eva Martinez']).toBe('mère');
+    expect(byName['Quinten Mota']).toBe('père');
+    expect(byName['Jack Mota']).toBe('frère');
+  });
+
+  it('should keep Eva Martinez full mock documents on her dossier', async () => {
+    const fixture = await createFixtureForAffiliate(EVA_MARTINEZ_NISS);
+    const component = fixture.componentInstance;
+
+    expect(component.visibleDocuments().length).toBe(6);
+    expect(component.isEvaDossier()).toBe(true);
   });
 });

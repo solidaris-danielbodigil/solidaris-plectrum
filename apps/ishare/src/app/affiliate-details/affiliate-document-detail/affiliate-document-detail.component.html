@@ -1,184 +1,405 @@
 @if (documentDetail(); as detail) {
+
   <div
+
     class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0"
+
   >
-    <p-stepper
-      class="c-affiliate-document-detail__stepper o-layout--full-width o-layout--min-w-0"
-      [(value)]="activeStep"
-    >
-      <p-step-list>
-        @for (step of steps(); track step.value) {
-          <p-step [value]="step.value">{{ step.label }}</p-step>
-        }
-      </p-step-list>
 
-      <p-step-panels>
-        @for (step of steps(); track step.value) {
-          <p-step-panel [value]="step.value">
-            <ng-template #content>
-              @if (step.panels && step.panels.length > 0) {
-                <p-accordion
-                  class="c-audit-accordion o-layout--full-width o-layout--min-w-0"
-                  [value]="certPanelValue()"
-                  (valueChange)="onCertPanelValueChange($event)"
-                  expandIcon="bi bi-chevron-down"
-                  collapseIcon="bi bi-chevron-up"
-                  [multiple]="true"
-                >
-                  @for (panel of step.panels; track panel.id) {
-                    <p-accordion-panel
-                      [value]="panel.id"
-                      [attr.data-panel-id]="panel.id"
-                    >
-                      <p-accordion-header>
-                        <div
-                          class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
-                        >
-                          <span class="c-affiliate-document-detail__cert-title">{{
-                            panel.title
-                          }}</span>
-                          <div
-                            class="c-affiliate-document-detail__cert-header-slot o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-2 o-layout--min-w-0"
-                          >
-                            <div
-                              class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-1 o-layout--min-w-0"
-                            >
-                              <p-tag
-                                [severity]="panel.status.severity"
-                                [value]="panel.status.label"
-                                [icon]="panel.status.icon"
-                              />
-                              @if (panel.workerComment) {
-                                <p-tag
-                                  [severity]="panel.workerComment.severity"
-                                  value="1"
-                                  [icon]="panel.workerComment.icon"
-                                />
-                              }
-                            </div>
-                            <div
-                              class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
-                            >
-                              @for (action of panel.actions; track action.label) {
-                                <button
-                                  pButton
-                                  type="button"
-                                  severity="secondary"
-                                  size="small"
-                                  [icon]="action.icon"
-                                  [label]="action.label"
-                                  [attr.aria-label]="action.label"
-                                ></button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </p-accordion-header>
+    @if (isStandaloneLayout()) {
 
-                      <p-accordion-content>
-                        @if (panel.workerComment) {
-                          <p-message
-                            class="o-layout--margin-block-end-3"
-                            [class.c-affiliate-document-detail__message--highlighted]="
-                              highlightedPanelId() === panel.id
-                            "
-                            [severity]="panel.workerComment.severity"
-                            [text]="panel.workerComment.text"
-                            [icon]="panel.workerComment.icon"
-                          />
-                        }
-                        <h3
-                          class="c-affiliate-document-detail__details-heading"
-                        >
-                          Détails
-                        </h3>
-                        <div
-                          class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
-                        >
-                          @for (field of panel.details; track field.label) {
-                            <div
-                              class="c-affiliate-document-detail__detail-row o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
-                            >
-                              <span
-                                class="c-affiliate-document-detail__detail-label"
-                                >{{ field.label }}</span
-                              >
-                              @if (isPeriodField(field)) {
-                                <div
-                                  class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
-                                >
-                                  <span
-                                    class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
-                                    >Du</span
-                                  >
-                                  <span
-                                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
-                                    >{{ field.value.from }}</span
-                                  >
-                                  <span
-                                    class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
-                                    >Au</span
-                                  >
-                                  <span
-                                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
-                                    >{{ field.value.to }}</span
-                                  >
-                                </div>
-                              } @else {
-                                <span
-                                  class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
-                                  >{{ field.value }}</span
-                                >
-                              }
-                            </div>
-                          }
-                        </div>
+      @if (standalonePanels().length > 0) {
 
-                        <div class="c-affiliate-document-detail__divider">
-                          <p-divider layout="horizontal" />
-                        </div>
+        <ng-container
 
-                        <button
-                          pButton
-                          type="button"
-                          severity="secondary"
-                          icon="bi bi-eye"
-                          [label]="panel.moreDetailsLabel"
-                          (click)="openMoreDetails(panel)"
-                        ></button>
-                      </p-accordion-content>
-                    </p-accordion-panel>
-                  }
-                </p-accordion>
-              }
-            </ng-template>
-          </p-step-panel>
-        }
-      </p-step-panels>
-    </p-stepper>
+          *ngTemplateOutlet="
 
-    <div
-      class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1"
-    >
-      <button
-        pButton
-        type="button"
-        severity="secondary"
-        icon="bi bi-arrow-left"
-        iconPos="right"
-        label="Etape précédente"
-        [disabled]="previousDisabled()"
-        (click)="goToPreviousStep()"
-      ></button>
-      <button
-        pButton
-        type="button"
-        icon="bi bi-arrow-right"
-        iconPos="right"
-        label="Etape suivante"
-        [disabled]="nextDisabled()"
-        (click)="goToNextStep()"
-      ></button>
-    </div>
+            certPanelsAccordion;
+
+            context: { panels: standalonePanels() }
+
+          "
+
+        />
+
+      }
+
+    } @else {
+
+      <p-stepper
+
+        class="c-affiliate-document-detail__stepper o-layout--full-width o-layout--min-w-0"
+
+        [class.c-affiliate-document-detail__stepper--unnumbered]="!stepNumbered()"
+
+        [(value)]="activeStep"
+
+      >
+
+        <p-step-list>
+
+          @for (step of steps(); track step.value) {
+
+            <p-step [value]="step.value">{{ step.label }}</p-step>
+
+          }
+
+        </p-step-list>
+
+
+
+        <p-step-panels>
+
+          @for (step of steps(); track step.value) {
+
+            <p-step-panel [value]="step.value">
+
+              <ng-template #content>
+
+                @if (step.panels && step.panels.length > 0) {
+
+                  <ng-container
+
+                    *ngTemplateOutlet="
+
+                      certPanelsAccordion;
+
+                      context: { panels: step.panels }
+
+                    "
+
+                  />
+
+                }
+
+              </ng-template>
+
+            </p-step-panel>
+
+          }
+
+        </p-step-panels>
+
+      </p-stepper>
+
+
+
+      <div
+
+        class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1"
+
+      >
+
+        <button
+
+          pButton
+
+          type="button"
+
+          severity="secondary"
+
+          icon="bi bi-arrow-left"
+
+          iconPos="right"
+
+          label="Etape précédente"
+
+          [disabled]="previousDisabled()"
+
+          (click)="goToPreviousStep()"
+
+        ></button>
+
+        <button
+
+          pButton
+
+          type="button"
+
+          icon="bi bi-arrow-right"
+
+          iconPos="right"
+
+          label="Etape suivante"
+
+          [disabled]="nextDisabled()"
+
+          (click)="goToNextStep()"
+
+        ></button>
+
+      </div>
+
+    }
+
   </div>
+
 }
+
+
+
+<ng-template #certPanelsAccordion let-panels="panels">
+
+  <p-accordion
+
+    class="c-audit-accordion o-layout--full-width o-layout--min-w-0"
+
+    [value]="certPanelValue()"
+
+    (valueChange)="onCertPanelValueChange($event)"
+
+    expandIcon="bi bi-chevron-down"
+
+    collapseIcon="bi bi-chevron-up"
+
+    [multiple]="true"
+
+  >
+
+    @for (panel of panels; track panel.id) {
+
+      <p-accordion-panel
+
+        [value]="panel.id"
+
+        [attr.data-panel-id]="panel.id"
+
+      >
+
+        <p-accordion-header>
+
+          <div
+
+            class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+
+          >
+
+            <span class="c-affiliate-document-detail__cert-title">{{
+
+              panel.title
+
+            }}</span>
+
+            <div
+
+              class="c-affiliate-document-detail__cert-header-slot o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-2 o-layout--min-w-0"
+
+            >
+
+              <div
+
+                class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-1 o-layout--min-w-0"
+
+              >
+
+                <p-tag
+
+                  [severity]="panel.status.severity"
+
+                  [value]="panel.status.label"
+
+                  [icon]="panel.status.icon"
+
+                />
+
+                @if (panel.workerComment) {
+
+                  <p-tag
+
+                    [severity]="commentCountTagSeverity(panel.workerComment.severity)"
+
+                    value="1"
+
+                    [icon]="panel.workerComment.icon"
+
+                  />
+
+                }
+
+              </div>
+
+              <div
+
+                class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+
+              >
+
+                @for (action of panel.actions; track action.label) {
+
+                  <button
+
+                    pButton
+
+                    type="button"
+
+                    severity="secondary"
+
+                    size="small"
+
+                    [icon]="action.icon"
+
+                    [label]="action.label"
+
+                    [attr.aria-label]="action.label"
+
+                    (click)="onPanelActionClick(action)"
+
+                  ></button>
+
+                }
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </p-accordion-header>
+
+
+
+        <p-accordion-content>
+
+          @if (panel.workerComment) {
+
+            <p-message
+
+              class="o-layout--margin-block-end-3"
+
+              [class.c-affiliate-document-detail__message--highlighted]="
+
+                highlightedPanelId() === panel.id
+
+              "
+
+              [severity]="panel.workerComment.severity"
+
+              [text]="panel.workerComment.text"
+
+              [icon]="panel.workerComment.icon"
+
+            />
+
+          }
+
+          <h3 class="c-affiliate-document-detail__details-heading">
+
+            Détails
+
+          </h3>
+
+          <div
+
+            class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
+
+          >
+
+            @for (field of panel.details; track field.label) {
+
+              <div
+
+                class="c-affiliate-document-detail__detail-row o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
+
+              >
+
+                <span class="c-affiliate-document-detail__detail-label">{{
+
+                  field.label
+
+                }}</span>
+
+                @if (isPeriodField(field)) {
+
+                  <div
+
+                    class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
+
+                  >
+
+                    <span
+
+                      class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+
+                      >Du</span
+
+                    >
+
+                    <span
+
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+
+                      >{{ field.value.from }}</span
+
+                    >
+
+                    <span
+
+                      class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+
+                      >Au</span
+
+                    >
+
+                    <span
+
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+
+                      >{{ field.value.to }}</span
+
+                    >
+
+                  </div>
+
+                } @else {
+
+                  <span
+
+                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+
+                    >{{ field.value }}</span
+
+                  >
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+
+          <div class="c-affiliate-document-detail__divider">
+
+            <p-divider layout="horizontal" />
+
+          </div>
+
+
+
+          <button
+
+            pButton
+
+            type="button"
+
+            severity="secondary"
+
+            icon="bi bi-eye"
+
+            [label]="panel.moreDetailsLabel"
+
+            (click)="openMoreDetails(panel)"
+
+          ></button>
+
+        </p-accordion-content>
+
+      </p-accordion-panel>
+
+    }
+
+  </p-accordion>
+
+</ng-template>

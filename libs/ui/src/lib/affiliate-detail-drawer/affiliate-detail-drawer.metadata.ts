@@ -137,6 +137,7 @@ export const AffiliateDetailDrawerMetadata: ComponentMetadata = {
     { name: 'position', type: 'AffiliateDetailDrawerPosition', required: false, default: 'right', description: 'Edge the drawer slides in from' },
     { name: 'modal', type: 'boolean', required: false, default: 'true', description: 'Whether a backdrop mask is shown behind the drawer' },
     { name: 'view', type: 'AffiliateDetailDrawerView', required: false, default: 'details', description: 'Active segmented-control view (Détails / Documents)' },
+    { name: 'showNotes', type: 'boolean', required: false, default: 'true', description: 'Whether the Notes accordion section is rendered' },
   ],
   examples: [],
 };

@@ -103,6 +103,7 @@ const plectrumIconProviders = [
     <sds-affiliate-detail-drawer
       [(visible)]="open"
       [data]="data()"
+      [showNotes]="showNotes()"
       (identifierCopy)="onIdentifierCopy($event)"
       (viewChange)="onViewChange($event)"
       (quickActionsClick)="notify('Actions rapides')"
@@ -118,6 +119,7 @@ class AffiliateDetailDrawerDemoComponent implements OnInit {
 
   readonly data = input.required<AffiliateDetailDrawerData>();
   readonly initiallyOpen = input<boolean>(false);
+  readonly showNotes = input<boolean>(true);
 
   readonly open = signal(false);
 
@@ -146,6 +148,7 @@ class AffiliateDetailDrawerDemoComponent implements OnInit {
 interface AffiliateDetailDrawerStoryArgs {
   data: AffiliateDetailDrawerData;
   initiallyOpen: boolean;
+  showNotes: boolean;
 }
 
 const meta: Meta<AffiliateDetailDrawerStoryArgs> = {
@@ -181,6 +184,7 @@ iSHARE "Carte affilié" detail drawer — a headless \`p-drawer\` wrapper.
       <sds-affiliate-detail-drawer-demo
         [data]="data"
         [initiallyOpen]="initiallyOpen"
+        [showNotes]="showNotes"
       />
     `,
   }),
@@ -194,6 +198,7 @@ export const Closed: Story = {
   args: {
     data: EVA_MARTINEZ,
     initiallyOpen: false,
+    showNotes: true,
   },
   parameters: {
     docs: {
@@ -208,12 +213,29 @@ export const Open: Story = {
   args: {
     data: EVA_MARTINEZ,
     initiallyOpen: true,
+    showNotes: true,
   },
   parameters: {
     docs: {
       description: {
         story:
           'Drawer open by default showing the full Carte affilié: header, segmented control, sections, and the Famille (blue/green/yellow avatars) and Notes accordions.',
+      },
+    },
+  },
+};
+
+export const WithoutNotes: Story = {
+  args: {
+    data: EVA_MARTINEZ,
+    initiallyOpen: true,
+    showNotes: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Notes section hidden via `[showNotes]="false"` — used by iSHARE while Storybook and other consumers keep the default.',
       },
     },
   },

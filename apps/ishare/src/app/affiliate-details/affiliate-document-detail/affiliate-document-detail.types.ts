@@ -31,6 +31,19 @@ export const COMMENT_ICONS = {
   warn: 'bi bi-exclamation-triangle-fill',
 } as const satisfies Record<'info' | 'warn', string>;
 
+/**
+ * Maps a worker-comment severity onto the comment-count tag severity. Info
+ * comments display as `secondary` so they do not clash with the blue `info`
+ * status tags ("En attente"); every other severity (notably `warn`) is kept
+ * as-is. Shared by the document list row tags and the detail panel/accordion
+ * header tags so both stay visually aligned.
+ */
+export function commentCountTagSeverity(
+  severity: DocumentCertificatPanelStatusSeverity,
+): DocumentCertificatPanelStatusSeverity {
+  return severity === 'info' ? 'secondary' : severity;
+}
+
 /** Audit table description — plain text, status tag, or multiline block. */
 export type DocumentAuditDescription =
   | string
@@ -88,10 +101,19 @@ export interface DocumentStep {
   panels?: DocumentCertificatPanel[];
 }
 
+export type AffiliateDocumentDetailLayout = 'stepper' | 'standalone';
+
 export interface AffiliateDocumentDetail {
   documentId: string;
   title: string;
   activeStep: number;
+  /** When false, stepper hides step numbers (demande incapacité flux). Defaults to true. */
+  stepNumbered?: boolean;
+  /**
+   * Defaults to `stepper`. Use `standalone` for hors-parcours isolated documents
+   * that render a single accordion panel without stepper chrome.
+   */
+  layout?: AffiliateDocumentDetailLayout;
   steps: DocumentStep[];
 }
 

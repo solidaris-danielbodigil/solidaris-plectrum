@@ -195,6 +195,22 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(relationships[0].textContent?.trim()).toBe('(partenaire)');
   });
 
+  it('should hide the Notes accordion when showNotes is false', async () => {
+    fixture.componentRef.setInput('showNotes', false);
+    await openDrawer();
+
+    const accordions = fixture.debugElement.queryAll(By.directive(Accordion));
+    expect(accordions.length).toBe(1);
+    expect(
+      document.querySelector('.c-affiliate-detail-drawer__notes'),
+    ).toBeFalsy();
+    expect(
+      Array.from(
+        document.querySelectorAll('.c-affiliate-detail-drawer__section-title'),
+      ).some((title) => title.textContent?.trim() === 'Notes'),
+    ).toBe(false);
+  });
+
   it('should render notes with author, timestamp and body', async () => {
     await openDrawer();
 
@@ -273,15 +289,38 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(onEmail).toHaveBeenCalledTimes(1);
   });
 
-  it('should emit familyMemberSelect when a family arrow button is clicked', async () => {
+  it('should emit familyMemberSelect when a family tile is clicked', async () => {
     await openDrawer();
     const onSelect = jasmine.createSpy('familyMemberSelect');
     component.familyMemberSelect.subscribe(onSelect);
 
-    const arrow = document.querySelector(
-      '.c-affiliate-detail-drawer__family-tile .c-affiliate-detail-drawer__icon-button',
+    const tile = document.querySelector(
+      '.c-affiliate-detail-drawer__family-tile',
     ) as HTMLButtonElement;
-    arrow.click();
+    tile.click();
+
+    expect(onSelect).toHaveBeenCalledOnceWith(SAMPLE_DATA.family[0]);
+  });
+
+  it('should expose an accessible label on each family tile', async () => {
+    await openDrawer();
+
+    const tiles = document.querySelectorAll(
+      '.c-affiliate-detail-drawer__family-tile',
+    );
+    expect(tiles[0].getAttribute('aria-label')).toBe('Quinten Mota (partenaire)');
+    expect(tiles[2].getAttribute('aria-label')).toBe('Jack Mota (enfant à charge)');
+  });
+
+  it('should emit familyMemberSelect when clicking anywhere on the family tile', async () => {
+    await openDrawer();
+    const onSelect = jasmine.createSpy('familyMemberSelect');
+    component.familyMemberSelect.subscribe(onSelect);
+
+    const name = document.querySelector(
+      '.c-affiliate-detail-drawer__family-name',
+    ) as HTMLSpanElement;
+    name.click();
 
     expect(onSelect).toHaveBeenCalledOnceWith(SAMPLE_DATA.family[0]);
   });

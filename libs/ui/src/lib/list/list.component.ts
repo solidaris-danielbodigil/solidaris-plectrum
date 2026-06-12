@@ -3,6 +3,7 @@ import {
   Component,
   ViewEncapsulation,
   computed,
+  effect,
   input,
   output,
   signal,
@@ -78,6 +79,23 @@ export class ListComponent {
   } | null>(null);
 
   readonly isJourneyMode = computed(() => this.groups() !== null);
+
+  /** Keeps the parent group expanded when selection moves programmatically. */
+  private readonly expandGroupForSelectedItem = effect(() => {
+    const selectedId = this.selectedItemId();
+    if (selectedId === null || !this.isJourneyMode()) {
+      return;
+    }
+
+    const group = (this.groups() ?? []).find((item) =>
+      item.documents.some((document) => document.id === selectedId),
+    );
+    if (!group || this.isGroupExpanded(group.id)) {
+      return;
+    }
+
+    this.syncExpandedGroupId(group.id, true);
+  });
 
   readonly documentCount = computed(() => {
     if (this.isJourneyMode()) {

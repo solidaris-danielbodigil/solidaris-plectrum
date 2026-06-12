@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
@@ -24,8 +24,11 @@ import {
   FormFieldComponent,
   InputClearComponent,
   ListComponent,
+  TestingTelemetryService,
   ToolbarComponent,
+  TransactionsCicsModalComponent,
   type AffiliateDetailDrawerData,
+  type AffiliateDetailDrawerFamilyMember,
 } from '@solidaris/ui';
 import type {
   AffiliateOverviewIdentifier,
@@ -43,8 +46,17 @@ import { BreadcrumbService } from '../layout/breadcrumb.service';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
 import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail/affiliate-document-detail.mock';
 import { DocumentMoreDetailsDrawerComponent } from './affiliate-document-detail/document-more-details-drawer/document-more-details-drawer.component';
+import { environment } from '../../environments/environment';
+import {
+  familyMembersForDossier,
+  resolveAffiliateProfile,
+  resolveFamilyMemberNiss,
+} from './affiliate-family-mock';
+import { isEvaMartinezAffiliate } from './affiliate-mock.constants';
 import {
   COMMENT_ICONS,
+  commentCountTagSeverity,
+  type AffiliateDocumentDetail,
   type DocumentCertificatPanel,
   type DocumentCertificatPanelStatusSeverity,
 } from './affiliate-document-detail/affiliate-document-detail.types';
@@ -101,9 +113,35 @@ function toListTagSeverity(
     : 'secondary';
 }
 
+/**
+ * Visual severity for list comment-count tags. Applies the shared comment-count
+ * mapping (info → `secondary`, see {@link commentCountTagSeverity}) and then
+ * narrows to a {@link ListTagSeverity}, since the list tag does not support
+ * `contrast`.
+ */
+function commentCountListTagSeverity(
+  panelSeverity: DocumentCertificatPanelStatusSeverity,
+): ListTagSeverity {
+  return toListTagSeverity(commentCountTagSeverity(panelSeverity));
+}
+
 function commentTagAriaLabel(severity: ListTagSeverity, count: number): string {
   const noun = COMMENT_TAG_NOUNS[severity];
   return `${count} ${noun}${count > 1 ? 's' : ''}`;
+}
+
+function commentTagAriaLabelForBucket(
+  displaySeverity: ListTagSeverity,
+  panelSeverities: DocumentCertificatPanelStatusSeverity[],
+  count: number,
+): string {
+  const nounSeverity: ListTagSeverity =
+    displaySeverity === 'secondary' &&
+    panelSeverities.every((severity) => severity === 'info')
+      ? 'info'
+      : displaySeverity;
+
+  return commentTagAriaLabel(nounSeverity, count);
 }
 
 /**
@@ -114,13 +152,36 @@ function commentTagAriaLabel(severity: ListTagSeverity, count: number): string {
  * is encoded as `` `${stepValue}::${panelId}` `` for the detail component to
  * decode.
  */
-export function deriveDocumentTags(documentId: string): ListDocumentTag[] {
-  const detail = EVA_MARTINEZ_DOCUMENT_DETAILS[documentId];
+export function deriveDocumentTags(
+  documentId: string,
+  details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
+): ListDocumentTag[] {
+  const detail = details[documentId];
   if (!detail) {
     return [];
   }
 
-  const targetsBySeverity = new Map<ListTagSeverity, ListDocumentTagTarget[]>();
+  const targetsBySeverity = new Map<
+    ListTagSeverity,
+    {
+      targets: ListDocumentTagTarget[];
+      panelSeverities: DocumentCertificatPanelStatusSeverity[];
+    }
+  >();
+
+  const addTarget = (
+    displaySeverity: ListTagSeverity,
+    panelSeverity: DocumentCertificatPanelStatusSeverity,
+    target: ListDocumentTagTarget,
+  ): void => {
+    const bucket = targetsBySeverity.get(displaySeverity) ?? {
+      targets: [],
+      panelSeverities: [],
+    };
+    bucket.targets.push(target);
+    bucket.panelSeverities.push(panelSeverity);
+    targetsBySeverity.set(displaySeverity, bucket);
+  };
 
   for (const step of detail.steps) {
     for (const panel of step.panels ?? []) {
@@ -128,27 +189,40 @@ export function deriveDocumentTags(documentId: string): ListDocumentTag[] {
         continue;
       }
 
-      const severity = toListTagSeverity(panel.workerComment.severity);
-      const targets = targetsBySeverity.get(severity) ?? [];
-      targets.push({
-        id: `${step.value}::${panel.id}`,
-        label: `${step.label} - ${panel.title}`,
-      });
-      targetsBySeverity.set(severity, targets);
+      const targetLabel =
+        detail.layout === 'standalone'
+          ? panel.title
+          : `${step.label} - ${panel.title}`;
+
+      addTarget(
+        commentCountListTagSeverity(panel.workerComment.severity),
+        panel.workerComment.severity,
+        {
+          id: `${step.value}::${panel.id}`,
+          label: targetLabel,
+        },
+      );
     }
   }
 
-  return [...targetsBySeverity.entries()].map(([severity, targets]) => ({
-    label: String(targets.length),
+  return [...targetsBySeverity.entries()].map(([severity, bucket]) => ({
+    label: String(bucket.targets.length),
     severity,
     icon: COMMENT_TAG_ICONS[severity],
-    ariaLabel: commentTagAriaLabel(severity, targets.length),
-    targets,
+    ariaLabel: commentTagAriaLabelForBucket(
+      severity,
+      bucket.panelSeverities,
+      bucket.targets.length,
+    ),
+    targets: bucket.targets,
   }));
 }
 
-function withDerivedTags(document: ListDocumentItem): ListDocumentItem {
-  const tags = deriveDocumentTags(document.id);
+function withDerivedTags(
+  document: ListDocumentItem,
+  details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
+): ListDocumentItem {
+  const tags = deriveDocumentTags(document.id, details);
   return tags.length > 0 ? { ...document, tags } : document;
 }
 
@@ -225,80 +299,61 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
   },
 ] as ListGroup[]).map((group) => ({
   ...group,
-  documents: group.documents.map(withDerivedTags),
+  documents: group.documents.map((document) =>
+    withDerivedTags(document, EVA_MARTINEZ_DOCUMENT_DETAILS),
+  ),
 }));
 
-const DOCUMENT_START_DATE_BY_ID = new Map(
-  EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
-    group.documents.map(
-      (document) => [document.id, group.startDate ?? ''] as const,
-    ),
-  ),
+/** Hors-parcours documents — merged into flat list, excluded from journey groups. */
+export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
+  {
+    id: 'doc-c4',
+    title: 'C4',
+    titleLine2: 'Attestation C4',
+    status: {
+      label: 'Reçu',
+      severity: 'info',
+      icon: 'bi bi-save',
+    },
+  },
+  {
+    id: 'doc-attestation-pedicure',
+    title: 'Attestation de soin pédicure',
+    status: {
+      label: 'En traitement',
+      severity: 'warn',
+      icon: 'bi bi-hourglass-split',
+    },
+  },
+].map((document) =>
+  withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
 );
 
-const EVA_MARTINEZ_DRAWER_STATIC: Omit<
-  AffiliateDetailDrawerData,
-  'name' | 'identifiers'
-> = {
-  avatarInitials: 'EM',
-  avatarGender: 'female',
-  avatarVariant: 1,
-  generalInfo: [
-    { label: 'NSI', value: '00004212182' },
-    { label: 'Date de naissance', value: '14/08/1989 (36 ans)' },
-    { label: 'Nationalité', value: 'Espagnol (ES)' },
-    { label: 'Langue de contact', value: 'Espagnol (ES)' },
-  ],
-  contactInfo: [
-    { label: 'Adresse officielle', value: 'Solidariteitsstraat 5, 2500 Lier' },
-    { label: 'E-mail', value: 'lies.verhoeven@gmail.com' },
-    { label: 'Numéro de téléphone', value: '+32 89 123 004' },
-    { label: 'Numéro de portable', value: '+32 472 987 567' },
-  ],
-  family: [
-    {
-      initials: 'Q',
-      name: 'Quinten Mota',
-      relationship: 'partenaire',
-      color: 'blue',
-    },
-    {
-      initials: 'S',
-      name: 'Shiloh Mota',
-      relationship: 'enfant à charge',
-      color: 'green',
-    },
-    {
-      initials: 'J',
-      name: 'Jack Mota',
-      relationship: 'enfant à charge',
-      color: 'yellow',
-    },
-  ],
-  notes: [
-    {
-      author: 'Eva de Moyer',
-      timestamp: '11/11/2022, 09:10',
-      body: 'Personne agressive',
-      tagLabel: 'Informations sensibles',
-      severity: 'sensitive',
-    },
-    {
-      author: 'Bert Luyckx',
-      timestamp: '02/12/2023, 16:18',
-      body: 'L’affilié est de langue étrangère.',
-      tagLabel: 'Remarque libre',
-      severity: 'neutral',
-    },
-    {
-      author: 'Bert Luyckx',
-      timestamp: '02/12/2023, 16:18',
-      body: 'Lorem ipsum',
-      tagLabel: 'Informations sensibles',
-      severity: 'sensitive',
-    },
-  ],
-};
+const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
+  ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
+    group.documents.map((document) => {
+      const receptionById: Record<string, string> = {
+        'doc-demande-primaire': '24/11/2025',
+        'doc-incapacite': '24/11/2025',
+        'doc-rechute': '01/01/2026',
+        'doc-cloture-primaire': '20/01/2026',
+      };
+      return [
+        document.id,
+        receptionById[document.id] ?? group.startDate ?? '',
+      ] as const;
+    }),
+  ),
+  ['doc-c4', '16/12/2025'],
+  ['doc-attestation-pedicure', '09/06/2026'],
+]);
+
+function allEvaMartinezDocuments(): ListDocumentItem[] {
+  return [
+    ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
+    ...EVA_MARTINEZ_STANDALONE_DOCUMENTS,
+  ];
+}
 
 @Component({
   selector: 'app-affiliate-details',
@@ -321,6 +376,7 @@ const EVA_MARTINEZ_DRAWER_STATIC: Omit<
     AffiliateDocumentDetailComponent,
     AffiliateDetailDrawerComponent,
     DocumentMoreDetailsDrawerComponent,
+    TransactionsCicsModalComponent,
   ],
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
@@ -329,15 +385,12 @@ const EVA_MARTINEZ_DRAWER_STATIC: Omit<
 })
 export class AffiliateDetailsComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly affiliateHeaderService = inject(AffiliateHeaderService);
   private readonly messageService = inject(MessageService);
+  private readonly telemetry = inject(TestingTelemetryService);
   private readonly destroyRef = inject(DestroyRef);
-
-  // PLACEHOLDER affiliate data — real data binding (lookup by route id) comes in
-  // the next iteration. The Eva Martinez "warning" example mirrors the Figma SSOT
-  // (iSHARE-Audit node 324:5744).
-  readonly affiliateName = 'Eva Martinez';
 
   private readonly routeParams = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
@@ -345,6 +398,16 @@ export class AffiliateDetailsComponent {
 
   /** Searched identifier passed from the home search page (route param). */
   readonly affiliateId = computed(() => this.routeParams().get('id') ?? '');
+
+  readonly affiliateProfile = computed(() =>
+    resolveAffiliateProfile(this.affiliateId()),
+  );
+
+  readonly isEvaDossier = computed(() =>
+    isEvaMartinezAffiliate(this.affiliateId()),
+  );
+
+  readonly affiliateName = computed(() => this.affiliateProfile().name);
 
   readonly statusAction: AffiliateOverviewStatusAction = {
     label: 'Action requise',
@@ -354,15 +417,16 @@ export class AffiliateDetailsComponent {
   readonly documentInfoFilter =
     signal<AffiliateOverviewInfoTagFilterKey | null>(null);
 
+  readonly transactionsCicsDialogVisible = signal(false);
+
   readonly infoTags = computed<AffiliateOverviewInfoTag[]>(() => {
-    const allDocuments = EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap(
-      (group) => group.documents,
-    );
+    const allDocuments = this.allDocumentsForContext();
     const activeCount = allDocuments.filter(isActiveDocument).length;
     const closedCount = allDocuments.filter(isClosedDocument).length;
     const filter = this.documentInfoFilter();
+    const tags: AffiliateOverviewInfoTag[] = [];
 
-    return [
+    tags.push(
       {
         label: 'Dernière action:',
         value: this.lastActionLabel(),
@@ -381,16 +445,22 @@ export class AffiliateDetailsComponent {
         filterKey: 'closed-documents',
         active: filter === 'closed-documents',
       },
-    ];
+    );
+
+    return tags;
   });
 
   // The NISS chip echoes the identifier searched on the home page when present.
-  readonly identifiers = computed<AffiliateOverviewIdentifier[]>(() => [
-    { label: 'Territoire', value: '319' },
-    { label: 'NSI', value: '00004212182' },
-    { label: 'N° de contrat', value: '1241786-19630928-2' },
-    { label: 'NISS', value: this.affiliateId() || '63092814612' },
-  ]);
+  readonly identifiers = computed<AffiliateOverviewIdentifier[]>(() => {
+    const profile = this.affiliateProfile();
+
+    return [
+      { label: 'Territoire', value: '319' },
+      { label: 'NSI', value: profile.nsi },
+      { label: 'N° de contrat', value: profile.contractNumber },
+      { label: 'NISS', value: profile.niss },
+    ];
+  });
 
   readonly primaryAction: AffiliateOverviewPrimaryAction = {
     label: 'Voir carte affilié',
@@ -404,14 +474,24 @@ export class AffiliateDetailsComponent {
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
 
   readonly affiliateDetailDrawerData = computed<AffiliateDetailDrawerData>(
-    () => ({
-      name: this.affiliateName,
-      ...EVA_MARTINEZ_DRAWER_STATIC,
-      identifiers: this.identifiers().map(({ label, value }) => ({
-        label,
-        value,
-      })),
-    }),
+    () => {
+      const profile = this.affiliateProfile();
+
+      return {
+        name: profile.name,
+        avatarInitials: profile.avatarInitials,
+        avatarGender: profile.avatarGender,
+        avatarVariant: profile.avatarVariant,
+        generalInfo: profile.generalInfo,
+        contactInfo: profile.contactInfo,
+        family: familyMembersForDossier(profile.niss),
+        notes: [],
+        identifiers: this.identifiers().map(({ label, value }) => ({
+          label,
+          value,
+        })),
+      };
+    },
   );
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
@@ -471,9 +551,7 @@ export class AffiliateDetailsComponent {
   );
 
   readonly visibleDocuments = computed(() =>
-    this.filterDocuments(
-      EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
-    ),
+    this.filterDocuments(this.allDocumentsForContext()),
   );
 
   get listGroups(): ListGroup[] | null {
@@ -481,7 +559,9 @@ export class AffiliateDetailsComponent {
       return null;
     }
 
-    let groups = EVA_MARTINEZ_DOCUMENT_GROUPS;
+    let groups = this.isEvaDossier()
+      ? EVA_MARTINEZ_DOCUMENT_GROUPS
+      : [];
 
     if (this.documentInfoFilter() === 'last-action') {
       const latestGroupId = this.latestJourneyGroupId();
@@ -503,10 +583,8 @@ export class AffiliateDetailsComponent {
       return [];
     }
 
-    return this.sortDocumentsByStartDate(
-      this.filterDocuments(
-        EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
-      ),
+    return this.sortDocumentsByReceptionDate(
+      this.filterDocuments(this.allDocumentsForContext()),
     );
   }
 
@@ -565,13 +643,21 @@ export class AffiliateDetailsComponent {
     }
 
     const group = this.listGroups?.find((item) => item.id === newlyExpandedId);
-    const firstDocument = group?.documents[0];
-    if (!firstDocument) {
+    if (!group?.documents.length) {
+      return;
+    }
+
+    const selected = this.selectedDocumentId();
+    const selectedAlreadyInGroup =
+      selected !== null &&
+      group.documents.some((document) => document.id === selected);
+
+    if (selectedAlreadyInGroup) {
       return;
     }
 
     this.documentFocus.set(null);
-    this.selectedDocumentId.set(firstDocument.id);
+    this.selectedDocumentId.set(group.documents[0].id);
   }
 
   onDocumentClick(document: ListDocumentItem): void {
@@ -579,6 +665,7 @@ export class AffiliateDetailsComponent {
     // resets to the document defaults instead of re-jumping to the old panel.
     this.documentFocus.set(null);
     this.selectedDocumentId.set(document.id);
+    this.recordTelemetry('document_select', document.id);
   }
 
   onTagTargetClick({
@@ -602,6 +689,7 @@ export class AffiliateDetailsComponent {
 
     this.selectedDocumentId.set(doc.id);
     this.documentFocus.set({ stepValue, panelId });
+    this.recordTelemetry('deep_link_tag', `${doc.id}::${target.id}`);
   }
 
   onSelectedDocumentIdChange(documentId: string): void {
@@ -624,11 +712,33 @@ export class AffiliateDetailsComponent {
 
   onPrimaryActionClick(): void {
     this.affiliateDetailDrawerVisible.set(true);
+    this.recordTelemetry('drawer_open', 'affiliate-detail');
   }
 
   onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
     this.moreDetailsPanel.set(panel);
     this.moreDetailsDrawerVisible.set(true);
+    this.recordTelemetry('drawer_open', `more-details:${panel.id}`);
+  }
+
+  onTransactionsCicsOpen(): void {
+    this.transactionsCicsDialogVisible.set(true);
+    this.recordTelemetry('cics_modal_open');
+  }
+
+  onFamilyMemberSelect(member: AffiliateDetailDrawerFamilyMember): void {
+    const targetNiss = resolveFamilyMemberNiss(member);
+    if (!targetNiss || targetNiss === this.affiliateProfile().niss) {
+      return;
+    }
+
+    this.affiliateDetailDrawerVisible.set(false);
+    this.recordTelemetry('family_member_select', member.name);
+    void this.router.navigate(['/affiliate', targetNiss]);
+  }
+
+  onCicsTransactionLaunch(code: string): void {
+    this.recordTelemetry('cics_transaction_launch', code);
   }
 
   onDrawerMenuClick(): void {
@@ -650,14 +760,40 @@ export class AffiliateDetailsComponent {
     });
   }
 
-  private lastActionLabel(): string {
-    const latestGroup = this.latestJourneyGroup();
+  private allDocumentsForContext(): ListDocumentItem[] {
+    return this.isEvaDossier() ? allEvaMartinezDocuments() : [];
+  }
 
-    if (!latestGroup?.endDate) {
+  private receptionDateById(documentId: string): string | undefined {
+    return DOCUMENT_RECEPTION_DATE_BY_ID.get(documentId);
+  }
+
+  private recordTelemetry(event: string, target?: string): void {
+    if (environment.enableTestingTelemetry) {
+      this.telemetry.record(event, target);
+    }
+  }
+
+  private lastActionLabel(): string {
+    if (!this.isEvaDossier()) {
       return '—';
     }
 
-    return `Document reçu ${latestGroup.endDate}`;
+    let latestReceptionDate = '';
+    for (const date of DOCUMENT_RECEPTION_DATE_BY_ID.values()) {
+      if (
+        !latestReceptionDate ||
+        parseFrenchDate(date) > parseFrenchDate(latestReceptionDate)
+      ) {
+        latestReceptionDate = date;
+      }
+    }
+
+    if (!latestReceptionDate) {
+      return '—';
+    }
+
+    return `Document reçu ${latestReceptionDate}`;
   }
 
   private latestJourneyGroup(): ListGroup | null {
@@ -705,13 +841,8 @@ export class AffiliateDetailsComponent {
     } else if (infoFilter === 'closed-documents') {
       filtered = filtered.filter(isClosedDocument);
     } else if (infoFilter === 'last-action') {
-      const latestGroup = this.latestJourneyGroup();
-      const latestDocumentIds = new Set(
-        latestGroup?.documents.map((document) => document.id) ?? [],
-      );
-      filtered = filtered.filter((document) =>
-        latestDocumentIds.has(document.id),
-      );
+      const latestDocumentId = this.latestReceptionDocumentId();
+      filtered = filtered.filter((document) => document.id === latestDocumentId);
     }
 
     if (this.selectedSort()?.value === 'nom-document') {
@@ -719,7 +850,7 @@ export class AffiliateDetailsComponent {
         left.title.localeCompare(right.title),
       );
     } else {
-      filtered = this.sortDocumentsByStartDate(filtered);
+      filtered = this.sortDocumentsByReceptionDate(filtered);
     }
 
     return filtered;
@@ -733,21 +864,54 @@ export class AffiliateDetailsComponent {
     );
   }
 
-  private sortDocumentsByStartDate(
+  private sortDocumentsByReceptionDate(
     documents: ListDocumentItem[],
   ): ListDocumentItem[] {
     const ascending = this.startDateSortAscending();
 
     return [...documents].sort((left, right) =>
       compareStartDates(
-        DOCUMENT_START_DATE_BY_ID.get(left.id),
-        DOCUMENT_START_DATE_BY_ID.get(right.id),
+        this.receptionDateById(left.id),
+        this.receptionDateById(right.id),
         ascending,
       ),
     );
   }
 
+  private latestReceptionDocumentId(): string {
+    return [...DOCUMENT_RECEPTION_DATE_BY_ID.entries()].reduce(
+      (latest, [documentId, date]) =>
+        parseFrenchDate(date) > parseFrenchDate(latest.date)
+          ? { documentId, date }
+          : latest,
+      { documentId: '', date: '' },
+    ).documentId;
+  }
+
   constructor() {
+    if (environment.enableTestingTelemetry) {
+      this.telemetry.enable();
+    }
+
+    this.destroyRef.onDestroy(() => {
+      this.telemetry.disable();
+    });
+
+    let previousAffiliateRouteId: string | null = null;
+    effect(() => {
+      const routeId = this.affiliateId();
+      if (
+        previousAffiliateRouteId !== null &&
+        previousAffiliateRouteId !== routeId
+      ) {
+        this.defaultJourneyExpansionApplied = false;
+        this.expandedGroupIds.set([]);
+        this.selectedDocumentId.set(null);
+        this.documentFocus.set(null);
+      }
+      previousAffiliateRouteId = routeId;
+    });
+
     effect(() => {
       const visible = this.visibleDocuments();
       const selected = this.selectedDocumentId();
@@ -817,15 +981,17 @@ export class AffiliateDetailsComponent {
       this.breadcrumbService.setBreadcrumbs([
         { label: 'iShare' },
         { label: "Recherche d'affilié", routerLink: '/home' },
-        { label: this.affiliateName },
+        { label: this.affiliateName() },
       ]);
 
+      const profile = this.affiliateProfile();
+
       this.affiliateHeaderService.setHeader({
-        title: this.affiliateName,
-        variant: 'warning',
-        avatarGender: 'female',
-        avatarVariant: 1,
-        avatarInitials: 'EM',
+        title: profile.name,
+        variant: profile.headerVariant,
+        avatarGender: profile.avatarGender,
+        avatarVariant: profile.avatarVariant,
+        avatarInitials: profile.avatarInitials,
         statusAction: this.statusAction,
         infoTags: this.infoTags(),
         identifiers: this.identifiers(),

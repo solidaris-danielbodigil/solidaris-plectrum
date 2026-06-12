@@ -41,6 +41,12 @@
 // Stepper token bridge in 01-settings — structural panel reset only
 .c-affiliate-document-detail__stepper {
   min-width: 0;
+
+  &--unnumbered {
+    .p-step-number {
+      display: none;
+    }
+  }
 }
 
 // ── Certificate accordion content ────────────────────────────────────────────

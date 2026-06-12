@@ -213,103 +213,97 @@
                       member of affiliate.family;
                       track trackFamilyMember($index, member)
                     ) {
-                      <p-card
-                        class="c-affiliate-detail-drawer__family-tile o-layout--full-width"
+                      <button
+                        type="button"
+                        class="c-affiliate-detail-drawer__family-tile o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-layout--full-width"
+                        [attr.aria-label]="familyMemberAriaLabel(member)"
+                        (click)="onFamilyMemberSelect(member)"
                       >
-                        <div
-                          class="c-affiliate-detail-drawer__family-tile-inner o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5"
+                        <span
+                          class="c-affiliate-detail-drawer__family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
                         >
-                          <div
-                            class="c-affiliate-detail-drawer__family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
-                          >
-                            <sds-plectrum-avatar
-                              class="c-affiliate-detail-drawer__family-avatar o-flex__item--shrink-0"
-                              size="small"
-                              [initials]="member.initials"
-                              [color]="member.color ?? 'red'"
-                              [ariaLabel]="member.name"
-                            />
-                            <p
-                              class="c-affiliate-detail-drawer__family-text o-flex o-flex--align-items-baseline o-flex--wrap o-layout--gap-0-75 o-layout--min-w-0"
-                            >
-                              <span class="c-affiliate-detail-drawer__family-name">{{
-                                member.name
-                              }}</span>
-                              <span class="c-affiliate-detail-drawer__family-relationship"
-                                >({{ member.relationship }})</span
-                              >
-                            </p>
-                          </div>
-
-                          <button
-                            pButton
-                            type="button"
-                            text
-                            [rounded]="true"
-                            severity="secondary"
+                          <sds-plectrum-avatar
+                            class="c-affiliate-detail-drawer__family-avatar o-flex__item--shrink-0"
                             size="small"
-                            class="c-affiliate-detail-drawer__icon-button o-flex__item--shrink-0"
-                            icon="bi bi-arrow-right"
-                            [attr.aria-label]="familyMemberAriaLabel(member)"
-                            (click)="onFamilyMemberSelect(member)"
-                          ></button>
-                        </div>
-                      </p-card>
-                    }
-                  </div>
-                </p-accordion-content>
-              </p-accordion-panel>
-            </p-accordion>
-          </section>
-
-          <hr aria-hidden="true" />
-
-          <section class="c-affiliate-detail-drawer__section o-flex__item--shrink-0">
-            <p-accordion
-              class="c-affiliate-detail-drawer__accordion o-layout--full-width o-layout--min-w-0"
-              [value]="notesPanelValue()"
-              (valueChange)="notesPanelValue.set($any($event))"
-              expandIcon="bi bi-chevron-down"
-              collapseIcon="bi bi-chevron-up"
-            >
-              <p-accordion-panel [value]="notesPanel">
-                <p-accordion-header>
-                  <span class="c-affiliate-detail-drawer__section-title">Notes</span>
-                </p-accordion-header>
-                <p-accordion-content>
-                  <div
-                    class="c-affiliate-detail-drawer__notes o-flex o-flex--y o-layout--gap-1"
-                  >
-                    @for (note of affiliate.notes; track trackNote($index, note)) {
-                      <article class="c-affiliate-detail-drawer__note o-flex o-flex--y o-layout--gap-0-5">
-                        <div
-                          class="c-affiliate-detail-drawer__note-header o-flex o-flex--align-items-center o-layout--gap-0-75"
-                        >
-                          <span class="c-affiliate-detail-drawer__note-author">{{
-                            note.author
-                          }}</span>
-                          <span
-                            class="c-affiliate-detail-drawer__note-timestamp o-flex__item--grow-1 o-layout--min-w-0"
-                            >{{ note.timestamp }}</span
-                          >
-                          <p-tag
-                            class="c-affiliate-detail-drawer__note-tag"
-                            [class.c-affiliate-detail-drawer__note-tag--sensitive]="
-                              note.severity === 'sensitive'
-                            "
-                            [severity]="noteTagSeverity(note)"
-                            [value]="note.tagLabel"
-                            [icon]="noteTagIcon(note)"
+                            [initials]="member.initials"
+                            [color]="member.color ?? 'red'"
+                            aria-hidden="true"
+                            tabindex="-1"
                           />
-                        </div>
-                        <p class="c-affiliate-detail-drawer__note-body">{{ note.body }}</p>
-                      </article>
+                          <span
+                            class="c-affiliate-detail-drawer__family-text o-flex o-flex--align-items-baseline o-flex--wrap o-layout--gap-0-75 o-layout--min-w-0"
+                          >
+                            <span class="c-affiliate-detail-drawer__family-name">{{
+                              member.name
+                            }}</span>
+                            <span class="c-affiliate-detail-drawer__family-relationship"
+                              >({{ member.relationship }})</span
+                            >
+                          </span>
+                        </span>
+
+                        <i
+                          class="c-affiliate-detail-drawer__family-chevron bi bi-arrow-right o-flex__item--shrink-0"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
                     }
                   </div>
                 </p-accordion-content>
               </p-accordion-panel>
             </p-accordion>
           </section>
+
+          @if (showNotes()) {
+            <hr aria-hidden="true" />
+
+            <section class="c-affiliate-detail-drawer__section o-flex__item--shrink-0">
+              <p-accordion
+                class="c-affiliate-detail-drawer__accordion o-layout--full-width o-layout--min-w-0"
+                [value]="notesPanelValue()"
+                (valueChange)="notesPanelValue.set($any($event))"
+                expandIcon="bi bi-chevron-down"
+                collapseIcon="bi bi-chevron-up"
+              >
+                <p-accordion-panel [value]="notesPanel">
+                  <p-accordion-header>
+                    <span class="c-affiliate-detail-drawer__section-title">Notes</span>
+                  </p-accordion-header>
+                  <p-accordion-content>
+                    <div
+                      class="c-affiliate-detail-drawer__notes o-flex o-flex--y o-layout--gap-1"
+                    >
+                      @for (note of affiliate.notes; track trackNote($index, note)) {
+                        <article class="c-affiliate-detail-drawer__note o-flex o-flex--y o-layout--gap-0-5">
+                          <div
+                            class="c-affiliate-detail-drawer__note-header o-flex o-flex--align-items-center o-layout--gap-0-75"
+                          >
+                            <span class="c-affiliate-detail-drawer__note-author">{{
+                              note.author
+                            }}</span>
+                            <span
+                              class="c-affiliate-detail-drawer__note-timestamp o-flex__item--grow-1 o-layout--min-w-0"
+                              >{{ note.timestamp }}</span
+                            >
+                            <p-tag
+                              class="c-affiliate-detail-drawer__note-tag"
+                              [class.c-affiliate-detail-drawer__note-tag--sensitive]="
+                                note.severity === 'sensitive'
+                              "
+                              [severity]="noteTagSeverity(note)"
+                              [value]="note.tagLabel"
+                              [icon]="noteTagIcon(note)"
+                            />
+                          </div>
+                          <p class="c-affiliate-detail-drawer__note-body">{{ note.body }}</p>
+                        </article>
+                      }
+                    </div>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </section>
+          }
         </div>
       </div>
     }

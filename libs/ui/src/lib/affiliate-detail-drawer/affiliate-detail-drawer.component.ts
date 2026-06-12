@@ -11,7 +11,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { Drawer } from 'primeng/drawer';
 import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
@@ -127,7 +126,6 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   imports: [
     AccordionModule,
     ButtonModule,
-    Card,
     CopyableTextComponent,
     Drawer,
     FormsModule,
@@ -154,6 +152,9 @@ export class AffiliateDetailDrawerComponent {
 
   /** Active segmented-control view; controlled by the host when provided. */
   readonly view = input<AffiliateDetailDrawerView>('details');
+
+  /** Whether the Notes accordion section is rendered. */
+  readonly showNotes = input<boolean>(true);
 
   readonly identifierCopy = output<AffiliateDetailDrawerIdentifier>();
   readonly viewChange = output<AffiliateDetailDrawerView>();

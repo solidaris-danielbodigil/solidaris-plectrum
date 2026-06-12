@@ -1,6 +1,7 @@
 // Eva Martinez demo document detail data — Figma iSHARE-Audit node 324:5860.
 // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
 
+import { isEvaMartinezAffiliate } from '../affiliate-mock.constants';
 import type {
   AffiliateDocumentDetail,
   DocumentMoreDetails,
@@ -68,7 +69,11 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-27-11-2025',
       dateLabel: '27/11/2025',
-      status: { label: 'Accepté', severity: 'success', icon: 'bi bi-check-all' },
+      status: {
+        label: 'Accepté',
+        severity: 'success',
+        icon: 'bi bi-check-all',
+      },
       markerIcon: 'bi bi-check-all',
       markerTone: 'success',
       rows: [
@@ -87,9 +92,196 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
   ],
 };
 
+const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-20-01-2026',
+      dateLabel: '20/01/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '20/01/2026 09:15:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-21-01-2026',
+      dateLabel: '21/01/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '21/01/2026 10:00:00',
+          description: 'Dossier verrouillé pour traitement',
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'accepte-22-01-2026',
+      dateLabel: '22/01/2026',
+      status: {
+        label: 'Accepté',
+        severity: 'success',
+        icon: 'bi bi-check-all',
+      },
+      markerIcon: 'bi bi-check-all',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '22/01/2026 11:30:00',
+          description: {
+            kind: 'tag',
+            label: 'Accepté - Auto',
+            severity: 'success',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+  ],
+};
+
+const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-25-12-2025',
+      dateLabel: '25/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '25/12/2025 08:45:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'accepte-27-12-2025',
+      dateLabel: '27/12/2025',
+      status: {
+        label: 'Accepté',
+        severity: 'success',
+        icon: 'bi bi-check-all',
+      },
+      markerIcon: 'bi bi-check-all',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '27/12/2025 16:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Accepté - Auto',
+            severity: 'success',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+  ],
+};
+
+const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-02-01-2026',
+      dateLabel: '02/01/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '02/01/2026 10:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-03-01-2026',
+      dateLabel: '03/01/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '03/01/2026 11:30:00',
+          description: 'Dossier verrouillé pour traitement',
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'accepte-04-01-2026',
+      dateLabel: '04/01/2026',
+      status: {
+        label: 'Accepté',
+        severity: 'success',
+        icon: 'bi bi-check-all',
+      },
+      markerIcon: 'bi bi-check-all',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '04/01/2026 14:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Accepté - Auto',
+            severity: 'success',
+          },
+          application: 'Gestion des certificats ITT',
+          source: 'IGED',
+        },
+      ],
+    },
+  ],
+};
+
 const FDR_PANEL_DETAILS = [
   { label: 'Date de réception', value: '05/12/2025' },
   { label: 'Date du risque', value: '24/11/2025' },
+];
+
+const FDR_PANEL_DETAILS_RECHUTE = [
+  { label: 'Date de réception', value: '06/01/2026' },
+  { label: 'Date du risque', value: '01/01/2026' },
 ];
 
 const FDR_PANEL_ACTIONS = [
@@ -222,9 +414,58 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     title: 'Incapacité',
     activeStep: 1,
     steps: [
-      { value: 1, label: 'Certificat médical', panels: [] },
-      { value: 2, label: 'Feuilles de renseignement', panels: [] },
-      { value: 3, label: 'Calcul', panels: [] },
+      {
+        value: 1,
+        label: 'Paiement',
+        panels: [
+          {
+            id: 'paiement-incapacite',
+            title: 'Paiement',
+            status: {
+              label: 'En attente',
+              severity: 'info',
+              icon: 'bi bi-clock',
+            },
+            actions: [],
+            details: [
+              {
+                label: 'Période concernée',
+                value: { from: '25/12/2025', to: '27/12/2025' },
+              },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+          },
+        ],
+      },
+      {
+        value: 2,
+        label: 'Certificat',
+        panels: [
+          {
+            id: 'certificat-prolongation',
+            title: 'Certificat ITT - Prolongation',
+            status: {
+              label: 'Accepté',
+              severity: 'success',
+              icon: 'bi bi-check-lg',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '25/12/2025' },
+              { label: 'Numéro de certificat', value: '25/1256332' },
+              {
+                label: 'Période',
+                value: { from: '25/12/2025', to: '27/12/2025' },
+              },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+            moreDetails: CERTIFICAT_PROLONGATION_MORE_DETAILS,
+          },
+        ],
+      },
     ],
   },
   'doc-rechute': {
@@ -240,52 +481,24 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             id: 'certificat-rechute',
             title: 'Certificat ITT',
             status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
+              label: 'Accepté',
+              severity: 'success',
+              icon: 'bi bi-check-lg',
             },
-            actions: [],
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
             details: [
               { label: 'Date de réception', value: '02/01/2026' },
+              { label: 'Numéro de certificat', value: '26/1005678' },
               {
                 label: 'Période',
                 value: { from: '01/01/2026', to: '15/01/2026' },
               },
             ],
             moreDetailsLabel: 'Voir plus de details',
-          },
-        ],
-      },
-      { value: 2, label: 'Feuilles de renseignement', panels: [] },
-      { value: 3, label: 'Calcul', panels: [] },
-    ],
-  },
-  'doc-cloture-primaire': {
-    documentId: 'doc-cloture-primaire',
-    title: 'Demande Primaire - Régime général',
-    activeStep: 3,
-    steps: [
-      {
-        value: 1,
-        label: 'Certificat médical',
-        panels: [
-          {
-            id: 'certificat-cloture',
-            title: 'Certificat ITT',
-            status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
-            },
-            actions: [],
-            details: [
-              { label: 'Date de réception', value: '20/01/2026' },
-              {
-                label: 'Période',
-                value: { from: '20/01/2026', to: '12/06/2026' },
-              },
-            ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetails: CERTIFICAT_ITT_RECHUTE_MORE_DETAILS,
           },
         ],
       },
@@ -294,18 +507,44 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
         label: 'Feuilles de renseignement',
         panels: [
           {
-            id: 'fdr-cloture',
+            id: 'fdr-employeur-rechute',
             title: 'F.D.R. employeur',
             status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
             },
             actions: FDR_PANEL_ACTIONS,
-            details: [
-              { label: 'Date de réception', value: '28/01/2026' },
-              { label: 'Date du risque', value: '20/01/2026' },
-            ],
+            details: FDR_PANEL_DETAILS_RECHUTE,
+            moreDetailsLabel: 'Voir plus de details',
+          },
+          {
+            id: 'fdr-affilie-rechute',
+            title: 'F.D.R. affilié - Incapacité de travail',
+            status: {
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
+            },
+            workerComment: {
+              severity: 'info',
+              text: 'En attente du flux employeur - 08/01/2026 15:56',
+              icon: COMMENT_ICONS.info,
+            },
+            actions: FDR_PANEL_ACTIONS,
+            details: FDR_PANEL_DETAILS_RECHUTE,
+            moreDetailsLabel: 'Voir plus de details',
+          },
+          {
+            id: 'compte-financier-rechute',
+            title: 'Compte financier - Liasse',
+            status: {
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
+            },
+            actions: FDR_PANEL_ACTIONS,
+            details: FDR_PANEL_DETAILS_RECHUTE,
             moreDetailsLabel: 'Voir plus de details',
           },
         ],
@@ -315,19 +554,201 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
         label: 'Calcul',
         panels: [
           {
-            id: 'calcul-cloture',
+            id: 'calcul-rechute',
             title: 'Calcul',
             status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
+              label: 'En attente',
+              severity: 'info',
+              icon: 'bi bi-clock',
             },
-            actions: [],
-            details: [{ label: 'Date de clôture', value: '12/06/2026' }],
+            actions: [
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '10/01/2026' },
+              { label: 'Numéro de certificat', value: '26/1005678' },
+            ],
             moreDetailsLabel: 'Voir plus de details',
           },
         ],
       },
     ],
   },
+  'doc-cloture-primaire': {
+    documentId: 'doc-cloture-primaire',
+    title: 'Demande Primaire - Régime général',
+    activeStep: 1,
+    steps: [
+      {
+        value: 1,
+        label: 'Certificat médical',
+        panels: [
+          {
+            id: 'certificat-cloture',
+            title: 'Certificat ITT',
+            status: {
+              label: 'Accepté',
+              severity: 'success',
+              icon: 'bi bi-check-lg',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '20/01/2026' },
+              { label: 'Numéro de certificat', value: '26/1001234' },
+              {
+                label: 'Période',
+                value: { from: '20/01/2026', to: '12/06/2026' },
+              },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+            moreDetails: CERTIFICAT_ITT_CLOTURE_MORE_DETAILS,
+          },
+        ],
+      },
+      { value: 2, label: 'Feuilles de renseignement', panels: [] },
+      { value: 3, label: 'Calcul', panels: [] },
+    ],
+  },
+  'doc-c4': {
+    documentId: 'doc-c4',
+    title: 'Attestation C4',
+    activeStep: 1,
+    layout: 'standalone',
+    steps: [
+      {
+        value: 1,
+        label: 'C4',
+        panels: [
+          {
+            id: 'c4-isolated',
+            title: 'C4',
+            status: {
+              label: 'Reçu',
+              severity: 'info',
+              icon: 'bi bi-save',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '16/12/2025' },
+              { label: 'Application', value: 'Gestion des indemnités' },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+            moreDetails: {
+              events: [
+                {
+                  id: 'recu-16-12-2025',
+                  dateLabel: '16/12/2025',
+                  status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+                  markerIcon: 'bi bi-save',
+                  markerTone: 'info',
+                  rows: [
+                    {
+                      date: '16/12/2025 10:15:00',
+                      description: {
+                        kind: 'tag',
+                        label: 'Reçu',
+                        severity: 'info',
+                        icon: 'bi bi-save',
+                      },
+                      application: 'Gestion des indemnités',
+                      source: 'IGED',
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  'doc-attestation-pedicure': {
+    documentId: 'doc-attestation-pedicure',
+    title: 'Attestation de soin pédicure',
+    activeStep: 1,
+    layout: 'standalone',
+    steps: [
+      {
+        value: 1,
+        label: 'Attestation de soin pédicure',
+        panels: [
+          {
+            id: 'attestation-pedicure',
+            title: 'Attestation de soin pédicure',
+            status: {
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '09/06/2026' },
+              { label: 'Application', value: 'Remboursements AO/AC' },
+            ],
+            moreDetailsLabel: 'Voir plus de details',
+            moreDetails: {
+              events: [
+                {
+                  id: 'recu-09-06-2026',
+                  dateLabel: '09/06/2026',
+                  status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+                  markerIcon: 'bi bi-save',
+                  markerTone: 'info',
+                  rows: [
+                    {
+                      date: '09/06/2026 13:28:00',
+                      description: {
+                        kind: 'tag',
+                        label: 'Reçu',
+                        severity: 'info',
+                        icon: 'bi bi-save',
+                      },
+                      application: 'Remboursements AO/AC',
+                      source: 'IGED',
+                    },
+                  ],
+                },
+                {
+                  id: 'en-traitement-10-06-2026',
+                  dateLabel: '10/06/2026',
+                  status: {
+                    label: 'En traitement',
+                    severity: 'warn',
+                    icon: 'bi bi-hourglass-split',
+                  },
+                  markerIcon: 'bi bi-hourglass-split',
+                  markerTone: 'warn',
+                  rows: [
+                    {
+                      date: '10/06/2026 09:00:00',
+                      description: 'Dossier verrouillé pour traitement',
+                      application: 'Remboursements AO/AC',
+                      source: 'IGED',
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
+
+export function getDocumentDetailsForAffiliate(
+  affiliateRouteId: string,
+): Record<string, AffiliateDocumentDetail> {
+  return isEvaMartinezAffiliate(affiliateRouteId)
+    ? EVA_MARTINEZ_DOCUMENT_DETAILS
+    : {};
+}

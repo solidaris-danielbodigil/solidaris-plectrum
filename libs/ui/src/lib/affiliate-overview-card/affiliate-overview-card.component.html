@@ -57,24 +57,8 @@
               <div
                 class="c-affiliate-overview-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
               >
-                @for (tag of infoTags(); track tag.label) {
-                  @if (tag.filterKey) {
-                    <p-togglebutton
-                      class="c-affiliate-overview-card__info-tag c-affiliate-overview-card__info-tag--filterable"
-                      [size]="'small'"
-                      [ngModel]="tag.active ?? false"
-                      [ariaLabel]="infoTagAriaLabel(tag)"
-                      [disabled]="loading()"
-                      (onChange)="onInfoTagClick(tag)"
-                    >
-                      <ng-template #content>
-                        <span class="c-affiliate-overview-card__info-tag-label">{{ tag.label }}</span>
-                        <strong class="c-affiliate-overview-card__info-tag-value">{{
-                          tag.value
-                        }}</strong>
-                      </ng-template>
-                    </p-togglebutton>
-                  } @else {
+                @for (tag of infoTags(); track tag.label; let index = $index) {
+                  @if (!tag.filterKey) {
                     <button
                       pButton
                       type="button"
@@ -90,6 +74,25 @@
                         tag.value
                       }}</strong>
                     </button>
+                  } @else if (index === firstFilterableInfoTagIndex()) {
+                    <p-selectbutton
+                      class="c-affiliate-overview-card__info-tags-filter"
+                      [options]="filterableInfoTagOptions()"
+                      optionLabel="ariaLabel"
+                      optionValue="filterKey"
+                      [(ngModel)]="selectedInfoTagFilterKey"
+                      [allowEmpty]="true"
+                      size="small"
+                      [disabled]="loading()"
+                      (onChange)="onInfoTagFilterChange($event)"
+                    >
+                      <ng-template #item let-tag>
+                        <span class="c-affiliate-overview-card__info-tag-label">{{ tag.label }}</span>
+                        <strong class="c-affiliate-overview-card__info-tag-value">{{
+                          tag.value
+                        }}</strong>
+                      </ng-template>
+                    </p-selectbutton>
                   }
                 }
               </div>

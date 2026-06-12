@@ -11,3 +11,5 @@ export * from './toolbar';
 export * from './affiliate-overview-card';
 export * from './affiliate-detail-drawer';
 export * from './list';
+export * from './testing-telemetry';
+export * from './transactions-cics-modal';

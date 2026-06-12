@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MessageService } from 'primeng/api';
 import type { ListDocumentItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
 import { DocumentMoreDetailsDrawerComponent } from './document-more-details-drawer/document-more-details-drawer.component';
+import { TransactionsCicsModalComponent } from '@solidaris/ui';
 
 const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
   {
@@ -41,13 +43,19 @@ function findButtonByLabel(
       [visibleDocuments]="visibleDocuments"
       [focusTarget]="focusTarget()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
+      (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
     />
     <app-document-more-details-drawer
       [(visible)]="moreDetailsDrawerVisible"
       [panel]="moreDetailsPanel()"
     />
+    <sds-transactions-cics-modal [(visible)]="transactionsCicsDialogVisible" />
   `,
-  imports: [AffiliateDocumentDetailComponent, DocumentMoreDetailsDrawerComponent],
+  imports: [
+    AffiliateDocumentDetailComponent,
+    DocumentMoreDetailsDrawerComponent,
+    TransactionsCicsModalComponent,
+  ],
 })
 class DocumentDetailDrawerTestHostComponent {
   readonly selectedDocumentId = signal('doc-demande-primaire');
@@ -57,6 +65,7 @@ class DocumentDetailDrawerTestHostComponent {
   );
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
+  readonly transactionsCicsDialogVisible = signal(false);
 
   onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
     this.moreDetailsPanel.set(panel);
@@ -71,6 +80,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DocumentDetailDrawerTestHostComponent],
+      providers: [MessageService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DocumentDetailDrawerTestHostComponent);
@@ -153,6 +163,117 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).toBeTruthy();
   });
 
+  it('should open Transactions CICS dialog when panel action is clicked', () => {
+    const cicsButton = fixture.nativeElement.querySelector(
+      'button[aria-label="Transactions CICS"]',
+    ) as HTMLButtonElement;
+
+    cicsButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(true);
+  });
+
+  it('should render standalone doc-c4 as audit accordion without stepper footer', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    expect(component.isStandaloneLayout()).toBe(true);
+    expect(fixture.nativeElement.querySelector('p-stepper')).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('p-timeline')).toBeFalsy();
+    expect(
+      fixture.nativeElement.querySelector('p-accordion.c-audit-accordion'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('[data-panel-id="c4-isolated"]'),
+    ).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('16/12/2025');
+    expect(
+      findButtonByLabel(fixture.nativeElement, 'Voir plus de details'),
+    ).toBeTruthy();
+    expect(
+      findButtonByLabel(fixture.nativeElement, 'Etape précédente'),
+    ).toBeFalsy();
+    expect(
+      fixture.nativeElement.querySelector('button[aria-label="Transactions CICS"]'),
+    ).toBeTruthy();
+  });
+
+  it('should render attestation pédicure in audit accordion with réception 09/06/2026 (Scenario 5)', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-attestation-pedicure');
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('p-accordion.c-audit-accordion'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('[data-panel-id="attestation-pedicure"]'),
+    ).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('09/06/2026');
+    expect(fixture.nativeElement.textContent).toContain('Remboursements AO/AC');
+    expect(fixture.nativeElement.textContent).toContain('En traitement');
+    expect(fixture.nativeElement.querySelector('p-timeline')).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('p-stepper')).toBeFalsy();
+    expect(
+      findButtonByLabel(fixture.nativeElement, 'Voir plus de details'),
+    ).toBeTruthy();
+  });
+
+  it('should open the more-details drawer with audit timeline for standalone doc-c4', async () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('c4-isolated');
+
+    const drawerTitle = document.body.querySelector(
+      '.c-document-more-details-drawer__title',
+    );
+    expect(drawerTitle?.textContent?.trim()).toBe('Details - C4');
+
+    expect(
+      document.body.querySelectorAll(
+        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+      ).length,
+    ).toBe(1);
+  });
+
+  it('should open the more-details drawer with two audit events for attestation pédicure', async () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-attestation-pedicure');
+    fixture.detectChanges();
+
+    const moreDetailsButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Voir plus de details',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'attestation-pedicure',
+    );
+
+    expect(
+      document.body.querySelectorAll(
+        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+      ).length,
+    ).toBe(2);
+  });
+
   it('should render the Détails heading in the certificate panel body', () => {
     const heading = fixture.nativeElement.querySelector(
       '.c-affiliate-document-detail__details-heading',
@@ -194,23 +315,27 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain('24/11/2025');
   });
 
-  it('should render comment tag on panels with a worker comment', () => {
+  it('should render info comment-count tag with secondary severity, aligned with the document list', () => {
     component.activeStep.set(2);
     component.certPanelValue.set('fdr-affilie-incapacite');
     fixture.detectChanges();
 
     const fdrAffilieTag = fixture.nativeElement.querySelector(
       '[data-panel-id="fdr-affilie-incapacite"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
-    );
+    ) as HTMLElement | null;
     expect(fdrAffilieTag?.textContent).toContain('1');
+    expect(fdrAffilieTag?.classList.contains('p-tag-secondary')).toBe(true);
+    expect(fdrAffilieTag?.classList.contains('p-tag-info')).toBe(false);
 
     component.certPanelValue.set('compte-financier-liasse');
     fixture.detectChanges();
 
     const liasseTag = fixture.nativeElement.querySelector(
       '[data-panel-id="compte-financier-liasse"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
-    );
+    ) as HTMLElement | null;
     expect(liasseTag?.textContent).toContain('1');
+    expect(liasseTag?.classList.contains('p-tag-secondary')).toBe(true);
+    expect(liasseTag?.classList.contains('p-tag-info')).toBe(false);
   });
 
   it('should render info worker comment on Compte financier - Liasse panel', () => {
@@ -252,11 +377,12 @@ describe('AffiliateDocumentDetailComponent', () => {
         ?.querySelector('.p-message-icon')
         ?.classList.contains('bi-exclamation-triangle-fill'),
     ).toBe(true);
-    expect(
-      fixture.nativeElement.querySelector(
-        '.c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
-      ),
-    ).toBeTruthy();
+    const warnCommentTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="calcul"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    ) as HTMLElement | null;
+    expect(warnCommentTag).toBeTruthy();
+    expect(warnCommentTag?.classList.contains('p-tag-warn')).toBe(true);
+    expect(warnCommentTag?.classList.contains('p-tag-info')).toBe(false);
   });
 
   it('should render certificate metadata rows from Figma mock data', () => {
