@@ -226,11 +226,16 @@ describe('AffiliateDocumentDetailComponent', () => {
     });
   });
 
-  it('should render incapacité with unnumbered stepper and warn paiement worker comment', () => {
+  it('should render incapacité with numbered stepper and warn paiement worker comment', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    expect(component.stepNumbered()).toBe(false);
+    expect(component.stepNumbered()).toBe(true);
+    expect(
+      fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-document-detail__stepper .p-step-number',
+      ).length,
+    ).toBe(2);
     expect(fixture.nativeElement.textContent).toContain(
       'Pas de paiement reçu pour le moment',
     );

@@ -116,7 +116,7 @@ export interface AffiliateDocumentDetail {
   documentId: string;
   title: string;
   activeStep: number;
-  /** When false, stepper hides step numbers (demande incapacité flux). Defaults to true. */
+  /** When false, stepper hides step numbers. Defaults to true. */
   stepNumbered?: boolean;
   /**
    * Defaults to `stepper`. Use `standalone` for hors-parcours isolated documents

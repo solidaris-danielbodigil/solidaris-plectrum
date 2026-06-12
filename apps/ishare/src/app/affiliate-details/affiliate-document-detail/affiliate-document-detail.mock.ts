@@ -416,7 +416,6 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     documentId: 'doc-incapacite',
     title: 'Incapacité',
     activeStep: 1,
-    stepNumbered: false,
     steps: [
       {
         value: 1,
