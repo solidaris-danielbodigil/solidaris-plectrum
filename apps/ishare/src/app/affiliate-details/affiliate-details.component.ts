@@ -886,7 +886,30 @@ export class AffiliateDetailsComponent {
       return;
     }
 
+    this.syncSelectionToJourneyView();
     this.recordTelemetry('journey_view_on', source);
+  }
+
+  /** Select the first visible parcours document when journey view is enabled. */
+  private syncSelectionToJourneyView(): void {
+    const navigable = this.navigableDocuments();
+    const first = navigable[0];
+    if (!first) {
+      return;
+    }
+
+    this.documentFocus.set(null);
+    this.selectedDocumentId.set(first.id);
+
+    if (this.isEvaDossier() && !this.shouldUseFlatListPresentation()) {
+      const group = this.listGroups()?.find((item) =>
+        item.documents.some((document) => document.id === first.id),
+      );
+
+      if (group) {
+        this.expandedGroupIds.set([group.id]);
+      }
+    }
   }
 
   disableJourneyView(): void {

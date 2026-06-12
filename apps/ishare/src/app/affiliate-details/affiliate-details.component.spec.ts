@@ -988,6 +988,29 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedDocumentId()).toBe(component.listItems()[0].id);
   });
 
+  it('should select first parcours document when journey view is turned back on', () => {
+    component.journeyView.set(true);
+    fixture.detectChanges();
+
+    component.onJourneyViewChange(false);
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+
+    component.onJourneyViewChange(true);
+    fixture.detectChanges();
+
+    expect(component.journeyView()).toBe(true);
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(component.expandedGroupIds()).toContain('parcours-demande-primaire');
+
+    const detail = fixture.debugElement.query(
+      By.directive(AffiliateDocumentDetailComponent),
+    ).componentInstance as AffiliateDocumentDetailComponent;
+
+    expect(detail.selectedDocumentId()).toBe('doc-demande-primaire');
+  });
+
   it('should expose state-dependent journey view tooltip text', () => {
     component.journeyView.set(true);
     expect(component.journeyViewTooltip()).toBe(
