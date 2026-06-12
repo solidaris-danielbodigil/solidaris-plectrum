@@ -5,10 +5,10 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     name: 'AffiliateOverviewCard',
     category: 'molecules',
     description:
-      'iSHARE affiliate audit summary card with horizontal avatar layout, status split button, info tags, copyable identifiers, and primary action.',
+      'iSHARE affiliate audit summary card with horizontal avatar layout, outlined status button, info tags, copyable identifiers, and primary action.',
     type: 'display',
     path: 'libs/ui/src/lib/affiliate-overview-card/affiliate-overview-card.component.ts',
-    primeNgComponent: 'Card, SplitButton, Button, SelectButton',
+    primeNgComponent: 'Card, Button, SelectButton',
     bemBlock: 'c-affiliate-overview-card',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.affiliate-overview-card.scss',
@@ -32,9 +32,9 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       {
         name: 'Action required',
         description:
-          'Surface a non-blocking audit issue with a warn split button and identifier chips.',
+          'Surface a non-blocking audit issue with a warn status button and identifier chips.',
         composition:
-          '<sds-affiliate-overview-card variant="warning" [statusAction]="action" [infoTags]="tags" [identifiers]="ids" />',
+          '<sds-affiliate-overview-card variant="default" [statusAction]="{ label: \'C4 non reçu\', severity: \'warn\' }" [infoTags]="tags" [identifiers]="ids" />',
       },
     ],
     antiPatterns: [
@@ -59,19 +59,16 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       'Alt+A — trigger primary action when primaryAction.shortcut is set (skipped in editable fields)',
       'aria-keyshortcuts on primary action button when shortcut badge is shown',
       'aria-label on copy identifier buttons (Copier {label})',
-      'expandAriaLabel on status split button menu toggle (Afficher le menu pour {label})',
+      'aria-label on status action button (from statusAction.ariaLabel or label)',
       'aria-hidden on bullet separators, shortcut badge, and skeleton lines',
     ],
     contrastRequirements: [
-      'Status split button must include visible French label text — not colour alone.',
+      'Status button must include visible French label text — not colour alone.',
       'Info tag buttons must pair label and value text — not colour alone.',
     ],
   },
   tokens: {
     consumed: [
-      '--sds-color-affiliate-overview-card-accent-success',
-      '--sds-color-affiliate-overview-card-accent-warning',
-      '--sds-color-affiliate-overview-card-accent-danger',
       '--sds-color-affiliate-overview-card-bg-default',
       '--sds-affiliate-overview-card-bg-gradient-angle',
       '--sds-affiliate-overview-card-bg-gradient-stop',
@@ -91,7 +88,6 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       '--sds-text-affiliate-overview-card-shortcut-badge-weight',
       '--sds-text-affiliate-overview-card-shortcut-badge-line-height',
       '--sds-color-affiliate-overview-card-skeleton-bg',
-      '--sds-size-affiliate-overview-card-accent-width',
       '--sds-size-affiliate-overview-card-padding',
       '--sds-space-affiliate-overview-card-avatar-gap',
       '--sds-space-affiliate-overview-card-header-gap',
@@ -146,12 +142,13 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Primary affiliate summary card for iSHARE audit flows. Horizontal layout per Figma 507:7910. Variants: default, in-order, warning, danger.',
+      'Primary affiliate summary card for iSHARE audit flows. Horizontal layout per Figma 507:7910. Card gradient driven by statusAction.severity; variant input is fallback when no status action.',
     selectionCriteria: {
-      'variant default': 'Neutral lookup result without status emphasis',
-      'variant in-order': 'Affiliate audit passes — success accent',
-      'variant warning': 'Action required — warn split button',
-      'variant danger': 'Critical issue — danger split button',
+      'statusAction.severity success': 'Affiliate audit passes — in-order gradient + success button',
+      'statusAction.severity warn': 'Action required — warning gradient + warn button',
+      'statusAction.severity danger': 'Critical issue — danger gradient + danger button',
+      'variant in-order (no statusAction)': 'Success gradient via variant fallback only',
+      'variant default (no statusAction)': 'Neutral lookup result without status emphasis',
     },
     keywords: ['affiliate', 'audit', 'overview', 'NISS', 'NSI', 'status', 'metadata', 'iSHARE'],
   },
@@ -160,7 +157,15 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     { name: 'avatarInitials', type: 'string', required: false, default: "''", description: 'Initials fallback for the Plectrum avatar' },
     { name: 'avatarGender', type: 'PlectrumAvatarGender', required: false, default: 'female', description: 'Illustrated avatar gender passed to sds-plectrum-avatar' },
     { name: 'avatarVariant', type: 'PlectrumAvatarVariant', required: false, default: '1', description: 'Illustrated avatar variant passed to sds-plectrum-avatar' },
-    { name: 'variant', type: 'AffiliateOverviewCardVariant', required: false, default: 'default', description: 'Severity-driven card treatment' },
+    { name: 'variant', type: 'AffiliateOverviewCardVariant', required: false, default: 'default', description: 'Fallback card treatment when statusAction is absent' },
+    {
+      name: 'statusAction',
+      type: 'AffiliateOverviewStatusAction | null',
+      required: false,
+      default: 'null',
+      description:
+        'Outlined status button config. severity (success | warn | danger) drives card gradient when set.',
+    },
     { name: 'loading', type: 'boolean', required: false, default: 'false', description: 'Skeleton placeholder state' },
   ],
   examples: [],

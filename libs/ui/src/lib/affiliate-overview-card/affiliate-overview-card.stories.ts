@@ -130,21 +130,21 @@ const meta: Meta<AffiliateOverviewCardStoryArgs> = {
     docs: {
       description: {
         component: `
-iSHARE affiliate audit summary card with four severity-driven variants.
+iSHARE affiliate audit summary card — card gradient is driven by \`statusAction.severity\`; the \`variant\` input is a fallback when no status action is set.
 
 - **Figma**: [iSHARE-Audit node 507:8227](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227)
 - **BEM block**: \`c-affiliate-overview-card\`
 - **Avatar**: large illustrated avatar (51.333 × 56px) via \`c-plectrum-avatar--large\`; small initials variant remains 32px
 - **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--sds-icon-size-xs\`) on identifier chips
 - **Layout**: horizontal avatar + stacked header / identifier rows via \`o-flex\` / \`o-layout\` with flex-wrap
-- **PrimeNG**: \`p-card\`, \`p-splitButton\`, \`p-button\`, \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
+- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
 
-| Variant | Status action | Card treatment |
+| \`statusAction.severity\` | Card modifier | Status button |
 |---|---|---|
-| \`default\` | none | Neutral flat surface (\`--sds-color-content-bg\`) |
-| \`in-order\` | none | Success subtle gradient + left accent border |
-| \`warning\` | warn split button | Orange-50 → surface gradient (88deg) |
-| \`danger\` | danger split button | Danger subtle → surface gradient (88deg) |
+| \`success\` | \`in-order\` | Outlined success — e.g. « En ordre » |
+| \`warn\` | \`warning\` | Outlined warn — e.g. blocking reason « C4 non reçu » |
+| \`danger\` | \`danger\` | Outlined danger |
+| _(no statusAction)_ | from \`variant\` input | hidden |
         `,
       },
     },
@@ -153,7 +153,8 @@ iSHARE affiliate audit summary card with four severity-driven variants.
     variant: {
       control: 'select',
       options: ['default', 'in-order', 'warning', 'danger'],
-      description: 'Severity-driven card treatment and status action mapping.',
+      description:
+        'Fallback card treatment when statusAction is absent. Overridden by statusAction.severity when set.',
     },
     title: { control: 'text', description: 'Affiliate display name (card heading).' },
     avatarInitials: {
@@ -172,7 +173,8 @@ iSHARE affiliate audit summary card with four severity-driven variants.
     },
     statusAction: {
       control: 'object',
-      description: 'Warn/danger split button shown for warning and danger variants.',
+      description:
+        'Outlined status button with severity (success | warn | danger). Drives card gradient when set.',
     },
     infoTags: {
       control: 'object',
@@ -256,7 +258,7 @@ export const InOrder: Story = {
     docs: {
       description: {
         story:
-          'Affiliate audit passes — success subtle gradient (green-75 → surface) with success left accent border.',
+          'Variant-only fallback — success subtle gradient (green-75 → surface). Prefer statusAction.severity: success for severity-driven setup.',
       },
     },
   },
@@ -264,14 +266,16 @@ export const InOrder: Story = {
 
 export const Warning: Story = {
   args: {
-    variant: 'warning',
+    variant: 'default',
     title: 'Eva Martinez',
     avatarInitials: 'EM',
     avatarGender: 'female',
     avatarVariant: 1,
     statusAction: {
-      label: 'Action requise',
+      label: 'C4 non reçu',
       icon: 'bi bi-exclamation-triangle-fill',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — C4 non reçu',
     },
     infoTags: [
       { label: 'Dernière action:', value: 'Document reçu 12/04/2026', filterKey: 'last-action' },
@@ -290,7 +294,7 @@ export const Warning: Story = {
     docs: {
       description: {
         story:
-          'Action-required audit state — orange-50 → surface gradient (88deg) with warn split button. The "Documents actifs" info tag is shown as a checked p-selectbutton filter. Figma node 507:7910.',
+          'Severity-driven warning — orange-50 → surface gradient (88deg) from statusAction.severity warn with variant default. Figma node 507:7910.',
       },
     },
   },
@@ -298,7 +302,7 @@ export const Warning: Story = {
 
 export const Danger: Story = {
   args: {
-    variant: 'danger',
+    variant: 'default',
     title: 'Lambert, Sophie',
     avatarInitials: 'LS',
     avatarGender: 'female',
@@ -306,6 +310,7 @@ export const Danger: Story = {
     statusAction: {
       label: 'Critique',
       icon: 'bi bi-exclamation-octagon-fill',
+      severity: 'danger',
     },
     infoTags: [
       { label: 'Dernière action:', value: 'Incohérence détectée 28/05/2026', filterKey: 'last-action' },
@@ -325,7 +330,7 @@ export const Danger: Story = {
     docs: {
       description: {
         story:
-          'Critical audit failure — danger subtle → surface gradient (88deg) with danger split button.',
+          'Severity-driven danger — danger subtle → surface gradient (88deg) from statusAction.severity danger.',
       },
     },
   },
@@ -359,14 +364,16 @@ export const WrappedLayout: Story = {
     ),
   ],
   args: {
-    variant: 'warning',
+    variant: 'default',
     title: 'Eva Martinez avec un nom très long pour forcer le retour à la ligne',
     avatarInitials: 'EM',
     avatarGender: 'female',
     avatarVariant: 1,
     statusAction: {
-      label: 'Action requise',
+      label: 'C4 non reçu',
       icon: 'bi bi-exclamation-triangle-fill',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — C4 non reçu',
     },
     infoTags: [
       { label: 'Dernière action:', value: 'Document reçu 12/04/2026', filterKey: 'last-action' },

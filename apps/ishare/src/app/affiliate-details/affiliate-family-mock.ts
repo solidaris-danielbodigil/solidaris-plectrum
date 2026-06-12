@@ -30,8 +30,6 @@ export interface AffiliateFamilyProfile {
 
   avatarVariant: PlectrumAvatarVariant;
 
-  headerVariant: 'default' | 'warning';
-
   nsi: string;
 
   contractNumber: string;
@@ -172,8 +170,6 @@ export const AFFILIATE_FAMILY_PROFILES: Record<string, AffiliateFamilyProfile> =
 
     avatarVariant: 1,
 
-    headerVariant: 'warning',
-
     nsi: '00004212182',
 
     contractNumber: '1241786-19630928-2',
@@ -215,8 +211,6 @@ export const AFFILIATE_FAMILY_PROFILES: Record<string, AffiliateFamilyProfile> =
     avatarGender: 'male',
 
     avatarVariant: 1,
-
-    headerVariant: 'default',
 
     nsi: '00004321234',
 
@@ -260,8 +254,6 @@ export const AFFILIATE_FAMILY_PROFILES: Record<string, AffiliateFamilyProfile> =
 
     avatarVariant: 3,
 
-    headerVariant: 'default',
-
     nsi: '00005234567',
 
     contractNumber: '—',
@@ -303,8 +295,6 @@ export const AFFILIATE_FAMILY_PROFILES: Record<string, AffiliateFamilyProfile> =
     avatarGender: 'male',
 
     avatarVariant: 2,
-
-    headerVariant: 'default',
 
     nsi: '00005123456',
 

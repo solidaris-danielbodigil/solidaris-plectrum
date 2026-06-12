@@ -267,7 +267,7 @@ describe('AffiliateDetailsComponent', () => {
     const header = affiliateHeaderService.header();
 
     expect(header?.title).toBe('Eva Martinez');
-    expect(header?.variant).toBe('warning');
+    expect(header?.variant).toBe('default');
     expect(header?.identifiers?.find((id) => id.label === 'NISS')?.value).toBe(
       '63092814612',
     );
@@ -291,8 +291,9 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.onStatusActionClick).toEqual(jasmine.any(Function));
     expect(header?.statusAction).toEqual(
       jasmine.objectContaining({
-        label: 'Paiement non versé',
-        ariaLabel: 'Voir le détail — paiement non versé',
+        label: 'C4 non reçu',
+        severity: 'warn',
+        ariaLabel: 'Voir le détail — C4 non reçu',
       }),
     );
   });

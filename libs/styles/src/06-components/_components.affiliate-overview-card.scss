@@ -25,11 +25,6 @@
   // Standard card — PrimeNG card bridge tokens only.
 }
 
-.c-affiliate-overview-card--in-order {
-  border-inline-start: var(--#{$sds-prefix}-size-affiliate-overview-card-accent-width) solid
-    var(--#{$sds-prefix}-color-affiliate-overview-card-accent-success);
-}
-
 // Variant backgrounds owned by --p-card-background in 01-settings (88deg subtle gradients).
 
 // ── Header row ──────────────────────────────────────────────────────────────

@@ -39,9 +39,13 @@ export interface AffiliateOverviewIdentifier {
   value: string;
 }
 
+export type AffiliateOverviewStatusSeverity = 'success' | 'warn' | 'danger';
+
 export interface AffiliateOverviewStatusAction {
   label: string;
   icon?: string;
+  /** Drives card gradient and status button severity when set. */
+  severity?: AffiliateOverviewStatusSeverity;
   /** Accessible name for deep-link controls; falls back to {@link label}. */
   ariaLabel?: string;
   /** When true, renders as a non-interactive status chip (no menu). */
@@ -55,13 +59,12 @@ export interface AffiliateOverviewPrimaryAction {
   shortcut?: string;
 }
 
-type AffiliateOverviewStatusSeverity = 'warn' | 'danger';
-
-const VARIANT_STATUS_ACTION_SEVERITY: Record<
-  Extract<AffiliateOverviewCardVariant, 'warning' | 'danger'>,
-  AffiliateOverviewStatusSeverity
+const STATUS_SEVERITY_TO_VARIANT: Record<
+  AffiliateOverviewStatusSeverity,
+  AffiliateOverviewCardVariant
 > = {
-  warning: 'warn',
+  success: 'in-order',
+  warn: 'warning',
   danger: 'danger',
 };
 
@@ -181,10 +184,20 @@ export class AffiliateOverviewCardComponent {
 
   protected readonly titleId = `sds-affiliate-overview-card-title-${nextTitleId++}`;
 
+  readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {
+    const severity = this.statusAction()?.severity;
+
+    if (severity) {
+      return STATUS_SEVERITY_TO_VARIANT[severity];
+    }
+
+    return this.variant();
+  });
+
   readonly cardStyleClass = computed(() => {
     const classes = [
       'c-affiliate-overview-card',
-      `c-affiliate-overview-card--${this.variant()}`,
+      `c-affiliate-overview-card--${this.effectiveVariant()}`,
     ];
 
     if (this.loading()) {
@@ -194,24 +207,14 @@ export class AffiliateOverviewCardComponent {
     return classes.join(' ');
   });
 
-  readonly showStatusAction = computed(() => {
-    const variant = this.variant();
-    return (
-      !!this.statusAction() &&
-      !this.loading() &&
-      (variant === 'warning' || variant === 'danger')
-    );
-  });
+  readonly showStatusAction = computed(
+    () => !!this.statusAction() && !this.loading(),
+  );
 
-  readonly statusActionSeverity = computed((): AffiliateOverviewStatusSeverity | null => {
-    const variant = this.variant();
-
-    if (variant === 'warning' || variant === 'danger') {
-      return VARIANT_STATUS_ACTION_SEVERITY[variant];
-    }
-
-    return null;
-  });
+  readonly statusActionSeverity = computed(
+    (): AffiliateOverviewStatusSeverity | null =>
+      this.statusAction()?.severity ?? null,
+  );
 
   readonly statusActionMenuItems = computed(
     () => this.statusAction()?.menuItems ?? [],

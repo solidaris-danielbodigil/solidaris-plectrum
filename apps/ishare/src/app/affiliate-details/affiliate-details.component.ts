@@ -457,9 +457,10 @@ export class AffiliateDetailsComponent {
 
   private static readonly EVA_INCAPACITY_PAYMENT_STATUS_ACTION: AffiliateOverviewStatusAction =
     {
-      label: 'Paiement non versé',
+      label: 'C4 non reçu',
       icon: 'bi bi-exclamation-triangle-fill',
-      ariaLabel: 'Voir le détail — paiement non versé',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — C4 non reçu',
     };
 
   private static readonly EVA_INCAPACITY_PAYMENT_DEEP_LINK = {
@@ -1348,7 +1349,7 @@ export class AffiliateDetailsComponent {
 
       this.affiliateHeaderService.setHeader({
         title: profile.name,
-        variant: profile.headerVariant,
+        variant: 'default',
         avatarGender: profile.avatarGender,
         avatarVariant: profile.avatarVariant,
         avatarInitials: profile.avatarInitials,

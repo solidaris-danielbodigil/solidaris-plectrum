@@ -189,23 +189,46 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_IDENTIFIERS[0]);
   });
 
-  it('should show status action button for warning variant with statusAction', () => {
-    fixture.componentRef.setInput('variant', 'warning');
+  it('should derive warning gradient from statusAction severity with default variant', () => {
+    fixture.componentRef.setInput('variant', 'default');
     fixture.componentRef.setInput('statusAction', {
       label: 'Paiement non versé',
       icon: 'bi bi-exclamation-triangle-fill',
+      severity: 'warn',
     });
     fixture.detectChanges();
 
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card--warning'),
+    ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__status-action',
     );
     expect(statusButton).toBeTruthy();
-    expect(fixture.nativeElement.querySelector('p-splitbutton')).toBeFalsy();
+    expect(statusButton.classList.contains('p-button-warn')).toBe(true);
   });
 
-  it('should not show status action button for default variant', () => {
-    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
+  it('should derive in-order gradient from statusAction success severity', () => {
+    fixture.componentRef.setInput('variant', 'default');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'En ordre',
+      icon: 'bi bi-check-circle-fill',
+      severity: 'success',
+    });
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card--in-order'),
+    ).toBeTruthy();
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.classList.contains('p-button-success')).toBe(true);
+  });
+
+  it('should not show status action button when statusAction is null', () => {
+    fixture.componentRef.setInput('statusAction', null);
     fixture.detectChanges();
 
     expect(
@@ -214,8 +237,10 @@ describe('AffiliateOverviewCardComponent', () => {
   });
 
   it('should hide status action button when loading', () => {
-    fixture.componentRef.setInput('variant', 'warning');
-    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+    });
     fixture.detectChanges();
     expect(
       fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
@@ -231,8 +256,10 @@ describe('AffiliateOverviewCardComponent', () => {
   it('should emit statusActionClick when status action button fires', () => {
     const onStatusAction = jasmine.createSpy('statusActionClick');
     component.statusActionClick.subscribe(onStatusAction);
-    fixture.componentRef.setInput('variant', 'warning');
-    fixture.componentRef.setInput('statusAction', { label: 'Paiement non versé' });
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+    });
     fixture.detectChanges();
 
     component.onStatusActionClick();
@@ -241,9 +268,9 @@ describe('AffiliateOverviewCardComponent', () => {
   });
 
   it('should expose aria-label on status action from ariaLabel input', () => {
-    fixture.componentRef.setInput('variant', 'warning');
     fixture.componentRef.setInput('statusAction', {
       label: 'Paiement non versé',
+      severity: 'warn',
       ariaLabel: 'Voir le détail — paiement non versé',
     });
     fixture.detectChanges();
@@ -261,9 +288,9 @@ describe('AffiliateOverviewCardComponent', () => {
   it('should not emit statusActionClick when status action is disabled', () => {
     const onStatusAction = jasmine.createSpy('statusActionClick');
     component.statusActionClick.subscribe(onStatusAction);
-    fixture.componentRef.setInput('variant', 'warning');
     fixture.componentRef.setInput('statusAction', {
       label: 'Paiement non versé',
+      severity: 'warn',
       disabled: true,
     });
     fixture.detectChanges();
@@ -532,14 +559,18 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(heading.id).toBeTruthy();
   });
 
-  it('should show danger status action button for danger variant with statusAction', () => {
-    fixture.componentRef.setInput('variant', 'danger');
+  it('should show danger status action button for danger severity', () => {
+    fixture.componentRef.setInput('variant', 'default');
     fixture.componentRef.setInput('statusAction', {
       label: 'Critique',
       icon: 'bi bi-exclamation-octagon-fill',
+      severity: 'danger',
     });
     fixture.detectChanges();
 
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card--danger'),
+    ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__status-action',
     );
