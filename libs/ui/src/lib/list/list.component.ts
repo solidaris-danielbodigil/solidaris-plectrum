@@ -23,6 +23,7 @@ import type {
   ListGroup,
   ListItem,
 } from './list.types';
+import { resolveListDocumentIcon } from './list-document-icon';
 import { isListGroup } from './list.types';
 
 export interface ListGroupNodeData {
@@ -150,6 +151,10 @@ export class ListComponent {
 
   documentDisplayTitle(doc: ListDocumentItem): string {
     return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
+  }
+
+  documentIcon(doc: ListDocumentItem): string {
+    return resolveListDocumentIcon(doc);
   }
 
   onDocumentRowClick(event: MouseEvent, doc: ListDocumentItem): void {

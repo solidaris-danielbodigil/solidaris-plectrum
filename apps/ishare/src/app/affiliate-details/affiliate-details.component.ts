@@ -315,8 +315,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
 export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
   {
     id: 'doc-c4',
-    title: 'C4',
-    titleLine2: 'Attestation C4',
+    title: 'Attestation C4',
     status: {
       label: 'Reçu',
       severity: 'info',
@@ -565,7 +564,7 @@ export class AffiliateDetailsComponent {
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
   readonly sectorOptions: SectorOption[] = [
-    { label: 'Tous', value: '' },
+    { label: 'Tous', value: 'tous' },
     { label: 'indémnités', value: 'indemnites' },
     { label: 'front-office', value: 'front-office' },
     { label: 'médical', value: 'medical' },
@@ -727,16 +726,16 @@ export class AffiliateDetailsComponent {
       groups = groups.filter((group) => group.id === latestGroupId);
     }
 
-    return this.sortGroupsByStartDate(
-      groups
-        .map((group) => ({
-          ...group,
-          documents: this.sortDocuments(
-            group.documents.filter((document) => visibleIds.has(document.id)),
-          ),
-        }))
-        .filter((group) => group.documents.length > 0),
-    );
+    const filteredGroups = groups
+      .map((group) => ({
+        ...group,
+        documents: this.sortDocuments(
+          group.documents.filter((document) => visibleIds.has(document.id)),
+        ),
+      }))
+      .filter((group) => group.documents.length > 0);
+
+    return this.sortGroups(filteredGroups);
   });
 
   readonly listItems = computed((): ListDocumentItem[] => {
@@ -791,17 +790,48 @@ export class AffiliateDetailsComponent {
     return this.visibleDocuments();
   });
 
-  onSectorChange(option: SectorOption | null): void {
-    if (!option?.value) {
-      this.selectedSector.set(null);
-      return;
-    }
-
-    this.selectedSector.set(option);
+  onSectorChange(option: SectorOption | string | null): void {
+    const resolved = this.resolveSectorOption(option);
+    this.selectedSector.set(resolved);
   }
 
-  onSortChange(option: SortOption | null): void {
-    this.selectedSort.set(option);
+  onSortChange(option: SortOption | string | null): void {
+    this.selectedSort.set(
+      this.resolveSortOption(option) ?? this.defaultSortOption,
+    );
+  }
+
+  private get defaultSortOption(): SortOption {
+    return this.sortOptions[1];
+  }
+
+  /** PrimeNG AutoComplete ngModelChange emits option.value (primitive), not the full option. */
+  private resolveSectorOption(
+    option: SectorOption | string | null,
+  ): SectorOption | null {
+    if (option == null) {
+      return null;
+    }
+
+    if (typeof option === 'string') {
+      return this.sectorOptions.find((item) => item.value === option) ?? null;
+    }
+
+    return option;
+  }
+
+  private resolveSortOption(
+    option: SortOption | string | null,
+  ): SortOption | null {
+    if (option == null) {
+      return null;
+    }
+
+    if (typeof option === 'string') {
+      return this.sortOptions.find((item) => item.value === option) ?? null;
+    }
+
+    return option;
   }
 
   filterSectors(event: { query: string }): void {
@@ -1122,7 +1152,7 @@ export class AffiliateDetailsComponent {
       : [...documents];
 
     const sector = this.selectedSector()?.value;
-    if (sector) {
+    if (sector && sector !== 'tous') {
       filtered = filtered.filter(
         (document) => DOCUMENT_SECTOR_BY_ID.get(document.id) === sector,
       );
@@ -1170,6 +1200,49 @@ export class AffiliateDetailsComponent {
     }
 
     return this.sortDocumentsByReceptionDate(documents);
+  }
+
+  private sortGroups(groups: ListGroup[]): ListGroup[] {
+    const sortValue = this.selectedSort()?.value ?? 'date-reception';
+
+    if (sortValue === 'nom-document') {
+      return [...groups].sort((left, right) => {
+        const byTitle = (left.documents[0]?.title ?? '').localeCompare(
+          right.documents[0]?.title ?? '',
+        );
+
+        if (byTitle !== 0) {
+          return byTitle;
+        }
+
+        return compareStartDates(left.startDate, right.startDate, true);
+      });
+    }
+
+    if (sortValue === 'actions-en-cours') {
+      return [...groups].sort((left, right) => {
+        const leftPriority = this.groupStatusSortPriority(left);
+        const rightPriority = this.groupStatusSortPriority(right);
+
+        if (leftPriority !== rightPriority) {
+          return leftPriority - rightPriority;
+        }
+
+        return compareStartDates(left.startDate, right.startDate, true);
+      });
+    }
+
+    return this.sortGroupsByStartDate(groups);
+  }
+
+  private groupStatusSortPriority(group: ListGroup): number {
+    return Math.min(
+      ...group.documents.map(
+        (document) =>
+          STATUS_SORT_PRIORITY[document.status?.label ?? ''] ??
+          Number.MAX_SAFE_INTEGER,
+      ),
+    );
   }
 
   private sortGroupsByStartDate(groups: ListGroup[]): ListGroup[] {

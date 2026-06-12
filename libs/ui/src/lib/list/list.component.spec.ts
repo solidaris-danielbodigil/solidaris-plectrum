@@ -195,6 +195,39 @@ describe('ListComponent', () => {
     ).toBe(0);
   });
 
+  it('should render category-specific bootstrap icons on document rows', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', [
+      { id: 'doc-demande-primaire', title: 'Demande primaire -' },
+      { id: 'doc-incapacite', title: 'Incapacité' },
+      { id: 'doc-rechute', title: 'Rechute' },
+      { id: 'doc-c4', title: 'Attestation C4' },
+      {
+        id: 'doc-attestation-pedicure',
+        title: 'Attestation de soin pédicure',
+      },
+    ]);
+    fixture.detectChanges();
+
+    const icons = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-list__item--document .c-list__icon',
+      ),
+    ] as HTMLElement[];
+
+    expect(icons.map((icon) => icon.classList.contains('bi-clipboard2-check'))).toEqual([
+      true,
+      false,
+      false,
+      false,
+      false,
+    ]);
+    expect(icons[1].classList.contains('bi-bandaid')).toBe(true);
+    expect(icons[2].classList.contains('bi-arrow-repeat')).toBe(true);
+    expect(icons[3].classList.contains('bi-file-earmark-text')).toBe(true);
+    expect(icons[4].classList.contains('bi-file-earmark-check')).toBe(true);
+  });
+
   it('should render timeline gutters on journey document rows', () => {
     fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
     fixture.componentRef.setInput(

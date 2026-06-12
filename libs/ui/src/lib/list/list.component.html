@@ -101,7 +101,7 @@
                   class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
                 >
                   <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                    <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
+                    <i [class]="'c-list__icon ' + documentIcon(doc)" aria-hidden="true"></i>
                     <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0">
                       {{ documentDisplayTitle(doc) }}
                     </p>
@@ -162,7 +162,7 @@
                 class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
               >
                 <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                  <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
+                  <i [class]="'c-list__icon ' + documentIcon(doc)" aria-hidden="true"></i>
                   <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0">
                     {{ documentDisplayTitle(doc) }}
                   </p>

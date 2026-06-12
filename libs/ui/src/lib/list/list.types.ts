@@ -25,6 +25,8 @@ export interface ListDocumentItem {
   id: string;
   title: string;
   titleLine2?: string;
+  /** Bootstrap Icons class(es) for the row header icon (e.g. `bi bi-bandaid`). */
+  icon?: string;
   status?: ListDocumentStatus;
   tags?: ListDocumentTag[];
   selected?: boolean;

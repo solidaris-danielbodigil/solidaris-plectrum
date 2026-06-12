@@ -205,7 +205,10 @@ describe('AffiliateDetailsComponent', () => {
     sortAutocomplete?.componentInstance.clear();
     fixture.detectChanges();
 
-    expect(component.selectedSort()).toBeNull();
+    expect(component.selectedSort()).toEqual({
+      label: 'Date de réception',
+      value: 'date-reception',
+    });
   });
 
   it('should clear document search via sds-input-clear', () => {
@@ -1008,6 +1011,38 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.visibleDocuments()[0].id).toBe('doc-attestation-pedicure');
   });
 
+  it('should resolve sector filter when autocomplete emits primitive value', () => {
+    component.onSectorChange('front-office');
+    fixture.detectChanges();
+
+    expect(component.selectedSector()).toEqual({
+      label: 'front-office',
+      value: 'front-office',
+    });
+    expect(component.visibleDocuments().length).toBe(1);
+  });
+
+  it('should keep Tous selected when autocomplete emits tous primitive', () => {
+    component.onSectorChange('indemnites');
+    component.onSectorChange('tous');
+    fixture.detectChanges();
+
+    expect(component.selectedSector()).toEqual({ label: 'Tous', value: 'tous' });
+    expect(component.visibleDocuments().length).toBe(6);
+  });
+
+  it('should resolve sort when autocomplete emits primitive value', () => {
+    component.journeyView.set(false);
+    component.onSortChange('nom-document');
+    fixture.detectChanges();
+
+    expect(component.selectedSort()).toEqual({
+      label: 'Nom du document',
+      value: 'nom-document',
+    });
+    expect(component.listItems()[0].title).toBe('Attestation C4');
+  });
+
   it('should show standalone pedicure in journey mode when front-office sector is selected', () => {
     component.journeyView.set(true);
     component.onSectorChange({
@@ -1046,10 +1081,10 @@ describe('AffiliateDetailsComponent', () => {
       label: 'indémnités',
       value: 'indemnites',
     });
-    component.onSectorChange({ label: 'Tous', value: '' });
+    component.onSectorChange({ label: 'Tous', value: 'tous' });
     fixture.detectChanges();
 
-    expect(component.selectedSector()).toBeNull();
+    expect(component.selectedSector()).toEqual({ label: 'Tous', value: 'tous' });
     expect(component.visibleDocuments().length).toBe(6);
   });
 
@@ -1063,7 +1098,31 @@ describe('AffiliateDetailsComponent', () => {
 
     const titles = component.listItems().map((document) => document.title);
     expect(titles).toEqual([...titles].sort((left, right) => left.localeCompare(right)));
-    expect(component.listItems()[0].title).toBe('Attestation de soin pédicure');
+    expect(component.listItems()[0].title).toBe('Attestation C4');
+  });
+
+  it('should reorder journey groups when nom-document sort is selected', () => {
+    component.journeyView.set(true);
+    component.onSortChange('nom-document');
+    fixture.detectChanges();
+
+    expect(component.listGroups()?.map((group) => group.id)).toEqual([
+      'parcours-demande-primaire',
+      'parcours-clotures',
+      'parcours-rechute',
+    ]);
+  });
+
+  it('should reorder journey groups when actions-en-cours sort is selected', () => {
+    component.journeyView.set(true);
+    component.onSortChange('actions-en-cours');
+    fixture.detectChanges();
+
+    expect(component.listGroups()?.map((group) => group.id)).toEqual([
+      'parcours-demande-primaire',
+      'parcours-clotures',
+      'parcours-rechute',
+    ]);
   });
 
   describe('family member navigation', () => {
