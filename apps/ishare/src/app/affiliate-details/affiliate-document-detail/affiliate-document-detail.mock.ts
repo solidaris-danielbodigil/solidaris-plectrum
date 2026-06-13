@@ -9,7 +9,36 @@ import type {
   AffiliateDocumentDetail,
   DocumentMoreDetails,
 } from './affiliate-document-detail.types';
-import { COMMENT_ICONS } from './affiliate-document-detail.types';
+import { COMMENT_ICONS, MORE_DETAILS_LABEL } from './affiliate-document-detail.types';
+
+function placeholderMoreDetails(
+  panelTitle: string,
+  dateLabel = '—',
+): DocumentMoreDetails {
+  return {
+    events: [
+      {
+        id: `placeholder-${panelTitle.toLowerCase().replace(/\s+/g, '-')}`,
+        dateLabel,
+        status: {
+          label: 'Historique',
+          severity: 'info',
+          icon: 'bi bi-clock-history',
+        },
+        markerIcon: 'bi bi-clock-history',
+        markerTone: 'info',
+        rows: [
+          {
+            date: dateLabel,
+            description: `Historique détaillé pour ${panelTitle}.`,
+            application: 'iSHARE',
+            source: 'IGED',
+          },
+        ],
+      },
+    ],
+  };
+}
 
 // Figma iSHARE-Audit node 382:10723 — drawer plus de details certif ITT.
 // https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=382-10723
@@ -325,7 +354,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '24/11/2025', to: '27/12/2025' },
               },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_MORE_DETAILS,
           },
         ],
@@ -344,7 +373,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('F.D.R. employeur', '05/12/2025'),
           },
           {
             id: 'fdr-affilie-incapacite',
@@ -361,7 +391,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails(
+              'F.D.R. affilié - Incapacité de travail',
+              '05/12/2025',
+            ),
           },
           {
             id: 'compte-financier-liasse',
@@ -378,7 +412,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('Compte financier - Liasse', '05/12/2025'),
           },
         ],
       },
@@ -406,7 +441,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '10/12/2025' },
               { label: 'Numéro de certificat', value: '25/1256332' },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('Calcul', '10/12/2025'),
           },
         ],
       },
@@ -447,7 +483,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '25/12/2025', to: '27/12/2025' },
               },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('Paiement', '28/12/2025'),
           },
         ],
       },
@@ -475,7 +512,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '25/12/2025', to: '27/12/2025' },
               },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_PROLONGATION_MORE_DETAILS,
           },
         ],
@@ -511,7 +548,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '01/01/2026', to: '15/01/2026' },
               },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_RECHUTE_MORE_DETAILS,
           },
         ],
@@ -530,7 +567,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('F.D.R. employeur', '06/01/2026'),
           },
           {
             id: 'fdr-affilie-rechute',
@@ -547,7 +585,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails(
+              'F.D.R. affilié - Incapacité de travail',
+              '06/01/2026',
+            ),
           },
           {
             id: 'compte-financier-rechute',
@@ -559,7 +601,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('Compte financier - Liasse', '06/01/2026'),
           },
         ],
       },
@@ -582,7 +625,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '10/01/2026' },
               { label: 'Numéro de certificat', value: '26/1005678' },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails('Calcul', '10/01/2026'),
           },
         ],
       },
@@ -617,7 +661,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '20/01/2026', to: '12/06/2026' },
               },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_CLOTURE_MORE_DETAILS,
           },
         ],
@@ -657,7 +701,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '16/12/2025' },
               { label: 'Application', value: 'Gestion des indemnités' },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: {
               events: [
                 {
@@ -713,7 +757,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '09/06/2026' },
               { label: 'Application', value: 'Remboursements AO/AC' },
             ],
-            moreDetailsLabel: 'Voir plus de details',
+            moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: {
               events: [
                 {
@@ -785,7 +829,8 @@ export const JACK_MOTA_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDetail>
               },
               actions: [],
               details: [{ label: 'Date de réception', value: '01/03/2026' }],
-              moreDetailsLabel: 'Voir plus de details',
+              moreDetailsLabel: MORE_DETAILS_LABEL,
+              moreDetails: placeholderMoreDetails('Certificat médical', '01/03/2026'),
             },
           ],
         },

@@ -34,12 +34,10 @@ The telemetry export filename is generated automatically: `YYYY-MM-DD_{sessionId
 
 1. Start **OBS** recording.
 2. Open iSHARE dev build (with `?session=P01` if used).
-3. Click the **avatar** (top-right) → **Nouvelle session**.
-4. Avatar menu → **Démarrer la session test** (capture begins).
-5. Run protocol tasks; encourage think-aloud.
-6. Avatar menu → **Arrêter la session test** when finished.
-7. Stop **OBS** recording.
-8. Avatar menu → **Exporter les données** (downloads JSON).
+3. Avatar menu → **Démarrer la session test** (capture begins; a new session is created automatically if needed).
+4. Run protocol tasks; encourage think-aloud.
+5. Avatar menu → **Arrêter la session test** when finished (stops capture and downloads JSON automatically).
+6. Stop **OBS** recording.
 
 Capture only runs between Start and Stop — navigating away does not auto-start telemetry.
 
@@ -65,9 +63,8 @@ Capture only runs between Start and Stop — navigating away does not auto-start
 
 | Item | Action |
 |------|--------|
-| Nouvelle session | Clears buffer, assigns session id, logs `session_new` |
-| Démarrer / Arrêter la session test | Toggles global click + idle capture |
-| Exporter les données | Downloads session envelope JSON, logs `session_export` |
+| Démarrer la session test | Creates session if needed, begins global click + idle capture |
+| Arrêter la session test | Ends capture, downloads session envelope JSON, logs `session_stop` and `session_export` |
 
 The menu appears only when `environment.enableTestingTelemetry` is `true` (development builds).
 

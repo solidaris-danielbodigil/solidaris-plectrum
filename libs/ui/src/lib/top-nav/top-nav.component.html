@@ -133,14 +133,18 @@
             class="p-menu-item-link c-top-nav__menu-item-link"
             [attr.data-telemetry-id]="item.id"
             [attr.data-test]="telemetryLabelsEnabled() ? item.label : null"
-            [attr.aria-label]="item.badge ? item.label + ' (' + item.badge + ')' : item.label"
+            [attr.aria-label]="
+              item.id === avatarMenuTimerItemId() && avatarMenuTimerLabel()
+                ? item.label + ' (' + avatarMenuTimerLabel() + ')'
+                : item.label
+            "
           >
             @if (item.icon) {
               <i [class]="item.icon + ' p-menu-item-icon'" aria-hidden="true"></i>
             }
             <span class="p-menu-item-label">{{ item.label }}</span>
-            @if (item.badge) {
-              <span class="c-top-nav__menu-timer" aria-hidden="true">{{ item.badge }}</span>
+            @if (item.id === avatarMenuTimerItemId() && avatarMenuTimerLabel(); as timerLabel) {
+              <span class="c-top-nav__menu-timer" aria-hidden="true">{{ timerLabel }}</span>
             }
           </a>
         </ng-template>

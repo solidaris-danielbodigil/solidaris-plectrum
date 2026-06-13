@@ -112,15 +112,16 @@ describe('TopNavComponent', () => {
     expect(command).toHaveBeenCalledTimes(1);
   });
 
-  it('should render capture timer as a separate badge with a stable label', () => {
+  it('should render the live timer label without changing the menu model', () => {
     fixture.componentRef.setInput('avatarMenuItems', [
       {
         label: 'Arrêter la session test',
         icon: 'bi bi-stop-circle',
         id: 'session-stop',
-        badge: '02:34',
       },
     ]);
+    fixture.componentRef.setInput('avatarMenuTimerItemId', 'session-stop');
+    fixture.componentRef.setInput('avatarMenuTimerLabel', '02:34');
     fixture.detectChanges();
 
     const trigger = fixture.nativeElement.querySelector(
@@ -133,11 +134,42 @@ describe('TopNavComponent', () => {
       '.p-menu-item-link[data-telemetry-id="session-stop"]',
     ) as HTMLAnchorElement | null;
     const label = link?.querySelector('.p-menu-item-label');
-    const timer = link?.querySelector('.c-top-nav__menu-timer');
 
     expect(label?.textContent).toBe('Arrêter la session test');
-    expect(timer?.textContent).toBe('02:34');
+    expect(link?.querySelector('.c-top-nav__menu-timer')?.textContent).toBe('02:34');
     expect(link?.getAttribute('aria-label')).toBe('Arrêter la session test (02:34)');
+
+    fixture.componentRef.setInput('avatarMenuTimerLabel', '02:35');
+    fixture.detectChanges();
+
+    const updatedLink = document.body.querySelector(
+      '.p-menu-item-link[data-telemetry-id="session-stop"]',
+    ) as HTMLAnchorElement | null;
+
+    expect(updatedLink?.querySelector('.c-top-nav__menu-timer')?.textContent).toBe('02:35');
+    expect(updatedLink?.getAttribute('aria-label')).toBe('Arrêter la session test (02:35)');
+  });
+
+  it('should not render a timer on items that do not match the timer item id', () => {
+    fixture.componentRef.setInput('avatarMenuItems', [
+      { label: 'Démarrer la session test', icon: 'bi bi-play-circle', id: 'session-start' },
+    ]);
+    fixture.componentRef.setInput('avatarMenuTimerItemId', 'session-stop');
+    fixture.componentRef.setInput('avatarMenuTimerLabel', '02:34');
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    ) as HTMLButtonElement;
+    trigger.click();
+    fixture.detectChanges();
+
+    const link = document.body.querySelector(
+      '.p-menu-item-link[data-telemetry-id="session-start"]',
+    ) as HTMLAnchorElement | null;
+
+    expect(link?.querySelector('.c-top-nav__menu-timer')).toBeNull();
+    expect(link?.getAttribute('aria-label')).toBe('Démarrer la session test');
   });
 
   it('should emit avatarMenuOpenChange when the avatar menu opens and closes', () => {

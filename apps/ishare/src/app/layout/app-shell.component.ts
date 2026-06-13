@@ -36,6 +36,7 @@ export class AppShellComponent {
   readonly navItems = ISHARE_NAV_ITEMS;
   readonly testingTelemetryEnabled = environment.enableTestingTelemetry;
   readonly testingMenuItems = this.testingSessionMenu.menuItems;
+  readonly captureElapsedLabel = this.testingSessionMenu.captureElapsedLabel;
 
   readonly homeBreadcrumb: MenuItem = {
     icon: 'bi bi-house',
@@ -57,12 +58,6 @@ export class AppShellComponent {
   readonly showBackButton = computed(() =>
     (this.currentUrl() ?? '').includes('/affiliate/'),
   );
-
-  onAvatarMenuOpenChange(open: boolean): void {
-    if (this.testingTelemetryEnabled) {
-      this.testingSessionMenu.setMenuOpen(open);
-    }
-  }
 
   onBackClick(): void {
     if (this.canNavigateBack()) {

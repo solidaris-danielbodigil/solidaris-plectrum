@@ -312,7 +312,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       ),
     ).toBeFalsy();
     expect(
-      findButtonByLabel(fixture.nativeElement, 'Voir plus de details'),
+      findButtonByLabel(fixture.nativeElement, 'Voir plus de détails'),
     ).toBeTruthy();
     expect(
       findButtonByLabel(fixture.nativeElement, 'Etape précédente'),
@@ -338,7 +338,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.nativeElement.querySelector('p-timeline')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('p-stepper')).toBeFalsy();
     expect(
-      findButtonByLabel(fixture.nativeElement, 'Voir plus de details'),
+      findButtonByLabel(fixture.nativeElement, 'Voir plus de détails'),
     ).toBeTruthy();
   });
 
@@ -348,7 +348,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -377,7 +377,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -621,10 +621,10 @@ describe('AffiliateDocumentDetailComponent', () => {
     );
   });
 
-  it('should open the more-details drawer with Certificat ITT timeline when Voir plus de details is clicked', async () => {
+  it('should open the more-details drawer with Certificat ITT timeline when Voir plus de détails is clicked', async () => {
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -663,7 +663,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   it('should hide the more-details drawer when the close button is clicked', async () => {
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -683,13 +683,13 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
   });
 
-  it('should show an empty state in the more-details drawer for panels without moreDetails', async () => {
+  it('should open the more-details drawer with placeholder history for FDR panels', async () => {
     component.goToNextStep();
     fixture.detectChanges();
 
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -698,17 +698,15 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
-    expect(
-      document.body.querySelector('.c-document-more-details-drawer__empty'),
-    ).toBeTruthy();
-    expect(document.body.textContent).toContain('Aucun historique disponible');
-    expect(document.body.querySelector('.p-timeline')).toBeFalsy();
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('fdr-employeur');
+    expect(document.body.querySelector('.p-timeline')).toBeTruthy();
+    expect(document.body.textContent).toContain('Historique détaillé pour F.D.R. employeur');
   });
 
-  it('should open the more-details drawer when Voir plus de details is clicked for Certificat ITT', async () => {
+  it('should open the more-details drawer when Voir plus de détails is clicked for Certificat ITT', async () => {
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -745,7 +743,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   it('should hide the more-details drawer when the close button is clicked', async () => {
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -764,13 +762,13 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
   });
 
-  it('should show an empty state in the drawer for panels without moreDetails', async () => {
+  it('should open placeholder history in the drawer for FDR employeur panel', async () => {
     component.goToNextStep();
     fixture.detectChanges();
 
     const moreDetailsButton = findButtonByLabel(
       fixture.nativeElement,
-      'Voir plus de details',
+      'Voir plus de détails',
     );
 
     moreDetailsButton?.click();
@@ -779,8 +777,8 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('fdr-employeur');
-    expect(document.querySelector('sds-empty-state')).toBeTruthy();
-    expect(document.querySelector('.p-timeline')).toBeFalsy();
+    expect(document.querySelector('.p-timeline')).toBeTruthy();
+    expect(document.body.textContent).toContain('Historique détaillé pour F.D.R. employeur');
   });
 
   it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {

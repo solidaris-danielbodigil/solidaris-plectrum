@@ -121,6 +121,16 @@ export class TopNavComponent {
   /** When true, menu items expose `data-test` with their visible label (moderated testing). */
   readonly telemetryLabelsEnabled = input<boolean>(false);
 
+  /**
+   * Live trailing label (e.g. an elapsed timer) rendered on the matching menu item.
+   * Updating this signal repaints only the timer text node — it never rebuilds the menu
+   * model, so the menu does not flicker or re-render on each tick.
+   */
+  readonly avatarMenuTimerLabel = input<string | null>(null);
+
+  /** Id of the avatar menu item that should display {@link avatarMenuTimerLabel}. */
+  readonly avatarMenuTimerItemId = input<string | null>(null);
+
   /** Emitted when the sub-navigation toggle changes state. */
   readonly subNavExpandedChange = output<boolean>();
 

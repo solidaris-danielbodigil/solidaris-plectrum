@@ -95,10 +95,35 @@
 // The doubled wrapper class raises specificity above PrimeNG's single-class
 // rule (injected after our stylesheet) so the block context wins and the bottom
 // shadow stays pinned to the scrollport edge.
-.c-affiliate-details__documents.c-affiliate-details__documents .p-card-body,
-.c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {
+.c-affiliate-details__documents.c-affiliate-details__documents .p-card-body {
   display: block;
   @include scroll-shadow;
+}
+
+.c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.c-affiliate-details__detail.c-affiliate-details__detail .p-card-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.c-affiliate-details__detail-scroll {
+  position: relative;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  min-inline-size: 0;
+  @include scroll-shadow;
+}
+
+.c-affiliate-details__scrolltop {
+  flex-shrink: 0;
 }
 
 // Detail placeholder — fill the panel and vertically center the empty state block.

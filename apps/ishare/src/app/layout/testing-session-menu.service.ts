@@ -19,12 +19,15 @@ export class TestingSessionMenuService {
   private readonly messageService = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly menuTick = signal(0);
-  private readonly menuOpen = signal(false);
 
   readonly enabled = environment.enableTestingTelemetry;
 
+  /**
+   * Menu model only changes when capture starts/stops, keeping a stable object identity
+   * between ticks. The live timer is published separately via {@link captureElapsedLabel}
+   * so the seconds counter never rebuilds (and re-renders) the PrimeNG menu.
+   */
   readonly menuItems = computed<MenuItem[]>(() => {
-    this.menuTick();
     const isCapturing = this.telemetry.capturing();
 
     return [
@@ -34,25 +37,24 @@ export class TestingSessionMenuService {
           : 'Démarrer la session test',
         icon: isCapturing ? 'bi bi-stop-circle' : 'bi bi-play-circle',
         id: isCapturing ? 'session-stop' : 'session-start',
-        badge: isCapturing ? this.formatCaptureElapsed() : undefined,
         command: () => this.toggleCapture(),
-      },
-      {
-        label: 'Exporter les données',
-        icon: 'bi bi-download',
-        id: 'session-export',
-        command: () => this.onExport(),
       },
     ];
   });
 
+  /** Live `mm:ss` (or `h:mm:ss`) elapsed label for the active capture; `null` when idle. */
+  readonly captureElapsedLabel = computed<string | null>(() => {
+    this.menuTick();
+    if (!this.telemetry.capturing()) {
+      return null;
+    }
+
+    return this.formatCaptureElapsed();
+  });
+
   constructor() {
-    effect(() => {
-      if (
-        !this.enabled ||
-        !this.telemetry.capturing() ||
-        this.menuOpen()
-      ) {
+    effect((onCleanup) => {
+      if (!this.enabled || !this.telemetry.capturing()) {
         return;
       }
 
@@ -60,32 +62,23 @@ export class TestingSessionMenuService {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.menuTick.update((value) => value + 1));
 
-      return () => subscription.unsubscribe();
+      onCleanup(() => subscription.unsubscribe());
     });
-  }
-
-  /** Pauses live timer updates while the avatar menu is open to keep item targets stable. */
-  setMenuOpen(open: boolean): void {
-    this.menuOpen.set(open);
   }
 
   toggleCapture(): void {
     if (this.telemetry.capturing()) {
       this.telemetry.stopCapture();
-      this.showToast('Enregistrement arrêté');
+      const filename = this.telemetry.downloadSession('ishare', {
+        production: environment.production,
+        telemetryEnabled: environment.enableTestingTelemetry,
+      });
+      this.showToast('Enregistrement arrêté — données exportées', filename);
       return;
     }
 
     this.telemetry.startCapture();
     this.showToast('Enregistrement de la session démarré');
-  }
-
-  onExport(): void {
-    const filename = this.telemetry.downloadSession('ishare', {
-      production: environment.production,
-      telemetryEnabled: environment.enableTestingTelemetry,
-    });
-    this.showToast('Données exportées', filename);
   }
 
   private showToast(summary: string, detail?: string): void {

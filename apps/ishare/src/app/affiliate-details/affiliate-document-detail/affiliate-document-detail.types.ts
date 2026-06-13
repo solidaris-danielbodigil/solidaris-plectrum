@@ -25,6 +25,9 @@ export type DocumentCertificatPanelStatusSeverity =
   | 'secondary'
   | 'contrast';
 
+/** Shared label for accordion panel “more details” drawers (moderated testing `data-test`). */
+export const MORE_DETAILS_LABEL = 'Voir plus de détails';
+
 /** Filled Bootstrap icons for comment / warning severities (list tags, accordion, p-message). */
 export const COMMENT_ICONS = {
   info: 'bi bi-chat-right-text-fill',

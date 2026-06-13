@@ -31,6 +31,10 @@
   min-width: 0;
 }
 
+.c-top-nav__back-button {
+  flex-shrink: 0;
+}
+
 .c-top-nav__end {
   min-width: 0;
 }
@@ -59,4 +63,18 @@
 
 .c-top-nav__avatar {
   flex-shrink: 0;
+}
+
+.c-top-nav__menu-item-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.c-top-nav__menu-timer {
+  flex-shrink: 0;
+  min-inline-size: 3.5rem;
+  margin-inline-start: auto;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
 }
