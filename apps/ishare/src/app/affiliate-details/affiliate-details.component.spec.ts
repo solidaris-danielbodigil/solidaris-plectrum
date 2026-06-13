@@ -313,8 +313,8 @@ describe('AffiliateDetailsComponent', () => {
     ).toBeTruthy();
   });
 
-  it('should deep-link to incapacity payment panel when status action callback runs', () => {
-    component.selectedDocumentId.set('doc-demande-primaire');
+  it('should deep-link to demande primaire calcul panel when status action callback runs', () => {
+    component.selectedDocumentId.set('doc-incapacite');
     component.documentFocus.set(null);
     component.expandedGroupIds.set([]);
 
@@ -323,18 +323,18 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.journeyView()).toBe(true);
     expect(component.expandedGroupIds()).toContain('parcours-demande-primaire');
-    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
     expect(component.documentFocus()).toEqual({
-      stepValue: 1,
-      panelId: 'paiement-incapacite',
+      stepValue: 3,
+      panelId: 'calcul',
     });
 
     const detail = fixture.debugElement.query(
       By.directive(AffiliateDocumentDetailComponent),
     ).componentInstance as AffiliateDocumentDetailComponent;
 
-    expect(detail.activeStep()).toBe(1);
-    expect(detail.certPanelValue()).toBe('paiement-incapacite');
+    expect(detail.activeStep()).toBe(3);
+    expect(detail.certPanelValue()).toBe('calcul');
   });
 
   it('should hide the Notes section in the affiliate detail drawer', () => {
@@ -791,11 +791,7 @@ describe('AffiliateDetailsComponent', () => {
   it('should wire document detail navigation to selectedDocumentId', () => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
 
-    const detail = fixture.debugElement.query(
-      By.directive(AffiliateDocumentDetailComponent),
-    ).componentInstance as AffiliateDocumentDetailComponent;
-
-    detail.goToNextDocument();
+    component.goToNextDocument();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
@@ -817,11 +813,7 @@ describe('AffiliateDetailsComponent', () => {
     component.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    const detail = fixture.debugElement.query(
-      By.directive(AffiliateDocumentDetailComponent),
-    ).componentInstance as AffiliateDocumentDetailComponent;
-
-    detail.goToNextDocument();
+    component.goToNextDocument();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-rechute');
@@ -842,11 +834,7 @@ describe('AffiliateDetailsComponent', () => {
     component.selectedDocumentId.set('doc-rechute');
     fixture.detectChanges();
 
-    const detail = fixture.debugElement.query(
-      By.directive(AffiliateDocumentDetailComponent),
-    ).componentInstance as AffiliateDocumentDetailComponent;
-
-    detail.goToNextDocument();
+    component.goToNextDocument();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-c4');
@@ -857,11 +845,7 @@ describe('AffiliateDetailsComponent', () => {
     component.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    const detail = fixture.debugElement.query(
-      By.directive(AffiliateDocumentDetailComponent),
-    ).componentInstance as AffiliateDocumentDetailComponent;
-
-    detail.goToNextDocument();
+    component.goToNextDocument();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-rechute');

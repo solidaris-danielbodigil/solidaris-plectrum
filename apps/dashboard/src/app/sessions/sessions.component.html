@@ -1,0 +1,479 @@
+<section class="c-dashboard-sessions o-flex o-flex--y o-layout--gap-3">
+
+  <header class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--wrap o-layout--gap-2">
+
+    <div class="o-flex o-flex--y o-layout--gap-1">
+
+      <h1 class="c-dashboard-sessions__title o-flex o-flex--align-items-center o-layout--gap-2">
+
+        <i class="bi bi-graph-up c-dashboard-sessions__title-icon" aria-hidden="true"></i>
+
+        <span>Session analysis</span>
+
+      </h1>
+
+      <p class="c-dashboard-sessions__subtitle">
+
+        Import a telemetry JSON export to review timeline, click paths, and idle gaps.
+
+      </p>
+
+    </div>
+
+
+
+    <div class="o-flex o-flex--align-items-center o-layout--gap-2">
+
+      @if (session(); as loaded) {
+
+        <p-select
+
+          [options]="appFilterOptions"
+
+          optionLabel="label"
+
+          optionValue="value"
+
+          [ngModel]="appFilter()"
+
+          (ngModelChange)="appFilter.set($event)"
+
+          placeholder="App filter"
+
+        />
+
+        <span class="c-dashboard-sessions__meta">Session app: {{ loaded.app }}</span>
+
+      }
+
+
+
+      <input
+
+        #fileInput
+
+        type="file"
+
+        accept="application/json,.json"
+
+        class="u-sr-only"
+
+        (change)="onFileSelected($event)"
+
+      />
+
+      <button pButton type="button" (click)="fileInput.click()">
+
+        <i class="bi bi-upload" aria-hidden="true"></i>
+
+        <span>Import JSON</span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+
+  @if (parseError(); as error) {
+
+    <p-message severity="error" [text]="error" />
+
+  }
+
+
+
+  @if (session(); as loaded) {
+
+    <div class="c-dashboard-sessions__content o-flex o-flex--y o-layout--gap-3">
+
+    <div class="o-flex o-flex--wrap o-layout--gap-3">
+
+      <p-card class="c-dashboard-sessions__summary-card">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__summary-label">
+
+            <i class="bi bi-clock-history" aria-hidden="true"></i>
+
+            Duration
+
+          </span>
+
+        </ng-template>
+
+        <p class="c-dashboard-sessions__summary-value">{{ formatDuration(stats().durationMs) }}</p>
+
+      </p-card>
+
+      <p-card class="c-dashboard-sessions__summary-card">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__summary-label">
+
+            <i class="bi bi-hand-index" aria-hidden="true"></i>
+
+            Total clicks
+
+          </span>
+
+        </ng-template>
+
+        <p class="c-dashboard-sessions__summary-value">{{ stats().clickCount }}</p>
+
+      </p-card>
+
+      <p-card class="c-dashboard-sessions__summary-card">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__summary-label">
+
+            <i class="bi bi-pause-circle" aria-hidden="true"></i>
+
+            Idle events
+
+          </span>
+
+        </ng-template>
+
+        <p class="c-dashboard-sessions__summary-value">{{ stats().idleCount }}</p>
+
+      </p-card>
+
+      <p-card class="c-dashboard-sessions__summary-card">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__summary-label">
+
+            <i class="bi bi-calendar-event" aria-hidden="true"></i>
+
+            Exported at
+
+          </span>
+
+        </ng-template>
+
+        <p class="c-dashboard-sessions__summary-value c-dashboard-sessions__summary-value--secondary">
+
+          {{ formatTimestamp(loaded.exportedAt) }}
+
+        </p>
+
+      </p-card>
+
+      <p-card class="c-dashboard-sessions__summary-card">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__summary-label">
+
+            <i class="bi bi-person" aria-hidden="true"></i>
+
+            Participant
+
+          </span>
+
+        </ng-template>
+
+        <p class="c-dashboard-sessions__summary-value c-dashboard-sessions__summary-value--secondary">
+
+          {{ loaded.participantId ?? loaded.sessionId ?? '—' }}
+
+        </p>
+
+      </p-card>
+
+    </div>
+
+
+
+    <div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-3">
+
+      <p-card class="o-flex__item--grow-1">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__card-header">
+
+            <i class="bi bi-list-ul" aria-hidden="true"></i>
+
+            Event timeline
+
+          </span>
+
+        </ng-template>
+
+        <p-table
+
+          class="c-dashboard-sessions__table"
+
+          [value]="timeline()"
+
+          [paginator]="true"
+
+          [rows]="15"
+
+          [rowsPerPageOptions]="[15, 30, 50]"
+
+          sortField="relativeMs"
+
+          [sortOrder]="1"
+
+        >
+
+          <ng-template #header>
+
+            <tr>
+
+              <th pSortableColumn="relativeLabel">+mm:ss <p-sortIcon field="relativeLabel" /></th>
+
+              <th pSortableColumn="event">Event <p-sortIcon field="event" /></th>
+
+              <th pSortableColumn="target">Target <p-sortIcon field="target" /></th>
+
+              <th pSortableColumn="timestamp">Timestamp <p-sortIcon field="timestamp" /></th>
+
+            </tr>
+
+          </ng-template>
+
+          <ng-template #body let-row>
+
+            <tr>
+
+              <td>{{ row.relativeLabel }}</td>
+
+              <td>{{ formatEvent(row.event) }}</td>
+
+              <td>
+
+                <span class="c-dashboard-sessions__target-label">{{ formatTarget(row.target, row.label) }}</span>
+
+                @if (showTargetSecondary(row.target, row.label)) {
+
+                  <span class="c-dashboard-sessions__target-id">{{ row.target }}</span>
+
+                }
+
+              </td>
+
+              <td>{{ formatTimestamp(row.timestamp) }}</td>
+
+            </tr>
+
+          </ng-template>
+
+        </p-table>
+
+      </p-card>
+
+
+
+      <p-card class="c-dashboard-sessions__side-panel">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__card-header">
+
+            <i class="bi bi-signpost-split" aria-hidden="true"></i>
+
+            Click path
+
+          </span>
+
+        </ng-template>
+
+        <ol class="c-dashboard-sessions__click-path">
+
+          @for (target of clickPath(); track target; let index = $index) {
+
+            <li>{{ index + 1 }}. {{ formatTarget(target) }}</li>
+
+          }
+
+        </ol>
+
+      </p-card>
+
+    </div>
+
+
+
+    <div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-3">
+
+      <p-card class="c-dashboard-sessions__chart-card o-flex__item--grow-1">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__card-header">
+
+            <i class="bi bi-bar-chart" aria-hidden="true"></i>
+
+            Top 10 clicked targets
+
+          </span>
+
+        </ng-template>
+
+        <div class="c-dashboard-sessions__chart">
+
+          <p-chart type="bar" [data]="barChartData()" [options]="barChartOptions()" />
+
+        </div>
+
+      </p-card>
+
+
+
+      <p-card class="c-dashboard-sessions__chart-card o-flex__item--grow-1">
+
+        <ng-template #header>
+
+          <span class="c-dashboard-sessions__card-header">
+
+            <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+
+            Clicks per minute
+
+          </span>
+
+        </ng-template>
+
+        <div class="c-dashboard-sessions__chart">
+
+          <p-chart type="line" [data]="lineChartData()" [options]="lineChartOptions()" />
+
+        </div>
+
+      </p-card>
+
+    </div>
+
+
+
+    <p-card class="c-dashboard-sessions__frequency-card">
+
+      <ng-template #header>
+
+        <span class="c-dashboard-sessions__card-header">
+
+          <i class="bi bi-ui-checks-grid" aria-hidden="true"></i>
+
+          Element frequency (top {{ frequencyAggregates().length }})
+
+        </span>
+
+      </ng-template>
+
+      <div class="c-dashboard-sessions__frequency-chart-viewport">
+
+        <div
+
+          class="c-dashboard-sessions__frequency-chart"
+
+          [style.height.rem]="frequencyChartHeightRem()"
+
+        >
+
+          <p-chart
+
+            type="bar"
+
+            [data]="frequencyChartData()"
+
+            [options]="frequencyChartOptions()"
+
+          />
+
+        </div>
+
+      </div>
+
+    </p-card>
+
+
+
+    <p-card class="c-dashboard-sessions__idle-card">
+
+      <ng-template #header>
+
+        <span class="c-dashboard-sessions__card-header">
+
+          <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+
+          Idle gaps (&gt; 3s)
+
+        </span>
+
+      </ng-template>
+
+      <p-table
+
+        class="c-dashboard-sessions__table"
+
+        [value]="idleGaps()"
+
+        [paginator]="idleGaps().length > 10"
+
+        [rows]="10"
+
+      >
+
+        <ng-template #header>
+
+          <tr>
+
+            <th>At</th>
+
+            <th>Duration</th>
+
+            <th>Preceding target</th>
+
+            <th>Start</th>
+
+            <th>End</th>
+
+          </tr>
+
+        </ng-template>
+
+        <ng-template #body let-gap>
+
+          <tr>
+
+            <td>{{ gap.relativeLabel }}</td>
+
+            <td>{{ formatDuration(gap.durationMs) }}</td>
+
+            <td>{{ formatTarget(gap.precedingTarget) }}</td>
+
+            <td>{{ formatTimestamp(gap.startTimestamp) }}</td>
+
+            <td>{{ formatTimestamp(gap.endTimestamp) }}</td>
+
+          </tr>
+
+        </ng-template>
+
+      </p-table>
+
+    </p-card>
+
+    </div>
+
+  } @else if (!parseError()) {
+
+    <p-card>
+
+      <p class="c-dashboard-sessions__empty-state">Import a session JSON file to begin analysis.</p>
+
+    </p-card>
+
+  }
+
+</section>

@@ -457,6 +457,25 @@ describe('ListComponent', () => {
     expect(emitSpy).toHaveBeenCalledWith([]);
   });
 
+  it('should allow collapsing a group that contains the selected document', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.componentRef.setInput('selectedItemId', 'doc-demande-primaire');
+    fixture.detectChanges();
+
+    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    component.expandedGroupIdsChange.subscribe(emitSpy);
+
+    const groupHeader = fixture.nativeElement.querySelector(
+      '.c-list__item--group',
+    ) as HTMLElement;
+    groupHeader.click();
+    fixture.detectChanges();
+
+    expect(emitSpy).toHaveBeenCalledWith([]);
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('should expand a collapsed group when its header is clicked', () => {
     fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
     fixture.componentRef.setInput('expandedGroupIds', []);

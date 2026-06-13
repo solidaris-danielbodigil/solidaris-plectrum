@@ -28,7 +28,7 @@ Before starting:
 2. Confirm consent to **anonymous interaction logging** (clicks, timing) when the test build has telemetry enabled.
 3. Confirm the participant may stop at any time.
 
-Note: telemetry exports JSON/CSV at session end via the browser console (`TestingTelemetryService`) — facilitator only.
+Note: telemetry is exported as JSON via the top-nav **avatar menu** → **Exporter les données** (facilitator only). See [capture-data-workflow.md](./capture-data-workflow.md).
 
 ---
 
@@ -147,7 +147,11 @@ If time permits, administer the standard System Usability Scale questionnaire an
 
 ## Facilitator checklist (before session)
 
-- [ ] Development build with `enableTestingTelemetry: true`.
+- [ ] Development build with `enableTestingTelemetry: true` (`npm run start`).
+- [ ] OBS profile ready (screen + cursor + mic); naming convention agreed (`YYYY-MM-DD_P01_*`).
+- [ ] Optional session URL: `?session=P01` on affiliate route.
+- [ ] Avatar menu flow rehearsed: **Nouvelle session** → **Démarrer la session test** → **Arrêter** → **Exporter les données**.
+- [ ] Dashboard available locally: `npm run start:dashboard` (post-session analysis).
 - [ ] Vue parcours ON/OFF — 6 documents in flat list, 4 in groups + 2 standalone in journey mode.
 - [ ] Scenario 5 attestation réception exactly **09/06/2026**.
 - [ ] Scenario 2 C4 réception **16/12/2025** + Calcul alerte **15/12/2025**.

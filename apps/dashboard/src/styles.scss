@@ -1,0 +1,103 @@
+// Dashboard uses PrimeNG Aura dark (html.dark in index.html).
+// libs/styles sets body color from Plectrum light tokens (--sds-color-text).
+// PrimeNG v21 Aura has no --p-surface-ground token; page canvas uses --p-surface-950.
+
+html.dark {
+  --p-surface-ground: var(--p-surface-950);
+  color-scheme: dark;
+}
+
+html.dark,
+html.dark body {
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+}
+
+html.dark app-root,
+html.dark app-sessions,
+html.dark .c-dashboard-sessions {
+  display: block;
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+}
+
+html.dark app-root {
+  min-height: 100%;
+}
+
+html.dark app-shell {
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+  min-height: 100dvh;
+}
+
+html.dark app-shell > main {
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+}
+
+// Override Plectrum light text tokens inherited from libs/styles/main.scss.
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark p {
+  color: inherit;
+}
+
+// PrimeNG Card padding — sessions (and future dashboard pages) use p-card with #header
+// templates. Body padding comes from --p-card-body-padding (Aura card.body.padding: 1.25rem);
+// .p-card-header has no PrimeNG padding token, so header inset is set here.
+// Component SCSS cannot reach p-card internals (encapsulation); host token + global scope only.
+html.dark .c-dashboard-sessions {
+  p-card {
+    --p-card-body-padding: 1.25rem;
+  }
+
+  .p-card-header {
+    padding-inline: var(--p-card-body-padding);
+    padding-top: var(--p-card-body-padding);
+  }
+
+  .p-card-body {
+    padding: var(--p-card-body-padding);
+  }
+
+  .c-dashboard-sessions__frequency-chart {
+    p-chart,
+    .p-chart {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    canvas {
+      display: block;
+    }
+  }
+
+  .c-dashboard-sessions__table {
+    .p-datatable-thead > tr > th {
+      font-family: var(--text-label-sm-family);
+      font-size: var(--text-label-sm-size);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--text-label-sm-line-height);
+      color: var(--p-text-muted-color);
+      background: color-mix(in srgb, var(--p-content-background) 88%, var(--p-surface-950));
+    }
+
+    .p-datatable-tbody > tr > td {
+      font-family: var(--text-body-sm-family);
+      font-size: var(--text-body-sm-size);
+      font-weight: var(--text-body-sm-weight);
+      line-height: var(--text-body-sm-line-height);
+      color: var(--p-text-color);
+    }
+
+    .p-datatable-tbody > tr:hover > td {
+      color: var(--p-text-hover-color);
+    }
+  }
+}

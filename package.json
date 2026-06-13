@@ -8,8 +8,10 @@
   "scripts": {
     "start": "ng serve ishare",
     "start:icrm": "ng serve icrm",
+    "start:dashboard": "ng serve dashboard",
     "build": "ng build ishare",
     "build:icrm": "ng build icrm",
+    "build:dashboard": "ng build dashboard",
     "test": "ng test",
     "lint": "ng lint",
     "storybook": "ng run ui:storybook",
@@ -28,6 +30,7 @@
     "@angular/router": "^21.2.16",
     "@primeuix/themes": "^2.0.3",
     "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.5.1",
     "primeng": "^21.1.9",
     "rxjs": "~7.8.2",
     "zone.js": "~0.15.1"

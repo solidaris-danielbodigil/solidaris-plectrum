@@ -17,6 +17,21 @@
       </button>
     }
 
+    @if (showBackButton()) {
+      <button
+        pButton
+        type="button"
+        text
+        severity="secondary"
+        pRipple
+        class="c-top-nav__back-button o-flex o-flex--align-items-center o-flex__item--shrink-0"
+        icon="bi bi-arrow-left"
+        [label]="backLabel()"
+        [attr.aria-label]="backLabel()"
+        (click)="onBackClick()"
+      ></button>
+    }
+
     <div class="c-top-nav__breadcrumb o-layout--min-w-0 o-layout--overflow-hidden">
       <p-breadcrumb
         [model]="breadcrumbs()"
@@ -84,11 +99,59 @@
       <i class="bi bi-question-circle c-top-nav__action-icon" aria-hidden="true"></i>
     </button>
 
-    <sds-plectrum-avatar
-      class="c-top-nav__avatar o-flex__item--shrink-0"
-      [initials]="avatarInitials()"
-      [state]="avatarState()"
-      [ariaLabel]="avatarAriaLabel()"
-    />
+    @if (hasAvatarMenu()) {
+      <button
+        pButton
+        type="button"
+        text
+        severity="secondary"
+        pRipple
+        class="c-top-nav__avatar-trigger o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
+        role="button"
+        [attr.aria-label]="avatarMenuAriaLabel()"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="avatarMenuExpanded()"
+        (click)="toggleAvatarMenu($event, avatarMenu)"
+      >
+        <sds-plectrum-avatar
+          class="c-top-nav__avatar o-flex__item--shrink-0"
+          [initials]="avatarInitials()"
+          [state]="avatarState()"
+          [ariaLabel]="avatarAriaLabel()"
+        />
+      </button>
+      <p-menu
+        #avatarMenu
+        [model]="avatarMenuItems()"
+        [popup]="true"
+        appendTo="body"
+        (onHide)="onAvatarMenuHide()"
+      >
+        <ng-template #item let-item>
+          <a
+            pRipple
+            class="p-menu-item-link c-top-nav__menu-item-link"
+            [attr.data-telemetry-id]="item.id"
+            [attr.data-test]="telemetryLabelsEnabled() ? item.label : null"
+            [attr.aria-label]="item.badge ? item.label + ' (' + item.badge + ')' : item.label"
+          >
+            @if (item.icon) {
+              <i [class]="item.icon + ' p-menu-item-icon'" aria-hidden="true"></i>
+            }
+            <span class="p-menu-item-label">{{ item.label }}</span>
+            @if (item.badge) {
+              <span class="c-top-nav__menu-timer" aria-hidden="true">{{ item.badge }}</span>
+            }
+          </a>
+        </ng-template>
+      </p-menu>
+    } @else {
+      <sds-plectrum-avatar
+        class="c-top-nav__avatar o-flex__item--shrink-0"
+        [initials]="avatarInitials()"
+        [state]="avatarState()"
+        [ariaLabel]="avatarAriaLabel()"
+      />
+    }
   </div>
 </header>

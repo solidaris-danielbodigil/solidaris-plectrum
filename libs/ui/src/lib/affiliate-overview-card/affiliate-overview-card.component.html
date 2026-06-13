@@ -43,6 +43,8 @@
                 pButton
                 type="button"
                 class="c-affiliate-overview-card__status-action"
+                data-telemetry-id="affiliate-overview-status-action"
+                [sdsTelemetryLabel]="action.label"
                 [label]="action.label"
                 [icon]="action.icon"
                 [severity]="statusActionSeverity()!"
@@ -79,6 +81,7 @@
                   } @else if (index === firstFilterableInfoTagIndex()) {
                     <p-selectbutton
                       class="c-affiliate-overview-card__info-tags-filter"
+                      data-telemetry-id="affiliate-overview-info-tags"
                       [options]="filterableInfoTagOptions()"
                       optionLabel="ariaLabel"
                       optionValue="filterKey"

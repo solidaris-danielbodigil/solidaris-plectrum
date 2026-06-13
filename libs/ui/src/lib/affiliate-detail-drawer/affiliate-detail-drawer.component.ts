@@ -16,6 +16,7 @@ import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
+import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   PlectrumAvatarColor,
   PlectrumAvatarGender,
@@ -130,6 +131,7 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
     Drawer,
     FormsModule,
     PlectrumAvatarComponent,
+    SdsTelemetryLabelDirective,
     SelectButton,
     TagModule,
   ],

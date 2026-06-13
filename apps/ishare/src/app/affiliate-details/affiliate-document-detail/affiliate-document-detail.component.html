@@ -40,7 +40,7 @@
 
           @for (step of steps(); track step.value) {
 
-            <p-step [value]="step.value">{{ step.label }}</p-step>
+            <p-step [value]="step.value" [sdsTelemetryLabel]="step.label">{{ step.label }}</p-step>
 
           }
 
@@ -104,6 +104,8 @@
 
           label="Etape précédente"
 
+          sdsTelemetryLabel="Etape précédente"
+
           [disabled]="previousDisabled()"
 
           (click)="goToPreviousStep()"
@@ -121,6 +123,8 @@
           iconPos="right"
 
           label="Etape suivante"
+
+          sdsTelemetryLabel="Etape suivante"
 
           [disabled]="nextDisabled()"
 
@@ -166,7 +170,7 @@
 
       >
 
-        <p-accordion-header>
+        <p-accordion-header [sdsTelemetryLabel]="panel.title">
 
           <div
 
@@ -246,6 +250,8 @@
 
                     [attr.aria-label]="action.label"
 
+                    [sdsTelemetryLabel]="action.label"
+
                     (click)="onPanelActionClick(action)"
 
                   ></button>
@@ -304,6 +310,7 @@
               size="small"
               icon="bi bi-link-45deg"
               [label]="reference.label"
+              [sdsTelemetryLabel]="reference.label"
               (click)="onCrossReferenceClick(reference)"
             ></button>
           }
@@ -415,6 +422,8 @@
             icon="bi bi-eye"
 
             [label]="panel.moreDetailsLabel"
+
+            [sdsTelemetryLabel]="panel.moreDetailsLabel"
 
             (click)="openMoreDetails(panel)"
 

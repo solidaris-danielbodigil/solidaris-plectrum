@@ -20,12 +20,14 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { ScrollTop } from 'primeng/scrolltop';
 import {
   AffiliateDetailDrawerComponent,
   EmptyStateComponent,
   FormFieldComponent,
   InputClearComponent,
   ListComponent,
+  SdsTelemetryLabelDirective,
   TestingTelemetryService,
   ToolbarComponent,
   TransactionsCicsModalComponent,
@@ -46,7 +48,10 @@ import type {
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
-import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail/affiliate-document-detail.mock';
+import {
+  EVA_MARTINEZ_DOCUMENT_DETAILS,
+  getDocumentDetailsForAffiliate,
+} from './affiliate-document-detail/affiliate-document-detail.mock';
 import { DocumentMoreDetailsDrawerComponent } from './affiliate-document-detail/document-more-details-drawer/document-more-details-drawer.component';
 import { environment } from '../../environments/environment';
 import {
@@ -418,10 +423,12 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     InputClearComponent,
     EmptyStateComponent,
     ListComponent,
+    SdsTelemetryLabelDirective,
     AffiliateDocumentDetailComponent,
     AffiliateDetailDrawerComponent,
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
+    ScrollTop,
   ],
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
@@ -454,7 +461,7 @@ export class AffiliateDetailsComponent {
 
   readonly affiliateName = computed(() => this.affiliateProfile().name);
 
-  private static readonly EVA_INCAPACITY_PAYMENT_STATUS_ACTION: AffiliateOverviewStatusAction =
+  private static readonly EVA_C4_MISSING_STATUS_ACTION: AffiliateOverviewStatusAction =
     {
       label: 'C4 non reçu',
       icon: 'bi bi-exclamation-triangle-fill',
@@ -462,16 +469,16 @@ export class AffiliateDetailsComponent {
       ariaLabel: 'Voir le détail — C4 non reçu',
     };
 
-  private static readonly EVA_INCAPACITY_PAYMENT_DEEP_LINK = {
-    documentId: 'doc-incapacite',
+  private static readonly EVA_C4_MISSING_DEEP_LINK = {
+    documentId: 'doc-demande-primaire',
     groupId: 'parcours-demande-primaire',
-    stepValue: 1,
-    panelId: 'paiement-incapacite',
+    stepValue: 3,
+    panelId: 'calcul',
   } as const;
 
   readonly statusAction = computed((): AffiliateOverviewStatusAction | null =>
     this.isEvaDossier()
-      ? AffiliateDetailsComponent.EVA_INCAPACITY_PAYMENT_STATUS_ACTION
+      ? AffiliateDetailsComponent.EVA_C4_MISSING_STATUS_ACTION
       : null,
   );
 
@@ -777,17 +784,55 @@ export class AffiliateDetailsComponent {
     return this.listItems().length;
   });
 
-  /** Documents cycled by detail prev/next — parcours-only when journey view is on. */
+  /**
+   * Documents cycled by detail prev/next — always mirrors the visible list:
+   * flat `listItems` when the list renders rows, otherwise journey group order.
+   */
   readonly navigableDocuments = computed(() => {
-    if (
-      this.journeyView() &&
-      this.isEvaDossier() &&
-      !this.shouldUseFlatListPresentation()
-    ) {
-      return (this.listGroups() ?? []).flatMap((group) => group.documents);
+    const flatList = this.listItems();
+    if (flatList.length > 0) {
+      return flatList;
     }
 
-    return this.visibleDocuments();
+    return (this.listGroups() ?? []).flatMap((group) => group.documents);
+  });
+
+  readonly selectedDocumentDetail = computed((): AffiliateDocumentDetail | null => {
+    const id = this.selectedDocumentId();
+    if (!id) {
+      return null;
+    }
+
+    return getDocumentDetailsForAffiliate(this.affiliateId())[id] ?? null;
+  });
+
+  readonly selectedDocumentTitle = computed(
+    () => this.selectedDocumentDetail()?.title ?? '',
+  );
+
+  readonly canGoToPreviousDocument = computed(() => {
+    const selectedId = this.selectedDocumentId();
+    if (!selectedId) {
+      return false;
+    }
+
+    const index = this.navigableDocuments().findIndex(
+      (document) => document.id === selectedId,
+    );
+
+    return index > 0;
+  });
+
+  readonly canGoToNextDocument = computed(() => {
+    const selectedId = this.selectedDocumentId();
+    if (!selectedId) {
+      return false;
+    }
+
+    const documents = this.navigableDocuments();
+    const index = documents.findIndex((document) => document.id === selectedId);
+
+    return index >= 0 && index < documents.length - 1;
   });
 
   onSectorChange(option: SectorOption | string | null): void {
@@ -988,6 +1033,36 @@ export class AffiliateDetailsComponent {
     this.recordTelemetry('deep_link_tag', `${doc.id}::${target.id}`);
   }
 
+  goToPreviousDocument(): void {
+    const documents = this.navigableDocuments();
+    const selectedId = this.selectedDocumentId();
+    if (!selectedId) {
+      return;
+    }
+
+    const index = documents.findIndex((document) => document.id === selectedId);
+    if (index <= 0) {
+      return;
+    }
+
+    this.onSelectedDocumentIdChange(documents[index - 1].id);
+  }
+
+  goToNextDocument(): void {
+    const documents = this.navigableDocuments();
+    const selectedId = this.selectedDocumentId();
+    if (!selectedId) {
+      return;
+    }
+
+    const index = documents.findIndex((document) => document.id === selectedId);
+    if (index < 0 || index >= documents.length - 1) {
+      return;
+    }
+
+    this.onSelectedDocumentIdChange(documents[index + 1].id);
+  }
+
   onSelectedDocumentIdChange(documentId: string): void {
     // Prev/next document navigation is a plain selection, so drop any deep-link
     // focus from an earlier tag click.
@@ -1027,7 +1102,7 @@ export class AffiliateDetailsComponent {
     }
 
     const { documentId, groupId, stepValue, panelId } =
-      AffiliateDetailsComponent.EVA_INCAPACITY_PAYMENT_DEEP_LINK;
+      AffiliateDetailsComponent.EVA_C4_MISSING_DEEP_LINK;
 
     this.journeyView.set(true);
     this.ensureGroupExpanded(groupId);
@@ -1311,10 +1386,6 @@ export class AffiliateDetailsComponent {
   }
 
   constructor() {
-    if (environment.enableTestingTelemetry) {
-      this.telemetry.enable();
-    }
-
     this.destroyRef.onDestroy(() => {
       this.telemetry.disable();
     });

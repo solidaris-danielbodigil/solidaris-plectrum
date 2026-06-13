@@ -16,6 +16,7 @@ import { Popover } from 'primeng/popover';
 import { Ripple } from 'primeng/ripple';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
+import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   ListDocumentItem,
   ListDocumentTag,
@@ -38,7 +39,7 @@ export interface ListDocumentNodeData {
 @Component({
   selector: 'sds-list',
   standalone: true,
-  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, Tag, Tree],
+  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, SdsTelemetryLabelDirective, Tag, Tree],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -84,21 +85,33 @@ export class ListComponent {
 
   readonly isJourneyMode = computed(() => this.groups() !== null);
 
+  /** Last selection that triggered auto-expand — avoids re-opening after user collapse. */
+  private selectionAutoExpandId: string | null = null;
+
   /** Keeps the parent group expanded when selection moves programmatically. */
   private readonly expandGroupForSelectedItem = effect(() => {
     const selectedId = this.selectedItemId();
     if (selectedId === null || !this.isJourneyMode()) {
+      this.selectionAutoExpandId = null;
+      return;
+    }
+
+    if (selectedId === this.selectionAutoExpandId) {
       return;
     }
 
     const group = (this.groups() ?? []).find((item) =>
       item.documents.some((document) => document.id === selectedId),
     );
-    if (!group || this.isGroupExpanded(group.id)) {
+    if (!group) {
       return;
     }
 
-    this.syncExpandedGroupId(group.id, true);
+    if (!this.isGroupExpanded(group.id)) {
+      this.syncExpandedGroupId(group.id, true);
+    }
+
+    this.selectionAutoExpandId = selectedId;
   });
 
   readonly documentCount = computed(() => {
@@ -151,6 +164,10 @@ export class ListComponent {
 
   documentDisplayTitle(doc: ListDocumentItem): string {
     return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
+  }
+
+  groupTelemetryLabel(group: ListGroup): string {
+    return group.titleAccent ? `${group.title} ${group.titleAccent}` : group.title;
   }
 
   documentIcon(doc: ListDocumentItem): string {

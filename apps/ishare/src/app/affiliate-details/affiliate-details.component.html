@@ -22,6 +22,8 @@
                 autocomplete="off"
                 id="document-search"
                 name="documentSearch"
+                data-telemetry-id="document-search"
+                sdsTelemetryLabel="Rechercher"
                 [ngModel]="documentSearch()"
                 (ngModelChange)="documentSearch.set($event)"
                 pSize="small"
@@ -44,6 +46,8 @@
             <p-autocomplete
               inputId="document-sector"
               name="documentSector"
+              data-telemetry-id="filter-sector"
+              sdsTelemetryLabel="Secteur"
               [ngModel]="selectedSector()"
               (ngModelChange)="onSectorChange($event)"
               (onSelect)="onSectorChange($event.value)"
@@ -66,6 +70,8 @@
             <p-autocomplete
               inputId="document-sort"
               name="documentSort"
+              data-telemetry-id="filter-sort"
+              sdsTelemetryLabel="Trier par"
               [ngModel]="selectedSort()"
               (ngModelChange)="onSortChange($event)"
               (onSelect)="onSortChange($event.value)"
@@ -90,6 +96,8 @@
             <p-toggleswitch
               inputId="journey-view"
               name="journeyView"
+              data-telemetry-id="journey-view"
+              sdsTelemetryLabel="Vue parcours"
               [ngModel]="journeyView()"
               (ngModelChange)="onJourneyViewChange($event)"
               [pTooltip]="journeyViewTooltip()"
@@ -108,6 +116,8 @@
             <p-toggleswitch
               inputId="archived-only"
               name="archivedOnly"
+              data-telemetry-id="archived-only"
+              sdsTelemetryLabel="Documents archivés seulement"
               [ngModel]="archivedOnly()"
               (ngModelChange)="archivedOnly.set($event)"
             />
@@ -140,6 +150,8 @@
                 pButton
                 type="button"
                 class="c-affiliate-details__hors-parcours-chip"
+                data-telemetry-id="hors-parcours-chip"
+                [sdsTelemetryLabel]="horsParcoursChipLabel()"
                 severity="warn"
                 size="small"
                 [outlined]="true"
@@ -155,6 +167,8 @@
             text
             severity="secondary"
             class="c-affiliate-details__documents-sort"
+            data-telemetry-id="documents-sort"
+            [sdsTelemetryLabel]="startDateSortAriaLabel()"
             [icon]="startDateSortIcon()"
             [attr.aria-label]="startDateSortAriaLabel()"
             (click)="toggleStartDateSort()"
@@ -190,14 +204,14 @@
       >
         @if (selectedDocumentId(); as documentId) {
           <ng-template pTemplate="header">
-            @if (documentDetail.documentDetail(); as detail) {
+            @if (selectedDocumentDetail(); as detail) {
               <div
                 class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2"
               >
                 <h2
                   class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0"
                 >
-                  {{ documentDetail.documentTitle() }}
+                  {{ selectedDocumentTitle() }}
                 </h2>
 
                 <div
@@ -209,9 +223,10 @@
                     severity="secondary"
                     size="small"
                     icon="bi bi-skip-backward"
-                    [disabled]="!documentDetail.canGoToPreviousDocument()"
+                    [disabled]="!canGoToPreviousDocument()"
                     aria-label="Document précédent"
-                    (click)="documentDetail.goToPreviousDocument()"
+                    sdsTelemetryLabel="Document précédent"
+                    (click)="goToPreviousDocument()"
                   ></button>
                   <button
                     pButton
@@ -219,27 +234,41 @@
                     severity="secondary"
                     size="small"
                     icon="bi bi-skip-forward"
-                    [disabled]="!documentDetail.canGoToNextDocument()"
+                    [disabled]="!canGoToNextDocument()"
                     aria-label="Document suivant"
-                    (click)="documentDetail.goToNextDocument()"
+                    sdsTelemetryLabel="Document suivant"
+                    (click)="goToNextDocument()"
                   ></button>
                 </div>
               </div>
             }
           </ng-template>
 
-          <app-affiliate-document-detail
-            #documentDetail
-            class="o-layout--full-width o-layout--min-w-0"
-            [selectedDocumentId]="documentId"
-            [affiliateRouteId]="affiliateId()"
-            [navigableDocuments]="navigableDocuments()"
-            [focusTarget]="documentFocus()"
-            (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
-            (moreDetailsOpen)="onMoreDetailsOpen($event)"
-            (transactionsCicsOpen)="onTransactionsCicsOpen()"
-            (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
-          />
+          <div class="c-affiliate-details__detail-scroll">
+            <app-affiliate-document-detail
+              class="o-layout--full-width o-layout--min-w-0"
+              [selectedDocumentId]="documentId"
+              [affiliateRouteId]="affiliateId()"
+              [navigableDocuments]="navigableDocuments()"
+              [focusTarget]="documentFocus()"
+              (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
+              (moreDetailsOpen)="onMoreDetailsOpen($event)"
+              (transactionsCicsOpen)="onTransactionsCicsOpen()"
+              (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
+            />
+            <p-scrolltop
+              class="c-affiliate-details__scrolltop"
+              target="parent"
+              [threshold]="200"
+              icon="bi bi-arrow-up"
+              buttonAriaLabel="Retour en haut"
+              [buttonProps]="{
+                severity: 'secondary',
+                rounded: true,
+                raised: true,
+              }"
+            />
+          </div>
         } @else {
           <sds-empty-state
             class="c-affiliate-details__detail-empty o-layout--full-width o-layout--min-w-0"

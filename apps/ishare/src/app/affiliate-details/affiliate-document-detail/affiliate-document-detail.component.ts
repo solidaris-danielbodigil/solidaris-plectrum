@@ -19,6 +19,7 @@ import { StepperModule } from 'primeng/stepper';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import type { ListDocumentItem } from '@solidaris/ui';
+import { SdsTelemetryLabelDirective } from '@solidaris/ui';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   commentCountTagSeverity,
@@ -48,6 +49,7 @@ import {
     DividerModule,
     MessageModule,
     NgTemplateOutlet,
+    SdsTelemetryLabelDirective,
     StepperModule,
     TagModule,
   ],

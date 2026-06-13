@@ -1,0 +1,163 @@
+:host {
+  display: block;
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+}
+
+.c-dashboard-sessions {
+  background-color: var(--p-surface-950);
+  color: var(--p-text-color);
+
+  p-card {
+    display: block;
+    width: 100%;
+  }
+}
+
+.c-dashboard-sessions__content {
+  width: 100%;
+}
+
+.c-dashboard-sessions__title {
+  margin: 0;
+  font-family: var(--text-display-md-family);
+  font-size: var(--text-display-md-size);
+  font-weight: var(--text-display-md-weight);
+  line-height: var(--text-display-md-line-height);
+  letter-spacing: var(--text-display-md-spacing);
+  color: var(--p-text-color);
+}
+
+.c-dashboard-sessions__title-icon {
+  color: var(--p-primary-color);
+}
+
+.c-dashboard-sessions__subtitle {
+  margin: 0;
+  font-family: var(--text-body-md-family);
+  font-size: var(--text-body-md-size);
+  font-weight: var(--text-body-md-weight);
+  line-height: var(--text-body-md-line-height);
+  color: var(--p-text-muted-color);
+}
+
+.c-dashboard-sessions__meta {
+  font-family: var(--text-label-sm-family);
+  font-size: var(--text-label-sm-size);
+  font-weight: var(--text-label-sm-weight);
+  line-height: var(--text-label-sm-line-height);
+  color: var(--p-text-muted-color);
+}
+
+.c-dashboard-sessions__summary-card {
+  min-width: 12rem;
+  flex: 1 1 12rem;
+}
+
+.c-dashboard-sessions__summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--text-label-md-family);
+  font-size: var(--text-label-md-size);
+  font-weight: var(--text-label-md-weight);
+  line-height: var(--text-label-md-line-height);
+  color: var(--p-text-muted-color);
+}
+
+.c-dashboard-sessions__summary-value {
+  margin: 0;
+  font-family: var(--text-heading-md-family);
+  font-size: var(--text-heading-md-size);
+  font-weight: var(--text-heading-md-weight);
+  line-height: var(--text-heading-md-line-height);
+  color: var(--p-text-color);
+}
+
+.c-dashboard-sessions__summary-value--secondary {
+  font-family: var(--text-body-md-family);
+  font-size: var(--text-body-md-size);
+  font-weight: var(--text-body-md-weight);
+  line-height: var(--text-body-md-line-height);
+}
+
+.c-dashboard-sessions__card-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--text-heading-sm-family);
+  font-size: var(--text-heading-sm-size);
+  font-weight: var(--text-heading-sm-weight);
+  line-height: var(--text-heading-sm-line-height);
+  color: var(--p-text-color);
+}
+
+.c-dashboard-sessions__target-label {
+  display: block;
+  font-family: var(--text-body-sm-family);
+  font-size: var(--text-body-sm-size);
+  font-weight: var(--text-body-sm-weight);
+  line-height: var(--text-body-sm-line-height);
+  color: var(--p-text-color);
+}
+
+.c-dashboard-sessions__target-id {
+  display: block;
+  margin-top: 0.125rem;
+  font-family: var(--text-body-xs-family);
+  font-size: var(--text-body-xs-size);
+  font-weight: var(--text-body-xs-weight);
+  line-height: var(--text-body-xs-line-height);
+  color: var(--p-text-muted-color);
+}
+
+.c-dashboard-sessions__side-panel {
+  min-width: 18rem;
+  flex: 0 1 24rem;
+}
+
+.c-dashboard-sessions__click-path {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-family: var(--text-body-sm-family);
+  font-size: var(--text-body-sm-size);
+  font-weight: var(--text-body-sm-weight);
+  line-height: var(--text-body-sm-line-height);
+  color: var(--p-text-color);
+
+  li + li {
+    margin-top: 0.375rem;
+  }
+}
+
+.c-dashboard-sessions__chart-card {
+  min-height: 20rem;
+}
+
+.c-dashboard-sessions__chart {
+  height: 18rem;
+}
+
+.c-dashboard-sessions__frequency-card {
+  min-height: 0;
+}
+
+.c-dashboard-sessions__frequency-chart-viewport {
+  max-height: 36rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.c-dashboard-sessions__frequency-chart {
+  position: relative;
+  width: 100%;
+}
+
+.c-dashboard-sessions__empty-state {
+  margin: 0;
+  font-family: var(--text-body-md-family);
+  font-size: var(--text-body-md-size);
+  font-weight: var(--text-body-md-weight);
+  line-height: var(--text-body-md-line-height);
+  color: var(--p-text-muted-color);
+}

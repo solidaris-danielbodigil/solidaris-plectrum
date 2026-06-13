@@ -44,6 +44,7 @@
           role="button"
           tabindex="0"
           [attr.aria-expanded]="isGroupExpanded(group.id) ? 'true' : 'false'"
+          [sdsTelemetryLabel]="groupTelemetryLabel(group)"
           (click)="onGroupClick($event, group)"
           (keydown)="onGroupKeydown($event, group)"
         >
@@ -93,6 +94,8 @@
               role="button"
               tabindex="0"
               [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
+              [attr.data-telemetry-id]="'document-row-' + doc.id"
+              [sdsTelemetryLabel]="documentDisplayTitle(doc)"
               (click)="onDocumentRowClick($event, doc)"
               (keydown)="onDocumentKeydown($event, doc)"
             >
@@ -131,6 +134,8 @@
                           [label]="tag.label"
                           [icon]="tag.icon"
                           [attr.aria-label]="tag.ariaLabel"
+                          [attr.data-telemetry-id]="'document-tag-' + doc.id + '-' + tag.label"
+                          [sdsTelemetryLabel]="tag.label"
                           (click)="onTagClick($event, doc, tag)"
                           (keydown)="onTagKeydown($event, doc, tag)"
                         ></button>
@@ -154,6 +159,8 @@
             role="button"
             tabindex="0"
             [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
+            [attr.data-telemetry-id]="'document-row-' + doc.id"
+            [sdsTelemetryLabel]="documentDisplayTitle(doc)"
             (click)="onDocumentRowClick($event, doc)"
             (keydown)="onDocumentKeydown($event, doc)"
           >
@@ -192,6 +199,8 @@
                         [label]="tag.label"
                         [icon]="tag.icon"
                         [attr.aria-label]="tag.ariaLabel"
+                        [attr.data-telemetry-id]="'document-tag-' + doc.id + '-' + tag.label"
+                        [sdsTelemetryLabel]="tag.label"
                         (click)="onTagClick($event, doc, tag)"
                         (keydown)="onTagKeydown($event, doc, tag)"
                       ></button>
@@ -244,6 +253,7 @@
           class="p-autocomplete-option"
           tabindex="0"
           pRipple
+          [sdsTelemetryLabel]="target.label"
           (click)="onTagTargetSelect($event, target)"
           (keydown)="onTagTargetKeydown($event, target)"
         >

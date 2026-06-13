@@ -13,6 +13,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
 import { RippleModule } from 'primeng/ripple';
 import { InputClearComponent } from '../input-clear';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
@@ -41,6 +42,7 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
     InputClearComponent,
     InputIcon,
     InputText,
+    MenuModule,
     RippleModule,
     PlectrumAvatarComponent,
   ],
@@ -53,6 +55,15 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
   },
 })
 export class TopNavComponent {
+  /** When true, renders a text back button before the breadcrumb. */
+  readonly showBackButton = input<boolean>(false);
+
+  /** Label for the optional back button. */
+  readonly backLabel = input<string>('Retour');
+
+  /** Emitted when the back button is activated. */
+  readonly backClicked = output<void>();
+
   /** Breadcrumb items that describe the current route context. */
   readonly breadcrumbs = input.required<MenuItem[]>();
 
@@ -98,6 +109,18 @@ export class TopNavComponent {
   /** Optional accessible label for the avatar. */
   readonly avatarAriaLabel = input<string | null>(null);
 
+  /** Optional facilitator menu items shown when the avatar is used as a menu trigger. */
+  readonly avatarMenuItems = input<MenuItem[]>([]);
+
+  /** When true, renders the avatar as a menu trigger even if items is empty. */
+  readonly showAvatarMenu = input<boolean>(false);
+
+  /** Accessible label for the avatar menu trigger button. */
+  readonly avatarMenuAriaLabel = input<string>('Menu utilisateur');
+
+  /** When true, menu items expose `data-test` with their visible label (moderated testing). */
+  readonly telemetryLabelsEnabled = input<boolean>(false);
+
   /** Emitted when the sub-navigation toggle changes state. */
   readonly subNavExpandedChange = output<boolean>();
 
@@ -113,9 +136,19 @@ export class TopNavComponent {
   /** Emitted when the help button is activated. */
   readonly helpClicked = output<void>();
 
+  /** Emitted when the avatar popup menu opens or closes. */
+  readonly avatarMenuOpenChange = output<boolean>();
+
   private readonly _subNavExpanded = signal(false);
   private readonly _searchExpanded = signal(false);
   private readonly _searchQuery = signal('');
+  private readonly _avatarMenuOpen = signal(false);
+
+  readonly hasAvatarMenu = computed(
+    () => this.showAvatarMenu() || this.avatarMenuItems().length > 0,
+  );
+
+  readonly avatarMenuExpanded = computed(() => this._avatarMenuOpen());
 
   /** Resolved sub-navigation state — controlled input wins, otherwise use the local fallback. */
   readonly resolvedSubNavExpanded = computed(() => {
@@ -136,6 +169,10 @@ export class TopNavComponent {
   });
 
   readonly searchInputId = 'top-nav-search';
+
+  onBackClick(): void {
+    this.backClicked.emit();
+  }
 
   toggleSubNav(): void {
     const next = !this.resolvedSubNavExpanded();
@@ -197,6 +234,18 @@ export class TopNavComponent {
 
   onHelpClick(): void {
     this.helpClicked.emit();
+  }
+
+  toggleAvatarMenu(event: Event, menu: { toggle: (e: Event) => void }): void {
+    menu.toggle(event);
+    const next = !this._avatarMenuOpen();
+    this._avatarMenuOpen.set(next);
+    this.avatarMenuOpenChange.emit(next);
+  }
+
+  onAvatarMenuHide(): void {
+    this._avatarMenuOpen.set(false);
+    this.avatarMenuOpenChange.emit(false);
   }
 
   private setSearchExpanded(next: boolean): void {

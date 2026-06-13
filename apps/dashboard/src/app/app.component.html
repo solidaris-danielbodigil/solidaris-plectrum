@@ -1,0 +1,27 @@
+<div class="o-flex o-flex--y o-layout--gap-3 o-layout--padding-3">
+  <header class="o-flex o-flex--align-items-center o-layout--gap-2">
+    <h1 class="text-heading-md">Testing Dashboard</h1>
+    <nav class="o-flex o-layout--gap-1">
+      <a
+        pButton
+        routerLink="/sessions"
+        routerLinkActive="p-button-outlined"
+        label="Sessions"
+        severity="secondary"
+        text
+      ></a>
+      <a
+        pButton
+        routerLink="/design-system"
+        routerLinkActive="p-button-outlined"
+        label="Design system"
+        severity="secondary"
+        text
+      ></a>
+    </nav>
+  </header>
+
+  <main class="o-layout--min-w-0">
+    <router-outlet />
+  </main>
+</div>

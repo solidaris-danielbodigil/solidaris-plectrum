@@ -10,10 +10,17 @@
       class="o-layout--full-width"
       [home]="homeBreadcrumb"
       [breadcrumbs]="breadcrumbs()"
+      [showBackButton]="showBackButton()"
+      backLabel="Retour"
       [showSubNavToggle]="false"
+      (backClicked)="onBackClick()"
       avatarInitials="IS"
       avatarState="initials"
       avatarAriaLabel="Profil iShare"
+      avatarMenuAriaLabel="Menu session test"
+      [telemetryLabelsEnabled]="testingTelemetryEnabled"
+      [avatarMenuItems]="testingTelemetryEnabled ? testingMenuItems() : []"
+      (avatarMenuOpenChange)="onAvatarMenuOpenChange($event)"
     ></sds-top-nav>
 
     @if (affiliateHeader(); as header) {

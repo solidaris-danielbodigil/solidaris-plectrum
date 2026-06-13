@@ -15,6 +15,7 @@ import { Card } from 'primeng/card';
 import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
+import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
@@ -155,6 +156,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
     CopyableTextComponent,
     FormsModule,
     PlectrumAvatarComponent,
+    SdsTelemetryLabelDirective,
     SelectButton,
   ],
   templateUrl: './affiliate-overview-card.component.html',
