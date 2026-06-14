@@ -806,6 +806,41 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
       },
     ],
   },
+  'doc-archive-regularisation': {
+    documentId: 'doc-archive-regularisation',
+    title: 'Régularisation indemnités - Exercice 2024',
+    activeStep: 1,
+    layout: 'standalone',
+    steps: [
+      {
+        value: 1,
+        label: 'Régularisation',
+        panels: [
+          {
+            id: 'regularisation-2024',
+            title: 'Régularisation indemnités',
+            status: {
+              label: 'Clôturé',
+              severity: 'secondary',
+              icon: 'bi bi-clock-history',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '15/06/2024' },
+              { label: 'Application', value: 'Gestion des indemnités' },
+            ],
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails(
+              'Régularisation indemnités',
+              '15/06/2024',
+            ),
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const JACK_MOTA_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDetail> =

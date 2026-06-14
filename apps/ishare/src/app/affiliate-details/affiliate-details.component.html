@@ -88,41 +88,6 @@
             ></p-autocomplete>
           </sds-form-field>
         </div>
-
-        <div
-          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--auto"
-        >
-          <sds-form-field label="Vue parcours" inputId="journey-view">
-            <p-toggleswitch
-              inputId="journey-view"
-              name="journeyView"
-              data-telemetry-id="journey-view"
-              sdsTelemetryLabel="Vue parcours"
-              [ngModel]="journeyView()"
-              (ngModelChange)="onJourneyViewChange($event)"
-              [pTooltip]="journeyViewTooltip()"
-              tooltipPosition="bottom"
-            />
-          </sds-form-field>
-        </div>
-
-        <div
-          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--auto"
-        >
-          <sds-form-field
-            label="Documents archivés seulement"
-            inputId="archived-only"
-          >
-            <p-toggleswitch
-              inputId="archived-only"
-              name="archivedOnly"
-              data-telemetry-id="archived-only"
-              sdsTelemetryLabel="Documents archivés seulement"
-              [ngModel]="archivedOnly()"
-              (ngModelChange)="archivedOnly.set($event)"
-            />
-          </sds-form-field>
-        </div>
       </div>
     </ng-container>
   </sds-toolbar>
@@ -135,59 +100,152 @@
     >
       <ng-template pTemplate="header">
         <div
-          class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+          class="c-affiliate-details__card-header o-flex o-flex--y o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
         >
-          <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
-            <h2 class="c-affiliate-details__documents-title">
-              Suivi des documents
-            </h2>
-            <span
-              class="c-affiliate-details__documents-count o-flex o-flex--align-items-center o-flex--justify-content-center"
-              >{{ documentCount() }}</span
-            >
-            @if (showHorsParcoursChip()) {
-              <button
-                pButton
-                type="button"
-                class="c-affiliate-details__hors-parcours-chip"
-                data-telemetry-id="hors-parcours-chip"
-                [sdsTelemetryLabel]="horsParcoursChipLabel()"
-                severity="warn"
-                size="small"
-                [outlined]="true"
-                icon="bi bi-exclamation-triangle-fill"
-                [label]="horsParcoursChipLabel()"
-                (click)="disableJourneyView()"
-              ></button>
-            }
+          <div
+            class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width"
+          >
+            <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
+              <h2 class="c-affiliate-details__documents-title">
+                Suivi des documents
+              </h2>
+              <span
+                class="c-affiliate-details__documents-count o-flex o-flex--align-items-center o-flex--justify-content-center"
+                >{{ documentCount() }}</span
+              >
+            </div>
+            <button
+              pButton
+              type="button"
+              text
+              severity="secondary"
+              class="c-affiliate-details__documents-sort"
+              data-telemetry-id="documents-sort"
+              [sdsTelemetryLabel]="startDateSortAriaLabel()"
+              [icon]="startDateSortIcon()"
+              [attr.aria-label]="startDateSortAriaLabel()"
+              (click)="toggleStartDateSort()"
+            ></button>
           </div>
-          <button
-            pButton
-            type="button"
-            text
-            severity="secondary"
-            class="c-affiliate-details__documents-sort"
-            data-telemetry-id="documents-sort"
-            [sdsTelemetryLabel]="startDateSortAriaLabel()"
-            [icon]="startDateSortIcon()"
-            [attr.aria-label]="startDateSortAriaLabel()"
-            (click)="toggleStartDateSort()"
-          ></button>
+
+          @if (categories().length > 0) {
+            <p-tabs
+              class="c-affiliate-details__category-tabs"
+              [value]="activeCategory()"
+              (valueChange)="onCategoryTabChange($event)"
+            >
+              <p-tablist>
+                @for (cat of categories(); track cat.id) {
+                  <p-tab
+                    class="c-affiliate-details__category-tab"
+                    [value]="cat.id"
+                    [attr.data-telemetry-id]="'category-tab-' + cat.id"
+                    [sdsTelemetryLabel]="cat.label"
+                  >
+                    <button
+                      pButton
+                      type="button"
+                      text
+                      size="small"
+                      class="c-affiliate-details__category-eye"
+                      [attr.data-telemetry-id]="'category-toggle-' + cat.id"
+                      [sdsTelemetryLabel]="
+                        isCategoryOpen(cat.id)
+                          ? 'Masquer ' + cat.label
+                          : 'Afficher ' + cat.label
+                      "
+                      [attr.aria-label]="
+                        isCategoryOpen(cat.id)
+                          ? 'Masquer ' + cat.label
+                          : 'Afficher ' + cat.label
+                      "
+                      [icon]="
+                        isCategoryOpen(cat.id)
+                          ? 'bi bi-eye'
+                          : 'bi bi-eye-slash'
+                      "
+                      (click)="
+                        toggleCategoryVisibility(cat.id);
+                        $event.stopPropagation()
+                      "
+                    ></button>
+                    <span>{{ cat.label }}</span>
+                    <p-badge [value]="cat.count" />
+                  </p-tab>
+                }
+              </p-tablist>
+            </p-tabs>
+          }
         </div>
       </ng-template>
 
       @if (hasListResults()) {
-        <sds-list
-          class="o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
-          [showHeader]="false"
-          [groups]="listGroups()"
-          [items]="listItems()"
-          [expandedGroupIds]="expandedGroupIds()"
-          [selectedItemId]="selectedDocumentId()"
-          (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
-          (itemClick)="onDocumentClick($event)"
-          (tagTargetClick)="onTagTargetClick($event)"
-        />
+        <div class="c-affiliate-details__category-accordion">
+          <p-accordion
+            [value]="openCategories()"
+            [multiple]="true"
+            (valueChange)="onAccordionValueChange($event)"
+          >
+            @for (cat of categories(); track cat.id) {
+              <p-accordion-panel
+                [value]="cat.id"
+                [attr.id]="'category-panel-' + cat.id"
+              >
+                <p-accordion-header>
+                  <div class="c-affiliate-details__category-panel-header">
+                    <span class="c-affiliate-details__category-panel-label">{{
+                      cat.label
+                    }}</span>
+                    @if (cat.id === 'parcours') {
+                      <span class="c-affiliate-details__category-panel-count">
+                        <p-badge
+                          class="c-affiliate-details__category-panel-badge"
+                          [value]="cat.count"
+                          [attr.aria-label]="cat.count + ' documents'"
+                        />
+                        <span
+                          class="c-affiliate-details__category-panel-count-label"
+                          aria-hidden="true"
+                          >documents</span
+                        >
+                      </span>
+                    } @else {
+                      <p-badge
+                        class="c-affiliate-details__category-panel-badge"
+                        [value]="cat.count"
+                      />
+                    }
+                  </div>
+                </p-accordion-header>
+                <p-accordion-content>
+                  @if (cat.kind === 'journey' && cat.groups) {
+                    <sds-list
+                      class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
+                      [showHeader]="false"
+                      [groups]="cat.groups"
+                      [items]="[]"
+                      [expandedGroupIds]="expandedGroupIds()"
+                      [selectedItemId]="selectedDocumentId()"
+                      (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
+                      (itemClick)="onDocumentClick($event)"
+                      (tagTargetClick)="onTagTargetClick($event)"
+                    />
+                  } @else if (cat.items) {
+                    <sds-list
+                      class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
+                      [showHeader]="false"
+                      [groups]="null"
+                      [items]="cat.items"
+                      [selectedItemId]="selectedDocumentId()"
+                      (itemClick)="onDocumentClick($event)"
+                      (tagTargetClick)="onTagTargetClick($event)"
+                    />
+                  }
+                </p-accordion-content>
+              </p-accordion-panel>
+            }
+          </p-accordion>
+        </div>
       } @else {
         <sds-empty-state
           class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"

@@ -18,8 +18,9 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
-import { TooltipModule } from 'primeng/tooltip';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { AccordionModule } from 'primeng/accordion';
+import { BadgeModule } from 'primeng/badge';
+import { TabsModule } from 'primeng/tabs';
 import { ScrollTop } from 'primeng/scrolltop';
 import {
   AffiliateDetailDrawerComponent,
@@ -340,9 +341,41 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
   withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
 );
 
+/** Archived documents — flat Archivés category, excluded from parcours groups. */
+export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListDocumentItem[] = [
+  {
+    id: 'doc-archive-regularisation',
+    title: 'Régularisation indemnités -',
+    titleLine2: 'Exercice 2024',
+    status: {
+      label: 'Clôturé',
+      severity: 'secondary',
+      icon: 'bi bi-clock-history',
+    },
+  },
+].map((document) =>
+  withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
+);
+
 const STANDALONE_DOCUMENT_IDS = new Set(
   EVA_MARTINEZ_STANDALONE_DOCUMENTS.map((document) => document.id),
 );
+
+const ARCHIVED_DOCUMENT_IDS = new Set(
+  EVA_MARTINEZ_ARCHIVED_DOCUMENTS.map((document) => document.id),
+);
+
+type DocCategoryId = 'parcours' | 'isoles' | 'archives';
+
+interface DocCategory {
+  id: DocCategoryId;
+  label: string;
+  icon: string;
+  count: number;
+  kind: 'journey' | 'flat';
+  groups?: ListGroup[];
+  items?: ListDocumentItem[];
+}
 
 type DocumentSector = SectorOption['value'];
 
@@ -353,6 +386,7 @@ const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
   ['doc-cloture-primaire', 'indemnites'],
   ['doc-c4', 'indemnites'],
   ['doc-attestation-pedicure', 'front-office'],
+  ['doc-archive-regularisation', 'indemnites'],
   ['doc-jack-certificat', 'medical'],
 ]);
 
@@ -393,6 +427,7 @@ const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ),
   ['doc-c4', '16/12/2025'],
   ['doc-attestation-pedicure', '09/06/2026'],
+  ['doc-archive-regularisation', '15/06/2024'],
   ['doc-jack-certificat', '01/03/2026'],
 ]);
 
@@ -400,6 +435,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
   return [
     ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
     ...EVA_MARTINEZ_STANDALONE_DOCUMENTS,
+    ...EVA_MARTINEZ_ARCHIVED_DOCUMENTS,
   ];
 }
 
@@ -416,8 +452,9 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     InputTextModule,
     CardModule,
     TagModule,
-    ToggleSwitchModule,
-    TooltipModule,
+    AccordionModule,
+    BadgeModule,
+    TabsModule,
     ToolbarComponent,
     FormFieldComponent,
     InputClearComponent,
@@ -594,8 +631,9 @@ export class AffiliateDetailsComponent {
   sectorSuggestions: SectorOption[] = [...this.sectorOptions];
   readonly selectedSort = signal<SortOption | null>(this.sortOptions[1]);
   sortSuggestions: SortOption[] = [...this.sortOptions];
-  readonly journeyView = signal(true);
-  readonly archivedOnly = signal(false);
+
+  readonly openCategories = signal<DocCategoryId[]>(['parcours', 'isoles']);
+  readonly activeCategory = signal<DocCategoryId>('parcours');
 
   readonly expandedGroupIds = signal<string[]>([]);
 
@@ -608,12 +646,10 @@ export class AffiliateDetailsComponent {
   /** Flat list: `false` = newest reception date first (default). */
   readonly flatListSortAscending = signal(false);
 
-  readonly isFlatListMode = computed(() => !this.journeyView());
-
   readonly activeSortAscending = computed(() =>
-    this.isFlatListMode()
-      ? this.flatListSortAscending()
-      : this.startDateSortAscending(),
+    this.activeCategory() === 'parcours'
+      ? this.startDateSortAscending()
+      : this.flatListSortAscending(),
   );
 
   readonly startDateSortIcon = computed(() =>
@@ -624,28 +660,6 @@ export class AffiliateDetailsComponent {
     this.activeSortAscending()
       ? 'Trier du plus ancien au plus récent'
       : 'Trier du plus récent au plus ancien',
-  );
-
-  readonly standaloneDocumentCount = computed(() =>
-    this.isEvaDossier() ? EVA_MARTINEZ_STANDALONE_DOCUMENTS.length : 0,
-  );
-
-  readonly showHorsParcoursChip = computed(
-    () =>
-      this.isEvaDossier() &&
-      this.journeyView() &&
-      this.standaloneDocumentCount() > 0,
-  );
-
-  readonly horsParcoursChipLabel = computed(() => {
-    const count = this.standaloneDocumentCount();
-    return `+ ${count} hors parcours`;
-  });
-
-  readonly journeyViewTooltip = computed(() =>
-    this.journeyView()
-      ? 'Masque les documents hors parcours'
-      : 'Affiche les documents par parcours',
   );
 
   readonly emptyListTitle = computed(() => {
@@ -695,33 +709,9 @@ export class AffiliateDetailsComponent {
     this.sortDocuments(this.filteredDocuments()),
   );
 
-  /**
-   * Journey view hides hors-parcours rows in grouped mode. When filters narrow
-   * results to standalone documents only, switch the list to flat presentation.
-   */
-  readonly shouldUseFlatListPresentation = computed(() => {
-    if (!this.journeyView() || !this.isEvaDossier()) {
-      return !this.journeyView();
-    }
-
-    const filtered = this.filteredDocuments();
-    const hasStandalone = filtered.some((document) =>
-      STANDALONE_DOCUMENT_IDS.has(document.id),
-    );
-    const hasGrouped = filtered.some(
-      (document) => !STANDALONE_DOCUMENT_IDS.has(document.id),
-    );
-
-    return hasStandalone && !hasGrouped;
-  });
-
-  readonly listGroups = computed((): ListGroup[] | null => {
-    if (
-      !this.journeyView() ||
-      !this.isEvaDossier() ||
-      this.shouldUseFlatListPresentation()
-    ) {
-      return null;
+  readonly parcoursGroups = computed((): ListGroup[] => {
+    if (!this.isEvaDossier()) {
+      return [];
     }
 
     const visibleIds = new Set(this.filteredDocuments().map((doc) => doc.id));
@@ -745,56 +735,92 @@ export class AffiliateDetailsComponent {
     return this.sortGroups(filteredGroups);
   });
 
-  readonly listItems = computed((): ListDocumentItem[] => {
-    if (
-      this.journeyView() &&
-      this.isEvaDossier() &&
-      !this.shouldUseFlatListPresentation()
-    ) {
-      return [];
-    }
+  readonly isolesItems = computed((): ListDocumentItem[] => {
+    const filtered = this.filteredDocuments();
 
-    return this.visibleDocuments();
-  });
-
-  readonly hasListResults = computed(() => {
-    if (
-      this.journeyView() &&
-      this.isEvaDossier() &&
-      !this.shouldUseFlatListPresentation()
-    ) {
-      return (this.listGroups() ?? []).length > 0;
-    }
-
-    return this.listItems().length > 0;
-  });
-
-  readonly documentCount = computed(() => {
-    if (
-      this.journeyView() &&
-      this.isEvaDossier() &&
-      !this.shouldUseFlatListPresentation()
-    ) {
-      return (this.listGroups() ?? []).reduce(
-        (sum, group) => sum + group.documents.length,
-        0,
+    if (this.isEvaDossier()) {
+      return this.sortDocuments(
+        filtered.filter((document) => STANDALONE_DOCUMENT_IDS.has(document.id)),
       );
     }
 
-    return this.listItems().length;
+    return this.sortDocuments(
+      filtered.filter((document) => !ARCHIVED_DOCUMENT_IDS.has(document.id)),
+    );
   });
 
-  /**
-   * Documents cycled by detail prev/next — always mirrors the visible list:
-   * flat `listItems` when the list renders rows, otherwise journey group order.
-   */
-  readonly navigableDocuments = computed(() => {
-    const flatList = this.listItems();
-    if (flatList.length > 0) {
-      return flatList;
+  readonly archivesItems = computed((): ListDocumentItem[] =>
+    this.sortDocuments(
+      this.filteredDocuments().filter((document) =>
+        ARCHIVED_DOCUMENT_IDS.has(document.id),
+      ),
+    ),
+  );
+
+  readonly categories = computed((): DocCategory[] => {
+    const categories: DocCategory[] = [];
+
+    const parcours = this.parcoursGroups();
+    if (parcours.length > 0) {
+      categories.push({
+        id: 'parcours',
+        label: 'Parcours',
+        icon: 'bi bi-diagram-3',
+        count: parcours.reduce((sum, group) => sum + group.documents.length, 0),
+        kind: 'journey',
+        groups: parcours,
+      });
     }
 
-    return (this.listGroups() ?? []).flatMap((group) => group.documents);
+    const isoles = this.isolesItems();
+    if (isoles.length > 0) {
+      categories.push({
+        id: 'isoles',
+        label: 'Isolés',
+        icon: 'bi bi-file-earmark',
+        count: isoles.length,
+        kind: 'flat',
+        items: isoles,
+      });
+    }
+
+    const archives = this.archivesItems();
+    if (archives.length > 0) {
+      categories.push({
+        id: 'archives',
+        label: 'Archivés',
+        icon: 'bi bi-archive',
+        count: archives.length,
+        kind: 'flat',
+        items: archives,
+      });
+    }
+
+    return categories;
+  });
+
+  readonly hasListResults = computed(() => this.categories().length > 0);
+
+  readonly documentCount = computed(() =>
+    this.categories().reduce((sum, category) => sum + category.count, 0),
+  );
+
+  /**
+   * Documents cycled by detail prev/next — parcours group order, then isolés,
+   * then archivés.
+   */
+  readonly navigableDocuments = computed(() => {
+    const documents: ListDocumentItem[] = [];
+
+    for (const category of this.categories()) {
+      if (category.kind === 'journey' && category.groups) {
+        documents.push(...category.groups.flatMap((group) => group.documents));
+      } else if (category.items) {
+        documents.push(...category.items);
+      }
+    }
+
+    return documents;
   });
 
   readonly selectedDocumentDetail = computed((): AffiliateDocumentDetail | null => {
@@ -902,7 +928,7 @@ export class AffiliateDetailsComponent {
   }
 
   toggleStartDateSort(): void {
-    if (this.journeyView()) {
+    if (this.activeCategory() === 'parcours') {
       this.startDateSortAscending.update((ascending) => !ascending);
       return;
     }
@@ -910,59 +936,66 @@ export class AffiliateDetailsComponent {
     this.flatListSortAscending.update((ascending) => !ascending);
   }
 
-  onJourneyViewChange(
-    enabled: boolean,
-    source: 'toggle' | 'hors-parcours-hint' = 'toggle',
+  isCategoryOpen(id: DocCategoryId): boolean {
+    return this.openCategories().includes(id);
+  }
+
+  toggleCategoryVisibility(id: DocCategoryId): void {
+    const current = this.openCategories();
+
+    if (current.includes(id)) {
+      this.openCategories.set(current.filter((categoryId) => categoryId !== id));
+      return;
+    }
+
+    this.openCategories.set([...current, id]);
+  }
+
+  onAccordionValueChange(
+    value: DocCategoryId | DocCategoryId[] | null | undefined,
   ): void {
-    if (this.journeyView() === enabled) {
-      return;
-    }
-
-    this.journeyView.set(enabled);
-
-    if (!enabled) {
-      const items = this.listItems();
-      if (items.length > 0) {
-        this.documentFocus.set(null);
-        this.selectedDocumentId.set(items[0].id);
-      }
-
-      this.recordTelemetry('journey_view_off', source);
-      return;
-    }
-
-    this.syncSelectionToJourneyView();
-    this.recordTelemetry('journey_view_on', source);
+    const ids = Array.isArray(value) ? value : value != null ? [value] : [];
+    this.openCategories.set(ids);
   }
 
-  /** Select the first visible parcours document when journey view is enabled. */
-  private syncSelectionToJourneyView(): void {
-    const navigable = this.navigableDocuments();
-    const first = navigable[0];
-    if (!first) {
-      return;
-    }
-
-    this.documentFocus.set(null);
-    this.selectedDocumentId.set(first.id);
-
-    if (this.isEvaDossier() && !this.shouldUseFlatListPresentation()) {
-      const group = this.listGroups()?.find((item) =>
-        item.documents.some((document) => document.id === first.id),
-      );
-
-      if (group) {
-        this.expandedGroupIds.set([group.id]);
-      }
+  onCategoryTabChange(id: DocCategoryId | string | number | undefined): void {
+    if (id === 'parcours' || id === 'isoles' || id === 'archives') {
+      this.scrollToCategory(id);
     }
   }
 
-  disableJourneyView(): void {
-    this.onJourneyViewChange(false, 'hors-parcours-hint');
+  scrollToCategory(id: DocCategoryId): void {
+    if (!this.openCategories().includes(id)) {
+      this.openCategories.set([...this.openCategories(), id]);
+    }
+
+    this.activeCategory.set(id);
+
+    queueMicrotask(() => {
+      document
+        .getElementById(`category-panel-${id}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  private ensureParcoursVisible(): void {
+    this.ensureCategoryVisible('parcours');
+  }
+
+  private ensureArchivesVisible(): void {
+    this.ensureCategoryVisible('archives');
+  }
+
+  private ensureCategoryVisible(id: DocCategoryId): void {
+    if (!this.openCategories().includes(id)) {
+      this.openCategories.set([...this.openCategories(), id]);
+    }
+
+    this.activeCategory.set(id);
   }
 
   onCrossReferenceNavigate(reference: DocumentCrossReference): void {
-    this.journeyView.set(true);
+    this.ensureParcoursVisible();
     this.documentFocus.set({
       stepValue: reference.stepValue,
       panelId: reference.panelId,
@@ -979,11 +1012,11 @@ export class AffiliateDetailsComponent {
     this.expandedGroupIds.set(expandedGroupIds);
 
     const newlyExpandedId = expandedGroupIds.find((id) => !previous.includes(id));
-    if (!newlyExpandedId || !this.journeyView()) {
+    if (!newlyExpandedId) {
       return;
     }
 
-    const group = this.listGroups()?.find((item) => item.id === newlyExpandedId);
+    const group = this.parcoursGroups().find((item) => item.id === newlyExpandedId);
     if (!group?.documents.length) {
       return;
     }
@@ -1006,6 +1039,11 @@ export class AffiliateDetailsComponent {
     // resets to the document defaults instead of re-jumping to the old panel.
     this.documentFocus.set(null);
     this.selectedDocumentId.set(document.id);
+
+    if (ARCHIVED_DOCUMENT_IDS.has(document.id)) {
+      this.ensureArchivesVisible();
+    }
+
     this.recordTelemetry('document_select', document.id);
   }
 
@@ -1069,13 +1107,15 @@ export class AffiliateDetailsComponent {
     this.documentFocus.set(null);
     this.selectedDocumentId.set(documentId);
 
-    if (this.journeyView() && this.isEvaDossier()) {
-      const group = this.listGroups()?.find((item) =>
+    if (this.isEvaDossier()) {
+      const group = this.parcoursGroups().find((item) =>
         item.documents.some((document) => document.id === documentId),
       );
 
       if (group) {
         this.ensureGroupExpanded(group.id);
+      } else if (ARCHIVED_DOCUMENT_IDS.has(documentId)) {
+        this.ensureArchivesVisible();
       }
     }
   }
@@ -1104,8 +1144,9 @@ export class AffiliateDetailsComponent {
     const { documentId, groupId, stepValue, panelId } =
       AffiliateDetailsComponent.EVA_C4_MISSING_DEEP_LINK;
 
-    this.journeyView.set(true);
+    this.ensureParcoursVisible();
     this.ensureGroupExpanded(groupId);
+    this.scrollToCategory('parcours');
     this.selectedDocumentId.set(documentId);
     this.documentFocus.set({ stepValue, panelId });
     this.recordTelemetry(
@@ -1236,10 +1277,6 @@ export class AffiliateDetailsComponent {
   private applyDocumentFilters(
     documents: ListDocumentItem[],
   ): ListDocumentItem[] {
-    if (this.archivedOnly()) {
-      return documents.filter(isClosedDocument);
-    }
-
     const query = this.documentSearch().trim().toLowerCase();
     let filtered = query
       ? documents.filter(
@@ -1436,12 +1473,22 @@ export class AffiliateDetailsComponent {
     });
 
     effect(() => {
-      if (this.isEvaDossier() && this.journeyView()) {
-        return;
-      }
+      const categories = this.categories();
+      const active = this.activeCategory();
 
+      if (
+        categories.length > 0 &&
+        !categories.some((category) => category.id === active)
+      ) {
+        this.activeCategory.set(categories[0].id);
+      }
+    });
+
+    effect(() => {
       const visible = this.visibleDocuments();
-      if (visible.length === 0 || this.selectedDocumentId() !== null) {
+      const selected = this.selectedDocumentId();
+
+      if (visible.length === 0 || selected !== null || this.isEvaDossier()) {
         return;
       }
 
@@ -1450,46 +1497,19 @@ export class AffiliateDetailsComponent {
     });
 
     effect(() => {
-      this.archivedOnly();
-
-      if (!this.journeyView() || !this.archivedOnly()) {
+      if (this.defaultJourneyExpansionApplied) {
         return;
       }
 
-      const groupIds =
-        this.listGroups()
-          ?.filter((group) => group.documents.length > 0)
-          .map((group) => group.id) ?? [];
-
-      if (groupIds.length === 0) {
-        return;
-      }
-
-      const current = this.expandedGroupIds();
-      const missing = groupIds.filter((id) => !current.includes(id));
-
-      if (missing.length > 0) {
-        this.expandedGroupIds.set([...current, ...missing]);
-      }
-    });
-
-    effect(() => {
-      if (this.defaultJourneyExpansionApplied || !this.journeyView()) {
-        return;
-      }
-
-      // List-shaping signals — re-run when filters/sort change before first expand.
-      this.journeyView();
       this.startDateSortAscending();
       this.flatListSortAscending();
-      this.archivedOnly();
       this.documentInfoFilter();
       this.documentSearch();
       this.selectedSort();
       this.selectedSector();
 
-      const groups = this.listGroups();
-      if (!groups?.length) {
+      const groups = this.parcoursGroups();
+      if (!groups.length) {
         return;
       }
 

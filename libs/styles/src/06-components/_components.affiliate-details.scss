@@ -77,8 +77,61 @@
   flex-shrink: 0;
 }
 
-.c-affiliate-details__hors-parcours-chip {
+.c-affiliate-details__category-tabs {
+  min-width: 0;
+  width: 100%;
+}
+
+.c-affiliate-details__category-tab {
+  display: inline-grid;
+  grid-template-columns: auto var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
+  align-items: center;
+  gap: var(--spacing-1-5);
+}
+
+.c-affiliate-details__category-eye {
   flex-shrink: 0;
+}
+
+.c-affiliate-details__category-accordion {
+  min-width: 0;
+  width: 100%;
+
+  // Let projected header content fill the row before the PrimeNG toggle chevron.
+  .p-accordionheader {
+    gap: var(--spacing-2);
+  }
+}
+
+// Label + count badge on a shared axis; chevron stays right via accordion header flex.
+.c-affiliate-details__category-panel-header {
+  display: grid;
+  grid-template-columns: var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
+  align-items: center;
+  gap: var(--spacing-1);
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: start;
+}
+
+.c-affiliate-details__category-panel-label {
+  min-width: 0;
+}
+
+.c-affiliate-details__category-panel-count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  justify-self: start;
+}
+
+.c-affiliate-details__category-panel-count-label {
+  @include text-label-xs;
+  color: var(--#{$sds-prefix}-color-text-muted);
+}
+
+.c-affiliate-details__category-panel-badge {
+  justify-self: start;
 }
 
 // Second column — p-card shell; document title + nav in p-card header slot.

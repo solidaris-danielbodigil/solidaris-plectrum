@@ -23,6 +23,9 @@
 
   // Shared p-card header/body spacing — both column panels (Figma: 20px header padding)
   --#{$sds-prefix}-space-affiliate-details-card-header-padding: calc(20 / 14 * var(--base-unit));
+
+  // Category tab + accordion label column — fits longest label ("Archivés") so badges share one axis.
+  --#{$sds-prefix}-size-affiliate-details-category-label-min: calc(60 / 14 * var(--base-unit));
 }
 
 // ── PrimeNG Card token bridge — two-column content panels ────────────────────

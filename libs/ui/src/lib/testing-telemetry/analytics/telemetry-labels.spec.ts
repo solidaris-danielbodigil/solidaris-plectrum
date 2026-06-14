@@ -7,7 +7,9 @@ import {
 
 describe('telemetry labels', () => {
   it('should prefer an explicit data-test label over mapped ids', () => {
-    expect(formatTelemetryTarget('journey-view', 'Vue parcours')).toBe('Vue parcours');
+    expect(formatTelemetryTarget('category-tab-parcours', 'Parcours')).toBe(
+      'Parcours',
+    );
   });
 
   it('should map known target ids to French labels', () => {
@@ -28,7 +30,7 @@ describe('telemetry labels', () => {
   it('should classify generic telemetry targets', () => {
     expect(isGenericTelemetryTarget('div')).toBe(true);
     expect(isGenericTelemetryTarget('path')).toBe(true);
-    expect(isGenericTelemetryTarget('journey-view')).toBe(false);
+    expect(isGenericTelemetryTarget('category-tab-parcours')).toBe(false);
   });
 
   it('should map known event names to French labels', () => {

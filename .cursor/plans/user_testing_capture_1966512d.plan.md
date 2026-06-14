@@ -144,7 +144,7 @@ This replaces the console-only export and removes the need for a separate facili
 
 Add `data-telemetry-id` on high-value controls (cleaner click paths in dashboard):
 
-- Journey view toggle, sector/sort filters, hors-parcours chip
+- Category tabs (Parcours / Isolés / Archivés), sector/sort filters, eye visibility toggles
 - Status action button, info tags, list row tags
 - Document detail stepper steps, accordion panels (already partially via `data-panel-id`)
 

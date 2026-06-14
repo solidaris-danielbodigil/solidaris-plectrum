@@ -39,7 +39,7 @@ Note: telemetry is exported as JSON automatically when the facilitator stops the
 **Prompt (facilitator):**  
 *« L'affilié appelle pour sa prolongation de maladie du 25 au 27 décembre 2025. Elle n'a toujours pas reçu de paiement. Pouvez-vous vérifier l'état du dossier et expliquer pourquoi ? »*
 
-**Starting point:** Eva Martinez dossier, Vue parcours ON.
+**Starting point:** Eva Martinez dossier, toutes les catégories visibles (Parcours, Isolés, Archivés).
 
 **Success criteria:**
 
@@ -62,7 +62,7 @@ Note: telemetry is exported as JSON automatically when the facilitator stops the
 **Success criteria:**
 
 1. Opens **demande primaire** → **Calcul** → **message d'alerte** C4 manquant (15/12/2025), e.g. via the warn count tag.
-2. Turns **Vue parcours OFF** (or searches flat list) and finds standalone **C4** with réception **16/12/2025**.
+2. Scrolls to or expands the **Isolés** section (onglet ou accordéon) and finds standalone **C4** with réception **16/12/2025**.
 3. Explains the document is **reçu mais non rattaché** au parcours — workflow alert remains until linked.
 
 **Partial:** Step 1 only.  
@@ -111,7 +111,7 @@ Note: telemetry is exported as JSON automatically when the facilitator stops the
 
 **Success criteria:**
 
-- Turns **Vue parcours OFF** (isolated document not in parcours groups).
+- Expands the **Isolés** section (isolated document not in parcours groups).
 - Finds **Attestation de soin pédicure** with réception **09/06/2026**.
 - Confirms **Reçu** in audit timeline (09/06/2026 13:28) and answers clearly yes/no.
 - Notes application **Remboursements AO/AC**.
@@ -126,7 +126,7 @@ Note: telemetry is exported as JSON automatically when the facilitator stops the
 1. How confident are you that you found the right answer? (1–5)
 2. What was confusing or different from legacy iShare?
 3. Did you use the count tags (info/warn badges) on document rows?
-4. For Task 2/5: Did turning off Vue parcours help?
+4. For Task 2/5: Did the category tabs (Parcours / Isolés) help locate isolated documents?
 
 ---
 
@@ -135,7 +135,7 @@ Note: telemetry is exported as JSON automatically when the facilitator stops the
 **Debrief (5 min):**
 
 - Overall impression of the new layout vs legacy.
-- Journey view vs flat list preference.
+- Category tabs (Parcours / Isolés / Archivés) vs a single flat list preference.
 - Anything missing for daily operator work.
 
 **SUS (optional, 10 items):**  
@@ -152,7 +152,7 @@ If time permits, administer the standard System Usability Scale questionnaire an
 - [ ] Optional session URL: `?session=P01` on affiliate route.
 - [ ] Avatar menu flow rehearsed: **Démarrer la session test** → **Arrêter la session test** (auto-export JSON).
 - [ ] Dashboard available locally: `npm run start:dashboard` (post-session analysis).
-- [ ] Vue parcours ON/OFF — 6 documents in flat list, 4 in groups + 2 standalone in journey mode.
+- [ ] Category tabs — Parcours 4 / Isolés 2 / Archivés 1 (7 documents total).
 - [ ] Scenario 5 attestation réception exactly **09/06/2026**.
 - [ ] Scenario 2 C4 réception **16/12/2025** + Calcul alerte **15/12/2025**.
 - [ ] Scenario 1 — no paiement Accepté before 27/12/2025.
