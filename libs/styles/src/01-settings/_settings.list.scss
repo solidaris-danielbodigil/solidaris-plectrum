@@ -42,6 +42,9 @@
   // ── Sizes ───────────────────────────────────────────────────────────────────
   --#{$sds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));
   --#{$sds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--base-unit));
+  --#{$sds-prefix}-size-list-timeline-width: calc(6 / 14 * var(--base-unit));
+  --#{$sds-prefix}-size-list-timeline-cap-marker: calc(4 / 14 * var(--base-unit));
+  --#{$sds-prefix}-size-list-timeline-cap-arrow: calc(9 / 28 * var(--base-unit));
   --#{$sds-prefix}-size-list-timeline-marker: var(--spacing-1);
   --#{$sds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--base-unit));
   --#{$sds-prefix}-border-width-list: 1px;

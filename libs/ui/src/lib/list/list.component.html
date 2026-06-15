@@ -29,6 +29,36 @@
     }
   </div>
 } @else {
+  <svg class="c-list__timeline-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient
+        id="sds-list-timeline-body-gradient"
+        gradientUnits="userSpaceOnUse"
+        x1="3"
+        y1="0"
+        x2="3"
+        y2="100"
+      >
+        <stop stop-color="var(--sds-color-list-timeline-marker-border)" />
+        <stop offset="1" stop-color="var(--sds-color-list-timeline-line)" />
+      </linearGradient>
+      <symbol id="sds-list-timeline-marker" viewBox="0 0 6 4">
+        <circle
+          cx="3"
+          cy="2"
+          r="2"
+          fill="var(--sds-color-list-timeline-marker-border)"
+        />
+      </symbol>
+      <symbol id="sds-list-timeline-arrow" viewBox="0 0 6 4.5">
+        <path
+          d="M3 4.5L0.401924 0L5.59808 0L3 4.5Z"
+          fill="var(--sds-color-list-timeline-line)"
+        />
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="c-list__body">
     <p-tree
       [value]="treeNodes()"
@@ -90,7 +120,33 @@
         @if (documentData.showTimeline) {
           <div class="c-list__document-row o-layout--min-w-0">
             <div class="c-list__timeline" aria-hidden="true">
-              <img class="c-list__timeline-img" [src]="timelineSrc" alt="" />
+              <svg
+                class="c-list__timeline-cap c-list__timeline-cap--marker"
+                viewBox="0 0 6 4"
+                aria-hidden="true"
+              >
+                <use href="#sds-list-timeline-marker" width="6" height="4" />
+              </svg>
+              <svg
+                class="c-list__timeline-line"
+                viewBox="0 0 6 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3 0 L3 100"
+                  stroke="url(#sds-list-timeline-body-gradient)"
+                  stroke-width="1"
+                  stroke-dasharray="2 2"
+                />
+              </svg>
+              <svg
+                class="c-list__timeline-cap c-list__timeline-cap--arrow"
+                viewBox="0 0 6 4.5"
+                aria-hidden="true"
+              >
+                <use href="#sds-list-timeline-arrow" width="6" height="4.5" />
+              </svg>
             </div>
             <article
               class="c-list__item c-list__item--document o-flex__item--grow-1 o-layout--min-w-0"

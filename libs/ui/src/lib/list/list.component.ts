@@ -56,8 +56,6 @@ export interface ListDocumentNodeData {
   },
 })
 export class ListComponent {
-  readonly timelineSrc = 'assets/timeline.svg';
-
   readonly groups = input<ListGroup[] | null>(null);
   readonly items = input<ListItem[]>([]);
   readonly loading = input(false);

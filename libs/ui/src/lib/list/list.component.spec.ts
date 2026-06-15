@@ -237,16 +237,58 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     expect(
+      fixture.nativeElement.querySelectorAll('.c-list__timeline-sprite').length,
+    ).toBe(1);
+    expect(
+      fixture.nativeElement.querySelector('#sds-list-timeline-marker'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('#sds-list-timeline-body-gradient'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('#sds-list-timeline-line-tile'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('#sds-list-timeline-line-pattern'),
+    ).toBeNull();
+
+    expect(
       fixture.nativeElement.querySelectorAll('.c-list__timeline').length,
     ).toBe(2);
     expect(
-      fixture.nativeElement.querySelectorAll('.c-list__timeline-img').length,
-    ).toBe(2);
+      fixture.nativeElement.querySelectorAll('.c-list__timeline-cap').length,
+    ).toBe(4);
     expect(
-      fixture.nativeElement
-        .querySelector('.c-list__timeline-img')
-        ?.getAttribute('src'),
-    ).toBe('assets/timeline.svg');
+      fixture.nativeElement.querySelectorAll('.c-list__timeline-line').length,
+    ).toBe(2);
+
+    const markerUse = fixture.nativeElement.querySelector(
+      'use[href="#sds-list-timeline-marker"]',
+    );
+    const arrowUse = fixture.nativeElement.querySelector(
+      'use[href="#sds-list-timeline-arrow"]',
+    );
+    expect(markerUse).toBeTruthy();
+    expect(arrowUse).toBeTruthy();
+
+    const markerCap = fixture.nativeElement.querySelector(
+      '.c-list__timeline-cap--marker',
+    ) as SVGSVGElement;
+    const line = fixture.nativeElement.querySelector(
+      '.c-list__timeline-line',
+    ) as SVGSVGElement;
+    const timelineBody = line?.querySelector('path');
+    expect(getComputedStyle(markerCap).flexShrink).toBe('0');
+    expect(getComputedStyle(line).flexGrow).toBe('1');
+    expect(line.getAttribute('viewBox')).toBe('0 0 6 100');
+    expect(line.getAttribute('preserveAspectRatio')).toBe('none');
+    expect(timelineBody).toBeTruthy();
+    expect(timelineBody?.getAttribute('d')).toBe('M3 0 L3 100');
+    expect(timelineBody?.getAttribute('stroke')).toBe(
+      'url(#sds-list-timeline-body-gradient)',
+    );
+    expect(timelineBody?.getAttribute('stroke-dasharray')).toBe('2 2');
+    expect(fixture.nativeElement.querySelector('.c-list__timeline-img')).toBeNull();
   });
 
   it('should hide PrimeNG toggler placeholders on journey leaf document nodes', () => {

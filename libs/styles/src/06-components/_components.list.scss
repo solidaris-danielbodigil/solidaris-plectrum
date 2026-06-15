@@ -255,7 +255,7 @@
 
 // ── Timeline gutter (journey document rows) ─────────────────────────────────
 
-// Journey document row timeline — libs/assets/timeline.svg (vertical connector + top marker)
+// Journey document row timeline — inline SVG sprite 9-slice (marker / dashed gradient line / arrow)
 // Absolute positioning keeps the SVG out of flex flow so row height follows the card only.
 .c-list__document-row {
   position: relative;
@@ -265,21 +265,51 @@
   padding-inline-start: var(--#{$sds-prefix}-size-list-timeline-gutter);
 }
 
+.c-list__timeline-sprite {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .c-list__timeline {
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
   inline-size: var(--#{$sds-prefix}-size-list-timeline-gutter);
+  block-size: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   pointer-events: none;
+  color: var(--#{$sds-prefix}-color-list-timeline-line);
 }
 
-.c-list__timeline-img {
+.c-list__timeline-cap {
   display: block;
-  inline-size: calc(6 / 14 * var(--base-unit));
-  block-size: 100%;
-  object-fit: fill;
+  flex-shrink: 0;
+  inline-size: var(--#{$sds-prefix}-size-list-timeline-width);
+}
+
+.c-list__timeline-cap--marker {
+  block-size: var(--#{$sds-prefix}-size-list-timeline-cap-marker);
+}
+
+.c-list__timeline-cap--arrow {
+  block-size: var(--#{$sds-prefix}-size-list-timeline-cap-arrow);
+}
+
+.c-list__timeline-line {
+  display: block;
+  flex: 1 1 auto;
+  min-block-size: 1px;
+  inline-size: var(--#{$sds-prefix}-size-list-timeline-width);
+  overflow: visible;
+
+  path {
+    vector-effect: non-scaling-stroke;
+  }
 }
 
 // ── Mode modifiers ──────────────────────────────────────────────────────────

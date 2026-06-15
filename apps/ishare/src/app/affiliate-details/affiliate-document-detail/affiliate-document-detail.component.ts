@@ -163,6 +163,19 @@ export class AffiliateDocumentDetailComponent {
     return steps.findIndex((step) => step.value === this.activeStep());
   });
 
+  /** Panels for the currently visible step (stepper or standalone layout). */
+  readonly activeStepPanels = computed(() => {
+    if (this.isStandaloneLayout()) {
+      return this.standalonePanels();
+    }
+
+    const step = this.steps().find(
+      (documentStep) => documentStep.value === this.activeStep(),
+    );
+
+    return step?.panels ?? [];
+  });
+
   readonly previousDisabled = computed(() => this.activeStepIndex() <= 0);
 
   readonly nextDisabled = computed(() => {
@@ -184,15 +197,33 @@ export class AffiliateDocumentDetailComponent {
           this.activeStep.set(target.stepValue);
         }
 
-        this.certPanelValue.set(target.panelId);
-        this.focusPanel(target.panelId);
+        const targetStep =
+          detail?.steps.find((step) => step.value === target.stepValue) ??
+          detail?.steps[0];
+        const targetPanel = targetStep?.panels?.find(
+          (panel) => panel.id === target.panelId,
+        );
+
+        if (targetPanel && !targetPanel.disabled) {
+          this.certPanelValue.set(target.panelId);
+          this.focusPanel(target.panelId);
+        } else {
+          this.certPanelValue.set(undefined);
+        }
+
         return;
       }
 
-      this.activeStep.set(detail?.activeStep ?? 1);
+      const activeStepValue = detail?.activeStep ?? 1;
+      this.activeStep.set(activeStepValue);
 
-      const firstPanelId = detail?.steps[0]?.panels?.[0]?.id;
-      this.certPanelValue.set(firstPanelId ?? undefined);
+      const activeDocumentStep =
+        detail?.steps.find((step) => step.value === activeStepValue) ??
+        detail?.steps[0];
+
+      this.certPanelValue.set(
+        this.defaultExpandedPanelValue(activeDocumentStep?.panels),
+      );
     });
   }
 
@@ -260,7 +291,10 @@ export class AffiliateDocumentDetailComponent {
       return;
     }
 
-    this.certPanelValue.set(value as string | string[]);
+    const normalized = value as string | string[];
+    this.certPanelValue.set(
+      this.filterDisabledPanelValues(normalized, this.activeStepPanels()),
+    );
   }
 
   goToPreviousStep(): void {
@@ -285,7 +319,34 @@ export class AffiliateDocumentDetailComponent {
     const step = this.steps().find(
       (documentStep) => documentStep.value === this.activeStep(),
     );
-    this.certPanelValue.set(step?.panels?.[0]?.id ?? undefined);
+    this.certPanelValue.set(this.defaultExpandedPanelValue(step?.panels));
+  }
+
+  /** First enabled panel id for default expansion; undefined when all are disabled. */
+  private defaultExpandedPanelValue(
+    panels: DocumentCertificatPanel[] | undefined,
+  ): string | undefined {
+    return panels?.find((panel) => !panel.disabled)?.id;
+  }
+
+  private filterDisabledPanelValues(
+    value: string | string[],
+    panels: DocumentCertificatPanel[],
+  ): string | string[] | undefined {
+    const disabledIds = new Set(
+      panels.filter((panel) => panel.disabled).map((panel) => panel.id),
+    );
+
+    if (disabledIds.size === 0) {
+      return value;
+    }
+
+    if (Array.isArray(value)) {
+      const filtered = value.filter((id) => !disabledIds.has(id));
+      return filtered.length > 0 ? filtered : undefined;
+    }
+
+    return disabledIds.has(value) ? undefined : value;
   }
 
   /**

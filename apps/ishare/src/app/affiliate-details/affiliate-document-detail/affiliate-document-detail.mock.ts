@@ -645,6 +645,74 @@ const FDR_PANEL_ACTIONS = [
   { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
 ];
 
+const CHANGEMENT_ADRESSE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-15-06-2024',
+      dateLabel: '15/06/2024',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '15/06/2024 09:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: "Population - Changement d'adresse",
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-16-06-2024',
+      dateLabel: '16/06/2024',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '16/06/2024 10:30:00',
+          description: 'En traitement',
+          application: "Population - Changement d'adresse",
+          source: 'IGED',
+        },
+      ],
+    },
+    {
+      id: 'cloture-20-06-2024',
+      dateLabel: '20/06/2024',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'secondary',
+      rows: [
+        {
+          date: '20/06/2024 14:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: "Population - Changement d'adresse",
+          source: 'IGED',
+        },
+      ],
+    },
+  ],
+};
+
 /** 2e demande primaire — required FDR panels not yet received (legacy iSHARE: grayed accordion). */
 const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
   {
@@ -1207,10 +1275,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               },
             ],
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails(
-              "Changement d'adresse",
-              '15/06/2024',
-            ),
+            moreDetails: CHANGEMENT_ADRESSE_MORE_DETAILS,
           },
         ],
       },

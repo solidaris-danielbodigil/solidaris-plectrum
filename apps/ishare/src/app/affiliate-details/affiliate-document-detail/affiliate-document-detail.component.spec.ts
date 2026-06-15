@@ -640,6 +640,52 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(component.activeStep()).toBe(2);
   });
 
+  it('should keep disabled accordion panels collapsed by default on document load', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(1);
+    expect(component.certPanelValue()).toBeUndefined();
+  });
+
+  it('should open the first enabled panel when navigating to a step with disabled panels', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    component.goToNextStep();
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(2);
+    expect(component.certPanelValue()).toBe('certificat-prolongation');
+  });
+
+  it('should leave all panels collapsed when every panel on a step is disabled', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-cloture-primaire');
+    fixture.detectChanges();
+
+    component.goToNextStep();
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(2);
+    expect(component.certPanelValue()).toBeUndefined();
+  });
+
+  it('should leave disabled Calcul panel collapsed when navigating to step 3 of doc-cloture-primaire', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-cloture-primaire');
+    fixture.detectChanges();
+
+    component.goToNextStep();
+    component.goToNextStep();
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(3);
+    expect(component.certPanelValue()).toBeUndefined();
+  });
+
+  it('should still open the first enabled panel by default for enabled documents', () => {
+    expect(component.certPanelValue()).toBe('certificat-itt');
+  });
+
   it('should return to the previous step when Etape précédente is clicked', () => {
     component.activeStep.set(2);
     fixture.detectChanges();
@@ -1176,6 +1222,46 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(
         panel.querySelector('.c-affiliate-document-detail__disabled-hint'),
       ).not.toBeNull();
+    });
+  });
+
+  describe('doc-archive-changement-adresse', () => {
+    beforeEach(() => {
+      fixture.componentInstance.selectedDocumentId.set(
+        'doc-archive-changement-adresse',
+      );
+      fixture.detectChanges();
+    });
+
+    it('should open the more-details drawer with full audit timeline for changement d\'adresse', async () => {
+      const moreDetailsButton = findButtonByLabel(
+        fixture.nativeElement,
+        'Voir plus de détails',
+      );
+
+      moreDetailsButton?.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+        'changement-adresse',
+      );
+      expect(document.body.querySelector('.p-timeline')).toBeTruthy();
+      expect(document.body.textContent).toContain('Reçu');
+      expect(document.body.textContent).toContain('En traitement');
+      expect(document.body.textContent).toContain('Clôturé');
+      expect(document.body.textContent).toContain('IGED');
+      expect(document.body.textContent).toContain(
+        "Population - Changement d'adresse",
+      );
+      expect(document.body.textContent).not.toContain('Historique détaillé');
+
+      expect(
+        document.body.querySelectorAll(
+          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        ).length,
+      ).toBe(3);
     });
   });
 });
