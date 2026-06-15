@@ -7,6 +7,7 @@ import {
   input,
   output,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import type { TreeNode } from 'primeng/api';
@@ -129,17 +130,67 @@ export class ListComponent {
     this.items().filter((item): item is ListDocumentItem => !isListGroup(item)),
   );
 
-  readonly treeNodes = computed((): TreeNode[] => {
+  /** Stable tree node references — rebuilt only when groups/items change, not on expand toggle. */
+  private readonly treeNodesInternal = signal<TreeNode[]>([]);
+
+  readonly treeNodes = this.treeNodesInternal.asReadonly();
+
+  private readonly rebuildTreeNodes = effect(() => {
     if (this.loading()) {
-      return [];
+      this.treeNodesInternal.set([]);
+      return;
     }
 
     if (this.isJourneyMode()) {
-      return (this.groups() ?? []).map((group) => this.toGroupTreeNode(group));
+      const groups = this.groups() ?? [];
+      const expandedIds = untracked(() => this.expandedGroupIds());
+      const nodes = groups.map((group) => this.buildGroupTreeNode(group));
+      this.applyExpandedToNodes(nodes, expandedIds);
+      this.treeNodesInternal.set(nodes);
+      return;
     }
 
-    return this.flatDocuments().map((doc) => this.toDocumentTreeNode(doc, false));
+    this.treeNodesInternal.set(
+      this.flatDocuments().map((doc) => this.toDocumentTreeNode(doc, false)),
+    );
   });
+
+  private readonly patchTreeExpandedState = effect(() => {
+    if (!this.isJourneyMode() || this.loading()) {
+      return;
+    }
+
+    const expandedIds = this.expandedGroupIds();
+    const nodes = untracked(() => this.treeNodesInternal());
+    if (!nodes.length) {
+      return;
+    }
+
+    let changed = false;
+    for (const node of nodes) {
+      if (node.type !== 'group' || !node.key) {
+        continue;
+      }
+
+      const shouldExpand = expandedIds.includes(node.key);
+      if (node.expanded !== shouldExpand) {
+        node.expanded = shouldExpand;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      untracked(() => this.treeNodesInternal.set([...nodes]));
+    }
+  });
+
+  private applyExpandedToNodes(nodes: TreeNode[], expandedIds: string[]): void {
+    for (const node of nodes) {
+      if (node.type === 'group' && node.key) {
+        node.expanded = expandedIds.includes(node.key);
+      }
+    }
+  }
 
   isGroupExpanded(groupId: string): boolean {
     return this.expandedGroupIds().includes(groupId);
@@ -361,13 +412,13 @@ export class ListComponent {
     this.syncExpandedGroupId(groupId, false);
   }
 
-  private toGroupTreeNode(group: ListGroup): TreeNode {
+  private buildGroupTreeNode(group: ListGroup): TreeNode {
     return {
       key: group.id,
       type: 'group',
       label: `${group.title}${group.titleAccent ?? ''}`,
       data: { group },
-      expanded: this.isGroupExpanded(group.id),
+      expanded: false,
       selectable: false,
       children: group.documents.map((doc) => this.toDocumentTreeNode(doc, true)),
     };

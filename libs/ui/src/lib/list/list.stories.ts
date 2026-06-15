@@ -5,8 +5,8 @@ import type { ListDocumentItem, ListGroup } from './list.types';
 
 // =============================================================================
 // List (sds-list)
-// Design ref: Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7384,
-//             435:7387, Custom-components node 2:125 (document row default / hover / selected)
+// Design ref: Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7384, 435:7387
+//             Custom-components hierarchy: _master (2:108) → _states (2:125) → list/content (98:2220) → sds-list (107:3675)
 // =============================================================================
 
 const EVA_MARTINEZ_GROUPS: ListGroup[] = [
@@ -92,7 +92,8 @@ const meta: Meta<ListStoryArgs> = {
         component: `
 iSHARE affiliate document list with **journey** (grouped timeline) and **flat** modes.
 
-- **Figma**: [iSHARE-Audit node 324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) (journey ON), [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) (journey OFF)
+- **Figma (iSHARE-Audit)**: [324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) (journey ON), [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) (journey OFF)
+- **Figma (Custom-components)**: [sds-list / c-list](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675) → [list/content](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=98-2220) → [_states](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-125) → [_master](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-108)
 - **BEM block**: \`c-list\`
 - **Journey ON**: chevron on group headers, 64px timeline gutter on child document rows
 - **Journey OFF**: full-width document cards — no chevron, no timeline
