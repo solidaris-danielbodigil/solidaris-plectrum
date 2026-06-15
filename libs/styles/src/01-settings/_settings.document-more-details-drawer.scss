@@ -40,4 +40,13 @@
   // ── Event header date chip ───────────────────────────────────────────────────
   --#{$sds-prefix}-color-document-more-details-drawer-date-tag-bg: #eaeff4;
   --#{$sds-prefix}-color-document-more-details-drawer-date-tag-text: var(--#{$sds-prefix}-color-metadata-chip-text);
+
+  // ── Audit table columns (shared across timeline accordion tables) ────────────
+  // Figma 382:10723 — Date | Description | Applications | Sources
+  // Min-width rem columns keep headers on one line (nowrap) and align across accordion
+  // tables without stretching to the full drawer width (content-driven sizing).
+  --#{$sds-prefix}-size-document-more-details-drawer-table-col-date: 11rem;
+  --#{$sds-prefix}-size-document-more-details-drawer-table-col-description: 14rem;
+  --#{$sds-prefix}-size-document-more-details-drawer-table-col-application: 13rem;
+  --#{$sds-prefix}-size-document-more-details-drawer-table-col-source: 8rem;
 }

@@ -63,19 +63,23 @@
                     <span class="c-list__title-accent">{{ group.titleAccent }}</span>
                   }
                 </p>
-                <hr />
+                @if (groupHasFooterContent(group)) {
+                  <hr />
+                }
               </div>
             </div>
-            <div class="c-list__dates o-flex o-layout--gap-0-25">
-              <p class="c-list__date o-flex__item--grow-1">
-                Date de début :
-                <span class="c-list__date-value">{{ group.startDate }}</span>
-              </p>
-              <p class="c-list__date c-list__date--end o-flex__item--grow-1">
-                Date de fin :
-                <span class="c-list__date-value">{{ group.endDate }}</span>
-              </p>
-            </div>
+            @if (groupHasFooterContent(group)) {
+              <div class="c-list__dates o-flex o-layout--gap-0-25">
+                <p class="c-list__date o-flex__item--grow-1">
+                  Date de début :
+                  <span class="c-list__date-value">{{ group.startDate }}</span>
+                </p>
+                <p class="c-list__date c-list__date--end o-flex__item--grow-1">
+                  Date de fin :
+                  <span class="c-list__date-value">{{ group.endDate }}</span>
+                </p>
+              </div>
+            }
           </div>
         </article>
       </ng-template>
@@ -119,7 +123,9 @@
                     </div>
                   }
                 </div>
-                <hr />
+                @if (documentHasFooterContent(doc)) {
+                  <hr />
+                }
                 @if (doc.tags?.length) {
                   <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
                     @for (tag of doc.tags; track tag.label + tag.severity) {
@@ -184,7 +190,9 @@
                   </div>
                 }
               </div>
-              <hr />
+              @if (documentHasFooterContent(doc)) {
+                <hr />
+              }
               @if (doc.tags?.length) {
                 <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
                   @for (tag of doc.tags; track tag.label + tag.severity) {

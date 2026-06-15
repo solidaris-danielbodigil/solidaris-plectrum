@@ -225,6 +225,16 @@ export class ListComponent {
     return resolveListDocumentIcon(doc);
   }
 
+  /** True when a document row has footer content (tags, dates, …) below the header. */
+  documentHasFooterContent(doc: ListDocumentItem): boolean {
+    return Boolean(doc.tags?.length);
+  }
+
+  /** True when a journey group row has dates below the header. */
+  groupHasFooterContent(group: ListGroup): boolean {
+    return Boolean(group.startDate || group.endDate);
+  }
+
   onDocumentRowClick(event: MouseEvent, doc: ListDocumentItem): void {
     const target = event.target;
     if (target instanceof Element && target.closest('.c-list__tags button')) {

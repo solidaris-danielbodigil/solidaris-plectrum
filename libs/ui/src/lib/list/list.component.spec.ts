@@ -975,4 +975,74 @@ describe('ListComponent', () => {
 
     expect(footnoteSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('should not render hr on document rows without tags or dates', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', [
+      {
+        id: 'doc-attestation-pedicure',
+        title: 'Attestation de soin pédicure',
+        status: { label: 'En traitement', severity: 'warn' },
+      },
+    ]);
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector(
+      '.c-list__item--document .c-list__container',
+    ) as HTMLElement;
+
+    expect(container.querySelector('hr')).toBeNull();
+    expect(container.querySelector('.c-list__tags')).toBeNull();
+  });
+
+  it('should render hr on document rows when tags are present', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', [
+      {
+        id: 'doc-with-tags',
+        title: 'Demande primaire -',
+        tags: [{ label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' }],
+      },
+    ]);
+    fixture.detectChanges();
+
+    const container = fixture.nativeElement.querySelector(
+      '.c-list__item--document .c-list__container',
+    ) as HTMLElement;
+
+    expect(container.querySelector('hr')).toBeTruthy();
+    expect(container.querySelector('.c-list__tags')).toBeTruthy();
+  });
+
+  it('should render hr on journey group rows when dates are present', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.detectChanges();
+
+    const groupContainer = fixture.nativeElement.querySelector(
+      '.c-list__item--group .c-list__container',
+    ) as HTMLElement;
+
+    expect(groupContainer.querySelector('hr')).toBeTruthy();
+    expect(groupContainer.querySelector('.c-list__dates')).toBeTruthy();
+  });
+
+  it('should not render hr on journey group rows without dates', () => {
+    const groupsWithoutDates: ListGroup[] = [
+      {
+        id: 'group-no-dates',
+        title: 'Parcours sans dates',
+        documents: [],
+      },
+    ];
+
+    fixture.componentRef.setInput('groups', groupsWithoutDates);
+    fixture.detectChanges();
+
+    const groupContainer = fixture.nativeElement.querySelector(
+      '.c-list__item--group .c-list__container',
+    ) as HTMLElement;
+
+    expect(groupContainer.querySelector('hr')).toBeNull();
+    expect(groupContainer.querySelector('.c-list__dates')).toBeNull();
+  });
 });
