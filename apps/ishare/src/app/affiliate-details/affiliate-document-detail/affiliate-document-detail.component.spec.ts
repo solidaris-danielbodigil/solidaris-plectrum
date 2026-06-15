@@ -288,38 +288,6 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).not.toBeNull();
   });
 
-  it('should render incapacité Calcul panel as disabled accordion with neutral hint', () => {
-    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
-    fixture.detectChanges();
-
-    component.activeStep.set(3);
-    component.certPanelValue.set('calcul-incapacite');
-    fixture.detectChanges();
-
-    const panel = fixture.nativeElement.querySelector(
-      '[data-panel-id="calcul-incapacite"]',
-    ) as HTMLElement | null;
-
-    expect(panel?.classList.contains('p-disabled')).toBe(true);
-
-    const statusLabel =
-      panel?.querySelector('.p-tag')?.textContent?.trim() ?? '';
-    expect(statusLabel).toBe('Non démarré');
-
-    expect(panel?.textContent).toContain(
-      "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
-    );
-    expect(panel?.textContent).not.toContain('En attente');
-    expect(panel?.textContent).not.toContain('Voir plus de détails');
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__actions'),
-    ).toBeNull();
-    expect(panel?.querySelector('p-message')).toBeNull();
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__disabled-hint'),
-    ).not.toBeNull();
-  });
-
   it('should emit crossReferenceNavigate when cross-reference is clicked', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
@@ -350,6 +318,12 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(
       fixture.nativeElement.querySelector('[data-panel-id="c4-isolated"]'),
     ).toBeTruthy();
+    const statusTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="c4-isolated"] .c-affiliate-document-detail__cert-header-meta p-tag',
+    ) as HTMLElement | null;
+    expect(statusTag?.textContent).toContain('Reçu');
+    expect(statusTag?.classList.contains('p-tag-info')).toBe(true);
+    expect(statusTag?.classList.contains('p-tag-success')).toBe(false);
     expect(fixture.nativeElement.textContent).toContain('16/12/2025');
     expect(
       fixture.nativeElement.querySelector(
@@ -557,6 +531,11 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(content).toContain(
       'Veuillez nous faire parvenir une copie de votre C4',
     );
+    const statusTag = fixture.nativeElement.querySelector(
+      '[data-panel-id="calcul"] .c-affiliate-document-detail__cert-header-meta p-tag:first-of-type',
+    ) as HTMLElement | null;
+    expect(statusTag?.classList.contains('p-tag-warn')).toBe(true);
+    expect(statusTag?.classList.contains('p-tag-info')).toBe(false);
     const workerComment = fixture.nativeElement.querySelector('p-message');
     expect(workerComment).toBeTruthy();
     expect(workerComment?.classList.contains('p-message-warn')).toBe(true);
@@ -780,8 +759,10 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(document.body.textContent).toContain('Reçu flux');
     expect(document.body.textContent).toContain('En traitement');
     expect(document.body.textContent).toContain('Clôturé');
-    expect(document.body.textContent).toContain('URP01RPA');
-    expect(document.body.textContent).toContain('Gestion du flux urp01');
+    expect(document.body.textContent).toContain('IGED');
+    expect(document.body.textContent).toContain(
+      'Gestion de feuilles de renseignement',
+    );
 
     const accordions = document.querySelectorAll(
       '.c-document-more-details-drawer .c-audit-accordion',

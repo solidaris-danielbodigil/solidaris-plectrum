@@ -34,6 +34,8 @@
   --#{$sds-prefix}-color-document-more-details-drawer-marker-warn-icon: #431305;
   --#{$sds-prefix}-color-document-more-details-drawer-marker-success-bg: #f1fcf4;
   --#{$sds-prefix}-color-document-more-details-drawer-marker-success-icon: #196234;
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-secondary-bg: var(--#{$sds-prefix}-color-surface-75);
+  --#{$sds-prefix}-color-document-more-details-drawer-marker-secondary-icon: var(--#{$sds-prefix}-color-surface-800);
 
   // ── Event header date chip ───────────────────────────────────────────────────
   --#{$sds-prefix}-color-document-more-details-drawer-date-tag-bg: #eaeff4;

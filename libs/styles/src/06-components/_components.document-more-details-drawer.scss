@@ -86,6 +86,11 @@
   color: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-success-icon);
 }
 
+.c-document-more-details-drawer__marker--secondary {
+  background: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-secondary-bg);
+  color: var(--#{$sds-prefix}-color-document-more-details-drawer-marker-secondary-icon);
+}
+
 // ── Timeline PrimeNG bridge ──────────────────────────────────────────────────
 .c-document-more-details-drawer__timeline {
   --p-timeline-event-connector-color: var(--#{$sds-prefix}-color-document-more-details-drawer-border);

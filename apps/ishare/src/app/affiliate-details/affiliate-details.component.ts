@@ -266,7 +266,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
           titleLine2: 'Régime général',
           status: {
             label: 'En attente',
-            severity: 'info',
+            severity: 'warn',
             icon: 'bi bi-clock',
           },
         },
@@ -314,7 +314,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
           titleLine2: 'Régime général',
           status: {
             label: 'En attente',
-            severity: 'info',
+            severity: 'warn',
             icon: 'bi bi-clock',
           },
         },
@@ -335,7 +335,7 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
     title: 'Attestation C4',
     status: {
       label: 'Reçu',
-      severity: 'success',
+      severity: 'info',
       icon: 'bi bi-save',
     },
   },

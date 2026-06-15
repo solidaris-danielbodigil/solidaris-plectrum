@@ -36,8 +36,8 @@ export const COMMENT_ICONS = {
 
 /**
  * Maps a worker-comment severity onto the comment-count tag severity. Info
- * comments display as `secondary` so they do not clash with the blue `info`
- * status tags ("En attente"); every other severity (notably `warn`) is kept
+ * comments display as `secondary` so they do not clash with blue `info`
+ * status tags (e.g. "Reçu"); every other severity (notably `warn`) is kept
  * as-is. Shared by the document list row tags and the detail panel/accordion
  * header tags so both stay visually aligned.
  */
@@ -71,7 +71,7 @@ export interface DocumentTimelineEvent {
   dateLabel: string;
   status: DocumentCertificatPanel['status'];
   markerIcon: string;
-  markerTone: 'info' | 'warn' | 'success';
+  markerTone: 'info' | 'warn' | 'success' | 'secondary';
   rows: DocumentAuditRow[];
 }
 

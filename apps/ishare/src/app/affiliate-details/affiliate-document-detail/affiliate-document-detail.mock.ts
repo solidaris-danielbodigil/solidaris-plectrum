@@ -323,8 +323,8 @@ const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
         {
           date: '05/12/2025 00:00',
           description: 'Reçu flux',
-          application: 'Gestion du flux urp01',
-          source: 'URP01RPA',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -341,9 +341,9 @@ const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
       rows: [
         {
           date: '06/12/2025 09:30:00',
-          description: 'Flux employeur en cours de traitement',
-          application: 'Gestion du flux urp01',
-          source: 'URP01RPA',
+          description: 'En traitement',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -356,7 +356,7 @@ const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
         icon: 'bi bi-clock-history',
       },
       markerIcon: 'bi bi-clock-history',
-      markerTone: 'info',
+      markerTone: 'secondary',
       rows: [
         {
           date: '09/12/2025 14:15:00',
@@ -366,8 +366,8 @@ const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
             severity: 'secondary',
             icon: 'bi bi-clock-history',
           },
-          application: 'Gestion du flux urp01',
-          source: 'URP01RPA',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -386,8 +386,8 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
         {
           date: '05/12/2025 00:00',
           description: 'Reçu flux',
-          application: 'Gestion du flux urp02',
-          source: 'URP02RPA',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -404,9 +404,9 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
       rows: [
         {
           date: '08/12/2025 10:00:00',
-          description: 'En attente du flux employeur',
-          application: 'Gestion du flux urp02',
-          source: 'URP02RPA',
+          description: 'En traitement',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -419,7 +419,7 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
         icon: 'bi bi-clock-history',
       },
       markerIcon: 'bi bi-clock-history',
-      markerTone: 'info',
+      markerTone: 'secondary',
       rows: [
         {
           date: '11/12/2025 11:45:00',
@@ -429,8 +429,8 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
             severity: 'secondary',
             icon: 'bi bi-clock-history',
           },
-          application: 'Gestion du flux urp02',
-          source: 'URP02RPA',
+          application: 'Gestion de feuilles de renseignement',
+          source: 'IGED',
         },
       ],
     },
@@ -488,7 +488,7 @@ const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
         icon: 'bi bi-clock-history',
       },
       markerIcon: 'bi bi-clock-history',
-      markerTone: 'info',
+      markerTone: 'secondary',
       rows: [
         {
           date: '12/12/2025 10:30:00',
@@ -787,7 +787,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             title: 'Calcul',
             status: {
               label: 'En attente',
-              severity: 'info',
+              severity: 'warn',
               icon: 'bi bi-clock',
             },
             workerComment: {
@@ -866,29 +866,6 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           },
         ],
       },
-      {
-        value: 3,
-        label: 'Calcul',
-        panels: [
-          {
-            id: 'calcul-incapacite',
-            title: 'Calcul',
-            disabled: true,
-            status: {
-              label: 'Non démarré',
-              severity: 'secondary',
-            },
-            workerComment: {
-              severity: 'info',
-              text: "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
-              icon: COMMENT_ICONS.info,
-            },
-            actions: [],
-            details: [],
-            moreDetailsLabel: MORE_DETAILS_LABEL,
-          },
-        ],
-      },
     ],
   },
   'doc-rechute': {
@@ -952,7 +929,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             workerComment: {
               severity: 'info',
-              text: 'En attente du flux employeur - 08/01/2026 15:56',
+              text: 'Accident de travail',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -1079,7 +1056,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             title: 'C4',
             status: {
               label: 'Reçu',
-              severity: 'success',
+              severity: 'info',
               icon: 'bi bi-save',
             },
             actions: [
@@ -1098,18 +1075,18 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                   dateLabel: '16/12/2025',
                   status: {
                     label: 'Reçu',
-                    severity: 'success',
+                    severity: 'info',
                     icon: 'bi bi-save',
                   },
                   markerIcon: 'bi bi-save',
-                  markerTone: 'success',
+                  markerTone: 'info',
                   rows: [
                     {
                       date: '16/12/2025 10:15:00',
                       description: {
                         kind: 'tag',
                         label: 'Reçu',
-                        severity: 'success',
+                        severity: 'info',
                         icon: 'bi bi-save',
                       },
                       application: 'Gestion des indemnités',
