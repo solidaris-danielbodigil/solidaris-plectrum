@@ -45,7 +45,6 @@
                 class="c-affiliate-overview-card__status-action"
                 data-telemetry-id="affiliate-overview-status-action"
                 [sdsTelemetryLabel]="action.label"
-                [label]="action.label"
                 [icon]="action.icon"
                 [severity]="statusActionSeverity()!"
                 size="small"
@@ -54,7 +53,22 @@
                 [attr.aria-disabled]="action.disabled ? 'true' : null"
                 [attr.aria-label]="statusActionAriaLabel()"
                 (click)="onStatusActionClick()"
-              ></button>
+              >
+                @if (action.tagValue) {
+                  <span class="c-affiliate-overview-card__status-action-prefix">{{
+                    statusActionTagPrefix
+                  }}</span>
+                  <p-badge
+                    class="c-affiliate-overview-card__status-action-badge"
+                    [value]="action.tagValue"
+                    [severity]="statusActionSeverity()!"
+                  />
+                } @else {
+                  <span class="c-affiliate-overview-card__status-action-label">{{
+                    action.label
+                  }}</span>
+                }
+              </button>
             }
 
             @if (infoTags().length > 0) {

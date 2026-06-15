@@ -7,9 +7,13 @@ import {
 } from '../affiliate-mock.constants';
 import type {
   AffiliateDocumentDetail,
+  DocumentCertificatPanel,
   DocumentMoreDetails,
 } from './affiliate-document-detail.types';
-import { COMMENT_ICONS, MORE_DETAILS_LABEL } from './affiliate-document-detail.types';
+import {
+  COMMENT_ICONS,
+  MORE_DETAILS_LABEL,
+} from './affiliate-document-detail.types';
 
 function placeholderMoreDetails(
   panelTitle: string,
@@ -127,14 +131,14 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
 const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
   events: [
     {
-      id: 'recu-20-01-2026',
-      dateLabel: '20/01/2026',
+      id: 'recu-20-05-2026',
+      dateLabel: '20/05/2026',
       status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
-          date: '20/01/2026 09:15:00',
+          date: '20/05/2026 09:15:00',
           description: {
             kind: 'tag',
             label: 'Reçu',
@@ -306,6 +310,326 @@ const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
   ],
 };
 
+// Figma iSHARE-Audit — FDR panels drawer (Reçu → En traitement → Clôturé).
+const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-05-12-2025',
+      dateLabel: '05/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '05/12/2025 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du flux urp01',
+          source: 'URP01RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-06-12-2025',
+      dateLabel: '06/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '06/12/2025 09:30:00',
+          description: 'Flux employeur en cours de traitement',
+          application: 'Gestion du flux urp01',
+          source: 'URP01RPA',
+        },
+      ],
+    },
+    {
+      id: 'cloture-09-12-2025',
+      dateLabel: '09/12/2025',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '09/12/2025 14:15:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: 'Gestion du flux urp01',
+          source: 'URP01RPA',
+        },
+      ],
+    },
+  ],
+};
+
+const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-05-12-2025',
+      dateLabel: '05/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '05/12/2025 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du flux urp02',
+          source: 'URP02RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-08-12-2025',
+      dateLabel: '08/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '08/12/2025 10:00:00',
+          description: 'En attente du flux employeur',
+          application: 'Gestion du flux urp02',
+          source: 'URP02RPA',
+        },
+      ],
+    },
+    {
+      id: 'cloture-11-12-2025',
+      dateLabel: '11/12/2025',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '11/12/2025 11:45:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: 'Gestion du flux urp02',
+          source: 'URP02RPA',
+        },
+      ],
+    },
+  ],
+};
+
+const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-05-12-2025',
+      dateLabel: '05/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '05/12/2025 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+        {
+          date: '10/12/2025 15:56',
+          description: 'UOPV encodé en 9M à la réception',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-10-12-2025',
+      dateLabel: '10/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '10/12/2025 16:00:00',
+          description: 'Liasse compte financier en cours de traitement',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+    {
+      id: 'cloture-12-12-2025',
+      dateLabel: '12/12/2025',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '12/12/2025 10:30:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+  ],
+};
+
+// doc-rechute step 2 FDR panels — Reçu → En traitement (no Clôturé).
+const FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-06-01-2026',
+      dateLabel: '06/01/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '06/01/2026 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du flux urp01',
+          source: 'URP01RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-07-01-2026',
+      dateLabel: '07/01/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '07/01/2026 09:30:00',
+          description: 'Flux employeur en cours de traitement',
+          application: 'Gestion du flux urp01',
+          source: 'URP01RPA',
+        },
+      ],
+    },
+  ],
+};
+
+const FDR_AFFILIE_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-06-01-2026',
+      dateLabel: '06/01/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '06/01/2026 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du flux urp02',
+          source: 'URP02RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-08-01-2026',
+      dateLabel: '08/01/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '08/01/2026 10:00:00',
+          description: 'En attente du flux employeur',
+          application: 'Gestion du flux urp02',
+          source: 'URP02RPA',
+        },
+      ],
+    },
+  ],
+};
+
+const COMPTE_FINANCIER_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-06-01-2026',
+      dateLabel: '06/01/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '06/01/2026 00:00',
+          description: 'Reçu flux',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+        {
+          date: '08/01/2026 15:56',
+          description: 'UOPV encodé en 9M à la réception',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-08-01-2026',
+      dateLabel: '08/01/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '08/01/2026 16:00:00',
+          description: 'Liasse compte financier en cours de traitement',
+          application: 'Gestion du compte financier',
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+  ],
+};
+
 const FDR_PANEL_DETAILS = [
   { label: 'Date de réception', value: '05/12/2025' },
   { label: 'Date du risque', value: '24/11/2025' },
@@ -319,6 +643,46 @@ const FDR_PANEL_DETAILS_RECHUTE = [
 const FDR_PANEL_ACTIONS = [
   { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
   { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+];
+
+/** 2e demande primaire — required FDR panels not yet received (legacy iSHARE: grayed accordion). */
+const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
+  {
+    id: 'fdr-employeur-cloture',
+    title: 'F.D.R. employeur',
+    disabled: true,
+    status: {
+      label: 'Non reçu',
+      severity: 'secondary',
+    },
+    actions: [],
+    details: [],
+    moreDetailsLabel: MORE_DETAILS_LABEL,
+  },
+  {
+    id: 'fdr-affilie-incapacite-cloture',
+    title: 'F.D.R. affilié - Incapacité de travail',
+    disabled: true,
+    status: {
+      label: 'Non reçu',
+      severity: 'secondary',
+    },
+    actions: [],
+    details: [],
+    moreDetailsLabel: MORE_DETAILS_LABEL,
+  },
+  {
+    id: 'compte-financier-liasse-cloture',
+    title: 'Compte financier - Liasse',
+    disabled: true,
+    status: {
+      label: 'Non reçu',
+      severity: 'secondary',
+    },
+    actions: [],
+    details: [],
+    moreDetailsLabel: MORE_DETAILS_LABEL,
+  },
 ];
 
 export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
@@ -374,7 +738,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('F.D.R. employeur', '05/12/2025'),
+            moreDetails: FDR_EMPLOYEUR_MORE_DETAILS,
           },
           {
             id: 'fdr-affilie-incapacite',
@@ -392,10 +756,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails(
-              'F.D.R. affilié - Incapacité de travail',
-              '05/12/2025',
-            ),
+            moreDetails: FDR_AFFILIE_INCAPACITE_MORE_DETAILS,
           },
           {
             id: 'compte-financier-liasse',
@@ -413,7 +774,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('Compte financier - Liasse', '05/12/2025'),
+            moreDetails: COMPTE_FINANCIER_LIASSE_MORE_DETAILS,
           },
         ],
       },
@@ -460,31 +821,19 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'paiement-incapacite',
             title: 'Paiement',
+            disabled: true,
             status: {
-              label: 'En attente',
-              severity: 'info',
-              icon: 'bi bi-clock',
+              label: 'Non démarré',
+              severity: 'secondary',
             },
             workerComment: {
-              severity: 'warn',
-              text: 'Pas de paiement reçu pour le moment - 28/12/2025 09:00',
-              icon: COMMENT_ICONS.warn,
-            },
-            crossReference: {
-              label: 'Calcul primaire bloqué — C4 manquant',
-              documentId: 'doc-demande-primaire',
-              stepValue: 3,
-              panelId: 'calcul',
+              severity: 'info',
+              text: 'Aucun paiement reçu pour le moment.',
+              icon: COMMENT_ICONS.info,
             },
             actions: [],
-            details: [
-              {
-                label: 'Période concernée',
-                value: { from: '25/12/2025', to: '27/12/2025' },
-              },
-            ],
+            details: [],
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('Paiement', '28/12/2025'),
           },
         ],
       },
@@ -514,6 +863,29 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             ],
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_PROLONGATION_MORE_DETAILS,
+          },
+        ],
+      },
+      {
+        value: 3,
+        label: 'Calcul',
+        panels: [
+          {
+            id: 'calcul-incapacite',
+            title: 'Calcul',
+            disabled: true,
+            status: {
+              label: 'Non démarré',
+              severity: 'secondary',
+            },
+            workerComment: {
+              severity: 'info',
+              text: "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
+              icon: COMMENT_ICONS.info,
+            },
+            actions: [],
+            details: [],
+            moreDetailsLabel: MORE_DETAILS_LABEL,
           },
         ],
       },
@@ -568,7 +940,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('F.D.R. employeur', '06/01/2026'),
+            moreDetails: FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS,
           },
           {
             id: 'fdr-affilie-rechute',
@@ -586,10 +958,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails(
-              'F.D.R. affilié - Incapacité de travail',
-              '06/01/2026',
-            ),
+            moreDetails: FDR_AFFILIE_RECHUTE_MORE_DETAILS,
           },
           {
             id: 'compte-financier-rechute',
@@ -602,7 +971,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('Compte financier - Liasse', '06/01/2026'),
+            moreDetails: COMPTE_FINANCIER_RECHUTE_MORE_DETAILS,
           },
         ],
       },
@@ -613,20 +982,19 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'calcul-rechute',
             title: 'Calcul',
+            disabled: true,
             status: {
-              label: 'En attente',
-              severity: 'info',
-              icon: 'bi bi-clock',
+              label: 'Non démarré',
+              severity: 'secondary',
             },
-            actions: [
-              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
-            ],
-            details: [
-              { label: 'Date de réception', value: '10/01/2026' },
-              { label: 'Numéro de certificat', value: '26/1005678' },
-            ],
+            workerComment: {
+              severity: 'info',
+              text: "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
+              icon: COMMENT_ICONS.info,
+            },
+            actions: [],
+            details: [],
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('Calcul', '10/01/2026'),
           },
         ],
       },
@@ -654,11 +1022,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '20/01/2026' },
+              { label: 'Date de réception', value: '20/05/2026' },
               { label: 'Numéro de certificat', value: '26/1001234' },
               {
                 label: 'Période',
-                value: { from: '20/01/2026', to: '12/06/2026' },
+                value: { from: '20/05/2026', to: '12/06/2026' },
               },
             ],
             moreDetailsLabel: MORE_DETAILS_LABEL,
@@ -666,8 +1034,34 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           },
         ],
       },
-      { value: 2, label: 'Feuilles de renseignement', panels: [] },
-      { value: 3, label: 'Calcul', panels: [] },
+      {
+        value: 2,
+        label: 'Feuilles de renseignement',
+        panels: CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED,
+      },
+      {
+        value: 3,
+        label: 'Calcul',
+        panels: [
+          {
+            id: 'calcul-cloture-primaire',
+            title: 'Calcul',
+            disabled: true,
+            status: {
+              label: 'Non démarré',
+              severity: 'secondary',
+            },
+            workerComment: {
+              severity: 'info',
+              text: "Le calcul des indemnités n'a pas encore commencé car les F.D.R. n'ont pas été reçues",
+              icon: COMMENT_ICONS.info,
+            },
+            actions: [],
+            details: [],
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+          },
+        ],
+      },
     ],
   },
   'doc-c4': {
@@ -675,11 +1069,6 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     title: 'Attestation C4',
     activeStep: 1,
     layout: 'standalone',
-    banner: {
-      severity: 'warn',
-      text: 'Document reçu mais non rattaché au parcours',
-      icon: COMMENT_ICONS.warn,
-    },
     steps: [
       {
         value: 1,
@@ -690,7 +1079,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             title: 'C4',
             status: {
               label: 'Reçu',
-              severity: 'info',
+              severity: 'success',
               icon: 'bi bi-save',
             },
             actions: [
@@ -707,16 +1096,20 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 {
                   id: 'recu-16-12-2025',
                   dateLabel: '16/12/2025',
-                  status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+                  status: {
+                    label: 'Reçu',
+                    severity: 'success',
+                    icon: 'bi bi-save',
+                  },
                   markerIcon: 'bi bi-save',
-                  markerTone: 'info',
+                  markerTone: 'success',
                   rows: [
                     {
                       date: '16/12/2025 10:15:00',
                       description: {
                         kind: 'tag',
                         label: 'Reçu',
-                        severity: 'info',
+                        severity: 'success',
                         icon: 'bi bi-save',
                       },
                       application: 'Gestion des indemnités',
@@ -763,7 +1156,11 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 {
                   id: 'recu-09-06-2026',
                   dateLabel: '09/06/2026',
-                  status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+                  status: {
+                    label: 'Reçu',
+                    severity: 'info',
+                    icon: 'bi bi-save',
+                  },
                   markerIcon: 'bi bi-save',
                   markerTone: 'info',
                   rows: [
@@ -806,34 +1203,35 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
       },
     ],
   },
-  'doc-archive-regularisation': {
-    documentId: 'doc-archive-regularisation',
-    title: 'Régularisation indemnités - Exercice 2024',
+  'doc-archive-changement-adresse': {
+    documentId: 'doc-archive-changement-adresse',
+    title: "Changement d'adresse",
     activeStep: 1,
     layout: 'standalone',
     steps: [
       {
         value: 1,
-        label: 'Régularisation',
+        label: "Changement d'adresse",
         panels: [
           {
-            id: 'regularisation-2024',
-            title: 'Régularisation indemnités',
+            id: 'changement-adresse',
+            title: "Changement d'adresse",
             status: {
               label: 'Clôturé',
               severity: 'secondary',
               icon: 'bi bi-clock-history',
             },
-            actions: [
-              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
-            ],
+            actions: [{ label: 'Iris', icon: 'bi bi-box-arrow-up-right' }],
             details: [
               { label: 'Date de réception', value: '15/06/2024' },
-              { label: 'Application', value: 'Gestion des indemnités' },
+              {
+                label: 'Application',
+                value: 'Population - Changement d\'adresse',
+              },
             ],
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: placeholderMoreDetails(
-              'Régularisation indemnités',
+              "Changement d'adresse",
               '15/06/2024',
             ),
           },
@@ -843,35 +1241,40 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
   },
 };
 
-export const JACK_MOTA_DOCUMENT_DETAILS: Record<string, AffiliateDocumentDetail> =
-  {
-    'doc-jack-certificat': {
-      documentId: 'doc-jack-certificat',
-      title: 'Certificat médical',
-      activeStep: 1,
-      steps: [
-        {
-          value: 1,
-          label: 'Certificat',
-          panels: [
-            {
-              id: 'certificat-jack',
-              title: 'Certificat médical',
-              status: {
-                label: 'En traitement',
-                severity: 'warn',
-                icon: 'bi bi-hourglass-split',
-              },
-              actions: [],
-              details: [{ label: 'Date de réception', value: '01/03/2026' }],
-              moreDetailsLabel: MORE_DETAILS_LABEL,
-              moreDetails: placeholderMoreDetails('Certificat médical', '01/03/2026'),
+export const JACK_MOTA_DOCUMENT_DETAILS: Record<
+  string,
+  AffiliateDocumentDetail
+> = {
+  'doc-jack-certificat': {
+    documentId: 'doc-jack-certificat',
+    title: 'Certificat médical',
+    activeStep: 1,
+    steps: [
+      {
+        value: 1,
+        label: 'Certificat',
+        panels: [
+          {
+            id: 'certificat-jack',
+            title: 'Certificat médical',
+            status: {
+              label: 'En traitement',
+              severity: 'warn',
+              icon: 'bi bi-hourglass-split',
             },
-          ],
-        },
-      ],
-    },
-  };
+            actions: [],
+            details: [{ label: 'Date de réception', value: '01/03/2026' }],
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: placeholderMoreDetails(
+              'Certificat médical',
+              '01/03/2026',
+            ),
+          },
+        ],
+      },
+    ],
+  },
+};
 
 export function getDocumentDetailsForAffiliate(
   affiliateRouteId: string,

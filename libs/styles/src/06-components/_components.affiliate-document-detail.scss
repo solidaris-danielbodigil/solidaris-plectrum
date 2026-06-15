@@ -125,6 +125,12 @@
   min-width: 0;
 }
 
+.c-affiliate-document-detail__disabled-hint {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-label-text);
+  min-width: 0;
+}
+
 // ── Deep-link message pulse (transient) ──────────────────────────────────────
 // Bespoke wave on worker-comment p-message when a list count tag deep-links.
 // Not a PrimeNG restyle — short-lived expanding ring on the message.

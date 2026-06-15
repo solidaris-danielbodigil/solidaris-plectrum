@@ -1,11 +1,22 @@
-import { ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  tick,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
-import type { ListDocumentItem, ListDocumentTag, ListDocumentTagTarget } from '@solidaris/ui';
+import type {
+  ListDocumentItem,
+  ListDocumentTag,
+  ListDocumentTagTarget,
+} from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import {
@@ -150,13 +161,17 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should enable showClear on sector and sort autocompletes', () => {
-    const autocompletes = fixture.debugElement.queryAll(By.directive(AutoComplete));
+    const autocompletes = fixture.debugElement.queryAll(
+      By.directive(AutoComplete),
+    );
 
     expect(autocompletes.length).toBe(2);
     autocompletes.forEach((autocomplete) => {
       expect(autocomplete.componentInstance.showClear).toBe(true);
       expect(
-        autocomplete.nativeElement.classList.contains('p-autocomplete-clearable'),
+        autocomplete.nativeElement.classList.contains(
+          'p-autocomplete-clearable',
+        ),
       ).toBe(true);
     });
   });
@@ -220,8 +235,11 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.documentSearch()).toBe('');
     expect(
-      (fixture.nativeElement.querySelector('#document-search') as HTMLInputElement)
-        .value,
+      (
+        fixture.nativeElement.querySelector(
+          '#document-search',
+        ) as HTMLInputElement
+      ).value,
     ).toBe('');
   });
 
@@ -297,6 +315,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.statusAction).toEqual(
       jasmine.objectContaining({
         label: 'C4 non reçu',
+        tagValue: 'C4',
         severity: 'warn',
         ariaLabel: 'Voir le détail — C4 non reçu',
       }),
@@ -373,6 +392,34 @@ describe('AffiliateDetailsComponent', () => {
     });
   });
 
+  it('should show an info toast for drawer placeholder actions', () => {
+    const addSpy = spyOn(messageService, 'add');
+    const expectedToast = {
+      severity: 'info',
+      summary: 'Bientôt disponible',
+      detail: 'Cette fonctionnalité sera disponible prochainement.',
+    };
+
+    component.onDrawerMenuClick();
+    component.onDrawerQuickActionsClick();
+    component.onDrawerCallClick();
+    component.onDrawerEmailClick();
+    component.onDrawerViewChange('documents');
+
+    expect(addSpy).toHaveBeenCalledTimes(5);
+    for (let i = 0; i < 5; i++) {
+      expect(addSpy.calls.argsFor(i)[0]).toEqual(expectedToast);
+    }
+  });
+
+  it('should not show a toast when the drawer Détails view is selected', () => {
+    const addSpy = spyOn(messageService, 'add');
+
+    component.onDrawerViewChange('details');
+
+    expect(addSpy).not.toHaveBeenCalled();
+  });
+
   it('should clear affiliate header on destroy', () => {
     fixture.destroy();
 
@@ -400,8 +447,92 @@ describe('AffiliateDetailsComponent', () => {
       expect(tab.querySelector('p-badge')).toBeTruthy();
     });
     expect(
-      fixture.nativeElement.querySelector('[data-telemetry-id="category-tab-isoles"]'),
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="category-tab-isoles"]',
+      ),
     ).toBeTruthy();
+  });
+
+  it('should keep all category tabs visible and disable empty ones for active-documents filter', () => {
+    component.activeCategory.set('archives');
+    component.onInfoTagClick({
+      label: 'Documents actifs:',
+      value: '6',
+      filterKey: 'active-documents',
+    });
+    fixture.detectChanges();
+
+    const tabs = fixture.nativeElement.querySelectorAll(
+      '.c-affiliate-details__category-tab',
+    );
+    expect(tabs.length).toBe(3);
+
+    const archivesTab = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="category-tab-archives"]',
+    ) as HTMLElement;
+    expect(
+      archivesTab.classList.contains(
+        'c-affiliate-details__category-tab--disabled',
+      ),
+    ).toBe(true);
+    expect(archivesTab.getAttribute('aria-disabled')).toBe('true');
+    expect(component.activeCategory()).toBe('parcours');
+    expect(component.selectedCategoryTab()).toBe('parcours');
+  });
+
+  it('should not select a disabled category tab when clicked', () => {
+    component.onInfoTagClick({
+      label: 'Documents clôturés:',
+      value: '1',
+      filterKey: 'closed-documents',
+    });
+    fixture.detectChanges();
+
+    expect(component.activeCategory()).toBe('archives');
+
+    component.onCategoryTabChange('isoles');
+    fixture.detectChanges();
+
+    expect(component.activeCategory()).toBe('archives');
+  });
+
+  it('should collapse disabled category accordion panels when the filter changes', () => {
+    expect(component.openCategories()).toEqual(['parcours', 'isoles']);
+
+    component.onInfoTagClick({
+      label: 'Documents clôturés:',
+      value: '1',
+      filterKey: 'closed-documents',
+    });
+    fixture.detectChanges();
+
+    expect(component.openCategories()).not.toContain('parcours');
+    expect(component.openCategories()).not.toContain('isoles');
+    expect(component.openCategories()).toContain('archives');
+  });
+
+  it('should show an explicit empty-filter message in a disabled accordion panel', () => {
+    component.onInfoTagClick({
+      label: 'Documents clôturés:',
+      value: '1',
+      filterKey: 'closed-documents',
+    });
+    fixture.detectChanges();
+
+    component.onAccordionValueChange(['parcours', 'archives']);
+    fixture.detectChanges();
+
+    const parcoursPanel = fixture.nativeElement.querySelector(
+      '#category-panel-parcours',
+    );
+    const emptyMessage = parcoursPanel?.querySelector(
+      '.c-affiliate-details__category-empty-filter',
+    );
+
+    expect(emptyMessage?.textContent?.trim()).toBe(
+      'Aucun document ne correspond à ce filtre.',
+    );
+    expect(parcoursPanel?.querySelector('sds-list')).toBeNull();
   });
 
   it('should render p-badge counts in accordion panel headers', () => {
@@ -418,9 +549,9 @@ describe('AffiliateDetailsComponent', () => {
       '#category-panel-parcours .c-affiliate-details__category-panel-header',
     );
     expect(
-      parcoursHeader?.querySelector(
-        '.c-affiliate-details__category-panel-count-label',
-      )?.textContent?.trim(),
+      parcoursHeader
+        ?.querySelector('.c-affiliate-details__category-panel-count-label')
+        ?.textContent?.trim(),
     ).toBe('documents');
     expect(
       fixture.nativeElement.querySelector(
@@ -548,15 +679,45 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.categories().map((category) => category.id)).toEqual([
+      'parcours',
+      'isoles',
       'archives',
     ]);
-    expect(component.archivesItems()[0].id).toBe('doc-archive-regularisation');
+    expect(
+      component.categories().find((category) => category.id === 'parcours')
+        ?.enabled,
+    ).toBe(false);
+    expect(
+      component.categories().find((category) => category.id === 'isoles')
+        ?.enabled,
+    ).toBe(false);
+    expect(
+      component.categories().find((category) => category.id === 'archives')
+        ?.enabled,
+    ).toBe(true);
+    expect(component.activeCategory()).toBe('archives');
+    expect(component.openCategories()).toContain('archives');
+    expect(component.archivesItems()[0].id).toBe('doc-archive-changement-adresse');
   });
+
   it('should filter documents by search query across categories', () => {
     component.documentSearch.set('rechute');
     fixture.detectChanges();
 
-    expect(component.categories().length).toBe(1);
+    expect(component.categories().map((category) => category.id)).toEqual([
+      'parcours',
+      'isoles',
+      'archives',
+    ]);
+    expect(
+      component.categories().find((category) => category.id === 'parcours')
+        ?.count,
+    ).toBe(1);
+    expect(
+      component.categories().find((category) => category.id === 'isoles')
+        ?.enabled,
+    ).toBe(false);
+    expect(component.openCategories()).toContain('parcours');
     expect(component.parcoursGroups()[0].documents[0].id).toBe('doc-rechute');
   });
 
@@ -628,9 +789,10 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should select the first document when a journey group is expanded', () => {
-    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.selectedDocumentId.set('nonexistent-document');
+    expandJourneyGroup(component, fixture, 'parcours-clotures');
 
-    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
     expect(
       fixture.nativeElement.querySelector('app-affiliate-document-detail'),
     ).toBeTruthy();
@@ -638,7 +800,9 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should expose seven visible documents sorted by oldest reception date by default', () => {
     expect(component.visibleDocuments().length).toBe(7);
-    expect(component.visibleDocuments()[0].id).toBe('doc-archive-regularisation');
+    expect(component.visibleDocuments()[0].id).toBe(
+      'doc-archive-changement-adresse',
+    );
     expect(component.visibleDocuments().at(-1)?.id).toBe(
       'doc-attestation-pedicure',
     );
@@ -678,6 +842,43 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.documentInfoFilter()).toBeNull();
   });
+
+  it('should restore scroll to the selected document when an info tag filter is cleared', fakeAsync(() => {
+    component.selectedDocumentId.set('doc-attestation-pedicure');
+    component.activeCategory.set('isoles');
+    fixture.detectChanges();
+
+    component.onInfoTagClick({
+      label: 'Dernière action:',
+      value: '09/06/2026',
+      filterKey: 'last-action',
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+    flush();
+
+    const scrollSpy = spyOn(
+      HTMLElement.prototype,
+      'scrollIntoView',
+    ).and.callThrough();
+    const scrollBySpy = spyOn(
+      HTMLElement.prototype,
+      'scrollBy',
+    ).and.callThrough();
+
+    component.onInfoTagClick({
+      label: 'Dernière action:',
+      value: '09/06/2026',
+      filterKey: 'last-action',
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+    flush();
+
+    expect(component.documentInfoFilter()).toBeNull();
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
+  }));
 
   it('should update header info tag active state when filter changes', () => {
     component.onInfoTagClick({
@@ -740,7 +941,10 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should clear documentFocus on a plain row click so an old focus is not re-applied', () => {
-    component.documentFocus.set({ stepValue: 2, panelId: 'compte-financier-liasse' });
+    component.documentFocus.set({
+      stepValue: 2,
+      panelId: 'compte-financier-liasse',
+    });
 
     component.onDocumentClick({ id: 'doc-incapacite', title: 'Incapacité' });
 
@@ -761,7 +965,8 @@ describe('AffiliateDetailsComponent', () => {
         targets: [
           {
             id: '2::fdr-affilie-incapacite',
-            label: 'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+            label:
+              'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
           },
           {
             id: '2::compte-financier-liasse',
@@ -793,26 +998,17 @@ describe('AffiliateDetailsComponent', () => {
     expect(deriveDocumentTags('doc-cloture-primaire')).toEqual([]);
   });
 
-  it('should derive warn count tag for doc-incapacite missing payment', () => {
-    const tags = deriveDocumentTags('doc-incapacite');
-
-    expect(tags).toEqual([
-      {
-        label: '1',
-        severity: 'warn',
-        icon: 'bi bi-exclamation-triangle-fill',
-        ariaLabel: '1 avertissement',
-        targets: [{ id: '1::paiement-incapacite', label: 'Paiement - Paiement' }],
-      },
-    ]);
+  it('should return no derived tags for doc-incapacite disabled paiement panel', () => {
+    expect(deriveDocumentTags('doc-incapacite')).toEqual([]);
   });
 
-  it('should apply derived warn tag to doc-incapacite in visible documents', () => {
+  it('should apply no comment tags to doc-incapacite in visible documents', () => {
     const incapacite = component
       .visibleDocuments()
       .find((document) => document.id === 'doc-incapacite');
 
-    expect(incapacite?.tags).toEqual(deriveDocumentTags('doc-incapacite'));
+    expect(incapacite).toBeTruthy();
+    expect(incapacite?.tags).toBeUndefined();
   });
 
   it('should jump detail to Calcul when the single-target warn tag is clicked', () => {
@@ -827,12 +1023,17 @@ describe('AffiliateDetailsComponent', () => {
     const warnTagButton = fixture.nativeElement.querySelector(
       '.c-list__tags button[aria-label="1 avertissement"]',
     ) as HTMLButtonElement;
-    expect(warnTagButton).withContext('single-target warn tag button').toBeTruthy();
+    expect(warnTagButton)
+      .withContext('single-target warn tag button')
+      .toBeTruthy();
 
     warnTagButton.click();
     fixture.detectChanges();
 
-    expect(component.documentFocus()).toEqual({ stepValue: 3, panelId: 'calcul' });
+    expect(component.documentFocus()).toEqual({
+      stepValue: 3,
+      panelId: 'calcul',
+    });
     expect(detail.activeStep()).toBe(3);
     expect(detail.certPanelValue()).toBe('calcul');
   });
@@ -847,7 +1048,9 @@ describe('AffiliateDetailsComponent', () => {
     const infoTagButton = fixture.nativeElement.querySelector(
       '.c-list__tags button[aria-label="2 commentaires"]',
     ) as HTMLButtonElement;
-    expect(infoTagButton).withContext('multi-target info tag button').toBeTruthy();
+    expect(infoTagButton)
+      .withContext('multi-target info tag button')
+      .toBeTruthy();
 
     infoTagButton.click();
     fixture.detectChanges();
@@ -870,6 +1073,8 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should wire document detail navigation to selectedDocumentId', () => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.selectedDocumentId.set('doc-demande-primaire');
+    fixture.detectChanges();
 
     component.goToNextDocument();
     fixture.detectChanges();
@@ -880,17 +1085,19 @@ describe('AffiliateDetailsComponent', () => {
   it('should span prev/next navigation across parcours, isolés, and archivés', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
 
-    expect(component.navigableDocuments().map((document) => document.id)).toEqual([
+    expect(
+      component.navigableDocuments().map((document) => document.id),
+    ).toEqual([
       'doc-demande-primaire',
       'doc-incapacite',
       'doc-rechute',
       'doc-cloture-primaire',
       'doc-attestation-pedicure',
       'doc-c4',
-      'doc-archive-regularisation',
+      'doc-archive-changement-adresse',
     ]);
 
-    component.selectedDocumentId.set('doc-cloture-primaire');
+    component.selectedDocumentId.set('doc-rechute');
     fixture.detectChanges();
 
     component.goToNextDocument();
@@ -898,17 +1105,26 @@ describe('AffiliateDetailsComponent', () => {
     flush();
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+    expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
     expect(component.navigableDocuments().length).toBe(7);
-    expect(component.navigableDocuments().map((document) => document.id)).toEqual([
+    expect(
+      component.navigableDocuments().map((document) => document.id),
+    ).toEqual([
       'doc-demande-primaire',
       'doc-incapacite',
       'doc-rechute',
       'doc-cloture-primaire',
       'doc-attestation-pedicure',
       'doc-c4',
-      'doc-archive-regularisation',
+      'doc-archive-changement-adresse',
     ]);
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
 
     component.goToNextDocument();
     flushMicrotasks();
@@ -922,19 +1138,19 @@ describe('AffiliateDetailsComponent', () => {
     flush();
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
   }));
 
   it('should select archived document from the archivés list', () => {
     component.onDocumentClick({
-      id: 'doc-archive-regularisation',
-      title: 'Régularisation indemnités -',
+      id: 'doc-archive-changement-adresse',
+      title: "Changement d'adresse",
     });
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
     expect(
@@ -975,7 +1191,7 @@ describe('AffiliateDetailsComponent', () => {
     flush();
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
   }));
@@ -1024,7 +1240,9 @@ describe('AffiliateDetailsComponent', () => {
       '.c-list__item--document.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
     ) as HTMLElement | null;
 
-    expect(selectedInTree).withContext('cloture row selected in parcours list').toBeTruthy();
+    expect(selectedInTree)
+      .withContext('cloture row selected in parcours list')
+      .toBeTruthy();
   }));
 
   it('should scroll the active document row into view when navigating with prev/next', fakeAsync(() => {
@@ -1096,7 +1314,7 @@ describe('AffiliateDetailsComponent', () => {
     tick(32 * 10);
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
 
     const maxTop = scroller.scrollHeight - scroller.clientHeight;
     expect(scroller.scrollTop).toBe(maxTop);
@@ -1110,6 +1328,60 @@ describe('AffiliateDetailsComponent', () => {
     ]);
 
     expect(component.selectedDocumentId()).toBe('doc-rechute');
+  });
+
+  it('should not change selection when expanding a parcours group while an isolés document is selected', () => {
+    component.selectedDocumentId.set('doc-attestation-pedicure');
+    component.onExpandedGroupIdsChange(['parcours-demande-primaire']);
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+  });
+
+  it('should keep isolés selection when derniere action filter is toggled repeatedly', fakeAsync(() => {
+    component.selectedDocumentId.set('doc-attestation-pedicure');
+    component.activeCategory.set('isoles');
+    fixture.detectChanges();
+
+    const toggleLastAction = () => {
+      component.onInfoTagClick({
+        label: 'Dernière action:',
+        value: '09/06/2026',
+        filterKey: 'last-action',
+      });
+      fixture.detectChanges();
+      tick(1500);
+    };
+
+    toggleLastAction();
+    toggleLastAction();
+    toggleLastAction();
+    toggleLastAction();
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+    expect(component.activeCategory()).toBe('isoles');
+    expect(component.openCategories()).toEqual(['isoles']);
+  }));
+
+  it('should not re-expand parcours when derniere action filter is cleared', () => {
+    component.onInfoTagClick({
+      label: 'Dernière action:',
+      value: '09/06/2026',
+      filterKey: 'last-action',
+    });
+    fixture.detectChanges();
+
+    expect(component.openCategories()).toEqual(['isoles']);
+
+    component.onInfoTagClick({
+      label: 'Dernière action:',
+      value: '09/06/2026',
+      filterKey: 'last-action',
+    });
+    fixture.detectChanges();
+
+    expect(component.openCategories()).toEqual(['isoles']);
+    expect(component.openCategories()).not.toContain('parcours');
+    expect(component.openCategories()).not.toContain('archives');
   });
 
   it('should keep standalone documents in isolés but out of parcours groups', () => {
@@ -1130,8 +1402,14 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.categories().map((category) => category.id)).toEqual([
+      'parcours',
       'isoles',
+      'archives',
     ]);
+    expect(
+      component.categories().find((category) => category.id === 'isoles')
+        ?.count,
+    ).toBe(1);
     expect(component.isolesItems()[0].id).toBe('doc-c4');
   });
 
@@ -1180,7 +1458,10 @@ describe('AffiliateDetailsComponent', () => {
     component.onSectorChange('tous');
     fixture.detectChanges();
 
-    expect(component.selectedSector()).toEqual({ label: 'Tous', value: 'tous' });
+    expect(component.selectedSector()).toEqual({
+      label: 'Tous',
+      value: 'tous',
+    });
     expect(component.visibleDocuments().length).toBe(7);
   });
 
@@ -1204,8 +1485,14 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.categories().map((category) => category.id)).toEqual([
+      'parcours',
       'isoles',
+      'archives',
     ]);
+    expect(
+      component.categories().find((category) => category.id === 'isoles')
+        ?.enabled,
+    ).toBe(true);
     expect(component.isolesItems().map((document) => document.id)).toEqual([
       'doc-attestation-pedicure',
     ]);
@@ -1220,11 +1507,11 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.parcoursGroups().length).toBeGreaterThan(0);
-    expect(component.documentCount()).toBe(6);
+    expect(component.documentCount()).toBe(5);
     expect(component.isolesItems().map((document) => document.id)).toEqual([
       'doc-c4',
     ]);
-    expect(component.archivesItems().length).toBe(1);
+    expect(component.archivesItems().length).toBe(0);
   });
 
   it('should reset sector filter when Tous is selected', () => {
@@ -1235,7 +1522,10 @@ describe('AffiliateDetailsComponent', () => {
     component.onSectorChange({ label: 'Tous', value: 'tous' });
     fixture.detectChanges();
 
-    expect(component.selectedSector()).toEqual({ label: 'Tous', value: 'tous' });
+    expect(component.selectedSector()).toEqual({
+      label: 'Tous',
+      value: 'tous',
+    });
     expect(component.visibleDocuments().length).toBe(7);
   });
 
@@ -1248,7 +1538,9 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const titles = component.isolesItems().map((document) => document.title);
-    expect(titles).toEqual([...titles].sort((left, right) => left.localeCompare(right)));
+    expect(titles).toEqual(
+      [...titles].sort((left, right) => left.localeCompare(right)),
+    );
     expect(component.isolesItems()[0].title).toBe('Attestation C4');
   });
 
@@ -1395,9 +1687,9 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
     const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
     const component = fixture.componentInstance;
 
-    expect(component.affiliateDetailDrawerData().family.map((m) => m.name)).toEqual(
-      ['Eva Martinez', 'Quinten Mota', 'Shiloh Mota'],
-    );
+    expect(
+      component.affiliateDetailDrawerData().family.map((m) => m.name),
+    ).toEqual(['Eva Martinez', 'Quinten Mota', 'Shiloh Mota']);
   });
 
   it('should show parent and sibling labels in Jack drawer', async () => {

@@ -1,5 +1,10 @@
 import { Component, inject, input } from '@angular/core';
-import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import {
+  componentWrapperDecorator,
+  moduleMetadata,
+  type Meta,
+  type StoryObj,
+} from '@storybook/angular';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
@@ -34,8 +39,17 @@ const DEFAULT_IDENTIFIERS: AffiliateOverviewIdentifier[] = [
 // Filterable tags (filterKey set) render as a single p-selectbutton group bound to the active filter;
 // display-only tags (no filterKey) render as non-interactive pButton chips.
 const DEFAULT_INFO_TAGS: AffiliateOverviewInfoTag[] = [
-  { label: 'Dernière action:', value: 'Consultation 02/06/2026', filterKey: 'last-action' },
-  { label: 'Documents actifs:', value: '2', filterKey: 'active-documents', active: true },
+  {
+    label: 'Dernière action:',
+    value: 'Consultation 02/06/2026',
+    filterKey: 'last-action',
+  },
+  {
+    label: 'Documents actifs:',
+    value: '2',
+    filterKey: 'active-documents',
+    active: true,
+  },
   { label: 'Documents clôturés:', value: '1', filterKey: 'closed-documents' },
 ];
 
@@ -122,7 +136,8 @@ const meta: Meta<AffiliateOverviewCardStoryArgs> = {
   decorators: [
     moduleMetadata({ providers: plectrumIconProviders }),
     componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
+      (story) =>
+        `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
     ),
   ],
   parameters: {
@@ -137,12 +152,12 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
 - **Avatar**: large illustrated avatar (51.333 × 56px) via \`c-plectrum-avatar--large\`; small initials variant remains 32px
 - **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--sds-icon-size-xs\`) on identifier chips
 - **Layout**: horizontal avatar + stacked header / identifier rows via \`o-flex\` / \`o-layout\` with flex-wrap
-- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
+- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-badge\` (status action code), \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
 
 | \`statusAction.severity\` | Card modifier | Status button |
 |---|---|---|
 | \`success\` | \`in-order\` | Outlined success — e.g. « En ordre » |
-| \`warn\` | \`warning\` | Outlined warn — e.g. blocking reason « C4 non reçu » |
+| \`warn\` | \`warning\` | Outlined warn — e.g. « Actions à réaliser: » + badge « C4 » |
 | \`danger\` | \`danger\` | Outlined danger |
 | _(no statusAction)_ | from \`variant\` input | hidden |
         `,
@@ -156,10 +171,14 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
       description:
         'Fallback card treatment when statusAction is absent. Overridden by statusAction.severity when set.',
     },
-    title: { control: 'text', description: 'Affiliate display name (card heading).' },
+    title: {
+      control: 'text',
+      description: 'Affiliate display name (card heading).',
+    },
     avatarInitials: {
       control: 'text',
-      description: 'Initials rendered in the Plectrum avatar (small variant fallback).',
+      description:
+        'Initials rendered in the Plectrum avatar (small variant fallback).',
     },
     avatarGender: {
       control: 'select',
@@ -183,15 +202,18 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
     },
     identifiers: {
       control: 'object',
-      description: 'Copyable identifier chips with 10.5px copy icon in the metadata row.',
+      description:
+        'Copyable identifier chips with 10.5px copy icon in the metadata row.',
     },
     primaryAction: {
       control: 'object',
-      description: 'Secondary header button with optional keyboard shortcut badge.',
+      description:
+        'Secondary header button with optional keyboard shortcut badge.',
     },
     loading: {
       control: 'boolean',
-      description: 'Skeleton placeholder with large avatar (56px) and disabled actions.',
+      description:
+        'Skeleton placeholder with large avatar (56px) and disabled actions.',
     },
   },
   render: (args) => ({
@@ -232,7 +254,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Neutral affiliate summary with info tags, copyable identifiers, and primary action.',
+        story:
+          'Neutral affiliate summary with info tags, copyable identifiers, and primary action.',
       },
     },
   },
@@ -246,9 +269,17 @@ export const InOrder: Story = {
     avatarGender: 'female',
     avatarVariant: 1,
     infoTags: [
-      { label: 'Dernière action:', value: 'Validation 01/06/2026', filterKey: 'last-action' },
+      {
+        label: 'Dernière action:',
+        value: 'Validation 01/06/2026',
+        filterKey: 'last-action',
+      },
       { label: 'Documents actifs:', value: '1', filterKey: 'active-documents' },
-      { label: 'Documents clôturés:', value: '0', filterKey: 'closed-documents' },
+      {
+        label: 'Documents clôturés:',
+        value: '0',
+        filterKey: 'closed-documents',
+      },
     ],
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
@@ -273,14 +304,28 @@ export const Warning: Story = {
     avatarVariant: 1,
     statusAction: {
       label: 'C4 non reçu',
+      tagValue: 'C4',
       icon: 'bi bi-exclamation-triangle-fill',
       severity: 'warn',
       ariaLabel: 'Voir le détail — C4 non reçu',
     },
     infoTags: [
-      { label: 'Dernière action:', value: 'Document reçu 12/04/2026', filterKey: 'last-action' },
-      { label: 'Documents actifs:', value: '3', filterKey: 'active-documents', active: true },
-      { label: 'Documents clôturés:', value: '3', filterKey: 'closed-documents' },
+      {
+        label: 'Dernière action:',
+        value: 'Document reçu 12/04/2026',
+        filterKey: 'last-action',
+      },
+      {
+        label: 'Documents actifs:',
+        value: '3',
+        filterKey: 'active-documents',
+        active: true,
+      },
+      {
+        label: 'Documents clôturés:',
+        value: '3',
+        filterKey: 'closed-documents',
+      },
     ],
     identifiers: FIGMA_IDENTIFIERS,
     primaryAction: {
@@ -313,9 +358,17 @@ export const Danger: Story = {
       severity: 'danger',
     },
     infoTags: [
-      { label: 'Dernière action:', value: 'Incohérence détectée 28/05/2026', filterKey: 'last-action' },
+      {
+        label: 'Dernière action:',
+        value: 'Incohérence détectée 28/05/2026',
+        filterKey: 'last-action',
+      },
       { label: 'Documents actifs:', value: '0', filterKey: 'active-documents' },
-      { label: 'Documents clôturés:', value: '2', filterKey: 'closed-documents' },
+      {
+        label: 'Documents clôturés:',
+        value: '2',
+        filterKey: 'closed-documents',
+      },
     ],
     identifiers: [
       { label: 'NISS', value: '92.08.22-789.01' },
@@ -351,7 +404,8 @@ export const Loading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading placeholder with large avatar skeleton (56px), header, and identifier skeletons.',
+        story:
+          'Loading placeholder with large avatar skeleton (56px), header, and identifier skeletons.',
       },
     },
   },
@@ -360,25 +414,36 @@ export const Loading: Story = {
 export const WrappedLayout: Story = {
   decorators: [
     componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper" style="max-width: 24rem">${story}</div>`,
+      (story) =>
+        `<div class="sb-demo-wrapper" style="max-width: 24rem">${story}</div>`,
     ),
   ],
   args: {
     variant: 'default',
-    title: 'Eva Martinez avec un nom très long pour forcer le retour à la ligne',
+    title:
+      'Eva Martinez avec un nom très long pour forcer le retour à la ligne',
     avatarInitials: 'EM',
     avatarGender: 'female',
     avatarVariant: 1,
     statusAction: {
       label: 'C4 non reçu',
+      tagValue: 'C4',
       icon: 'bi bi-exclamation-triangle-fill',
       severity: 'warn',
       ariaLabel: 'Voir le détail — C4 non reçu',
     },
     infoTags: [
-      { label: 'Dernière action:', value: 'Document reçu 12/04/2026', filterKey: 'last-action' },
+      {
+        label: 'Dernière action:',
+        value: 'Document reçu 12/04/2026',
+        filterKey: 'last-action',
+      },
       { label: 'Documents actifs:', value: '3', filterKey: 'active-documents' },
-      { label: 'Documents clôturés:', value: '3', filterKey: 'closed-documents' },
+      {
+        label: 'Documents clôturés:',
+        value: '3',
+        filterKey: 'closed-documents',
+      },
     ],
     identifiers: FIGMA_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
@@ -398,7 +463,8 @@ export const CopyWithToast: Story = {
   decorators: [
     moduleMetadata({ imports: [AffiliateOverviewCardCopyDemoComponent] }),
     componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
+      (story) =>
+        `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
     ),
   ],
   render: (args) => ({

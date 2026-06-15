@@ -150,9 +150,7 @@ describe('AffiliateOverviewCardComponent', () => {
   });
 
   it('should render identifier copy buttons with values', () => {
-    const buttons = fixture.nativeElement.querySelectorAll(
-      '.c-copyable-text',
-    );
+    const buttons = fixture.nativeElement.querySelectorAll('.c-copyable-text');
 
     expect(buttons.length).toBe(SAMPLE_IDENTIFIERS.length);
     expect(buttons[0].textContent).toContain('NISS');
@@ -199,7 +197,9 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-overview-card--warning'),
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card--warning',
+      ),
     ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__status-action',
@@ -218,7 +218,9 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-overview-card--in-order'),
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card--in-order',
+      ),
     ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__status-action',
@@ -232,7 +234,9 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card__status-action',
+      ),
     ).toBeFalsy();
   });
 
@@ -243,13 +247,17 @@ describe('AffiliateOverviewCardComponent', () => {
     });
     fixture.detectChanges();
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card__status-action',
+      ),
     ).toBeTruthy();
 
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-overview-card__status-action'),
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card__status-action',
+      ),
     ).toBeFalsy();
   });
 
@@ -283,6 +291,34 @@ describe('AffiliateOverviewCardComponent', () => {
       'Voir le détail — paiement non versé',
     );
     expect(statusButton.disabled).toBe(false);
+  });
+
+  it('should render status action prefix and p-badge when tagValue is set', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'C4 non reçu',
+      tagValue: 'C4',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — C4 non reçu',
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    ) as HTMLButtonElement;
+    const prefix = statusButton.querySelector(
+      '.c-affiliate-overview-card__status-action-prefix',
+    );
+    const badge = statusButton.querySelector(
+      '.c-affiliate-overview-card__status-action-badge',
+    );
+
+    expect(prefix?.textContent?.trim()).toBe('Actions à réaliser:');
+    expect(badge).toBeTruthy();
+    expect(badge?.textContent?.trim()).toBe('C4');
+    expect(statusButton.classList.contains('p-button-warn')).toBe(true);
+    expect(statusButton.getAttribute('aria-label')).toBe(
+      'Voir le détail — C4 non reçu',
+    );
   });
 
   it('should not emit statusActionClick when status action is disabled', () => {
@@ -337,7 +373,11 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     document.dispatchEvent(
-      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
     );
 
     expect(onPrimary).toHaveBeenCalledTimes(1);
@@ -382,7 +422,11 @@ describe('AffiliateOverviewCardComponent', () => {
     fixture.detectChanges();
 
     document.dispatchEvent(
-      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
     );
 
     expect(onPrimary).not.toHaveBeenCalled();
@@ -400,7 +444,11 @@ describe('AffiliateOverviewCardComponent', () => {
     const input = document.createElement('input');
     document.body.appendChild(input);
     input.dispatchEvent(
-      new KeyboardEvent('keydown', { altKey: true, code: 'KeyA', bubbles: true }),
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
     );
     document.body.removeChild(input);
 
@@ -408,7 +456,9 @@ describe('AffiliateOverviewCardComponent', () => {
   });
 
   it('should hide primary action when loading', () => {
-    fixture.componentRef.setInput('primaryAction', { label: 'Voir carte affilié' });
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+    });
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
 
@@ -472,10 +522,12 @@ describe('AffiliateOverviewCardComponent', () => {
     ) as HTMLButtonElement;
 
     expect(button.getAttribute('tabindex')).toBe('-1');
-    expect(button.classList.contains('c-affiliate-overview-card__info-tag--filterable')).toBe(false);
     expect(
-      fixture.nativeElement.querySelector('p-selectbutton'),
-    ).toBeFalsy();
+      button.classList.contains(
+        'c-affiliate-overview-card__info-tag--filterable',
+      ),
+    ).toBe(false);
+    expect(fixture.nativeElement.querySelector('p-selectbutton')).toBeFalsy();
   });
 
   it('should emit infoTagClick when a filterable info tag is clicked', () => {

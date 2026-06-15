@@ -128,18 +128,22 @@
             ></button>
           </div>
 
-          @if (categories().length > 0) {
+          @if (showCategoryTabs()) {
             <p-tabs
               class="c-affiliate-details__category-tabs"
-              [value]="activeCategory()"
+              [value]="selectedCategoryTab()"
               (valueChange)="onCategoryTabChange($event)"
             >
               <p-tablist>
                 @for (cat of categories(); track cat.id) {
                   <p-tab
                     class="c-affiliate-details__category-tab"
+                    [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
                     [value]="cat.id"
                     [attr.data-telemetry-id]="'category-tab-' + cat.id"
+                    [attr.aria-disabled]="cat.enabled ? null : 'true'"
+                    [pTooltip]="cat.enabled ? undefined : categoryTabDisabledHint"
+                    tooltipPosition="bottom"
                     [sdsTelemetryLabel]="cat.label"
                   >
                     <button
@@ -148,7 +152,10 @@
                       text
                       size="small"
                       class="c-affiliate-details__category-eye"
+                      [class.c-affiliate-details__category-eye--disabled]="!cat.enabled"
                       [attr.data-telemetry-id]="'category-toggle-' + cat.id"
+                      [attr.aria-disabled]="cat.enabled ? null : 'true'"
+                      [attr.tabindex]="cat.enabled ? 0 : -1"
                       [sdsTelemetryLabel]="
                         isCategoryOpen(cat.id)
                           ? 'Masquer ' + cat.label
@@ -179,8 +186,9 @@
         </div>
       </ng-template>
 
-      @if (hasListResults()) {
-        <div class="c-affiliate-details__category-accordion">
+      @if (showCategoryTabs()) {
+        @if (hasListResults()) {
+          <div class="c-affiliate-details__category-accordion">
           <p-accordion
             [value]="openCategories()"
             [multiple]="true"
@@ -218,7 +226,11 @@
                   </div>
                 </p-accordion-header>
                 <p-accordion-content>
-                  @if (cat.kind === 'journey' && cat.groups) {
+                  @if (!cat.enabled) {
+                    <p class="c-affiliate-details__category-empty-filter">
+                      {{ categoryEmptyFilterMessage }}
+                    </p>
+                  } @else if (cat.kind === 'journey' && cat.groups) {
                     <sds-list
                       class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
@@ -246,6 +258,13 @@
             }
           </p-accordion>
         </div>
+        } @else {
+          <sds-empty-state
+            class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
+            [title]="emptyListTitle()"
+            [description]="emptyListDescription()"
+          />
+        }
       } @else {
         <sds-empty-state
           class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
@@ -347,6 +366,9 @@
   (identifierCopy)="onDrawerIdentifierCopy($event)"
   (menuClick)="onDrawerMenuClick()"
   (quickActionsClick)="onDrawerQuickActionsClick()"
+  (callClick)="onDrawerCallClick()"
+  (emailClick)="onDrawerEmailClick()"
+  (viewChange)="onDrawerViewChange($event)"
   (familyMemberSelect)="onFamilyMemberSelect($event)"
 />
 

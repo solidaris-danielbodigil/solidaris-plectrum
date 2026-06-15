@@ -12,7 +12,10 @@ import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { Drawer } from 'primeng/drawer';
-import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
+import {
+  SelectButton,
+  type SelectButtonChangeEvent,
+} from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
@@ -173,7 +176,9 @@ export class AffiliateDetailDrawerComponent {
     NOTES_PANEL_VALUE,
   );
 
-  private readonly internalView = signal<AffiliateDetailDrawerView | null>(null);
+  private readonly internalView = signal<AffiliateDetailDrawerView | null>(
+    null,
+  );
 
   protected readonly selectedView = computed<AffiliateDetailDrawerView>(
     () => this.internalView() ?? this.view(),
@@ -213,8 +218,14 @@ export class AffiliateDetailDrawerComponent {
       return;
     }
 
-    this.internalView.set(value);
     this.viewChange.emit(value);
+
+    // Documents is host-controlled — keep Détails selected until the host switches view.
+    if (value === 'documents') {
+      return;
+    }
+
+    this.internalView.set(value);
   }
 
   protected onIdentifierCopy(
@@ -259,10 +270,7 @@ export class AffiliateDetailDrawerComponent {
     return member.id ?? `${member.name}-${index}`;
   }
 
-  protected trackNote(
-    index: number,
-    note: AffiliateDetailDrawerNote,
-  ): string {
+  protected trackNote(index: number, note: AffiliateDetailDrawerNote): string {
     return note.id ?? `${note.author}-${note.timestamp}-${index}`;
   }
 }

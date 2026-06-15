@@ -63,6 +63,20 @@
   font-weight: var(--font-weight-bold);
 }
 
+// Status action — outlined warn/success/danger button with optional inline p-badge.
+.c-affiliate-overview-card__status-action {
+  line-height: normal;
+
+  .c-affiliate-overview-card__status-action-prefix {
+    font-family: var(--text-label-sm-family);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .c-affiliate-overview-card__status-action-badge {
+    flex-shrink: 0;
+  }
+}
+
 // Primary header action — PrimeNG secondary small; badge must not outgrow sm padding.
 .c-affiliate-overview-card__primary-action {
   line-height: normal;

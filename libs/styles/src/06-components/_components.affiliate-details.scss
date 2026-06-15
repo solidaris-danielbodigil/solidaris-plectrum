@@ -87,10 +87,22 @@
   grid-template-columns: auto var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
   align-items: center;
   gap: var(--spacing-1-5);
+
+  &--disabled {
+    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    cursor: not-allowed;
+    color: var(--#{$sds-prefix}-color-text-muted);
+  }
 }
 
 .c-affiliate-details__category-eye {
   flex-shrink: 0;
+
+  &--disabled {
+    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 .c-affiliate-details__category-accordion {
@@ -107,6 +119,13 @@
   .c-list__item--group {
     scroll-margin-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
   }
+}
+
+.c-affiliate-details__category-empty-filter {
+  @include text-body-sm;
+  margin: 0;
+  padding: var(--spacing-2) var(--spacing-3);
+  color: var(--#{$sds-prefix}-color-text-muted);
 }
 
 // Label + count badge on a shared axis; chevron stays right via accordion header flex.

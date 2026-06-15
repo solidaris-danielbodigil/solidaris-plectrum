@@ -264,6 +264,18 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(component.visible()).toBe(false);
   });
 
+  it('should emit viewChange when the Documents option is selected', async () => {
+    await openDrawer();
+    const onViewChange = jasmine.createSpy('viewChange');
+    component.viewChange.subscribe(onViewChange);
+
+    const selectButton = fixture.debugElement.query(By.directive(SelectButton));
+    selectButton.triggerEventHandler('onChange', { value: 'documents' });
+
+    expect(onViewChange).toHaveBeenCalledOnceWith('documents');
+    expect(component['selectedView']()).toBe('details');
+  });
+
   it('should emit menuClick, quickActionsClick, callClick and emailClick', async () => {
     await openDrawer();
     const onMenu = jasmine.createSpy('menuClick');

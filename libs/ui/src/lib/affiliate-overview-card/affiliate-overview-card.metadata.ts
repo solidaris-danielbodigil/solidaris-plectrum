@@ -11,7 +11,8 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     primeNgComponent: 'Card, Button, SelectButton',
     bemBlock: 'c-affiliate-overview-card',
     itcssLayer: '06-components',
-    scssPath: 'libs/styles/src/06-components/_components.affiliate-overview-card.scss',
+    scssPath:
+      'libs/styles/src/06-components/_components.affiliate-overview-card.scss',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
@@ -34,7 +35,7 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
         description:
           'Surface a non-blocking audit issue with a warn status button and identifier chips.',
         composition:
-          '<sds-affiliate-overview-card variant="default" [statusAction]="{ label: \'C4 non reçu\', severity: \'warn\' }" [infoTags]="tags" [identifiers]="ids" />',
+          '<sds-affiliate-overview-card variant="default" [statusAction]="{ label: \'C4 non reçu\', tagValue: \'C4\', severity: \'warn\' }" [infoTags]="tags" [identifiers]="ids" />',
       },
     ],
     antiPatterns: [
@@ -45,7 +46,8 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       },
       {
         scenario: 'Inline table of many affiliates',
-        reason: 'Identifier chips are designed for a single affiliate snapshot.',
+        reason:
+          'Identifier chips are designed for a single affiliate snapshot.',
         alternative: 'Use a data table component for multi-row listings.',
       },
     ],
@@ -144,20 +146,63 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     context:
       'Primary affiliate summary card for iSHARE audit flows. Horizontal layout per Figma 507:7910. Card gradient driven by statusAction.severity; variant input is fallback when no status action.',
     selectionCriteria: {
-      'statusAction.severity success': 'Affiliate audit passes — in-order gradient + success button',
-      'statusAction.severity warn': 'Action required — warning gradient + warn button',
-      'statusAction.severity danger': 'Critical issue — danger gradient + danger button',
-      'variant in-order (no statusAction)': 'Success gradient via variant fallback only',
-      'variant default (no statusAction)': 'Neutral lookup result without status emphasis',
+      'statusAction.severity success':
+        'Affiliate audit passes — in-order gradient + success button',
+      'statusAction.severity warn':
+        'Action required — warning gradient + warn button',
+      'statusAction.severity danger':
+        'Critical issue — danger gradient + danger button',
+      'variant in-order (no statusAction)':
+        'Success gradient via variant fallback only',
+      'variant default (no statusAction)':
+        'Neutral lookup result without status emphasis',
     },
-    keywords: ['affiliate', 'audit', 'overview', 'NISS', 'NSI', 'status', 'metadata', 'iSHARE'],
+    keywords: [
+      'affiliate',
+      'audit',
+      'overview',
+      'NISS',
+      'NSI',
+      'status',
+      'metadata',
+      'iSHARE',
+    ],
   },
   props: [
-    { name: 'title', type: 'string', required: true, description: 'Affiliate display name (card heading)' },
-    { name: 'avatarInitials', type: 'string', required: false, default: "''", description: 'Initials fallback for the Plectrum avatar' },
-    { name: 'avatarGender', type: 'PlectrumAvatarGender', required: false, default: 'female', description: 'Illustrated avatar gender passed to sds-plectrum-avatar' },
-    { name: 'avatarVariant', type: 'PlectrumAvatarVariant', required: false, default: '1', description: 'Illustrated avatar variant passed to sds-plectrum-avatar' },
-    { name: 'variant', type: 'AffiliateOverviewCardVariant', required: false, default: 'default', description: 'Fallback card treatment when statusAction is absent' },
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      description: 'Affiliate display name (card heading)',
+    },
+    {
+      name: 'avatarInitials',
+      type: 'string',
+      required: false,
+      default: "''",
+      description: 'Initials fallback for the Plectrum avatar',
+    },
+    {
+      name: 'avatarGender',
+      type: 'PlectrumAvatarGender',
+      required: false,
+      default: 'female',
+      description: 'Illustrated avatar gender passed to sds-plectrum-avatar',
+    },
+    {
+      name: 'avatarVariant',
+      type: 'PlectrumAvatarVariant',
+      required: false,
+      default: '1',
+      description: 'Illustrated avatar variant passed to sds-plectrum-avatar',
+    },
+    {
+      name: 'variant',
+      type: 'AffiliateOverviewCardVariant',
+      required: false,
+      default: 'default',
+      description: 'Fallback card treatment when statusAction is absent',
+    },
     {
       name: 'statusAction',
       type: 'AffiliateOverviewStatusAction | null',
@@ -166,7 +211,13 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
       description:
         'Outlined status button config. severity (success | warn | danger) drives card gradient when set.',
     },
-    { name: 'loading', type: 'boolean', required: false, default: 'false', description: 'Skeleton placeholder state' },
+    {
+      name: 'loading',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Skeleton placeholder state',
+    },
   ],
   examples: [],
 };

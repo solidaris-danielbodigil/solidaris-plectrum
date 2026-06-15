@@ -166,6 +166,8 @@
 
         [value]="panel.id"
 
+        [disabled]="panel.disabled ?? false"
+
         [attr.data-panel-id]="panel.id"
 
       >
@@ -207,21 +209,22 @@
                 />
 
                 @if (panel.workerComment) {
-
-                  <p-tag
-
-                    [severity]="commentCountTagSeverity(panel.workerComment.severity)"
-
-                    value="1"
-
-                    [icon]="panel.workerComment.icon"
-
-                  />
-
+                  @if (panel.disabled) {
+                    <span class="c-affiliate-document-detail__disabled-hint">{{
+                      panel.workerComment.text
+                    }}</span>
+                  } @else {
+                    <p-tag
+                      [severity]="commentCountTagSeverity(panel.workerComment.severity)"
+                      value="1"
+                      [icon]="panel.workerComment.icon"
+                    />
+                  }
                 }
 
               </div>
 
+              @if (!panel.disabled) {
               <div
 
                 class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
@@ -259,6 +262,7 @@
                 }
 
               </div>
+              }
 
             </div>
 
@@ -279,28 +283,19 @@
             />
           }
 
-          @if (panel.workerComment) {
-
+          @if (panel.workerComment && !panel.disabled) {
             <p-message
-
               class="o-layout--margin-block-end-3"
-
               [class.c-affiliate-document-detail__message--highlighted]="
-
                 highlightedPanelId() === panel.id
-
               "
-
               [severity]="panel.workerComment.severity"
-
               [text]="panel.workerComment.text"
-
               [icon]="panel.workerComment.icon"
-
             />
-
           }
 
+          @if (!panel.disabled) {
           @if (panel.crossReference; as reference) {
             <button
               pButton
@@ -428,6 +423,7 @@
             (click)="openMoreDetails(panel)"
 
           ></button>
+          }
 
         </p-accordion-content>
 

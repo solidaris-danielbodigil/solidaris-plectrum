@@ -6,6 +6,7 @@ import {
   effect,
   inject,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -21,6 +22,7 @@ import { TagModule } from 'primeng/tag';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
+import { TooltipModule } from 'primeng/tooltip';
 import { ScrollTop } from 'primeng/scrolltop';
 import {
   AffiliateDetailDrawerComponent,
@@ -34,6 +36,7 @@ import {
   TransactionsCicsModalComponent,
   type AffiliateDetailDrawerData,
   type AffiliateDetailDrawerFamilyMember,
+  type AffiliateDetailDrawerView,
 } from '@solidaris/ui';
 import type {
   AffiliateOverviewIdentifier,
@@ -167,7 +170,10 @@ function commentTagAriaLabelForBucket(
  */
 export function deriveDocumentTags(
   documentId: string,
-  details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
+  details: Record<
+    string,
+    AffiliateDocumentDetail
+  > = EVA_MARTINEZ_DOCUMENT_DETAILS,
 ): ListDocumentTag[] {
   const detail = details[documentId];
   if (!detail) {
@@ -198,7 +204,7 @@ export function deriveDocumentTags(
 
   for (const step of detail.steps) {
     for (const panel of step.panels ?? []) {
-      if (!panel.workerComment) {
+      if (!panel.workerComment || panel.disabled) {
         continue;
       }
 
@@ -233,7 +239,10 @@ export function deriveDocumentTags(
 
 function withDerivedTags(
   document: ListDocumentItem,
-  details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
+  details: Record<
+    string,
+    AffiliateDocumentDetail
+  > = EVA_MARTINEZ_DOCUMENT_DETAILS,
 ): ListDocumentItem {
   const tags = deriveDocumentTags(document.id, details);
   return tags.length > 0 ? { ...document, tags } : document;
@@ -241,76 +250,78 @@ function withDerivedTags(
 
 // Row count tags are derived from the detail mock (see `withDerivedTags`) so the
 // badge counts and the deep-link jump targets always stay in sync.
-const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = ([
-  {
-    id: 'parcours-demande-primaire',
-    title: 'Parcours Indemnités -',
-    titleAccent: 'Demande primaire',
-    startDate: '24/11/2025',
-    endDate: '27/12/2025',
-    expanded: false,
-    documents: [
-      {
-        id: 'doc-demande-primaire',
-        title: 'Demande primaire -',
-        titleLine2: 'Régime général',
-        status: {
-          label: 'En attente',
-          severity: 'info',
-          icon: 'bi bi-clock',
+const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
+  [
+    {
+      id: 'parcours-demande-primaire',
+      title: 'Parcours Indemnités -',
+      titleAccent: 'Demande primaire',
+      startDate: '24/11/2025',
+      endDate: '27/12/2025',
+      expanded: false,
+      documents: [
+        {
+          id: 'doc-demande-primaire',
+          title: 'Demande primaire -',
+          titleLine2: 'Régime général',
+          status: {
+            label: 'En attente',
+            severity: 'info',
+            icon: 'bi bi-clock',
+          },
         },
-      },
-      {
-        id: 'doc-incapacite',
-        title: 'Incapacité',
-        status: {
-          label: 'En traitement',
-          severity: 'warn',
-          icon: 'bi bi-hourglass-split',
+        {
+          id: 'doc-incapacite',
+          title: 'Incapacité',
+          status: {
+            label: 'En traitement',
+            severity: 'warn',
+            icon: 'bi bi-hourglass-split',
+          },
         },
-      },
-    ],
-  },
-  {
-    id: 'parcours-rechute',
-    title: 'Parcours Indemnités -',
-    titleAccent: 'Rechute',
-    startDate: '01/01/2026',
-    endDate: '15/01/2026',
-    expanded: false,
-    documents: [
-      {
-        id: 'doc-rechute',
-        title: 'Rechute',
-        status: {
-          label: 'En traitement',
-          severity: 'warn',
-          icon: 'bi bi-hourglass-split',
+      ],
+    },
+    {
+      id: 'parcours-rechute',
+      title: 'Parcours Indemnités -',
+      titleAccent: 'Rechute',
+      startDate: '01/01/2026',
+      endDate: '15/01/2026',
+      expanded: false,
+      documents: [
+        {
+          id: 'doc-rechute',
+          title: 'Rechute',
+          status: {
+            label: 'En traitement',
+            severity: 'warn',
+            icon: 'bi bi-hourglass-split',
+          },
         },
-      },
-    ],
-  },
-  {
-    id: 'parcours-clotures',
-    title: 'Parcours Indemnités -',
-    titleAccent: 'Demande primaire',
-    startDate: '20/01/2026',
-    endDate: '12/06/2026',
-    expanded: false,
-    documents: [
-      {
-        id: 'doc-cloture-primaire',
-        title: 'Demande primaire -',
-        titleLine2: 'Régime général',
-        status: {
-          label: 'En attente',
-          severity: 'info',
-          icon: 'bi bi-clock',
+      ],
+    },
+    {
+      id: 'parcours-clotures',
+      title: 'Parcours Indemnités -',
+      titleAccent: 'Demande primaire',
+      startDate: '20/05/2026',
+      endDate: '12/06/2026',
+      expanded: false,
+      documents: [
+        {
+          id: 'doc-cloture-primaire',
+          title: 'Demande primaire -',
+          titleLine2: 'Régime général',
+          status: {
+            label: 'En attente',
+            severity: 'info',
+            icon: 'bi bi-clock',
+          },
         },
-      },
-    ],
-  },
-] as ListGroup[]).map((group) => ({
+      ],
+    },
+  ] as ListGroup[]
+).map((group) => ({
   ...group,
   documents: group.documents.map((document) =>
     withDerivedTags(document, EVA_MARTINEZ_DOCUMENT_DETAILS),
@@ -324,7 +335,7 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
     title: 'Attestation C4',
     status: {
       label: 'Reçu',
-      severity: 'info',
+      severity: 'success',
       icon: 'bi bi-save',
     },
   },
@@ -344,9 +355,8 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
 /** Archived documents — flat Archivés category, excluded from parcours groups. */
 export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListDocumentItem[] = [
   {
-    id: 'doc-archive-regularisation',
-    title: 'Régularisation indemnités -',
-    titleLine2: 'Exercice 2024',
+    id: 'doc-archive-changement-adresse',
+    title: "Changement d'adresse",
     status: {
       label: 'Clôturé',
       severity: 'secondary',
@@ -372,10 +382,27 @@ interface DocCategory {
   label: string;
   icon: string;
   count: number;
+  enabled: boolean;
   kind: 'journey' | 'flat';
   groups?: ListGroup[];
   items?: ListDocumentItem[];
 }
+
+const DOC_CATEGORY_SPECS: ReadonlyArray<
+  Pick<DocCategory, 'id' | 'label' | 'icon' | 'kind'>
+> = [
+  {
+    id: 'parcours',
+    label: 'Parcours',
+    icon: 'bi bi-diagram-3',
+    kind: 'journey',
+  },
+  { id: 'isoles', label: 'Isolés', icon: 'bi bi-file-earmark', kind: 'flat' },
+  { id: 'archives', label: 'Archivés', icon: 'bi bi-archive', kind: 'flat' },
+];
+
+const CATEGORY_EMPTY_FILTER_MESSAGE =
+  'Aucun document ne correspond à ce filtre.';
 
 type DocumentSector = SectorOption['value'];
 
@@ -386,7 +413,7 @@ const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
   ['doc-cloture-primaire', 'indemnites'],
   ['doc-c4', 'indemnites'],
   ['doc-attestation-pedicure', 'front-office'],
-  ['doc-archive-regularisation', 'indemnites'],
+  ['doc-archive-changement-adresse', 'population'],
   ['doc-jack-certificat', 'medical'],
 ]);
 
@@ -417,7 +444,7 @@ const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
         'doc-demande-primaire': '24/11/2025',
         'doc-incapacite': '24/11/2025',
         'doc-rechute': '01/01/2026',
-        'doc-cloture-primaire': '20/01/2026',
+        'doc-cloture-primaire': '20/05/2026',
       };
       return [
         document.id,
@@ -427,7 +454,7 @@ const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ),
   ['doc-c4', '16/12/2025'],
   ['doc-attestation-pedicure', '09/06/2026'],
-  ['doc-archive-regularisation', '15/06/2024'],
+  ['doc-archive-changement-adresse', '15/06/2024'],
   ['doc-jack-certificat', '01/03/2026'],
 ]);
 
@@ -455,6 +482,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     AccordionModule,
     BadgeModule,
     TabsModule,
+    TooltipModule,
     ToolbarComponent,
     FormFieldComponent,
     InputClearComponent,
@@ -470,7 +498,10 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0' },
+  host: {
+    class:
+      'o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0',
+  },
 })
 export class AffiliateDetailsComponent {
   private readonly route = inject(ActivatedRoute);
@@ -501,6 +532,7 @@ export class AffiliateDetailsComponent {
   private static readonly EVA_C4_MISSING_STATUS_ACTION: AffiliateOverviewStatusAction =
     {
       label: 'C4 non reçu',
+      tagValue: 'C4',
       icon: 'bi bi-exclamation-triangle-fill',
       severity: 'warn',
       ariaLabel: 'Voir le détail — C4 non reçu',
@@ -646,8 +678,16 @@ export class AffiliateDetailsComponent {
   /** Ignores accordion echo when openCategories is updated from component code. */
   private suppressAccordionSync = false;
 
+  /** Tracks filter inputs so category visibility syncs only on filter changes. */
+  private categoryFilterSnapshot = '';
+
+  private categoryFilterSnapshotReady = false;
+
   /** Prevents journey auto-select while prev/next navigation is in flight. */
   private isNavigatingDocuments = false;
+
+  /** Invalidates in-flight list scroll timers when filters or navigation change. */
+  private viewportScrollGeneration = 0;
 
   /** Journey groups: `true` = oldest start date first. */
   readonly startDateSortAscending = signal(true);
@@ -706,9 +746,10 @@ export class AffiliateDetailsComponent {
   // Deep-link target forwarded to the detail card when a row count tag is
   // clicked. Reset to null on a plain row select so a later click does not keep
   // forcing a stale step/panel jump.
-  readonly documentFocus = signal<{ stepValue: number; panelId: string } | null>(
-    null,
-  );
+  readonly documentFocus = signal<{
+    stepValue: number;
+    panelId: string;
+  } | null>(null);
 
   readonly filteredDocuments = computed(() =>
     this.applyDocumentFilters(this.allDocumentsForContext()),
@@ -771,48 +812,63 @@ export class AffiliateDetailsComponent {
   );
 
   readonly categories = computed((): DocCategory[] => {
-    const categories: DocCategory[] = [];
-
     const parcours = this.parcoursGroups();
-    if (parcours.length > 0) {
-      categories.push({
-        id: 'parcours',
-        label: 'Parcours',
-        icon: 'bi bi-diagram-3',
-        count: parcours.reduce((sum, group) => sum + group.documents.length, 0),
-        kind: 'journey',
-        groups: parcours,
-      });
-    }
-
     const isoles = this.isolesItems();
-    if (isoles.length > 0) {
-      categories.push({
-        id: 'isoles',
-        label: 'Isolés',
-        icon: 'bi bi-file-earmark',
-        count: isoles.length,
-        kind: 'flat',
-        items: isoles,
-      });
-    }
-
     const archives = this.archivesItems();
-    if (archives.length > 0) {
-      categories.push({
-        id: 'archives',
-        label: 'Archivés',
-        icon: 'bi bi-archive',
-        count: archives.length,
-        kind: 'flat',
-        items: archives,
-      });
-    }
+    const parcoursCount = parcours.reduce(
+      (sum, group) => sum + group.documents.length,
+      0,
+    );
 
-    return categories;
+    return DOC_CATEGORY_SPECS.map((spec) => {
+      if (spec.id === 'parcours') {
+        return {
+          ...spec,
+          count: parcoursCount,
+          enabled: parcoursCount > 0,
+          groups: parcours,
+        };
+      }
+
+      if (spec.id === 'isoles') {
+        return {
+          ...spec,
+          count: isoles.length,
+          enabled: isoles.length > 0,
+          items: isoles,
+        };
+      }
+
+      return {
+        ...spec,
+        count: archives.length,
+        enabled: archives.length > 0,
+        items: archives,
+      };
+    });
   });
 
-  readonly hasListResults = computed(() => this.categories().length > 0);
+  readonly showCategoryTabs = computed(
+    () => this.allDocumentsForContext().length > 0,
+  );
+
+  readonly categoryTabDisabledHint = CATEGORY_EMPTY_FILTER_MESSAGE;
+
+  readonly categoryEmptyFilterMessage = CATEGORY_EMPTY_FILTER_MESSAGE;
+
+  readonly selectedCategoryTab = computed((): DocCategoryId => {
+    const categories = this.categories();
+    const active = this.activeCategory();
+    const current = categories.find((category) => category.id === active);
+
+    if (current?.enabled) {
+      return active;
+    }
+
+    return categories.find((category) => category.enabled)?.id ?? active;
+  });
+
+  readonly hasListResults = computed(() => this.documentCount() > 0);
 
   readonly documentCount = computed(() =>
     this.categories().reduce((sum, category) => sum + category.count, 0),
@@ -826,6 +882,10 @@ export class AffiliateDetailsComponent {
     const documents: ListDocumentItem[] = [];
 
     for (const category of this.categories()) {
+      if (!category.enabled) {
+        continue;
+      }
+
       if (category.kind === 'journey' && category.groups) {
         documents.push(...category.groups.flatMap((group) => group.documents));
       } else if (category.items) {
@@ -836,14 +896,16 @@ export class AffiliateDetailsComponent {
     return documents;
   });
 
-  readonly selectedDocumentDetail = computed((): AffiliateDocumentDetail | null => {
-    const id = this.selectedDocumentId();
-    if (!id) {
-      return null;
-    }
+  readonly selectedDocumentDetail = computed(
+    (): AffiliateDocumentDetail | null => {
+      const id = this.selectedDocumentId();
+      if (!id) {
+        return null;
+      }
 
-    return getDocumentDetailsForAffiliate(this.affiliateId())[id] ?? null;
-  });
+      return getDocumentDetailsForAffiliate(this.affiliateId())[id] ?? null;
+    },
+  );
 
   readonly selectedDocumentTitle = computed(
     () => this.selectedDocumentDetail()?.title ?? '',
@@ -953,11 +1015,23 @@ export class AffiliateDetailsComponent {
     return this.openCategories().includes(id);
   }
 
+  isCategoryEnabled(id: DocCategoryId): boolean {
+    return (
+      this.categories().find((category) => category.id === id)?.enabled ?? false
+    );
+  }
+
   toggleCategoryVisibility(id: DocCategoryId): void {
+    if (!this.isCategoryEnabled(id)) {
+      return;
+    }
+
     const current = this.openCategories();
 
     if (current.includes(id)) {
-      this.syncOpenCategories(current.filter((categoryId) => categoryId !== id));
+      this.syncOpenCategories(
+        current.filter((categoryId) => categoryId !== id),
+      );
       return;
     }
 
@@ -977,11 +1051,19 @@ export class AffiliateDetailsComponent {
 
   onCategoryTabChange(id: DocCategoryId | string | number | undefined): void {
     if (id === 'parcours' || id === 'isoles' || id === 'archives') {
+      if (!this.isCategoryEnabled(id)) {
+        return;
+      }
+
       this.scrollToCategory(id);
     }
   }
 
   scrollToCategory(id: DocCategoryId): void {
+    if (!this.isCategoryEnabled(id)) {
+      return;
+    }
+
     if (!this.openCategories().includes(id)) {
       this.syncOpenCategories([...this.openCategories(), id]);
     }
@@ -1005,6 +1087,10 @@ export class AffiliateDetailsComponent {
   }
 
   private ensureCategoryVisible(id: DocCategoryId): void {
+    if (!this.isCategoryEnabled(id)) {
+      return;
+    }
+
     if (!this.openCategories().includes(id)) {
       this.syncOpenCategories([...this.openCategories(), id]);
     }
@@ -1037,7 +1123,9 @@ export class AffiliateDetailsComponent {
     const previous = this.expandedGroupIds();
     this.expandedGroupIds.set(expandedGroupIds);
 
-    const newlyExpandedId = expandedGroupIds.find((id) => !previous.includes(id));
+    const newlyExpandedId = expandedGroupIds.find(
+      (id) => !previous.includes(id),
+    );
     if (!newlyExpandedId) {
       return;
     }
@@ -1050,18 +1138,24 @@ export class AffiliateDetailsComponent {
       return;
     }
 
-    const group = this.parcoursGroups().find((item) => item.id === newlyExpandedId);
+    const group = this.parcoursGroups().find(
+      (item) => item.id === newlyExpandedId,
+    );
     if (!group?.documents.length) {
       return;
     }
 
     const selected = this.selectedDocumentId();
-    const selectedAlreadyInGroup =
-      selected !== null &&
-      group.documents.some((document) => document.id === selected);
+    if (selected !== null) {
+      if (group.documents.some((document) => document.id === selected)) {
+        return;
+      }
 
-    if (selectedAlreadyInGroup) {
-      return;
+      if (
+        this.visibleDocuments().some((document) => document.id === selected)
+      ) {
+        return;
+      }
     }
 
     this.documentFocus.set(null);
@@ -1171,9 +1265,23 @@ export class AffiliateDetailsComponent {
     }
 
     const current = this.documentInfoFilter();
-    this.documentInfoFilter.set(
-      current === tag.filterKey ? null : tag.filterKey,
-    );
+    const nextFilter = current === tag.filterKey ? null : tag.filterKey;
+    this.documentInfoFilter.set(nextFilter);
+
+    if (nextFilter === 'last-action') {
+      queueMicrotask(() => {
+        const latestId = this.latestReceptionDocumentId();
+
+        if (
+          latestId &&
+          !this.selectedDocumentId() &&
+          this.visibleDocuments().some((document) => document.id === latestId)
+        ) {
+          this.selectedDocumentId.set(latestId);
+          this.scheduleFilterViewportRestore({ documentId: latestId });
+        }
+      });
+    }
   }
 
   onPrimaryActionClick(): void {
@@ -1227,21 +1335,40 @@ export class AffiliateDetailsComponent {
   }
 
   onDrawerMenuClick(): void {
-    // PLACEHOLDER — drawer menu actions wired in a later iteration.
+    this.showDrawerFeatureComingSoonToast();
   }
 
   onDrawerQuickActionsClick(): void {
-    // PLACEHOLDER — drawer quick actions wired in a later iteration.
+    this.showDrawerFeatureComingSoonToast();
   }
 
-  onDrawerIdentifierCopy(identifier: {
-    label: string;
-    value: string;
-  }): void {
+  onDrawerCallClick(): void {
+    this.showDrawerFeatureComingSoonToast();
+  }
+
+  onDrawerEmailClick(): void {
+    this.showDrawerFeatureComingSoonToast();
+  }
+
+  onDrawerViewChange(view: AffiliateDetailDrawerView): void {
+    if (view === 'documents') {
+      this.showDrawerFeatureComingSoonToast();
+    }
+  }
+
+  onDrawerIdentifierCopy(identifier: { label: string; value: string }): void {
     this.messageService.add({
       severity: 'success',
       summary: 'Copié !',
       detail: `${identifier.label}: ${identifier.value}`,
+    });
+  }
+
+  private showDrawerFeatureComingSoonToast(): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Bientôt disponible',
+      detail: 'Cette fonctionnalité sera disponible prochainement.',
     });
   }
 
@@ -1291,7 +1418,9 @@ export class AffiliateDetailsComponent {
       return null;
     }
 
-    return this.visibleDocuments().some((document) => document.id === documentId)
+    return this.visibleDocuments().some(
+      (document) => document.id === documentId,
+    )
       ? 'isoles'
       : null;
   }
@@ -1303,7 +1432,109 @@ export class AffiliateDetailsComponent {
   }
 
   private scheduleScrollToDocument(documentId: string): void {
-    this.scrollToDocumentRowWhenReady(documentId, 0);
+    const generation = this.bumpViewportScrollGeneration();
+    this.scrollToDocumentRowWhenReady(documentId, 0, generation);
+  }
+
+  private bumpViewportScrollGeneration(): number {
+    this.viewportScrollGeneration += 1;
+    return this.viewportScrollGeneration;
+  }
+
+  private isViewportScrollCurrent(generation: number): boolean {
+    return generation === this.viewportScrollGeneration;
+  }
+
+  /** Re-expands category/group chrome and scrolls after filter-driven list reflows. */
+  private restoreSelectedDocumentViewport(): void {
+    const selected = this.selectedDocumentId();
+
+    if (
+      selected &&
+      this.visibleDocuments().some((document) => document.id === selected)
+    ) {
+      this.scheduleFilterViewportRestore({ documentId: selected });
+      return;
+    }
+
+    const active = this.activeCategory();
+
+    if (this.isCategoryEnabled(active)) {
+      this.scheduleFilterViewportRestore({ categoryId: active });
+    }
+  }
+
+  private scheduleFilterViewportRestore(target: {
+    documentId?: string;
+    categoryId?: DocCategoryId;
+  }): void {
+    const generation = this.bumpViewportScrollGeneration();
+    this.isNavigatingDocuments = true;
+    this.settleFilterViewport(target, 0, generation);
+  }
+
+  private settleFilterViewport(
+    target: { documentId?: string; categoryId?: DocCategoryId },
+    attempt: number,
+    generation: number,
+  ): void {
+    const maxAttempts = 24;
+    const delay = attempt === 0 ? 80 : 50;
+
+    globalThis.setTimeout(() => {
+      if (!this.isViewportScrollCurrent(generation)) {
+        return;
+      }
+
+      const documentId = target.documentId;
+      const categoryId =
+        target.categoryId ??
+        (documentId ? this.categoryForDocumentId(documentId) : null);
+
+      if (!categoryId) {
+        this.isNavigatingDocuments = false;
+        return;
+      }
+
+      this.ensureCategoryVisible(categoryId);
+
+      if (categoryId === 'parcours' && documentId) {
+        const group = this.parcoursGroups().find((item) =>
+          item.documents.some((document) => document.id === documentId),
+        );
+
+        if (group) {
+          this.ensureGroupExpanded(group.id);
+        }
+      }
+
+      this.activeCategory.set(categoryId);
+
+      if (documentId) {
+        const row = document.querySelector(
+          `[data-telemetry-id="document-row-${documentId}"]`,
+        );
+
+        if (row instanceof HTMLElement) {
+          this.scrollElementIntoViewWithInset(row, 'auto');
+          this.isNavigatingDocuments = false;
+          return;
+        }
+      }
+
+      const panel = document.getElementById(`category-panel-${categoryId}`);
+
+      if (panel instanceof HTMLElement) {
+        this.scrollElementIntoViewWithInset(panel, 'auto');
+      }
+
+      if (attempt < maxAttempts) {
+        this.settleFilterViewport(target, attempt + 1, generation);
+        return;
+      }
+
+      this.isNavigatingDocuments = false;
+    }, delay);
   }
 
   private isFirstNavigableDocument(documentId: string): boolean {
@@ -1317,9 +1548,17 @@ export class AffiliateDetailsComponent {
   }
 
   /** Waits for journey group content to render before scrolling the document row. */
-  private scrollToDocumentRowWhenReady(documentId: string, attempt: number): void {
+  private scrollToDocumentRowWhenReady(
+    documentId: string,
+    attempt: number,
+    generation: number,
+  ): void {
     globalThis.setTimeout(
       () => {
+        if (!this.isViewportScrollCurrent(generation)) {
+          return;
+        }
+
         if (this.isFirstNavigableDocument(documentId)) {
           const scroller = this.getDocumentsScroller();
           if (scroller) {
@@ -1355,7 +1594,11 @@ export class AffiliateDetailsComponent {
         }
 
         if (attempt < 5) {
-          this.scrollToDocumentRowWhenReady(documentId, attempt + 1);
+          this.scrollToDocumentRowWhenReady(
+            documentId,
+            attempt + 1,
+            generation,
+          );
           return;
         }
 
@@ -1402,7 +1645,10 @@ export class AffiliateDetailsComponent {
    * Snaps the documents scroller to the bottom while accordion content settles,
    * then fine-tunes so the last row is fully visible with scroll inset.
    */
-  private settleDocumentsScrollerAtBottom(row: HTMLElement, attempt: number): void {
+  private settleDocumentsScrollerAtBottom(
+    row: HTMLElement,
+    attempt: number,
+  ): void {
     const maxAttempts = 10;
     const delay = attempt === 0 ? 0 : 32;
 
@@ -1435,12 +1681,15 @@ export class AffiliateDetailsComponent {
    * Unlike `scrollIntoView({ block: 'nearest' })`, also scrolls when only the bottom
    * edge is clipped.
    */
-  private scrollElementIntoViewWithInset(element: HTMLElement): void {
+  private scrollElementIntoViewWithInset(
+    element: HTMLElement,
+    behavior: ScrollBehavior = 'smooth',
+  ): void {
     const inset = this.listScrollInset();
     const scrollParent = this.findScrollableParent(element);
 
     if (!scrollParent) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      element.scrollIntoView({ behavior, block: 'nearest' });
       return;
     }
 
@@ -1452,12 +1701,12 @@ export class AffiliateDetailsComponent {
       elementRect.bottom - parentRect.bottom + inset.blockEnd;
 
     if (overflowTop < 0) {
-      scrollParent.scrollBy({ top: overflowTop, behavior: 'smooth' });
+      scrollParent.scrollBy({ top: overflowTop, behavior });
       return;
     }
 
     if (overflowBottom > 0) {
-      scrollParent.scrollBy({ top: overflowBottom, behavior: 'smooth' });
+      scrollParent.scrollBy({ top: overflowBottom, behavior });
     }
   }
 
@@ -1526,8 +1775,9 @@ export class AffiliateDetailsComponent {
     const latestGroupId = this.latestJourneyGroupId();
 
     return (
-      EVA_MARTINEZ_DOCUMENT_GROUPS.find((group) => group.id === latestGroupId) ??
-      null
+      EVA_MARTINEZ_DOCUMENT_GROUPS.find(
+        (group) => group.id === latestGroupId,
+      ) ?? null
     );
   }
 
@@ -1573,7 +1823,9 @@ export class AffiliateDetailsComponent {
       filtered = filtered.filter(isClosedDocument);
     } else if (infoFilter === 'last-action') {
       const latestDocumentId = this.latestReceptionDocumentId();
-      filtered = filtered.filter((document) => document.id === latestDocumentId);
+      filtered = filtered.filter(
+        (document) => document.id === latestDocumentId,
+      );
     }
 
     return filtered;
@@ -1591,9 +1843,11 @@ export class AffiliateDetailsComponent {
     if (sortValue === 'actions-en-cours') {
       return [...documents].sort((left, right) => {
         const leftPriority =
-          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ??
+          Number.MAX_SAFE_INTEGER;
         const rightPriority =
-          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ??
+          Number.MAX_SAFE_INTEGER;
 
         if (leftPriority !== rightPriority) {
           return leftPriority - rightPriority;
@@ -1633,9 +1887,11 @@ export class AffiliateDetailsComponent {
     if (sortValue === 'actions-en-cours') {
       return [...documents].sort((left, right) => {
         const leftPriority =
-          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ??
+          Number.MAX_SAFE_INTEGER;
         const rightPriority =
-          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ??
+          Number.MAX_SAFE_INTEGER;
 
         if (leftPriority !== rightPriority) {
           return leftPriority - rightPriority;
@@ -1789,12 +2045,67 @@ export class AffiliateDetailsComponent {
     effect(() => {
       const categories = this.categories();
       const active = this.activeCategory();
+      const current = categories.find((category) => category.id === active);
 
-      if (
-        categories.length > 0 &&
-        !categories.some((category) => category.id === active)
-      ) {
-        this.activeCategory.set(categories[0].id);
+      if (current?.enabled) {
+        return;
+      }
+
+      const firstEnabled = categories.find((category) => category.enabled);
+      if (firstEnabled) {
+        this.activeCategory.set(firstEnabled.id);
+      }
+    });
+
+    effect(() => {
+      const search = this.documentSearch();
+      const sector = this.selectedSector()?.value ?? '';
+      const info = this.documentInfoFilter() ?? '';
+      const filterSnapshot = [search, sector, info].join('\u0000');
+
+      const categories = this.categories();
+      const open = untracked(() => this.openCategories());
+      const enabledIds = categories
+        .filter((category) => category.enabled)
+        .map((category) => category.id);
+      const enabledSet = new Set(enabledIds);
+
+      const previousSnapshot = this.categoryFilterSnapshot;
+      const filterChanged =
+        this.categoryFilterSnapshotReady && filterSnapshot !== previousSnapshot;
+
+      const [prevSearch = '', prevSector = '', prevInfo = ''] =
+        previousSnapshot.split('\u0000');
+      const filterCleared =
+        filterChanged &&
+        ((prevInfo !== '' && info === '') ||
+          (prevSector !== '' && sector === '') ||
+          (prevSearch !== '' && search === ''));
+
+      this.categoryFilterSnapshot = filterSnapshot;
+      this.categoryFilterSnapshotReady = true;
+
+      const next =
+        filterChanged && filterCleared
+          ? open.filter((id) => enabledSet.has(id))
+          : filterChanged
+            ? [
+                ...open.filter((id) => enabledSet.has(id)),
+                ...enabledIds.filter((id) => !open.includes(id)),
+              ]
+            : open.filter((id) => enabledSet.has(id));
+
+      const changed =
+        next.length !== open.length || next.some((id) => !open.includes(id));
+
+      if (changed) {
+        this.syncOpenCategories(next);
+      }
+
+      if (filterChanged) {
+        untracked(() => {
+          this.restoreSelectedDocumentViewport();
+        });
       }
     });
 

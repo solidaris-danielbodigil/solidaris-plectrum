@@ -113,9 +113,7 @@ export class AffiliateDocumentDetailComponent {
     return details[id] ?? null;
   });
 
-  readonly documentTitle = computed(
-    () => this.documentDetail()?.title ?? '',
-  );
+  readonly documentTitle = computed(() => this.documentDetail()?.title ?? '');
 
   readonly steps = computed(() => this.documentDetail()?.steps ?? []);
 
@@ -134,8 +132,9 @@ export class AffiliateDocumentDetailComponent {
     }
 
     const step =
-      detail.steps.find((documentStep) => documentStep.value === detail.activeStep) ??
-      detail.steps[0];
+      detail.steps.find(
+        (documentStep) => documentStep.value === detail.activeStep,
+      ) ?? detail.steps[0];
 
     return step?.panels ?? [];
   });
@@ -230,9 +229,7 @@ export class AffiliateDocumentDetailComponent {
       return;
     }
 
-    this.selectedDocumentIdChange.emit(
-      this.navigableDocuments()[index - 1].id,
-    );
+    this.selectedDocumentIdChange.emit(this.navigableDocuments()[index - 1].id);
   }
 
   goToNextDocument(): void {
@@ -300,9 +297,7 @@ export class AffiliateDocumentDetailComponent {
   private focusPanel(panelId: string): void {
     setTimeout(() => {
       const host = this.elementRef.nativeElement as HTMLElement;
-      const panelElement = host.querySelector(
-        `[data-panel-id="${panelId}"]`,
-      );
+      const panelElement = host.querySelector(`[data-panel-id="${panelId}"]`);
       panelElement
         ?.querySelector('p-message')
         ?.scrollIntoView({ behavior: 'smooth', block: 'center' });

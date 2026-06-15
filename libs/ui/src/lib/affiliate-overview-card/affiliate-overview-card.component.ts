@@ -12,7 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
-import { SelectButton, type SelectButtonChangeEvent } from 'primeng/selectbutton';
+import { BadgeModule } from 'primeng/badge';
+import {
+  SelectButton,
+  type SelectButtonChangeEvent,
+} from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
@@ -21,7 +25,11 @@ import type {
   PlectrumAvatarVariant,
 } from '../plectrum-avatar/plectrum-avatar.types';
 
-export type AffiliateOverviewCardVariant = 'default' | 'in-order' | 'warning' | 'danger';
+export type AffiliateOverviewCardVariant =
+  | 'default'
+  | 'in-order'
+  | 'warning'
+  | 'danger';
 
 export type AffiliateOverviewInfoTagFilterKey =
   | 'last-action'
@@ -44,6 +52,8 @@ export type AffiliateOverviewStatusSeverity = 'success' | 'warn' | 'danger';
 
 export interface AffiliateOverviewStatusAction {
   label: string;
+  /** Short code shown in the status action tag (e.g. « C4 »). */
+  tagValue?: string;
   icon?: string;
   /** Drives card gradient and status button severity when set. */
   severity?: AffiliateOverviewStatusSeverity;
@@ -71,6 +81,10 @@ const STATUS_SEVERITY_TO_VARIANT: Record<
 
 let nextTitleId = 0;
 
+/** Global prefix for status actions that expose a {@link AffiliateOverviewStatusAction.tagValue}. */
+export const AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX =
+  'Actions à réaliser: ';
+
 const SHORTCUT_MODIFIER_KEYS = ['ALT', 'CTRL', 'SHIFT', 'META'] as const;
 
 function isEditableShortcutTarget(target: EventTarget | null): boolean {
@@ -80,10 +94,18 @@ function isEditableShortcutTarget(target: EventTarget | null): boolean {
 
   const tag = target.tagName;
 
-  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
+  return (
+    tag === 'INPUT' ||
+    tag === 'TEXTAREA' ||
+    tag === 'SELECT' ||
+    target.isContentEditable
+  );
 }
 
-function matchesKeyboardShortcut(event: KeyboardEvent, shortcut: string): boolean {
+function matchesKeyboardShortcut(
+  event: KeyboardEvent,
+  shortcut: string,
+): boolean {
   const parts = shortcut.split('+').map((part) => part.trim().toUpperCase());
 
   if (parts.length < 2) {
@@ -106,7 +128,14 @@ function matchesKeyboardShortcut(event: KeyboardEvent, shortcut: string): boolea
     return false;
   }
 
-  if (modifiers.some((modifier) => !SHORTCUT_MODIFIER_KEYS.includes(modifier as (typeof SHORTCUT_MODIFIER_KEYS)[number]))) {
+  if (
+    modifiers.some(
+      (modifier) =>
+        !SHORTCUT_MODIFIER_KEYS.includes(
+          modifier as (typeof SHORTCUT_MODIFIER_KEYS)[number],
+        ),
+    )
+  ) {
     return false;
   }
 
@@ -158,6 +187,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
     PlectrumAvatarComponent,
     SdsTelemetryLabelDirective,
     SelectButton,
+    BadgeModule,
   ],
   templateUrl: './affiliate-overview-card.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -185,6 +215,8 @@ export class AffiliateOverviewCardComponent {
   readonly statusMenuSelect = output<MenuItem>();
 
   protected readonly titleId = `sds-affiliate-overview-card-title-${nextTitleId++}`;
+  protected readonly statusActionTagPrefix =
+    AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX;
 
   readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {
     const severity = this.statusAction()?.severity;
@@ -241,13 +273,18 @@ export class AffiliateOverviewCardComponent {
       })),
   );
 
-  readonly activeInfoTagFilterKey = computed((): AffiliateOverviewInfoTagFilterKey | null => {
-    const activeTag = this.filterableInfoTagOptions().find((tag) => tag.active);
+  readonly activeInfoTagFilterKey = computed(
+    (): AffiliateOverviewInfoTagFilterKey | null => {
+      const activeTag = this.filterableInfoTagOptions().find(
+        (tag) => tag.active,
+      );
 
-    return activeTag?.filterKey ?? null;
-  });
+      return activeTag?.filterKey ?? null;
+    },
+  );
 
-  protected selectedInfoTagFilterKey: AffiliateOverviewInfoTagFilterKey | null = null;
+  protected selectedInfoTagFilterKey: AffiliateOverviewInfoTagFilterKey | null =
+    null;
 
   constructor() {
     effect(() => {
@@ -326,7 +363,9 @@ export class AffiliateOverviewCardComponent {
       return;
     }
 
-    const previouslyActive = this.infoTags().find((tag) => tag.active && tag.filterKey);
+    const previouslyActive = this.infoTags().find(
+      (tag) => tag.active && tag.filterKey,
+    );
 
     if (previouslyActive) {
       this.infoTagClick.emit(previouslyActive);

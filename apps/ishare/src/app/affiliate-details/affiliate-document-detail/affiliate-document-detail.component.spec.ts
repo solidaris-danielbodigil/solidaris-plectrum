@@ -1,5 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import type { DocumentCrossReference } from './affiliate-document-detail.types';
@@ -14,17 +19,29 @@ const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
     id: 'doc-demande-primaire',
     title: 'Demande primaire -',
     titleLine2: 'Régime général',
-    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+    status: {
+      label: 'En traitement',
+      severity: 'warn',
+      icon: 'bi bi-hourglass-split',
+    },
   },
   {
     id: 'doc-incapacite',
     title: 'Incapacité',
-    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+    status: {
+      label: 'En traitement',
+      severity: 'warn',
+      icon: 'bi bi-hourglass-split',
+    },
   },
   {
     id: 'doc-rechute',
     title: 'Rechute',
-    status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+    status: {
+      label: 'En traitement',
+      severity: 'warn',
+      icon: 'bi bi-hourglass-split',
+    },
   },
 ];
 
@@ -104,9 +121,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should expose the selected document title from mock data', () => {
-    expect(component.documentTitle()).toBe(
-      'Demande Primaire - Régime général',
-    );
+    expect(component.documentTitle()).toBe('Demande Primaire - Régime général');
   });
 
   it('should disable previous document navigation on the first visible document', () => {
@@ -158,9 +173,13 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should expose aria-label on certificate action buttons', () => {
-    expect(fixture.nativeElement.querySelector('button[aria-label="Iris"]')).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector('button[aria-label="Transactions CICS"]'),
+      fixture.nativeElement.querySelector('button[aria-label="Iris"]'),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector(
+        'button[aria-label="Transactions CICS"]',
+      ),
     ).toBeTruthy();
   });
 
@@ -172,7 +191,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     cicsButton.click();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(true);
+    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(
+      true,
+    );
   });
 
   it('should not toggle accordion when certificate header action buttons are clicked', () => {
@@ -194,7 +215,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(component.certPanelValue()).toEqual(['certificat-itt']);
-    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(true);
+    expect(fixture.componentInstance.transactionsCicsDialogVisible()).toBe(
+      true,
+    );
   });
 
   it('should still toggle accordion when certificate header title is clicked', () => {
@@ -226,41 +249,75 @@ describe('AffiliateDocumentDetailComponent', () => {
     });
   });
 
-  it('should render incapacité with numbered stepper and warn paiement worker comment', () => {
+  it('should render incapacité paiement panel as disabled accordion with neutral hint', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    expect(component.stepNumbered()).toBe(true);
-    expect(
-      fixture.nativeElement.querySelectorAll(
-        '.c-affiliate-document-detail__stepper .p-step-number',
-      ).length,
-    ).toBe(2);
-    expect(fixture.nativeElement.textContent).toContain(
-      'Pas de paiement reçu pour le moment',
-    );
-    expect(fixture.nativeElement.textContent).toContain('28/12/2025 09:00');
-    expect(
-      findButtonByLabel(fixture.nativeElement, 'Calcul primaire bloqué — C4 manquant'),
-    ).toBeTruthy();
+    component.activeStep.set(1);
+    component.certPanelValue.set('paiement-incapacite');
+    fixture.detectChanges();
 
-    const workerComment = fixture.nativeElement.querySelector(
-      '[data-panel-id="paiement-incapacite"] p-message',
-    );
-    expect(workerComment).toBeTruthy();
-    expect(workerComment?.classList.contains('p-message-warn')).toBe(true);
-    expect(
-      workerComment
-        ?.querySelector('.p-message-icon')
-        ?.classList.contains('bi-exclamation-triangle-fill'),
-    ).toBe(true);
-
-    const warnCommentTag = fixture.nativeElement.querySelector(
-      '[data-panel-id="paiement-incapacite"] .c-affiliate-document-detail__cert-header-meta p-tag:nth-of-type(2)',
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="paiement-incapacite"]',
     ) as HTMLElement | null;
-    expect(warnCommentTag).toBeTruthy();
-    expect(warnCommentTag?.classList.contains('p-tag-warn')).toBe(true);
-    expect(warnCommentTag?.classList.contains('p-tag-secondary')).toBe(false);
+
+    expect(panel?.classList.contains('p-disabled')).toBe(true);
+
+    const statusLabel =
+      panel?.querySelector('.p-tag')?.textContent?.trim() ?? '';
+    expect(statusLabel).toBe('Non démarré');
+
+    expect(panel?.textContent).toContain(
+      'Aucun paiement reçu pour le moment.',
+    );
+    expect(panel?.textContent).not.toContain('En attente');
+    expect(panel?.textContent).not.toContain('28/12/2025 09:00');
+    expect(panel?.textContent).not.toContain('Voir plus de détails');
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__cross-reference'),
+    ).toBeNull();
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__plain-note'),
+    ).toBeNull();
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__actions'),
+    ).toBeNull();
+    expect(panel?.querySelector('p-message')).toBeNull();
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__disabled-hint'),
+    ).not.toBeNull();
+  });
+
+  it('should render incapacité Calcul panel as disabled accordion with neutral hint', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    component.activeStep.set(3);
+    component.certPanelValue.set('calcul-incapacite');
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="calcul-incapacite"]',
+    ) as HTMLElement | null;
+
+    expect(panel?.classList.contains('p-disabled')).toBe(true);
+
+    const statusLabel =
+      panel?.querySelector('.p-tag')?.textContent?.trim() ?? '';
+    expect(statusLabel).toBe('Non démarré');
+
+    expect(panel?.textContent).toContain(
+      "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
+    );
+    expect(panel?.textContent).not.toContain('En attente');
+    expect(panel?.textContent).not.toContain('Voir plus de détails');
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__actions'),
+    ).toBeNull();
+    expect(panel?.querySelector('p-message')).toBeNull();
+    expect(
+      panel?.querySelector('.c-affiliate-document-detail__disabled-hint'),
+    ).not.toBeNull();
   });
 
   it('should emit crossReferenceNavigate when cross-reference is clicked', () => {
@@ -294,13 +351,11 @@ describe('AffiliateDocumentDetailComponent', () => {
       fixture.nativeElement.querySelector('[data-panel-id="c4-isolated"]'),
     ).toBeTruthy();
     expect(fixture.nativeElement.textContent).toContain('16/12/2025');
-    expect(fixture.nativeElement.textContent).toContain(
-      'Document reçu mais non rattaché au parcours',
-    );
-    const banner = fixture.nativeElement.querySelector(
-      '[data-panel-id="c4-isolated"] .c-affiliate-document-detail__banner',
-    );
-    expect(banner).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-panel-id="c4-isolated"] .c-affiliate-document-detail__banner',
+      ),
+    ).toBeFalsy();
     expect(
       fixture.nativeElement.querySelector(
         '.c-affiliate-document-detail__body > .c-affiliate-document-detail__banner',
@@ -318,19 +373,25 @@ describe('AffiliateDocumentDetailComponent', () => {
       findButtonByLabel(fixture.nativeElement, 'Etape précédente'),
     ).toBeFalsy();
     expect(
-      fixture.nativeElement.querySelector('button[aria-label="Transactions CICS"]'),
+      fixture.nativeElement.querySelector(
+        'button[aria-label="Transactions CICS"]',
+      ),
     ).toBeTruthy();
   });
 
   it('should render attestation pédicure in audit accordion with réception 09/06/2026 (Scenario 5)', () => {
-    fixture.componentInstance.selectedDocumentId.set('doc-attestation-pedicure');
+    fixture.componentInstance.selectedDocumentId.set(
+      'doc-attestation-pedicure',
+    );
     fixture.detectChanges();
 
     expect(
       fixture.nativeElement.querySelector('p-accordion.c-audit-accordion'),
     ).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector('[data-panel-id="attestation-pedicure"]'),
+      fixture.nativeElement.querySelector(
+        '[data-panel-id="attestation-pedicure"]',
+      ),
     ).toBeTruthy();
     expect(fixture.nativeElement.textContent).toContain('09/06/2026');
     expect(fixture.nativeElement.textContent).toContain('Remboursements AO/AC');
@@ -357,7 +418,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
-    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('c4-isolated');
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'c4-isolated',
+    );
 
     const drawerTitle = document.body.querySelector(
       '.c-document-more-details-drawer__title',
@@ -372,7 +435,9 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should open the more-details drawer with two audit events for attestation pédicure', async () => {
-    fixture.componentInstance.selectedDocumentId.set('doc-attestation-pedicure');
+    fixture.componentInstance.selectedDocumentId.set(
+      'doc-attestation-pedicure',
+    );
     fixture.detectChanges();
 
     const moreDetailsButton = findButtonByLabel(
@@ -411,9 +476,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     );
 
     expect(statusTag?.textContent).toContain('Accepté');
-    expect(
-      fixture.nativeElement.textContent,
-    ).toContain('Certificat ITT');
+    expect(fixture.nativeElement.textContent).toContain('Certificat ITT');
   });
 
   it('should render the data-driven status icon on the certificate panel', () => {
@@ -491,7 +554,9 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(content).toContain('Calcul');
     expect(content).toContain('En attente');
-    expect(content).toContain('Veuillez nous faire parvenir une copie de votre C4');
+    expect(content).toContain(
+      'Veuillez nous faire parvenir une copie de votre C4',
+    );
     const workerComment = fixture.nativeElement.querySelector('p-message');
     expect(workerComment).toBeTruthy();
     expect(workerComment?.classList.contains('p-message-warn')).toBe(true);
@@ -525,7 +590,10 @@ describe('AffiliateDocumentDetailComponent', () => {
       ),
     ] as HTMLElement[];
 
-    expect(inlineLabels.map((el) => el.textContent?.trim())).toEqual(['Du', 'Au']);
+    expect(inlineLabels.map((el) => el.textContent?.trim())).toEqual([
+      'Du',
+      'Au',
+    ]);
   });
 
   it('should always render both step navigation buttons in the footer', () => {
@@ -616,9 +684,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(component.activeStep()).toBe(2);
-    expect(component.certPanelValue()).toBe(
-      'compte-financier-liasse',
-    );
+    expect(component.certPanelValue()).toBe('compte-financier-liasse');
   });
 
   it('should open the more-details drawer with Certificat ITT timeline when Voir plus de détails is clicked', async () => {
@@ -633,9 +699,13 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
-    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('certificat-itt');
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'certificat-itt',
+    );
 
-    expect(document.body.querySelector('.p-drawer-mask.p-overlay-mask')).toBeTruthy();
+    expect(
+      document.body.querySelector('.p-drawer-mask.p-overlay-mask'),
+    ).toBeTruthy();
 
     const drawerTitle = document.body.querySelector(
       '.c-document-more-details-drawer__title',
@@ -656,7 +726,12 @@ describe('AffiliateDocumentDetailComponent', () => {
     ].map((cell) => cell.textContent?.trim());
 
     expect(tableHeaders).toEqual(
-      jasmine.arrayContaining(['Date', 'Description', 'Applications', 'Sources']),
+      jasmine.arrayContaining([
+        'Date',
+        'Description',
+        'Applications',
+        'Sources',
+      ]),
     );
   });
 
@@ -683,7 +758,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
   });
 
-  it('should open the more-details drawer with placeholder history for FDR panels', async () => {
+  it('should open the more-details drawer with audit timeline for FDR panels', async () => {
     component.goToNextStep();
     fixture.detectChanges();
 
@@ -698,9 +773,20 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
-    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('fdr-employeur');
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'fdr-employeur',
+    );
     expect(document.body.querySelector('.p-timeline')).toBeTruthy();
-    expect(document.body.textContent).toContain('Historique détaillé pour F.D.R. employeur');
+    expect(document.body.textContent).toContain('Reçu flux');
+    expect(document.body.textContent).toContain('En traitement');
+    expect(document.body.textContent).toContain('Clôturé');
+    expect(document.body.textContent).toContain('URP01RPA');
+    expect(document.body.textContent).toContain('Gestion du flux urp01');
+
+    const accordions = document.querySelectorAll(
+      '.c-document-more-details-drawer .c-audit-accordion',
+    );
+    expect(accordions.length).toBe(3);
   });
 
   it('should open the more-details drawer when Voir plus de détails is clicked for Certificat ITT', async () => {
@@ -715,7 +801,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(true);
-    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('certificat-itt');
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'certificat-itt',
+    );
 
     const drawerTitle = document.querySelector(
       '.c-document-more-details-drawer__title',
@@ -730,9 +818,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(accordions.length).toBe(3);
 
     const tableHeaders = [
-      ...document.querySelectorAll(
-        '.c-document-more-details-drawer__table th',
-      ),
+      ...document.querySelectorAll('.c-document-more-details-drawer__table th'),
     ].map((header) => header.textContent?.trim());
     expect(tableHeaders).toContain('Date');
     expect(tableHeaders).toContain('Description');
@@ -762,7 +848,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsDrawerVisible()).toBe(false);
   });
 
-  it('should open placeholder history in the drawer for FDR employeur panel', async () => {
+  it('should open audit timeline in the drawer for FDR employeur panel', async () => {
     component.goToNextStep();
     fixture.detectChanges();
 
@@ -776,9 +862,19 @@ describe('AffiliateDocumentDetailComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('fdr-employeur');
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'fdr-employeur',
+    );
     expect(document.querySelector('.p-timeline')).toBeTruthy();
-    expect(document.body.textContent).toContain('Historique détaillé pour F.D.R. employeur');
+    expect(document.body.textContent).toContain('Reçu');
+    expect(document.body.textContent).toContain('Reçu flux');
+    expect(document.body.textContent).toContain('En traitement');
+    expect(document.body.textContent).toContain('Clôturé');
+
+    const accordions = document.querySelectorAll(
+      '.c-document-more-details-drawer .c-audit-accordion',
+    );
+    expect(accordions.length).toBe(3);
   });
 
   it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {
@@ -795,9 +891,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       '[data-panel-id="compte-financier-liasse"] p-message',
     ) as HTMLElement | null;
 
-    expect(component.highlightedPanelId()).toBe(
-      'compte-financier-liasse',
-    );
+    expect(component.highlightedPanelId()).toBe('compte-financier-liasse');
     expect(
       message?.classList.contains(
         'c-affiliate-document-detail__message--highlighted',
@@ -872,5 +966,235 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(messageAfterHighlight).toBe(messageDuringHighlight);
   }));
-});
 
+  describe('doc-rechute', () => {
+    beforeEach(() => {
+      fixture.componentInstance.selectedDocumentId.set('doc-rechute');
+      fixture.detectChanges();
+    });
+
+    it('should render disabled Calcul panel on step 3 with FDR not-processed message', () => {
+      component.activeStep.set(3);
+      component.certPanelValue.set('calcul-rechute');
+      fixture.detectChanges();
+
+      const panel = fixture.nativeElement.querySelector(
+        '[data-panel-id="calcul-rechute"]',
+      ) as HTMLElement;
+
+      expect(panel.classList.contains('p-disabled')).toBe(true);
+
+      const statusLabel =
+        panel.querySelector('.p-tag')?.textContent?.trim() ?? '';
+      expect(statusLabel).toBe('Non démarré');
+
+      expect(panel.textContent).toContain(
+        "Le calcul des indemnités n'a pas encore commencé car les F.D.R. ne sont pas traitées.",
+      );
+      expect(panel.textContent).not.toContain('En attente');
+      expect(panel.textContent).not.toContain('10/01/2026');
+      expect(panel.textContent).not.toContain('26/1005678');
+      expect(panel.textContent).not.toContain('Voir plus de détails');
+      expect(
+        panel.querySelector('.c-affiliate-document-detail__actions'),
+      ).toBeNull();
+      expect(panel.querySelector('p-message')).toBeNull();
+    });
+
+    it('should open the more-details drawer with two audit events for FDR employeur rechute', async () => {
+      component.activeStep.set(2);
+      component.certPanelValue.set('fdr-employeur-rechute');
+      fixture.detectChanges();
+
+      const panel = fixture.nativeElement.querySelector(
+        '[data-panel-id="fdr-employeur-rechute"]',
+      ) as HTMLElement;
+      const moreDetailsButton = findButtonByLabel(
+        panel,
+        'Voir plus de détails',
+      );
+
+      moreDetailsButton?.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+        'fdr-employeur-rechute',
+      );
+      expect(document.body.textContent).toContain('Reçu flux');
+      expect(document.body.textContent).toContain('En traitement');
+      expect(document.body.textContent).toContain('URP01RPA');
+      expect(document.body.textContent).not.toContain('Clôturé');
+      expect(
+        document.body.querySelectorAll(
+          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        ).length,
+      ).toBe(2);
+    });
+
+    it('should open the more-details drawer with two audit events for FDR affilié rechute', async () => {
+      component.activeStep.set(2);
+      component.certPanelValue.set('fdr-affilie-rechute');
+      fixture.detectChanges();
+
+      const panel = fixture.nativeElement.querySelector(
+        '[data-panel-id="fdr-affilie-rechute"]',
+      ) as HTMLElement;
+      const moreDetailsButton = findButtonByLabel(
+        panel,
+        'Voir plus de détails',
+      );
+
+      moreDetailsButton?.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+        'fdr-affilie-rechute',
+      );
+      expect(document.body.textContent).toContain('Reçu flux');
+      expect(document.body.textContent).toContain('En attente du flux employeur');
+      expect(document.body.textContent).toContain('URP02RPA');
+      expect(document.body.textContent).not.toContain('Clôturé');
+      expect(
+        document.body.querySelectorAll(
+          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        ).length,
+      ).toBe(2);
+    });
+
+    it('should open the more-details drawer with two audit events for compte financier rechute', async () => {
+      component.activeStep.set(2);
+      component.certPanelValue.set('compte-financier-rechute');
+      fixture.detectChanges();
+
+      const panel = fixture.nativeElement.querySelector(
+        '[data-panel-id="compte-financier-rechute"]',
+      ) as HTMLElement;
+      const moreDetailsButton = findButtonByLabel(
+        panel,
+        'Voir plus de détails',
+      );
+
+      moreDetailsButton?.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+        'compte-financier-rechute',
+      );
+      expect(document.body.textContent).toContain('Reçu flux');
+      expect(document.body.textContent).toContain(
+        'UOPV encodé en 9M à la réception',
+      );
+      expect(document.body.textContent).toContain(
+        'Liasse compte financier en cours de traitement',
+      );
+      expect(document.body.textContent).toContain('UOPV01RPA');
+      expect(document.body.textContent).not.toContain('Clôturé');
+      expect(
+        document.body.querySelectorAll(
+          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        ).length,
+      ).toBe(2);
+    });
+  });
+
+  describe('doc-cloture-primaire (2e demande primaire)', () => {
+    beforeEach(() => {
+      fixture.componentInstance.selectedDocumentId.set('doc-cloture-primaire');
+      fixture.detectChanges();
+    });
+
+    it('should render three disabled FDR panels with Non reçu status on step 2', () => {
+      component.activeStep.set(2);
+      fixture.detectChanges();
+
+      const disabledPanels = [
+        ...fixture.nativeElement.querySelectorAll(
+          '.c-audit-accordion .p-accordionpanel.p-disabled',
+        ),
+      ] as HTMLElement[];
+
+      expect(disabledPanels).toHaveSize(3);
+
+      const statusLabels = disabledPanels.map(
+        (panel) =>
+          panel.querySelector('.p-tag')?.textContent?.trim() ?? '',
+      );
+
+      expect(statusLabels).toEqual([
+        'Non reçu',
+        'Non reçu',
+        'Non reçu',
+      ]);
+
+      const titles = disabledPanels.map(
+        (panel) =>
+          panel
+            .querySelector('.c-affiliate-document-detail__cert-title')
+            ?.textContent?.trim() ?? '',
+      );
+
+      expect(titles).toEqual([
+        'F.D.R. employeur',
+        'F.D.R. affilié - Incapacité de travail',
+        'Compte financier - Liasse',
+      ]);
+    });
+
+    it('should not show worker comments or panel actions on disabled FDR panels', () => {
+      component.activeStep.set(2);
+      fixture.detectChanges();
+
+      const panelRoots = [
+        'fdr-employeur-cloture',
+        'fdr-affilie-incapacite-cloture',
+        'compte-financier-liasse-cloture',
+      ];
+
+      for (const panelId of panelRoots) {
+        const panel = fixture.nativeElement.querySelector(
+          `[data-panel-id="${panelId}"]`,
+        ) as HTMLElement;
+
+        expect(panel.querySelector('p-message')).toBeNull();
+        expect(panel.querySelector('.c-affiliate-document-detail__actions')).toBeNull();
+      }
+
+      expect(fixture.nativeElement.textContent).not.toContain('Clôturé');
+    });
+
+    it('should render disabled Calcul panel on step 3 with FDR not-received message', () => {
+      component.activeStep.set(3);
+      component.certPanelValue.set('calcul-cloture-primaire');
+      fixture.detectChanges();
+
+      const panel = fixture.nativeElement.querySelector(
+        '[data-panel-id="calcul-cloture-primaire"]',
+      ) as HTMLElement;
+
+      expect(panel.classList.contains('p-disabled')).toBe(true);
+
+      const statusLabel =
+        panel.querySelector('.p-tag')?.textContent?.trim() ?? '';
+      expect(statusLabel).toBe('Non démarré');
+
+      expect(panel.textContent).toContain(
+        "Le calcul des indemnités n'a pas encore commencé car les F.D.R. n'ont pas été reçues",
+      );
+      expect(panel.textContent).not.toContain('En attente');
+      expect(panel.textContent).not.toContain('Voir plus de détails');
+      expect(
+        panel.querySelector('.c-affiliate-document-detail__actions'),
+      ).toBeNull();
+      expect(panel.querySelector('p-message')).toBeNull();
+      expect(
+        panel.querySelector('.c-affiliate-document-detail__disabled-hint'),
+      ).not.toBeNull();
+    });
+  });
+});

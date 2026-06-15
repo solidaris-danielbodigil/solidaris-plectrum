@@ -90,6 +90,8 @@ export interface DocumentCrossReference {
 export interface DocumentCertificatPanel {
   id: string;
   title: string;
+  /** When true, accordion header is grayed and cannot expand (e.g. required doc not yet received). */
+  disabled?: boolean;
   status: {
     label: string;
     severity: DocumentCertificatPanelStatusSeverity;
@@ -138,7 +140,12 @@ export interface AffiliateDocumentDetail {
 export function isDocumentDetailPeriod(
   value: DocumentDetailField['value'],
 ): value is DocumentDetailPeriod {
-  return typeof value === 'object' && value !== null && 'from' in value && 'to' in value;
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'from' in value &&
+    'to' in value
+  );
 }
 
 export function isDocumentAuditTag(

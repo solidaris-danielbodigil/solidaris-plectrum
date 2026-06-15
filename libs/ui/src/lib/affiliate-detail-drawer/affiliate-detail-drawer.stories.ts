@@ -13,6 +13,7 @@ import {
   AffiliateDetailDrawerComponent,
   type AffiliateDetailDrawerData,
   type AffiliateDetailDrawerIdentifier,
+  type AffiliateDetailDrawerView,
 } from './affiliate-detail-drawer.component';
 
 // =============================================================================
@@ -103,6 +104,7 @@ const plectrumIconProviders = [
     <sds-affiliate-detail-drawer
       [(visible)]="open"
       [data]="data()"
+      [view]="activeView()"
       [showNotes]="showNotes()"
       (identifierCopy)="onIdentifierCopy($event)"
       (viewChange)="onViewChange($event)"
@@ -122,6 +124,7 @@ class AffiliateDetailDrawerDemoComponent implements OnInit {
   readonly showNotes = input<boolean>(true);
 
   readonly open = signal(false);
+  readonly activeView = signal<AffiliateDetailDrawerView>('details');
 
   ngOnInit(): void {
     this.open.set(this.initiallyOpen());
@@ -136,7 +139,8 @@ class AffiliateDetailDrawerDemoComponent implements OnInit {
     });
   }
 
-  onViewChange(view: string): void {
+  onViewChange(view: AffiliateDetailDrawerView): void {
+    this.activeView.set(view);
     this.notify(`Vue : ${view}`);
   }
 
