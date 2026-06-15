@@ -96,10 +96,16 @@
 .c-affiliate-details__category-accordion {
   min-width: 0;
   width: 100%;
+  padding-block-end: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
 
   // Let projected header content fill the row before the PrimeNG toggle chevron.
   .p-accordionheader {
     gap: var(--spacing-2);
+  }
+
+  .c-list__item--document,
+  .c-list__item--group {
+    scroll-margin-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
   }
 }
 
@@ -151,6 +157,7 @@
 .c-affiliate-details__documents.c-affiliate-details__documents .p-card-body {
   display: block;
   @include scroll-shadow;
+  scroll-padding-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
 }
 
 .c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {

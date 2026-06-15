@@ -640,6 +640,15 @@ export class AffiliateDetailsComponent {
   /** Ensures the first journey group is expanded only once on initial load. */
   private defaultJourneyExpansionApplied = false;
 
+  /** Skips auto-select in onExpandedGroupIdsChange after reveal-driven expansion. */
+  private readonly programmaticGroupExpansions = new Set<string>();
+
+  /** Ignores accordion echo when openCategories is updated from component code. */
+  private suppressAccordionSync = false;
+
+  /** Prevents journey auto-select while prev/next navigation is in flight. */
+  private isNavigatingDocuments = false;
+
   /** Journey groups: `true` = oldest start date first. */
   readonly startDateSortAscending = signal(true);
 
@@ -726,8 +735,9 @@ export class AffiliateDetailsComponent {
     const filteredGroups = groups
       .map((group) => ({
         ...group,
-        documents: this.sortDocuments(
+        documents: this.sortDocumentsForCategory(
           group.documents.filter((document) => visibleIds.has(document.id)),
+          'parcours',
         ),
       }))
       .filter((group) => group.documents.length > 0);
@@ -739,21 +749,24 @@ export class AffiliateDetailsComponent {
     const filtered = this.filteredDocuments();
 
     if (this.isEvaDossier()) {
-      return this.sortDocuments(
+      return this.sortDocumentsForCategory(
         filtered.filter((document) => STANDALONE_DOCUMENT_IDS.has(document.id)),
+        'flat',
       );
     }
 
-    return this.sortDocuments(
+    return this.sortDocumentsForCategory(
       filtered.filter((document) => !ARCHIVED_DOCUMENT_IDS.has(document.id)),
+      'flat',
     );
   });
 
   readonly archivesItems = computed((): ListDocumentItem[] =>
-    this.sortDocuments(
+    this.sortDocumentsForCategory(
       this.filteredDocuments().filter((document) =>
         ARCHIVED_DOCUMENT_IDS.has(document.id),
       ),
+      'flat',
     ),
   );
 
@@ -944,16 +957,20 @@ export class AffiliateDetailsComponent {
     const current = this.openCategories();
 
     if (current.includes(id)) {
-      this.openCategories.set(current.filter((categoryId) => categoryId !== id));
+      this.syncOpenCategories(current.filter((categoryId) => categoryId !== id));
       return;
     }
 
-    this.openCategories.set([...current, id]);
+    this.syncOpenCategories([...current, id]);
   }
 
   onAccordionValueChange(
     value: DocCategoryId | DocCategoryId[] | null | undefined,
   ): void {
+    if (this.suppressAccordionSync) {
+      return;
+    }
+
     const ids = Array.isArray(value) ? value : value != null ? [value] : [];
     this.openCategories.set(ids);
   }
@@ -966,15 +983,16 @@ export class AffiliateDetailsComponent {
 
   scrollToCategory(id: DocCategoryId): void {
     if (!this.openCategories().includes(id)) {
-      this.openCategories.set([...this.openCategories(), id]);
+      this.syncOpenCategories([...this.openCategories(), id]);
     }
 
     this.activeCategory.set(id);
 
     queueMicrotask(() => {
-      document
-        .getElementById(`category-panel-${id}`)
-        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const panel = document.getElementById(`category-panel-${id}`);
+      if (panel) {
+        this.scrollElementIntoViewWithInset(panel);
+      }
     });
   }
 
@@ -988,10 +1006,18 @@ export class AffiliateDetailsComponent {
 
   private ensureCategoryVisible(id: DocCategoryId): void {
     if (!this.openCategories().includes(id)) {
-      this.openCategories.set([...this.openCategories(), id]);
+      this.syncOpenCategories([...this.openCategories(), id]);
     }
 
     this.activeCategory.set(id);
+  }
+
+  private syncOpenCategories(ids: DocCategoryId[]): void {
+    this.suppressAccordionSync = true;
+    this.openCategories.set(ids);
+    queueMicrotask(() => {
+      this.suppressAccordionSync = false;
+    });
   }
 
   onCrossReferenceNavigate(reference: DocumentCrossReference): void {
@@ -1016,6 +1042,14 @@ export class AffiliateDetailsComponent {
       return;
     }
 
+    if (this.programmaticGroupExpansions.delete(newlyExpandedId)) {
+      return;
+    }
+
+    if (this.isNavigatingDocuments) {
+      return;
+    }
+
     const group = this.parcoursGroups().find((item) => item.id === newlyExpandedId);
     if (!group?.documents.length) {
       return;
@@ -1035,15 +1069,7 @@ export class AffiliateDetailsComponent {
   }
 
   onDocumentClick(document: ListDocumentItem): void {
-    // A plain row select clears any prior deep-link focus so the detail card
-    // resets to the document defaults instead of re-jumping to the old panel.
-    this.documentFocus.set(null);
-    this.selectedDocumentId.set(document.id);
-
-    if (ARCHIVED_DOCUMENT_IDS.has(document.id)) {
-      this.ensureArchivesVisible();
-    }
-
+    this.navigateToDocument(document.id, { scroll: false });
     this.recordTelemetry('document_select', document.id);
   }
 
@@ -1083,7 +1109,7 @@ export class AffiliateDetailsComponent {
       return;
     }
 
-    this.onSelectedDocumentIdChange(documents[index - 1].id);
+    this.navigateToDocument(documents[index - 1].id);
   }
 
   goToNextDocument(): void {
@@ -1098,26 +1124,45 @@ export class AffiliateDetailsComponent {
       return;
     }
 
-    this.onSelectedDocumentIdChange(documents[index + 1].id);
+    this.navigateToDocument(documents[index + 1].id);
   }
 
   onSelectedDocumentIdChange(documentId: string): void {
+    this.navigateToDocument(documentId);
+  }
+
+  private navigateToDocument(
+    documentId: string,
+    options: { scroll?: boolean } = { scroll: true },
+  ): void {
     // Prev/next document navigation is a plain selection, so drop any deep-link
     // focus from an earlier tag click.
+    this.isNavigatingDocuments = true;
     this.documentFocus.set(null);
-    this.selectedDocumentId.set(documentId);
 
-    if (this.isEvaDossier()) {
-      const group = this.parcoursGroups().find((item) =>
-        item.documents.some((document) => document.id === documentId),
-      );
+    const categoryId = this.categoryForDocumentId(documentId);
+    if (categoryId) {
+      this.ensureCategoryVisible(categoryId);
 
-      if (group) {
-        this.ensureGroupExpanded(group.id);
-      } else if (ARCHIVED_DOCUMENT_IDS.has(documentId)) {
-        this.ensureArchivesVisible();
+      if (categoryId === 'parcours') {
+        const group = this.parcoursGroups().find((item) =>
+          item.documents.some((document) => document.id === documentId),
+        );
+
+        if (group) {
+          this.ensureGroupExpanded(group.id);
+        }
       }
     }
+
+    this.selectedDocumentId.set(documentId);
+
+    if (options.scroll !== false && categoryId) {
+      this.scheduleScrollToDocument(documentId);
+      return;
+    }
+
+    this.endDocumentNavigationGuard();
   }
 
   onInfoTagClick(tag: AffiliateOverviewInfoTag): void {
@@ -1220,8 +1265,236 @@ export class AffiliateDetailsComponent {
     const current = this.expandedGroupIds();
 
     if (!current.includes(groupId)) {
-      this.expandedGroupIds.set([...current, groupId]);
+      this.programmaticGroupExpansions.add(groupId);
+      this.onExpandedGroupIdsChange([...current, groupId]);
     }
+  }
+
+  private categoryForDocumentId(documentId: string): DocCategoryId | null {
+    if (ARCHIVED_DOCUMENT_IDS.has(documentId)) {
+      return 'archives';
+    }
+
+    if (this.isEvaDossier()) {
+      if (STANDALONE_DOCUMENT_IDS.has(documentId)) {
+        return 'isoles';
+      }
+
+      if (
+        this.parcoursGroups().some((group) =>
+          group.documents.some((document) => document.id === documentId),
+        )
+      ) {
+        return 'parcours';
+      }
+
+      return null;
+    }
+
+    return this.visibleDocuments().some((document) => document.id === documentId)
+      ? 'isoles'
+      : null;
+  }
+
+  private endDocumentNavigationGuard(): void {
+    globalThis.setTimeout(() => {
+      this.isNavigatingDocuments = false;
+    }, 0);
+  }
+
+  private scheduleScrollToDocument(documentId: string): void {
+    this.scrollToDocumentRowWhenReady(documentId, 0);
+  }
+
+  private isFirstNavigableDocument(documentId: string): boolean {
+    const documents = this.navigableDocuments();
+    return documents.length > 0 && documents[0].id === documentId;
+  }
+
+  private isLastNavigableDocument(documentId: string): boolean {
+    const documents = this.navigableDocuments();
+    return documents.length > 0 && documents.at(-1)?.id === documentId;
+  }
+
+  /** Waits for journey group content to render before scrolling the document row. */
+  private scrollToDocumentRowWhenReady(documentId: string, attempt: number): void {
+    globalThis.setTimeout(
+      () => {
+        if (this.isFirstNavigableDocument(documentId)) {
+          const scroller = this.getDocumentsScroller();
+          if (scroller) {
+            this.scrollDocumentsScrollerTo(scroller, 'top');
+            this.isNavigatingDocuments = false;
+            return;
+          }
+        }
+
+        const row = document.querySelector(
+          `[data-telemetry-id="document-row-${documentId}"]`,
+        );
+
+        if (row instanceof HTMLElement) {
+          if (this.isLastNavigableDocument(documentId)) {
+            this.settleDocumentsScrollerAtBottom(row, 0);
+            return;
+          }
+
+          if (this.isFirstNavigableDocument(documentId)) {
+            const scroller = this.getDocumentsScroller();
+            if (scroller) {
+              this.scrollDocumentsScrollerTo(scroller, 'top');
+            } else {
+              this.scrollElementIntoViewWithInset(row);
+            }
+          } else {
+            this.scrollElementIntoViewWithInset(row);
+          }
+
+          this.isNavigatingDocuments = false;
+          return;
+        }
+
+        if (attempt < 5) {
+          this.scrollToDocumentRowWhenReady(documentId, attempt + 1);
+          return;
+        }
+
+        if (this.isLastNavigableDocument(documentId)) {
+          const row = document.querySelector(
+            `[data-telemetry-id="document-row-${documentId}"]`,
+          );
+          if (row instanceof HTMLElement) {
+            this.settleDocumentsScrollerAtBottom(row, 0);
+            return;
+          }
+
+          const scroller = this.getDocumentsScroller();
+          if (scroller) {
+            this.scrollDocumentsScrollerTo(scroller, 'bottom');
+          }
+        }
+
+        this.isNavigatingDocuments = false;
+      },
+      attempt === 0 ? 0 : 16,
+    );
+  }
+
+  private getDocumentsScroller(): HTMLElement | null {
+    const scroller = document.querySelector(
+      '.c-affiliate-details__documents .p-card-body',
+    );
+
+    return scroller instanceof HTMLElement ? scroller : null;
+  }
+
+  private scrollDocumentsScrollerTo(
+    scroller: HTMLElement,
+    edge: 'top' | 'bottom',
+  ): void {
+    const top =
+      edge === 'top' ? 0 : scroller.scrollHeight - scroller.clientHeight;
+
+    scroller.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  /**
+   * Snaps the documents scroller to the bottom while accordion content settles,
+   * then fine-tunes so the last row is fully visible with scroll inset.
+   */
+  private settleDocumentsScrollerAtBottom(row: HTMLElement, attempt: number): void {
+    const maxAttempts = 10;
+    const delay = attempt === 0 ? 0 : 32;
+
+    globalThis.setTimeout(() => {
+      const scroller = this.getDocumentsScroller();
+      const scrollHeightBefore = scroller?.scrollHeight ?? 0;
+
+      if (scroller) {
+        scroller.scrollTop = scroller.scrollHeight - scroller.clientHeight;
+      }
+
+      this.scrollElementIntoViewWithInset(row);
+
+      const scrollHeightAfter = scroller?.scrollHeight ?? 0;
+      const needsAnotherPass =
+        attempt < maxAttempts - 1 &&
+        (scrollHeightAfter > scrollHeightBefore || attempt < 3);
+
+      if (needsAnotherPass) {
+        this.settleDocumentsScrollerAtBottom(row, attempt + 1);
+        return;
+      }
+
+      this.isNavigatingDocuments = false;
+    }, delay);
+  }
+
+  /**
+   * Scrolls so the full element fits inside the documents card scroller with inset.
+   * Unlike `scrollIntoView({ block: 'nearest' })`, also scrolls when only the bottom
+   * edge is clipped.
+   */
+  private scrollElementIntoViewWithInset(element: HTMLElement): void {
+    const inset = this.listScrollInset();
+    const scrollParent = this.findScrollableParent(element);
+
+    if (!scrollParent) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    const parentRect = scrollParent.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    const overflowTop = elementRect.top - parentRect.top - inset.blockStart;
+    const overflowBottom =
+      elementRect.bottom - parentRect.bottom + inset.blockEnd;
+
+    if (overflowTop < 0) {
+      scrollParent.scrollBy({ top: overflowTop, behavior: 'smooth' });
+      return;
+    }
+
+    if (overflowBottom > 0) {
+      scrollParent.scrollBy({ top: overflowBottom, behavior: 'smooth' });
+    }
+  }
+
+  private listScrollInset(): { blockStart: number; blockEnd: number } {
+    const scroller = this.getDocumentsScroller();
+
+    if (scroller) {
+      const style = globalThis.getComputedStyle(scroller);
+      const blockStart = Number.parseFloat(style.scrollPaddingTop);
+      const blockEnd = Number.parseFloat(style.scrollPaddingBottom);
+
+      if (!Number.isNaN(blockStart) && !Number.isNaN(blockEnd)) {
+        return { blockStart, blockEnd };
+      }
+    }
+
+    return { blockStart: 21, blockEnd: 21 };
+  }
+
+  private findScrollableParent(element: HTMLElement): HTMLElement | null {
+    let parent = element.parentElement;
+
+    while (parent) {
+      const style = globalThis.getComputedStyle(parent);
+      const overflowY = style.overflowY;
+
+      if (
+        (overflowY === 'auto' || overflowY === 'scroll') &&
+        parent.scrollHeight > parent.clientHeight
+      ) {
+        return parent;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    return null;
   }
 
   private recordTelemetry(event: string, target?: string): void {
@@ -1334,7 +1607,62 @@ export class AffiliateDetailsComponent {
       });
     }
 
-    return this.sortDocumentsByReceptionDate(documents);
+    const ascending = this.activeSortAscending();
+
+    return [...documents].sort((left, right) =>
+      compareStartDates(
+        this.receptionDateById(left.id),
+        this.receptionDateById(right.id),
+        ascending,
+      ),
+    );
+  }
+
+  private sortDocumentsForCategory(
+    documents: ListDocumentItem[],
+    category: 'parcours' | 'flat',
+  ): ListDocumentItem[] {
+    const sortValue = this.selectedSort()?.value;
+
+    if (sortValue === 'nom-document') {
+      return [...documents].sort((left, right) =>
+        left.title.localeCompare(right.title),
+      );
+    }
+
+    if (sortValue === 'actions-en-cours') {
+      return [...documents].sort((left, right) => {
+        const leftPriority =
+          STATUS_SORT_PRIORITY[left.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+        const rightPriority =
+          STATUS_SORT_PRIORITY[right.status?.label ?? ''] ?? Number.MAX_SAFE_INTEGER;
+
+        if (leftPriority !== rightPriority) {
+          return leftPriority - rightPriority;
+        }
+
+        return compareStartDates(
+          this.receptionDateById(left.id),
+          this.receptionDateById(right.id),
+          category === 'parcours'
+            ? this.startDateSortAscending()
+            : this.flatListSortAscending(),
+        );
+      });
+    }
+
+    const ascending =
+      category === 'parcours'
+        ? this.startDateSortAscending()
+        : this.flatListSortAscending();
+
+    return [...documents].sort((left, right) =>
+      compareStartDates(
+        this.receptionDateById(left.id),
+        this.receptionDateById(right.id),
+        ascending,
+      ),
+    );
   }
 
   private sortGroups(groups: ListGroup[]): ListGroup[] {
@@ -1385,20 +1713,6 @@ export class AffiliateDetailsComponent {
 
     return [...groups].sort((left, right) =>
       compareStartDates(left.startDate, right.startDate, ascending),
-    );
-  }
-
-  private sortDocumentsByReceptionDate(
-    documents: ListDocumentItem[],
-  ): ListDocumentItem[] {
-    const ascending = this.activeSortAscending();
-
-    return [...documents].sort((left, right) =>
-      compareStartDates(
-        this.receptionDateById(left.id),
-        this.receptionDateById(right.id),
-        ascending,
-      ),
     );
   }
 

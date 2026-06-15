@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
@@ -508,14 +508,21 @@ describe('AffiliateDetailsComponent', () => {
     const panel = fixture.nativeElement.querySelector(
       '#category-panel-isoles',
     ) as HTMLElement;
-    const scrollSpy = spyOn(panel, 'scrollIntoView').and.stub();
+    const scrollSpy = spyOn(
+      HTMLElement.prototype,
+      'scrollIntoView',
+    ).and.callThrough();
+    const scrollBySpy = spyOn(
+      HTMLElement.prototype,
+      'scrollBy',
+    ).and.callThrough();
 
     component.onCategoryTabChange('isoles');
     flushMicrotasks();
 
     expect(component.activeCategory()).toBe('isoles');
     expect(component.openCategories()).toContain('isoles');
-    expect(scrollSpy).toHaveBeenCalled();
+    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
   }));
 
   it('should show closed-documents info tag when archived documents exist', () => {
@@ -870,7 +877,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
   });
 
-  it('should span prev/next navigation across parcours, isolés, and archivés', () => {
+  it('should span prev/next navigation across parcours, isolés, and archivés', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
 
     expect(component.navigableDocuments().map((document) => document.id)).toEqual([
@@ -878,8 +885,8 @@ describe('AffiliateDetailsComponent', () => {
       'doc-incapacite',
       'doc-rechute',
       'doc-cloture-primaire',
-      'doc-c4',
       'doc-attestation-pedicure',
+      'doc-c4',
       'doc-archive-regularisation',
     ]);
 
@@ -887,20 +894,38 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+    expect(component.navigableDocuments().length).toBe(7);
+    expect(component.navigableDocuments().map((document) => document.id)).toEqual([
+      'doc-demande-primaire',
+      'doc-incapacite',
+      'doc-rechute',
+      'doc-cloture-primaire',
+      'doc-attestation-pedicure',
+      'doc-c4',
+      'doc-archive-regularisation',
+    ]);
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-c4');
 
-    component.selectedDocumentId.set('doc-attestation-pedicure');
-    fixture.detectChanges();
-
     component.goToNextDocument();
+    flushMicrotasks();
+    flush();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
-  });
+  }));
 
   it('should select archived document from the archivés list', () => {
     component.onDocumentClick({
@@ -935,6 +960,148 @@ describe('AffiliateDetailsComponent', () => {
     expect(selectedInTree?.textContent).toContain('Rechute');
   });
 
+  it('should expand a collapsed category accordion when navigating to a document in that category', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.toggleCategoryVisibility('isoles');
+    fixture.detectChanges();
+
+    expect(component.openCategories()).toEqual(['parcours']);
+
+    component.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+    expect(component.openCategories()).toContain('archives');
+    expect(component.activeCategory()).toBe('archives');
+  }));
+
+  it('should reopen isolés when prev/next navigates to an isolés document', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.toggleCategoryVisibility('isoles');
+    fixture.detectChanges();
+
+    expect(component.openCategories()).not.toContain('isoles');
+
+    component.selectedDocumentId.set('doc-cloture-primaire');
+    fixture.detectChanges();
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
+    expect(component.openCategories()).toContain('isoles');
+    expect(component.activeCategory()).toBe('isoles');
+  }));
+
+  it('should select and reveal the last parcours document when navigating back from isolés', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.toggleCategoryVisibility('isoles');
+    fixture.detectChanges();
+
+    component.selectedDocumentId.set('doc-attestation-pedicure');
+    component.activeCategory.set('isoles');
+    fixture.detectChanges();
+
+    expect(component.expandedGroupIds()).not.toContain('parcours-clotures');
+
+    component.goToPreviousDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
+    expect(component.activeCategory()).toBe('parcours');
+    expect(component.expandedGroupIds()).toContain('parcours-clotures');
+
+    const selectedInTree = fixture.nativeElement.querySelector(
+      '.c-list__item--document.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
+    ) as HTMLElement | null;
+
+    expect(selectedInTree).withContext('cloture row selected in parcours list').toBeTruthy();
+  }));
+
+  it('should scroll the active document row into view when navigating with prev/next', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.selectedDocumentId.set('doc-demande-primaire');
+    fixture.detectChanges();
+
+    const scrollSpy = spyOn(
+      HTMLElement.prototype,
+      'scrollIntoView',
+    ).and.callThrough();
+    const scrollBySpy = spyOn(
+      HTMLElement.prototype,
+      'scrollBy',
+    ).and.callThrough();
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+
+    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
+  }));
+
+  it('should scroll the documents list to the top when navigating to the first document', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    const scroller = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents .p-card-body',
+    ) as HTMLElement;
+    scroller.scrollTop = 500;
+
+    const scrollToSpy = spyOn(scroller, 'scrollTo').and.callThrough();
+
+    component.goToPreviousDocument();
+    flushMicrotasks();
+    flush();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(scrollToSpy).toHaveBeenCalled();
+    const topScrollCall = scrollToSpy.calls
+      .allArgs()
+      .map((args) => args[0] as ScrollToOptions)
+      .find((options) => options.top === 0);
+    expect(topScrollCall).toEqual(
+      jasmine.objectContaining({ top: 0, behavior: 'smooth' }),
+    );
+  }));
+
+  it('should scroll the documents list to the bottom when navigating to the last document', fakeAsync(() => {
+    expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
+    component.toggleCategoryVisibility('isoles');
+    component.toggleCategoryVisibility('archives');
+    fixture.detectChanges();
+
+    component.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    const scroller = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents .p-card-body',
+    ) as HTMLElement;
+
+    component.goToNextDocument();
+    flushMicrotasks();
+    flush();
+    tick(32 * 10);
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-archive-regularisation');
+
+    const maxTop = scroller.scrollHeight - scroller.clientHeight;
+    expect(scroller.scrollTop).toBe(maxTop);
+  }));
+
   it('should preserve selectedDocumentId when expanding a group that already contains the selection', () => {
     component.selectedDocumentId.set('doc-rechute');
     component.onExpandedGroupIdsChange([
@@ -953,8 +1120,8 @@ describe('AffiliateDetailsComponent', () => {
     expect(groupDocumentIds).not.toContain('doc-c4');
     expect(groupDocumentIds).not.toContain('doc-attestation-pedicure');
     expect(component.isolesItems().map((document) => document.id)).toEqual([
-      'doc-c4',
       'doc-attestation-pedicure',
+      'doc-c4',
     ]);
   });
 

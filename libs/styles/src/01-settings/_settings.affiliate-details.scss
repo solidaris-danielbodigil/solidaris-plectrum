@@ -26,6 +26,9 @@
 
   // Category tab + accordion label column — fits longest label ("Archivés") so badges share one axis.
   --#{$sds-prefix}-size-affiliate-details-category-label-min: calc(60 / 14 * var(--base-unit));
+
+  // List scroll inset — keeps document rows fully visible inside the documents card scroller.
+  --#{$sds-prefix}-space-affiliate-details-list-scroll-inset: var(--spacing-3);
 }
 
 // ── PrimeNG Card token bridge — two-column content panels ────────────────────
