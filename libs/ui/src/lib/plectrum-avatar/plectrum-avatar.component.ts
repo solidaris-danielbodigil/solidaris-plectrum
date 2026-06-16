@@ -29,9 +29,10 @@ import {
     '[class.c-plectrum-avatar--color-yellow]': 'color() === "yellow"',
     '[class.c-plectrum-avatar--color-red]': 'color() === "red"',
     '[attr.data-state]': 'state() === "active" ? "active" : null',
-    tabindex: '0',
-    role: 'img',
-    '[attr.aria-label]': 'ariaLabel() ?? initials().toUpperCase()',
+    '[attr.tabindex]': 'focusable() ? 0 : null',
+    '[attr.role]': 'focusable() ? "img" : null',
+    '[attr.aria-label]': 'focusable() ? (ariaLabel() ?? initials().toUpperCase()) : null',
+    '[attr.aria-hidden]': 'focusable() ? null : "true"',
   },
 })
 export class PlectrumAvatarComponent {
@@ -58,6 +59,12 @@ export class PlectrumAvatarComponent {
 
   /** Optional accessible label; falls back to the initials. */
   readonly ariaLabel = input<string | null>(null);
+
+  /**
+   * When false, the avatar is decorative (no tabindex/role) — use inside another
+   * interactive control such as the top-nav menu trigger button.
+   */
+  readonly focusable = input(true);
 
   readonly isLarge = computed(() => this.size() === 'large');
 

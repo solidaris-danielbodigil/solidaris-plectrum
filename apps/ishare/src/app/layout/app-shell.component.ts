@@ -16,7 +16,7 @@ import { AffiliateHeaderService, type AffiliateHeaderData } from './affiliate-he
 import { BreadcrumbService } from './breadcrumb.service';
 import { ISHARE_NAV_ITEMS } from './nav-items';
 import { TestingSessionMenuService } from './testing-session-menu.service';
-import { environment } from '../../environments/environment';
+import { isTestingTelemetryEnabled } from '../testing/is-testing-telemetry-enabled';
 
 @Component({
   selector: 'app-shell',
@@ -34,7 +34,7 @@ export class AppShellComponent {
   private readonly testingSessionMenu = inject(TestingSessionMenuService);
 
   readonly navItems = ISHARE_NAV_ITEMS;
-  readonly testingTelemetryEnabled = environment.enableTestingTelemetry;
+  readonly testingTelemetryEnabled = isTestingTelemetryEnabled();
   readonly testingMenuItems = this.testingSessionMenu.menuItems;
   readonly captureElapsedLabel = this.testingSessionMenu.captureElapsedLabel;
 

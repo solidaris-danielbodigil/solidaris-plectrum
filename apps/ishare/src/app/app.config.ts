@@ -6,7 +6,7 @@ import { providePlectrum } from '@solidaris/plectrum';
 import { IconRegistry, registerPlectrumIcons, TESTING_TELEMETRY_ENABLED } from '@solidaris/ui';
 import { routes } from './app.routes';
 import { registerIshareIcons } from './ishare.icons';
-import { environment } from '../environments/environment';
+import { isTestingTelemetryEnabled } from './testing/is-testing-telemetry-enabled';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     providePlectrum(),
-    { provide: TESTING_TELEMETRY_ENABLED, useValue: environment.enableTestingTelemetry },
+    { provide: TESTING_TELEMETRY_ENABLED, useFactory: isTestingTelemetryEnabled },
     MessageService,
     provideAppInitializer(() => {
       const iconRegistry = inject(IconRegistry);

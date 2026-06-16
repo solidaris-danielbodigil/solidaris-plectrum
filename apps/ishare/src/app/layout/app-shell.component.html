@@ -18,6 +18,7 @@
       avatarState="initials"
       avatarAriaLabel="Profil iShare"
       avatarMenuAriaLabel="Menu session test"
+      [showAvatarMenu]="testingTelemetryEnabled"
       [telemetryLabelsEnabled]="testingTelemetryEnabled"
       [avatarMenuItems]="testingTelemetryEnabled ? testingMenuItems() : []"
       [avatarMenuTimerLabel]="captureElapsedLabel()"

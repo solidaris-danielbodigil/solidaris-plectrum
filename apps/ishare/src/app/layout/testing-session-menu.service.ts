@@ -11,6 +11,7 @@ import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { TestingTelemetryService } from '@solidaris/ui';
 import { interval } from 'rxjs';
+import { isTestingTelemetryEnabled } from '../testing/is-testing-telemetry-enabled';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +21,7 @@ export class TestingSessionMenuService {
   private readonly destroyRef = inject(DestroyRef);
   private readonly menuTick = signal(0);
 
-  readonly enabled = environment.enableTestingTelemetry;
+  readonly enabled = isTestingTelemetryEnabled();
 
   /**
    * Menu model only changes when capture starts/stops, keeping a stable object identity
@@ -71,7 +72,7 @@ export class TestingSessionMenuService {
       this.telemetry.stopCapture();
       const filename = this.telemetry.downloadSession('ishare', {
         production: environment.production,
-        telemetryEnabled: environment.enableTestingTelemetry,
+        telemetryEnabled: isTestingTelemetryEnabled(),
       });
       this.showToast('Enregistrement arrêté — données exportées', filename);
       return;

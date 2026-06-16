@@ -32,6 +32,7 @@ import {
   ListComponent,
   SdsTelemetryLabelDirective,
   TestingTelemetryService,
+  TESTING_TELEMETRY_ENABLED,
   ToolbarComponent,
   TransactionsCicsModalComponent,
   type AffiliateDetailDrawerData,
@@ -57,7 +58,6 @@ import {
   getDocumentDetailsForAffiliate,
 } from './affiliate-document-detail/affiliate-document-detail.mock';
 import { DocumentMoreDetailsDrawerComponent } from './affiliate-document-detail/document-more-details-drawer/document-more-details-drawer.component';
-import { environment } from '../../environments/environment';
 import {
   familyMembersForDossier,
   resolveAffiliateProfile,
@@ -510,6 +510,7 @@ export class AffiliateDetailsComponent {
   private readonly affiliateHeaderService = inject(AffiliateHeaderService);
   private readonly messageService = inject(MessageService);
   private readonly telemetry = inject(TestingTelemetryService);
+  private readonly testingTelemetryEnabled = inject(TESTING_TELEMETRY_ENABLED);
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly routeParams = toSignal(this.route.paramMap, {
@@ -1747,7 +1748,7 @@ export class AffiliateDetailsComponent {
   }
 
   private recordTelemetry(event: string, target?: string): void {
-    if (environment.enableTestingTelemetry) {
+    if (this.testingTelemetryEnabled) {
       this.telemetry.record(event, target);
     }
   }

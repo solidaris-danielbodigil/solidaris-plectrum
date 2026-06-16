@@ -192,4 +192,14 @@ describe('PlectrumAvatarComponent', () => {
       fixture.nativeElement.classList.contains('c-plectrum-avatar--color-red'),
     ).toBe(false);
   });
+
+  it('should be decorative when focusable is false', () => {
+    fixture.componentRef.setInput('focusable', false);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.getAttribute('tabindex')).toBeNull();
+    expect(fixture.nativeElement.getAttribute('role')).toBeNull();
+    expect(fixture.nativeElement.getAttribute('aria-hidden')).toBe('true');
+    expect(fixture.nativeElement.getAttribute('aria-label')).toBeNull();
+  });
 });

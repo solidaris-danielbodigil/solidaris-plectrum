@@ -55,6 +55,18 @@ describe('TopNavComponent', () => {
     expect(avatar).not.toBeNull();
   });
 
+  it('should render a menu trigger when showAvatarMenu is true even without items', () => {
+    fixture.componentRef.setInput('showAvatarMenu', true);
+    fixture.detectChanges();
+
+    const trigger = fixture.nativeElement.querySelector('.c-top-nav__avatar-trigger');
+    const avatar = trigger?.querySelector('.c-top-nav__avatar');
+
+    expect(trigger).not.toBeNull();
+    expect(avatar?.getAttribute('tabindex')).toBeNull();
+    expect(avatar?.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('should render an avatar menu trigger when items are provided', () => {
     fixture.componentRef.setInput('avatarMenuItems', [
       { label: 'Export', icon: 'bi bi-download', id: 'session-export' },
