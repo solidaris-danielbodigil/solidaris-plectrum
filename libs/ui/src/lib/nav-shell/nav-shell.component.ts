@@ -13,7 +13,7 @@ import { IconComponent } from '../icon/icon.component';
 import { NavItem } from './nav-item.model';
 
 @Component({
-  selector: 'sds-nav-shell',
+  selector: 'pds-nav-shell',
   standalone: true,
   imports: [RouterLink, IconComponent],
   templateUrl: './nav-shell.component.html',

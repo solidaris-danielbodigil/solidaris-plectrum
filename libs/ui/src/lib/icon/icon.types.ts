@@ -1,9 +1,9 @@
 // =============================================================================
 // libs/ui/src/lib/icon/icon.types.ts
-// Shared types for the SDS icon system.
+// Shared types for the PDS icon system.
 // =============================================================================
 
-/** Visual size variant for <sds-icon>. Maps to --sds-icon-size-* tokens. */
+/** Visual size variant for <(pds|app|lib)-icon>. Maps to --pds-icon-size-* tokens. */
 export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 /**

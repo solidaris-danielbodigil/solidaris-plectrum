@@ -21,7 +21,7 @@ export const EmptyStateMetadata: ComponentMetadata = {
       {
         name: 'Empty detail panel',
         description: 'Use the component with a short heading and one supporting sentence.',
-        composition: '<sds-empty-state title="No results" description="Try another search." />',
+        composition: '<(pds|app|lib)-empty-state title="No results" description="Try another search." />',
       },
     ],
     antiPatterns: [
@@ -47,8 +47,8 @@ export const EmptyStateMetadata: ComponentMetadata = {
       '--text-body-md-weight',
       '--text-body-md-line-height',
       '--text-body-md-spacing',
-      '--sds-color-text',
-      '--sds-color-text-muted',
+      '--pds-color-text',
+      '--pds-color-text-muted',
     ],
   },
   aiHints: {

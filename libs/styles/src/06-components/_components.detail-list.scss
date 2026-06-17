@@ -8,12 +8,12 @@
 
 .c-detail-list__label {
   @include text-label-sm;
-  flex: 0 0 var(--#{$sds-prefix}-size-detail-list-label-width);
-  width: var(--#{$sds-prefix}-size-detail-list-label-width);
-  color: var(--#{$sds-prefix}-color-text);
+  flex: 0 0 var(--#{$pds-prefix}-size-detail-list-label-width);
+  width: var(--#{$pds-prefix}-size-detail-list-label-width);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 .c-detail-list__value {
   @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }

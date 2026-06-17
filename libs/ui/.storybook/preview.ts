@@ -49,7 +49,7 @@ const preview: Preview = {
     },
   ],
   parameters: {
-    // Use the app's page background (--sds-color-surface-page = gray-50 = #f9f9f9)
+    // Use the app's page background (--pds-color-surface-page = gray-50 = #f9f9f9)
     // so the shell's own surface/50 (#f6f6f6) background is clearly visible.
     backgrounds: {
       default: 'app',

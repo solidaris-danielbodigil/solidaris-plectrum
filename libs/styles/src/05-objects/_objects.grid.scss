@@ -9,8 +9,8 @@
 //
 //   display: grid          → use  o-grid
 //   grid-template-columns  → use  o-grid--cols-{1-12} / --auto-fit / --auto-fill,
-//                            or the --sds-grid-template-columns escape hatch
-//   grid-template-rows     → use  the --sds-grid-template-rows escape hatch
+//                            or the --pds-grid-template-columns escape hatch
+//   grid-template-rows     → use  the --pds-grid-template-rows escape hatch
 //   grid-auto-flow         → use  o-grid--{row|col|row-dense|col-dense}
 //   justify/align/place-items / -content
 //                          → use  o-grid--{justify|align|place}-{items|content}-{value}
@@ -19,7 +19,7 @@
 //
 // Exception (Tier 3): genuinely bespoke layouts (named `grid-template-areas`,
 // complex row templates) own their template in component SCSS — set
-// --sds-grid-template-columns / write `grid-template` directly, exactly like the
+// --pds-grid-template-columns / write `grid-template` directly, exactly like the
 // accordion owns its radii. Document the case with a comment.
 //
 // Gap is NOT defined here — reuse `o-layout--gap-*` as a BEM mix, same contract
@@ -42,8 +42,8 @@
   // Arbitrary track lists via custom properties. Default `none` = no template
   // unless a --cols-* class or the custom property is set. Mutually exclusive
   // with the --cols-* classes (source order wins).
-  grid-template-columns: var(--#{$sds-prefix}-grid-template-columns, none);
-  grid-template-rows: var(--#{$sds-prefix}-grid-template-rows, none);
+  grid-template-columns: var(--#{$pds-prefix}-grid-template-columns, none);
+  grid-template-rows: var(--#{$pds-prefix}-grid-template-rows, none);
 
   // ── Tier 1a — equal columns 1..12 (+ responsive) ────────────────────────
   @for $i from 1 through grid.$grid-cols {
@@ -64,17 +64,17 @@
   }
 
   // ── Tier 1b — responsive auto grids (reflow without breakpoints) ─────────
-  // Column count derives from container width and --sds-grid-min.
+  // Column count derives from container width and --pds-grid-min.
   &--auto-fit {
     grid-template-columns: repeat(
       auto-fit,
-      minmax(min(var(--#{$sds-prefix}-grid-min), 100%), 1fr)
+      minmax(min(var(--#{$pds-prefix}-grid-min), 100%), 1fr)
     );
   }
   &--auto-fill {
     grid-template-columns: repeat(
       auto-fill,
-      minmax(min(var(--#{$sds-prefix}-grid-min), 100%), 1fr)
+      minmax(min(var(--#{$pds-prefix}-grid-min), 100%), 1fr)
     );
   }
 

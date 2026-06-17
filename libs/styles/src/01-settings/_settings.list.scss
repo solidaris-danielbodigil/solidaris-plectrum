@@ -2,7 +2,7 @@
 
 // =============================================================================
 // 01-settings/_settings.list.scss
-// sds-list component tokens — document/journey list for iSHARE affiliate audit.
+// pds-list component tokens — document/journey list for iSHARE affiliate audit.
 //
 // Design ref: Figma iSHARE-Audit nodes 324:5827 (journey ON), 518:48833 (journey OFF),
 //             324:5840 (group header), 435:7384 (journey timeline connector),
@@ -12,38 +12,38 @@
 
 :root {
   // ── Colours ─────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-list-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-section-title: var(--#{$sds-prefix}-color-surface-600);
-  --#{$sds-prefix}-color-list-count-badge-bg: var(--#{$sds-prefix}-color-primary-75);
-  --#{$sds-prefix}-color-list-count-badge-text: var(--#{$sds-prefix}-color-neutral-800);
-  --#{$sds-prefix}-color-list-row-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-row-border: var(--#{$sds-prefix}-color-card-border);
-  --#{$sds-prefix}-color-list-row-hover-border: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-row-selected-border: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-title-text: var(--#{$sds-prefix}-color-surface-700);
-  --#{$sds-prefix}-color-list-title-accent: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-icon: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-date-label: var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-list-date-value: var(--#{$sds-prefix}-color-surface-700);
-  --#{$sds-prefix}-color-list-timeline-line: var(--#{$sds-prefix}-color-surface-200);
-  --#{$sds-prefix}-color-list-timeline-marker: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-timeline-marker-border: var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-list-skeleton-bg: var(--#{$sds-prefix}-color-surface-muted);
+  --#{$pds-prefix}-color-list-bg: var(--#{$pds-prefix}-color-content-bg);
+  --#{$pds-prefix}-color-list-section-title: var(--#{$pds-prefix}-color-surface-600);
+  --#{$pds-prefix}-color-list-count-badge-bg: var(--#{$pds-prefix}-color-primary-75);
+  --#{$pds-prefix}-color-list-count-badge-text: var(--#{$pds-prefix}-color-neutral-800);
+  --#{$pds-prefix}-color-list-row-bg: var(--#{$pds-prefix}-color-content-bg);
+  --#{$pds-prefix}-color-list-row-border: var(--#{$pds-prefix}-color-card-border);
+  --#{$pds-prefix}-color-list-row-hover-border: var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-list-row-selected-border: var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-list-title-text: var(--#{$pds-prefix}-color-surface-700);
+  --#{$pds-prefix}-color-list-title-accent: var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-list-icon: var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-list-date-label: var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-list-date-value: var(--#{$pds-prefix}-color-surface-700);
+  --#{$pds-prefix}-color-list-timeline-line: var(--#{$pds-prefix}-color-surface-200);
+  --#{$pds-prefix}-color-list-timeline-marker: var(--#{$pds-prefix}-color-content-bg);
+  --#{$pds-prefix}-color-list-timeline-marker-border: var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-list-skeleton-bg: var(--#{$pds-prefix}-color-surface-muted);
 
   // ── Sizes ───────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));
-  --#{$sds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--base-unit));
-  --#{$sds-prefix}-size-list-timeline-width: calc(6 / 14 * var(--base-unit));
-  --#{$sds-prefix}-size-list-timeline-cap-marker: calc(4 / 14 * var(--base-unit));
-  --#{$sds-prefix}-size-list-timeline-cap-arrow: calc(9 / 28 * var(--base-unit));
-  --#{$sds-prefix}-size-list-timeline-marker: var(--spacing-1);
-  --#{$sds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--base-unit));
-  --#{$sds-prefix}-border-width-list: 1px;
-  --#{$sds-prefix}-border-width-list-row: 1px;
-  --#{$sds-prefix}-border-width-list-selected: var(--#{$sds-prefix}-border-width-list-row);
+  --#{$pds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-list-timeline-width: calc(6 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-list-timeline-cap-marker: calc(4 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-list-timeline-cap-arrow: calc(9 / 28 * var(--base-unit));
+  --#{$pds-prefix}-size-list-timeline-marker: var(--spacing-1);
+  --#{$pds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--base-unit));
+  --#{$pds-prefix}-border-width-list: 1px;
+  --#{$pds-prefix}-border-width-list-row: 1px;
+  --#{$pds-prefix}-border-width-list-selected: var(--#{$pds-prefix}-border-width-list-row);
 
   // ── Effects ─────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-shadow-list-row-selected: var(--#{$sds-prefix}-shadow-md);
-  --#{$sds-prefix}-transition-list-row: border-color var(--#{$sds-prefix}-transition-duration) ease,
-    box-shadow var(--#{$sds-prefix}-transition-duration) ease;
+  --#{$pds-prefix}-shadow-list-row-selected: var(--#{$pds-prefix}-shadow-md);
+  --#{$pds-prefix}-transition-list-row: border-color var(--#{$pds-prefix}-transition-duration) ease,
+    box-shadow var(--#{$pds-prefix}-transition-duration) ease;
 }

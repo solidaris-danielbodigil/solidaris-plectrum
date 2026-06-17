@@ -14,7 +14,7 @@
 
 .c-drawer__section-title {
   @include text-heading-sm;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 // ── Affiliate detail (Carte affilié) ─────────────────────────────────────────
@@ -23,14 +23,14 @@
 
 .c-drawer__affiliate-detail-name {
   @include text-heading-sm;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 .c-drawer__affiliate-detail-family-tile {
   appearance: none;
-  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-content-border);
-  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-tile);
+  background: var(--#{$pds-prefix}-color-affiliate-detail-drawer-tile-bg);
+  border: 1px solid var(--#{$pds-prefix}-color-content-border);
+  border-radius: var(--#{$pds-prefix}-radius-affiliate-detail-drawer-tile);
   box-shadow: none;
   color: inherit;
   font: inherit;
@@ -39,50 +39,50 @@
   transition: border-color 0.15s ease;
 
   &:hover {
-    border-color: var(--#{$sds-prefix}-color-text-muted);
+    border-color: var(--#{$pds-prefix}-color-text-muted);
   }
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
-      var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
 
 .c-drawer__affiliate-detail-family-chevron {
   @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
   line-height: 1;
 }
 
 .c-drawer__affiliate-detail-family-name {
   @include text-label-sm;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 .c-drawer__affiliate-detail-family-relationship {
   @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-relationship);
+  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-relationship);
 }
 
 .c-drawer__affiliate-detail-note {
   inline-size: 100%;
-  background: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-content-border);
-  border-radius: var(--#{$sds-prefix}-radius-affiliate-detail-drawer-note);
+  background: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-bg);
+  border: 1px solid var(--#{$pds-prefix}-color-content-border);
+  border-radius: var(--#{$pds-prefix}-radius-affiliate-detail-drawer-note);
 }
 
 .c-drawer__affiliate-detail-note-author {
   @include text-label-sm;
-  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-author);
+  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-author);
 }
 
 .c-drawer__affiliate-detail-note-timestamp {
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-affiliate-detail-drawer-note-timestamp);
+  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-timestamp);
 }
 
 .c-drawer__affiliate-detail-note-body {
   @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }

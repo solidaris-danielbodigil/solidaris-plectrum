@@ -32,28 +32,28 @@
   <svg class="c-list__timeline-sprite" aria-hidden="true" focusable="false">
     <defs>
       <linearGradient
-        id="sds-list-timeline-body-gradient"
+        id="pds-list-timeline-body-gradient"
         gradientUnits="userSpaceOnUse"
         x1="3"
         y1="0"
         x2="3"
         y2="100"
       >
-        <stop stop-color="var(--sds-color-list-timeline-marker-border)" />
-        <stop offset="1" stop-color="var(--sds-color-list-timeline-line)" />
+        <stop stop-color="var(--pds-color-list-timeline-marker-border)" />
+        <stop offset="1" stop-color="var(--pds-color-list-timeline-line)" />
       </linearGradient>
-      <symbol id="sds-list-timeline-marker" viewBox="0 0 6 4">
+      <symbol id="pds-list-timeline-marker" viewBox="0 0 6 4">
         <circle
           cx="3"
           cy="2"
           r="2"
-          fill="var(--sds-color-list-timeline-marker-border)"
+          fill="var(--pds-color-list-timeline-marker-border)"
         />
       </symbol>
-      <symbol id="sds-list-timeline-arrow" viewBox="0 0 6 4.5">
+      <symbol id="pds-list-timeline-arrow" viewBox="0 0 6 4.5">
         <path
           d="M3 4.5L0.401924 0L5.59808 0L3 4.5Z"
-          fill="var(--sds-color-list-timeline-line)"
+          fill="var(--pds-color-list-timeline-line)"
         />
       </symbol>
     </defs>
@@ -74,7 +74,7 @@
           role="button"
           tabindex="0"
           [attr.aria-expanded]="isGroupExpanded(group.id) ? 'true' : 'false'"
-          [sdsTelemetryLabel]="groupTelemetryLabel(group)"
+          [pdsTelemetryLabel]="groupTelemetryLabel(group)"
           (click)="onGroupClick($event, group)"
           (keydown)="onGroupKeydown($event, group)"
         >
@@ -125,7 +125,7 @@
                 viewBox="0 0 6 4"
                 aria-hidden="true"
               >
-                <use href="#sds-list-timeline-marker" width="6" height="4" />
+                <use href="#pds-list-timeline-marker" width="6" height="4" />
               </svg>
               <svg
                 class="c-list__timeline-line"
@@ -135,7 +135,7 @@
               >
                 <path
                   d="M3 0 L3 100"
-                  stroke="url(#sds-list-timeline-body-gradient)"
+                  stroke="url(#pds-list-timeline-body-gradient)"
                   stroke-width="1"
                   stroke-dasharray="2 2"
                 />
@@ -145,7 +145,7 @@
                 viewBox="0 0 6 4.5"
                 aria-hidden="true"
               >
-                <use href="#sds-list-timeline-arrow" width="6" height="4.5" />
+                <use href="#pds-list-timeline-arrow" width="6" height="4.5" />
               </svg>
             </div>
             <article
@@ -155,7 +155,7 @@
               tabindex="0"
               [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
               [attr.data-telemetry-id]="'document-row-' + doc.id"
-              [sdsTelemetryLabel]="documentDisplayTitle(doc)"
+              [pdsTelemetryLabel]="documentDisplayTitle(doc)"
               (click)="onDocumentRowClick($event, doc)"
               (keydown)="onDocumentKeydown($event, doc)"
             >
@@ -197,7 +197,7 @@
                           [icon]="tag.icon"
                           [attr.aria-label]="tag.ariaLabel"
                           [attr.data-telemetry-id]="'document-tag-' + doc.id + '-' + tag.label"
-                          [sdsTelemetryLabel]="tag.label"
+                          [pdsTelemetryLabel]="tag.label"
                           (click)="onTagClick($event, doc, tag)"
                           (keydown)="onTagKeydown($event, doc, tag)"
                         ></button>
@@ -222,7 +222,7 @@
             tabindex="0"
             [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
             [attr.data-telemetry-id]="'document-row-' + doc.id"
-            [sdsTelemetryLabel]="documentDisplayTitle(doc)"
+            [pdsTelemetryLabel]="documentDisplayTitle(doc)"
             (click)="onDocumentRowClick($event, doc)"
             (keydown)="onDocumentKeydown($event, doc)"
           >
@@ -264,7 +264,7 @@
                         [icon]="tag.icon"
                         [attr.aria-label]="tag.ariaLabel"
                         [attr.data-telemetry-id]="'document-tag-' + doc.id + '-' + tag.label"
-                        [sdsTelemetryLabel]="tag.label"
+                        [pdsTelemetryLabel]="tag.label"
                         (click)="onTagClick($event, doc, tag)"
                         (keydown)="onTagKeydown($event, doc, tag)"
                       ></button>
@@ -288,7 +288,7 @@
       <button
         type="button"
         class="c-list__footnote u-border-top o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
-        style="--sds-border-color: var(--sds-color-panel-border); --sds-border-width: var(--sds-border-width-list)"
+        style="--pds-border-color: var(--pds-color-panel-border); --pds-border-width: var(--pds-border-width-list)"
         (click)="footnoteClick.emit()"
       >
         {{ footnote() }}
@@ -318,7 +318,7 @@
           class="p-autocomplete-option"
           tabindex="0"
           pRipple
-          [sdsTelemetryLabel]="target.label"
+          [pdsTelemetryLabel]="target.label"
           (click)="onTagTargetSelect($event, target)"
           (keydown)="onTagTargetKeydown($event, target)"
         >

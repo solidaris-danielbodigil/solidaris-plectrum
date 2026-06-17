@@ -7,9 +7,9 @@
 
 :root {
   // Search field sizing — page-chrome constraints for the icon browser toolbar.
-  --#{$sds-prefix}-size-iconography-search-min: 12.5rem;  // 200px
-  --#{$sds-prefix}-size-iconography-search-max: 22.5rem;  // 360px
+  --#{$pds-prefix}-size-iconography-search-min: 12.5rem;  // 200px
+  --#{$pds-prefix}-size-iconography-search-max: 22.5rem;  // 360px
 
   // Copy-hint overlay scrim — semi-opaque white veil over an icon cell on hover.
-  --#{$sds-prefix}-color-iconography-copy-hint-bg: rgba(255, 255, 255, 0.88);
+  --#{$pds-prefix}-color-iconography-copy-hint-bg: rgba(255, 255, 255, 0.88);
 }

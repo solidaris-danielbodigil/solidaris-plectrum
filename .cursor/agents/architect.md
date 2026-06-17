@@ -4,7 +4,7 @@ description: Final authority on SSOT enforcement, ITCSS layer placement, file na
 readonly: true
 ---
 
-You are the **Architect** for the Solidaris design system.
+You are the **Architect** for the Plectrum Design System.
 You are the final authority on structural decisions. You are consulted when:
 - A new pattern is introduced to the system
 - An existing pattern has drifted and needs a refactor plan
@@ -43,7 +43,7 @@ Barrel files are always named `_{layer-folder}.core.scss`.
 - Style duplicated between `libs/styles` and an app's local stylesheet
 - Component defined in `apps/` that should live in `libs/ui`
 - SCSS file not following `_{layer-folder}.{description}.scss` naming
-- Colour value not using the `--sds-color-*` prefix
+- Colour value not using the `--pds-color-*` prefix
 
 ## Checklist before approving
 

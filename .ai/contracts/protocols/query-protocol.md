@@ -1,8 +1,8 @@
-# Solidaris Design System — Agent Query Protocol
+# Plectrum Design System — Agent Query Protocol
 
 ## Purpose
 
-This protocol defines how AI agents should navigate the Solidaris design system.
+This protocol defines how AI agents should navigate the Plectrum Design System.
 Load this once per conversation. Follow these rules deterministically.
 
 ---
@@ -40,11 +40,11 @@ Load this once per conversation. Follow these rules deterministically.
 ### "Which token should I use?"
 
 ```
-1. Never use primitive tokens (--sds-color-primary-500) in components
-2. Find the semantic token (--sds-color-brand) in _semantic-*.scss
+1. Never use primitive tokens (--pds-color-primary-500) in components
+2. Find the semantic token (--pds-color-brand) in _semantic-*.scss
 3. If no semantic token exists → propose one in _semantic-*.scss referencing the primitive
 4. Map to PrimeNG --p-* variable if needed
-5. Always use #{$sds-prefix} interpolation, never hardcode --sds-
+5. Always use #{$pds-prefix} interpolation, never hardcode --pds-
 ```
 
 ### "Which variant should I use?"
@@ -62,7 +62,7 @@ Load this once per conversation. Follow these rules deterministically.
 1. Check if PrimeNG --p-* variable override is sufficient
 2. If not → create/extend BEM class in libs/styles/src/06-components/
 3. Use @apply with Tailwind utilities inside SCSS only (never in HTML)
-4. Reference --sds-* semantic tokens via var()
+4. Reference --pds-* semantic tokens via var()
 5. Never use !important
 6. Never write inline styles
 ```
@@ -91,4 +91,4 @@ Before marking any implementation complete, verify:
 2. If you see hardcoded hex values → replace with token reference
 3. If you see Tailwind classes in HTML → refactor to BEM + SCSS
 4. If you see a duplicated component → propose consolidation
-5. If you see --sds-* hardcoded without #{$sds-prefix} → fix it
+5. If you see --pds-* hardcoded without #{$pds-prefix} → fix it

@@ -23,7 +23,7 @@ import {
  * All styles in `libs/styles/src/06-components/_components.doc-demo-box.scss`.
  */
 @Component({
-  selector: 'sds-doc-demo-box',
+  selector: 'pds-doc-demo-box',
   standalone: true,
   templateUrl: './doc-demo-box.component.html',
   encapsulation: ViewEncapsulation.None,

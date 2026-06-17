@@ -11,13 +11,13 @@
 
 :root {
   // Demo filler cells (documentation-only palette)
-  --#{$sds-prefix}-color-doc-demo-cell-bg:            #e8eaf6;
-  --#{$sds-prefix}-color-doc-demo-cell-border:        #c5cae9;
-  --#{$sds-prefix}-color-doc-demo-cell-text:          #3949ab;
-  --#{$sds-prefix}-color-doc-demo-cell-accent-bg:     #9fa8da;
-  --#{$sds-prefix}-color-doc-demo-cell-accent-border: #7986cb;
+  --#{$pds-prefix}-color-doc-demo-cell-bg:            #e8eaf6;
+  --#{$pds-prefix}-color-doc-demo-cell-border:        #c5cae9;
+  --#{$pds-prefix}-color-doc-demo-cell-text:          #3949ab;
+  --#{$pds-prefix}-color-doc-demo-cell-accent-bg:     #9fa8da;
+  --#{$pds-prefix}-color-doc-demo-cell-accent-border: #7986cb;
 
   // Structural
-  --#{$sds-prefix}-size-doc-demo-cell-min-h:  2.5rem;
-  --#{$sds-prefix}-size-doc-demo-swatch:      var(--spacing-1);  // default swatch bar size (8px)
+  --#{$pds-prefix}-size-doc-demo-cell-min-h:  2.5rem;
+  --#{$pds-prefix}-size-doc-demo-swatch:      var(--spacing-1);  // default swatch bar size (8px)
 }

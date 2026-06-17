@@ -19,7 +19,7 @@ export { PlectrumPresetMenuService } from './plectrum-preset-menu.service';
  * Use this in both apps — never configure PrimeNG theme directly in an app.
  *
  * @param version — Explicit preset version. When omitted, reads
- *   `solidaris-plectrum-preset` from localStorage (default `v1`).
+ *   `solidaris-plectrum-preset` from localStorage (default `v0.6`).
  *
  * @example
  * // app.config.ts
@@ -42,7 +42,7 @@ export function providePlectrum(
           darkModeSelector: '.dark',
           cssLayer: {
             name: 'primeng',
-            // reset < primeng < unlayered SDS styles
+            // reset < primeng < unlayered PDS styles
             order: 'reset, primeng',
           },
         },

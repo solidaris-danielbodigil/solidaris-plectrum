@@ -67,7 +67,7 @@ solidaris-nx/
 │   ├── styles/        # SSOT — all SCSS/ITCSS tokens and utilities
 │   └── plectrum/      # SSOT — design system integration
 ├── storybook/         # Global Storybook for all libs/ui components
-└── tools/generators/  # Component scaffolding (npm run sds:component)
+└── tools/generators/  # Component scaffolding (npm run pds:component)
 ```
 
 ---

@@ -22,7 +22,7 @@
 
 .c-affiliate-overview-card__title {
   @include text-heading-lg;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 // Display-only chips (no filterKey) render as a non-interactive pButton.
@@ -73,35 +73,35 @@
 
 .c-affiliate-overview-card__shortcut-badge {
   font-family: var(--font-family-label);
-  font-size: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-size);
-  font-weight: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-weight);
-  line-height: var(--#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height);
-  background: var(--#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-bg);
-  color: var(--#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-text);
-  border-radius: var(--#{$sds-prefix}-radius-sm);
-  padding-block: var(--#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-block);
-  padding-inline: var(--#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline);
+  font-size: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-size);
+  font-weight: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-weight);
+  line-height: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height);
+  background: var(--#{$pds-prefix}-color-affiliate-overview-card-shortcut-badge-bg);
+  color: var(--#{$pds-prefix}-color-affiliate-overview-card-shortcut-badge-text);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  padding-block: var(--#{$pds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-block);
+  padding-inline: var(--#{$pds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline);
 }
 
 // ── Loading state ───────────────────────────────────────────────────────────
 
 .c-affiliate-overview-card.is-loading {
   pointer-events: none;
-  opacity: var(--#{$sds-prefix}-disabled-opacity);
+  opacity: var(--#{$pds-prefix}-disabled-opacity);
 }
 
 .c-affiliate-overview-card__skeleton-avatar {
   display: block;
-  inline-size: var(--#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-w);
-  block-size: var(--#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-h);
-  border-radius: var(--#{$sds-prefix}-radius-pill);
-  background: var(--#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg);
+  inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-w);
+  block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-h);
+  border-radius: var(--#{$pds-prefix}-radius-pill);
+  background: var(--#{$pds-prefix}-color-affiliate-overview-card-skeleton-bg);
 }
 
 .c-affiliate-overview-card__skeleton-line {
   display: block;
-  border-radius: var(--#{$sds-prefix}-radius-sm);
-  background: var(--#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  background: var(--#{$pds-prefix}-color-affiliate-overview-card-skeleton-bg);
   block-size: var(--spacing-1);
 }
 

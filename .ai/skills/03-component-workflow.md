@@ -38,7 +38,7 @@ libs/ui/src/lib/{component-name}/
 └── {component-name}.metadata.ts        ← CONTRACT — required
 
 libs/styles/src/06-components/
-└── _components.{component-name}.scss   BEM SCSS — all var(--sds-*), o-flex/o-layout BEM mixes in template
+└── _components.{component-name}.scss   BEM SCSS — all var(--pds-*), o-flex/o-layout BEM mixes in template
 ```
 
 After creating, export from `libs/ui/src/index.ts` and run `npm run generate-index`.
@@ -52,7 +52,7 @@ After creating, export from `libs/ui/src/index.ts` and run `npm run generate-ind
 Use the workspace generator to scaffold the correct file structure:
 
 ```bash
-npm run sds:component
+npm run PDS:component
 ```
 
 This creates the component folder, metadata contract, SCSS stub, and Storybook story template.
@@ -68,7 +68,7 @@ A component is **not done** until all of these pass:
 - [ ] PrimeNG MCP queried — no existing component reimplemented
 
 ### SCSS / Tokens
-- [ ] All values reference `var(--sds-*)` — no hardcoded hex/px/rgba
+- [ ] All values reference `var(--pds-*)` — no hardcoded hex/px/rgba
 - [ ] No local SCSS `$variables` in the component file
 - [ ] Missing tokens added to `01-settings` before use
 - [ ] `@apply` used for layout helpers — no Tailwind in HTML templates
@@ -83,7 +83,7 @@ A component is **not done** until all of these pass:
 
 ### Metadata
 - [ ] `.metadata.ts` created and conforms to `ComponentMetadata` schema
-- [ ] `tokens.consumed` lists all `--sds-*` tokens the component reads
+- [ ] `tokens.consumed` lists all `--pds-*` tokens the component reads
 
 ### Storybook
 - [ ] `.stories.ts` created **colocated** in `libs/ui/src/lib/{component-name}/`

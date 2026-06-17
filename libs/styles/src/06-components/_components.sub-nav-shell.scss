@@ -3,7 +3,7 @@
 
 // =============================================================================
 // 06-components/_components.sub-nav-shell.scss
-// Second-level navigation sidebar — <sds-sub-nav-shell>
+// Second-level navigation sidebar — <(pds|app|lib)-sub-nav-shell>
 //
 // Layout strategy:
 //   All flex, overflow, and width properties are expressed as o-flex / o-layout
@@ -28,44 +28,44 @@
 // Design ref:   Figma IRkr21rHS0w7rI0bgrv1fZ node 1:1476
 // Token source: libs/styles/src/01-settings/
 //   _settings.colors-semantic.scss  → --color-sub-nav-shell-*
-//   _settings.spacing.scss          → --sds-size-sub-nav-shell-*, --sds-space-sub-nav-shell-*
+//   _settings.spacing.scss          → --pds-size-sub-nav-shell-*, --pds-space-sub-nav-shell-*
 //   _settings.accordion.scss        → --p-accordion-* token bridge
 // =============================================================================
 
 // Host — structural fixed dimensions (no o-* class for these)
 .c-sub-nav-shell {
   // Fixed width required — second-level sidebar has a fixed structural dimension
-  width: var(--#{$sds-prefix}-size-sub-nav-shell-width);
+  width: var(--#{$pds-prefix}-size-sub-nav-shell-width);
   // Full-viewport height required — flex column needs height context for flex-grow children
   height: 100dvh;
   // Figma: surface/50 — light gray shell background
-  background-color: var(--#{$sds-prefix}-color-sub-nav-shell-bg);
+  background-color: var(--#{$pds-prefix}-color-sub-nav-shell-bg);
   // Figma: transparent/black/100 — subtle right border separating from content
-  border-right: 1px solid var(--#{$sds-prefix}-color-content-border);
+  border-right: 1px solid var(--#{$pds-prefix}-color-content-border);
 }
 
 // Header — title bar with bottom border
 .c-sub-nav-shell__header {
-  height: var(--#{$sds-prefix}-space-sub-nav-shell-header-h);
-  border-bottom: 1px solid var(--#{$sds-prefix}-color-content-border);
+  height: var(--#{$pds-prefix}-space-sub-nav-shell-header-h);
+  border-bottom: 1px solid var(--#{$pds-prefix}-color-content-border);
 }
 
 .c-sub-nav-shell__title {
   @include text-heading-sm;
-  color: var(--#{$sds-prefix}-color-sub-nav-shell-header-text);
+  color: var(--#{$pds-prefix}-color-sub-nav-shell-header-text);
   white-space: nowrap;
 }
 
 // Featured section — 14px horizontal padding is non-scale (component token)
 .c-sub-nav-shell__featured {
-  padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
+  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
 }
 
 // Accordion panel padding lives in _components.accordion.scss (.c-accordion--nav)
 
 .c-sub-nav-shell__section-label {
   @include text-label-sm;
-  color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -79,29 +79,29 @@
 
 // Single nav link/button row
 .c-sub-nav-shell__item {
-  border-radius: var(--#{$sds-prefix}-radius-lg);
+  border-radius: var(--#{$pds-prefix}-radius-lg);
   cursor: pointer;
   text-decoration: none;
-  color: var(--#{$sds-prefix}-color-sub-nav-shell-item-text);
+  color: var(--#{$pds-prefix}-color-sub-nav-shell-item-text);
 
   &:hover,
   &:focus-visible {
-    background-color: var(--#{$sds-prefix}-color-sub-nav-shell-item-hover-bg);
+    background-color: var(--#{$pds-prefix}-color-sub-nav-shell-item-hover-bg);
     text-decoration: none;
     outline: none;
   }
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 
   &.is-active {
-    background-color: var(--#{$sds-prefix}-color-sub-nav-shell-item-active-bg);
+    background-color: var(--#{$pds-prefix}-color-sub-nav-shell-item-active-bg);
   }
 
   &.is-disabled {
-    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -110,8 +110,8 @@
 // Optional leading icon in item
 .c-sub-nav-shell__item-icon {
   // Fixed size required — icon fonts collapse to 0 without an explicit constraint
-  width: var(--#{$sds-prefix}-size-sub-nav-shell-item-icon);
-  height: var(--#{$sds-prefix}-size-sub-nav-shell-item-icon);
+  width: var(--#{$pds-prefix}-size-sub-nav-shell-item-icon);
+  height: var(--#{$pds-prefix}-size-sub-nav-shell-item-icon);
 }
 
 // Item text label
@@ -130,17 +130,17 @@
 
 .c-sub-nav-shell__footer-version {
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-sub-nav-shell-footer-muted);
+  color: var(--#{$pds-prefix}-color-sub-nav-shell-footer-muted);
 }
 
 .c-sub-nav-shell__footer-link {
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-sub-nav-shell-footer-link);
+  color: var(--#{$pds-prefix}-color-sub-nav-shell-footer-link);
   text-decoration: underline;
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
-    border-radius: var(--#{$sds-prefix}-radius-xs);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+    border-radius: var(--#{$pds-prefix}-radius-xs);
   }
 }

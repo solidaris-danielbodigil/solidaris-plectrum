@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { pickRandomEmptyStateIllustration } from './empty-state-illustrations';
 
 @Component({
-  selector: 'sds-empty-state',
+  selector: 'pds-empty-state',
   standalone: true,
   templateUrl: './empty-state.component.html',
 })

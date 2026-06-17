@@ -8,7 +8,7 @@
 // These classes are the ONLY permitted way to express spacing and overflow
 // when the value is on the global --spacing-* scale.
 // The following CSS properties are FORBIDDEN in 06-components/ SCSS files
-// unless the value references a var(--sds-*) component token:
+// unless the value references a var(--pds-*) component token:
 //
 //   overflow / overflow-x / overflow-y → use  o-layout--overflow-{key}
 //   gap / row-gap / column-gap         → use  o-layout--gap-{scale}
@@ -19,7 +19,7 @@
 //   min-height: 0 / min-width: 0      → use  o-layout--min-h-0 / o-layout--min-w-0
 //   margin: 0 on owned elements        → use  o-layout--margin-0 (spacing scale key `0`)
 //
-// Exception: spacing values that MUST reference a var(--sds-*) token
+// Exception: spacing values that MUST reference a var(--pds-*) token
 // (component-specific sizing, form padding) stay in component SCSS as var() calls.
 //
 // Apply these classes as BEM mixes directly in HTML templates.

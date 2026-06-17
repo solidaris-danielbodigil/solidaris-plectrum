@@ -12,13 +12,13 @@
 
 :root {
 
-  --#{$sds-prefix}-radius-none:  0;
-  --#{$sds-prefix}-radius-xs:    2px;
-  --#{$sds-prefix}-radius-sm:    4px;
-  --#{$sds-prefix}-radius-md:    8px;
-  --#{$sds-prefix}-radius-lg:    10px;
-  --#{$sds-prefix}-radius-xl:    12px;
-  --#{$sds-prefix}-radius-2xl:   16px;
-  --#{$sds-prefix}-radius-pill:  9999px;
+  --#{$pds-prefix}-radius-none:  0;
+  --#{$pds-prefix}-radius-xs:    2px;
+  --#{$pds-prefix}-radius-sm:    4px;
+  --#{$pds-prefix}-radius-md:    8px;
+  --#{$pds-prefix}-radius-lg:    10px;
+  --#{$pds-prefix}-radius-xl:    12px;
+  --#{$pds-prefix}-radius-2xl:   16px;
+  --#{$pds-prefix}-radius-pill:  9999px;
 
 }

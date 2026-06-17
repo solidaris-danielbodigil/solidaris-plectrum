@@ -37,8 +37,8 @@ When PrimeNG needs visual customisation:
 ```scss
 // ✅ Correct — token bridge, scoped to wrapper
 .c-form-field {
-  --p-inputtext-border-color: var(--sds-color-field-border);
-  --p-inputtext-focus-border-color: var(--sds-color-field-border-focus);
+  --p-inputtext-border-color: var(--pds-color-field-border);
+  --p-inputtext-focus-border-color: var(--pds-color-field-border-focus);
 }
 
 // ❌ Wrong — fighting PrimeNG internals
@@ -106,15 +106,15 @@ unless the user explicitly asks for custom styling.
 ```scss
 // ❌ Wrong — component-layer decorative override on a PrimeNG primitive
 .c-my-feature__message.p-message-warn {
-  --p-message-warn-background: var(--sds-color-warning-subtle);
+  --p-message-warn-background: var(--pds-color-warning-subtle);
   border-radius: 8px;
   padding: 12px;
 }
 
 // ❌ Wrong — BEM wrapper remapping Tag severity tokens
 .c-my-feature__status-tag {
-  --p-tag-success-background: var(--sds-color-success-subtle);
-  --p-tag-success-color: var(--sds-color-green-700);
+  --p-tag-success-background: var(--pds-color-success-subtle);
+  --p-tag-success-color: var(--pds-color-green-700);
   --p-tag-font-size: var(--text-label-xs-size);
   --p-tag-icon-size: var(--text-label-xs-size);
 }
@@ -122,18 +122,18 @@ unless the user explicitly asks for custom styling.
 // ❌ Wrong — BEM wrapper remapping outlined secondary Button tokens
 .c-my-feature__nav-button {
   --p-button-label-font-weight: var(--font-weight-regular);
-  --p-button-outlined-secondary-color: var(--sds-color-text);
-  --p-button-outlined-secondary-border-color: var(--sds-color-surface-200);
-  --p-button-outlined-secondary-background: var(--sds-color-content-bg);
-  --p-button-outlined-secondary-hover-background: var(--sds-color-content-hover-bg);
+  --p-button-outlined-secondary-color: var(--pds-color-text);
+  --p-button-outlined-secondary-border-color: var(--pds-color-surface-200);
+  --p-button-outlined-secondary-background: var(--pds-color-content-bg);
+  --p-button-outlined-secondary-hover-background: var(--pds-color-content-hover-bg);
   --p-disabled-opacity: 1;
   opacity: 1;
 }
 
 // ❌ Wrong — BEM chrome duplicating PrimeNG feedback styling
 .c-my-feature__message {
-  background: var(--sds-color-warning-subtle);
-  color: var(--sds-color-warning);
+  background: var(--pds-color-warning-subtle);
+  color: var(--pds-color-warning);
 }
 ```
 

@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import {
   EmptyStateComponent,
-  SDS_DRAWER_APPEND_TO,
-  SDS_DRAWER_CONTENT_STYLE,
-  SDS_PANEL_BORDER_BOTTOM_STYLE,
+  PDS_DRAWER_APPEND_TO,
+  PDS_DRAWER_CONTENT_STYLE,
+  PDS_PANEL_BORDER_BOTTOM_STYLE,
   normalizeAccordionPanelIds,
 } from '@solidaris/ui';
 import { AccordionModule } from 'primeng/accordion';
@@ -57,9 +57,9 @@ import {
   },
 })
 export class DocumentMoreDetailsDrawerComponent {
-  protected readonly drawerAppendTo = SDS_DRAWER_APPEND_TO;
-  protected readonly drawerPanelStyle = SDS_DRAWER_CONTENT_STYLE;
-  protected readonly drawerPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
+  protected readonly drawerAppendTo = PDS_DRAWER_APPEND_TO;
+  protected readonly drawerPanelStyle = PDS_DRAWER_CONTENT_STYLE;
+  protected readonly drawerPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
   protected readonly isAuditTag = isDocumentAuditTag;
   protected readonly isAuditMultiline = isDocumentAuditMultiline;
 

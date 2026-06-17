@@ -15,7 +15,7 @@ import { copyTextToClipboard } from './copy-to-clipboard';
  * Copies `value` to the clipboard on click.
  */
 @Component({
-  selector: 'sds-copyable-text',
+  selector: 'pds-copyable-text',
   standalone: true,
   imports: [ButtonModule, IconComponent],
   templateUrl: './copyable-text.component.html',

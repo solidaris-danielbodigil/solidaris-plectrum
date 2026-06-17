@@ -19,14 +19,14 @@ import {
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
 import {
-  SDS_DRAWER_APPEND_TO,
-  SDS_DRAWER_CONTENT_STYLE,
-  SDS_PANEL_BORDER_BOTTOM_STYLE,
+  PDS_DRAWER_APPEND_TO,
+  PDS_DRAWER_CONTENT_STYLE,
+  PDS_PANEL_BORDER_BOTTOM_STYLE,
   type DetailListRow,
   type DrawerPosition,
 } from '../drawer';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
-import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
+import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   PlectrumAvatarColor,
   PlectrumAvatarGender,
@@ -129,7 +129,7 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
  * https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012
  */
 @Component({
-  selector: 'sds-affiliate-detail-drawer',
+  selector: 'pds-affiliate-detail-drawer',
   standalone: true,
   imports: [
     AccordionModule,
@@ -138,7 +138,7 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
     Drawer,
     FormsModule,
     PlectrumAvatarComponent,
-    SdsTelemetryLabelDirective,
+    PdsTelemetryLabelDirective,
     SelectButton,
     TagModule,
   ],
@@ -150,9 +150,9 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   },
 })
 export class AffiliateDetailDrawerComponent {
-  protected readonly drawerAppendTo = SDS_DRAWER_APPEND_TO;
-  protected readonly drawerPanelStyle = SDS_DRAWER_CONTENT_STYLE;
-  protected readonly drawerPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
+  protected readonly drawerAppendTo = PDS_DRAWER_APPEND_TO;
+  protected readonly drawerPanelStyle = PDS_DRAWER_CONTENT_STYLE;
+  protected readonly drawerPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
 
   /** Affiliate content rendered inside the drawer. */
   readonly data = input.required<AffiliateDetailDrawerData>();

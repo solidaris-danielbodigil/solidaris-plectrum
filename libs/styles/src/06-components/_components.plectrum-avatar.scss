@@ -14,14 +14,14 @@
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: var(--#{$sds-prefix}-size-avatar);
-  height: var(--#{$sds-prefix}-size-avatar);
-  border-radius: var(--#{$sds-prefix}-radius-md);
+  width: var(--#{$pds-prefix}-size-avatar);
+  height: var(--#{$pds-prefix}-size-avatar);
+  border-radius: var(--#{$pds-prefix}-radius-md);
   overflow: visible;
   background-color: transparent;
-  color: var(--#{$sds-prefix}-color-solidaris-red-500);
+  color: var(--#{$pds-prefix}-color-solidaris-red-500);
   user-select: none;
-  transition: box-shadow var(--#{$sds-prefix}-transition-duration-mask) ease, color var(--#{$sds-prefix}-transition-duration-mask) ease;
+  transition: box-shadow var(--#{$pds-prefix}-transition-duration-mask) ease, color var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   &:hover,
   &:focus-visible,
@@ -31,29 +31,29 @@
   }
 
   &:hover {
-    color: var(--#{$sds-prefix}-color-avatar-shape-hover);
+    color: var(--#{$pds-prefix}-color-avatar-shape-hover);
   }
 
   &:focus-visible,
   &[data-state='active'] {
-    box-shadow: var(--#{$sds-prefix}-shadow-avatar-active);
+    box-shadow: var(--#{$pds-prefix}-shadow-avatar-active);
   }
 
   &:active {
-    color: var(--#{$sds-prefix}-color-avatar-shape-hover);
+    color: var(--#{$pds-prefix}-color-avatar-shape-hover);
   }
 
   &[data-state='active'] {
-    color: var(--#{$sds-prefix}-color-solidaris-red-500);
+    color: var(--#{$pds-prefix}-color-solidaris-red-500);
   }
 }
 
 // ── Large illustrated variant (affiliate overview card) ───────────────────────
 
 .c-plectrum-avatar--large {
-  width: var(--#{$sds-prefix}-size-avatar-large-w);
-  height: var(--#{$sds-prefix}-size-avatar-large-h);
-  border-radius: var(--#{$sds-prefix}-radius-none);
+  width: var(--#{$pds-prefix}-size-avatar-large-w);
+  height: var(--#{$pds-prefix}-size-avatar-large-h);
+  border-radius: var(--#{$pds-prefix}-radius-none);
   overflow: hidden;
 
   .c-plectrum-avatar__shape,
@@ -88,7 +88,7 @@
   &:hover,
   &:active,
   &[data-state='active'] {
-    color: var(--#{$sds-prefix}-color-avatar-color-red);
+    color: var(--#{$pds-prefix}-color-avatar-color-red);
   }
 }
 
@@ -97,7 +97,7 @@
   &:hover,
   &:active,
   &[data-state='active'] {
-    color: var(--#{$sds-prefix}-color-avatar-color-blue);
+    color: var(--#{$pds-prefix}-color-avatar-color-blue);
   }
 }
 
@@ -106,7 +106,7 @@
   &:hover,
   &:active,
   &[data-state='active'] {
-    color: var(--#{$sds-prefix}-color-avatar-color-green);
+    color: var(--#{$pds-prefix}-color-avatar-color-green);
   }
 }
 
@@ -115,11 +115,11 @@
   &:hover,
   &:active,
   &[data-state='active'] {
-    color: var(--#{$sds-prefix}-color-avatar-color-yellow);
+    color: var(--#{$pds-prefix}-color-avatar-color-yellow);
   }
 
   .c-plectrum-avatar__initials {
-    color: var(--#{$sds-prefix}-color-avatar-initials-on-yellow);
+    color: var(--#{$pds-prefix}-color-avatar-initials-on-yellow);
   }
 }
 
@@ -127,7 +127,7 @@
   position: relative;
   z-index: 1;
   @include text-heading-xs;
-  color: var(--#{$sds-prefix}-color-surface-0);
+  color: var(--#{$pds-prefix}-color-surface-0);
   text-align: center;
   letter-spacing: var(--letter-spacing-0);
   pointer-events: none;

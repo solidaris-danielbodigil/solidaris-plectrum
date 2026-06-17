@@ -6,13 +6,13 @@ import { TESTING_TELEMETRY_ENABLED } from './testing-telemetry-enabled.token';
  * Gated by `TESTING_TELEMETRY_ENABLED` (provided by the host app when `enableTestingTelemetry` is true).
  */
 @Directive({
-  selector: '[sdsTelemetryLabel]',
+  selector: '[pdsTelemetryLabel]',
   standalone: true,
 })
-export class SdsTelemetryLabelDirective {
+export class PdsTelemetryLabelDirective {
   private readonly enabled = inject(TESTING_TELEMETRY_ENABLED);
 
-  readonly label = input.required<string>({ alias: 'sdsTelemetryLabel' });
+  readonly label = input.required<string>({ alias: 'pdsTelemetryLabel' });
 
   @HostBinding('attr.data-test')
   get dataTest(): string | null {

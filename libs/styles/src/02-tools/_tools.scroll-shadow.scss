@@ -38,7 +38,7 @@
     position: sticky;
     z-index: 1;
     display: block;
-    block-size: var(--#{$sds-prefix}-size-scroll-shadow-height);
+    block-size: var(--#{$pds-prefix}-size-scroll-shadow-height);
     opacity: 0;
     pointer-events: none;
     animation-timeline: $timeline;
@@ -50,10 +50,10 @@
   // Top edge — hidden at the start of the scroll, visible once scrolled down.
   &::before {
     inset-block-start: 0;
-    margin-block-end: calc(-1 * var(--#{$sds-prefix}-size-scroll-shadow-height));
+    margin-block-end: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
     background: linear-gradient(
       to bottom,
-      var(--#{$sds-prefix}-color-scroll-shadow),
+      var(--#{$pds-prefix}-color-scroll-shadow),
       transparent
     );
     animation-name: o-scroll-shadow-top;
@@ -62,10 +62,10 @@
   // Bottom edge — visible at the start, fades out at the end of the scroll.
   &::after {
     inset-block-end: 0;
-    margin-block-start: calc(-1 * var(--#{$sds-prefix}-size-scroll-shadow-height));
+    margin-block-start: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
     background: linear-gradient(
       to top,
-      var(--#{$sds-prefix}-color-scroll-shadow),
+      var(--#{$pds-prefix}-color-scroll-shadow),
       transparent
     );
     animation-name: o-scroll-shadow-bottom;

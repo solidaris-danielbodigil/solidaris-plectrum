@@ -34,11 +34,11 @@ A **CSS Grid object** — the column-system companion to the flex-based [Foundat
 
 CSS Grid's strength is custom track definitions, not fixed 12-column layouts, so \`o-grid\` is built in three tiers:
 
-1. **Bounded utility classes** for the common ~90% — equal columns \`.o-grid--cols-{1–12}\` and responsive auto grids \`.o-grid--auto-fit\` / \`.o-grid--auto-fill\` (driven by \`--sds-grid-min\`).
-2. **Custom-property escape hatch** — set \`--sds-grid-template-columns\` (and \`--sds-grid-template-rows\`) to any arbitrary track list (\`200px 1fr 2fr\`, \`auto 1fr auto\`) while still getting every alignment modifier + \`o-layout--gap-*\`. No class explosion.
+1. **Bounded utility classes** for the common ~90% — equal columns \`.o-grid--cols-{1–12}\` and responsive auto grids \`.o-grid--auto-fit\` / \`.o-grid--auto-fill\` (driven by \`--pds-grid-min\`).
+2. **Custom-property escape hatch** — set \`--pds-grid-template-columns\` (and \`--pds-grid-template-rows\`) to any arbitrary track list (\`200px 1fr 2fr\`, \`auto 1fr auto\`) while still getting every alignment modifier + \`o-layout--gap-*\`. No class explosion.
 3. **Case-by-case in component SCSS** for the genuinely bespoke (named \`grid-template-areas\`, complex row templates) — the component owns its template, exactly like the accordion owns its radii.
 
-> **Mutually exclusive** — \`.o-grid--cols-*\` and the \`--sds-grid-template-columns\` escape hatch both set \`grid-template-columns\`. Use one or the other; if both are present, **source order wins** (the \`--cols-*\` rule comes later, so it overrides the custom property).
+> **Mutually exclusive** — \`.o-grid--cols-*\` and the \`--pds-grid-template-columns\` escape hatch both set \`grid-template-columns\`. Use one or the other; if both are present, **source order wins** (the \`--cols-*\` rule comes later, so it overrides the custom property).
 
 > **Gap** — gap is *not* defined on \`o-grid\`. Reuse \`.o-layout--gap-{scale}\` as a BEM mix on the same element, the same contract as \`.o-flex\`.
 
@@ -52,11 +52,11 @@ Styles: \`libs/styles/src/05-objects/_objects.grid.scss\`
   argTypes: {
     'o-grid':                    { name: '.o-grid',                          description: 'CSS Grid container initializer (display: grid)',                              table: { category: 'Grid Container', subcategory: 'Block' } },
     'o-grid--cols-xx':           { name: '.o-grid--cols-{1–12}',  options: COLS,        description: 'Tier 1a — equal columns: repeat(n, minmax(0, 1fr))',            table: { category: 'Grid Container', subcategory: 'Track template', type: { summary: '1 to 12' } } },
-    'o-grid--auto-fit':          { name: '.o-grid--auto-fit',                description: 'Tier 1b — auto-fit columns sized by --sds-grid-min (collapses empty tracks)',  table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '--sds-grid-min: 16rem' } } },
-    'o-grid--auto-fill':         { name: '.o-grid--auto-fill',               description: 'Tier 1b — auto-fill columns sized by --sds-grid-min (keeps empty tracks)',      table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '--sds-grid-min: 16rem' } } },
-    '--sds-grid-template-columns':{ name: '--sds-grid-template-columns',      description: 'Tier 2 — escape hatch: arbitrary column track list (custom property)',          table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: 'none' } } },
-    '--sds-grid-template-rows':  { name: '--sds-grid-template-rows',          description: 'Tier 2 — escape hatch: arbitrary row track list (custom property)',             table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: 'none' } } },
-    '--sds-grid-min':            { name: '--sds-grid-min',                    description: 'Min column width for --auto-fit / --auto-fill (override per instance)',          table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '16rem' } } },
+    'o-grid--auto-fit':          { name: '.o-grid--auto-fit',                description: 'Tier 1b — auto-fit columns sized by --pds-grid-min (collapses empty tracks)',  table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '--pds-grid-min: 16rem' } } },
+    'o-grid--auto-fill':         { name: '.o-grid--auto-fill',               description: 'Tier 1b — auto-fill columns sized by --pds-grid-min (keeps empty tracks)',      table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '--pds-grid-min: 16rem' } } },
+    '--pds-grid-template-columns':{ name: '--pds-grid-template-columns',      description: 'Tier 2 — escape hatch: arbitrary column track list (custom property)',          table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: 'none' } } },
+    '--pds-grid-template-rows':  { name: '--pds-grid-template-rows',          description: 'Tier 2 — escape hatch: arbitrary row track list (custom property)',             table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: 'none' } } },
+    '--pds-grid-min':            { name: '--pds-grid-min',                    description: 'Min column width for --auto-fit / --auto-fill (override per instance)',          table: { category: 'Grid Container', subcategory: 'Track template', defaultValue: { summary: '16rem' } } },
     'auto-flow':                 { name: '.o-grid--{flow}',       options: AUTO_FLOW,   description: 'grid-auto-flow shorthand',                                      table: { category: 'Grid Container', subcategory: 'Block-modifier', type: { summary: AUTO_FLOW.join(' | ') }, defaultValue: { summary: 'row' } } },
     'justify-items':             { name: '.o-grid--justify-items-xxx',  options: ITEMS,  description: 'Inline-axis alignment of items within their grid area',          table: { category: 'Grid Container', subcategory: 'Alignment', type: { summary: ITEMS.join(' | ') }, defaultValue: { summary: 'stretch' } } },
     'align-items':               { name: '.o-grid--align-items-xxx',    options: ITEMS,  description: 'Block-axis alignment of items within their grid area',            table: { category: 'Grid Container', subcategory: 'Alignment', type: { summary: ITEMS.join(' | ') }, defaultValue: { summary: 'stretch' } } },
@@ -106,19 +106,19 @@ export const AutoGrid = {
 - \`.o-grid--auto-fit\` — collapses empty tracks so items stretch to fill the row.
 - \`.o-grid--auto-fill\` — keeps empty tracks reserved (items keep their min width).
 
-Both derive column count from \`--sds-grid-min\` (default \`16rem\`). Override per instance with an inline \`style="--sds-grid-min: 12rem;"\`. Resize the viewport to watch columns reflow.
+Both derive column count from \`--pds-grid-min\` (default \`16rem\`). Override per instance with an inline \`style="--pds-grid-min: 12rem;"\`. Resize the viewport to watch columns reflow.
   ` } } },
   render: () => ({ template: `
-    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">auto-fit · --sds-grid-min: 10rem</p>
-    <ul class="o-grid o-grid--auto-fit o-layout--gap-2" style="--sds-grid-min: 10rem; list-style: none; padding: 0; margin: 0;">
+    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">auto-fit · --pds-grid-min: 10rem</p>
+    <ul class="o-grid o-grid--auto-fit o-layout--gap-2" style="--pds-grid-min: 10rem; list-style: none; padding: 0; margin: 0;">
       <li class="c-demo-cell o-layout--padding-2">1</li>
       <li class="c-demo-cell c-demo-cell--accent o-layout--padding-2">2</li>
       <li class="c-demo-cell o-layout--padding-2">3</li>
       <li class="c-demo-cell c-demo-cell--accent o-layout--padding-2">4</li>
       <li class="c-demo-cell o-layout--padding-2">5</li>
     </ul>
-    <p style="font-size: 0.85rem; color: #666; margin: 1rem 0 0.5rem;">auto-fill · --sds-grid-min: 10rem</p>
-    <ul class="o-grid o-grid--auto-fill o-layout--gap-2" style="--sds-grid-min: 10rem; list-style: none; padding: 0; margin: 0;">
+    <p style="font-size: 0.85rem; color: #666; margin: 1rem 0 0.5rem;">auto-fill · --pds-grid-min: 10rem</p>
+    <ul class="o-grid o-grid--auto-fill o-layout--gap-2" style="--pds-grid-min: 10rem; list-style: none; padding: 0; margin: 0;">
       <li class="c-demo-cell o-layout--padding-2">1</li>
       <li class="c-demo-cell c-demo-cell--accent o-layout--padding-2">2</li>
       <li class="c-demo-cell o-layout--padding-2">3</li>
@@ -129,22 +129,22 @@ Both derive column count from \`--sds-grid-min\` (default \`16rem\`). Override p
 export const CustomTemplate = {
   name: 'Custom Template (escape hatch)',
   parameters: { docs: { description: { story: `
-**Tier 2.** For arbitrary track lists, set \`--sds-grid-template-columns\` (and/or \`--sds-grid-template-rows\`) inline. The element still gets every alignment modifier and \`o-layout--gap-*\` — no class explosion.
+**Tier 2.** For arbitrary track lists, set \`--pds-grid-template-columns\` (and/or \`--pds-grid-template-rows\`) inline. The element still gets every alignment modifier and \`o-layout--gap-*\` — no class explosion.
 
 \`\`\`html
-<div class="o-grid o-layout--gap-3" style="--sds-grid-template-columns: 200px 1fr 2fr;">…</div>
-<div class="o-grid o-layout--gap-3" style="--sds-grid-template-columns: auto 1fr auto;">…</div>
+<div class="o-grid o-layout--gap-3" style="--pds-grid-template-columns: 200px 1fr 2fr;">…</div>
+<div class="o-grid o-layout--gap-3" style="--pds-grid-template-columns: auto 1fr auto;">…</div>
 \`\`\`
   ` } } },
   render: () => ({ template: `
-    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">--sds-grid-template-columns: 200px 1fr 2fr</p>
-    <div class="o-grid o-layout--gap-2" style="--sds-grid-template-columns: 200px 1fr 2fr;">
+    <p style="font-size: 0.85rem; color: #666; margin-bottom: 0.5rem;">--pds-grid-template-columns: 200px 1fr 2fr</p>
+    <div class="o-grid o-layout--gap-2" style="--pds-grid-template-columns: 200px 1fr 2fr;">
       <div class="c-demo-cell o-layout--padding-2">200px</div>
       <div class="c-demo-cell c-demo-cell--accent o-layout--padding-2">1fr</div>
       <div class="c-demo-cell o-layout--padding-2">2fr</div>
     </div>
-    <p style="font-size: 0.85rem; color: #666; margin: 1rem 0 0.5rem;">--sds-grid-template-columns: auto 1fr auto</p>
-    <div class="o-grid o-layout--gap-2" style="--sds-grid-template-columns: auto 1fr auto;">
+    <p style="font-size: 0.85rem; color: #666; margin: 1rem 0 0.5rem;">--pds-grid-template-columns: auto 1fr auto</p>
+    <div class="o-grid o-layout--gap-2" style="--pds-grid-template-columns: auto 1fr auto;">
       <div class="c-demo-cell o-layout--padding-2">auto</div>
       <div class="c-demo-cell c-demo-cell--accent o-layout--padding-2">1fr</div>
       <div class="c-demo-cell o-layout--padding-2">auto</div>

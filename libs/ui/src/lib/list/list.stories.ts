@@ -4,9 +4,9 @@ import { ListComponent } from './list.component';
 import type { ListDocumentItem, ListGroup } from './list.types';
 
 // =============================================================================
-// List (sds-list)
+// List (pds-list)
 // Design ref: Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7384, 435:7387
-//             Custom-components hierarchy: _master (2:108) → _states (2:125) → list/content (98:2220) → sds-list (107:3675)
+//             Custom-components hierarchy: _master (2:108) → _states (2:125) → list/content (98:2220) → pds-list (107:3675)
 // =============================================================================
 
 const EVA_MARTINEZ_GROUPS: ListGroup[] = [
@@ -93,7 +93,7 @@ const meta: Meta<ListStoryArgs> = {
 iSHARE affiliate document list with **journey** (grouped timeline) and **flat** modes.
 
 - **Figma (iSHARE-Audit)**: [324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) (journey ON), [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) (journey OFF)
-- **Figma (Custom-components)**: [sds-list / c-list](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675) → [list/content](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=98-2220) → [_states](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-125) → [_master](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-108)
+- **Figma (Custom-components)**: [pds-list / c-list](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675) → [list/content](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=98-2220) → [_states](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-125) → [_master](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-108)
 - **BEM block**: \`c-list\`
 - **Journey ON**: chevron on group headers, 64px timeline gutter on child document rows
 - **Journey OFF**: full-width document cards — no chevron, no timeline
@@ -128,7 +128,7 @@ iSHARE affiliate document list with **journey** (grouped timeline) and **flat** 
   render: (args) => ({
     props: args,
     template: `
-      <sds-list
+      <(pds|app|lib)-list
         [groups]="groups"
         [items]="items"
         [expandedGroupIds]="expandedGroupIds"
@@ -256,7 +256,7 @@ export const RowDefault: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default document row via sds-list — no selection. Figma node 2:125.',
+        story: 'Default document row via pds-list — no selection. Figma node 2:125.',
       },
     },
   },
@@ -269,7 +269,7 @@ export const RowHover: Story = {
       (story) => `
         <style>
           .sb-list-row-hover-demo .c-list__item--document.sb-list-row--hover:not(.c-list__item--selected) {
-            border-color: var(--sds-color-list-row-hover-border);
+            border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
         <div class="sb-list-row-hover-demo sb-demo-wrapper" style="max-width: 56rem">${story}</div>
@@ -283,7 +283,7 @@ export const RowHover: Story = {
     docs: {
       description: {
         story:
-          'Hover document row via sds-list — static capture uses `.sb-list-row--hover`. Figma node 2:125.',
+          'Hover document row via pds-list — static capture uses `.sb-list-row--hover`. Figma node 2:125.',
       },
     },
   },
@@ -297,7 +297,7 @@ export const RowSelected: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Selected document row via sds-list and `selectedItemId`. Figma node 2:125.',
+        story: 'Selected document row via pds-list and `selectedItemId`. Figma node 2:125.',
       },
     },
   },
@@ -379,7 +379,7 @@ export const RowStates: Story = {
       (story) => `
         <style>
           .sb-list-row-states .c-list__item--document.sb-force-hover:not(.c-list__item--selected) {
-            border-color: var(--sds-color-list-row-hover-border);
+            border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
         <div class="sb-list-row-states sb-demo-wrapper" style="max-width: 56rem">${story}</div>

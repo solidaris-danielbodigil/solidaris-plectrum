@@ -51,8 +51,8 @@ For scroll containers you **don't** own (e.g. PrimeNG's \`.p-card-body\`), apply
 ### Tuning
 | Token | Default | Controls |
 |---|---|---|
-| \`--sds-size-scroll-shadow-height\` | \`--spacing-3\` | Depth of each edge fade |
-| \`--sds-color-scroll-shadow\` | \`--sds-color-transparent-white-80\` | Fade colour |
+| \`--pds-size-scroll-shadow-height\` | \`--spacing-3\` | Depth of each edge fade |
+| \`--pds-color-scroll-shadow\` | \`--pds-color-transparent-white-80\` | Fade colour |
 
 ### Browser support
 Scroll-driven animations are **Chromium-only** today. Elsewhere it degrades gracefully to **no shadow** (the base \`opacity: 0\` simply stays) — content remains fully usable.

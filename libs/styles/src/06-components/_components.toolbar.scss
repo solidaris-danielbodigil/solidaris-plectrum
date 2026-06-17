@@ -2,7 +2,7 @@
 
 // =============================================================================
 // 06-components/_components.toolbar.scss
-// <sds-toolbar> — generic sticky-capable toolbar with named content slots.
+// <(pds|app|lib)-toolbar> — generic sticky-capable toolbar with named content slots.
 //
 // Slots:
 //   [slot=start]  — left-aligned content (search, filters, …)
@@ -16,7 +16,7 @@
 //
 // Design ref:   internal component — no direct Figma node
 // Token source: libs/styles/src/01-settings/
-//   _settings.globals.scss  → --sds-z-sticky (z-index scale)
+//   _settings.globals.scss  → --pds-z-sticky (z-index scale)
 // =============================================================================
 
 // Host element — sticky modifier
@@ -28,7 +28,7 @@
   &--sticky {
     position: sticky;
     top: 0;
-    z-index: var(--#{$sds-prefix}-z-sticky, 10);
+    z-index: var(--#{$pds-prefix}-z-sticky, 10);
   }
 }
 

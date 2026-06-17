@@ -11,7 +11,7 @@ import type { FormFieldLayout } from './form-field.types';
  * mark ngModel as touched on interaction.
  */
 @Component({
-  selector: 'sds-form-field',
+  selector: 'pds-form-field',
   standalone: true,
   imports: [MessageModule],
   templateUrl: './form-field.component.html',
@@ -21,7 +21,7 @@ export class FormFieldComponent {
   private static nextLabelId = 0;
 
   /** Stable id for `aria-labelledby` when `inputId` is not set on the control. */
-  protected readonly labelId = `sds-form-field-label-${FormFieldComponent.nextLabelId++}`;
+  protected readonly labelId = `pds-form-field-label-${FormFieldComponent.nextLabelId++}`;
 
   readonly label = input.required<string>();
   readonly layout = input<FormFieldLayout>('vertical');

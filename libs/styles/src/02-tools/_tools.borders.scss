@@ -20,20 +20,20 @@ $border-sides: (
   $prop: map.get($border-sides, $side);
   $c: if(
     sass($color == null): var(
-      --#{$sds-prefix}-border-color,
-      var(--#{$sds-prefix}-color-content-border)
+      --#{$pds-prefix}-border-color,
+      var(--#{$pds-prefix}-color-content-border)
     );
     else: $color
   );
   $w: if(
     sass($width == null): var(
-      --#{$sds-prefix}-border-width,
-      var(--#{$sds-prefix}-border-width-default)
+      --#{$pds-prefix}-border-width,
+      var(--#{$pds-prefix}-border-width-default)
     );
     else: $width
   );
   $s: if(
-    sass($style == null): var(--#{$sds-prefix}-border-style, solid);
+    sass($style == null): var(--#{$pds-prefix}-border-style, solid);
     else: $style
   );
   #{$prop}: $w $s $c;

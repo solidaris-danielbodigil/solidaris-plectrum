@@ -21,7 +21,7 @@ import { Card } from 'primeng/card';
  * `ViewEncapsulation.None` is required because styles are in the global ITCSS sheet.
  *
  * ## Domain variants
- * Apply a BEM block class on `<sds-toolbar>` for page-specific chrome overrides.
+ * Apply a BEM block class on `<(pds|app|lib)-toolbar>` for page-specific chrome overrides.
  * - `c-affiliate-documents-toolbar` — affiliate document filter row (Figma 324:5772).
  *   Tokens: `libs/styles/src/01-settings/_settings.affiliate-documents.scss`
  *   Styles: `libs/styles/src/06-components/_components.affiliate-documents.scss`
@@ -29,18 +29,18 @@ import { Card } from 'primeng/card';
  *
  * ## Usage
  * ```html
- * <sds-toolbar [sticky]="true">
+ * <(pds|app|lib)-toolbar [sticky]="true">
  *   <ng-container slot="start">
  *     <!-- search, filters … -->
  *   </ng-container>
  *   <ng-container slot="end">
  *     <!-- badge, actions … -->
  *   </ng-container>
- * </sds-toolbar>
+ * </pds-toolbar>
  * ```
  */
 @Component({
-  selector: 'sds-toolbar',
+  selector: 'pds-toolbar',
   standalone: true,
   imports: [Card],
   templateUrl: './toolbar.component.html',

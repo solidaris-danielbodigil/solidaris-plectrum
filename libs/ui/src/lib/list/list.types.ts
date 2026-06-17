@@ -43,7 +43,7 @@ export interface ListGroup {
   documents: ListDocumentItem[];
 }
 
-/** Union of row types rendered by sds-list. */
+/** Union of row types rendered by pds-list. */
 export type ListItem = ListGroup | ListDocumentItem;
 
 export function isListGroup(item: ListItem): item is ListGroup {

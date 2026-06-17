@@ -1,12 +1,12 @@
 // =============================================================================
 // libs/ui/src/lib/icon/icon.component.ts
-// <sds-icon> — universal icon component for the Solidaris Design System.
+// <(pds|app|lib)-icon> — universal icon component for the Plectrum Design System.
 //
 // Supports:
 //   - Bootstrap Icons via CSS class strings  (source="class", default)
 //   - Custom SVG icons via the IconRegistry  (source="svg")
 //
-// Size variants map to --sds-icon-size-* tokens.
+// Size variants map to --pds-icon-size-* tokens.
 // Colour inherits via currentColor by default.
 // =============================================================================
 
@@ -24,7 +24,7 @@ import { IconRegistry } from './icon.registry';
 import { IconSize, IconSource } from './icon.types';
 
 @Component({
-  selector: 'sds-icon',
+  selector: 'pds-icon',
   standalone: true,
   templateUrl: './icon.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -82,7 +82,7 @@ export class IconComponent {
     const entry = this.registry.get(this.icon());
     if (!entry) {
       if (this.isBrowser) {
-        console.warn(`[sds-icon] SVG icon "${this.icon()}" is not registered.`);
+        console.warn(`[pds-icon] SVG icon "${this.icon()}" is not registered.`);
       }
       return null;
     }

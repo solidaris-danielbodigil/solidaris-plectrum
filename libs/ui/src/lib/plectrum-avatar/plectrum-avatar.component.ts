@@ -15,7 +15,7 @@ import {
 } from './plectrum-avatar.types';
 
 @Component({
-  selector: 'sds-plectrum-avatar',
+  selector: 'pds-plectrum-avatar',
   standalone: true,
   templateUrl: './plectrum-avatar.component.html',
   // Styles live in libs/styles global sheet (SSOT).

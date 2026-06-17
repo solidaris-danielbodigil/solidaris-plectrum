@@ -8,8 +8,8 @@
 
 :root {
   // Depth of each edge fade — drives both pseudo-element height and negative margin.
-  --#{$sds-prefix}-size-scroll-shadow-height: var(--spacing-3);
+  --#{$pds-prefix}-size-scroll-shadow-height: var(--spacing-3);
 
   // Fade colour — white scrim by default (softens content under the edge).
-  --#{$sds-prefix}-color-scroll-shadow: var(--#{$sds-prefix}-color-transparent-white-80);
+  --#{$pds-prefix}-color-scroll-shadow: var(--#{$pds-prefix}-color-transparent-white-80);
 }

@@ -64,7 +64,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should render large illustrated avatar when not loading', () => {
     const avatar = fixture.nativeElement.querySelector(
-      'sds-plectrum-avatar.c-affiliate-overview-card__avatar',
+      'pds-plectrum-avatar.c-affiliate-overview-card__avatar',
     );
     expect(avatar).toBeTruthy();
     expect(avatar.classList.contains('c-plectrum-avatar--large')).toBe(true);
@@ -89,7 +89,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should render copy icon in identifier buttons', () => {
     const icons = fixture.nativeElement.querySelectorAll(
-      'sds-icon.c-copyable-text__icon',
+      'pds-icon.c-copyable-text__icon',
     );
 
     expect(icons.length).toBe(SAMPLE_IDENTIFIERS.length);
@@ -97,7 +97,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should mark copy icons as decorative aria-hidden', () => {
     const icons = fixture.nativeElement.querySelectorAll(
-      'sds-icon.c-copyable-text__icon',
+      'pds-icon.c-copyable-text__icon',
     );
 
     icons.forEach((icon: Element) => {
@@ -107,7 +107,7 @@ describe('AffiliateOverviewCardComponent', () => {
 
   it('should set avatar aria-label from title', () => {
     const avatar = fixture.nativeElement.querySelector(
-      'sds-plectrum-avatar.c-affiliate-overview-card__avatar',
+      'pds-plectrum-avatar.c-affiliate-overview-card__avatar',
     );
 
     expect(avatar?.getAttribute('aria-label')).toBe('Dupont, Marie');

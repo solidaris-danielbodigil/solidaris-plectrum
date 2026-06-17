@@ -26,22 +26,22 @@ export const IconMetadata: ComponentMetadata = {
       {
         name: 'Decorative Bootstrap Icon',
         description: 'Icon is purely visual — label is on the surrounding interactive element.',
-        composition: '<sds-icon icon="bi bi-house" />',
+        composition: '<(pds|app|lib)-icon icon="bi bi-house" />',
       },
       {
         name: 'Accessible standalone icon',
         description: 'Icon conveys meaning on its own — provide a label for screen readers.',
-        composition: '<sds-icon icon="bi bi-bell" label="Notifications" />',
+        composition: '<(pds|app|lib)-icon icon="bi bi-bell" label="Notifications" />',
       },
       {
         name: 'Custom SVG from registry',
         description: 'Register once via IconRegistry.register(), then reference by key.',
-        composition: '<sds-icon icon="logo-solidaris" source="svg" size="lg" />',
+        composition: '<(pds|app|lib)-icon icon="logo-solidaris" source="svg" size="lg" />',
       },
     ],
     antiPatterns: [
       {
-        scenario: 'Setting an explicit color on sds-icon',
+        scenario: 'Setting an explicit color on pds-icon',
         reason: 'Icons inherit currentColor — overriding breaks theme coherence.',
         alternative: 'Set the color on the parent element and let it inherit.',
       },
@@ -63,11 +63,11 @@ export const IconMetadata: ComponentMetadata = {
   },
   tokens: {
     consumed: [
-      '--sds-icon-size-xs',
-      '--sds-icon-size-sm',
-      '--sds-icon-size-md',
-      '--sds-icon-size-lg',
-      '--sds-icon-size-xl',
+      '--pds-icon-size-xs',
+      '--pds-icon-size-sm',
+      '--pds-icon-size-md',
+      '--pds-icon-size-lg',
+      '--pds-icon-size-xl',
     ],
   },
   aiHints: {
@@ -83,17 +83,17 @@ export const IconMetadata: ComponentMetadata = {
     {
       name: 'Decorative nav icon',
       description: 'Used inside a nav item where the <a> carries the accessible label.',
-      code: '<sds-icon icon="bi bi-house" size="md" />',
+      code: '<(pds|app|lib)-icon icon="bi bi-house" size="md" />',
     },
     {
       name: 'Accessible standalone icon',
       description: 'Non-decorative use — icon is the only representation of the action.',
-      code: '<sds-icon icon="bi bi-bell" label="Notifications" size="md" />',
+      code: '<(pds|app|lib)-icon icon="bi bi-bell" label="Notifications" size="md" />',
     },
     {
       name: 'Custom SVG (registry)',
       description: 'Custom branded SVG registered via IconRegistry and rendered inline.',
-      code: '<sds-icon icon="logo-solidaris" source="svg" size="xl" />',
+      code: '<(pds|app|lib)-icon icon="logo-solidaris" source="svg" size="xl" />',
     },
   ],
 };

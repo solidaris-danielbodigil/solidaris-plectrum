@@ -8,13 +8,13 @@
 // =============================================================================
 
 :root {
-  --#{$sds-prefix}-color-affiliate-detail-drawer-relationship: var(--#{$sds-prefix}-color-surface-700);
+  --#{$pds-prefix}-color-affiliate-detail-drawer-relationship: var(--#{$pds-prefix}-color-surface-700);
 
-  --#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg: var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-radius-affiliate-detail-drawer-tile: var(--#{$sds-prefix}-radius-lg);
+  --#{$pds-prefix}-color-affiliate-detail-drawer-tile-bg: var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-radius-affiliate-detail-drawer-tile: var(--#{$pds-prefix}-radius-lg);
 
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-bg: var(--#{$sds-prefix}-color-surface-50);
-  --#{$sds-prefix}-radius-affiliate-detail-drawer-note: var(--#{$sds-prefix}-radius-md);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-author: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-timestamp: var(--#{$sds-prefix}-color-black-alpha-700);
+  --#{$pds-prefix}-color-affiliate-detail-drawer-note-bg: var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-radius-affiliate-detail-drawer-note: var(--#{$pds-prefix}-radius-md);
+  --#{$pds-prefix}-color-affiliate-detail-drawer-note-author: var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-affiliate-detail-drawer-note-timestamp: var(--#{$pds-prefix}-color-black-alpha-700);
 }

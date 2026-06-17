@@ -1,6 +1,6 @@
 ---
 name: Solidaris
-description: Coordinator for the Solidaris design system. Delegates to specialist subagents for research, engineering, implementation, testing, token auditing, and architecture.
+description: Coordinator for the Plectrum Design System. Delegates to specialist subagents for research, engineering, implementation, testing, token auditing, and architecture.
 tools:
   - agent
   - read
@@ -35,7 +35,7 @@ the `agent` tool (`runSubagent`).
 - SCSS: ITCSS (01-settings → 08-trumps) · Naming: BEMIT (`c-`, `o-`, `u-`)
 - Shared components → `libs/ui` · Shared styles → `libs/styles`
 - No Tailwind in HTML templates — `@apply` in SCSS only
-- All values via `var(--sds-*)` — no hardcoded hex/px/rem
+- All values via `var(--pds-*)` — no hardcoded hex/px/rem
 - Every component needs a colocated `.stories.ts` before it is done
 
 ---
@@ -66,7 +66,7 @@ Using the design brief from the UX Researcher and the architectural guidance fro
 the Architect, invoke the **UX Engineer** subagent:
 
 > "Using the following design brief: [paste UX Researcher output] and architectural
-> guidance: [paste Architect output] — add missing `--sds-*` tokens to `01-settings/`,
+> guidance: [paste Architect output] — add missing `--pds-*` tokens to `01-settings/`,
 > write the SCSS file in `06-components/`, register it in `_components.core.scss`,
 > and write all Storybook stories colocated with the component."
 
@@ -100,7 +100,7 @@ Do not wait for one to finish before starting the other:
 
 2. Invoke the **Token Auditor** subagent:
    > "Audit the tokens added for [component name]. Check: prefix compliance
-   > (all via `#{$sds-prefix}`), semantic coverage (no primitives used directly),
+   > (all via `#{$pds-prefix}`), semantic coverage (no primitives used directly),
    > PrimeNG sync, and Figma drift. Report any issues."
 
 Wait for both to return results before proceeding to Step 5.

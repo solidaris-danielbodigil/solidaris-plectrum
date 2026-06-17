@@ -1,6 +1,6 @@
 # AI Prompt Templates
 
-Reusable prompts for AI agents working on the Plectrum/Solidaris design system.
+Reusable prompts for AI agents working on the Plectrum/Plectrum Design System.
 
 ---
 
@@ -17,13 +17,13 @@ Reusable prompts for AI agents working on the Plectrum/Solidaris design system.
 Use this when asking an AI to review a proposed token change before merge.
 
 ```
-You are helping review a design-token change for the Plectrum/Solidaris design system.
+You are helping review a design-token change for the Plectrum/Plectrum Design System.
 
 Context:
 - Figma is the shared design reference for designers.
 - The repository is the controlled implementation layer.
 - PrimeNG is the component library. Plectrum/Solidaris owns the custom design layer.
-- All Solidaris CSS variables use the --sds-* prefix, controlled by $sds-prefix in 01-settings/_settings.prefix.scss.
+- All Solidaris CSS variables use the --pds-* prefix, controlled by $pds-prefix in 01-settings/_settings.prefix.scss.
 - PrimeNG variables keep the --p-* prefix.
 - The PrimeNG TypeScript preset is a small adapter — not the main design authoring layer.
 - SCSS/CSS owns most Solidaris design implementation.
@@ -64,14 +64,14 @@ Token change to review:
 
 ## Prompt B — Translating Figma Decisions into Tokens
 
-Use this when a Figma design decision needs to be translated into `--sds-*` tokens.
+Use this when a Figma design decision needs to be translated into `--pds-*` tokens.
 
 ```
 You are helping translate a Figma design decision into a clean design-token structure for Plectrum/Solidaris.
 
 Context:
 - Figma is the shared design reference.
-- All Solidaris tokens use the --sds-* prefix via $sds-prefix in 01-settings/_settings.prefix.scss.
+- All Solidaris tokens use the --pds-* prefix via $pds-prefix in 01-settings/_settings.prefix.scss.
 - Tokens are split: primitive values in _settings.*-primitive.scss, semantic roles in _settings.*-semantic.scss.
 - PrimeNG variables use --p-* prefix.
 - The PrimeNG TypeScript preset is a minimal adapter.
@@ -84,7 +84,7 @@ Given the following Figma decision, propose:
 1. Primitive tokens (if new raw values are needed)
 2. Semantic tokens
 3. Component tokens (if component-specific)
-4. CSS custom properties using --sds-* with $sds-prefix interpolation
+4. CSS custom properties using --pds-* with $pds-prefix interpolation
 5. PrimeNG --p-* mappings (if relevant)
 6. SCSS implementation snippet
 7. ITCSS file location
@@ -106,7 +106,7 @@ Figma decision:
 Use this as a system-level context injection for any AI agent working on the codebase.
 
 ```
-Use these rules when working on the Plectrum/Solidaris design system.
+Use these rules when working on the Plectrum/Plectrum Design System.
 
 Architecture:
 - Figma = shared design reference
@@ -119,7 +119,7 @@ Architecture:
 
 SCSS rules (hard stops):
 - No local $variables in component files — all values in 01-settings/
-- No hardcoded hex/rgba/px in 06-components — always var(--sds-*)
+- No hardcoded hex/rgba/px in 06-components — always var(--pds-*)
 - If a token is missing, add it to 01-settings FIRST, then use it
 - @apply for layout/spacing — never Tailwind classes in HTML templates
 - Dimensions content-driven — no arbitrary fixed width/height
@@ -128,10 +128,10 @@ Preferred flow:
 Figma MCP → PrimeNG MCP → add missing tokens → implement component → Storybook story → generate-index
 
 CSS variable naming:
-- All Solidaris/Plectrum tokens: --sds-* (controlled by $sds-prefix in 01-settings/_settings.prefix.scss)
+- All Solidaris/Plectrum tokens: --pds-* (controlled by $pds-prefix in 01-settings/_settings.prefix.scss)
 - PrimeNG tokens: --p-* (never rename)
 - Always @use 'settings.prefix' as * in files that emit tokens
-- Emit tokens as: --#{$sds-prefix}-token-name
+- Emit tokens as: --#{$pds-prefix}-token-name
 
 Token layers:
 1. Primitive  — raw values, _settings.*-primitive.scss files  (never use in components)
@@ -139,23 +139,23 @@ Token layers:
 3. Component  — component decisions, 06-components/_components.*.scss files
 
 01-settings/ file map (naming: _settings.{description}.scss):
-- _settings.prefix.scss                — $sds-prefix config
-- _settings.colors-primitive.scss      — --sds-color-{palette}-{shade}
-- _settings.colors-semantic.scss       — --sds-color-{role}
-- _settings.typography-primitive.scss  — --sds-font-*, --sds-line-height-*, --sds-letter-spacing-*
-- _settings.typography-semantic.scss   — --sds-text-{category}-{size}-{property}
-- _settings.spacing.scss               — --sds-space-*, --sds-size-*
-- _settings.radius.scss                — --sds-radius-*
-- _settings.shadows.scss               — --sds-shadow-*
-- _settings.transitions.scss           — --sds-transition-*
-- _settings.focus.scss                 — --sds-focus-ring-*
-- _settings.globals.scss               — --sds-disabled-opacity, --sds-icon-size, --sds-anchor-gutter
+- _settings.prefix.scss                — $pds-prefix config
+- _settings.colors-primitive.scss      — --pds-color-{palette}-{shade}
+- _settings.colors-semantic.scss       — --pds-color-{role}
+- _settings.typography-primitive.scss  — --pds-font-*, --pds-line-height-*, --pds-letter-spacing-*
+- _settings.typography-semantic.scss   — --pds-text-{category}-{size}-{property}
+- _settings.spacing.scss               — --pds-space-*, --pds-size-*
+- _settings.radius.scss                — --pds-radius-*
+- _settings.shadows.scss               — --pds-shadow-*
+- _settings.transitions.scss           — --pds-transition-*
+- _settings.focus.scss                 — --pds-focus-ring-*
+- _settings.globals.scss               — --pds-disabled-opacity, --pds-icon-size, --pds-anchor-gutter
 - _settings.{primeng-component}.scss   — PrimeNG --p-* token bridge (e.g. _settings.accordion.scss)
 
 Bridge pattern (preferred):
 :root {
-  --sds-color-brand: var(--sds-color-primary-500);
-  --p-button-primary-background: var(--sds-color-brand);
+  --pds-color-brand: var(--pds-color-primary-500);
+  --p-button-primary-background: var(--pds-color-brand);
 }
 
 Never:

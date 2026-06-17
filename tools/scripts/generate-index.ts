@@ -115,11 +115,11 @@ function extractImports(filePath: string): string[] {
     }
   }
 
-  // Match template usage: <app-component-name or <lib-component-name
+  // Match template usage: <pds-component-name or <app-component-name
   const templatePath = filePath.replace('.component.ts', '.component.html');
   if (fs.existsSync(templatePath)) {
     const template = fs.readFileSync(templatePath, 'utf-8');
-    const tagRegex = /<(sds|app|lib)-([a-z-]+)/g;
+    const tagRegex = /<(pds|app|lib)-([a-z-]+)/g;
     while ((match = tagRegex.exec(template)) !== null) {
       imports.push(toPascalCase(match[2]));
     }
@@ -257,7 +257,7 @@ function generate(): void {
       framework: 'angular',
       componentLibrary: 'primeng',
       designSystem: 'plectrum',
-      prefix: 'sds',
+      prefix: 'pds',
       baseRemPx: 14,
     },
     workspace: existingIndex?.workspace ?? {
@@ -272,7 +272,7 @@ function generate(): void {
       ],
     },
     tokenArchitecture: existingIndex?.tokenArchitecture ?? {
-      prefix: '--sds-*',
+      prefix: '--pds-*',
       prefixConfig: 'libs/styles/src/01-settings/_settings.prefix.scss',
       layers: {
         primitive: {
@@ -280,7 +280,7 @@ function generate(): void {
             'libs/styles/src/01-settings/_settings.colors-primitive.scss',
             'libs/styles/src/01-settings/_settings.typography-primitive.scss',
           ],
-          pattern: '--sds-{category}-{palette}-{shade}',
+          pattern: '--pds-{category}-{palette}-{shade}',
         },
         semantic: {
           files: [
@@ -293,11 +293,11 @@ function generate(): void {
             'libs/styles/src/01-settings/_settings.focus.scss',
             'libs/styles/src/01-settings/_settings.globals.scss',
           ],
-          pattern: '--sds-{category}-{role}',
+          pattern: '--pds-{category}-{role}',
         },
         component: {
           files: ['libs/styles/src/06-components/_components.*.scss'],
-          pattern: '--p-{component}-{property} mapped from --sds-*',
+          pattern: '--p-{component}-{property} mapped from --pds-*',
         },
       },
     },

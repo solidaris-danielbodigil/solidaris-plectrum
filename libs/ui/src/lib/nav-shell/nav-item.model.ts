@@ -4,13 +4,13 @@ export interface NavItem {
   /** Accessible label (always rendered; visually hidden in collapsed mode) */
   label: string;
   /**
-   * Icon identifier passed to <sds-icon [icon]="...">.
+   * Icon identifier passed to <(pds|app|lib)-icon [icon]="...">.
    * - For iconSource="class": Bootstrap Icons class string, e.g. `'bi bi-house'`
    * - For iconSource="svg":   Registry key registered via IconRegistry.register()
    */
   icon: string;
   /**
-   * How the icon value should be interpreted by <sds-icon>.
+   * How the icon value should be interpreted by <(pds|app|lib)-icon>.
    * Defaults to 'svg' (custom brand-mark SVG via IconRegistry).
    */
   iconSource?: 'class' | 'svg';

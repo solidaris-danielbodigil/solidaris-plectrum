@@ -41,7 +41,7 @@ export const Vertical: Story = {
       imports: [FormsModule, InputTextModule, FormFieldComponent],
     },
     template: `
-      <sds-form-field
+      <(pds|app|lib)-form-field
         [label]="label"
         [layout]="layout"
         [required]="required"
@@ -49,7 +49,7 @@ export const Vertical: Story = {
         [errorMessage]="errorMessage"
       >
         <input pInputText [(ngModel)]="value" [required]="required" />
-      </sds-form-field>
+      </pds-form-field>
     `,
   }),
   args: {
@@ -76,7 +76,7 @@ export const Horizontal: Story = {
       imports: [FormsModule, InputTextModule, FormFieldComponent],
     },
     template: `
-      <sds-form-field
+      <(pds|app|lib)-form-field
         [label]="label"
         [layout]="layout"
         [required]="required"
@@ -85,7 +85,7 @@ export const Horizontal: Story = {
         [inputId]="inputId"
       >
         <input pInputText [id]="inputId" [(ngModel)]="value" [required]="required" />
-      </sds-form-field>
+      </pds-form-field>
     `,
   }),
   args: {

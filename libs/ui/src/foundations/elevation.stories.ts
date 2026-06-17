@@ -7,13 +7,13 @@ import { componentWrapperDecorator, type Meta } from '@storybook/angular';
 
 const SHADOWS = [
   { cls: 'none', token: '—', use: 'Remove elevation' },
-  { cls: 'sm', token: '--sds-shadow-sm', use: 'Subtle card chrome' },
-  { cls: 'md', token: '--sds-shadow-md', use: 'Raised panels, dropdowns' },
-  { cls: 'xl', token: '--sds-shadow-xl', use: 'Prominent elevation (drawers)' },
-  { cls: 'overlay-modal', token: '--sds-shadow-overlay-modal', use: 'Modal dialogs' },
-  { cls: 'overlay-select', token: '--sds-shadow-overlay-select', use: 'Select / autocomplete panels' },
-  { cls: 'overlay-popover', token: '--sds-shadow-overlay-popover', use: 'Popovers, tooltips' },
-  { cls: 'overlay-navigation', token: '--sds-shadow-overlay-navigation', use: 'Navigation overlays' },
+  { cls: 'sm', token: '--pds-shadow-sm', use: 'Subtle card chrome' },
+  { cls: 'md', token: '--pds-shadow-md', use: 'Raised panels, dropdowns' },
+  { cls: 'xl', token: '--pds-shadow-xl', use: 'Prominent elevation (drawers)' },
+  { cls: 'overlay-modal', token: '--pds-shadow-overlay-modal', use: 'Modal dialogs' },
+  { cls: 'overlay-select', token: '--pds-shadow-overlay-select', use: 'Select / autocomplete panels' },
+  { cls: 'overlay-popover', token: '--pds-shadow-overlay-popover', use: 'Popovers, tooltips' },
+  { cls: 'overlay-navigation', token: '--pds-shadow-overlay-navigation', use: 'Navigation overlays' },
 ];
 
 export default {
@@ -27,7 +27,7 @@ export default {
     docs: {
       description: {
         component: `
-Elevation utilities map directly to \`--sds-shadow-*\` tokens from \`01-settings/_settings.shadows.scss\`.
+Elevation utilities map directly to \`--pds-shadow-*\` tokens from \`01-settings/_settings.shadows.scss\`.
 
 Elevation only — status/focus rings are handled separately in \`_settings.focus.scss\`.
 
@@ -53,7 +53,7 @@ ${SHADOWS.map((s) => `| \`.u-shadow-${s.cls}\` | \`${s.token}\` | ${s.use} |`).j
   },
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-4 o-layout--padding-4" style="background: var(--sds-color-surface-100, #f5f5f5);">
+    <div class="o-flex o-flex--wrap o-layout--gap-4 o-layout--padding-4" style="background: var(--pds-color-surface-100, #f5f5f5);">
       ${SHADOWS.map(
         (s) => `
       <div class="c-demo-cell u-shadow-${s.cls} o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-4" style="width: 10rem; height: 6rem; background: white;">

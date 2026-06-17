@@ -53,7 +53,7 @@ export const IconField: Story = {
           placeholder="Search"
         />
         <p-inputicon>
-          <sds-input-clear
+          <(pds|app|lib)-input-clear
             [visible]="!!value"
             [ariaLabel]="ariaLabel"
             (clear)="value = ''"
@@ -93,7 +93,7 @@ export const SearchWithLeadingIcon: Story = {
           placeholder="Rechercher document..."
         />
         <p-inputicon>
-          <sds-input-clear
+          <(pds|app|lib)-input-clear
             [visible]="!!query"
             [ariaLabel]="ariaLabel"
             (clear)="query = ''"
@@ -126,7 +126,7 @@ export const InInputGroup: Story = {
         <p-iconfield class="o-flex__item--grow-1 o-layout--min-w-0">
           <input pInputText [(ngModel)]="value" placeholder="Numéro NISS" />
           <p-inputicon>
-            <sds-input-clear
+            <(pds|app|lib)-input-clear
               [visible]="!!value"
               [ariaLabel]="ariaLabel"
               (clear)="value = ''"

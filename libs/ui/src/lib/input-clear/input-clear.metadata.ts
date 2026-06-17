@@ -26,23 +26,23 @@ export const InputClearMetadata: ComponentMetadata = {
       {
         name: 'Clearable icon field',
         description:
-          'Wrap the input in p-iconfield, place sds-input-clear inside p-inputicon after the input.',
+          'Wrap the input in p-iconfield, place pds-input-clear inside p-inputicon after the input.',
         composition: `<p-iconfield>
   <input pInputText type="text" role="searchbox" autocomplete="off" [(ngModel)]="value" />
   <p-inputicon>
-    <sds-input-clear [visible]="!!value" ariaLabel="Clear" (clear)="value = ''" />
+    <(pds|app|lib)-input-clear [visible]="!!value" ariaLabel="Clear" (clear)="value = ''" />
   </p-inputicon>
 </p-iconfield>`,
       },
       {
         name: 'Search field with leading icon',
         description:
-          'Leading search icon in the first p-inputicon; sds-input-clear in a second p-inputicon after the input. Never use type="search".',
+          'Leading search icon in the first p-inputicon; pds-input-clear in a second p-inputicon after the input. Never use type="search".',
         composition: `<p-iconfield>
   <p-inputicon><i class="bi bi-search" aria-hidden="true"></i></p-inputicon>
   <input pInputText type="text" role="searchbox" autocomplete="off" [(ngModel)]="query" />
   <p-inputicon>
-    <sds-input-clear [visible]="!!query" ariaLabel="Clear search" (clear)="query = ''" />
+    <(pds|app|lib)-input-clear [visible]="!!query" ariaLabel="Clear search" (clear)="query = ''" />
   </p-inputicon>
 </p-iconfield>`,
       },
@@ -54,7 +54,7 @@ export const InputClearMetadata: ComponentMetadata = {
   <p-iconfield>
     <input pInputText type="text" [(ngModel)]="value" />
     <p-inputicon>
-      <sds-input-clear [visible]="!!value" (clear)="value = ''" />
+      <(pds|app|lib)-input-clear [visible]="!!value" (clear)="value = ''" />
     </p-inputicon>
   </p-iconfield>
   <button pButton type="submit" label="Search" />
@@ -65,18 +65,18 @@ export const InputClearMetadata: ComponentMetadata = {
       {
         scenario: 'Bootstrap bi-x-lg inside p-inputicon',
         reason: 'Font icons render at different metrics than PrimeNG showClear SVGs.',
-        alternative: 'Use sds-input-clear for consistent 14×14 PrimeNG times asset.',
+        alternative: 'Use pds-input-clear for consistent 14×14 PrimeNG times asset.',
       },
       {
-        scenario: 'Input type="search" with sds-input-clear',
+        scenario: 'Input type="search" with pds-input-clear',
         reason: 'Browsers render a native clear control alongside the PrimeNG times icon.',
-        alternative: 'Use type="text" with role="searchbox" and sds-input-clear only.',
+        alternative: 'Use type="text" with role="searchbox" and pds-input-clear only.',
       },
       {
-        scenario: 'Clearable pInputText without sds-input-clear',
+        scenario: 'Clearable pInputText without pds-input-clear',
         reason: 'Leaves browser-native search clears or no clear affordance; inconsistent with home and top-nav.',
         alternative:
-          'Add sds-input-clear in p-inputicon after the input. Use showClear only on PrimeNG components that support it natively (autocomplete, select, multiselect).',
+          'Add pds-input-clear in p-inputicon after the input. Use showClear only on PrimeNG components that support it natively (autocomplete, select, multiselect).',
       },
     ],
   },

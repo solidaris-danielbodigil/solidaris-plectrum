@@ -12,7 +12,7 @@
 
 ```
 Scan all SCSS in libs/styles/ for:
-- Hardcoded --sds- without #{$sds-prefix} → ERROR
+- Hardcoded --pds- without #{$pds-prefix} → ERROR
 - Direct use of primitive tokens in 06-components/ → WARNING
 - Missing @use 'settings.prefix' as * in files emitting tokens → ERROR
 ```
@@ -29,7 +29,7 @@ For each primitive token used in components:
 
 ```
 For each --p-* override in the codebase:
-- Does it reference an --sds-* semantic token? → If hardcoded value, ERROR
+- Does it reference an --pds-* semantic token? → If hardcoded value, ERROR
 - Is the mapping documented in component .metadata.ts? → If not, WARNING
 ```
 
@@ -45,7 +45,7 @@ Compare Figma variable export against token files:
 ### 5. Accessibility
 
 ```
-For all --sds-color-text-* and --sds-color-surface-* pairs:
+For all --pds-color-text-* and --pds-color-surface-* pairs:
 - Compute contrast ratio
 - Flag any pair below 4.5:1 (AA normal text)
 - Flag any pair below 3:1 (AA large text / UI)

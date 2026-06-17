@@ -1,6 +1,6 @@
 // =============================================================================
 // 07-utilities/_utilities.shadows.scss
-// u-shadow-* — elevation utilities from the --sds-shadow-* tokens (prefix: u-).
+// u-shadow-* — elevation utilities from the --pds-shadow-* tokens (prefix: u-).
 //
 // Elevation only. Status / focus rings are a separate concern handled by
 // _settings.focus.scss — out of scope here.
@@ -23,6 +23,6 @@ $shadows: (
 
 @each $s in $shadows {
   .u-shadow-#{$s} {
-    box-shadow: var(--#{$sds-prefix}-shadow-#{$s});
+    box-shadow: var(--#{$pds-prefix}-shadow-#{$s});
   }
 }

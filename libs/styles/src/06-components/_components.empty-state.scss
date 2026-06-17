@@ -20,8 +20,8 @@
 .c-empty-state__art {
   // Fixed size required — the SVG illustration needs a stable frame to preserve proportions.
   position: relative;
-  inline-size: min(100%, var(--#{$sds-prefix}-size-empty-state-art-w));
-  block-size: var(--#{$sds-prefix}-size-empty-state-art-h);
+  inline-size: min(100%, var(--#{$pds-prefix}-size-empty-state-art-w));
+  block-size: var(--#{$pds-prefix}-size-empty-state-art-h);
   flex-shrink: 0;
 }
 
@@ -33,10 +33,10 @@
 
 .c-empty-state__title {
   @include text-heading-md;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 .c-empty-state__description {
   @include text-body-md;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
 }

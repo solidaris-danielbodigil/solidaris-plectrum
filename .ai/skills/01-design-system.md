@@ -55,24 +55,24 @@ Order of operations:
 ## 4. Typography
 
 - **Base font size**: `1rem = 14px` (Plectrum base — not the browser default of 16px)
-- **Display / Heading font**: `Agenda` — token: `--sds-font-agenda`
-- **Body / Label font**: `Open Sans` — token: `--sds-font-open-sans`
-- Font style token pattern: `--sds-text-{category}-{size}-{property}`
-  - e.g. `--sds-text-body-md-size`, `--sds-text-heading-lg-family`, `--sds-text-label-sm-weight`
-- **Never** hardcode `font-size`, `font-family`, or `line-height` — always use `--sds-text-*` tokens
+- **Display / Heading font**: `Agenda` — token: `--pds-font-agenda`
+- **Body / Label font**: `Open Sans` — token: `--pds-font-open-sans`
+- Font style token pattern: `--pds-text-{category}-{size}-{property}`
+  - e.g. `--pds-text-body-md-size`, `--pds-text-heading-lg-family`, `--pds-text-label-sm-weight`
+- **Never** hardcode `font-size`, `font-family`, or `line-height` — always use `--pds-text-*` tokens
 
 ---
 
 ## 5. Design Tokens
 
 - Tokens are provided by the Plectrum PrimeNG theme via `providePlectrum()`
-- All Solidaris tokens use the `--sds-*` prefix (controlled by `$sds-prefix` in `01-settings/_settings.prefix.scss`)
+- All Solidaris tokens use the `--pds-*` prefix (controlled by `$pds-prefix` in `01-settings/_settings.prefix.scss`)
 - Always reference **semantic** tokens — never primitive tokens when a semantic one exists
 - Token hierarchy: **primitive** → **semantic** → **component**
 
 ```
-Primitive:  --sds-color-gray-600    ← raw value — never use in components
-Semantic:   --sds-color-text-muted  ← design intent — use this in components
+Primitive:  --pds-color-gray-600    ← raw value — never use in components
+Semantic:   --pds-color-text-muted  ← design intent — use this in components
 ```
 
 ---
@@ -82,13 +82,13 @@ Semantic:   --sds-color-text-muted  ← design intent — use this in components
 ### Figma MCP — what to extract
 
 When inspecting a Figma node:
-- Background colours → map to `--sds-color-*`
-- Text colours → map to `--sds-color-text-*`
-- Spacing values → map to `--sds-space-*`
-- Icon sizes → map to `--sds-size-*` or `--sds-globals-icon-size`
-- Border radius → map to `--sds-radius-*`
-- Font family, size, weight, line-height → map to `--sds-text-*-*`
-- Transition/animation → map to `--sds-transition-*`
+- Background colours → map to `--pds-color-*`
+- Text colours → map to `--pds-color-text-*`
+- Spacing values → map to `--pds-space-*`
+- Icon sizes → map to `--pds-size-*` or `--pds-globals-icon-size`
+- Border radius → map to `--pds-radius-*`
+- Font family, size, weight, line-height → map to `--pds-text-*-*`
+- Transition/animation → map to `--pds-transition-*`
 - Figma variable names (e.g. `surface/50`, `spacing-300`) → note them in token comments
 
 ### PrimeNG MCP — what to confirm

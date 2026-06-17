@@ -73,13 +73,13 @@ interface AffiliateOverviewCardStoryArgs {
 }
 
 @Component({
-  selector: 'sds-affiliate-overview-card-copy-demo',
+  selector: 'pds-affiliate-overview-card-copy-demo',
   standalone: true,
   imports: [AffiliateOverviewCardComponent, Toast],
   providers: [MessageService],
   template: `
     <p-toast />
-    <sds-affiliate-overview-card
+    <(pds|app|lib)-affiliate-overview-card
       [title]="title()"
       [avatarInitials]="avatarInitials()"
       [avatarGender]="avatarGender()"
@@ -150,9 +150,9 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
 - **Figma**: [iSHARE-Audit node 507:8227](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227)
 - **BEM block**: \`c-affiliate-overview-card\`
 - **Avatar**: large illustrated avatar (51.333 × 56px) via \`c-plectrum-avatar--large\`; small initials variant remains 32px
-- **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--sds-icon-size-xs\`) on identifier chips
+- **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--pds-icon-size-xs\`) on identifier chips
 - **Layout**: horizontal avatar + stacked header / identifier rows via \`o-flex\` / \`o-layout\` with flex-wrap
-- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-badge\` (status action code), \`p-selectbutton\` (filterable info tags), \`sds-plectrum-avatar\`
+- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-badge\` (status action code), \`p-selectbutton\` (filterable info tags), \`pds-plectrum-avatar\`
 
 | \`statusAction.severity\` | Card modifier | Status button |
 |---|---|---|
@@ -183,12 +183,12 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
     avatarGender: {
       control: 'select',
       options: ['female', 'male', 'other'],
-      description: 'Illustrated avatar gender passed to sds-plectrum-avatar.',
+      description: 'Illustrated avatar gender passed to pds-plectrum-avatar.',
     },
     avatarVariant: {
       control: 'select',
       options: [1, 2, 3],
-      description: 'Illustrated avatar variant passed to sds-plectrum-avatar.',
+      description: 'Illustrated avatar variant passed to pds-plectrum-avatar.',
     },
     statusAction: {
       control: 'object',
@@ -219,7 +219,7 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
   render: (args) => ({
     props: args,
     template: `
-      <sds-affiliate-overview-card
+      <(pds|app|lib)-affiliate-overview-card
         [title]="title"
         [avatarInitials]="avatarInitials"
         [avatarGender]="avatarGender"
@@ -470,7 +470,7 @@ export const CopyWithToast: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <sds-affiliate-overview-card-copy-demo
+      <(pds|app|lib)-affiliate-overview-card-copy-demo
         [title]="title"
         [avatarInitials]="avatarInitials"
         [avatarGender]="avatarGender"

@@ -17,7 +17,7 @@ import { Popover } from 'primeng/popover';
 import { Ripple } from 'primeng/ripple';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
-import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
+import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   ListDocumentItem,
   ListDocumentTag,
@@ -38,9 +38,9 @@ export interface ListDocumentNodeData {
 }
 
 @Component({
-  selector: 'sds-list',
+  selector: 'pds-list',
   standalone: true,
-  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, SdsTelemetryLabelDirective, Tag, Tree],
+  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, PdsTelemetryLabelDirective, Tag, Tree],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -48,7 +48,7 @@ export interface ListDocumentNodeData {
   host: {
     class: 'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout--overflow-hidden',
     style:
-      '--sds-border-color: var(--sds-color-panel-border); --sds-border-width: var(--sds-border-width-list)',
+      '--pds-border-color: var(--pds-color-panel-border); --pds-border-width: var(--pds-border-width-list)',
     '[class.c-list--journey]': 'isJourneyMode()',
     '[class.c-list--flat]': '!isJourneyMode()',
     '[class.is-loading]': 'loading()',

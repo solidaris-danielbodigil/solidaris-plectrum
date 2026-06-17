@@ -44,7 +44,7 @@ export type RenderBlock = StandaloneBlock | AccordionBlock;
  * https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476
  */
 @Component({
-  selector: 'sds-sub-nav-shell',
+  selector: 'pds-sub-nav-shell',
   standalone: true,
   imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, AccordionModule, BadgeModule, TooltipModule],
   templateUrl: './sub-nav-shell.component.html',

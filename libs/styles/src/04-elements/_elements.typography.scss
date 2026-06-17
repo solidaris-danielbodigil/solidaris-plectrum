@@ -16,5 +16,5 @@ body {
   font-family: var(--font-open-sans, 'Open Sans', sans-serif);
   font-size: var(--font-size-s, 1rem); // 1rem = 14px (Plectrum base)
   line-height: normal; // PrimeNG chrome inherits body line-height — keep browser default
-  color: var(--sds-color-text);
+  color: var(--pds-color-text);
 }

@@ -36,17 +36,17 @@ libs/styles/src/
 │
 ├── 01-settings/                         ← CSS custom properties — ALL design tokens live here
 │   ├── _settings.core.scss              barrel — @forward all settings files
-│   ├── _settings.prefix.scss            $sds-prefix: 'sds'
+│   ├── _settings.prefix.scss            $pds-prefix: 'PDS'
 │   ├── _settings.colors-primitive.scss  --color-{palette}-{shade}
 │   ├── _settings.colors-semantic.scss   --color-{role}
 │   ├── _settings.typography-primitive.scss  --font-family-*, --font-size-*, --line-height-*
 │   ├── _settings.typography-semantic.scss   --text-{category}-{size}-{property}
 │   ├── _settings.spacing.scss           --spacing-*
-│   ├── _settings.radius.scss            --sds-radius-*   (sds-prefixed, via $sds-prefix)
-│   ├── _settings.shadows.scss           --sds-shadow-*
-│   ├── _settings.transitions.scss       --sds-transition-*
-│   ├── _settings.focus.scss             --sds-focus-ring-*
-│   ├── _settings.globals.scss           --sds-disabled-opacity, --sds-icon-size
+│   ├── _settings.radius.scss            --pds-radius-*   (pds-prefixed, via $pds-prefix)
+│   ├── _settings.shadows.scss           --pds-shadow-*
+│   ├── _settings.transitions.scss       --pds-transition-*
+│   ├── _settings.focus.scss             --pds-focus-ring-*
+│   ├── _settings.globals.scss           --pds-disabled-opacity, --pds-icon-size
 │   ├── _settings.grid.scss              SCSS maps consumed by 05-objects
 │   ├── _settings.breakpoints.scss       SCSS maps consumed by 02-tools
 │   └── _settings.{primeng-component}.scss  PrimeNG token bridge (e.g. _settings.accordion.scss)
@@ -101,7 +101,7 @@ The prefix is controlled by a single SCSS variable — change it once to rename 
 
 ```scss
 // libs/styles/src/01-settings/_settings.prefix.scss
-$sds-prefix: 'sds' !default;
+$pds-prefix: 'PDS' !default;
 ```
 
 All settings files use it like this:
@@ -110,7 +110,7 @@ All settings files use it like this:
 @use 'settings.prefix' as *;
 
 :root {
-  --#{$sds-prefix}-color-brand: var(--color-primary-500);
+  --#{$pds-prefix}-color-brand: var(--color-primary-500);
 }
 ```
 
@@ -120,7 +120,7 @@ Component SCSS files use it the same way:
 @use '../01-settings/settings.prefix' as *;
 
 .c-nav-shell {
-  background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
+  background-color: var(--#{$pds-prefix}-color-nav-shell-bg);
 }
 ```
 
@@ -128,11 +128,11 @@ Component SCSS files use it the same way:
 
 ## 3. Adding New Tokens
 
-When Figma specifies a value that has no `--sds-*` equivalent:
+When Figma specifies a value that has no `--pds-*` equivalent:
 
 1. Identify the correct `01-settings` file (see layer map above)
 2. Add the token with a comment citing the Figma variable name and node ID
-3. Use `--#{$sds-prefix}-` interpolation
+3. Use `--#{$pds-prefix}-` interpolation
 4. Reference it in the component SCSS
 
 ```scss
@@ -141,7 +141,7 @@ When Figma specifies a value that has no `--sds-*` equivalent:
 
 :root {
   // Figma: surface/50, Custom components node 1:1433
-  --#{$sds-prefix}-color-nav-shell-bg: #f6f6f6;
+  --#{$pds-prefix}-color-nav-shell-bg: #f6f6f6;
 }
 ```
 
@@ -160,15 +160,15 @@ Template for a new component SCSS file:
 //
 // Design ref:   Figma node {id}
 // Token source: libs/styles/src/01-settings/
-//   _settings.colors-semantic.scss → --color-* / --sds-color-*
+//   _settings.colors-semantic.scss → --color-* / --pds-color-*
 //   _settings.spacing.scss         → --spacing-*
-//   _settings.radius.scss          → --sds-radius-*
+//   _settings.radius.scss          → --pds-radius-*
 // =============================================================================
 
 .c-my-component {
-  gap: var(--#{$sds-prefix}-space-4);               // spacing via token
+  gap: var(--#{$pds-prefix}-space-4);               // spacing via token
   background: var(--color-surface-default);          // colour via token
-  border-radius: var(--#{$sds-prefix}-radius-md);   // radius via token
+  border-radius: var(--#{$pds-prefix}-radius-md);   // radius via token
 
   &__element { ... }
   &--modifier { ... }
@@ -184,12 +184,12 @@ Tailwind v4 is configured via PostCSS. `@apply` is available in all SCSS files.
 
 **Priority order for layout properties:**
 1. **`o-flex` / `o-layout` classes in the HTML template** — always first choice when an equivalent class exists
-2. **`@apply` in SCSS** — only for properties that have no `o-*` class AND no `--sds-*` token
-3. **`var(--sds-*)` in SCSS** — for component-specific spacing/sizing tokens
+2. **`@apply` in SCSS** — only for properties that have no `o-*` class AND no `--pds-*` token
+3. **`var(--pds-*)` in SCSS** — for component-specific spacing/sizing tokens
 
 - ✅ Use `@apply` for: `list-none`, `no-underline`, `cursor-pointer`, `truncate`, `block`, `inline-block`, `fixed`, `absolute`, `relative`
 - ❌ Do not use `@apply` for: `flex`, `items-center`, `justify-center`, `shrink-0`, `w-full`, `overflow-*`, `gap-*` — use `o-flex` / `o-layout` template classes instead
-- ❌ Do not use `@apply` for spacing values that have `--sds-space-*` tokens — use `var()` instead
+- ❌ Do not use `@apply` for spacing values that have `--pds-space-*` tokens — use `var()` instead
 - ❌ Never put Tailwind classes in Angular HTML templates
 
 ---
@@ -223,7 +223,7 @@ Examples: `_settings.accordion.scss`, `_settings.inputtext.scss`, `_settings.dat
   --p-accordion-header-background: transparent;
   --p-accordion-header-hover-background: transparent;
   --p-accordion-header-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-header-padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
   --p-accordion-content-background: transparent;
   --p-accordion-content-padding: 0;
   --p-accordion-content-border-width: 0;
@@ -241,7 +241,7 @@ overrides (like removing padding from generated containers):
 
 // Accordion panel structural spacing (not a token — layout concern)
 .c-sub-nav-shell__accordion .p-accordionpanel {
-  padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
+  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
 }
 ```
 

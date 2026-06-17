@@ -57,11 +57,11 @@ export const IdentifierRow: Story = {
     },
     template: `
       <div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
-        <sds-copyable-text label="Territoire" value="319" [iconSize]="iconSize" />
+        <(pds|app|lib)-copyable-text label="Territoire" value="319" [iconSize]="iconSize" />
         <span class="c-copyable-text__separator" aria-hidden="true">•</span>
-        <sds-copyable-text label="NISS" value="85010112345" [iconSize]="iconSize" />
+        <(pds|app|lib)-copyable-text label="NISS" value="85010112345" [iconSize]="iconSize" />
         <span class="c-copyable-text__separator" aria-hidden="true">•</span>
-        <sds-copyable-text label="NSI" value="A-123456" [iconSize]="iconSize" />
+        <(pds|app|lib)-copyable-text label="NSI" value="A-123456" [iconSize]="iconSize" />
       </div>
     `,
   }),

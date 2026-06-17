@@ -12,13 +12,13 @@
 
 :root {
   // Bordered panel stack — Figma iSHARE-Audit node 544:6474
-  --#{$sds-prefix}-color-accordion-bordered-section-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-radius-accordion-bordered-section: var(--#{$sds-prefix}-radius-xl);
-  --#{$sds-prefix}-space-accordion-bordered-padding: calc(17 / 14 * var(--base-unit));
-  --#{$sds-prefix}-radius-accordion-bordered-header: var(--#{$sds-prefix}-radius-accordion-bordered-section);
-  --#{$sds-prefix}-radius-accordion-bordered-content: var(--#{$sds-prefix}-radius-accordion-bordered-section);
-  --#{$sds-prefix}-color-accordion-bordered-header-text: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-space-accordion-bordered-header-gap: var(--spacing-2);
+  --#{$pds-prefix}-color-accordion-bordered-section-bg: var(--#{$pds-prefix}-color-content-bg);
+  --#{$pds-prefix}-radius-accordion-bordered-section: var(--#{$pds-prefix}-radius-xl);
+  --#{$pds-prefix}-space-accordion-bordered-padding: calc(17 / 14 * var(--base-unit));
+  --#{$pds-prefix}-radius-accordion-bordered-header: var(--#{$pds-prefix}-radius-accordion-bordered-section);
+  --#{$pds-prefix}-radius-accordion-bordered-content: var(--#{$pds-prefix}-radius-accordion-bordered-section);
+  --#{$pds-prefix}-color-accordion-bordered-header-text: var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-space-accordion-bordered-header-gap: var(--spacing-2);
 }
 
 // ── Nav — sub-nav shell sections ─────────────────────────────────────────────
@@ -29,16 +29,16 @@
   --p-accordion-header-background: transparent;
   --p-accordion-header-hover-background: transparent;
   --p-accordion-header-active-background: transparent;
-  --p-accordion-header-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
-  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
-  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-header-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-hover-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-active-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-header-padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
   --p-accordion-content-background: transparent;
   --p-accordion-content-padding: 0;
   --p-accordion-content-border-width: 0;
-  --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
-  --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
-  --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-hover-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-active-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
 }
 
 // ── Chromeless — list journey group headers ──────────────────────────────────
@@ -64,18 +64,18 @@
 // ── Bordered — certificate panels + drawer timeline events ───────────────────
 .c-accordion--bordered {
   --p-accordion-panel-border-width: 1px;
-  --p-accordion-panel-border-color: var(--#{$sds-prefix}-color-panel-border);
-  --p-accordion-header-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
-  --p-accordion-header-hover-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
-  --p-accordion-header-active-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
-  --p-accordion-header-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
-  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
-  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-accordion-bordered-padding);
-  --p-accordion-content-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
-  --p-accordion-content-padding: var(--#{$sds-prefix}-space-accordion-bordered-padding);
+  --p-accordion-panel-border-color: var(--#{$pds-prefix}-color-panel-border);
+  --p-accordion-header-background: var(--#{$pds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-hover-background: var(--#{$pds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-active-background: var(--#{$pds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-hover-color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-active-color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-padding: var(--#{$pds-prefix}-space-accordion-bordered-padding);
+  --p-accordion-content-background: var(--#{$pds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-content-padding: var(--#{$pds-prefix}-space-accordion-bordered-padding);
   --p-accordion-content-border-width: 0;
-  --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-text-muted);
-  --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-text);
-  --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-text);
+  --p-accordion-toggle-icon-color: var(--#{$pds-prefix}-color-text-muted);
+  --p-accordion-toggle-icon-hover-color: var(--#{$pds-prefix}-color-text);
+  --p-accordion-toggle-icon-active-color: var(--#{$pds-prefix}-color-text);
 }

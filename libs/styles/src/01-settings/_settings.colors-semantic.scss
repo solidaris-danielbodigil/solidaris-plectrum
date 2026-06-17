@@ -12,8 +12,8 @@
 //
 // RULES:
 //   - Use these tokens in all component SCSS — never reference primitive
-//     --sds-color-{palette}-{shade} tokens directly from components.
-//   - Every token is emitted as --#{$sds-prefix}-color-* (the --sds-* convention).
+//     --pds-color-{palette}-{shade} tokens directly from components.
+//   - Every token is emitted as --#{$pds-prefix}-color-* (the --pds-* convention).
 //   - Primitives live in _settings.colors-primitive.scss. Never redeclare hex values here.
 // =============================================================================
 
@@ -22,168 +22,168 @@
   // ===========================================================================
   // BRAND  (Figma: Color → brand)
   // ===========================================================================
-  --#{$sds-prefix}-color-brand:         var(--#{$sds-prefix}-color-primary-500);
-  --#{$sds-prefix}-color-brand-hover:   var(--#{$sds-prefix}-color-primary-700);
-  --#{$sds-prefix}-color-brand-active:  var(--#{$sds-prefix}-color-primary-800);
-  --#{$sds-prefix}-color-brand-subtle:  var(--#{$sds-prefix}-color-primary-75);
+  --#{$pds-prefix}-color-brand:         var(--#{$pds-prefix}-color-primary-500);
+  --#{$pds-prefix}-color-brand-hover:   var(--#{$pds-prefix}-color-primary-700);
+  --#{$pds-prefix}-color-brand-active:  var(--#{$pds-prefix}-color-primary-800);
+  --#{$pds-prefix}-color-brand-subtle:  var(--#{$pds-prefix}-color-primary-75);
 
   // ===========================================================================
   // FEEDBACK  (Figma: Color → functional)
   // ===========================================================================
-  --#{$sds-prefix}-color-success:         var(--#{$sds-prefix}-color-green-500);
-  --#{$sds-prefix}-color-success-subtle:  var(--#{$sds-prefix}-color-green-75);
+  --#{$pds-prefix}-color-success:         var(--#{$pds-prefix}-color-green-500);
+  --#{$pds-prefix}-color-success-subtle:  var(--#{$pds-prefix}-color-green-75);
 
-  --#{$sds-prefix}-color-warning:         var(--#{$sds-prefix}-color-orange-500);
-  --#{$sds-prefix}-color-warning-subtle:  var(--#{$sds-prefix}-color-orange-75);
+  --#{$pds-prefix}-color-warning:         var(--#{$pds-prefix}-color-orange-500);
+  --#{$pds-prefix}-color-warning-subtle:  var(--#{$pds-prefix}-color-orange-75);
 
-  --#{$sds-prefix}-color-danger:          var(--#{$sds-prefix}-color-red-500);
-  --#{$sds-prefix}-color-danger-subtle:   var(--#{$sds-prefix}-color-red-75);
+  --#{$pds-prefix}-color-danger:          var(--#{$pds-prefix}-color-red-500);
+  --#{$pds-prefix}-color-danger-subtle:   var(--#{$pds-prefix}-color-red-75);
   // Darker emphasis variant (red-600) — used by invalid labels/placeholders.
-  --#{$sds-prefix}-color-danger-emphasis: var(--#{$sds-prefix}-color-red-600);
+  --#{$pds-prefix}-color-danger-emphasis: var(--#{$pds-prefix}-color-red-600);
   // error is an alias of danger — funnel through the canonical status token.
-  --#{$sds-prefix}-color-error:           var(--#{$sds-prefix}-color-danger);
+  --#{$pds-prefix}-color-error:           var(--#{$pds-prefix}-color-danger);
 
-  --#{$sds-prefix}-color-info:            var(--#{$sds-prefix}-color-blue-500);
-  --#{$sds-prefix}-color-info-subtle:     var(--#{$sds-prefix}-color-blue-300);
+  --#{$pds-prefix}-color-info:            var(--#{$pds-prefix}-color-blue-500);
+  --#{$pds-prefix}-color-info-subtle:     var(--#{$pds-prefix}-color-blue-300);
 
   // ===========================================================================
   // SURFACE ROLES  (Figma: Color → background)
-  // The full surface scale (--sds-color-surface-0…950) lives in the primitive
+  // The full surface scale (--pds-color-surface-0…950) lives in the primitive
   // layer; these are the intent-based aliases components should consume.
   // ===========================================================================
-  --#{$sds-prefix}-color-surface:          var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-surface-default:  var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-surface-subtle:   var(--#{$sds-prefix}-color-surface-50);
-  --#{$sds-prefix}-color-surface-muted:    var(--#{$sds-prefix}-color-surface-75);
-  --#{$sds-prefix}-color-surface-border:   var(--#{$sds-prefix}-color-surface-100);
+  --#{$pds-prefix}-color-surface:          var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-surface-default:  var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-surface-subtle:   var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-color-surface-muted:    var(--#{$pds-prefix}-color-surface-75);
+  --#{$pds-prefix}-color-surface-border:   var(--#{$pds-prefix}-color-surface-100);
 
   // Structural borders — prefer these over feature-specific aliases in component SCSS.
   // panel-border: flat chrome dividers (list shell, accordion stack, flush card header rule) — Figma #e7e7e7
-  --#{$sds-prefix}-color-panel-border:     var(--#{$sds-prefix}-color-surface-border-drawer);
+  --#{$pds-prefix}-color-panel-border:     var(--#{$pds-prefix}-color-surface-border-drawer);
   // card-border: elevated card / row outline — Figma #d1d1d1
-  --#{$sds-prefix}-color-card-border:      var(--#{$sds-prefix}-color-surface-200);
+  --#{$pds-prefix}-color-card-border:      var(--#{$pds-prefix}-color-surface-200);
 
   // ===========================================================================
   // DIVIDER  (consumed by 04-elements/_elements.hr.scss)
   // Canonical horizontal rule — surface-200 at 50% opacity (list group header).
   // ===========================================================================
-  --#{$sds-prefix}-color-divider:    var(--#{$sds-prefix}-color-surface-200);
-  --#{$sds-prefix}-opacity-divider:  0.5;
+  --#{$pds-prefix}-color-divider:    var(--#{$pds-prefix}-color-surface-200);
+  --#{$pds-prefix}-opacity-divider:  0.5;
 
   // iSHARE Audit affiliate overview — Figma 507:7910 text roles
-  --#{$sds-prefix}-color-info-tag-text:      var(--#{$sds-prefix}-color-surface-700);   // Figma: #454545 → surface/700
-  --#{$sds-prefix}-color-metadata-chip-text: var(--#{$sds-prefix}-color-primary-700);   // Figma: #30495c → primary/700
+  --#{$pds-prefix}-color-info-tag-text:      var(--#{$pds-prefix}-color-surface-700);   // Figma: #454545 → surface/700
+  --#{$pds-prefix}-color-metadata-chip-text: var(--#{$pds-prefix}-color-primary-700);   // Figma: #30495c → primary/700
 
   // ===========================================================================
   // TEXT  (base.ts: semantic.colorScheme.light.text)
   // ===========================================================================
-  --#{$sds-prefix}-color-text:             var(--#{$sds-prefix}-color-surface-900);
-  --#{$sds-prefix}-color-text-hover:       var(--#{$sds-prefix}-color-surface-950);
-  --#{$sds-prefix}-color-text-muted:       var(--#{$sds-prefix}-color-surface-600);
-  --#{$sds-prefix}-color-text-muted-hover: var(--#{$sds-prefix}-color-surface-600);
-  --#{$sds-prefix}-color-text-inverse:     var(--#{$sds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-text:             var(--#{$pds-prefix}-color-surface-900);
+  --#{$pds-prefix}-color-text-hover:       var(--#{$pds-prefix}-color-surface-950);
+  --#{$pds-prefix}-color-text-muted:       var(--#{$pds-prefix}-color-surface-600);
+  --#{$pds-prefix}-color-text-muted-hover: var(--#{$pds-prefix}-color-surface-600);
+  --#{$pds-prefix}-color-text-inverse:     var(--#{$pds-prefix}-color-surface-0);
 
   // Link text roles (consumed by 04-elements/_elements.links.scss)
-  --#{$sds-prefix}-color-text-link:          var(--#{$sds-prefix}-color-brand);
-  --#{$sds-prefix}-color-text-link-hover:    var(--#{$sds-prefix}-color-brand-hover);
-  --#{$sds-prefix}-color-text-link-visited:  var(--#{$sds-prefix}-color-brand-active);
+  --#{$pds-prefix}-color-text-link:          var(--#{$pds-prefix}-color-brand);
+  --#{$pds-prefix}-color-text-link-hover:    var(--#{$pds-prefix}-color-brand-hover);
+  --#{$pds-prefix}-color-text-link-visited:  var(--#{$pds-prefix}-color-brand-active);
 
   // ===========================================================================
   // HIGHLIGHT  (base.ts: semantic.colorScheme.light.highlight)
   // ===========================================================================
-  --#{$sds-prefix}-color-highlight:             var(--#{$sds-prefix}-color-primary-75);
-  --#{$sds-prefix}-color-highlight-focus:       var(--#{$sds-prefix}-color-primary-100);
-  --#{$sds-prefix}-color-highlight-text:        var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-highlight-focus-text:  var(--#{$sds-prefix}-color-text);
+  --#{$pds-prefix}-color-highlight:             var(--#{$pds-prefix}-color-primary-75);
+  --#{$pds-prefix}-color-highlight-focus:       var(--#{$pds-prefix}-color-primary-100);
+  --#{$pds-prefix}-color-highlight-text:        var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-highlight-focus-text:  var(--#{$pds-prefix}-color-text);
 
   // ===========================================================================
   // FOCUS
   // ===========================================================================
-  --#{$sds-prefix}-color-focus:  var(--#{$sds-prefix}-color-blue-300);
+  --#{$pds-prefix}-color-focus:  var(--#{$pds-prefix}-color-blue-300);
 
   // ===========================================================================
   // OVERLAY BORDERS  (base.ts: semantic.colorScheme.light.overlay)
   // ===========================================================================
-  --#{$sds-prefix}-color-overlay-modal-border:    var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-overlay-select-border:   var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-overlay-popover-border:  var(--#{$sds-prefix}-color-surface-200);
+  --#{$pds-prefix}-color-overlay-modal-border:    var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-overlay-select-border:   var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-overlay-popover-border:  var(--#{$pds-prefix}-color-surface-200);
 
   // ===========================================================================
   // CONTENT  (base.ts: semantic.colorScheme.light.content)
   // ===========================================================================
-  --#{$sds-prefix}-color-content:           var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-content-bg:        var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-content-hover:     var(--#{$sds-prefix}-color-text-hover);
-  --#{$sds-prefix}-color-content-hover-bg:  var(--#{$sds-prefix}-color-surface-75);
-  --#{$sds-prefix}-color-content-border:    var(--#{$sds-prefix}-color-black-alpha-100);
+  --#{$pds-prefix}-color-content:           var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-content-bg:        var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-content-hover:     var(--#{$pds-prefix}-color-text-hover);
+  --#{$pds-prefix}-color-content-hover-bg:  var(--#{$pds-prefix}-color-surface-75);
+  --#{$pds-prefix}-color-content-border:    var(--#{$pds-prefix}-color-black-alpha-100);
 
   // ===========================================================================
   // PRIMARY INTERACTIVE  (base.ts: semantic.colorScheme.light.primary)
   // ===========================================================================
-  --#{$sds-prefix}-color-primary-interactive:           var(--#{$sds-prefix}-color-primary-500);
-  --#{$sds-prefix}-color-primary-interactive-hover:     var(--#{$sds-prefix}-color-primary-700);
-  --#{$sds-prefix}-color-primary-interactive-active:    var(--#{$sds-prefix}-color-primary-800);
-  --#{$sds-prefix}-color-primary-interactive-contrast:  var(--#{$sds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-primary-interactive:           var(--#{$pds-prefix}-color-primary-500);
+  --#{$pds-prefix}-color-primary-interactive-hover:     var(--#{$pds-prefix}-color-primary-700);
+  --#{$pds-prefix}-color-primary-interactive-active:    var(--#{$pds-prefix}-color-primary-800);
+  --#{$pds-prefix}-color-primary-interactive-contrast:  var(--#{$pds-prefix}-color-surface-0);
 
   // ===========================================================================
   // FORM FIELD  (base.ts: semantic.colorScheme.light.formField)
   // ===========================================================================
-  --#{$sds-prefix}-color-form-text:                 var(--#{$sds-prefix}-color-surface-900);
-  --#{$sds-prefix}-color-form-bg:                   var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-form-border:               var(--#{$sds-prefix}-color-black-alpha-200);
-  --#{$sds-prefix}-color-form-border-hover:         var(--#{$sds-prefix}-color-black-alpha-400);
-  --#{$sds-prefix}-color-form-border-focus:         var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-form-border-invalid:       var(--#{$sds-prefix}-color-danger);
-  --#{$sds-prefix}-color-form-icon:                 var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-placeholder:          var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-disabled-text:        var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-disabled-bg:          var(--#{$sds-prefix}-color-surface-100);
-  --#{$sds-prefix}-color-form-filled-bg:            var(--#{$sds-prefix}-color-surface-50);
-  --#{$sds-prefix}-color-form-float-label:          var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-float-label-focus:    var(--#{$sds-prefix}-color-primary-600);
-  --#{$sds-prefix}-color-form-float-label-active:   var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-float-label-invalid:  var(--#{$sds-prefix}-color-danger-emphasis);
-  --#{$sds-prefix}-color-form-invalid-placeholder:  var(--#{$sds-prefix}-color-danger-emphasis);
+  --#{$pds-prefix}-color-form-text:                 var(--#{$pds-prefix}-color-surface-900);
+  --#{$pds-prefix}-color-form-bg:                   var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-form-border:               var(--#{$pds-prefix}-color-black-alpha-200);
+  --#{$pds-prefix}-color-form-border-hover:         var(--#{$pds-prefix}-color-black-alpha-400);
+  --#{$pds-prefix}-color-form-border-focus:         var(--#{$pds-prefix}-color-primary-interactive);
+  --#{$pds-prefix}-color-form-border-invalid:       var(--#{$pds-prefix}-color-danger);
+  --#{$pds-prefix}-color-form-icon:                 var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-form-placeholder:          var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-form-disabled-text:        var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-form-disabled-bg:          var(--#{$pds-prefix}-color-surface-100);
+  --#{$pds-prefix}-color-form-filled-bg:            var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-color-form-float-label:          var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-form-float-label-focus:    var(--#{$pds-prefix}-color-primary-600);
+  --#{$pds-prefix}-color-form-float-label-active:   var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-form-float-label-invalid:  var(--#{$pds-prefix}-color-danger-emphasis);
+  --#{$pds-prefix}-color-form-invalid-placeholder:  var(--#{$pds-prefix}-color-danger-emphasis);
 
   // ===========================================================================
   // MASK  (base.ts: semantic.colorScheme.light.mask)
   // ===========================================================================
-  --#{$sds-prefix}-color-mask:     var(--#{$sds-prefix}-color-surface-200);
-  --#{$sds-prefix}-color-mask-bg:  var(--#{$sds-prefix}-color-black-alpha-400);
+  --#{$pds-prefix}-color-mask:     var(--#{$pds-prefix}-color-surface-200);
+  --#{$pds-prefix}-color-mask-bg:  var(--#{$pds-prefix}-color-black-alpha-400);
 
   // ===========================================================================
   // NAVIGATION  (base.ts: semantic.colorScheme.light.navigation)
   // ===========================================================================
-  --#{$sds-prefix}-color-nav-item:              var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-nav-item-focus:        var(--#{$sds-prefix}-color-text-hover);
-  --#{$sds-prefix}-color-nav-item-active:       var(--#{$sds-prefix}-color-text-hover);
-  --#{$sds-prefix}-color-nav-item-focus-bg:     var(--#{$sds-prefix}-color-surface-100);
-  --#{$sds-prefix}-color-nav-item-active-bg:    var(--#{$sds-prefix}-color-surface-100);
-  --#{$sds-prefix}-color-nav-item-icon:         var(--#{$sds-prefix}-color-surface-400);
-  --#{$sds-prefix}-color-nav-item-icon-focus:   var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-nav-item-icon-active:  var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-nav-submenu-icon:      var(--#{$sds-prefix}-color-surface-400);
-  --#{$sds-prefix}-color-nav-submenu-label:     var(--#{$sds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-nav-item:              var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-nav-item-focus:        var(--#{$pds-prefix}-color-text-hover);
+  --#{$pds-prefix}-color-nav-item-active:       var(--#{$pds-prefix}-color-text-hover);
+  --#{$pds-prefix}-color-nav-item-focus-bg:     var(--#{$pds-prefix}-color-surface-100);
+  --#{$pds-prefix}-color-nav-item-active-bg:    var(--#{$pds-prefix}-color-surface-100);
+  --#{$pds-prefix}-color-nav-item-icon:         var(--#{$pds-prefix}-color-surface-400);
+  --#{$pds-prefix}-color-nav-item-icon-focus:   var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-nav-item-icon-active:  var(--#{$pds-prefix}-color-surface-500);
+  --#{$pds-prefix}-color-nav-submenu-icon:      var(--#{$pds-prefix}-color-surface-400);
+  --#{$pds-prefix}-color-nav-submenu-label:     var(--#{$pds-prefix}-color-text-muted);
 
   // ===========================================================================
   // SECOND-LEVEL NAVIGATION  (Figma: iCRM Audit node 20:1447)
   // ===========================================================================
-  --#{$sds-prefix}-color-sub-nav-shell-bg:              var(--#{$sds-prefix}-color-surface-50);         // Figma: surface/50
-  --#{$sds-prefix}-color-sub-nav-shell-header-text:     var(--#{$sds-prefix}-color-text);               // Figma: black (bold heading)
-  --#{$sds-prefix}-color-sub-nav-shell-section-text:    var(--#{$sds-prefix}-color-black-alpha-500);    // Figma: transparent/black/500
-  --#{$sds-prefix}-color-sub-nav-shell-item-text:       var(--#{$sds-prefix}-color-black-alpha-800);    // Figma: transparent/black/800
-  --#{$sds-prefix}-color-sub-nav-shell-item-hover-bg:   var(--#{$sds-prefix}-color-black-alpha-50);     // Figma: transparent/black/50
-  --#{$sds-prefix}-color-sub-nav-shell-item-active-bg:  var(--#{$sds-prefix}-color-black-alpha-50);     // Figma: transparent/black/50
-  --#{$sds-prefix}-color-sub-nav-shell-footer-muted:    var(--#{$sds-prefix}-color-surface-600);        // Figma: surface/600
-  --#{$sds-prefix}-color-sub-nav-shell-footer-link:     var(--#{$sds-prefix}-color-blue-700);           // Figma: blue/700
+  --#{$pds-prefix}-color-sub-nav-shell-bg:              var(--#{$pds-prefix}-color-surface-50);         // Figma: surface/50
+  --#{$pds-prefix}-color-sub-nav-shell-header-text:     var(--#{$pds-prefix}-color-text);               // Figma: black (bold heading)
+  --#{$pds-prefix}-color-sub-nav-shell-section-text:    var(--#{$pds-prefix}-color-black-alpha-500);    // Figma: transparent/black/500
+  --#{$pds-prefix}-color-sub-nav-shell-item-text:       var(--#{$pds-prefix}-color-black-alpha-800);    // Figma: transparent/black/800
+  --#{$pds-prefix}-color-sub-nav-shell-item-hover-bg:   var(--#{$pds-prefix}-color-black-alpha-50);     // Figma: transparent/black/50
+  --#{$pds-prefix}-color-sub-nav-shell-item-active-bg:  var(--#{$pds-prefix}-color-black-alpha-50);     // Figma: transparent/black/50
+  --#{$pds-prefix}-color-sub-nav-shell-footer-muted:    var(--#{$pds-prefix}-color-surface-600);        // Figma: surface/600
+  --#{$pds-prefix}-color-sub-nav-shell-footer-link:     var(--#{$pds-prefix}-color-blue-700);           // Figma: blue/700
 
   // ===========================================================================
   // EMUTNAV  (extend.ts: emutnav — Solidaris custom navigation)
   // ===========================================================================
-  --#{$sds-prefix}-color-emutnav-item:             var(--#{$sds-prefix}-color-black-alpha-700);
-  --#{$sds-prefix}-color-emutnav-item-icon:        var(--#{$sds-prefix}-color-black-alpha-400);
-  --#{$sds-prefix}-color-emutnav-item-focus:       var(--#{$sds-prefix}-color-rose-700);
-  --#{$sds-prefix}-color-emutnav-item-focus-bg:    var(--#{$sds-prefix}-color-rose-50);
-  --#{$sds-prefix}-color-emutnav-item-icon-focus:  var(--#{$sds-prefix}-color-rose-700);
+  --#{$pds-prefix}-color-emutnav-item:             var(--#{$pds-prefix}-color-black-alpha-700);
+  --#{$pds-prefix}-color-emutnav-item-icon:        var(--#{$pds-prefix}-color-black-alpha-400);
+  --#{$pds-prefix}-color-emutnav-item-focus:       var(--#{$pds-prefix}-color-rose-700);
+  --#{$pds-prefix}-color-emutnav-item-focus-bg:    var(--#{$pds-prefix}-color-rose-50);
+  --#{$pds-prefix}-color-emutnav-item-icon-focus:  var(--#{$pds-prefix}-color-rose-700);
 
 }

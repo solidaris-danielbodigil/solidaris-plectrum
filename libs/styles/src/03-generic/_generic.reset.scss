@@ -3,7 +3,7 @@
    Placed in @layer reset so that PrimeNG's @layer primeng and our own
    unlayered component styles in 06-components can override it.
    Layer order (lowest → highest specificity):
-     reset → primeng → (unlayered SDS component styles)
+     reset → primeng → (unlayered PDS component styles)
    ============================================================================= */
 
 @layer reset {

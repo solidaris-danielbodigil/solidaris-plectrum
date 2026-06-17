@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { TransactionsCicsModalComponent } from './transactions-cics-modal.component';
 
 @Component({
-  selector: 'sds-transactions-cics-modal-story-host',
+  selector: 'pds-transactions-cics-modal-story-host',
   standalone: true,
   imports: [ButtonModule, TransactionsCicsModalComponent],
   template: `
@@ -19,7 +19,7 @@ import { TransactionsCicsModalComponent } from './transactions-cics-modal.compon
       label="Transactions CICS"
       (click)="visible.set(true)"
     ></button>
-    <sds-transactions-cics-modal [(visible)]="visible" />
+    <(pds|app|lib)-transactions-cics-modal [(visible)]="visible" />
   `,
 })
 class TransactionsCicsModalStoryHostComponent {

@@ -11,45 +11,45 @@
 
 :root {
   // --- Sizing (structural — icon-only layout depends on these) -------------
-  --#{$sds-prefix}-size-nav-shell-logomark:       24px;   // Figma: logomark height (24×32 natural ratio)
-  --#{$sds-prefix}-size-nav-shell-wordmark:       var(--font-size-4xl); // 2.286rem = 32px @ 14px rem base
-  --#{$sds-prefix}-size-nav-shell-icon:           20px;   // Figma: nav icon
-  --#{$sds-prefix}-size-nav-shell-trailing-icon:  14px;   // Figma: external-link glyph
+  --#{$pds-prefix}-size-nav-shell-logomark:       24px;   // Figma: logomark height (24×32 natural ratio)
+  --#{$pds-prefix}-size-nav-shell-wordmark:       var(--font-size-4xl); // 2.286rem = 32px @ 14px rem base
+  --#{$pds-prefix}-size-nav-shell-icon:           20px;   // Figma: nav icon
+  --#{$pds-prefix}-size-nav-shell-trailing-icon:  14px;   // Figma: external-link glyph
 
   // --- Spacing -------------------------------------------------------------
-  --#{$sds-prefix}-space-nav-shell-section-gap:       14px;
-  --#{$sds-prefix}-space-nav-shell-list-gap:          16px;
-  --#{$sds-prefix}-space-nav-shell-list-px:           6px;
-  --#{$sds-prefix}-space-nav-shell-item-px:           10px;
-  --#{$sds-prefix}-space-nav-shell-item-py:           9px;   // Figma: py-9 expanded (9 + 22px label line-height + 9 = 40px)
-  --#{$sds-prefix}-space-nav-shell-item-gap-inner:     10px; // Figma: gap-10 (icon ↔ label / logomark ↔ wordmark)
+  --#{$pds-prefix}-space-nav-shell-section-gap:       14px;
+  --#{$pds-prefix}-space-nav-shell-list-gap:          16px;
+  --#{$pds-prefix}-space-nav-shell-list-px:           6px;
+  --#{$pds-prefix}-space-nav-shell-item-px:           10px;
+  --#{$pds-prefix}-space-nav-shell-item-py:           9px;   // Figma: py-9 expanded (9 + 22px label line-height + 9 = 40px)
+  --#{$pds-prefix}-space-nav-shell-item-gap-inner:     10px; // Figma: gap-10 (icon ↔ label / logomark ↔ wordmark)
 
   // Collapsed in-flow slot — icon column + horizontal padding (no fixed shell width)
-  --#{$sds-prefix}-size-nav-shell-footprint: calc(
-    (var(--#{$sds-prefix}-space-nav-shell-list-px) * 2) +
-    (var(--#{$sds-prefix}-space-nav-shell-item-px) * 2) +
-    var(--#{$sds-prefix}-size-nav-shell-icon)
+  --#{$pds-prefix}-size-nav-shell-footprint: calc(
+    (var(--#{$pds-prefix}-space-nav-shell-list-px) * 2) +
+    (var(--#{$pds-prefix}-space-nav-shell-item-px) * 2) +
+    var(--#{$pds-prefix}-size-nav-shell-icon)
   );
 
   // Caps expanded width so an unusually long label can't stretch the panel.
-  --#{$sds-prefix}-size-nav-shell-label-max: 12rem;
+  --#{$pds-prefix}-size-nav-shell-label-max: 12rem;
 
   // --- Colours (map to existing semantic/primitive tokens) -----------------
-  --#{$sds-prefix}-color-nav-shell-bg:          var(--#{$sds-prefix}-color-surface-50);          // Figma: surface/50
-  --#{$sds-prefix}-color-nav-shell-text:        currentcolor;
-  --#{$sds-prefix}-color-nav-shell-label:       var(--#{$sds-prefix}-color-black-alpha-800);     // Figma: transparent/black/800
-  --#{$sds-prefix}-color-nav-shell-item-hover:  var(--#{$sds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
-  --#{$sds-prefix}-color-nav-shell-item-pressed: var(--#{$sds-prefix}-color-black-alpha-100);    // Figma: transparent/black/100
-  --#{$sds-prefix}-color-nav-shell-item-active: var(--#{$sds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
+  --#{$pds-prefix}-color-nav-shell-bg:          var(--#{$pds-prefix}-color-surface-50);          // Figma: surface/50
+  --#{$pds-prefix}-color-nav-shell-text:        currentcolor;
+  --#{$pds-prefix}-color-nav-shell-label:       var(--#{$pds-prefix}-color-black-alpha-800);     // Figma: transparent/black/800
+  --#{$pds-prefix}-color-nav-shell-item-hover:  var(--#{$pds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
+  --#{$pds-prefix}-color-nav-shell-item-pressed: var(--#{$pds-prefix}-color-black-alpha-100);    // Figma: transparent/black/100
+  --#{$pds-prefix}-color-nav-shell-item-active: var(--#{$pds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50
 
   // --- Radius --------------------------------------------------------------
-  --#{$sds-prefix}-radius-nav-shell-item:  10px;  // Figma: item corner radius
+  --#{$pds-prefix}-radius-nav-shell-item:  10px;  // Figma: item corner radius
 
   // --- Transitions ---------------------------------------------------------
   // Panel — width tweens between the collapsed footprint and `max-content`
   // (needs interpolate-size: allow-keywords on an ancestor; set on .c-nav-shell).
-  --#{$sds-prefix}-transition-nav-shell:  width 200ms ease, box-shadow 200ms ease;
+  --#{$pds-prefix}-transition-nav-shell:  width 200ms ease, box-shadow 200ms ease;
   // Reveal — fades opacity while flipping `display` via discrete transition
   // (transition-behavior: allow-discrete). Shared by labels, wordmark, trailing icon.
-  --#{$sds-prefix}-transition-nav-reveal: opacity 150ms ease, display 150ms allow-discrete;
+  --#{$pds-prefix}-transition-nav-reveal: opacity 150ms ease, display 150ms allow-discrete;
 }

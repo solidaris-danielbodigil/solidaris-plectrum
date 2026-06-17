@@ -66,7 +66,7 @@ Rules:
 | File name | `kebab-case` | `nav-shell.component.ts` |
 | Class name | `PascalCase` | `NavShellComponent` |
 | BEM block | `c-` + `kebab-case` | `c-nav-shell` |
-| Selector | `sds-` + `kebab-case` | `sds-nav-shell` |
+| Selector | `pds-` + `kebab-case` | `pds-nav-shell` |
 
 **Never use app-specific prefixes inside `libs/ui`.**
 
@@ -84,7 +84,7 @@ Rules:
 ```
 File:      button.component.ts
 Class:     ButtonComponent
-Selector:  sds-button
+Selector:  pds-button
 BEM block: c-button
 
 .c-button              default state
@@ -101,7 +101,7 @@ BEM block: c-button
 ```
 File:      card.component.ts
 Class:     CardComponent
-Selector:  sds-card
+Selector:  pds-card
 BEM block: c-card
 
 .c-card                default
@@ -117,7 +117,7 @@ BEM block: c-card
 ```
 File:      nav-shell.component.ts
 Class:     NavShellComponent
-Selector:  sds-nav-shell
+Selector:  pds-nav-shell
 BEM block: c-nav-shell
 
 .c-nav-shell             collapsed (default)

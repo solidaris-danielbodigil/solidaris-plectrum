@@ -19,7 +19,7 @@ export class IconRegistry {
 
   /**
    * Register a custom SVG icon under a unique name.
-   * @param name   Icon identifier used in <sds-icon [icon]="name" source="svg">
+   * @param name   Icon identifier used in <(pds|app|lib)-icon [icon]="name" source="svg">
    * @param svg    Raw SVG markup — should NOT have explicit width/height attributes.
    */
   register(name: string, svg: string): void {

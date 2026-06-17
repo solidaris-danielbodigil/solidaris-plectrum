@@ -3,22 +3,22 @@
 
 // =============================================================================
 // 06-components/_components.form-field.scss
-// sds-form-field — label layout + validation. Flex/gap via o-flex / o-layout in template.
+// pds-form-field — label layout + validation. Flex/gap via o-flex / o-layout in template.
 // =============================================================================
 
 .c-form-field__label {
   @include text-label-sm;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
 }
 
 .c-form-field.is-invalid .c-form-field__label {
-  color: var(--#{$sds-prefix}-color-form-float-label-invalid);
+  color: var(--#{$pds-prefix}-color-form-float-label-invalid);
 }
 
 // Horizontal label column — fixed width + PrimeNG control alignment
 .c-form-field--horizontal .c-form-field__label {
   flex-shrink: 0;
-  min-width: var(--#{$sds-prefix}-size-form-field-label-min-width);
+  min-width: var(--#{$pds-prefix}-size-form-field-label-min-width);
   padding-block-start: var(--p-form-field-padding-y);
 }
 

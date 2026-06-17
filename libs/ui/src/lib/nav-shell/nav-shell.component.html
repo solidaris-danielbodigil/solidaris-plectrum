@@ -149,8 +149,8 @@
         [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
         (click)="onItemClick(item)"
       >
-        <!-- Icon — delegated to <sds-icon>; decorative here (label is on the <a>) -->
-        <sds-icon
+        <!-- Icon — delegated to <(pds|app|lib)-icon>; decorative here (label is on the <a>) -->
+        <(pds|app|lib)-icon
           class="c-nav-shell__icon"
           [icon]="item.icon"
           [source]="item.iconSource ?? 'svg'"
@@ -162,7 +162,7 @@
 
         <!-- Trailing external-link icon — only visible in expanded mode -->
         @if (item.trailingIcon) {
-          <sds-icon
+          <(pds|app|lib)-icon
             class="c-nav-shell__trailing-icon"
             icon="bi bi-box-arrow-up-right"
             source="class"

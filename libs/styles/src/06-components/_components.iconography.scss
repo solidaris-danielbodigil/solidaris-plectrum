@@ -7,12 +7,12 @@
 //
 // Design ref:   Figma Foundations — Plectrum for PrimeNG (Main)
 // Token source: libs/styles/src/01-settings/
-//   _settings.colors-semantic.scss  → --sds-color-*
-//   _settings.iconography.scss       → --sds-size-iconography-*, copy-hint bg
+//   _settings.colors-semantic.scss  → --pds-color-*
+//   _settings.iconography.scss       → --pds-size-iconography-*, copy-hint bg
 //   _settings.spacing.scss           → --spacing-*
-//   _settings.radius.scss            → --sds-radius-*
-//   _settings.focus.scss             → --sds-focus-ring-*
-//   _settings.shadows.scss           → --sds-shadow-*
+//   _settings.radius.scss            → --pds-radius-*
+//   _settings.focus.scss             → --pds-focus-ring-*
+//   _settings.shadows.scss           → --pds-shadow-*
 // =============================================================================
 
 // ── Page wrapper ─────────────────────────────────────────────────────────────
@@ -24,8 +24,8 @@
 // Layout/alignment of the toolbar row is owned by c-toolbar in _components.toolbar.scss.
 // Only the search field's sizing constraint lives here.
 .c-iconography-toolbar__search {
-  min-width: var(--#{$sds-prefix}-size-iconography-search-min);
-  max-width: var(--#{$sds-prefix}-size-iconography-search-max);
+  min-width: var(--#{$pds-prefix}-size-iconography-search-min);
+  max-width: var(--#{$pds-prefix}-size-iconography-search-max);
 }
 
 .c-iconography-toolbar__search-input {
@@ -47,9 +47,9 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
-    border-radius: var(--#{$sds-prefix}-radius-md);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+    border-radius: var(--#{$pds-prefix}-radius-md);
   }
 }
 
@@ -61,26 +61,26 @@
 .c-iconography__card {
   height: 100%;
   text-align: center;
-  transition: border-color var(--#{$sds-prefix}-transition-duration-mask), box-shadow var(--#{$sds-prefix}-transition-duration-mask);
+  transition: border-color var(--#{$pds-prefix}-transition-duration-mask), box-shadow var(--#{$pds-prefix}-transition-duration-mask);
 
   .c-iconography__item:hover &,
   .c-iconography__item.is-hovered & {
-    box-shadow: var(--#{$sds-prefix}-shadow-overlay-select);
+    box-shadow: var(--#{$pds-prefix}-shadow-overlay-select);
   }
 }
 
 // ── Icon preview ─────────────────────────────────────────────────────────────
 .c-iconography__preview {
   // Fixed size required — Bootstrap Icons collapse to 0 without an explicit constraint
-  font-size: var(--#{$sds-prefix}-icon-size-xl);
+  font-size: var(--#{$pds-prefix}-icon-size-xl);
   line-height: 1;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 // ── Icon name label ──────────────────────────────────────────────────────────
 .c-iconography__name {
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
   word-break: break-all;
 }
 
@@ -97,13 +97,13 @@
   justify-content: center;
   gap: var(--spacing-1);
   @include text-label-xs;
-  color: var(--#{$sds-prefix}-color-brand);
-  background: var(--#{$sds-prefix}-color-iconography-copy-hint-bg);
+  color: var(--#{$pds-prefix}-color-brand);
+  background: var(--#{$pds-prefix}-color-iconography-copy-hint-bg);
   backdrop-filter: blur(2px);
   border-radius: inherit;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--#{$sds-prefix}-transition-duration-mask) ease;
+  transition: opacity var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   .c-iconography__item:hover &,
   .c-iconography__item.is-hovered & {
@@ -115,6 +115,6 @@
 // ── Empty state ──────────────────────────────────────────────────────────────
 .c-iconography__empty {
   text-align: center;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
   @include text-body-sm;
 }

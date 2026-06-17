@@ -69,11 +69,11 @@ Apply the generated `o-layout` modifier classes in the HTML template instead.
 <!-- ✅ Correct — gap via o-layout mix in template -->
 <ul class="c-iconography__grid o-layout--gap-3">
 
-<!-- ✅ Also correct — gap via var(--sds-*) token, no o-layout available for it -->
-.c-toolbar__inner { gap: var(--sds-space-4); }
+<!-- ✅ Also correct — gap via var(--pds-*) token, no o-layout available for it -->
+.c-toolbar__inner { gap: var(--pds-space-4); }
 ```
 
-**Exception:** spacing values that must reference a `var(--sds-*)` token (component-
+**Exception:** spacing values that must reference a `var(--pds-*)` token (component-
 specific sizing, form padding, etc.) stay in SCSS as `var()` calls.
 `o-layout` spacing modifiers use the global `--spacing-*` scale; component-specific
 tokens are still written in SCSS.
@@ -86,14 +86,14 @@ Only these categories belong in `06-components/` SCSS files:
 
 | Category | Example | Why it stays |
 |---|---|---|
-| Token-referenced gap/padding | `gap: var(--sds-space-4)` | Component-specific spacing not on global scale |
+| Token-referenced gap/padding | `gap: var(--pds-space-4)` | Component-specific spacing not on global scale |
 | Structural flex constraints | `flex: 1 1 0; min-width: 0` | No single `o-flex` equivalent for combined shorthand |
 | Trailing-edge push | `margin-left: auto` | No `o-layout` class for auto margin |
 | Colour, border, radius, shadow (state-driven) | `border-color` on `:hover` / `.is-selected` | Tied to component tokens or interaction |
 | Static border, radius, shadow | Template | `u-border-*`, `u-radius-*`, `u-shadow-*` per [09-styling-policy.md](./09-styling-policy.md) |
-| Typography | `font-size: var(--sds-text-label-sm-size)` | Visual concern, not layout |
+| Typography | `font-size: var(--pds-text-label-sm-size)` | Visual concern, not layout |
 | Transition / animation | `transition: border-color 150ms` | Behaviour, not layout |
-| Position / z-index | `position: sticky; top: 0; z-index: var(--sds-z-sticky)` | Stacking concern |
+| Position / z-index | `position: sticky; top: 0; z-index: var(--pds-z-sticky)` | Stacking concern |
 | Pseudo-class / state styles | `&:hover`, `&:focus-visible`, `&.is-active` | State concern |
 
 **Moved OUT of component SCSS** (these now belong elsewhere):
@@ -118,8 +118,8 @@ Only these categories belong in `06-components/` SCSS files:
    YES → use the class in the HTML template
    NO  → keep in SCSS
 
-2. Does the value reference a component-specific --sds-* token?
-   YES → keep in SCSS (e.g. gap: var(--sds-space-toolbar-gap))
+2. Does the value reference a component-specific --pds-* token?
+   YES → keep in SCSS (e.g. gap: var(--pds-space-toolbar-gap))
    NO  → use the o-layout class (e.g. o-layout--gap-3)
 
 3. Is it a --p-* PrimeNG override?

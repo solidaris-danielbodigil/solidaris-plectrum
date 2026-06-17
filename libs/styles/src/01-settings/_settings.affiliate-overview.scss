@@ -19,125 +19,125 @@
 :root {
   // ── Variant accent borders (left accent for in-order only) ─────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-accent-success: var(--#{$sds-prefix}-color-success);
+  --#{$pds-prefix}-color-affiliate-overview-card-accent-success: var(--#{$pds-prefix}-color-success);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-accent-warning: var(--#{$sds-prefix}-color-warning);
+  --#{$pds-prefix}-color-affiliate-overview-card-accent-warning: var(--#{$pds-prefix}-color-warning);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-accent-danger: var(--#{$sds-prefix}-color-danger);
+  --#{$pds-prefix}-color-affiliate-overview-card-accent-danger: var(--#{$pds-prefix}-color-danger);
 
   // ── Variant backgrounds ─────────────────────────────────────────────────────
   // Shared gradient geometry — Figma 507:8227 (88deg, 0% → 23.21%)
 
-  --#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle: 88deg;
+  --#{$pds-prefix}-affiliate-overview-card-bg-gradient-angle: 88deg;
 
-  --#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop: 23.21%;
+  --#{$pds-prefix}-affiliate-overview-card-bg-gradient-stop: 23.21%;
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-default: var(--#{$sds-prefix}-color-content-bg);
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-default: var(--#{$pds-prefix}-color-content-bg);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-warning-gradient-start: var(--#{$sds-prefix}-color-orange-50);
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-warning-gradient-start: var(--#{$pds-prefix}-color-orange-50);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-danger-gradient-start: var(--#{$sds-prefix}-color-danger-subtle);
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-danger-gradient-start: var(--#{$pds-prefix}-color-danger-subtle);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start: var(--#{$sds-prefix}-color-success-subtle);
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start: var(--#{$pds-prefix}-color-success-subtle);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-warning: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-    var(--#{$sds-prefix}-color-affiliate-overview-card-bg-warning-gradient-start) 0%,
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-warning: linear-gradient(var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-affiliate-overview-card-bg-warning-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-danger: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-    var(--#{$sds-prefix}-color-affiliate-overview-card-bg-danger-gradient-start) 0%,
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-danger: linear-gradient(var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-affiliate-overview-card-bg-danger-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-in-order: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-    var(--#{$sds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start) 0%,
+  --#{$pds-prefix}-color-affiliate-overview-card-bg-in-order: linear-gradient(var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
   // ── Info tags & metadata chips ──────────────────────────────────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-info-tag-bg: var(--#{$sds-prefix}-color-surface-50);
+  --#{$pds-prefix}-color-affiliate-overview-card-info-tag-bg: var(--#{$pds-prefix}-color-surface-50);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-info-tag-text: var(--#{$sds-prefix}-color-info-tag-text);
+  --#{$pds-prefix}-color-affiliate-overview-card-info-tag-text: var(--#{$pds-prefix}-color-info-tag-text);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-metadata-text: var(--#{$sds-prefix}-color-metadata-chip-text);
+  --#{$pds-prefix}-color-affiliate-overview-card-metadata-text: var(--#{$pds-prefix}-color-metadata-chip-text);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-metadata-separator: var(--#{$sds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-affiliate-overview-card-metadata-separator: var(--#{$pds-prefix}-color-text-muted);
 
   // ── Shortcut badge (splitbutton keyboard hint) ───────────────────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-bg: color-mix(in srgb,
+  --#{$pds-prefix}-color-affiliate-overview-card-shortcut-badge-bg: color-mix(in srgb,
 
-    var(--#{$sds-prefix}-color-primary-75) 80%,
+    var(--#{$pds-prefix}-color-primary-75) 80%,
 
     transparent);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-text: var(--#{$sds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-affiliate-overview-card-shortcut-badge-text: var(--#{$pds-prefix}-color-text-muted);
 
-  --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-size: calc(10 / 14 * var(--base-unit));
+  --#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-size: calc(10 / 14 * var(--base-unit));
 
-  --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-weight: var(--font-weight-bold);
+  --#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-weight: var(--font-weight-bold);
 
   // Unitless — must fit inside p-button-sm without stretching the button row.
-  --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height: 1;
+  --#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height: 1;
 
   // ── Loading skeleton ────────────────────────────────────────────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg: var(--#{$sds-prefix}-color-surface-muted);
+  --#{$pds-prefix}-color-affiliate-overview-card-skeleton-bg: var(--#{$pds-prefix}-color-surface-muted);
 
   // ── Structural ──────────────────────────────────────────────────────────────
 
-  --#{$sds-prefix}-size-affiliate-overview-card-accent-width: var(--spacing-0-5);
+  --#{$pds-prefix}-size-affiliate-overview-card-accent-width: var(--spacing-0-5);
 
-  --#{$sds-prefix}-size-affiliate-overview-card-padding: calc(var(--spacing-2) + var(--spacing-0-5));
+  --#{$pds-prefix}-size-affiliate-overview-card-padding: calc(var(--spacing-2) + var(--spacing-0-5));
 
-  --#{$sds-prefix}-space-affiliate-overview-card-avatar-gap: var(--spacing-1-5);
+  --#{$pds-prefix}-space-affiliate-overview-card-avatar-gap: var(--spacing-1-5);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-header-gap: var(--spacing-1-5);
+  --#{$pds-prefix}-space-affiliate-overview-card-header-gap: var(--spacing-1-5);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-header-inner-gap: calc(var(--spacing-1) + var(--spacing-0-25));
+  --#{$pds-prefix}-space-affiliate-overview-card-header-inner-gap: calc(var(--spacing-1) + var(--spacing-0-25));
 
-  --#{$sds-prefix}-space-affiliate-overview-card-metadata-gap: var(--spacing-1);
+  --#{$pds-prefix}-space-affiliate-overview-card-metadata-gap: var(--spacing-1);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-info-tag-padding-inline: var(--spacing-1);
+  --#{$pds-prefix}-space-affiliate-overview-card-info-tag-padding-inline: var(--spacing-1);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-info-tag-padding-block: var(--spacing-0-25);
+  --#{$pds-prefix}-space-affiliate-overview-card-info-tag-padding-block: var(--spacing-0-25);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline: var(--spacing-0-5);
+  --#{$pds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-inline: var(--spacing-0-5);
 
-  --#{$sds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-block: var(--spacing-0-25);
+  --#{$pds-prefix}-space-affiliate-overview-card-shortcut-badge-padding-block: var(--spacing-0-25);
 
   // Figma: copy-content-LEGACY icon at 10.5px (0.75rem @ 14px base)
-  --#{$sds-prefix}-size-affiliate-overview-card-metadata-icon: var(--#{$sds-prefix}-icon-size-xs);
+  --#{$pds-prefix}-size-affiliate-overview-card-metadata-icon: var(--#{$pds-prefix}-icon-size-xs);
 
-  // Large illustrated avatar skeleton — matches --sds-size-avatar-large-*
-  --#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-w: var(--#{$sds-prefix}-size-avatar-large-w);
-  --#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-h: var(--#{$sds-prefix}-size-avatar-large-h);
+  // Large illustrated avatar skeleton — matches --pds-size-avatar-large-*
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-w: var(--#{$pds-prefix}-size-avatar-large-w);
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-h: var(--#{$pds-prefix}-size-avatar-large-h);
 }
 
 // ── PrimeNG Card token bridge — scoped to affiliate overview card wrapper ─────
 
 .c-affiliate-overview-card {
-  --p-card-body-padding: var(--#{$sds-prefix}-size-affiliate-overview-card-padding);
+  --p-card-body-padding: var(--#{$pds-prefix}-size-affiliate-overview-card-padding);
 
-  --p-card-border-color: var(--#{$sds-prefix}-color-panel-border);
+  --p-card-border-color: var(--#{$pds-prefix}-color-panel-border);
 
-  --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-default);
+  --p-card-background: var(--#{$pds-prefix}-color-affiliate-overview-card-bg-default);
 
-  --p-card-border-radius: var(--#{$sds-prefix}-radius-none);
+  --p-card-border-radius: var(--#{$pds-prefix}-radius-none);
 
   --p-card-shadow: none;
 }
 
 .c-affiliate-overview-card--in-order {
-  --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-in-order);
+  --p-card-background: var(--#{$pds-prefix}-color-affiliate-overview-card-bg-in-order);
 }
 
 .c-affiliate-overview-card--warning {
-  --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-warning);
+  --p-card-background: var(--#{$pds-prefix}-color-affiliate-overview-card-bg-warning);
 }
 
 .c-affiliate-overview-card--danger {
-  --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-danger);
+  --p-card-background: var(--#{$pds-prefix}-color-affiliate-overview-card-bg-danger);
 }

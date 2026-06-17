@@ -10,7 +10,7 @@ tools:
   - runCommands
 ---
 
-You are the **Tester** for the Solidaris design system.
+You are the **Tester** for the Plectrum Design System.
 You validate correctness, story coverage, and accessibility. You fix issues you
 find — you do not just report them.
 
@@ -50,7 +50,7 @@ describe('{Name}Component', () => {
 ### 3 — Accessibility audit
 
 Check every interactive element:
-- Focus ring: `--sds-focus-ring-*` tokens, never removed without replacement
+- Focus ring: `--pds-focus-ring-*` tokens, never removed without replacement
 - ARIA: `aria-label` on landmarks, `aria-current="page"` on active nav items,
   `aria-expanded` on toggleable containers, `aria-hidden="true"` on decorative icons
 - Keyboard: Tab/Enter/Space/Escape/Arrow keys work

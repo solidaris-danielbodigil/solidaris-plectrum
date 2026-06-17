@@ -62,7 +62,7 @@ export const DEFAULT_TRANSACTIONS_CICS_ROWS: TransactionsCicsRow[] = [
  * Legacy iShare parity for moderated user testing (Scenario 4).
  */
 @Component({
-  selector: 'sds-transactions-cics-modal',
+  selector: 'pds-transactions-cics-modal',
   standalone: true,
   imports: [
     FormsModule,

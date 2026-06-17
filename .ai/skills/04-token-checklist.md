@@ -1,6 +1,6 @@
 # Skills — 04 Token-First Checklist
 
-When implementing a component, map every visual property to the correct `--sds-*` token
+When implementing a component, map every visual property to the correct `--pds-*` token
 before writing any SCSS. Use this as a pre-implementation scan.
 
 ---
@@ -20,16 +20,16 @@ before writing any SCSS. Use this as a pre-implementation scan.
 
 | Visual property | Token pattern | Example |
 |---|---|---|
-| Background | `--sds-color-surface-*` or `--sds-color-{component}-bg` | `--sds-color-nav-shell-bg` |
-| Text | `--sds-color-text-*` | `--sds-color-text-default` |
-| Border | `--sds-color-border-*` | `--sds-color-border-default` |
-| Brand / primary | `--sds-color-brand` | `--sds-color-brand` |
-| Interactive hover bg | `--sds-color-{component}-item-hover` | `--sds-color-nav-shell-item-hover` |
-| Active / selected bg | `--sds-color-{component}-item-active` | `--sds-color-nav-shell-item-active` |
-| Danger | `--sds-color-danger` | `--sds-color-danger` |
-| Success | `--sds-color-success` | `--sds-color-success` |
-| Focus ring | `--sds-focus-ring-color` | `--sds-focus-ring-color` |
-| Icon colour | `currentcolor` or `--sds-color-text-*` | — |
+| Background | `--pds-color-surface-*` or `--pds-color-{component}-bg` | `--pds-color-nav-shell-bg` |
+| Text | `--pds-color-text-*` | `--pds-color-text-default` |
+| Border | `--pds-color-border-*` | `--pds-color-border-default` |
+| Brand / primary | `--pds-color-brand` | `--pds-color-brand` |
+| Interactive hover bg | `--pds-color-{component}-item-hover` | `--pds-color-nav-shell-item-hover` |
+| Active / selected bg | `--pds-color-{component}-item-active` | `--pds-color-nav-shell-item-active` |
+| Danger | `--pds-color-danger` | `--pds-color-danger` |
+| Success | `--pds-color-success` | `--pds-color-success` |
+| Focus ring | `--pds-focus-ring-color` | `--pds-focus-ring-color` |
+| Icon colour | `currentcolor` or `--pds-color-text-*` | — |
 
 ---
 
@@ -37,11 +37,11 @@ before writing any SCSS. Use this as a pre-implementation scan.
 
 | Visual property | Token pattern | Example |
 |---|---|---|
-| Padding (generic) | `--sds-space-{scale}` | `--sds-space-4` |
-| Padding (form field) | `--sds-space-form-{x\|y}` | `--sds-space-form-x` |
-| Gap between items | `--sds-space-{component}-gap` | `--sds-space-nav-shell-item-gap` |
-| Component padding | `--sds-space-{component}-*` | `--sds-space-nav-shell-item-p` |
-| List padding | `--sds-space-list-{x\|y}` | `--sds-space-list-x` |
+| Padding (generic) | `--pds-space-{scale}` | `--pds-space-4` |
+| Padding (form field) | `--pds-space-form-{x\|y}` | `--pds-space-form-x` |
+| Gap between items | `--pds-space-{component}-gap` | `--pds-space-nav-shell-item-gap` |
+| Component padding | `--pds-space-{component}-*` | `--pds-space-nav-shell-item-p` |
+| List padding | `--pds-space-list-{x\|y}` | `--pds-space-list-x` |
 
 ---
 
@@ -49,10 +49,10 @@ before writing any SCSS. Use this as a pre-implementation scan.
 
 | Visual property | Token pattern | Example |
 |---|---|---|
-| Font family | `--sds-text-{cat}-{size}-family` | `--sds-text-label-sm-family` |
-| Font size | `--sds-text-{cat}-{size}-size` | `--sds-text-body-md-size` |
-| Font weight | `--sds-text-{cat}-{size}-weight` | `--sds-text-label-sm-weight` |
-| Line height | `--sds-text-{cat}-{size}-line` | `--sds-text-label-sm-line` |
+| Font family | `--pds-text-{cat}-{size}-family` | `--pds-text-label-sm-family` |
+| Font size | `--pds-text-{cat}-{size}-size` | `--pds-text-body-md-size` |
+| Font weight | `--pds-text-{cat}-{size}-weight` | `--pds-text-label-sm-weight` |
+| Line height | `--pds-text-{cat}-{size}-line` | `--pds-text-label-sm-line` |
 
 Categories: `display`, `heading`, `body`, `label`
 Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
@@ -63,11 +63,11 @@ Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
 
 | Visual property | Token pattern | Example |
 |---|---|---|
-| Border radius | `--sds-radius-{size}` | `--sds-radius-lg` |
-| Shadow | `--sds-shadow-*` | `--sds-shadow-overlay-navigation` |
-| Icon size | `--sds-size-{component}-icon` or `--sds-globals-icon-size` | `--sds-size-nav-shell-icon` |
-| Fixed structural width | `--sds-size-{component}-{descriptor}` | `--sds-size-nav-shell-footprint` |
-| Fixed structural height | `--sds-space-{component}-header-h` | `--sds-space-nav-shell-header-h` |
+| Border radius | `--pds-radius-{size}` | `--pds-radius-lg` |
+| Shadow | `--pds-shadow-*` | `--pds-shadow-overlay-navigation` |
+| Icon size | `--pds-size-{component}-icon` or `--pds-globals-icon-size` | `--pds-size-nav-shell-icon` |
+| Fixed structural width | `--pds-size-{component}-{descriptor}` | `--pds-size-nav-shell-footprint` |
+| Fixed structural height | `--pds-space-{component}-header-h` | `--pds-space-nav-shell-header-h` |
 
 ---
 
@@ -75,18 +75,18 @@ Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
 
 | Visual property | Token pattern | Example |
 |---|---|---|
-| Transition duration | `--sds-transition-duration` | `--sds-transition-duration` |
-| Named transition | `--sds-transition-{component}` | `--sds-transition-nav-shell` |
-| Label fade in | `--sds-transition-nav-label-in` | `--sds-transition-nav-label-in` |
-| Focus ring width | `--sds-focus-ring-width` | `--sds-focus-ring-width` |
-| Focus ring offset | `--sds-focus-ring-offset` | `--sds-focus-ring-offset` |
-| Disabled opacity | `--sds-disabled-opacity` | `--sds-disabled-opacity` |
+| Transition duration | `--pds-transition-duration` | `--pds-transition-duration` |
+| Named transition | `--pds-transition-{component}` | `--pds-transition-nav-shell` |
+| Label fade in | `--pds-transition-nav-label-in` | `--pds-transition-nav-label-in` |
+| Focus ring width | `--pds-focus-ring-width` | `--pds-focus-ring-width` |
+| Focus ring offset | `--pds-focus-ring-offset` | `--pds-focus-ring-offset` |
+| Disabled opacity | `--pds-disabled-opacity` | `--pds-disabled-opacity` |
 
 ---
 
 ## 6. When a Token Is Missing
 
-If a Figma value has no matching `--sds-*` token:
+If a Figma value has no matching `--pds-*` token:
 
 1. Note the Figma variable name (e.g. `surface/50`, `spacing-300`, `transparent/black/50`)
 2. Identify the correct `01-settings` file (see `skills/02-scss-architecture.md §1`)
@@ -98,5 +98,5 @@ If a Figma value has no matching `--sds-*` token:
 // libs/styles/src/01-settings/_settings.colors-semantic.scss
 
 // Figma: surface/50 — Custom components node 1:1433
---#{$sds-prefix}-color-nav-shell-bg: #f6f6f6;
+--#{$pds-prefix}-color-nav-shell-bg: #f6f6f6;
 ```

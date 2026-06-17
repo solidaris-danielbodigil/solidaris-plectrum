@@ -56,18 +56,18 @@ function findButtonByLabel(
 
 @Component({
   template: `
-    <app-affiliate-document-detail
+    <(pds|app|lib)-affiliate-document-detail
       [selectedDocumentId]="selectedDocumentId()"
       [navigableDocuments]="navigableDocuments"
       [focusTarget]="focusTarget()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
     />
-    <app-document-more-details-drawer
+    <(pds|app|lib)-document-more-details-drawer
       [(visible)]="moreDetailsDrawerVisible"
       [panel]="moreDetailsPanel()"
     />
-    <sds-transactions-cics-modal [(visible)]="transactionsCicsDialogVisible" />
+    <(pds|app|lib)-transactions-cics-modal [(visible)]="transactionsCicsDialogVisible" />
   `,
   imports: [
     AffiliateDocumentDetailComponent,

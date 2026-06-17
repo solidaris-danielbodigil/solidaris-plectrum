@@ -1,4 +1,4 @@
-# Solidaris Design System — AI Knowledge Base
+# Plectrum Design System — AI Knowledge Base
 
 This folder is the single source of truth for all AI agent context.
 Load the relevant files at the start of every conversation.

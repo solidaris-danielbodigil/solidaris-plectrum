@@ -3,13 +3,13 @@
 
 // =============================================================================
 // 06-components/_components.doc-demo-box.scss
-// <sds-doc-demo-box> — framed preview sandbox for Foundation doc pages.
+// <(pds|app|lib)-doc-demo-box> — framed preview sandbox for Foundation doc pages.
 //
 // Token source: libs/styles/src/01-settings/
-//   _settings.doc-demo-box.scss     → --sds-color-doc-demo-*, --sds-size-doc-demo-*
-//   _settings.colors-semantic.scss  → --sds-color-surface-*, --sds-color-text-*, --sds-color-brand
+//   _settings.doc-demo-box.scss     → --pds-color-doc-demo-*, --pds-size-doc-demo-*
+//   _settings.colors-semantic.scss  → --pds-color-surface-*, --pds-color-text-*, --pds-color-brand
 //   _settings.spacing.scss          → --spacing-*
-//   _settings.radius.scss           → --sds-radius-*
+//   _settings.radius.scss           → --pds-radius-*
 // =============================================================================
 
 // ── Demo cell — the colored box used inside demos ────────────────────────────
@@ -17,35 +17,35 @@
 // NOTE: flex layout stays here — this is a doc primitive reused across many
 // inline story templates, so there is no single owning template (rules §5 exception).
 .c-demo-cell {
-  border: 1px solid var(--#{$sds-prefix}-color-doc-demo-cell-border);
-  background: var(--#{$sds-prefix}-color-doc-demo-cell-bg);
+  border: 1px solid var(--#{$pds-prefix}-color-doc-demo-cell-border);
+  background: var(--#{$pds-prefix}-color-doc-demo-cell-bg);
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-doc-demo-cell-text);
-  min-height: var(--#{$sds-prefix}-size-doc-demo-cell-min-h);
+  color: var(--#{$pds-prefix}-color-doc-demo-cell-text);
+  min-height: var(--#{$pds-prefix}-size-doc-demo-cell-min-h);
 
   &--accent {
-    background: var(--#{$sds-prefix}-color-doc-demo-cell-accent-bg);
-    color: var(--#{$sds-prefix}-color-surface-0);
-    border-color: var(--#{$sds-prefix}-color-doc-demo-cell-accent-border);
+    background: var(--#{$pds-prefix}-color-doc-demo-cell-accent-bg);
+    color: var(--#{$pds-prefix}-color-surface-0);
+    border-color: var(--#{$pds-prefix}-color-doc-demo-cell-accent-border);
   }
 }
 
 // ── Outer frame ──────────────────────────────────────────────────────────────
 .c-doc-demo-box {
-  border: 1px solid var(--#{$sds-prefix}-color-surface-border);
-  border-radius: var(--#{$sds-prefix}-radius-md);
+  border: 1px solid var(--#{$pds-prefix}-color-surface-border);
+  border-radius: var(--#{$pds-prefix}-radius-md);
   overflow: hidden;
 }
 
 // ── Preview area ─────────────────────────────────────────────────────────────
 .c-doc-demo-box__preview {
-  background: var(--#{$sds-prefix}-color-surface-default);
+  background: var(--#{$pds-prefix}-color-surface-default);
 }
 
 // ── Footer — "Show code" toggle ───────────────────────────────────────────────
 .c-doc-demo-box__footer {
-  background: var(--#{$sds-prefix}-color-surface-subtle);
-  border-top: 1px solid var(--#{$sds-prefix}-color-surface-border);
+  background: var(--#{$pds-prefix}-color-surface-subtle);
+  border-top: 1px solid var(--#{$pds-prefix}-color-surface-border);
 }
 
 .c-doc-demo-box__toggle {
@@ -53,27 +53,27 @@
   border: none;
   cursor: pointer;
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
   padding: 0;
 
   &:hover {
-    color: var(--#{$sds-prefix}-color-brand);
+    color: var(--#{$pds-prefix}-color-brand);
     text-decoration: underline;
   }
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
 
 // ── Code panel ───────────────────────────────────────────────────────────────
 .c-doc-demo-box__code {
-  background: var(--#{$sds-prefix}-color-surface-subtle);
-  border-top: 1px solid var(--#{$sds-prefix}-color-surface-border);
+  background: var(--#{$pds-prefix}-color-surface-subtle);
+  border-top: 1px solid var(--#{$pds-prefix}-color-surface-border);
   @include text-body-xs;
   white-space: pre;
-  color: var(--#{$sds-prefix}-color-text);
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 // ── Spacing token swatch ─────────────────────────────────────────────────────
@@ -86,16 +86,16 @@
   align-items: flex-start;
   gap: var(--spacing-0-5);
   padding: var(--spacing-1);
-  border: 1px solid var(--#{$sds-prefix}-color-surface-border);
-  border-radius: var(--#{$sds-prefix}-radius-md);
-  background: var(--#{$sds-prefix}-color-surface-default);
+  border: 1px solid var(--#{$pds-prefix}-color-surface-border);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  background: var(--#{$pds-prefix}-color-surface-default);
   @include text-body-xs;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
 }
 
 .c-spacing-swatch__bar {
-  background: var(--#{$sds-prefix}-color-brand);
-  height: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
-  width: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
+  background: var(--#{$pds-prefix}-color-brand);
+  height: var(--swatch-size, var(--#{$pds-prefix}-size-doc-demo-swatch));
+  width: var(--swatch-size, var(--#{$pds-prefix}-size-doc-demo-swatch));
   flex-shrink: 0;
 }

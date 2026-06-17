@@ -61,7 +61,7 @@
           (keydown)="onSearchKeydown($event)"
         />
         <p-inputicon>
-          <sds-input-clear
+          <(pds|app|lib)-input-clear
             [visible]="!!resolvedSearchQuery()"
             [ariaLabel]="searchClearLabel()"
             (clear)="clearSearch()"
@@ -113,7 +113,7 @@
         [attr.aria-expanded]="avatarMenuExpanded()"
         (click)="toggleAvatarMenu($event, avatarMenu)"
       >
-        <sds-plectrum-avatar
+        <(pds|app|lib)-plectrum-avatar
           class="c-top-nav__avatar o-flex__item--shrink-0"
           [initials]="avatarInitials()"
           [state]="avatarState()"
@@ -155,7 +155,7 @@
         </ng-template>
       </p-menu>
     } @else {
-      <sds-plectrum-avatar
+      <(pds|app|lib)-plectrum-avatar
         class="c-top-nav__avatar o-flex__item--shrink-0"
         [initials]="avatarInitials()"
         [state]="avatarState()"

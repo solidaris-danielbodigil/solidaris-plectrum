@@ -25,12 +25,12 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
       {
         name: 'Default state',
         description: 'Red brand mark with centered initials.',
-        composition: '<sds-plectrum-avatar initials="LV" />',
+        composition: '<(pds|app|lib)-plectrum-avatar initials="LV" />',
       },
       {
         name: 'Active state',
         description: 'Selected avatar with blue halo and white outline.',
-        composition: '<sds-plectrum-avatar initials="LV" state="active" />',
+        composition: '<(pds|app|lib)-plectrum-avatar initials="LV" state="active" />',
       },
     ],
     antiPatterns: [
@@ -42,7 +42,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
       {
         scenario: 'Hardcoding the active halo in component SCSS',
         reason: 'The active ring is tokenised and must stay in 01-settings.',
-        alternative: 'Use --sds-shadow-avatar-active from the avatar settings file.',
+        alternative: 'Use --pds-shadow-avatar-active from the avatar settings file.',
       },
     ],
   },
@@ -65,12 +65,12 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
   },
   tokens: {
     consumed: [
-      '--sds-size-avatar',
-      '--sds-color-avatar-shape-hover',
-      '--sds-shadow-avatar-active',
-      '--sds-radius-md',
-      '--sds-color-surface-0',
-      '--sds-transition-duration-mask',
+      '--pds-size-avatar',
+      '--pds-color-avatar-shape-hover',
+      '--pds-shadow-avatar-active',
+      '--pds-radius-md',
+      '--pds-color-surface-0',
+      '--pds-transition-duration-mask',
     ],
   },
   composition: {
@@ -92,7 +92,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     {
       name: 'Default avatar',
       description: 'Render a initials avatar',
-      code: '<sds-plectrum-avatar initials="LV" />',
+      code: '<(pds|app|lib)-plectrum-avatar initials="LV" />',
     },
   ],
 };

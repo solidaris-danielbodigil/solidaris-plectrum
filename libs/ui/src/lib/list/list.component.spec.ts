@@ -240,16 +240,16 @@ describe('ListComponent', () => {
       fixture.nativeElement.querySelectorAll('.c-list__timeline-sprite').length,
     ).toBe(1);
     expect(
-      fixture.nativeElement.querySelector('#sds-list-timeline-marker'),
+      fixture.nativeElement.querySelector('#pds-list-timeline-marker'),
     ).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector('#sds-list-timeline-body-gradient'),
+      fixture.nativeElement.querySelector('#pds-list-timeline-body-gradient'),
     ).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector('#sds-list-timeline-line-tile'),
+      fixture.nativeElement.querySelector('#pds-list-timeline-line-tile'),
     ).toBeNull();
     expect(
-      fixture.nativeElement.querySelector('#sds-list-timeline-line-pattern'),
+      fixture.nativeElement.querySelector('#pds-list-timeline-line-pattern'),
     ).toBeNull();
 
     expect(
@@ -263,10 +263,10 @@ describe('ListComponent', () => {
     ).toBe(2);
 
     const markerUse = fixture.nativeElement.querySelector(
-      'use[href="#sds-list-timeline-marker"]',
+      'use[href="#pds-list-timeline-marker"]',
     );
     const arrowUse = fixture.nativeElement.querySelector(
-      'use[href="#sds-list-timeline-arrow"]',
+      'use[href="#pds-list-timeline-arrow"]',
     );
     expect(markerUse).toBeTruthy();
     expect(arrowUse).toBeTruthy();
@@ -285,7 +285,7 @@ describe('ListComponent', () => {
     expect(timelineBody).toBeTruthy();
     expect(timelineBody?.getAttribute('d')).toBe('M3 0 L3 100');
     expect(timelineBody?.getAttribute('stroke')).toBe(
-      'url(#sds-list-timeline-body-gradient)',
+      'url(#pds-list-timeline-body-gradient)',
     );
     expect(timelineBody?.getAttribute('stroke-dasharray')).toBe('2 2');
     expect(fixture.nativeElement.querySelector('.c-list__timeline-img')).toBeNull();

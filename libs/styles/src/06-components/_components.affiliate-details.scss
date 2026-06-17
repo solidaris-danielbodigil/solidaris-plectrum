@@ -14,12 +14,12 @@
 // =============================================================================
 
 .c-affiliate-details {
-  background: var(--#{$sds-prefix}-color-affiliate-details-page-bg);
+  background: var(--#{$pds-prefix}-color-affiliate-details-page-bg);
 }
 
 .c-affiliate-details__documents {
   min-width: 0;
-  min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-documents-column-min);
+  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-documents-column-min);
 
   .c-list {
     background: transparent;
@@ -41,15 +41,15 @@
 // Category tab — label column width from token (grid layout via o-grid in template)
 .c-affiliate-details__category-tab {
   &--disabled {
-    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
     cursor: not-allowed;
-    color: var(--#{$sds-prefix}-color-text-muted);
+    color: var(--#{$pds-prefix}-color-text-muted);
   }
 }
 
 .c-affiliate-details__category-eye {
   &--disabled {
-    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -63,13 +63,13 @@
 
   .c-list__item--document,
   .c-list__item--group {
-    scroll-margin-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
+    scroll-margin-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
   }
 }
 
 .c-affiliate-details__category-empty-filter {
   @include text-body-sm;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
 }
 
 // Panel header — label + badge alignment (grid layout via o-grid in template)
@@ -83,12 +83,12 @@
 
 .c-affiliate-details__category-panel-count-label {
   @include text-label-xs;
-  color: var(--#{$sds-prefix}-color-text-muted);
+  color: var(--#{$pds-prefix}-color-text-muted);
 }
 
 .c-affiliate-details__detail {
   min-width: 0;
-  min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-detail-column-min);
+  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-detail-column-min);
 
   :where(.p-card-body) {
     display: flex;
@@ -106,7 +106,7 @@
 }
 
 .c-affiliate-details__documents-scroll {
-  scroll-padding-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
+  scroll-padding-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
 }
 
 .c-affiliate-details__detail-scroll {

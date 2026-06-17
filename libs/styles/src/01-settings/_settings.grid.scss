@@ -3,7 +3,7 @@
 // Grid configuration — Sass maps for the flex-grid (o-flex) and CSS grid
 // (o-grid) systems.
 // Mostly no CSS output; values consumed by 05-objects/_objects.flex-grid.scss
-// and 05-objects/_objects.grid.scss. The --sds-grid-min token below is the one
+// and 05-objects/_objects.grid.scss. The --pds-grid-min token below is the one
 // emitted custom property (default min track for o-grid auto-fit/auto-fill).
 // =============================================================================
 @use 'settings.prefix' as *;
@@ -15,7 +15,7 @@ $grid-cols: 12 !default;
 
   // Default min column width for o-grid --auto-fit / --auto-fill responsive
   // grids. Override per instance via inline style or component SCSS.
-  --#{$sds-prefix}-grid-min: 16rem;
+  --#{$pds-prefix}-grid-min: 16rem;
 }
 
 $overflow: (

@@ -37,11 +37,11 @@ $nav-bg: #f6f6f6;
 .c-nav { background: $nav-bg; }
 
 // ✅ Correct — token in 01-settings/_settings.colors-semantic.scss
-.c-nav { background: var(--sds-color-nav-shell-bg); }
+.c-nav { background: var(--pds-color-nav-shell-bg); }
 ```
 
 ### 2 — CSS custom properties only in components
-Use `var(--sds-*)` throughout. Never hardcode hex, rgba, px, or rem values in `06-components`.
+Use `var(--pds-*)` throughout. Never hardcode hex, rgba, px, or rem values in `06-components`.
 
 ```scss
 // ❌ Wrong
@@ -49,8 +49,8 @@ Use `var(--sds-*)` throughout. Never hardcode hex, rgba, px, or rem values in `0
 
 // ✅ Correct
 .c-nav__item {
-  padding: var(--sds-space-nav-shell-item-p);
-  border-radius: var(--sds-radius-lg);
+  padding: var(--pds-space-nav-shell-item-p);
+  border-radius: var(--pds-radius-lg);
 }
 ```
 
@@ -71,7 +71,7 @@ Tailwind utility classes must **never** appear in HTML templates.
 **Priority order:**
 1. `o-flex` / `o-layout` class in template — always first if one exists
 2. `@apply` in SCSS — only for properties with no `o-*` equivalent (e.g. `list-none`, `cursor-pointer`, `truncate`)
-3. `var(--sds-*)` in SCSS — for component-specific spacing that's token-backed
+3. `var(--pds-*)` in SCSS — for component-specific spacing that's token-backed
 
 ### 4 — PrimeNG token bridge in `01-settings/` ⛔
 All PrimeNG `--p-*` variable overrides belong in `libs/styles/src/01-settings/_settings.{primeng-component}.scss`.
@@ -104,21 +104,21 @@ Only two categories justify a fixed dimension — both require a justification c
 .c-nav-shell__link { min-height: 40px; }
 
 // ✅ Correct — content-driven
-.c-nav-shell__logo { padding: var(--sds-space-nav-shell-item-px); }
-.c-nav-shell__link { padding: var(--sds-space-nav-shell-item-py) var(--sds-space-nav-shell-item-px); }
+.c-nav-shell__logo { padding: var(--pds-space-nav-shell-item-px); }
+.c-nav-shell__link { padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px); }
 
 // ✅ Acceptable — structurally required, with comment
 .c-nav-shell__icon {
   // Fixed size required — icon fonts collapse to 0 without an explicit constraint
-  width: var(--sds-size-nav-shell-icon);
-  height: var(--sds-size-nav-shell-icon);
+  width: var(--pds-size-nav-shell-icon);
+  height: var(--pds-size-nav-shell-icon);
 }
 ```
 
 ### 6 — Token creation when values are missing
-If Figma specifies a value that has no existing `--sds-*` token:
+If Figma specifies a value that has no existing `--pds-*` token:
 1. Add it to the correct `01-settings` file with a descriptive comment citing the Figma node
-2. Reference it in the component SCSS via `var(--sds-*)`
+2. Reference it in the component SCSS via `var(--pds-*)`
 3. Note the new token in the `.metadata.ts` under `tokens.consumed`
 
 ## Storybook Rule (mandatory)
@@ -167,7 +167,7 @@ export const {Name}Metadata: ComponentMetadata = {
     wcagLevel: 'AA',
   },
   tokens: {
-    consumed: [], // list all --sds-* tokens this component reads
+    consumed: [], // list all --pds-* tokens this component reads
   },
   aiHints: {
     priority: 'medium',
@@ -184,7 +184,7 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] Storybook story created **colocated** in `libs/ui/src/lib/{component-name}/` covering all states
 - [ ] Component exported from `libs/ui/src/index.ts`
 - [ ] `.metadata.ts` conforms to schema
-- [ ] All SCSS values use `var(--sds-*)` — no local `$variables`, no hardcoded values
+- [ ] All SCSS values use `var(--pds-*)` — no local `$variables`, no hardcoded values
 - [ ] New tokens added to `libs/styles/src/01-settings/` before use (not inline in component)
 - [ ] Layout via `o-flex`/`o-layout` in template — no `display: flex`, `overflow`, `width: 100%` in SCSS
 - [ ] PrimeNG `--p-*` overrides in `01-settings/_settings.{component}.scss` — never in `06-components/`

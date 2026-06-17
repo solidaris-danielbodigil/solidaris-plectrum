@@ -13,7 +13,7 @@ const meta: Meta<PlectrumAvatarComponent> = {
 
 - Figma initials: [Custom component node 1:1586](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1586)
 - Figma illustrated large: [node 507:7915](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-7915) — 51.333 × 56px
-- Default size: 32px initials variant (\`--sds-size-avatar\`)
+- Default size: 32px initials variant (\`--pds-size-avatar\`)
 - Large modifier: \`c-plectrum-avatar--large\` with a single illustrated SVG from \`libs/assets/\`
 - Hover, focus-visible, and pressed are CSS pseudo-class states
 - The \`state\` input controls the persistent selected/active state

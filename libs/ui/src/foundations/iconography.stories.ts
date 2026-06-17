@@ -5,7 +5,7 @@
 // Template: ./iconography-page.component.html
 //
 // PrimeNG components used:
-//   - sds-toolbar    — sticky card toolbar (libs/ui/src/lib/toolbar)
+//   - pds-toolbar    — sticky card toolbar (libs/ui/src/lib/toolbar)
 //   - p-iconField    — search field with leading icon
 //   - p-inputIcon    — icon slot inside IconField
 //   - InputText      — directive on the <input>
@@ -67,7 +67,7 @@ const SIZE_OPTIONS = [
 
 // ── Iconography Page Component ────────────────────────────────────────────────
 @Component({
-  selector: 'sds-iconography-page',
+  selector: 'pds-iconography-page',
   standalone: true,
   imports: [
     FormsModule,
@@ -142,7 +142,7 @@ const meta: Meta<IconographyPageComponent> = {
 - All icons are rendered via Bootstrap Icons CSS font (\`bi bi-{name}\`)
 - Click any icon to copy its class string to the clipboard
 - Filter by variant: All / Regular (no suffix) / Filled (-fill suffix)
-- Toolbar uses \`<sds-toolbar [sticky]="true">\` with named \`slot=start\` / \`slot=end\` projection
+- Toolbar uses \`<(pds|app|lib)-toolbar [sticky]="true">\` with named \`slot=start\` / \`slot=end\` projection
 
 Figma: [Foundations — Iconography](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390)
 

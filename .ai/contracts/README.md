@@ -1,6 +1,6 @@
 # Contracts — Contract-Driven Development (CDD)
 
-> Machine-readable codebase map and component metadata system for the Solidaris design system.
+> Machine-readable codebase map and component metadata system for the Plectrum Design System.
 > Based on the "Agentic Design Systems" pattern by Cristian Morales Achiardi, adapted for Angular CLI + PrimeNG + Plectrum.
 
 ---
@@ -83,7 +83,7 @@
 
 ## 6. Future Automation
 
-- [x] Generator to scaffold `.metadata.ts` with component (`npm run sds:component`)
+- [x] Generator to scaffold `.metadata.ts` with component (`npm run PDS:component`)
 - [x] Script to regenerate `index.json` (`npm run generate-index`)
 - [ ] CI hook: regenerate index on component changes + fail if stale
 - [ ] Drift detection: compare `.metadata.ts` against actual component API

@@ -26,7 +26,7 @@ Use it when you need to answer: *“What value does Figma assign to this semanti
 2. **Search `tokens.json`** — grep for the path fragment (`"drawer"`, `"panel-border"`, `"surface"`).
 3. **Follow `{token.path}` chains** — `$value` may reference another token; resolve until you hit a hex/number.
 4. **Map to code** — primitives → `base.ts` `primitive`; semantics → `base.ts` `semantic` / `colorScheme`; app custom → `extend.ts`.
-5. **SDS primitives** — [`libs/styles/src/01-settings/_settings.colors-primitive.scss`](../styles/src/01-settings/_settings.colors-primitive.scss) is **independent** (hardcoded). Compare when auditing drift; do not auto-sync.
+5. **PDS primitives** — [`libs/styles/src/01-settings/_settings.colors-primitive.scss`](../styles/src/01-settings/_settings.colors-primitive.scss) is **independent** (hardcoded). Compare when auditing drift; do not auto-sync.
 
 ### Example: `surface.0` (white)
 
@@ -41,16 +41,16 @@ Figma aliases `extremes.white` → `#ffffff`. In v1 preset, define `primitive.ex
 
 Figma `Component Color Scheme/Light → drawer` → `border.color` → typically `#e7e7e7`.
 
-SDS exposes this as `--sds-color-surface-border-drawer` / `--sds-color-panel-border` in `_settings.colors-primitive.scss` and `_settings.colors-semantic.scss`.
+PDS exposes this as `--PDS-color-surface-border-drawer` / `--PDS-color-panel-border` in `_settings.colors-primitive.scss` and `_settings.colors-semantic.scss`.
 
-## PrimeNG preset vs SDS
+## PrimeNG preset vs PDS
 
 | Layer | Responsibility |
 |-------|----------------|
 | **PrimeNG preset** (`Plectrum_v1/ts`) | Emits `--p-*` CSS variables for PrimeNG components |
-| **SDS SCSS** (`libs/styles`) | BEMIT components, overrides, semantic aliases (`--sds-color-*`) |
+| **PDS SCSS** (`libs/styles`) | BEMIT components, overrides, semantic aliases (`--PDS-color-*`) |
 
-Apps consume both. A token can be correct in SDS but missing in the preset (or vice versa).
+Apps consume both. A token can be correct in PDS but missing in the preset (or vice versa).
 
 ## Audit script
 

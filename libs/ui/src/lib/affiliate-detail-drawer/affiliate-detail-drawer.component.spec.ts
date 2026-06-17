@@ -110,7 +110,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const avatar = document.querySelector(
-      'sds-plectrum-avatar.c-drawer__affiliate-detail-avatar',
+      'pds-plectrum-avatar.c-drawer__affiliate-detail-avatar',
     );
     expect(avatar).toBeTruthy();
     expect(avatar?.classList.contains('c-plectrum-avatar--large')).toBe(true);
@@ -168,7 +168,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const avatars = document.querySelectorAll(
-      'sds-plectrum-avatar.c-drawer__affiliate-detail-family-avatar',
+      'pds-plectrum-avatar.c-drawer__affiliate-detail-family-avatar',
     );
     expect(avatars.length).toBe(3);
     expect(avatars[0].classList.contains('c-plectrum-avatar--color-blue')).toBe(true);

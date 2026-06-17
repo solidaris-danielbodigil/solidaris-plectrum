@@ -45,7 +45,7 @@ function generate(schema: Schema): void {
   writeFile(path.join(componentDir, `${fileName}.component.ts`), `import { Component } from '@angular/core';
 
 @Component({
-  selector: 'sds-${fileName}',
+  selector: 'pds-${fileName}',
   standalone: true,
   templateUrl: './${fileName}.component.html',
   styleUrl: './${fileName}.component.scss',
@@ -161,7 +161,7 @@ export const ${className}Metadata: ComponentMetadata = {
     {
       name: 'default',
       description: 'Default ${className}',
-      code: \`<sds-${fileName}></sds-${fileName}>\`,
+      code: \`<(pds|app|lib)-${fileName}></pds-${fileName}>\`,
     },
   ],
 };
@@ -177,7 +177,7 @@ export const ${className}Metadata: ComponentMetadata = {
 // =============================================================================
 
 .c-${fileName} {
-  // TODO: Add styles using var(--#{$sds-prefix}-*) tokens
+  // TODO: Add styles using var(--#{$pds-prefix}-*) tokens
 
   // &__element {}
   // &--modifier {}
@@ -207,7 +207,7 @@ Files created:
 
 Next steps:
   1. Fill in the .metadata.ts TODOs
-  2. Add BEM styles using var(--sds-*) tokens
+  2. Add BEM styles using var(--pds-*) tokens
   3. Complete all Storybook story states
   4. Run: npm run generate-index
   `);

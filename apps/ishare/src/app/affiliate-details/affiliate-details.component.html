@@ -1,7 +1,7 @@
 <div
   class="c-affiliate-details o-flex o-flex--y o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
 >
-  <sds-toolbar
+  <(pds|app|lib)-toolbar
     class="c-affiliate-details__toolbar c-affiliate-documents-toolbar o-layout--full-width o-flex__item--shrink-0"
     [sticky]="true"
   >
@@ -10,7 +10,7 @@
         class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
       >
         <div class="c-affiliate-documents-toolbar__field">
-          <sds-form-field label="Rechercher" inputId="document-search">
+          <(pds|app|lib)-form-field label="Rechercher" inputId="document-search">
             <p-iconfield class="c-affiliate-documents-toolbar__field-input o-layout--full-width">
               <p-inputicon>
                 <i class="bi bi-search" aria-hidden="true"></i>
@@ -23,7 +23,7 @@
                 id="document-search"
                 name="documentSearch"
                 data-telemetry-id="document-search"
-                sdsTelemetryLabel="Rechercher"
+                pdsTelemetryLabel="Rechercher"
                 [ngModel]="documentSearch()"
                 (ngModelChange)="documentSearch.set($event)"
                 pSize="small"
@@ -31,23 +31,23 @@
                 class="c-affiliate-documents-toolbar__field-input o-layout--full-width"
               />
               <p-inputicon>
-                <sds-input-clear
+                <(pds|app|lib)-input-clear
                   [visible]="!!documentSearch()"
                   ariaLabel="Effacer la recherche"
                   (clear)="clearDocumentSearch()"
                 />
               </p-inputicon>
             </p-iconfield>
-          </sds-form-field>
+          </pds-form-field>
         </div>
 
         <div class="c-affiliate-documents-toolbar__field">
-          <sds-form-field label="Secteur" inputId="document-sector">
+          <(pds|app|lib)-form-field label="Secteur" inputId="document-sector">
             <p-autocomplete
               inputId="document-sector"
               name="documentSector"
               data-telemetry-id="filter-sector"
-              sdsTelemetryLabel="Secteur"
+              pdsTelemetryLabel="Secteur"
               [ngModel]="selectedSector()"
               (ngModelChange)="onSectorChange($event)"
               (onSelect)="onSectorChange($event.value)"
@@ -62,16 +62,16 @@
               size="small"
               fluid
             ></p-autocomplete>
-          </sds-form-field>
+          </pds-form-field>
         </div>
 
         <div class="c-affiliate-documents-toolbar__field">
-          <sds-form-field label="Trier par" inputId="document-sort">
+          <(pds|app|lib)-form-field label="Trier par" inputId="document-sort">
             <p-autocomplete
               inputId="document-sort"
               name="documentSort"
               data-telemetry-id="filter-sort"
-              sdsTelemetryLabel="Trier par"
+              pdsTelemetryLabel="Trier par"
               [ngModel]="selectedSort()"
               (ngModelChange)="onSortChange($event)"
               (onSelect)="onSortChange($event.value)"
@@ -86,11 +86,11 @@
               size="small"
               fluid
             ></p-autocomplete>
-          </sds-form-field>
+          </pds-form-field>
         </div>
       </div>
     </ng-container>
-  </sds-toolbar>
+  </pds-toolbar>
 
   <div
     class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
@@ -121,7 +121,7 @@
               severity="secondary"
               class="c-affiliate-details__documents-sort o-flex__item--shrink-0"
               data-telemetry-id="documents-sort"
-              [sdsTelemetryLabel]="startDateSortAriaLabel()"
+              [pdsTelemetryLabel]="startDateSortAriaLabel()"
               [icon]="startDateSortIcon()"
               [attr.aria-label]="startDateSortAriaLabel()"
               (click)="toggleStartDateSort()"
@@ -138,14 +138,14 @@
                 @for (cat of categories(); track cat.id) {
                   <p-tab
                     class="c-affiliate-details__category-tab o-grid o-grid--align-items-center o-layout--gap-1-5"
-                    style="--sds-grid-template-columns: auto var(--sds-size-affiliate-details-category-label-min) max-content"
+                    style="--pds-grid-template-columns: auto var(--pds-size-affiliate-details-category-label-min) max-content"
                     [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
                     [value]="cat.id"
                     [attr.data-telemetry-id]="'category-tab-' + cat.id"
                     [attr.aria-disabled]="cat.enabled ? null : 'true'"
                     [pTooltip]="cat.enabled ? undefined : categoryTabDisabledHint"
                     tooltipPosition="bottom"
-                    [sdsTelemetryLabel]="cat.label"
+                    [pdsTelemetryLabel]="cat.label"
                   >
                     <button
                       pButton
@@ -157,7 +157,7 @@
                       [attr.data-telemetry-id]="'category-toggle-' + cat.id"
                       [attr.aria-disabled]="cat.enabled ? null : 'true'"
                       [attr.tabindex]="cat.enabled ? 0 : -1"
-                      [sdsTelemetryLabel]="
+                      [pdsTelemetryLabel]="
                         isCategoryOpen(cat.id)
                           ? 'Masquer ' + cat.label
                           : 'Afficher ' + cat.label
@@ -208,7 +208,7 @@
                 <p-accordion-header>
                   <div
                     class="c-affiliate-details__category-panel-header o-grid o-grid--align-items-center o-grid--justify-content-flex-start o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
-                    style="--sds-grid-template-columns: var(--sds-size-affiliate-details-category-label-min) max-content"
+                    style="--pds-grid-template-columns: var(--pds-size-affiliate-details-category-label-min) max-content"
                   >
                     <span class="c-affiliate-details__category-panel-label">{{
                       cat.label
@@ -244,7 +244,7 @@
                       {{ categoryEmptyFilterMessage }}
                     </p>
                   } @else if (cat.kind === 'journey' && cat.groups) {
-                    <sds-list
+                    <(pds|app|lib)-list
                       class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
                       [groups]="cat.groups"
@@ -256,7 +256,7 @@
                       (tagTargetClick)="onTagTargetClick($event)"
                     />
                   } @else if (cat.items) {
-                    <sds-list
+                    <(pds|app|lib)-list
                       class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
                       [groups]="null"
@@ -272,14 +272,14 @@
           </p-accordion>
         </div>
         } @else {
-          <sds-empty-state
+          <(pds|app|lib)-empty-state
             class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
             [title]="emptyListTitle()"
             [description]="emptyListDescription()"
           />
         }
       } @else {
-        <sds-empty-state
+        <(pds|app|lib)-empty-state
           class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
           [title]="emptyListTitle()"
           [description]="emptyListDescription()"
@@ -316,7 +316,7 @@
                     icon="bi bi-skip-backward"
                     [disabled]="!canGoToPreviousDocument()"
                     aria-label="Document précédent"
-                    sdsTelemetryLabel="Document précédent"
+                    pdsTelemetryLabel="Document précédent"
                     (click)="goToPreviousDocument()"
                   ></button>
                   <button
@@ -327,7 +327,7 @@
                     icon="bi bi-skip-forward"
                     [disabled]="!canGoToNextDocument()"
                     aria-label="Document suivant"
-                    sdsTelemetryLabel="Document suivant"
+                    pdsTelemetryLabel="Document suivant"
                     (click)="goToNextDocument()"
                   ></button>
                 </div>
@@ -338,7 +338,7 @@
           <div
             class="c-affiliate-details__detail-scroll o-flex o-flex--y o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
           >
-            <app-affiliate-document-detail
+            <(pds|app|lib)-affiliate-document-detail
               class="o-layout--full-width o-layout--min-w-0"
               [selectedDocumentId]="documentId"
               [affiliateRouteId]="affiliateId()"
@@ -363,7 +363,7 @@
             />
           </div>
         } @else {
-          <sds-empty-state
+          <(pds|app|lib)-empty-state
             class="c-affiliate-details__detail-empty o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0"
             title="Aucun document sélectionné"
             description="Développez un parcours et sélectionnez un document pour afficher son détail."
@@ -375,7 +375,7 @@
 
 </div>
 
-<sds-affiliate-detail-drawer
+<(pds|app|lib)-affiliate-detail-drawer
   [(visible)]="affiliateDetailDrawerVisible"
   [data]="affiliateDetailDrawerData()"
   [showNotes]="false"
@@ -388,12 +388,12 @@
   (familyMemberSelect)="onFamilyMemberSelect($event)"
 />
 
-<app-document-more-details-drawer
+<(pds|app|lib)-document-more-details-drawer
   [(visible)]="moreDetailsDrawerVisible"
   [panel]="moreDetailsPanel()"
 />
 
-<sds-transactions-cics-modal
+<(pds|app|lib)-transactions-cics-modal
   [(visible)]="transactionsCicsDialogVisible"
   (transactionLaunch)="onCicsTransactionLaunch($event.code)"
 />

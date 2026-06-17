@@ -10,7 +10,7 @@
 //   .u-border-danger                              → status color via custom prop
 //
 // Default color: content-border. Default width/style: 1px solid.
-// Override color per instance:  style="--sds-border-color: var(--sds-color-panel-border);"
+// Override color per instance:  style="--pds-border-color: var(--pds-color-panel-border);"
 // =============================================================================
 @use '../01-settings/settings.prefix' as *;
 @use '../02-tools/tools.borders' as border;
@@ -26,16 +26,16 @@ $statuses: (success, warning, danger, info);
 
 // Orthogonal modifiers — combine freely with any side class.
 .u-border-thick {
-  --#{$sds-prefix}-border-width: var(--#{$sds-prefix}-border-width-thick);
+  --#{$pds-prefix}-border-width: var(--#{$pds-prefix}-border-width-thick);
 }
 
 .u-border-dashed {
-  --#{$sds-prefix}-border-style: dashed;
+  --#{$pds-prefix}-border-style: dashed;
 }
 
-// Status colors reuse the canonical --sds-color-{status} tokens — color only.
+// Status colors reuse the canonical --pds-color-{status} tokens — color only.
 @each $st in $statuses {
   .u-border-#{$st} {
-    --#{$sds-prefix}-border-color: var(--#{$sds-prefix}-color-#{$st});
+    --#{$pds-prefix}-border-color: var(--#{$pds-prefix}-color-#{$st});
   }
 }

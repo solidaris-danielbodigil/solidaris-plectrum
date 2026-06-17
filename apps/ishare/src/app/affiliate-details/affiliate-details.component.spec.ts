@@ -86,7 +86,7 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should render sticky affiliate documents toolbar', () => {
     const toolbar = fixture.nativeElement.querySelector(
-      'sds-toolbar.c-affiliate-documents-toolbar',
+      'pds-toolbar.c-affiliate-documents-toolbar',
     );
 
     expect(toolbar).toBeTruthy();
@@ -157,7 +157,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(searchInput.getAttribute('role')).toBe('searchbox');
     expect(searchInput.placeholder).toBe('Rechercher document...');
     expect(searchInput.value).toBe('');
-    expect(fixture.nativeElement.querySelector('sds-input-clear')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('pds-input-clear')).toBeTruthy();
   });
 
   it('should enable showClear on sector and sort autocompletes', () => {
@@ -223,12 +223,12 @@ describe('AffiliateDetailsComponent', () => {
     });
   });
 
-  it('should clear document search via sds-input-clear', () => {
+  it('should clear document search via pds-input-clear', () => {
     component.documentSearch.set('rechute');
     fixture.detectChanges();
 
     const clearButton = fixture.nativeElement.querySelector(
-      'sds-input-clear button',
+      'pds-input-clear button',
     ) as HTMLButtonElement;
     clearButton.click();
     fixture.detectChanges();
@@ -330,7 +330,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.affiliateDetailDrawerVisible()).toBe(true);
     expect(
-      fixture.nativeElement.querySelector('sds-affiliate-detail-drawer'),
+      fixture.nativeElement.querySelector('pds-affiliate-detail-drawer'),
     ).toBeTruthy();
   });
 
@@ -364,7 +364,7 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const drawer = fixture.nativeElement.querySelector(
-      'sds-affiliate-detail-drawer',
+      'pds-affiliate-detail-drawer',
     );
     expect(drawer).toBeTruthy();
 
@@ -532,7 +532,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(emptyMessage?.textContent?.trim()).toBe(
       'Aucun document ne correspond à ce filtre.',
     );
-    expect(parcoursPanel?.querySelector('sds-list')).toBeNull();
+    expect(parcoursPanel?.querySelector('pds-list')).toBeNull();
   });
 
   it('should render p-badge counts in accordion panel headers', () => {
@@ -562,7 +562,7 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should render parcours journey list inside the parcours accordion panel', () => {
     const parcoursList = fixture.nativeElement.querySelector(
-      '#category-panel-parcours sds-list',
+      '#category-panel-parcours pds-list',
     );
 
     expect(parcoursList).toBeTruthy();
@@ -576,10 +576,10 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should render flat lists for isolés and archivés accordion panels', () => {
     const isolesList = fixture.nativeElement.querySelector(
-      '#category-panel-isoles sds-list',
+      '#category-panel-isoles pds-list',
     );
     const archivesList = fixture.nativeElement.querySelector(
-      '#category-panel-archives sds-list',
+      '#category-panel-archives pds-list',
     );
 
     expect(isolesList?.classList.contains('c-list--flat')).toBe(true);
@@ -723,10 +723,10 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should place toolbar at page level outside documents column', () => {
     const toolbar = fixture.nativeElement.querySelector(
-      '.c-affiliate-details > sds-toolbar.c-affiliate-documents-toolbar',
+      '.c-affiliate-details > pds-toolbar.c-affiliate-documents-toolbar',
     );
     const toolbarInDocuments = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents sds-toolbar',
+      '.c-affiliate-details__documents pds-toolbar',
     );
 
     expect(toolbar).toBeTruthy();
@@ -750,7 +750,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(documentsColumn).toBeTruthy();
     expect(
       documentsColumn?.querySelector(
-        'sds-list, sds-empty-state, .c-affiliate-details__category-accordion',
+        'pds-list, pds-empty-state, .c-affiliate-details__category-accordion',
       ),
     ).toBeTruthy();
     expect(detailPanel).toBeTruthy();
@@ -1421,7 +1421,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.transactionsCicsDialogVisible()).toBe(true);
     expect(
-      fixture.nativeElement.querySelector('sds-transactions-cics-modal'),
+      fixture.nativeElement.querySelector('pds-transactions-cics-modal'),
     ).toBeTruthy();
   });
 
@@ -1666,7 +1666,7 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
     expect(component.hasListResults()).toBe(true);
     expect(
       fixture.nativeElement.querySelector(
-        '.c-affiliate-details__documents sds-empty-state',
+        '.c-affiliate-details__documents pds-empty-state',
       ),
     ).toBeFalsy();
   });
@@ -1679,7 +1679,7 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
       'Aucun document actif pour cet affilié',
     );
     expect(
-      fixture.nativeElement.querySelector('sds-empty-state')?.textContent,
+      fixture.nativeElement.querySelector('pds-empty-state')?.textContent,
     ).toContain('Aucun document actif pour cet affilié');
   });
 

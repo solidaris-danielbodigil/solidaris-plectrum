@@ -8,7 +8,7 @@
 export interface TokenContract {
   /** Token identity */
   name: string;
-  /** CSS custom property name (e.g. --sds-color-brand) */
+  /** CSS custom property name (e.g. --pds-color-brand) */
   cssProperty: string;
   /** primitive | semantic | component */
   layer: 'primitive' | 'semantic' | 'component';

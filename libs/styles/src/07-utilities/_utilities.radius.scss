@@ -29,11 +29,11 @@ $targets: (
   @each $t in $targets {
     @if $t == all {
       .u-radius-#{$r} {
-        @include radius.radius(var(--#{$sds-prefix}-radius-#{$r}), all);
+        @include radius.radius(var(--#{$pds-prefix}-radius-#{$r}), all);
       }
     } @else {
       .u-radius-#{$t}-#{$r} {
-        @include radius.radius(var(--#{$sds-prefix}-radius-#{$r}), $t);
+        @include radius.radius(var(--#{$pds-prefix}-radius-#{$r}), $t);
       }
     }
   }

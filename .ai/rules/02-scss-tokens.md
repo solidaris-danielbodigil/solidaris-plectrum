@@ -28,9 +28,9 @@ $nav-bg: #f6f6f6;
 
 // ✅ Correct
 // Step 1 — in 01-settings/_settings.colors-semantic.scss:
-//   --sds-color-nav-shell-bg: #f6f6f6; // Figma: surface/50, node 1:1433
+//   --pds-color-nav-shell-bg: #f6f6f6; // Figma: surface/50, node 1:1433
 // Step 2 — in 06-components/_components.nav-shell.scss:
-.c-nav { background: var(--sds-color-nav-shell-bg); }
+.c-nav { background: var(--pds-color-nav-shell-bg); }
 ```
 
 ---
@@ -38,7 +38,7 @@ $nav-bg: #f6f6f6;
 ## 2. CSS Custom Properties Only ⛔
 
 Never hardcode hex, rgba, px, rem, or unitless values in `06-components` SCSS.
-Every value must reference a `var(--sds-*)` token.
+Every value must reference a `var(--pds-*)` token.
 
 ```scss
 // ❌ Wrong
@@ -46,9 +46,9 @@ Every value must reference a `var(--sds-*)` token.
 
 // ✅ Correct
 .c-item {
-  padding: var(--sds-space-nav-shell-item-p);
-  color: var(--sds-color-nav-shell-text);
-  border-radius: var(--sds-radius-lg);
+  padding: var(--pds-space-nav-shell-item-p);
+  color: var(--pds-color-nav-shell-text);
+  border-radius: var(--pds-radius-lg);
 }
 ```
 
@@ -56,18 +56,18 @@ Every value must reference a `var(--sds-*)` token.
 
 ## 3. Token-First — Add to `01-settings` Before Use ⛔
 
-If a Figma value has no existing `--sds-*` token:
+If a Figma value has no existing `--pds-*` token:
 
 1. Add the token to the correct `01-settings` file
 2. Include a comment with the Figma variable name and node ID
-3. Reference it in the component SCSS via `var(--sds-*)`
+3. Reference it in the component SCSS via `var(--pds-*)`
 4. List it under `tokens.consumed` in the `.metadata.ts`
 
 ```scss
 // In libs/styles/src/01-settings/_settings.colors-semantic.scss:
 
 // First-level shell — Figma: surface/50, node 1:1433
---sds-color-nav-shell-bg: #f6f6f6;
+--pds-color-nav-shell-bg: #f6f6f6;
 ```
 
 **Token file map** (where to add new tokens):
@@ -122,7 +122,7 @@ Layout and spacing on the global `--spacing-*` scale must be expressed as **obje
 |---|---|
 | `flex: 1 1 0`, `flex-shrink: 0`, `flex-basis: 100%` | No `o-flex` equivalent — structural constraints |
 | `min-width: 0`, `overflow: hidden` | Visual/containment concerns, not spacing |
-| `gap` / `padding` referencing a **component token** `var(--sds-*)` | Component-specific spacing that doesn't map to global scale |
+| `gap` / `padding` referencing a **component token** `var(--pds-*)` | Component-specific spacing that doesn't map to global scale |
 
 ---
 
@@ -136,7 +136,7 @@ Only two categories justify a fixed size, and both require a comment:
 | Category | Example | Why it's justified |
 |---|---|---|
 | Icon / asset constraints | `.c-nav-shell__icon { width: 20px; height: 20px; }` | Icon fonts and SVGs must be constrained or they collapse to 0 |
-| Reserved in-flow slot (overlay layouts) | `.c-nav-shell { width: var(--sds-size-nav-shell-footprint); }` | An absolutely-positioned panel can't size its in-flow slot, so the slot reserves the collapsed footprint (itself derived from icon + padding tokens) |
+| Reserved in-flow slot (overlay layouts) | `.c-nav-shell { width: var(--pds-size-nav-shell-footprint); }` | An absolutely-positioned panel can't size its in-flow slot, so the slot reserves the collapsed footprint (itself derived from icon + padding tokens) |
 
 Everything else — container heights, item heights, expanded widths — must emerge from `padding` + `line-height` + `gap`.
 
@@ -148,19 +148,19 @@ Everything else — container heights, item heights, expanded widths — must em
 
 // ✅ Correct — content-driven
 .c-card { @apply flex flex-col; min-width: 0; }
-.c-nav-shell__logo { padding: var(--sds-space-nav-shell-item-px); } // height = padding + SVG height
-.c-nav-shell__link { padding: var(--sds-space-nav-shell-item-py) var(--sds-space-nav-shell-item-px); }
+.c-nav-shell__logo { padding: var(--pds-space-nav-shell-item-px); } // height = padding + SVG height
+.c-nav-shell__link { padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px); }
 
 // ✅ Acceptable — structurally required, with justification comment
 .c-nav-shell__icon {
   // Fixed size required — icon fonts collapse to 0 without an explicit constraint
-  width: var(--sds-size-nav-shell-icon);
-  height: var(--sds-size-nav-shell-icon);
+  width: var(--pds-size-nav-shell-icon);
+  height: var(--pds-size-nav-shell-icon);
 }
 .c-nav-shell {
   // Reserved slot — the absolutely-positioned panel can't size its in-flow slot,
   // so reserve the collapsed footprint (derived from icon + padding tokens)
-  width: var(--sds-size-nav-shell-footprint);
+  width: var(--pds-size-nav-shell-footprint);
 }
 ```
 
@@ -180,7 +180,7 @@ When overriding PrimeNG `--p-*` CSS variables to match the Plectrum design:
 1. **Create a dedicated settings file** in `01-settings/` named `_settings.{primeng-component}.scss`
    (e.g. `_settings.accordion.scss`, `_settings.inputtext.scss`)
 2. **Define all `--p-*` overrides as CSS custom properties** inside `:root` (or a scoped selector) in that file
-3. **Reference `--sds-*` semantic tokens** as values — never hardcode
+3. **Reference `--pds-*` semantic tokens** as values — never hardcode
 4. **In `06-components/`**, only apply the scoping selector (BEM wrapper class) that activates
    the bridge — do NOT declare `--p-*` variables inline in `06-components`
 
@@ -199,7 +199,7 @@ When overriding PrimeNG `--p-*` CSS variables to match the Plectrum design:
   --p-accordion-header-color: var(--color-sub-nav-shell-section-text);
   --p-accordion-header-hover-color: var(--color-sub-nav-shell-section-text);
   --p-accordion-header-active-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-header-padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
   --p-accordion-content-background: transparent;
   --p-accordion-content-padding: 0;
   --p-accordion-content-border-width: 0;

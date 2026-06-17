@@ -24,11 +24,11 @@ Token-driven **border** and **radius** utilities in \`07-utilities/\`. Geometry 
 
 **Radius:** \`.u-radius-{stop}\` (all corners) · \`.u-radius-{side|corner}-{stop}\` (per edge/corner)
 
-**Border sides:** \`.u-border-{side}\` — default \`1px solid\` using \`--sds-color-content-border\`
+**Border sides:** \`.u-border-{side}\` — default \`1px solid\` using \`--pds-color-content-border\`
 
 **Orthogonal modifiers** (compose freely): \`.u-border-thick\` · \`.u-border-dashed\` · \`.u-border-{status}\`
 
-Override color per instance: \`style="--sds-border-color: var(--sds-color-panel-border);"\`
+Override color per instance: \`style="--pds-border-color: var(--pds-color-panel-border);"\`
 
 Styles: \`libs/styles/src/07-utilities/_utilities.radius.scss\` · \`_utilities.borders.scss\`
         `,
@@ -44,11 +44,11 @@ export const Radius = {
     docs: {
       description: {
         story: `
-All-corner radius stops from the \`--sds-radius-*\` token scale.
+All-corner radius stops from the \`--pds-radius-*\` token scale.
 
 | Class | Token |
 |---|---|
-${RADII.map((r) => `| \`.u-radius-${r}\` | \`--sds-radius-${r}\` |`).join('\n')}
+${RADII.map((r) => `| \`.u-radius-${r}\` | \`--pds-radius-${r}\` |`).join('\n')}
         `,
       },
     },
@@ -160,11 +160,11 @@ export const BorderStatus = {
     docs: {
       description: {
         story: `
-Status modifiers set \`--sds-border-color\` to the canonical \`--sds-color-{status}\` token — no per-color matrix.
+Status modifiers set \`--pds-border-color\` to the canonical \`--pds-color-{status}\` token — no per-color matrix.
 
 | Class | Token |
 |---|---|
-${STATUSES.map((s) => `| \`.u-border-${s}\` | \`--sds-color-${s}\` |`).join('\n')}
+${STATUSES.map((s) => `| \`.u-border-${s}\` | \`--pds-color-${s}\` |`).join('\n')}
         `,
       },
     },
@@ -188,13 +188,13 @@ export const BorderColorOverride = {
     docs: {
       description: {
         story: `
-Default border color is \`--sds-color-content-border\`. Override per instance via \`--sds-border-color\`:
+Default border color is \`--pds-color-content-border\`. Override per instance via \`--pds-border-color\`:
 
 | Inline style | Role |
 |---|---|
-| \`var(--sds-color-panel-border)\` | Flat panel chrome |
-| \`var(--sds-color-card-border)\` | Elevated card outline |
-| \`var(--sds-color-content-border)\` | Subtle inset (default) |
+| \`var(--pds-color-panel-border)\` | Flat panel chrome |
+| \`var(--pds-color-card-border)\` | Elevated card outline |
+| \`var(--pds-color-content-border)\` | Subtle inset (default) |
         `,
       },
     },
@@ -205,10 +205,10 @@ Default border color is \`--sds-color-content-border\`. Override per instance vi
       <div class="c-demo-cell u-border-bottom o-layout--padding-3">
         default (content-border)
       </div>
-      <div class="c-demo-cell u-border-bottom o-layout--padding-3" style="--sds-border-color: var(--sds-color-panel-border);">
+      <div class="c-demo-cell u-border-bottom o-layout--padding-3" style="--pds-border-color: var(--pds-color-panel-border);">
         panel-border override
       </div>
-      <div class="c-demo-cell u-border-all o-layout--padding-3" style="--sds-border-color: var(--sds-color-card-border);">
+      <div class="c-demo-cell u-border-all o-layout--padding-3" style="--pds-border-color: var(--pds-color-card-border);">
         card-border override
       </div>
     </div>`,

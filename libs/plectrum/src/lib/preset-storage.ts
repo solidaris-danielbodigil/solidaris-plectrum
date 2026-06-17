@@ -32,7 +32,7 @@ export function resolvePresetVersion(
     return explicit;
   }
 
-  return readStoredPresetVersion(storage) ?? 'v1';
+  return readStoredPresetVersion(storage) ?? 'v0.6';
 }
 
 export function toggleStoredPresetVersion(storage: Storage | null = getBrowserStorage()): PlectrumPresetVersion {

@@ -8,18 +8,18 @@
 
 :root {
 
-  --#{$sds-prefix}-disabled-opacity:  0.6;
-  --#{$sds-prefix}-icon-size:         1rem;
-  --#{$sds-prefix}-anchor-gutter:     2px;
+  --#{$pds-prefix}-disabled-opacity:  0.6;
+  --#{$pds-prefix}-icon-size:         1rem;
+  --#{$pds-prefix}-anchor-gutter:     2px;
 
   // Icon size scale — consumed by c-icon size modifiers
-  --#{$sds-prefix}-icon-size-xs:  0.75rem;   // ~10.5px
-  --#{$sds-prefix}-icon-size-sm:  0.875rem;  // ~12px
-  --#{$sds-prefix}-icon-size-md:  1rem;      //  14px  (base unit)
-  --#{$sds-prefix}-icon-size-lg:  1.25rem;   // ~17.5px
-  --#{$sds-prefix}-icon-size-xl:  1.5rem;    //  21px
+  --#{$pds-prefix}-icon-size-xs:  0.75rem;   // ~10.5px
+  --#{$pds-prefix}-icon-size-sm:  0.875rem;  // ~12px
+  --#{$pds-prefix}-icon-size-md:  1rem;      //  14px  (base unit)
+  --#{$pds-prefix}-icon-size-lg:  1.25rem;   // ~17.5px
+  --#{$pds-prefix}-icon-size-xl:  1.5rem;    //  21px
 
   // Z-index scale — sticky toolbars, filter rows
-  --#{$sds-prefix}-z-sticky: 10;
+  --#{$pds-prefix}-z-sticky: 10;
 
 }

@@ -10,6 +10,6 @@
 :root {
   // Illustration frame — asset constraint: the SVG needs a stable frame so it
   // keeps its proportions. Fixed by design (see rules §6 — asset constraints).
-  --#{$sds-prefix}-size-empty-state-art-w: 17rem;
-  --#{$sds-prefix}-size-empty-state-art-h: 16rem;
+  --#{$pds-prefix}-size-empty-state-art-w: 17rem;
+  --#{$pds-prefix}-size-empty-state-art-h: 16rem;
 }

@@ -38,8 +38,8 @@ describe('preset-storage', () => {
     storage = createMemoryStorage();
   });
 
-  it('defaults resolvePresetVersion to v1 when storage is empty', () => {
-    expect(resolvePresetVersion(undefined, storage)).toBe('v1');
+  it('defaults resolvePresetVersion to v0.6 when storage is empty', () => {
+    expect(resolvePresetVersion(undefined, storage)).toBe('v0.6');
   });
 
   it('reads and writes solidaris-plectrum-preset', () => {
@@ -51,12 +51,12 @@ describe('preset-storage', () => {
   it('ignores invalid stored values', () => {
     storage.setItem(PLECTRUM_PRESET_STORAGE_KEY, 'v2');
     expect(readStoredPresetVersion(storage)).toBeNull();
-    expect(resolvePresetVersion(undefined, storage)).toBe('v1');
+    expect(resolvePresetVersion(undefined, storage)).toBe('v0.6');
   });
 
-  it('toggleStoredPresetVersion flips between v1 and v0.6', () => {
-    expect(toggleStoredPresetVersion(storage)).toBe('v0.6');
+  it('toggleStoredPresetVersion flips between v0.6 and v1', () => {
     expect(toggleStoredPresetVersion(storage)).toBe('v1');
+    expect(toggleStoredPresetVersion(storage)).toBe('v0.6');
   });
 
   it('explicit version wins over storage', () => {

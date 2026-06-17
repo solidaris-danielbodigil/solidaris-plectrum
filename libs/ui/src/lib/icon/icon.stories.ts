@@ -1,6 +1,6 @@
 // =============================================================================
 // libs/ui/src/lib/icon/icon.stories.ts
-// Storybook stories for <sds-icon>
+// Storybook stories for <(pds|app|lib)-icon>
 // =============================================================================
 
 import type { Meta, StoryObj } from '@storybook/angular';
@@ -22,13 +22,13 @@ const meta: Meta<IconComponent> = {
     docs: {
       description: {
         component: `
-**Icon** — universal icon primitive for the Solidaris Design System.
+**Icon** — universal icon primitive for the Plectrum Design System.
 
 Renders a Bootstrap Icons class or a custom SVG retrieved from \`IconRegistry\`.
 
 - **source="class"** (default) — pass any Bootstrap Icons class string, e.g. \`bi bi-house\`
 - **source="svg"** — pass a registry key previously registered via \`IconRegistry.register(name, svg)\`
-- **size** — \`xs | sm | md | lg | xl\` — maps to \`--sds-icon-size-*\` tokens
+- **size** — \`xs | sm | md | lg | xl\` — maps to \`--pds-icon-size-*\` tokens
 - **label** — when provided the icon is non-decorative (\`role="img"\`, \`aria-label\`); when omitted it is \`aria-hidden\`
 
 Figma: [Icons — Plectrum UI Kit](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-)
@@ -60,11 +60,11 @@ export const SizeVariants: Story = {
   render: () => ({
     template: `
       <div style="display:flex;align-items:center;gap:1rem;">
-        <sds-icon icon="bi bi-star-fill" size="xs" />
-        <sds-icon icon="bi bi-star-fill" size="sm" />
-        <sds-icon icon="bi bi-star-fill" size="md" />
-        <sds-icon icon="bi bi-star-fill" size="lg" />
-        <sds-icon icon="bi bi-star-fill" size="xl" />
+        <(pds|app|lib)-icon icon="bi bi-star-fill" size="xs" />
+        <(pds|app|lib)-icon icon="bi bi-star-fill" size="sm" />
+        <(pds|app|lib)-icon icon="bi bi-star-fill" size="md" />
+        <(pds|app|lib)-icon icon="bi bi-star-fill" size="lg" />
+        <(pds|app|lib)-icon icon="bi bi-star-fill" size="xl" />
       </div>
     `,
     moduleMetadata: { imports: [IconComponent] },
@@ -110,9 +110,9 @@ export const ColourInheritance: Story = {
   render: () => ({
     template: `
       <div style="display:flex;gap:1.5rem;">
-        <span style="color:var(--sds-color-brand, #da002f)"><sds-icon icon="bi bi-heart-fill" size="lg"/></span>
-        <span style="color:var(--sds-color-success, #2e7d32)"><sds-icon icon="bi bi-check-circle-fill" size="lg"/></span>
-        <span style="color:var(--sds-color-danger, #c62828)"><sds-icon icon="bi bi-exclamation-triangle-fill" size="lg"/></span>
+        <span style="color:var(--pds-color-brand, #da002f)"><(pds|app|lib)-icon icon="bi bi-heart-fill" size="lg"/></span>
+        <span style="color:var(--pds-color-success, #2e7d32)"><(pds|app|lib)-icon icon="bi bi-check-circle-fill" size="lg"/></span>
+        <span style="color:var(--pds-color-danger, #c62828)"><(pds|app|lib)-icon icon="bi bi-exclamation-triangle-fill" size="lg"/></span>
       </div>
     `,
     moduleMetadata: { imports: [IconComponent] },

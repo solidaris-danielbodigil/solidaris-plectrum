@@ -33,7 +33,7 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
  * https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1533
  */
 @Component({
-  selector: 'sds-top-nav',
+  selector: 'pds-top-nav',
   standalone: true,
   imports: [
     ButtonModule,

@@ -1,5 +1,5 @@
 {
-  "id": "sds-component",
+  "id": "pds-component",
   "title": "Solidaris UI Component Generator",
   "description": "Scaffolds a component in libs/ui with metadata contract, Storybook story, and BEM SCSS.",
   "type": "object",

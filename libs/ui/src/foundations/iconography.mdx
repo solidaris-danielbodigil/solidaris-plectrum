@@ -5,19 +5,19 @@ import * as Stories from './iconography.stories';
 
 # Iconography
 
-The Solidaris Design System uses **Bootstrap Icons** as its default icon set.
-All icons are available via the `<sds-icon>` component:
+The Plectrum Design System uses **Bootstrap Icons** as its default icon set.
+All icons are available via the `<(pds|app|lib)-icon>` component:
 
 ```html
 <!-- Bootstrap Icon (default) -->
-<sds-icon icon="bi bi-house" />
-<sds-icon icon="bi bi-house" size="lg" />
+<(pds|app|lib)-icon icon="bi bi-house" />
+<(pds|app|lib)-icon icon="bi bi-house" size="lg" />
 
 <!-- Non-decorative (standalone) -->
-<sds-icon icon="bi bi-bell" label="Notifications" />
+<(pds|app|lib)-icon icon="bi bi-bell" label="Notifications" />
 
 <!-- Custom SVG from registry -->
-<sds-icon icon="logo-solidaris" source="svg" size="xl" />
+<(pds|app|lib)-icon icon="logo-solidaris" source="svg" size="xl" />
 ```
 
 Custom icons are exported from Figma as SVG and registered at app startup:

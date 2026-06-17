@@ -15,7 +15,7 @@
 //                       widest item, floating above adjacent content.
 //
 // Reveal animation uses `display` + `opacity` with transition-behavior:
-// allow-discrete (via --sds-transition-nav-reveal) plus @starting-style — no
+// allow-discrete (via --pds-transition-nav-reveal) plus @starting-style — no
 // width/scale hacks.
 //
 // BEM mix pattern: o-flex classes are applied in the template on the panel.
@@ -29,7 +29,7 @@
   display: block;
   position: relative;
   flex-shrink: 0;
-  width: var(--#{$sds-prefix}-size-nav-shell-footprint);
+  width: var(--#{$pds-prefix}-size-nav-shell-footprint);
   height: 100%;
   // Inherited — lets the panel's width tween to/from the `max-content` keyword.
   interpolate-size: allow-keywords;
@@ -42,36 +42,36 @@
   inset-inline-start: 0;
   z-index: 200;
   // Collapsed — match the reserved footprint; grows to content on hover/focus.
-  width: var(--#{$sds-prefix}-size-nav-shell-footprint);
+  width: var(--#{$pds-prefix}-size-nav-shell-footprint);
   height: 100%;
-  gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
-  background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
-  border-right: 1px solid var(--#{$sds-prefix}-color-content-border);
+  gap: var(--#{$pds-prefix}-space-nav-shell-section-gap);
+  background-color: var(--#{$pds-prefix}-color-nav-shell-bg);
+  border-right: 1px solid var(--#{$pds-prefix}-color-content-border);
   overflow-x: clip;
-  transition: var(--#{$sds-prefix}-transition-nav-shell);
+  transition: var(--#{$pds-prefix}-transition-nav-shell);
 
   // Expanded — grow to the widest item and float above adjacent layout without reflow.
   .c-nav-shell:is(:hover, :focus-within) & {
     width: max-content;
-    box-shadow: var(--#{$sds-prefix}-shadow-overlay-select);
+    box-shadow: var(--#{$pds-prefix}-shadow-overlay-select);
   }
 }
 
 // Logo — left-aligned in both states so the logomark lines up with item icons.
 .c-nav-shell__logo {
   flex-shrink: 0;
-  min-height: var(--#{$sds-prefix}-size-nav-shell-footprint);
+  min-height: var(--#{$pds-prefix}-size-nav-shell-footprint);
   box-sizing: border-box;
   // Match the icon's left inset: list padding + item padding.
   padding-inline-start: calc(
-    var(--#{$sds-prefix}-space-nav-shell-list-px) + var(--#{$sds-prefix}-space-nav-shell-item-px)
+    var(--#{$pds-prefix}-space-nav-shell-list-px) + var(--#{$pds-prefix}-space-nav-shell-item-px)
   );
 }
 
 // Logomark — always visible; constrained so the 24×32 SVG fits the footprint.
 .c-nav-shell__logomark {
   // Fixed size required — brand mark SVG collapses without explicit constraint
-  height: var(--#{$sds-prefix}-size-nav-shell-logomark);
+  height: var(--#{$pds-prefix}-size-nav-shell-logomark);
   width: auto;
   flex-shrink: 0;
   object-fit: contain;
@@ -83,11 +83,11 @@
   opacity: 0;
   order: 1; // render after the logomark (decorative; DOM groups it with the logo)
   // Fixed height — preserves the natural aspect ratio of the wordmark SVG
-  height: var(--#{$sds-prefix}-size-nav-shell-wordmark);
+  height: var(--#{$pds-prefix}-size-nav-shell-wordmark);
   width: auto;
   flex-shrink: 0;
   object-fit: contain;
-  transition: var(--#{$sds-prefix}-transition-nav-reveal);
+  transition: var(--#{$pds-prefix}-transition-nav-reveal);
 
   .c-nav-shell:is(:hover, :focus-within) & {
     display: block;
@@ -99,7 +99,7 @@
 
 // List — layout via o-flex / o-layout in template
 .c-nav-shell__list {
-  padding: 0 var(--#{$sds-prefix}-space-nav-shell-list-px);
+  padding: 0 var(--#{$pds-prefix}-space-nav-shell-list-px);
   list-style: none;
 }
 
@@ -108,35 +108,35 @@
   text-decoration: none;
   cursor: pointer;
   width: 100%;
-  padding: var(--#{$sds-prefix}-space-nav-shell-item-py) var(--#{$sds-prefix}-space-nav-shell-item-px);
+  padding: var(--#{$pds-prefix}-space-nav-shell-item-py) var(--#{$pds-prefix}-space-nav-shell-item-px);
   // Match expanded row height (label line-height) so label reveal does not jump item height
   min-height: calc(
-    (var(--#{$sds-prefix}-space-nav-shell-item-py) * 2) + var(--text-label-sm-line-height)
+    (var(--#{$pds-prefix}-space-nav-shell-item-py) * 2) + var(--text-label-sm-line-height)
   );
-  gap: var(--#{$sds-prefix}-space-nav-shell-item-gap-inner);
-  border-radius: var(--#{$sds-prefix}-radius-nav-shell-item);
-  color: var(--#{$sds-prefix}-color-nav-shell-text);
+  gap: var(--#{$pds-prefix}-space-nav-shell-item-gap-inner);
+  border-radius: var(--#{$pds-prefix}-radius-nav-shell-item);
+  color: var(--#{$pds-prefix}-color-nav-shell-text);
   white-space: nowrap;
   overflow: hidden;
-  transition: background-color var(--#{$sds-prefix}-transition-duration-mask) ease;
+  transition: background-color var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   // Hover — Figma: transparent/black/50
-  &:hover   { background-color: var(--#{$sds-prefix}-color-nav-shell-item-hover); }
+  &:hover   { background-color: var(--#{$pds-prefix}-color-nav-shell-item-hover); }
   // Pressed — instant transition so the feedback is visible during the brief click
   &:active  {
-    background-color: var(--#{$sds-prefix}-color-nav-shell-item-pressed);
+    background-color: var(--#{$pds-prefix}-color-nav-shell-item-pressed);
     transition: none;
   }
 
   // Active — Figma: transparent/black/50 bg; icon shows full brand colour
   &.is-active {
-    background-color: var(--#{$sds-prefix}-color-nav-shell-item-active);
+    background-color: var(--#{$pds-prefix}-color-nav-shell-item-active);
     .c-nav-shell__icon { filter: none; opacity: 1; }
   }
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style) var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
 
@@ -144,14 +144,14 @@
 .c-nav-shell__icon {
   flex-shrink: 0;
   // Fixed size required — icon fonts/SVGs collapse to 0 without an explicit constraint
-  width: var(--#{$sds-prefix}-size-nav-shell-icon);
-  height: var(--#{$sds-prefix}-size-nav-shell-icon);
+  width: var(--#{$pds-prefix}-size-nav-shell-icon);
+  height: var(--#{$pds-prefix}-size-nav-shell-icon);
   color: inherit;
   filter: grayscale(1) opacity(0.5);
-  transition: filter var(--#{$sds-prefix}-transition-duration-mask) ease;
+  transition: filter var(--#{$pds-prefix}-transition-duration-mask) ease;
 
-  i        { display: block; line-height: 1; font-size: var(--#{$sds-prefix}-size-nav-shell-icon); }
-  img, svg { display: block; width: var(--#{$sds-prefix}-size-nav-shell-icon); height: var(--#{$sds-prefix}-size-nav-shell-icon); object-fit: contain; }
+  i        { display: block; line-height: 1; font-size: var(--#{$pds-prefix}-size-nav-shell-icon); }
+  img, svg { display: block; width: var(--#{$pds-prefix}-size-nav-shell-icon); height: var(--#{$pds-prefix}-size-nav-shell-icon); object-fit: contain; }
 }
 
 // Label — hidden when collapsed; revealed on hover/focus via discrete display transition
@@ -160,14 +160,14 @@
   opacity: 0;
   flex: 0 1 auto;
   min-width: 0;
-  max-width: var(--#{$sds-prefix}-size-nav-shell-label-max);
+  max-width: var(--#{$pds-prefix}-size-nav-shell-label-max);
   @include text-label-sm;
-  color: var(--#{$sds-prefix}-color-nav-shell-label); // Figma: transparent/black/800
+  color: var(--#{$pds-prefix}-color-nav-shell-label); // Figma: transparent/black/800
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;
-  transition: var(--#{$sds-prefix}-transition-nav-reveal);
+  transition: var(--#{$pds-prefix}-transition-nav-reveal);
 
   .c-nav-shell:is(:hover, :focus-within) & {
     display: block;
@@ -183,12 +183,12 @@
   display: none;
   opacity: 0;
   // Fixed height required — icon collapse prevention
-  height: var(--#{$sds-prefix}-size-nav-shell-trailing-icon);
+  height: var(--#{$pds-prefix}-size-nav-shell-trailing-icon);
   flex-shrink: 0;
   pointer-events: none;
-  transition: var(--#{$sds-prefix}-transition-nav-reveal);
+  transition: var(--#{$pds-prefix}-transition-nav-reveal);
 
-  i { display: block; line-height: 1; font-size: var(--#{$sds-prefix}-size-nav-shell-trailing-icon); color: currentcolor; }
+  i { display: block; line-height: 1; font-size: var(--#{$pds-prefix}-size-nav-shell-trailing-icon); color: currentcolor; }
 
   .c-nav-shell:is(:hover, :focus-within) & {
     display: block;

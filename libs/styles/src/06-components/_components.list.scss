@@ -13,7 +13,7 @@
 // =============================================================================
 
 .c-list {
-  background: var(--#{$sds-prefix}-color-list-bg);
+  background: var(--#{$pds-prefix}-color-list-bg);
 }
 
 // ── Section header (Suivi des documents) ────────────────────────────────────
@@ -21,17 +21,17 @@
 
 .c-list > .c-list__header-row .c-list__title {
   @include text-heading-md;
-  color: var(--#{$sds-prefix}-color-list-section-title);
+  color: var(--#{$pds-prefix}-color-list-section-title);
 }
 
 .c-list__count-badge {
   @include text-label-xs;
   font-weight: var(--font-weight-bold);
-  min-inline-size: var(--#{$sds-prefix}-size-list-count-badge-min);
-  min-block-size: var(--#{$sds-prefix}-size-list-count-badge-min);
+  min-inline-size: var(--#{$pds-prefix}-size-list-count-badge-min);
+  min-block-size: var(--#{$pds-prefix}-size-list-count-badge-min);
   border-radius: calc(10.5 / 14 * var(--base-unit));
-  background: var(--#{$sds-prefix}-color-list-count-badge-bg);
-  color: var(--#{$sds-prefix}-color-list-count-badge-text);
+  background: var(--#{$pds-prefix}-color-list-count-badge-bg);
+  color: var(--#{$pds-prefix}-color-list-count-badge-text);
   text-align: center;
 }
 
@@ -40,15 +40,15 @@
 .c-list__footnote {
   @include text-body-sm;
   border: 0;
-  background: var(--#{$sds-prefix}-color-list-bg);
-  color: var(--#{$sds-prefix}-color-text-muted);
+  background: var(--#{$pds-prefix}-color-list-bg);
+  color: var(--#{$pds-prefix}-color-text-muted);
   text-align: start;
   cursor: pointer;
 
   &:hover,
   &:focus-visible {
-    color: var(--#{$sds-prefix}-color-text-default);
-    background: var(--#{$sds-prefix}-color-surface-subtle);
+    color: var(--#{$pds-prefix}-color-text-default);
+    background: var(--#{$pds-prefix}-color-surface-subtle);
   }
 }
 
@@ -117,21 +117,21 @@
 // Group row card chrome on tree wrapper (toggler + label inside one bordered box)
 :where(.c-list--journey) .p-tree-node:not(.p-tree-node-leaf) > .p-tree-node-content {
   padding: var(--spacing-2);
-  background: var(--#{$sds-prefix}-color-list-row-bg);
-  border: var(--#{$sds-prefix}-border-width-list-row) solid var(--#{$sds-prefix}-color-list-row-border);
-  border-radius: var(--#{$sds-prefix}-radius-xl);
+  background: var(--#{$pds-prefix}-color-list-row-bg);
+  border: var(--#{$pds-prefix}-border-width-list-row) solid var(--#{$pds-prefix}-color-list-row-border);
+  border-radius: var(--#{$pds-prefix}-radius-xl);
   overflow: hidden;
-  transition: var(--#{$sds-prefix}-transition-list-row);
+  transition: var(--#{$pds-prefix}-transition-list-row);
   cursor: pointer;
 
   &:hover {
-    border-color: var(--#{$sds-prefix}-color-list-row-hover-border);
+    border-color: var(--#{$pds-prefix}-color-list-row-hover-border);
   }
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
-      var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 
   // Outer node-content owns inset — drop inner padding so chevron sits flush with header.
@@ -147,9 +147,9 @@
 // ── Row cards ───────────────────────────────────────────────────────────────
 
 .c-list__item {
-  background: var(--#{$sds-prefix}-color-list-row-bg);
-  border: var(--#{$sds-prefix}-border-width-list-row) solid var(--#{$sds-prefix}-color-list-row-border);
-  border-radius: var(--#{$sds-prefix}-radius-xl);
+  background: var(--#{$pds-prefix}-color-list-row-bg);
+  border: var(--#{$pds-prefix}-border-width-list-row) solid var(--#{$pds-prefix}-color-list-row-border);
+  border-radius: var(--#{$pds-prefix}-radius-xl);
   overflow: hidden;
   min-width: 0;
 }
@@ -163,9 +163,9 @@
 }
 
 .c-list__item--selected {
-  border-width: var(--#{$sds-prefix}-border-width-list-selected);
-  border-color: var(--#{$sds-prefix}-color-list-row-selected-border);
-  box-shadow: var(--#{$sds-prefix}-shadow-list-row-selected);
+  border-width: var(--#{$pds-prefix}-border-width-list-selected);
+  border-color: var(--#{$pds-prefix}-color-list-row-selected-border);
+  box-shadow: var(--#{$pds-prefix}-shadow-list-row-selected);
 }
 
 .c-list__item--document {
@@ -174,21 +174,21 @@
 
 .c-list__item--document[role='button'] {
   cursor: pointer;
-  transition: var(--#{$sds-prefix}-transition-list-row);
+  transition: var(--#{$pds-prefix}-transition-list-row);
 
   &:focus-visible {
-    outline: var(--#{$sds-prefix}-focus-ring-width) var(--#{$sds-prefix}-focus-ring-style)
-      var(--#{$sds-prefix}-focus-ring-color);
-    outline-offset: var(--#{$sds-prefix}-focus-ring-offset);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 
   &:hover:not(.c-list__item--selected) {
-    border-color: var(--#{$sds-prefix}-color-list-row-hover-border);
+    border-color: var(--#{$pds-prefix}-color-list-row-hover-border);
   }
 }
 
 .c-list__item--selected .c-list__title {
-  color: var(--#{$sds-prefix}-color-list-title-accent);
+  color: var(--#{$pds-prefix}-color-list-title-accent);
   font-weight: var(--font-weight-bold);
 }
 
@@ -198,22 +198,22 @@
 
 .c-list__item .c-list__header-row .c-list__title {
   @include text-label-md;
-  color: var(--#{$sds-prefix}-color-list-title-text);
+  color: var(--#{$pds-prefix}-color-list-title-text);
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
 }
 
 .c-list__title-accent {
-  color: var(--#{$sds-prefix}-color-list-title-accent);
+  color: var(--#{$pds-prefix}-color-list-title-accent);
 }
 
 // ── Icons ───────────────────────────────────────────────────────────────────
 
 .c-list__icon {
-  font-size: var(--#{$sds-prefix}-size-list-icon);
+  font-size: var(--#{$pds-prefix}-size-list-icon);
   line-height: 1;
-  color: var(--#{$sds-prefix}-color-list-icon);
+  color: var(--#{$pds-prefix}-color-list-icon);
 }
 
 // ── Dates (group rows) ──────────────────────────────────────────────────────
@@ -224,11 +224,11 @@
 
 .c-list__date {
   @include text-label-xs;
-  color: var(--#{$sds-prefix}-color-list-date-label);
+  color: var(--#{$pds-prefix}-color-list-date-label);
 }
 
 .c-list__date-value {
-  color: var(--#{$sds-prefix}-color-list-date-value);
+  color: var(--#{$pds-prefix}-color-list-date-value);
 }
 
 .c-list__date--end {
@@ -244,7 +244,7 @@
   flex: 1;
   min-width: 0;
   width: 100%;
-  padding-inline-start: var(--#{$sds-prefix}-size-list-timeline-gutter);
+  padding-inline-start: var(--#{$pds-prefix}-size-list-timeline-gutter);
 }
 
 .c-list__timeline-sprite {
@@ -259,34 +259,34 @@
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
-  inline-size: var(--#{$sds-prefix}-size-list-timeline-gutter);
+  inline-size: var(--#{$pds-prefix}-size-list-timeline-gutter);
   block-size: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   pointer-events: none;
-  color: var(--#{$sds-prefix}-color-list-timeline-line);
+  color: var(--#{$pds-prefix}-color-list-timeline-line);
 }
 
 .c-list__timeline-cap {
   display: block;
   flex-shrink: 0;
-  inline-size: var(--#{$sds-prefix}-size-list-timeline-width);
+  inline-size: var(--#{$pds-prefix}-size-list-timeline-width);
 }
 
 .c-list__timeline-cap--marker {
-  block-size: var(--#{$sds-prefix}-size-list-timeline-cap-marker);
+  block-size: var(--#{$pds-prefix}-size-list-timeline-cap-marker);
 }
 
 .c-list__timeline-cap--arrow {
-  block-size: var(--#{$sds-prefix}-size-list-timeline-cap-arrow);
+  block-size: var(--#{$pds-prefix}-size-list-timeline-cap-arrow);
 }
 
 .c-list__timeline-line {
   display: block;
   flex: 1 1 auto;
   min-block-size: 1px;
-  inline-size: var(--#{$sds-prefix}-size-list-timeline-width);
+  inline-size: var(--#{$pds-prefix}-size-list-timeline-width);
   overflow: visible;
 
   path {
@@ -306,13 +306,13 @@
 
 .c-list.is-loading {
   pointer-events: none;
-  opacity: var(--#{$sds-prefix}-disabled-opacity);
+  opacity: var(--#{$pds-prefix}-disabled-opacity);
 }
 
 .c-list__skeleton-line {
   display: block;
-  border-radius: var(--#{$sds-prefix}-radius-sm);
-  background: var(--#{$sds-prefix}-color-list-skeleton-bg);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  background: var(--#{$pds-prefix}-color-list-skeleton-bg);
   block-size: var(--spacing-1);
 }
 
@@ -332,10 +332,10 @@
 
 .c-list__skeleton-icon {
   display: block;
-  inline-size: var(--#{$sds-prefix}-size-list-icon);
-  block-size: var(--#{$sds-prefix}-size-list-icon);
-  border-radius: var(--#{$sds-prefix}-radius-sm);
-  background: var(--#{$sds-prefix}-color-list-skeleton-bg);
+  inline-size: var(--#{$pds-prefix}-size-list-icon);
+  block-size: var(--#{$pds-prefix}-size-list-icon);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  background: var(--#{$pds-prefix}-color-list-skeleton-bg);
   flex-shrink: 0;
 }
 

@@ -11,7 +11,7 @@ tools:
   - fetch
 ---
 
-You are the **Frontend Developer** for the Solidaris design system.
+You are the **Frontend Developer** for the Plectrum Design System.
 You take the UX Engineer's SCSS and story as input and implement the Angular
 component logic in `libs/ui`. You do **not** write SCSS or design tokens.
 
@@ -40,7 +40,7 @@ component logic in `libs/ui`. You do **not** write SCSS or design tokens.
 ### 2 — Scaffold
 
 ```bash
-npm run sds:component
+npm run PDS:component
 ```
 
 ### 3 — Implement
@@ -48,7 +48,7 @@ npm run sds:component
 Component class:
 ```typescript
 @Component({
-  selector: 'sds-{name}',
+  selector: 'pds-{name}',
   standalone: true,
   imports: [/* PrimeNG, CommonModule, FormsModule as needed */],
   templateUrl: './{name}.component.html',

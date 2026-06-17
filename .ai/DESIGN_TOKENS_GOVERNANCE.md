@@ -71,7 +71,7 @@ Figma should be easy for designers to understand and use. Code should be reliabl
 
 ### 3.2 Repository
 
-- CSS custom properties (`--sds-*`)
+- CSS custom properties (`--pds-*`)
 - SCSS `@use`, interpolation and token generation
 - ITCSS organization and cascade control
 - BEM naming for custom components and wrappers
@@ -112,7 +112,7 @@ Figma proposal
 2. The change is reviewed by the design-system owner or a technical reviewer.
 3. The token is exported or synchronized into a reviewed settings file.
 4. A pull request updates the implementation layer.
-5. `--sds-*` custom properties and PrimeNG mappings are updated where needed.
+5. `--pds-*` custom properties and PrimeNG mappings are updated where needed.
 6. Storybook is checked visually and functionally.
 7. The change is merged and communicated.
 
@@ -125,11 +125,11 @@ Figma proposal
 Raw values — describe **what** the value is, not how it is used. Never used directly in components.
 
 ```
---sds-color-green-500
---sds-color-gray-100
---sds-space-4
---sds-radius-md
---sds-font-size-md
+--pds-color-green-500
+--pds-color-gray-100
+--pds-space-4
+--pds-radius-md
+--pds-font-size-md
 ```
 
 ### 5.2 Semantic Tokens
@@ -137,13 +137,13 @@ Raw values — describe **what** the value is, not how it is used. Never used di
 Describe design intent. These are what components should reference.
 
 ```
---sds-color-text-default
---sds-color-text-muted
---sds-color-surface-page
---sds-color-surface-default
---sds-color-brand
---sds-color-danger
---sds-color-border-focus
+--pds-color-text-default
+--pds-color-text-muted
+--pds-color-surface-page
+--pds-color-surface-default
+--pds-color-brand
+--pds-color-danger
+--pds-color-border-focus
 ```
 
 ### 5.3 Component Tokens
@@ -151,11 +151,11 @@ Describe design intent. These are what components should reference.
 Component-specific decisions. Should reference semantic tokens where possible.
 
 ```
---sds-text-body-md-size
---sds-text-heading-lg-family
---sds-space-form-x
---sds-space-form-y
---sds-focus-ring-color
+--pds-text-body-md-size
+--pds-text-heading-lg-family
+--pds-space-form-x
+--pds-space-form-y
+--pds-focus-ring-color
 ```
 
 ---
@@ -165,17 +165,17 @@ Component-specific decisions. Should reference semantic tokens where possible.
 - Use lowercase names.
 - Use stable, descriptive, intent-based names — not appearance-only names.
 - Use `kebab-case` for CSS custom properties.
-- Prefix all Solidaris/Plectrum tokens with `--sds-*`.
+- Prefix all Solidaris/Plectrum tokens with `--pds-*`.
 - Use dot notation in Figma; transform to `kebab-case` in CSS.
 - Do not name tokens after a temporary screen, page or experiment.
 
 **Good examples**
 ```
---sds-color-text-default
---sds-color-surface-page
---sds-color-action-primary-bg
---sds-space-form-x
---sds-radius-md
+--pds-color-text-default
+--pds-color-surface-page
+--pds-color-action-primary-bg
+--pds-space-form-x
+--pds-radius-md
 ```
 
 **Avoid**
@@ -191,7 +191,7 @@ Component-specific decisions. Should reference semantic tokens where possible.
 
 ## 7. CSS Variable Strategy
 
-All Solidaris/Plectrum-owned variables use the `--sds-*` prefix. PrimeNG variables keep the `--p-*` prefix.
+All Solidaris/Plectrum-owned variables use the `--pds-*` prefix. PrimeNG variables keep the `--p-*` prefix.
 
 ### Prefix configuration
 
@@ -199,7 +199,7 @@ The prefix is controlled by a single SCSS variable in `01-settings/_settings.pre
 
 ```scss
 // libs/styles/src/01-settings/_settings.prefix.scss
-$sds-prefix: 'sds' !default;
+$pds-prefix: 'PDS' !default;
 ```
 
 All settings files `@use 'settings.prefix' as *` and emit tokens via SCSS interpolation:
@@ -208,11 +208,11 @@ All settings files `@use 'settings.prefix' as *` and emit tokens via SCSS interp
 @use 'settings.prefix' as *;
 
 :root {
-  --#{$sds-prefix}-color-brand: var(--#{$sds-prefix}-color-primary-500);
+  --#{$pds-prefix}-color-brand: var(--#{$pds-prefix}-color-primary-500);
 }
 ```
 
-To rename the prefix across the entire token system — change `$sds-prefix` in one place.
+To rename the prefix across the entire token system — change `$pds-prefix` in one place.
 
 ### Bridge pattern
 
@@ -221,17 +221,17 @@ To rename the prefix across the entire token system — change `$sds-prefix` in 
 
 :root {
   /* primitive */
-  --sds-color-primary-500: #527191;
+  --pds-color-primary-500: #527191;
 
   /* semantic */
-  --sds-color-brand: var(--sds-color-primary-500);
+  --pds-color-brand: var(--pds-color-primary-500);
 
   /* PrimeNG mapping */
-  --p-button-primary-background: var(--sds-color-brand);
+  --p-button-primary-background: var(--pds-color-brand);
 }
 ```
 
-**Prefer** mapping `--sds-*` to `--p-*`. **Avoid** overriding `.p-button` with hardcoded values or `!important`.
+**Prefer** mapping `--pds-*` to `--p-*`. **Avoid** overriding `.p-button` with hardcoded values or `!important`.
 
 ---
 
@@ -246,12 +246,12 @@ To rename the prefix across the entire token system — change `$sds-prefix` in 
 **Preferred**
 
 ```scss
-.sds-form-field {
-  --p-inputtext-border-color: var(--sds-color-border-default);
+.pds-form-field {
+  --p-inputtext-border-color: var(--pds-color-border-default);
 }
 
-.sds-form-field--invalid {
-  --p-inputtext-border-color: var(--sds-color-border-danger);
+.pds-form-field--invalid {
+  --p-inputtext-border-color: var(--pds-color-border-danger);
 }
 ```
 
@@ -308,15 +308,15 @@ Token definitions live in `01-settings`. PrimeNG mappings live in `06-components
 - Keep specificity low.
 
 ```scss
-.sds-card {}
-.sds-card__header {}
-.sds-card__body {}
-.sds-card--highlighted {}
+.pds-card {}
+.pds-card__header {}
+.pds-card__body {}
+.pds-card--highlighted {}
 
-.sds-shell {}
-.sds-shell__sidebar {}
-.sds-shell__content {}
-.sds-shell--collapsed {}
+.pds-shell {}
+.pds-shell__sidebar {}
+.pds-shell__content {}
+.pds-shell--collapsed {}
 ```
 
 ### 10.3 PrimeNG Selector Rules
@@ -331,20 +331,20 @@ Token definitions live in `01-settings`. PrimeNG mappings live in `06-components
 
 - Normal text must meet WCAG AA contrast (4.5:1).
 - Interactive states must remain visible and distinguishable.
-- Focus states must be clearly visible — `--sds-focus-ring-*` tokens must never be removed.
+- Focus states must be clearly visible — `--pds-focus-ring-*` tokens must never be removed.
 - Color must not be the only way to communicate state.
 - Disabled states must remain recognizable.
 
 Any change to the following token groups requires accessibility review:
 
 ```
---sds-color-text-*
---sds-color-surface-*
---sds-color-border-*
---sds-focus-ring-*
---sds-color-danger
---sds-color-success
---sds-color-warning
+--pds-color-text-*
+--pds-color-surface-*
+--pds-color-border-*
+--pds-focus-ring-*
+--pds-color-danger
+--pds-color-success
+--pds-color-warning
 ```
 
 ---
@@ -370,8 +370,8 @@ Tokens must not be deleted immediately if used in production.
 5. Remove in a later release.
 
 ```scss
-// DEPRECATED — use --sds-color-brand instead
-// --sds-color-primary-default: var(--sds-color-primary-500);
+// DEPRECATED — use --pds-color-brand instead
+// --pds-color-primary-default: var(--pds-color-primary-500);
 ```
 
 ---
@@ -411,46 +411,46 @@ This section reflects the **actual current state** of `libs/styles/src/`. Keep i
 ### `01-settings/` — Design tokens (CSS custom properties)
 
 Every file is named `_settings.{description}.scss`. All files `@use 'settings.prefix' as *`
-and emit tokens as `--#{$sds-prefix}-*`. The barrel `_settings.core.scss` `@forward`s them all.
+and emit tokens as `--#{$pds-prefix}-*`. The barrel `_settings.core.scss` `@forward`s them all.
 
 ```
 01-settings/
 ├── _settings.core.scss                   barrel — @forward all settings files
-├── _settings.prefix.scss                 $sds-prefix: 'sds'  — single prefix config
+├── _settings.prefix.scss                 $pds-prefix: 'PDS'  — single prefix config
 │
-├── _settings.colors-primitive.scss       --sds-color-{palette}-{shade}
+├── _settings.colors-primitive.scss       --pds-color-{palette}-{shade}
 │                                         Palettes: primary, red, orange, yellow, green,
 │                                                   teal, blue, purple, gray, slate, stone,
 │                                                   white, black, transparent-black/white
 │
-├── _settings.colors-semantic.scss        --sds-color-{role}
+├── _settings.colors-semantic.scss        --pds-color-{role}
 │                                         Groups: brand, success, warning, danger, info,
 │                                                 surface, text, border, field, nav, emutnav
 │
-├── _settings.typography-primitive.scss   --sds-font-{family|size|weight}
-│                                         --sds-line-height-*
-│                                         --sds-letter-spacing-*
+├── _settings.typography-primitive.scss   --pds-font-{family|size|weight}
+│                                         --pds-line-height-*
+│                                         --pds-letter-spacing-*
 │
-├── _settings.typography-semantic.scss    --sds-text-{display|heading|body|label}-{size}-{property}
-│                                         e.g. --sds-text-body-md-size, --sds-text-heading-lg-family
+├── _settings.typography-semantic.scss    --pds-text-{display|heading|body|label}-{size}-{property}
+│                                         e.g. --pds-text-body-md-size, --pds-text-heading-lg-family
 │
-├── _settings.spacing.scss                --sds-space-{scale}         (0 → 24, Figma: 12 stops)
-│                                         --sds-space-form-{x|y}      (semantic form padding)
-│                                         --sds-space-list-{x|y}
-│                                         --sds-space-nav-{x|y}
-│                                         --sds-space-overlay-{x|y}
+├── _settings.spacing.scss                --pds-space-{scale}         (0 → 24, Figma: 12 stops)
+│                                         --pds-space-form-{x|y}      (semantic form padding)
+│                                         --pds-space-list-{x|y}
+│                                         --pds-space-nav-{x|y}
+│                                         --pds-space-overlay-{x|y}
 │
-├── _settings.radius.scss                 --sds-radius-{none|xs|sm|md|lg|xl|2xl|pill}
+├── _settings.radius.scss                 --pds-radius-{none|xs|sm|md|lg|xl|2xl|pill}
 │                                         (Figma: 8 stops)
 │
-├── _settings.shadows.scss                --sds-shadow-overlay-{modal|select|popover|navigation}
-│                                         --sds-shadow-form-field{|-dark}
+├── _settings.shadows.scss                --pds-shadow-overlay-{modal|select|popover|navigation}
+│                                         --pds-shadow-form-field{|-dark}
 │
-├── _settings.transitions.scss            --sds-transition-duration{|-mask}
+├── _settings.transitions.scss            --pds-transition-duration{|-mask}
 │
-├── _settings.focus.scss                  --sds-focus-ring-{color|style|width|offset|shadow}
+├── _settings.focus.scss                  --pds-focus-ring-{color|style|width|offset|shadow}
 │
-├── _settings.globals.scss                --sds-disabled-opacity, --sds-icon-size, --sds-anchor-gutter
+├── _settings.globals.scss                --pds-disabled-opacity, --pds-icon-size, --pds-anchor-gutter
 │
 ├── _settings.grid.scss                   SCSS maps consumed by 05-objects
 ├── _settings.breakpoints.scss            SCSS maps consumed by 02-tools
@@ -488,7 +488,7 @@ and emit tokens as `--#{$sds-prefix}-*`. The barrel `_settings.core.scss` `@forw
 ```
 04-elements/
 ├── _elements.core.scss       barrel
-├── _elements.typography.scss   Uses --sds-text-* and --sds-color-text-* tokens
+├── _elements.typography.scss   Uses --pds-text-* and --pds-color-text-* tokens
 └── _elements.links.scss
 ```
 
@@ -566,18 +566,18 @@ Each layer is loaded via its prefixed `*.core` barrel, in cascade order:
 // 06-components/_components.form-field.scss
 @use '../01-settings/settings.prefix' as *;
 
-.sds-form-field {
-  padding: var(--#{$sds-prefix}-space-form-y) var(--#{$sds-prefix}-space-form-x);
-  border-radius: var(--#{$sds-prefix}-radius-md);
-  background: var(--#{$sds-prefix}-color-field-bg);
-  border: 1px solid var(--#{$sds-prefix}-color-field-border);
+.pds-form-field {
+  padding: var(--#{$pds-prefix}-space-form-y) var(--#{$pds-prefix}-space-form-x);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  background: var(--#{$pds-prefix}-color-field-bg);
+  border: 1px solid var(--#{$pds-prefix}-color-field-border);
 
   // Map to PrimeNG
-  --p-inputtext-border-color: var(--#{$sds-prefix}-color-field-border);
-  --p-inputtext-focus-border-color: var(--#{$sds-prefix}-color-field-border-focus);
+  --p-inputtext-border-color: var(--#{$pds-prefix}-color-field-border);
+  --p-inputtext-focus-border-color: var(--#{$pds-prefix}-color-field-border-focus);
 
   &--invalid {
-    --p-inputtext-border-color: var(--#{$sds-prefix}-color-field-border-invalid);
+    --p-inputtext-border-color: var(--#{$pds-prefix}-color-field-border-invalid);
   }
 }
 ```
@@ -589,13 +589,13 @@ Each layer is loaded via its prefixed `*.core` barrel, in cascade order:
 | Layer | Role |
 |---|---|
 | **Figma** | Shared design reference — visual decisions and token proposals |
-| **`$sds-prefix`** | Single SCSS variable controlling the `--sds-*` prefix |
+| **`$pds-prefix`** | Single SCSS variable controlling the `--pds-*` prefix |
 | **`01-settings/`** | All CSS custom properties — split into primitive and semantic per category |
 | **SCSS / CSS** | Solidaris visual design implementation |
 | **ITCSS** | Cascade and architecture structure |
-| **BEM** | Custom component naming strategy (`sds-` block prefix) |
+| **BEM** | Custom component naming strategy (`pds-` block prefix) |
 | **PrimeNG TS preset** | Integration adapter only — `providePlectrum()` |
-| **`--p-*` mappings** | Bridge from `--sds-*` to PrimeNG component tokens |
+| **`--p-*` mappings** | Bridge from `--pds-*` to PrimeNG component tokens |
 | **Storybook** | Documentation and validation layer |
 | **Review process** | Governance source of truth |
 

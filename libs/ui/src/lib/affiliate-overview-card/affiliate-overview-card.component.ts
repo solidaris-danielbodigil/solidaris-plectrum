@@ -18,9 +18,9 @@ import {
   type SelectButtonChangeEvent,
 } from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
-import { SDS_PANEL_BORDER_BOTTOM_STYLE } from '../drawer';
+import { PDS_PANEL_BORDER_BOTTOM_STYLE } from '../drawer';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
-import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
+import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
@@ -178,7 +178,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
  * and a copyable identifier chip row.
  */
 @Component({
-  selector: 'sds-affiliate-overview-card',
+  selector: 'pds-affiliate-overview-card',
   standalone: true,
   imports: [
     ButtonModule,
@@ -186,7 +186,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
     CopyableTextComponent,
     FormsModule,
     PlectrumAvatarComponent,
-    SdsTelemetryLabelDirective,
+    PdsTelemetryLabelDirective,
     SelectButton,
     BadgeModule,
   ],
@@ -215,10 +215,10 @@ export class AffiliateOverviewCardComponent {
   readonly identifierCopy = output<AffiliateOverviewIdentifier>();
   readonly statusMenuSelect = output<MenuItem>();
 
-  protected readonly titleId = `sds-affiliate-overview-card-title-${nextTitleId++}`;
+  protected readonly titleId = `pds-affiliate-overview-card-title-${nextTitleId++}`;
   protected readonly statusActionTagPrefix =
     AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX;
-  protected readonly cardPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
+  protected readonly cardPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
 
   readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {
     const severity = this.statusAction()?.severity;

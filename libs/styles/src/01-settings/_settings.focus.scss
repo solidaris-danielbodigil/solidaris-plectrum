@@ -8,10 +8,10 @@
 
 :root {
 
-  --#{$sds-prefix}-focus-ring-color:   var(--#{$sds-prefix}-color-blue-300);
-  --#{$sds-prefix}-focus-ring-style:   solid;
-  --#{$sds-prefix}-focus-ring-width:   2px;
-  --#{$sds-prefix}-focus-ring-offset:  0;
-  --#{$sds-prefix}-focus-ring-shadow:  none;
+  --#{$pds-prefix}-focus-ring-color:   var(--#{$pds-prefix}-color-blue-300);
+  --#{$pds-prefix}-focus-ring-style:   solid;
+  --#{$pds-prefix}-focus-ring-width:   2px;
+  --#{$pds-prefix}-focus-ring-offset:  0;
+  --#{$pds-prefix}-focus-ring-shadow:  none;
 
 }

@@ -10,16 +10,16 @@
 
 :root {
   // ── Header chrome (consumed by affiliate-details card header bridge) ────────
-  --#{$sds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$sds-prefix}-color-primary-50);
-  --#{$sds-prefix}-color-affiliate-document-detail-title-text: var(--#{$sds-prefix}-color-surface-600);
+  --#{$pds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$pds-prefix}-color-primary-50);
+  --#{$pds-prefix}-color-affiliate-document-detail-title-text: var(--#{$pds-prefix}-color-surface-600);
 
   // ── Certificate / detail metadata ───────────────────────────────────────────
-  --#{$sds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
-  --#{$sds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$sds-prefix}-color-text-muted);
-  --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg: var(--#{$sds-prefix}-color-primary-75);
-  --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-text: var(--#{$sds-prefix}-color-metadata-chip-text);
+  --#{$pds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
+  --#{$pds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-bg: var(--#{$pds-prefix}-color-primary-75);
+  --#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-text: var(--#{$pds-prefix}-color-metadata-chip-text);
 
   // ── Deep-link message pulse (transient) ─────────────────────────────────────
-  --#{$sds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
-  --#{$sds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
+  --#{$pds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
+  --#{$pds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
 }

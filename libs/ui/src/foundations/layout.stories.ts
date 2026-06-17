@@ -362,7 +362,7 @@ Spacing classes apply gap, padding, or margin from the spacing scale.
 Or reuse the variables in your \`.scss\`:
 
 \`\`\`scss
-padding: var(--sds-space-2) var(--sds-space-1-5) var(--sds-space-0) var(--sds-space-2);
+padding: var(--pds-space-2) var(--pds-space-1-5) var(--pds-space-0) var(--pds-space-2);
 \`\`\`
         `,
       },

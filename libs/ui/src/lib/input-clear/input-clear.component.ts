@@ -8,7 +8,7 @@ import { TimesIcon } from 'primeng/icons';
  * `times` SVG asset (14×14) and reserves icon-field padding so layout does not shift.
  */
 @Component({
-  selector: 'sds-input-clear',
+  selector: 'pds-input-clear',
   standalone: true,
   imports: [TimesIcon],
   templateUrl: './input-clear.component.html',

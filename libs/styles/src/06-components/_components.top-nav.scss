@@ -8,21 +8,21 @@
 
 .c-top-nav {
   display: block;
-  background: var(--#{$sds-prefix}-color-content-bg);
-  border-bottom: 1px solid var(--#{$sds-prefix}-color-content-border);
+  background: var(--#{$pds-prefix}-color-content-bg);
+  border-bottom: 1px solid var(--#{$pds-prefix}-color-content-border);
 }
 
 .c-top-nav__surface {
-  padding-inline: var(--#{$sds-prefix}-space-top-nav-inline);
-  min-height: var(--#{$sds-prefix}-size-top-nav-height);
+  padding-inline: var(--#{$pds-prefix}-space-top-nav-inline);
+  min-height: var(--#{$pds-prefix}-size-top-nav-height);
 }
 
 .c-top-nav__search {
-  inline-size: var(--#{$sds-prefix}-size-top-nav-search-width);
+  inline-size: var(--#{$pds-prefix}-size-top-nav-search-width);
 }
 
 .c-top-nav__action-icon {
-  font-size: var(--#{$sds-prefix}-size-top-nav-action-icon);
+  font-size: var(--#{$pds-prefix}-size-top-nav-action-icon);
   line-height: 1;
 }
 

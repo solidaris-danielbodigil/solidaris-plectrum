@@ -40,7 +40,7 @@
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background: var(--#{$sds-prefix}-color-surface-200);
+    background: var(--#{$pds-prefix}-color-surface-200);
     pointer-events: none;
   }
 }
@@ -51,18 +51,18 @@
 .c-affiliate-documents-toolbar__field,
 .c-affiliate-documents-toolbar__field--auto {
   min-width: 0;
-  flex: 0 0 var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
-  width: var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
+  flex: 0 0 var(--#{$pds-prefix}-size-affiliate-documents-filter-field);
+  width: var(--#{$pds-prefix}-size-affiliate-documents-filter-field);
 
   // Label-xs above control — Figma: 12px semibold, 7px label-to-control gap via --gap-xs modifier.
   &.c-form-field--vertical,
   .c-form-field--vertical {
-    gap: var(--#{$sds-prefix}-space-form-field-gap-xs);
+    gap: var(--#{$pds-prefix}-space-form-field-gap-xs);
   }
 
   .c-form-field__label {
     @include text-label-xs;
-    color: var(--#{$sds-prefix}-color-affiliate-documents-filter-label);
+    color: var(--#{$pds-prefix}-color-affiliate-documents-filter-label);
   }
 
   // Uniform control row — labels align at row top; inputs and switches share one baseline height.
@@ -71,7 +71,7 @@
   .c-form-field__control {
     display: flex;
     align-items: center;
-    min-height: var(--#{$sds-prefix}-size-affiliate-documents-filter-control);
+    min-height: var(--#{$pds-prefix}-size-affiliate-documents-filter-control);
   }
 
   p-iconfield,

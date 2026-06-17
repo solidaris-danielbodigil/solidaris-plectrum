@@ -4,7 +4,7 @@
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
-    "prefix": "sds",
+    "prefix": "PDS",
     "baseRemPx": 14
   },
   "workspace": {
@@ -37,7 +37,7 @@
     ]
   },
   "tokenArchitecture": {
-    "prefix": "--sds-*",
+    "prefix": "--pds-*",
     "prefixConfig": "libs/styles/src/01-settings/_settings.prefix.scss",
     "layers": {
       "primitive": {
@@ -45,7 +45,7 @@
           "libs/styles/src/01-settings/_settings.colors-primitive.scss",
           "libs/styles/src/01-settings/_settings.typography-primitive.scss"
         ],
-        "pattern": "--sds-{category}-{palette}-{shade}"
+        "pattern": "--pds-{category}-{palette}-{shade}"
       },
       "semantic": {
         "files": [
@@ -58,13 +58,13 @@
           "libs/styles/src/01-settings/_settings.focus.scss",
           "libs/styles/src/01-settings/_settings.globals.scss"
         ],
-        "pattern": "--sds-{category}-{role}"
+        "pattern": "--pds-{category}-{role}"
       },
       "component": {
         "files": [
           "libs/styles/src/06-components/_components.*.scss"
         ],
-        "pattern": "--p-{component}-{property} mapped from --sds-*"
+        "pattern": "--p-{component}-{property} mapped from --pds-*"
       }
     }
   },

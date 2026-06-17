@@ -69,14 +69,14 @@ Color must **never** be the only way to communicate state (also use an icon, lab
 
 - Focus states must always be visible
 - Never remove `outline` without replacing it with an equally visible focus indicator
-- Use `--sds-focus-ring-*` tokens — never hardcode focus ring styles
+- Use `--pds-focus-ring-*` tokens — never hardcode focus ring styles
 - Test keyboard focus for every interactive component
 
 ```scss
 // ✅ Correct
 .c-nav-shell__link:focus-visible {
-  outline: var(--sds-focus-ring-width) var(--sds-focus-ring-style) var(--sds-focus-ring-color);
-  outline-offset: var(--sds-focus-ring-offset);
+  outline: var(--pds-focus-ring-width) var(--pds-focus-ring-style) var(--pds-focus-ring-color);
+  outline-offset: var(--pds-focus-ring-offset);
 }
 ```
 
@@ -98,11 +98,11 @@ All interactive components must be fully operable by keyboard:
 Any change to these token groups requires an accessibility review before merge:
 
 ```
---sds-color-text-*
---sds-color-surface-*
---sds-color-border-*
---sds-focus-ring-*
---sds-color-danger
---sds-color-success
---sds-color-warning
+--pds-color-text-*
+--pds-color-surface-*
+--pds-color-border-*
+--pds-focus-ring-*
+--pds-color-danger
+--pds-color-success
+--pds-color-warning
 ```

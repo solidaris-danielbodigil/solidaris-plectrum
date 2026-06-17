@@ -14,11 +14,11 @@
   min-width: 0;
 
   .p-accordionpanel.p-disabled {
-    opacity: var(--#{$sds-prefix}-disabled-opacity);
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
 
     .p-accordionheader {
       cursor: not-allowed;
-      color: var(--#{$sds-prefix}-color-text-muted);
+      color: var(--#{$pds-prefix}-color-text-muted);
     }
   }
 
@@ -26,7 +26,7 @@
   .p-accordionpanel {
     overflow: hidden;
     @include radius.radius(
-      var(--#{$sds-prefix}-radius-accordion-bordered-section),
+      var(--#{$pds-prefix}-radius-accordion-bordered-section),
       all
     );
 
@@ -35,22 +35,22 @@
     }
 
     .p-accordionheader {
-      gap: var(--#{$sds-prefix}-space-accordion-bordered-header-gap);
+      gap: var(--#{$pds-prefix}-space-accordion-bordered-header-gap);
       @include radius.radius(
-        var(--#{$sds-prefix}-radius-accordion-bordered-header),
+        var(--#{$pds-prefix}-radius-accordion-bordered-header),
         top
       );
 
       &[aria-expanded='true'] {
         @include border.border(
           bottom,
-          var(--#{$sds-prefix}-color-panel-border)
+          var(--#{$pds-prefix}-color-panel-border)
         );
       }
 
       &[aria-expanded='false'] {
         @include radius.radius(
-          var(--#{$sds-prefix}-radius-accordion-bordered-content),
+          var(--#{$pds-prefix}-radius-accordion-bordered-content),
           bottom
         );
       }
@@ -58,23 +58,23 @@
 
     .p-accordioncontent {
       @include radius.radius(
-        var(--#{$sds-prefix}-radius-accordion-bordered-content),
+        var(--#{$pds-prefix}-radius-accordion-bordered-content),
         bottom
       );
     }
 
     &:not(:only-child) {
-      @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
+      @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
 
       &:first-child {
         @include radius.radius(
-          var(--#{$sds-prefix}-radius-accordion-bordered-section),
+          var(--#{$pds-prefix}-radius-accordion-bordered-section),
           top
         );
 
         .p-accordionheader {
           @include radius.radius(
-            var(--#{$sds-prefix}-radius-accordion-bordered-header),
+            var(--#{$pds-prefix}-radius-accordion-bordered-header),
             top
           );
 
@@ -90,7 +90,7 @@
 
       &:last-child {
         @include radius.radius(
-          var(--#{$sds-prefix}-radius-accordion-bordered-section),
+          var(--#{$pds-prefix}-radius-accordion-bordered-section),
           bottom
         );
 
@@ -99,7 +99,7 @@
 
           &[aria-expanded='false'] {
             @include radius.radius(
-              var(--#{$sds-prefix}-radius-accordion-bordered-content),
+              var(--#{$pds-prefix}-radius-accordion-bordered-content),
               bottom
             );
           }
@@ -107,27 +107,27 @@
 
         .p-accordioncontent {
           @include radius.radius(
-            var(--#{$sds-prefix}-radius-accordion-bordered-content),
+            var(--#{$pds-prefix}-radius-accordion-bordered-content),
             bottom
           );
         }
       }
 
       &:not(:first-child):not(:last-child) {
-        @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
+        @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
         border-block-start-width: 0;
         border-block-end-width: 0;
 
         .p-accordionheader {
-          @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
+          @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
 
           &[aria-expanded='false'] {
-            @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
+            @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
           }
         }
 
         .p-accordioncontent {
-          @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
+          @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
         }
       }
     }
@@ -136,5 +136,5 @@
 
 // Nav variant — section panel padding (non-scale 14px horizontal; see sub-nav-shell tokens)
 .c-sub-nav-shell .c-accordion--nav .p-accordionpanel {
-  padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
+  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
 }

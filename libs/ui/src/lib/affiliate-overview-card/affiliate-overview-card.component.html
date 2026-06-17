@@ -11,7 +11,7 @@
         aria-hidden="true"
       ></span>
     } @else {
-      <sds-plectrum-avatar
+      <(pds|app|lib)-plectrum-avatar
         class="c-affiliate-overview-card__avatar o-flex__item--shrink-0"
         size="large"
         [initials]="avatarInitials()"
@@ -44,7 +44,7 @@
                 type="button"
                 class="c-affiliate-overview-card__status-action"
                 data-telemetry-id="affiliate-overview-status-action"
-                [sdsTelemetryLabel]="action.label"
+                [pdsTelemetryLabel]="action.label"
                 [icon]="action.icon"
                 [severity]="statusActionSeverity()!"
                 size="small"
@@ -161,7 +161,7 @@
           class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
         >
           @for (identifier of identifiers(); track identifier.label; let last = $last) {
-            <sds-copyable-text
+            <(pds|app|lib)-copyable-text
               [label]="identifier.label"
               [value]="identifier.value"
               iconSize="sm"

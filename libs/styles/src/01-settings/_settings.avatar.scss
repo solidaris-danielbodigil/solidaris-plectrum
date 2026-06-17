@@ -8,22 +8,22 @@
 // =============================================================================
 
 :root {
-  --#{$sds-prefix}-size-avatar: 32px;
+  --#{$pds-prefix}-size-avatar: 32px;
   // Figma: illustrated avatar node 507:7915 — affiliate overview card
-  --#{$sds-prefix}-size-avatar-large-w: 51.333px;
-  --#{$sds-prefix}-size-avatar-large-h: 56px;
-  --#{$sds-prefix}-color-avatar-shape-hover: #af052a; // Figma: avatar hover shape color
-  --#{$sds-prefix}-shadow-avatar-active:
-    0 0 0 2px var(--#{$sds-prefix}-color-surface-0),
-    0 0 0 4px var(--#{$sds-prefix}-color-blue-300);
+  --#{$pds-prefix}-size-avatar-large-w: 51.333px;
+  --#{$pds-prefix}-size-avatar-large-h: 56px;
+  --#{$pds-prefix}-color-avatar-shape-hover: #af052a; // Figma: avatar hover shape color
+  --#{$pds-prefix}-shadow-avatar-active:
+    0 0 0 2px var(--#{$pds-prefix}-color-surface-0),
+    0 0 0 4px var(--#{$pds-prefix}-color-blue-300);
 
   // ── Named colour variants (small shield) ───────────────────────────────────
   // Figma family avatars (nodes 7:1160 / 7:1170 / 7:1180). The shield uses the
   // host `color` (fill: currentColor); initials flip to dark on the light yellow.
-  --#{$sds-prefix}-color-avatar-color-red:    var(--#{$sds-prefix}-color-solidaris-red-500);
-  --#{$sds-prefix}-color-avatar-color-blue:   var(--#{$sds-prefix}-color-blue-500);
-  --#{$sds-prefix}-color-avatar-color-green:  var(--#{$sds-prefix}-color-green-500);
-  --#{$sds-prefix}-color-avatar-color-yellow: var(--#{$sds-prefix}-color-yellow-400);
-  --#{$sds-prefix}-color-avatar-initials-on-color:  var(--#{$sds-prefix}-color-surface-0);       // Figma: white initials (blue/green)
-  --#{$sds-prefix}-color-avatar-initials-on-yellow: var(--#{$sds-prefix}-color-black-alpha-900); // Figma: rgba(0,0,0,0.9) initials
+  --#{$pds-prefix}-color-avatar-color-red:    var(--#{$pds-prefix}-color-solidaris-red-500);
+  --#{$pds-prefix}-color-avatar-color-blue:   var(--#{$pds-prefix}-color-blue-500);
+  --#{$pds-prefix}-color-avatar-color-green:  var(--#{$pds-prefix}-color-green-500);
+  --#{$pds-prefix}-color-avatar-color-yellow: var(--#{$pds-prefix}-color-yellow-400);
+  --#{$pds-prefix}-color-avatar-initials-on-color:  var(--#{$pds-prefix}-color-surface-0);       // Figma: white initials (blue/green)
+  --#{$pds-prefix}-color-avatar-initials-on-yellow: var(--#{$pds-prefix}-color-black-alpha-900); // Figma: rgba(0,0,0,0.9) initials
 }

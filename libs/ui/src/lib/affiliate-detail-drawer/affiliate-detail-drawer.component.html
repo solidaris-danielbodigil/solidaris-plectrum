@@ -18,7 +18,7 @@
           <div
             class="c-drawer__affiliate-detail-identity o-flex o-flex--align-items-flex-start o-layout--gap-1-5 o-flex__item--grow-1 o-layout--min-w-0"
           >
-            <sds-plectrum-avatar
+            <(pds|app|lib)-plectrum-avatar
               class="c-drawer__affiliate-detail-avatar o-flex__item--shrink-0"
               size="large"
               [initials]="affiliate.avatarInitials ?? ''"
@@ -41,7 +41,7 @@
                     track trackIdentifier($index, identifier);
                     let last = $last
                   ) {
-                    <sds-copyable-text
+                    <(pds|app|lib)-copyable-text
                       [label]="identifier.label"
                       [value]="identifier.value"
                       (copied)="onIdentifierCopy(identifier)"
@@ -73,7 +73,7 @@
               icon="bi bi-three-dots-vertical"
               aria-label="Plus d'actions"
               data-telemetry-id="drawer-menu"
-              sdsTelemetryLabel="Plus d'actions"
+              pdsTelemetryLabel="Plus d'actions"
               (click)="menuClick.emit()"
             ></button>
             <button
@@ -85,7 +85,7 @@
               size="small"
               icon="bi bi-x-lg"
               aria-label="Fermer"
-              sdsTelemetryLabel="Fermer"
+              pdsTelemetryLabel="Fermer"
               (click)="onClose()"
             ></button>
           </div>
@@ -119,7 +119,7 @@
               icon="bi bi-three-dots-vertical"
               label="Actions rapides"
               data-telemetry-id="drawer-quick-actions"
-              sdsTelemetryLabel="Actions rapides"
+              pdsTelemetryLabel="Actions rapides"
               (click)="quickActionsClick.emit()"
             ></button>
           </div>
@@ -171,7 +171,7 @@
                 class="c-drawer__affiliate-detail-contact-action"
                 icon="bi bi-telephone"
                 label="Appeler l'affilié"
-                sdsTelemetryLabel="Appeler l'affilié"
+                pdsTelemetryLabel="Appeler l'affilié"
                 (click)="callClick.emit()"
               ></button>
               <button
@@ -182,7 +182,7 @@
                 class="c-drawer__affiliate-detail-contact-action"
                 icon="bi bi-envelope"
                 label="Envoyer un e-mail à l'affilié"
-                sdsTelemetryLabel="Envoyer un e-mail à l'affilié"
+                pdsTelemetryLabel="Envoyer un e-mail à l'affilié"
                 (click)="emailClick.emit()"
               ></button>
             </div>
@@ -210,7 +210,7 @@
               collapseIcon="bi bi-chevron-up"
             >
               <p-accordion-panel [value]="familyPanel">
-                <p-accordion-header sdsTelemetryLabel="Famille">
+                <p-accordion-header pdsTelemetryLabel="Famille">
                   <span class="c-drawer__section-title">Famille</span>
                 </p-accordion-header>
                 <p-accordion-content>
@@ -225,13 +225,13 @@
                         type="button"
                         class="c-drawer__affiliate-detail-family-tile o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-layout--full-width o-layout--padding-block-0-5 o-layout--padding-inline-start-2 o-layout--padding-inline-end-0-5 o-layout--margin-0"
                         [attr.aria-label]="familyMemberAriaLabel(member)"
-                        [sdsTelemetryLabel]="familyMemberAriaLabel(member)"
+                        [pdsTelemetryLabel]="familyMemberAriaLabel(member)"
                         (click)="onFamilyMemberSelect(member)"
                       >
                         <span
                           class="c-drawer__affiliate-detail-family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
                         >
-                          <sds-plectrum-avatar
+                          <(pds|app|lib)-plectrum-avatar
                             class="c-drawer__affiliate-detail-family-avatar o-flex__item--shrink-0"
                             size="small"
                             [initials]="member.initials"
@@ -275,7 +275,7 @@
                 collapseIcon="bi bi-chevron-up"
               >
                 <p-accordion-panel [value]="notesPanel">
-                  <p-accordion-header sdsTelemetryLabel="Notes">
+                  <p-accordion-header pdsTelemetryLabel="Notes">
                     <span class="c-drawer__section-title">Notes</span>
                   </p-accordion-header>
                   <p-accordion-content>

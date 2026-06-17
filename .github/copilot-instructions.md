@@ -31,7 +31,7 @@ Always query both before implementing any component.
 
 ## Hard rules (full detail in `.ai/rules/`)
 
-- All values in `06-components/` SCSS via `var(--sds-*)` — no hardcoded hex/px/rem
+- All values in `06-components/` SCSS via `var(--pds-*)` — no hardcoded hex/px/rem
 - No Tailwind classes in HTML templates — `@apply` in SCSS only
 - Layout/spacing via `o-flex`/`o-layout` BEM mixes in the template, not in SCSS
 - Every component in `libs/ui` needs a colocated `.stories.ts` — not done without it

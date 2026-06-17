@@ -21,12 +21,12 @@
   --_sb-cell-bg-odd:    color-mix(in srgb, var(--p-primary-200, #90b8d4), white 30%);
   --_sb-cell-bg-nested: color-mix(in srgb, var(--p-primary-400, #4a90b8), transparent 70%);
   --_sb-cell-bg-wrap:   color-mix(in srgb, var(--p-primary-200, #90b8d4), white 70%);
-  --_sb-cell-text:      var(--sds-color-text-default, #333);
+  --_sb-cell-text:      var(--pds-color-text-default, #333);
 
   // ── Flex container demo styles ─────────────────────────────────────────────
   .o-flex {
-    margin-bottom: var(--sds-space-2, 1rem);
-    padding: calc(var(--sds-space-1, 0.5rem));
+    margin-bottom: var(--pds-space-2, 1rem);
+    padding: calc(var(--pds-space-1, 0.5rem));
     background: var(--_sb-cell-bg-wrap);
     counter-reset: counter;   // each container restarts auto-numbering
 
@@ -58,7 +58,7 @@
   // ── Flex item demo styles ──────────────────────────────────────────────────
   .o-flex__item {
     background: var(--_sb-cell-bg);
-    padding: var(--sds-space-2, 1rem);
+    padding: var(--pds-space-2, 1rem);
     color: var(--_sb-cell-text);
     counter-increment: counter;
 
@@ -77,7 +77,7 @@
     // Fixed-height helpers for alignment demos — justified because the visual
     // demonstration of align-items / align-self requires items of unequal size.
     &--sm  { height: 30px; }
-    &--md  { margin-top: var(--sds-space-2, 1rem); height: 70px; }
+    &--md  { margin-top: var(--pds-space-2, 1rem); height: 70px; }
     &--big { height: 100px; }
   }
 

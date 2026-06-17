@@ -25,23 +25,23 @@ export const CopyableTextMetadata: ComponentMetadata = {
       {
         name: 'Single identifier',
         description: 'One copyable chip for a stable identifier value.',
-        composition: `<sds-copyable-text label="Territoire" value="319" />`,
+        composition: `<(pds|app|lib)-copyable-text label="Territoire" value="319" />`,
       },
       {
         name: 'Identifier row with separators',
         description:
           'Wrap multiple chips in a flex row; add c-copyable-text__separator between items.',
         composition: `<div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
-  <sds-copyable-text label="Territoire" value="319" />
+  <(pds|app|lib)-copyable-text label="Territoire" value="319" />
   <span class="c-copyable-text__separator" aria-hidden="true">•</span>
-  <sds-copyable-text label="NISS" value="85010112345" />
+  <(pds|app|lib)-copyable-text label="NISS" value="85010112345" />
 </div>`,
       },
       {
         name: 'Toast on copy',
         description:
           'Listen to (copied) for analytics or confirmation toasts; clipboard write is internal.',
-        composition: `<sds-copyable-text
+        composition: `<(pds|app|lib)-copyable-text
   label="Territoire"
   value="319"
   (copied)="showCopiedToast('Territoire', $event)"
@@ -51,13 +51,13 @@ export const CopyableTextMetadata: ComponentMetadata = {
     antiPatterns: [
       {
         scenario: 'Duplicating clipboard logic in parent handlers',
-        reason: 'Copy behaviour belongs in sds-copyable-text for consistency and fallback.',
+        reason: 'Copy behaviour belongs in pds-copyable-text for consistency and fallback.',
         alternative: 'Use (copied) only for toast/analytics after successful copy.',
       },
       {
         scenario: 'Plain text span for copyable identifiers',
         reason: 'No copy affordance, no keyboard-accessible action, inconsistent with audit UI.',
-        alternative: 'Use sds-copyable-text with label and value inputs.',
+        alternative: 'Use pds-copyable-text with label and value inputs.',
       },
     ],
   },
@@ -68,12 +68,12 @@ export const CopyableTextMetadata: ComponentMetadata = {
   },
   tokens: {
     consumed: [
-      '--sds-color-metadata-chip-text',
-      '--sds-color-content-hover-bg',
-      '--sds-color-primary-100',
-      '--sds-color-primary-interactive-hover',
-      '--sds-color-primary-interactive-active',
-      '--sds-color-text-muted',
+      '--pds-color-metadata-chip-text',
+      '--pds-color-content-hover-bg',
+      '--pds-color-primary-100',
+      '--pds-color-primary-interactive-hover',
+      '--pds-color-primary-interactive-active',
+      '--pds-color-text-muted',
       '--p-button-text-secondary-color',
       '--p-button-padding-x',
       '--p-button-border-radius',
@@ -82,7 +82,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in sds-affiliate-overview-card and sds-affiliate-detail-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
+      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-affiliate-overview-card and pds-affiliate-detail-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
     selectionCriteria: {},
     keywords: ['copy', 'clipboard', 'identifier', 'metadata chip', 'Territoire', 'NISS'],
   },
