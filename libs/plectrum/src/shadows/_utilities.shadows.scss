@@ -1,0 +1,44 @@
+// semantic values for shadows
+
+#{$bs-utilities}shadow {
+  @include shadow();
+}
+
+#{$bs-utilities}shadow--focus {
+  @include shadow($_color: focus);
+}
+
+#{$bs-utilities}shadow--warning {
+  @include shadow($_color: warning);
+}
+
+#{$bs-utilities}shadow--error {
+  @include shadow($_color: error);
+}
+
+@each $direction in $_shadow-directions {
+
+  #{$bs-utilities}shadow--focus-#{$direction} {
+    @include shadow($_color: focus, $_direction: $direction);
+  }
+
+  #{$bs-utilities}shadow--warning-#{$direction} {
+    @include shadow($_color: warning, $_direction: $direction);
+  }
+
+  #{$bs-utilities}shadow--error-#{$direction} {
+    @include shadow($_color: error, $_direction: $direction);
+  }
+}
+.foundations-tokens__shadow-value--default {
+  @extend %u-shadow;
+}
+.foundations-tokens__shadow-value--focus {
+  @extend %u-shadow--focus;
+}
+.foundations-tokens__shadow-value--warning {
+  @extend %u-shadow--warning;
+}
+.foundations-tokens__shadow-value--error {
+  @extend %u-shadow--error;
+}

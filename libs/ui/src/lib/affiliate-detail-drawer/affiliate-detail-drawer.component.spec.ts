@@ -95,14 +95,14 @@ describe('AffiliateDetailDrawerComponent', () => {
 
   it('should not render the drawer content when not visible', () => {
     expect(
-      document.querySelector('.c-affiliate-detail-drawer__panel'),
+      document.querySelector('.p-drawer .o-layout--full-height'),
     ).toBeFalsy();
   });
 
   it('should render the affiliate name when visible', async () => {
     await openDrawer();
 
-    const name = document.querySelector('.c-affiliate-detail-drawer__name');
+    const name = document.querySelector('.p-drawer h2');
     expect(name?.textContent?.trim()).toBe('Eva Martinez');
   });
 
@@ -206,7 +206,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     ).toBeFalsy();
     expect(
       Array.from(
-        document.querySelectorAll('.c-affiliate-detail-drawer__section-title'),
+        document.querySelectorAll('.c-drawer__section-title'),
       ).some((title) => title.textContent?.trim() === 'Notes'),
     ).toBe(false);
   });
@@ -234,9 +234,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(tags[0].componentInstance.severity).toBe('danger');
     expect(tags[1].componentInstance.severity).toBe('secondary');
 
-    const sensitiveTag = document.querySelector(
-      '.c-affiliate-detail-drawer__note-tag--sensitive',
-    );
+    const sensitiveTag = document.querySelector('.c-affiliate-detail-drawer__note p-tag.p-tag-danger');
     expect(sensitiveTag).toBeTruthy();
   });
 

@@ -1,0 +1,19 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.detail-list.scss
+// c-detail-list — label / value description lists (drawers, panels, sidebars).
+// =============================================================================
+
+.c-detail-list__label {
+  @include text-label-sm;
+  flex: 0 0 var(--#{$sds-prefix}-size-detail-list-label-width);
+  width: var(--#{$sds-prefix}-size-detail-list-label-width);
+  color: var(--#{$sds-prefix}-color-text);
+}
+
+.c-detail-list__value {
+  @include text-body-sm;
+  color: var(--#{$sds-prefix}-color-text);
+}

@@ -11,7 +11,7 @@
       >
         <div class="c-affiliate-documents-toolbar__field">
           <sds-form-field label="Rechercher" inputId="document-search">
-            <p-iconfield class="c-affiliate-documents-toolbar__field-input">
+            <p-iconfield class="c-affiliate-documents-toolbar__field-input o-layout--full-width">
               <p-inputicon>
                 <i class="bi bi-search" aria-hidden="true"></i>
               </p-inputicon>
@@ -28,7 +28,7 @@
                 (ngModelChange)="documentSearch.set($event)"
                 pSize="small"
                 placeholder="Rechercher document..."
-                class="c-affiliate-documents-toolbar__field-input"
+                class="c-affiliate-documents-toolbar__field-input o-layout--full-width"
               />
               <p-inputicon>
                 <sds-input-clear
@@ -106,11 +106,11 @@
             class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width"
           >
             <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
-              <h2 class="c-affiliate-details__documents-title">
+              <h2 class="c-list__title o-layout--margin-0">
                 Suivi des documents
               </h2>
               <span
-                class="c-affiliate-details__documents-count o-flex o-flex--align-items-center o-flex--justify-content-center"
+                class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
                 >{{ documentCount() }}</span
               >
             </div>
@@ -119,7 +119,7 @@
               type="button"
               text
               severity="secondary"
-              class="c-affiliate-details__documents-sort"
+              class="c-affiliate-details__documents-sort o-flex__item--shrink-0"
               data-telemetry-id="documents-sort"
               [sdsTelemetryLabel]="startDateSortAriaLabel()"
               [icon]="startDateSortIcon()"
@@ -130,7 +130,7 @@
 
           @if (showCategoryTabs()) {
             <p-tabs
-              class="c-affiliate-details__category-tabs"
+              class="c-affiliate-details__category-tabs o-layout--full-width o-layout--min-w-0"
               [value]="selectedCategoryTab()"
               (valueChange)="onCategoryTabChange($event)"
             >
@@ -186,9 +186,14 @@
         </div>
       </ng-template>
 
+      <div
+        class="c-affiliate-details__documents-scroll o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0"
+      >
       @if (showCategoryTabs()) {
         @if (hasListResults()) {
-          <div class="c-affiliate-details__category-accordion">
+          <div
+            class="c-affiliate-details__category-accordion o-layout--full-width o-layout--min-w-0 o-layout--padding-block-end-3"
+          >
           <p-accordion
             [value]="openCategories()"
             [multiple]="true"
@@ -205,7 +210,9 @@
                       cat.label
                     }}</span>
                     @if (cat.id === 'parcours') {
-                      <span class="c-affiliate-details__category-panel-count">
+                      <span
+                        class="c-affiliate-details__category-panel-count o-flex o-flex--align-items-center o-layout--gap-1"
+                      >
                         <p-badge
                           class="c-affiliate-details__category-panel-badge"
                           [value]="cat.count"
@@ -227,7 +234,9 @@
                 </p-accordion-header>
                 <p-accordion-content>
                   @if (!cat.enabled) {
-                    <p class="c-affiliate-details__category-empty-filter">
+                    <p
+                      class="c-affiliate-details__category-empty-filter o-layout--margin-0 o-layout--padding-2 o-layout--padding-inline-3"
+                    >
                       {{ categoryEmptyFilterMessage }}
                     </p>
                   } @else if (cat.kind === 'journey' && cat.groups) {
@@ -272,21 +281,22 @@
           [description]="emptyListDescription()"
         />
       }
+      </div>
     </p-card>
 
     @if (visibleDocuments().length > 0) {
       <p-card
-        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
+        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-hidden o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
         [class.c-affiliate-details__detail--empty]="!selectedDocumentId()"
       >
         @if (selectedDocumentId(); as documentId) {
           <ng-template pTemplate="header">
             @if (selectedDocumentDetail(); as detail) {
               <div
-                class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2"
+                class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
               >
                 <h2
-                  class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0"
+                  class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0 o-layout--margin-0"
                 >
                   {{ selectedDocumentTitle() }}
                 </h2>
@@ -321,7 +331,9 @@
             }
           </ng-template>
 
-          <div class="c-affiliate-details__detail-scroll">
+          <div
+            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
+          >
             <app-affiliate-document-detail
               class="o-layout--full-width o-layout--min-w-0"
               [selectedDocumentId]="documentId"
@@ -334,7 +346,7 @@
               (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
             />
             <p-scrolltop
-              class="c-affiliate-details__scrolltop"
+              class="c-affiliate-details__scrolltop o-flex__item--shrink-0"
               target="parent"
               [threshold]="200"
               icon="bi bi-arrow-up"
@@ -348,7 +360,7 @@
           </div>
         } @else {
           <sds-empty-state
-            class="c-affiliate-details__detail-empty o-layout--full-width o-layout--min-w-0"
+            class="c-affiliate-details__detail-empty o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0"
             title="Aucun document sélectionné"
             description="Développez un parcours et sélectionnez un document pour afficher son détail."
           />

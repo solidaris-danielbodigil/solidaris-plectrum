@@ -3,7 +3,7 @@
     class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
   >
     <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
-      <h2 class="c-list__title">Suivi des documents</h2>
+      <h2 class="c-list__title o-layout--margin-0">Suivi des documents</h2>
       <span
         class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
         >{{ documentCount() }}</span
@@ -59,7 +59,7 @@
     </defs>
   </svg>
 
-  <div class="c-list__body">
+  <div class="c-list__body o-layout--full-width o-layout--min-w-0 o-flex__item--grow-1">
     <p-tree
       [value]="treeNodes()"
       [indentation]="0"
@@ -81,13 +81,13 @@
           <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
             <div class="c-list__header-row o-flex o-layout--gap-3">
               <i
-                class="c-list__icon bi"
+                class="c-list__icon bi o-flex__item--shrink-0"
                 [class.bi-folder2-open]="isGroupExpanded(group.id)"
                 [class.bi-folder]="!isGroupExpanded(group.id)"
                 aria-hidden="true"
               ></i>
               <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
-                <p class="c-list__title">
+                <p class="c-list__title o-layout--margin-0">
                   {{ group.title }}
                   @if (group.titleAccent) {
                     <span class="c-list__title-accent">{{ group.titleAccent }}</span>
@@ -100,11 +100,11 @@
             </div>
             @if (groupHasFooterContent(group)) {
               <div class="c-list__dates o-flex o-layout--gap-0-25">
-                <p class="c-list__date o-flex__item--grow-1">
+                <p class="c-list__date o-flex__item--grow-1 o-layout--margin-0">
                   Date de début :
                   <span class="c-list__date-value">{{ group.startDate }}</span>
                 </p>
-                <p class="c-list__date c-list__date--end o-flex__item--grow-1">
+                <p class="c-list__date c-list__date--end o-flex__item--grow-1 o-layout--margin-0">
                   Date de fin :
                   <span class="c-list__date-value">{{ group.endDate }}</span>
                 </p>
@@ -164,8 +164,8 @@
                   class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
                 >
                   <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                    <i [class]="'c-list__icon ' + documentIcon(doc)" aria-hidden="true"></i>
-                    <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0">
+                    <i [class]="'c-list__icon o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
+                    <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0 o-layout--margin-0">
                       {{ documentDisplayTitle(doc) }}
                     </p>
                   </div>
@@ -231,7 +231,7 @@
                 class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
               >
                 <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                  <i [class]="'c-list__icon ' + documentIcon(doc)" aria-hidden="true"></i>
+                  <i [class]="'c-list__icon o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
                   <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0">
                     {{ documentDisplayTitle(doc) }}
                   </p>
@@ -287,7 +287,7 @@
     @if (footnote()) {
       <button
         type="button"
-        class="c-list__footnote"
+        class="c-list__footnote o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
         (click)="footnoteClick.emit()"
       >
         {{ footnote() }}
@@ -307,7 +307,7 @@
   @let active = activeTagContext();
   @if (active) {
     <ul
-      class="p-autocomplete-list c-list__tag-target-list"
+      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
       role="listbox"
       [attr.aria-label]="active.tag.ariaLabel"
     >

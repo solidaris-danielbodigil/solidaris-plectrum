@@ -370,7 +370,7 @@ describe('AffiliateDetailsComponent', () => {
 
     const sectionTitles = [
       ...fixture.nativeElement.querySelectorAll(
-        '.c-affiliate-detail-drawer__section-title',
+        '.c-drawer__section-title',
       ),
     ].map((title) => (title as Element).textContent?.trim());
 
@@ -1273,7 +1273,7 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const scroller = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents .p-card-body',
+      '.c-affiliate-details__documents-scroll',
     ) as HTMLElement;
     scroller.scrollTop = 500;
 
@@ -1305,7 +1305,7 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const scroller = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents .p-card-body',
+      '.c-affiliate-details__documents-scroll',
     ) as HTMLElement;
 
     component.goToNextDocument();

@@ -236,9 +236,9 @@ Overflow syntax: \`.o-layout--overflow-[axis?]-[value]\`
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 150px; border: 1px solid #ccc;">
-      <div class="c-demo-cell" style="min-height: 80px;">Item 1</div>
-      <div class="c-demo-cell c-demo-cell--accent" style="min-height: 80px;">Item 2</div>
-      <div class="c-demo-cell" style="min-height: 80px;">Item 3</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 1</div>
+      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 2</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 3</div>
     </div>`,
   }),
 };
@@ -323,9 +323,9 @@ Position classes set the \`position\` property with responsive support.
     template: `
     <div class="o-layout--overflow-y-auto" style="height: 200px; border: 1px solid #ccc;">
       <div class="c-demo-cell c-demo-cell--accent o-layout--sticky-top">Sticky header (scroll me)</div>
-      <div class="c-demo-cell" style="height: 100px;">Content 1</div>
-      <div class="c-demo-cell c-demo-cell--accent" style="height: 100px;">Content 2</div>
-      <div class="c-demo-cell" style="height: 100px;">Content 3</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 1</div>
+      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 2</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 3</div>
     </div>`,
   }),
 };
@@ -424,9 +424,9 @@ The responsive class applies from that breakpoint **upward** (mobile-first, \`mi
       Resize the viewport to see responsive changes.
     </p>
     <div class="o-flex o-flex--wrap o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">
-      <div class="c-demo-cell" style="flex: 1; min-width: 100px;">gap-1 → gap-2@sm → gap-4@lg</div>
-      <div class="c-demo-cell c-demo-cell--accent" style="flex: 1; min-width: 100px;">Resize me</div>
-      <div class="c-demo-cell" style="flex: 1; min-width: 100px;">to see gap change</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">gap-1 → gap-2@sm → gap-4@lg</div>
+      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">Resize me</div>
+      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">to see gap change</div>
     </div>
     <div class="o-layout--hidden o-layout--block@md c-demo-cell c-demo-cell--accent" style="margin-top: 1rem;">
       I'm hidden below md, visible from md up

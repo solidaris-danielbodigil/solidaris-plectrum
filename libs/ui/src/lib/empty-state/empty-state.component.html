@@ -4,10 +4,10 @@
   </div>
 
   <div class="c-empty-state__content o-flex o-flex--col o-flex--align-items-center o-layout--gap-1">
-    <h3 class="c-empty-state__title">{{ title() }}</h3>
+    <h3 class="c-empty-state__title o-layout--margin-0">{{ title() }}</h3>
 
     @if (description()) {
-      <p class="c-empty-state__description">{{ description() }}</p>
+      <p class="c-empty-state__description o-layout--margin-0">{{ description() }}</p>
     }
   </div>
 </section>

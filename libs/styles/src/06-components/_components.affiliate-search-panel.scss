@@ -4,6 +4,7 @@
 // 06-components/_components.affiliate-search-panel.scss
 // c-affiliate-search-panel — width cap for the iShare affiliate lookup card.
 //
+// Layout via o-flex / o-layout in template.
 // Token source: 01-settings/_settings.affiliate-search.scss
 // =============================================================================
 
@@ -11,13 +12,7 @@
   max-width: var(--#{$sds-prefix}-size-affiliate-search-panel-max);
 }
 
-.c-affiliate-search-panel__query-field {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
 .c-affiliate-search-panel__query-submit {
-  flex-shrink: 0;
   padding-inline: var(--p-button-padding-x);
   white-space: nowrap;
 }

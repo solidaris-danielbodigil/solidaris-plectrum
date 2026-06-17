@@ -17,7 +17,6 @@
 
 // ── Page wrapper ─────────────────────────────────────────────────────────────
 .c-iconography {
-  padding: 0 var(--spacing-6) var(--spacing-6);
   @include text-body-sm;
 }
 
@@ -25,7 +24,6 @@
 // Layout/alignment of the toolbar row is owned by c-toolbar in _components.toolbar.scss.
 // Only the search field's sizing constraint lives here.
 .c-iconography-toolbar__search {
-  flex: 1;
   min-width: var(--#{$sds-prefix}-size-iconography-search-min);
   max-width: var(--#{$sds-prefix}-size-iconography-search-max);
 }
@@ -40,8 +38,6 @@
 // Only list resets live here.
 .c-iconography__grid {
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 // ── Icon list item (grid cell wrapper) ───────────────────────────────────────
@@ -119,7 +115,6 @@
 // ── Empty state ──────────────────────────────────────────────────────────────
 .c-iconography__empty {
   text-align: center;
-  padding: var(--spacing-7);
   color: var(--#{$sds-prefix}-color-text-muted);
   @include text-body-sm;
 }

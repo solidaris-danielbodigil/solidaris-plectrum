@@ -1626,7 +1626,7 @@ export class AffiliateDetailsComponent {
 
   private getDocumentsScroller(): HTMLElement | null {
     const scroller = document.querySelector(
-      '.c-affiliate-details__documents .p-card-body',
+      '.c-affiliate-details__documents-scroll',
     );
 
     return scroller instanceof HTMLElement ? scroller : null;

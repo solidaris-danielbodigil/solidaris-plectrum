@@ -1,0 +1,12 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.drawer.scss
+// Shared drawer panel sizing — content-driven width for all p-drawer instances.
+// Apply via appendTo="body" + [style] bindings in templates (no styleClass on root).
+// =============================================================================
+
+:root {
+  --#{$sds-prefix}-size-drawer-min-width: 20rem;
+  --#{$sds-prefix}-size-drawer-max-width: calc(100vw - var(--spacing-4));
+}

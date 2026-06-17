@@ -313,7 +313,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.nativeElement.querySelector('p-stepper')).toBeFalsy();
     expect(fixture.nativeElement.querySelector('p-timeline')).toBeFalsy();
     expect(
-      fixture.nativeElement.querySelector('p-accordion.c-audit-accordion'),
+      fixture.nativeElement.querySelector('p-accordion.c-accordion--bordered'),
     ).toBeTruthy();
     expect(
       fixture.nativeElement.querySelector('[data-panel-id="c4-isolated"]'),
@@ -360,7 +360,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector('p-accordion.c-audit-accordion'),
+      fixture.nativeElement.querySelector('p-accordion.c-accordion--bordered'),
     ).toBeTruthy();
     expect(
       fixture.nativeElement.querySelector(
@@ -397,13 +397,13 @@ describe('AffiliateDocumentDetailComponent', () => {
     );
 
     const drawerTitle = document.body.querySelector(
-      '.c-document-more-details-drawer__title',
+      '.p-drawer h2',
     );
     expect(drawerTitle?.textContent?.trim()).toBe('Details - C4');
 
     expect(
       document.body.querySelectorAll(
-        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        '.p-drawer .c-accordion--bordered p-accordion-panel',
       ).length,
     ).toBe(1);
   });
@@ -431,7 +431,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(
       document.body.querySelectorAll(
-        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        '.p-drawer .c-accordion--bordered p-accordion-panel',
       ).length,
     ).toBe(2);
   });
@@ -733,20 +733,20 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).toBeTruthy();
 
     const drawerTitle = document.body.querySelector(
-      '.c-document-more-details-drawer__title',
+      '.p-drawer h2',
     );
     expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
 
     expect(document.body.querySelector('.p-timeline')).toBeTruthy();
     expect(
       document.body.querySelectorAll(
-        '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+        '.p-drawer .c-accordion--bordered p-accordion-panel',
       ).length,
     ).toBe(3);
 
     const tableHeaders = [
       ...document.body.querySelectorAll(
-        '.c-document-more-details-drawer__table th',
+        '.p-drawer .p-datatable th',
       ),
     ].map((cell) => cell.textContent?.trim());
 
@@ -772,7 +772,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     const closeButton = document.body.querySelector(
-      '.c-document-more-details-drawer__close-button',
+      '.p-drawer button[aria-label="Fermer"]',
     ) as HTMLButtonElement | null;
 
     closeButton?.click();
@@ -811,7 +811,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     );
 
     const accordions = document.querySelectorAll(
-      '.c-document-more-details-drawer .c-audit-accordion',
+      '.p-drawer .c-accordion--bordered',
     );
     expect(accordions.length).toBe(3);
   });
@@ -833,19 +833,19 @@ describe('AffiliateDocumentDetailComponent', () => {
     );
 
     const drawerTitle = document.querySelector(
-      '.c-document-more-details-drawer__title',
+      '.p-drawer h2',
     );
     expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
 
     expect(document.querySelector('.p-timeline')).toBeTruthy();
 
     const accordions = document.querySelectorAll(
-      '.c-document-more-details-drawer .c-audit-accordion',
+      '.p-drawer .c-accordion--bordered',
     );
     expect(accordions.length).toBe(3);
 
     const tableHeaders = [
-      ...document.querySelectorAll('.c-document-more-details-drawer__table th'),
+      ...document.querySelectorAll('.p-drawer .p-datatable th'),
     ].map((header) => header.textContent?.trim());
     expect(tableHeaders).toContain('Date');
     expect(tableHeaders).toContain('Description');
@@ -865,7 +865,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     const closeButton = document.querySelector(
-      '.c-document-more-details-drawer__close-button',
+      '.p-drawer button[aria-label="Fermer"]',
     ) as HTMLButtonElement | null;
     closeButton?.click();
     fixture.detectChanges();
@@ -899,7 +899,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(document.body.textContent).toContain('Clôturé');
 
     const accordions = document.querySelectorAll(
-      '.c-document-more-details-drawer .c-audit-accordion',
+      '.p-drawer .c-accordion--bordered',
     );
     expect(accordions.length).toBe(3);
   });
@@ -1055,7 +1055,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(document.body.textContent).not.toContain('Clôturé');
       expect(
         document.body.querySelectorAll(
-          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+          '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
       ).toBe(2);
     });
@@ -1087,7 +1087,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(document.body.textContent).not.toContain('Clôturé');
       expect(
         document.body.querySelectorAll(
-          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+          '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
       ).toBe(2);
     });
@@ -1124,7 +1124,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(document.body.textContent).not.toContain('Clôturé');
       expect(
         document.body.querySelectorAll(
-          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+          '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
       ).toBe(2);
     });
@@ -1142,7 +1142,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
       const disabledPanels = [
         ...fixture.nativeElement.querySelectorAll(
-          '.c-audit-accordion .p-accordionpanel.p-disabled',
+          '.c-accordion--bordered .p-accordionpanel.p-disabled',
         ),
       ] as HTMLElement[];
 
@@ -1259,7 +1259,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
       expect(
         document.body.querySelectorAll(
-          '.c-document-more-details-drawer .c-audit-accordion p-accordion-panel',
+          '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
       ).toBe(3);
     });

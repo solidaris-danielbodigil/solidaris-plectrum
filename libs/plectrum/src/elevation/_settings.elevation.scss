@@ -1,0 +1,23 @@
+/* --------------------------------
+elevation
+-------------------------------- */
+
+@for $i from 1 through 25 {
+  :root {
+    --elevation-#{$i}: #{$i};
+  }
+}
+
+
+$_elevation-context: (
+  under,
+  raised,
+  sticky,
+  high-raised,
+  overlays,
+  blocking-overlays,
+);
+
+$_elevation-shadow: (
+  true, false,
+)

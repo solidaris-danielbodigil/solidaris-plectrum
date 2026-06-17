@@ -1,87 +1,45 @@
 @use '../01-settings/settings.prefix' as *;
 @use '../02-tools/tools.typography' as *;
-@use '../02-tools/tools.scroll-shadow' as *;
 
 // =============================================================================
 // 06-components/_components.affiliate-details.scss
 // c-affiliate-details — full-width filter toolbar + two-column content row.
 //
-// Layout (flex, gap, grow/shrink) via o-flex / o-layout BEM mixes in the template.
-// Only page canvas background and structural min-widths live here.
+// Layout: o-flex / o-layout in templates.
+// Exceptions: PrimeNG .p-card-body / .p-accordionheader (no template access),
+//             CSS grid tab/panel headers (no o-grid utility),
+//             scroll-padding on owned scroll wrappers.
 //
 // Design ref:   Figma node 324:5739 (Dossier Affilié — page layout)
-//               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5739
 // Token source: libs/styles/src/01-settings/_settings.affiliate-details.scss
 // =============================================================================
 
-// Page canvas — contrast behind white cards so ring shadow + radii stay visible.
 .c-affiliate-details {
   background: var(--#{$sds-prefix}-color-affiliate-details-page-bg);
-  min-height: 0;
 }
 
-// Full-width document filter toolbar — sticky within the main content scroll area.
-.c-affiliate-details__toolbar {
-  flex-shrink: 0;
-  min-width: 0;
-  width: 100%;
-}
-
-// Two-column row — documents list (left) + detail viewer (right) at @lg.
-.c-affiliate-details__columns {
-  flex: 1 1 auto;
-  min-height: 0;
-  min-width: 0;
-  width: 100%;
-}
-
-// Shared p-card header slot — padding via --p-card-header-padding; flex via o-flex in template.
-.c-affiliate-details__card-header {
-  min-width: 0;
-  width: 100%;
-}
-
-// First column — p-card shell; section header in p-card header slot.
-// flex-shrink via o-flex__item--shrink-1 in template so 5/7 basis can absorb row gap.
 .c-affiliate-details__documents {
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-documents-column-min);
 
-  // sds-list body only — p-card owns panel surface and section header.
   .c-list {
     background: transparent;
     border: none;
     border-radius: 0;
     overflow: visible;
   }
+
+  // PrimeNG p-card body — no template hook
+  :where(.p-card-body) {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+    overflow: hidden;
+    flex: 1 1 auto;
+  }
 }
 
-.c-affiliate-details__documents-title {
-  @include text-heading-md;
-  color: var(--#{$sds-prefix}-color-list-section-title);
-  margin: 0;
-}
-
-.c-affiliate-details__documents-count {
-  @include text-label-xs;
-  font-weight: var(--font-weight-bold);
-  min-inline-size: var(--#{$sds-prefix}-size-list-count-badge-min);
-  min-block-size: var(--#{$sds-prefix}-size-list-count-badge-min);
-  border-radius: calc(10.5 / 14 * var(--base-unit));
-  background: var(--#{$sds-prefix}-color-list-count-badge-bg);
-  color: var(--#{$sds-prefix}-color-list-count-badge-text);
-  text-align: center;
-}
-
-.c-affiliate-details__documents-sort {
-  flex-shrink: 0;
-}
-
-.c-affiliate-details__category-tabs {
-  min-width: 0;
-  width: 100%;
-}
-
+// Category tab — CSS grid (no o-grid); fixed label column from token
 .c-affiliate-details__category-tab {
   display: inline-grid;
   grid-template-columns: auto var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
@@ -96,8 +54,6 @@
 }
 
 .c-affiliate-details__category-eye {
-  flex-shrink: 0;
-
   &--disabled {
     opacity: var(--#{$sds-prefix}-disabled-opacity);
     cursor: not-allowed;
@@ -106,11 +62,7 @@
 }
 
 .c-affiliate-details__category-accordion {
-  min-width: 0;
-  width: 100%;
-  padding-block-end: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
-
-  // Let projected header content fill the row before the PrimeNG toggle chevron.
+  // PrimeNG accordion header row — internal flex gap
   .p-accordionheader {
     gap: var(--spacing-2);
   }
@@ -123,12 +75,10 @@
 
 .c-affiliate-details__category-empty-filter {
   @include text-body-sm;
-  margin: 0;
-  padding: var(--spacing-2) var(--spacing-3);
   color: var(--#{$sds-prefix}-color-text-muted);
 }
 
-// Label + count badge on a shared axis; chevron stays right via accordion header flex.
+// Panel header — CSS grid aligns label + badge before accordion chevron
 .c-affiliate-details__category-panel-header {
   display: grid;
   grid-template-columns: var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
@@ -143,75 +93,44 @@
   min-width: 0;
 }
 
-.c-affiliate-details__category-panel-count {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  justify-self: start;
-}
-
 .c-affiliate-details__category-panel-count-label {
   @include text-label-xs;
   color: var(--#{$sds-prefix}-color-text-muted);
 }
 
-.c-affiliate-details__category-panel-badge {
-  justify-self: start;
-}
-
-// Second column — p-card shell; document title + nav in p-card header slot.
 .c-affiliate-details__detail {
   min-width: 0;
   min-inline-size: var(--#{$sds-prefix}-size-affiliate-details-detail-column-min);
-  overflow: hidden;
+
+  :where(.p-card-body) {
+    display: flex;
+    flex-direction: column;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  :where(.p-card-content) {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-block-size: 0;
+  }
 }
 
-// Keep card headers fixed while only the body/content area scrolls, with a
-// scroll-driven edge-shadow affordance (shared o-scroll-shadow pattern).
-// PrimeNG's base sets `.p-card-body { display: flex; flex-direction: column }`,
-// and sticky-bottom does not pin reliably on the last child of a flex column.
-// The doubled wrapper class raises specificity above PrimeNG's single-class
-// rule (injected after our stylesheet) so the block context wins and the bottom
-// shadow stays pinned to the scrollport edge.
-.c-affiliate-details__documents.c-affiliate-details__documents .p-card-body {
-  display: block;
-  @include scroll-shadow;
+.c-affiliate-details__documents-scroll {
   scroll-padding-block: var(--#{$sds-prefix}-space-affiliate-details-list-scroll-inset);
-}
-
-.c-affiliate-details__detail.c-affiliate-details__detail .p-card-body {
-  display: flex;
-  flex-direction: column;
-  min-block-size: 0;
-  overflow: hidden;
-}
-
-.c-affiliate-details__detail.c-affiliate-details__detail .p-card-content {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  min-block-size: 0;
 }
 
 .c-affiliate-details__detail-scroll {
   position: relative;
-  flex: 1 1 auto;
-  min-block-size: 0;
-  min-inline-size: 0;
-  @include scroll-shadow;
 }
 
-.c-affiliate-details__scrolltop {
-  flex-shrink: 0;
-}
-
-// Detail placeholder — fill the panel and vertically center the empty state block.
-.c-affiliate-details__detail.c-affiliate-details__detail--empty {
+:where(.c-affiliate-details__detail--empty.c-affiliate-details__detail) {
   flex: 1 1 auto;
   min-block-size: 0;
   block-size: 100%;
 
-  &.c-affiliate-details__detail .p-card-body {
+  .p-card-body {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
@@ -228,13 +147,7 @@
 }
 
 .c-affiliate-details__detail-empty {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  min-block-size: 0;
-  min-inline-size: 0;
-
-  .c-empty-state {
+  :where(.c-empty-state) {
     flex: 1 1 auto;
     min-block-size: 0;
   }

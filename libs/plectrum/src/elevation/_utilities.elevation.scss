@@ -1,0 +1,91 @@
+@for $i from 1 through 5 {
+  @each $category, $components in $_elevation-context {
+    $context: 0;
+
+    @if ($category == "under") or ($category == "raised") {
+      $context: $i;
+    } @else if ($category == "sticky") {
+      $context: $i + 5;
+    } @else if ($category == "high-raised") {
+      $context: $i + 10;
+    } @else if ($category == "overlays") {
+      $context: $i + 15;
+    } @else if ($category == "blocking-overlays") {
+      $context: $i + 20;
+    }
+
+    @each $is-shadow in $_elevation-shadow {
+      @if ($is-shadow == true) {
+        @each $direction in $_shadow-directions {
+          #{$bs-utilities}elevation--#{$category}#{if($i != 1, "-#{$i}", "")}#{if($direction != "all", "-#{$direction}", "")} {
+            @if ($category == "under") {
+              z-index: calc(var(--elevation-#{$context}) * -1);
+
+              @include shadow($_inset: true, $_offset: $i, $_direction: $direction, $_color: 2, $_blur: $i, $_spread: "none");
+            } @else if ($category == "raised") or ($category == "high-raised") {
+              @if ($i == 1) {
+                z-index: var(--elevation-#{$context});
+
+                @include shadow($_offset: '0-5', $_direction: $direction, $_color: 2, $_blur: '1-5', $_spread: $i);
+              }
+              @else {
+                z-index: var(--elevation-#{$context});
+
+                @include shadow($_offset: $i, $_direction: $direction, $_color: 2, $_blur: $i, $_spread: $i);
+              }
+            }
+            @else if ($category == "sticky") {
+              z-index: var(--elevation-#{$context});
+
+              @include shadow($_offset: $i, $_direction: $direction, $_color: 3, $_blur: $i, $_spread: $i);
+            }
+            @else if ($category == "overlays") {
+              z-index: var(--elevation-#{$context});
+
+              @include shadow($_offset: $i, $_direction: $direction, $_color: 1, $_blur: $i, $_spread: $i);
+            }
+            @else if ($category == "blocking-overlays") {
+              z-index: var(--elevation-#{$context});
+
+              @include shadow($_offset: $i, $_direction: $direction, $_color: 1, $_blur: $i, $_spread: $i);
+              @container root style(--dark-mode: 1) {
+                @include shadow($_offset: $i, $_direction: $direction, $_color: high-contrast, $_blur: $i, $_spread: $i);
+              }
+            }
+          }
+        }
+      }
+      @else if ($is-shadow == false) {
+        #{$bs-utilities}elevation--#{$category}#{if($i != 1, "-#{$i}", "")}-shadow-none {
+          @if ($category == "under") {
+
+            z-index: calc(var(--elevation-#{$context}) * -1);
+          }
+          @if ($category == "raised") or ($category == "high-raised"){
+
+            z-index: var(--elevation-#{$context});
+          }
+          @else if($category == "sticky"){
+
+            z-index: var(--elevation-#{$context});
+          }
+          @else if ($category == "overlays") or ($category == "blocking-overlays") {
+
+            z-index: var(--elevation-#{$context});
+          }
+        }
+      }
+    }
+  }
+}
+
+@each $component in $_component-shadow {
+  #{$bs-utilities}elevation--component-#{$component} {
+    @if (get-component-shadow($component, 'level') == 1) {
+      @extend %u-elevation--#{get-component-shadow($component, 'type')}-#{get-component-shadow($component, 'direction')};
+    }
+    @else {
+      @extend %u-elevation--#{get-component-shadow($component, 'type')}-#{get-component-shadow($component, 'level')}-#{get-component-shadow($component, 'direction')};
+    }
+  }
+}

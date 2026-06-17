@@ -1,0 +1,268 @@
+// list of variables for borders
+
+:root {
+  --border-default: calc(var(--base-unit) / 16);
+  --border-small: calc(var(--border-default) / 2);
+  --border-big: calc(var(--border-default) * 2);
+  --border-extra-big: calc(var(--border-default) * 4);
+  --border-none: var(--none);
+
+  --radius: calc(var(--base-unit) / 8); // 2
+  --radius--md: calc(var(--border-default) * 3); // 3
+  --radius--big: calc(var(--base-unit) / 4); // 4
+  --radius--xl: calc(var(--border-default) * 5); // 5
+  --radius--xxl: calc(var(--base-unit) * 4); // 8
+  --radius--circle: 100%;
+
+  --shadow-blur: calc(var(--base-unit) * 1);
+
+  --none: 0;
+}
+
+// You can change borders values here -->
+
+// --> values for borders
+
+$_border-props: (
+  border-width: (
+    default: var(--border-default),
+    input: var(--border-default),
+    button: var(--border-default),
+    checkbox: var(--border-default),
+    tag: var(--border-default),
+    badge: var(--border-default),
+    none: var(--none),
+    big: var(--border-big),
+    card: var(--border-default),
+    alert: var(--border-default),
+  ),
+
+  border-style: (
+    solid: solid,
+    dotted: dotted,
+    dashed: dashed,
+    none: none,
+  ),
+  border-radius: (
+    small: var(--radius),
+    regular: var(--radius--md),
+    big: var(--radius--big),
+    extra-big: var(--radius--xl),
+    rounded: var(--radius--xxl),
+    circle: var(--radius--circle),
+    none: var(--none),
+  ),
+  border-radius-direction: (
+    all: all,
+    left: left,
+    right: right,
+    bottom: bottom,
+    top: top,
+    corner-1: corner-1,
+    corner-2: corner-2,
+    corner-3: corner-3,
+    corner-4: corner-4,
+  ),
+  border-direction: (
+    all: all,
+    left: left,
+    right: right,
+    bottom: bottom,
+    top: top,
+    vertical: vertical,
+    horizontal: horizontal,
+    no-right: no-right,
+    no-left: no-left,
+    no-bottom: no-bottom,
+    no-top: no-top,
+    corner-1: corner-1,
+    corner-2: corner-2,
+    corner-3: corner-3,
+    corner-4: corner-4,
+  ),
+);
+
+// --> colors for borders by status and types
+
+$_border-types-props: (
+  default: (
+    divider: var(--color--generic--border__divider),
+    tab: var(--color--component--border__tab),
+    default: var(--color--generic--border__default),
+    dark: var(--color--generic--border__dark),
+    divider-primary: var(--color--generic--border__divider-primary),
+    divider-blue: var(--color--divider-blue-border),
+  ),
+  input: (
+    input: var(--color--generic--border__default),
+    input-hover: var(--color--status--hover__border),
+    input-focus: var(--color--status--active__border-input),
+    input-disabled: var(--color--status--disabled__border-input),
+    input-pressed: var(--color--status--active__border-input),
+    input-success: var(--color--status--success__border),
+    input-success-hover: var(--color--status--success__border-hover),
+    input-success-focus: var(--color--status--success__border-focus),
+    input-error: var(--color--status--error__border),
+    input-error-hover: var(--color--status--error__border-hover),
+    input-error-focus: var(--color--status--error__border-focus),
+    input-warning: var(--color--status--warning__border),
+    input-warning-hover: var(--color--status--warning__border-hover),
+    input-warning-focus: var(--color--status--warning__border-focus),
+  ),
+  button: (
+    button: var(--color--generic--border__default),
+    button-disabled: var(--color--generic--border__default),
+    button-active: var(--color--status--active__border-button),
+    button-danger: var(--color--component--button__border-danger),
+    button-danger-hover: var(--color--status--hover__border-button-danger),
+    button-primary: var(--color--component--button__border-primary),
+  ),
+  checkbox: (
+    checkbox: var(--color--generic--border__default),
+    checkbox-checked: var(--color--status--active__border-checkbox),
+    checkbox-hover: var(--color--status--hover__border),
+  ),
+  tag: (
+    tag: var(--color--generic--border__default),
+    tag-success: var(--color--status--success__border),
+    tag-error: var(--color--status--error__border),
+    tag-dashed: var(--tag-dashed-border),
+    tag-processing: var(--color--status--process__border),
+    tag-warning: var(--color--status--warning__border),
+    tag-magenta: var(--color--scheme--magenta__border),
+    tag-volcano: var(--color--scheme--volcano__border),
+    tag-orange: var(--color--scheme--orange__border),
+    tag-gold: var(--color--scheme--gold__border),
+    tag-lime: var(--color--scheme--lime__border),
+    tag-cyan: var(--color--scheme--cyan__border),
+    tag-blue: var(--color--scheme--blue__border),
+    tag-purple: var(--color--scheme--purple__border),
+    tag-selection: var(--color--status--active__border-input),
+  ),
+  badge: (
+    badge: var(--color--component--badge__border),
+    badge-ghost-dark: var(--color--component--badge__border-ghost-dark),
+  ),
+  card: (
+    card: var(--color--component--card__background),
+    card-outlined: var(--color--generic--border__default),
+    card-elevated: var(--color--component--card__background),
+    card-both: var(--color--generic--border__default),
+    card-clickable: var(--color--status--hover__border),
+  ),
+  alert: (
+    alert-success: var(--color--status--success__border),
+    alert-error: var(--color--status--error__border),
+    alert-info: var(--color--status--process__border),
+    alert-warning: var(--color--status--warning__border),
+    alert-warning-empty: var(--color--generic--border__default),
+  ),
+);
+
+// ----------------------------------------------------------------------------
+
+// list of arguments accepted for borders values
+
+$_width: (none, default, input, button, checkbox, tag, big, card, alert);
+
+$_radius: (small, big, extra-big, rounded, circle, none);
+
+$_radius-direction: (
+  top,
+  right,
+  bottom,
+  left,
+  corner-1,
+  corner-2,
+  corner-3,
+  corner-4,
+  all,
+);
+
+
+$_style: (solid, dotted, dashed, none);
+
+$_direction: (
+  horizontal,
+  vertical,
+  top,
+  right,
+  bottom,
+  left,
+  no-right,
+  no-left,
+  no-top,
+  no-bottom,
+  all,
+  corner-1,
+  corner-2,
+  corner-3,
+  corner-4
+);
+
+// list of arguments accepted for borders status and borders types
+
+$_default: (divider, tab, default, dark, divider-primary, divider-blue);
+
+$_input: (
+  input,
+  input-hover,
+  input-focus,
+  input-disabled,
+  input-pressed,
+  input-success,
+  input-success-hover,
+  input-success-focus,
+  input-error,
+  input-error-hover,
+  input-error-focus,
+  input-warning,
+  input-warning-hover,
+  input-warning-focus
+);
+
+$_button: (
+  button,
+  button-disabled,
+  button-active,
+  button-danger,
+  button-primary,
+  button-danger-hover
+);
+
+$_checkbox: (checkbox, checkbox-checked, checkbox-hover);
+
+$_tag: (
+  tag,
+  tag-sticker,
+  tag-success,
+  tag-error,
+  tag-dashed,
+  tag-processing,
+  tag-warning,
+  tag-magenta,
+  tag-volcano,
+  tag-orange,
+  tag-lime,
+  tag-cyan,
+  tag-blue,
+  tag-purple,
+  tag-selection,
+  tag-gold
+);
+
+$_badge: (badge, badge-ghost-dark);
+
+$_card: (card, card-outlined, card-elevated, card-both, card-clickable);
+
+$_alert: (
+  alert-error,
+  alert-success,
+  alert-info,
+  alert-warning,
+  alert-warning-empty
+);
+
+$_types: (default, input, button, checkbox, tag, badge, card, alert);
+
+$_shadow: (input-focus, input-error-focus, input-success-focus, input-warning-focus, tag-sticker, card-elevated, card-both, accordion-header, card-clickable, divider-top, divider-bottom, divider-left, divider-right, divider-vertical, divider-horizontal, default, button-primary, default-top, default-bottom, default-left, default-right,  default-vertical, default-horizontal, none);

@@ -47,7 +47,6 @@ import {
     TimelineModule,
   ],
   templateUrl: './document-more-details-drawer.component.html',
-  styleUrl: './document-more-details-drawer.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

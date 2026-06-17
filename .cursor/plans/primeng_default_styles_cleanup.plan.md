@@ -4,40 +4,40 @@ overview: Align libs/styles with agreed policy — PrimeNG defaults (+ Plectrum 
 todos:
   - id: phase1-document-drawer
     content: 'Phase 1 — document-more-details-drawer: default p-drawer (no styleClass); delete PrimeNG bridges; replace layout BEM with o-flex/o-layout where possible; delete SCSS file if empty; keep c-audit-accordion only'
-    status: pending
+    status: completed
   - id: phase1-document-drawer-settings
-    content: 'Phase 1 — Remove _settings.document-more-details-drawer.scss and _components.document-more-details-drawer.scss if superseded by o-flex/o-layout + default PrimeNG; update core forwards'
-    status: pending
+    content: Phase 1 — Remove _settings.document-more-details-drawer.scss and _components.document-more-details-drawer.scss if superseded by o-flex/o-layout + default PrimeNG; update core forwards
+    status: completed
   - id: phase1-document-drawer-tests
-    content: 'Phase 1 — Update specs for default PrimeNG drawer/timeline/table/tag/button; run ishare affiliate-document-detail tests'
-    status: pending
+    content: Phase 1 — Update specs for default PrimeNG drawer/timeline/table/tag/button; run ishare affiliate-document-detail tests
+    status: completed
   - id: phase2-affiliate-drawer
     content: 'Phase 2 — c-affiliate-detail-drawer: default p-drawer; remove --p-button-*/--p-tag-*; o-flex/o-layout for layout; keep p-card family tiles only; drop chrome-free accordion reset'
-    status: pending
+    status: completed
   - id: phase3-overlays
     content: 'Phase 3 — Audit drawer/modal/popover/menu/dialog usage: no styleClass on overlay roots, no scoped overlay SCSS; default PrimeNG + appendTo="body" only where needed for stacking'
-    status: pending
+    status: completed
   - id: phase4-stepper
-    content: 'Phase 4 — Remove _settings.stepper.scss p-stepper token bridge; default PrimeNG stepper on document detail'
-    status: pending
+    content: Phase 4 — Remove _settings.stepper.scss p-stepper token bridge; default PrimeNG stepper on document detail
+    status: completed
   - id: phase5-buttons-tags-inputs
-    content: 'Phase 5 — Remove scoped --p-button-*, --p-tag-*, input token bridges (top-nav, overview, copyable-text, drawers); keep global parity line-height only'
-    status: pending
+    content: Phase 5 — Remove scoped --p-button-*, --p-tag-*, input token bridges (top-nav, overview, copyable-text, drawers); keep global parity line-height only
+    status: completed
   - id: phase6-cards-surface
-    content: 'Phase 6 — Keep p-card as reusable surface; fix scroll-shadow via owned wrapper + o-scroll-shadow, not doubled .p-card-body selectors'
-    status: pending
+    content: Phase 6 — Keep p-card as reusable surface; fix scroll-shadow via owned wrapper + o-scroll-shadow, not doubled .p-card-body selectors
+    status: completed
   - id: phase7-tree-variant
-    content: 'Phase 7 — Formalize c-list p-tree as named variant; flat BEM scope class; document as intentional non-default tree'
-    status: pending
+    content: Phase 7 — Formalize c-list p-tree as named variant; flat BEM scope class; document as intentional non-default tree
+    status: completed
   - id: phase8-accordion-borders
-    content: 'Phase 8 — Keep c-audit-accordion bordered styles; audit chrome-free accordions (sub-nav, list, drawers) → default PrimeNG or c-audit-accordion'
-    status: pending
+    content: Phase 8 — Keep c-audit-accordion bordered styles; audit chrome-free accordions (sub-nav, list, drawers) → default PrimeNG or c-audit-accordion
+    status: completed
   - id: phase9-bemit-flat-specificity
-    content: 'Phase 9 — Flatten deep BEM chains; replace doubled-class specificity hacks (e.g. .c-x.c-x) with ITCSS layer order, :is(), :where(), or @layer'
-    status: pending
+    content: Phase 9 — Flatten deep BEM chains; replace doubled-class specificity hacks (e.g. .c-x.c-x) with ITCSS layer order, :is(), :where(), or @layer
+    status: completed
   - id: phase10-convention-doc
-    content: 'Phase 10 — Document full styling policy in libs/styles README or AGENTS.md (SSOT, overlays, o-flex/o-layout, BEMIT, specificity)'
-    status: pending
+    content: Phase 10 — Document full styling policy in libs/styles README or AGENTS.md (SSOT, overlays, o-flex/o-layout, BEMIT, specificity)
+    status: completed
 isProject: false
 ---
 
@@ -56,14 +56,14 @@ Feature work has added SCSS layers that override PrimeNG when defaults would suf
 
 ## SSOT & principles
 
-| Principle | Rule |
-|-----------|------|
-| **SSOT** | **PrimeNG defaults + Plectrum theme** — not Figma, not per-feature token files |
-| **Minimal CSS** | No new component SCSS unless layout/objects cannot express it |
-| **Layout in templates** | Use `o-flex`, `o-layout` ([05-objects](libs/styles/src/05-objects/)) in HTML — avoid `__header`, `__body` flex/gap/padding SCSS when a utility mix exists |
-| **Flat BEMIT** | Shallow blocks/modifiers only; avoid long descendant chains |
-| **Specificity** | Prefer ITCSS layer cascade (settings → objects → components → trumps); if PrimeNG must be beaten, use `:is()`, `:where()`, or `@layer` — **not** doubled selectors like `.c-foo.c-foo` |
-| **Custom classes** | Add a `c-*` class only when it carries semantic scope (variant, audit pattern, tree variant) — not for flex/padding/overflow |
+| Principle               | Rule                                                                                                                                                                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SSOT**                | **PrimeNG defaults + Plectrum theme** — not Figma, not per-feature token files                                                                                                         |
+| **Minimal CSS**         | No new component SCSS unless layout/objects cannot express it                                                                                                                          |
+| **Layout in templates** | Use `o-flex`, `o-layout` ([05-objects](libs/styles/src/05-objects/)) in HTML — avoid `__header`, `__body` flex/gap/padding SCSS when a utility mix exists                              |
+| **Flat BEMIT**          | Shallow blocks/modifiers only; avoid long descendant chains                                                                                                                            |
+| **Specificity**         | Prefer ITCSS layer cascade (settings → objects → components → trumps); if PrimeNG must be beaten, use `:is()`, `:where()`, or `@layer` — **not** doubled selectors like `.c-foo.c-foo` |
+| **Custom classes**      | Add a `c-*` class only when it carries semantic scope (variant, audit pattern, tree variant) — not for flex/padding/overflow                                                           |
 
 Reference utilities:
 
@@ -74,19 +74,19 @@ Reference utilities:
 
 ## Component policy
 
-| PrimeNG component | Policy |
-|-------------------|--------|
-| **Button** | Default PrimeNG + Plectrum |
-| **Stepper** | Default PrimeNG + Plectrum |
-| **Tag** | Default PrimeNG + Plectrum |
-| **Inputs** | Default PrimeNG + Plectrum |
-| **Drawer** | Default PrimeNG — no `styleClass` on `p-drawer`, no `.p-drawer` overrides |
-| **Modal / Dialog** | Default PrimeNG |
-| **Popover / Menu** | Default PrimeNG — anchor via component API (`[popup]`, `appendTo="body"`), no custom overlay SCSS |
-| **Form field** (`c-form-field`) | **Custom SDS** — vertical/horizontal labels, required, validation (wrapper only) |
-| **Card** (`p-card`) | **Allowed surface** — reusable panel chrome on named wrappers |
-| **Tree** (`c-list`) | **Named variant** — formalize; do not revert to bare PrimeNG |
-| **Accordion** | **Custom bordered** — `c-audit-accordion` only for border chrome |
+| PrimeNG component               | Policy                                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Button**                      | Default PrimeNG + Plectrum                                                                        |
+| **Stepper**                     | Default PrimeNG + Plectrum                                                                        |
+| **Tag**                         | Default PrimeNG + Plectrum                                                                        |
+| **Inputs**                      | Default PrimeNG + Plectrum                                                                        |
+| **Drawer**                      | Default PrimeNG — no `styleClass` on `p-drawer`, no `.p-drawer` overrides                         |
+| **Modal / Dialog**              | Default PrimeNG                                                                                   |
+| **Popover / Menu**              | Default PrimeNG — anchor via component API (`[popup]`, `appendTo="body"`), no custom overlay SCSS |
+| **Form field** (`c-form-field`) | **Custom SDS** — vertical/horizontal labels, required, validation (wrapper only)                  |
+| **Card** (`p-card`)             | **Allowed surface** — reusable panel chrome on named wrappers                                     |
+| **Tree** (`c-list`)             | **Named variant** — formalize; do not revert to bare PrimeNG                                      |
+| **Accordion**                   | **Custom bordered** — `c-audit-accordion` only for border chrome                                  |
 
 ### Keep (global parity — not design chrome)
 
@@ -115,12 +115,12 @@ Reference utilities:
 
 ### SCSS — prefer deletion
 
-| Action | Target |
-|--------|--------|
-| **Delete** | `.p-drawer`, `--p-button-*`, `--p-timeline-*`, `--p-tag-*`, `--p-datatable-*` blocks |
-| **Delete** | Layout-only rules replaceable by `o-flex` / `o-layout` |
-| **Delete entire files** | Both drawer settings + components SCSS if nothing remains |
-| **Keep** | Marker color modifiers only if still needed after PrimeNG defaults |
+| Action                  | Target                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------ |
+| **Delete**              | `.p-drawer`, `--p-button-*`, `--p-timeline-*`, `--p-tag-*`, `--p-datatable-*` blocks |
+| **Delete**              | Layout-only rules replaceable by `o-flex` / `o-layout`                               |
+| **Delete entire files** | Both drawer settings + components SCSS if nothing remains                            |
+| **Keep**                | Marker color modifiers only if still needed after PrimeNG defaults                   |
 
 ### Tests
 
@@ -145,13 +145,13 @@ Same treatment as Phase 1 on [\_components.affiliate-detail-drawer.scss](libs/st
 
 Audit all overlay usage in apps + `libs/ui`:
 
-| Check | Pass criteria |
-|-------|---------------|
-| `p-drawer` | No feature `styleClass`; no feature SCSS on `.p-drawer` |
-| `p-dialog` / dynamic dialog | Default chrome; no custom mask/panel SCSS |
-| `p-popover` | Removed from list (now `p-menu`); any remaining popovers default only |
-| `p-menu [popup]` | `appendTo="body"` only; no `.p-menu-overlay` custom SCSS |
-| Mask | Theme `--p-mask-background` only (Plectrum) — no per-feature mask styles |
+| Check                       | Pass criteria                                                            |
+| --------------------------- | ------------------------------------------------------------------------ |
+| `p-drawer`                  | No feature `styleClass`; no feature SCSS on `.p-drawer`                  |
+| `p-dialog` / dynamic dialog | Default chrome; no custom mask/panel SCSS                                |
+| `p-popover`                 | Removed from list (now `p-menu`); any remaining popovers default only    |
+| `p-menu [popup]`            | `appendTo="body"` only; no `.p-menu-overlay` custom SCSS                 |
+| Mask                        | Theme `--p-mask-background` only (Plectrum) — no per-feature mask styles |
 
 Known SCSS to remove: drawer files in Phase 1–2. No other overlay SCSS in `libs/styles` today — enforce in convention doc for new work.
 
@@ -224,13 +224,13 @@ Do not remove card surface `--p-card-*` tokens.
 
 Repo-wide cleanup after feature phases:
 
-| Anti-pattern | Replacement |
-|--------------|---------------|
-| `.c-block.c-block .p-*` doubled classes | ITCSS order or `@layer components` |
-| Deep chains `.c-a .c-b .c-c .p-*` | Flat block + `:where()` / `:is()` on PrimeNG child |
-| Layout in `__element` SCSS | `o-flex` / `o-layout` in template |
-| Feature SCSS file per drawer/page | Delete when utilities + default PrimeNG suffice |
-| Figma-driven `--p-*` one-offs | Remove; Plectrum theme is SSOT |
+| Anti-pattern                            | Replacement                                        |
+| --------------------------------------- | -------------------------------------------------- |
+| `.c-block.c-block .p-*` doubled classes | ITCSS order or `@layer components`                 |
+| Deep chains `.c-a .c-b .c-c .p-*`       | Flat block + `:where()` / `:is()` on PrimeNG child |
+| Layout in `__element` SCSS              | `o-flex` / `o-layout` in template                  |
+| Feature SCSS file per drawer/page       | Delete when utilities + default PrimeNG suffice    |
+| Figma-driven `--p-*` one-offs           | Remove; Plectrum theme is SSOT                     |
 
 Examples to fix:
 

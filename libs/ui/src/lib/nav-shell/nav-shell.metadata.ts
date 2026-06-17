@@ -66,7 +66,7 @@ export const NavShellMetadata: ComponentMetadata = {
   tokens: {
     consumed: [
       '--sds-color-nav-shell-bg',
-      '--sds-color-nav-shell-border',
+      '--sds-color-content-border',
       '--sds-color-nav-shell-text',
       '--sds-color-nav-shell-label',
       '--sds-color-nav-shell-item-hover',

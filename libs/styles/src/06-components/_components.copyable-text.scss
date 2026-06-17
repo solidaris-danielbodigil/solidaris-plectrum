@@ -1,4 +1,5 @@
 @use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
 
 // =============================================================================
 // 06-components/_components.copyable-text.scss
@@ -6,15 +7,9 @@
 // =============================================================================
 
 .c-copyable-text {
-  font-family: var(--text-label-sm-family);
-  font-weight: var(--text-label-sm-weight);
-
-  &:hover {
-    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-hover);
-  }
+  @include text-label-sm;
 
   &:active {
-    --p-button-text-secondary-color: var(--#{$sds-prefix}-color-primary-interactive-active);
     background-color: var(--#{$sds-prefix}-color-primary-100);
     transition: none;
   }

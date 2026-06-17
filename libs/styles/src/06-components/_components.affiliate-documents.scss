@@ -46,15 +46,13 @@
 }
 
 // Row wrapper — full-width horizontal flex row for the five filter groups.
-.c-affiliate-documents-toolbar__row {
-  min-width: 0;
-  width: 100%;
-}
 
 // Fixed-width field shell (search, autocomplete) — mirrors c-iconography-toolbar__search sizing.
 .c-affiliate-documents-toolbar__field,
 .c-affiliate-documents-toolbar__field--auto {
   min-width: 0;
+  flex: 0 0 var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
+  width: var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
 
   // Label-xs above control — Figma: 12px semibold, 7px label-to-control gap via --gap-xs modifier.
   &.c-form-field--vertical,
@@ -68,11 +66,12 @@
   }
 
   // Uniform control row — labels align at row top; inputs and switches share one baseline height.
+  // Do not set line-height: 0 here — PrimeNG keeps the autocomplete overlay in-component
+  // and option text inherits line-height from ancestors.
   .c-form-field__control {
     display: flex;
     align-items: center;
     min-height: var(--#{$sds-prefix}-size-affiliate-documents-filter-control);
-    line-height: 0;
   }
 
   p-iconfield,
@@ -94,17 +93,8 @@
   }
 }
 
-.c-affiliate-documents-toolbar__field {
-  flex: 0 0 var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
-  width: var(--#{$sds-prefix}-size-affiliate-documents-filter-field);
-}
-
 // Toggle fields — auto width; layout via o-flex in template.
 .c-affiliate-documents-toolbar__field--auto {
   flex: 0 1 auto;
   width: auto;
-}
-
-.c-affiliate-documents-toolbar__field-input {
-  width: 100%;
 }

@@ -32,11 +32,6 @@
   }
 }
 
-// Inner row — structural constraints only; layout via o-flex + o-layout BEM mixes
-.c-toolbar__inner {
-  // No gap/padding here — owned by o-layout--gap-* and o-layout--padding-* in template
-}
-
 // Start slot — structural constraint: grows to fill available row space
 .c-toolbar__start {
   // flex: 1 1 0 has no o-flex equivalent — structural constraint, required

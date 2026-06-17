@@ -16,28 +16,13 @@
 // Modifiers are applied via p-card styleClass so rules match the rendered .p-card root.
 .c-affiliate-overview-card {
   box-shadow: none;
-  border-bottom: 1px solid var(--#{$sds-prefix}-color-affiliate-overview-card-border);
 }
-
-// ── Variant modifiers ───────────────────────────────────────────────────────
-
-.c-affiliate-overview-card--default {
-  // Standard card — PrimeNG card bridge tokens only.
-}
-
-// Variant backgrounds owned by --p-card-background in 01-settings (88deg subtle gradients).
 
 // ── Header row ──────────────────────────────────────────────────────────────
-
-.c-affiliate-overview-card__header-main {
-  // Growing left group (title + status + tags) — layout via o-flex__item--grow-1 in template.
-  min-width: 0;
-}
 
 .c-affiliate-overview-card__title {
   @include text-heading-lg;
   color: var(--#{$sds-prefix}-color-text);
-  margin: 0;
 }
 
 // Display-only chips (no filterKey) render as a non-interactive pButton.

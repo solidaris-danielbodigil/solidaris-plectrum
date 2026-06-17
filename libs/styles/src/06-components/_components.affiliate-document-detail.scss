@@ -10,38 +10,19 @@
 // Design ref:   Figma node 324:5860 / 544:6474 (card header + stepper + nested accordion)
 //               https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474
 // Token source: libs/styles/src/01-settings/_settings.affiliate-document-detail.scss
-//               libs/styles/src/01-settings/_settings.stepper.scss
-//               libs/styles/src/01-settings/_settings.audit-accordion.scss
+//               libs/styles/src/01-settings/_settings.accordion.scss
 // Reference:    _components.affiliate-overview-card.scss, _components.sub-nav-shell.scss
 // =============================================================================
-
-.c-affiliate-document-detail {
-  // Panel surface owned by parent p-card.c-affiliate-details__detail (see _components.affiliate-details.scss).
-  min-width: 0;
-}
 
 // ── Header (rendered in parent p-card header slot via c-affiliate-details__card-header) ─
 
 .c-affiliate-document-detail__title {
   @include text-heading-md;
   color: var(--#{$sds-prefix}-color-affiliate-document-detail-title-text);
-  margin: 0;
 }
 
-.c-affiliate-document-detail__nav {
-  min-width: 0;
-}
-
-// ── Body & stepper ───────────────────────────────────────────────────────────
-
-.c-affiliate-document-detail__body {
-  min-width: 0;
-}
-
-// Stepper token bridge in 01-settings — structural panel reset only
+// Stepper — default PrimeNG; hide step numbers when unnumbered variant is active
 .c-affiliate-document-detail__stepper {
-  min-width: 0;
-
   &--unnumbered {
     .p-step-number {
       display: none;
@@ -51,44 +32,20 @@
 
 // ── Certificate accordion content ────────────────────────────────────────────
 
-.c-affiliate-document-detail__divider {
-  padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-divider-padding-block);
-}
-
-// ── Certificate header row ───────────────────────────────────────────────────
-
-.c-affiliate-document-detail__cert-header {
-  min-width: 0;
-}
-
 .c-affiliate-document-detail__cert-title,
 .c-affiliate-document-detail__cert-header > span:first-child {
   @include text-label-sm;
-  line-height: var(--#{$sds-prefix}-text-affiliate-document-detail-cert-title-line-height);
-  color: var(--#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text);
-  margin: 0;
-}
-
-.c-affiliate-document-detail__actions {
-  min-width: 0;
+  line-height: 1;
+  color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
 }
 
 // ── Detail metadata rows ─────────────────────────────────────────────────────
 
-.c-affiliate-document-detail__details {
-  min-width: 0;
-}
-
 .c-affiliate-document-detail__details-title,
 .c-affiliate-document-detail__details-heading {
   @include text-label-sm;
-  line-height: var(--#{$sds-prefix}-text-affiliate-document-detail-details-title-line-height);
+  line-height: 1;
   color: var(--#{$sds-prefix}-color-text);
-  margin: 0 0 var(--#{$sds-prefix}-space-affiliate-document-detail-details-gap);
-}
-
-.c-affiliate-document-detail__detail-row {
-  min-width: 0;
 }
 
 .c-affiliate-document-detail__detail-label {
@@ -111,24 +68,12 @@
   background: var(--#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg);
   color: var(--#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-text);
   border-radius: var(--#{$sds-prefix}-radius-pill);
-  padding-block: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-block);
-  padding-inline: var(--#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-inline);
-  min-width: 0;
   word-break: break-word;
-}
-
-.c-affiliate-document-detail__detail-value--chip {
-  // Modifier retained for period-field markup; base value styles already apply chip chrome.
-}
-
-.c-affiliate-document-detail__cert-header-meta {
-  min-width: 0;
 }
 
 .c-affiliate-document-detail__disabled-hint {
   @include text-body-sm;
   color: var(--#{$sds-prefix}-color-affiliate-document-detail-detail-label-text);
-  min-width: 0;
 }
 
 // ── Deep-link message pulse (transient) ──────────────────────────────────────
@@ -198,6 +143,3 @@
 .c-affiliate-document-detail__message--highlighted :where(.p-message-error) {
   --_pulse: var(--#{$sds-prefix}-color-danger);
 }
-
-// ── Step footer ──────────────────────────────────────────────────────────────
-

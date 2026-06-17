@@ -13,12 +13,11 @@
 :root {
   // ── Colours ─────────────────────────────────────────────────────────────────
   --#{$sds-prefix}-color-list-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-border: var(--#{$sds-prefix}-color-drawer-border);
   --#{$sds-prefix}-color-list-section-title: var(--#{$sds-prefix}-color-surface-600);
   --#{$sds-prefix}-color-list-count-badge-bg: var(--#{$sds-prefix}-color-primary-75);
   --#{$sds-prefix}-color-list-count-badge-text: var(--#{$sds-prefix}-color-neutral-800);
   --#{$sds-prefix}-color-list-row-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-list-row-border: var(--#{$sds-prefix}-color-surface-200); // Figma 2:125 #d1d1d1
+  --#{$sds-prefix}-color-list-row-border: var(--#{$sds-prefix}-color-card-border);
   --#{$sds-prefix}-color-list-row-hover-border: var(--#{$sds-prefix}-color-primary-interactive);
   --#{$sds-prefix}-color-list-row-selected-border: var(--#{$sds-prefix}-color-primary-interactive);
   --#{$sds-prefix}-color-list-title-text: var(--#{$sds-prefix}-color-surface-700);
@@ -30,14 +29,6 @@
   --#{$sds-prefix}-color-list-timeline-marker: var(--#{$sds-prefix}-color-content-bg);
   --#{$sds-prefix}-color-list-timeline-marker-border: var(--#{$sds-prefix}-color-primary-interactive);
   --#{$sds-prefix}-color-list-skeleton-bg: var(--#{$sds-prefix}-color-surface-muted);
-
-  // ── Spacing ─────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-space-list-section-header-padding: calc(20 / 14 * var(--base-unit));
-  --#{$sds-prefix}-space-list-body-padding-inline: var(--spacing-1-5);
-  --#{$sds-prefix}-space-list-row-gap: var(--spacing-1-5);
-  --#{$sds-prefix}-space-list-row-padding-block: var(--spacing-1-5);
-  --#{$sds-prefix}-space-list-row-padding-inline: calc(20 / 14 * var(--base-unit));
-  --#{$sds-prefix}-space-list-timeline-marker-offset: var(--spacing-2);
 
   // ── Sizes ───────────────────────────────────────────────────────────────────
   --#{$sds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));

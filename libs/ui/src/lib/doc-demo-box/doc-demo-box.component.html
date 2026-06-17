@@ -1,7 +1,7 @@
-<div class="c-doc-demo-box">
+<div class="c-doc-demo-box o-layout--margin-block-2">
   <!-- Live preview area -->
   <div
-    class="c-doc-demo-box__preview"
+    class="c-doc-demo-box__preview o-layout--padding-2"
     [style.min-height.px]="minHeight() || null"
   >
     <ng-content />
@@ -9,7 +9,7 @@
 
   <!-- Show / Hide code toggle -->
   @if (code()) {
-    <div class="c-doc-demo-box__footer o-flex o-flex--justify-content-flex-end">
+    <div class="c-doc-demo-box__footer o-flex o-flex--justify-content-flex-end o-layout--padding-block-0-5 o-layout--padding-inline-1">
       <button
         class="c-doc-demo-box__toggle"
         type="button"
@@ -21,7 +21,7 @@
     </div>
 
     @if (codeVisible()) {
-      <pre class="c-doc-demo-box__code"><code>{{ code() }}</code></pre>
+      <pre class="c-doc-demo-box__code o-layout--padding-2 o-layout--overflow-x-auto o-layout--margin-0"><code>{{ code() }}</code></pre>
     }
   }
 </div>

@@ -4,80 +4,22 @@
 // 01-settings/_settings.affiliate-document-detail.scss
 // Affiliate document detail viewer tokens (second column).
 //
-// Design ref: Figma node 324:5860 (Dossier Affilié — second column: accordion + stepper + nested accordion)
-// https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5860&t=qaTBkNgcIoCG2CBx-1
+// Layout spacing uses o-layout in templates — only non-scale semantic tokens here.
+// Design ref: Figma node 324:5860 / 530:6471
 // =============================================================================
 
 :root {
-  // ── Header chrome ───────────────────────────────────────────────────────────
-  // Figma: #f5f7fa → primary/50 (#f6f8fa)
+  // ── Header chrome (consumed by affiliate-details card header bridge) ────────
   --#{$sds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$sds-prefix}-color-primary-50);
-  // Header padding owned by parent p-card — see --sds-space-affiliate-details-card-header-padding
-  // Figma: heading-md #666 → surface/600 (#717171)
   --#{$sds-prefix}-color-affiliate-document-detail-title-text: var(--#{$sds-prefix}-color-surface-600);
 
-  // ── Section card shell ──────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-affiliate-document-detail-section-bg: var(--#{$sds-prefix}-color-content-bg);
-  --#{$sds-prefix}-color-affiliate-document-detail-section-border: var(--#{$sds-prefix}-color-drawer-border);
-  --#{$sds-prefix}-radius-affiliate-document-detail-section: var(--#{$sds-prefix}-radius-xl);
-
-  // ── Nested accordion panels (aliases — canonical tokens in settings.audit-accordion) ─
-  --#{$sds-prefix}-space-affiliate-document-detail-accordion-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-header: var(--#{$sds-prefix}-radius-audit-accordion-header);
-  --#{$sds-prefix}-radius-affiliate-document-detail-accordion-content: var(--#{$sds-prefix}-radius-audit-accordion-content);
-  --#{$sds-prefix}-color-affiliate-document-detail-accordion-header-text: var(--#{$sds-prefix}-color-audit-accordion-header-text);
-  --#{$sds-prefix}-color-affiliate-document-detail-accordion-border: var(--#{$sds-prefix}-color-audit-accordion-border);
-
-  // ── Certificate accordion header row ────────────────────────────────────────
-  // Figma 530:6471 — title 14px semibold leading-none
-  --#{$sds-prefix}-space-affiliate-document-detail-cert-header-gap: var(--#{$sds-prefix}-space-audit-accordion-header-gap);
-  --#{$sds-prefix}-text-affiliate-document-detail-cert-title-line-height: 1;
-  --#{$sds-prefix}-space-affiliate-document-detail-cert-header-actions-gap: var(--spacing-1);
-
-  // ── Detail metadata rows ────────────────────────────────────────────────────
-  // Figma 530:6471 — Détails title 14px semibold; 16px to fields; rows 8px; label-value 12px
+  // ── Certificate / detail metadata ───────────────────────────────────────────
   --#{$sds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
   --#{$sds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$sds-prefix}-color-text-muted);
-  --#{$sds-prefix}-color-affiliate-document-detail-detail-value-text: var(--#{$sds-prefix}-color-metadata-chip-text);
-  --#{$sds-prefix}-text-affiliate-document-detail-details-title-line-height: 1;
-  --#{$sds-prefix}-space-affiliate-document-detail-details-gap: var(--spacing-2);
-  --#{$sds-prefix}-space-affiliate-document-detail-detail-rows-gap: var(--spacing-1);
-  --#{$sds-prefix}-space-affiliate-document-detail-detail-label-value-gap: var(--spacing-1-5);
-
-  // ── Metadata chips ──────────────────────────────────────────────────────────
-  // Figma 530:6471 — all metadata values as primary-75 chips
   --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-bg: var(--#{$sds-prefix}-color-primary-75);
   --#{$sds-prefix}-color-affiliate-document-detail-metadata-chip-text: var(--#{$sds-prefix}-color-metadata-chip-text);
-  --#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-inline: var(--spacing-1);
-  --#{$sds-prefix}-space-affiliate-document-detail-metadata-chip-padding-block: var(--spacing-0-25);
-
-  // ── Accordion content chrome ────────────────────────────────────────────────
-  --#{$sds-prefix}-space-affiliate-document-detail-divider-padding-block: var(--spacing-1);
-
-  // ── Step footer ─────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-affiliate-document-detail-step-footer-border: var(--#{$sds-prefix}-color-drawer-border);
-  --#{$sds-prefix}-space-affiliate-document-detail-step-footer-padding-block-start: var(--spacing-2);
 
   // ── Deep-link message pulse (transient) ─────────────────────────────────────
-  // Bespoke wave on worker-comment p-message when a list count tag deep-links.
-  // Severity color is set per .p-message-{severity} in the component layer.
   --#{$sds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
   --#{$sds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
-
-  // ── Stepper spacing (bridge in _settings.stepper.scss) ─────────────────────
-  // Figma: 16px step gap (step ↔ separator), 8px header gap (number ↔ title)
-  // 14px steppanels block-start padding, 8px steppanels inline padding
-  --#{$sds-prefix}-space-affiliate-document-detail-step-gap: var(--spacing-2);
-  --#{$sds-prefix}-space-affiliate-document-detail-step-header-gap: var(--spacing-1);
-  --#{$sds-prefix}-space-affiliate-document-detail-step-panels-padding-block-start: calc(14 / 14 * var(--base-unit));
-  --#{$sds-prefix}-space-affiliate-document-detail-step-panels-padding-inline: var(--spacing-1);
-
-  // ── Stepper (structural — bridge in _settings.stepper.scss) ─────────────────
-  // Figma: 32px step numbers, active #487395 → primary/500 (#527191)
-  --#{$sds-prefix}-size-affiliate-document-detail-step-number: calc(32 / 14 * var(--base-unit));
-  --#{$sds-prefix}-text-affiliate-document-detail-step-number-size: var(--font-size-md);
-  --#{$sds-prefix}-color-affiliate-document-detail-step-active: var(--#{$sds-prefix}-color-primary-500);
-  --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-text: var(--#{$sds-prefix}-color-text-muted);
-  --#{$sds-prefix}-color-affiliate-document-detail-step-inactive-border: var(--#{$sds-prefix}-color-drawer-border);
-  --#{$sds-prefix}-size-affiliate-document-detail-step-separator: var(--spacing-0-25);
 }

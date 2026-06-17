@@ -44,12 +44,10 @@
   // Collapsed — match the reserved footprint; grows to content on hover/focus.
   width: var(--#{$sds-prefix}-size-nav-shell-footprint);
   height: 100%;
-  align-items: flex-start;
   gap: var(--#{$sds-prefix}-space-nav-shell-section-gap);
   background-color: var(--#{$sds-prefix}-color-nav-shell-bg);
-  border-right: 1px solid var(--#{$sds-prefix}-color-nav-shell-border);
+  border-right: 1px solid var(--#{$sds-prefix}-color-content-border);
   overflow-x: clip;
-  overflow-y: auto;
   transition: var(--#{$sds-prefix}-transition-nav-shell);
 
   // Expanded — grow to the widest item and float above adjacent layout without reflow.
@@ -99,24 +97,13 @@
   }
 }
 
-// List — layout via o-flex o-flex--col in template
+// List — layout via o-flex / o-layout in template
 .c-nav-shell__list {
-  flex: 1 0 0;
-  align-self: stretch;
-  align-items: flex-start;
-  gap: var(--#{$sds-prefix}-space-nav-shell-list-gap);
-  margin: 0;
   padding: 0 var(--#{$sds-prefix}-space-nav-shell-list-px);
   list-style: none;
-  min-height: 0;
 }
 
-// Item — layout via o-flex in template
-.c-nav-shell__item {
-  align-self: stretch;
-}
-
-// Link — layout via o-flex o-flex--align-items-center in template
+// Link — non-scale item padding/gap (9px / 10px) stay token-backed
 .c-nav-shell__link {
   text-decoration: none;
   cursor: pointer;

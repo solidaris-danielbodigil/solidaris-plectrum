@@ -36,7 +36,6 @@
 
   // --- Colours (map to existing semantic/primitive tokens) -----------------
   --#{$sds-prefix}-color-nav-shell-bg:          var(--#{$sds-prefix}-color-surface-50);          // Figma: surface/50
-  --#{$sds-prefix}-color-nav-shell-border:      var(--#{$sds-prefix}-color-black-alpha-100);     // Figma: transparent/black/100
   --#{$sds-prefix}-color-nav-shell-text:        currentcolor;
   --#{$sds-prefix}-color-nav-shell-label:       var(--#{$sds-prefix}-color-black-alpha-800);     // Figma: transparent/black/800
   --#{$sds-prefix}-color-nav-shell-item-hover:  var(--#{$sds-prefix}-color-black-alpha-50);      // Figma: transparent/black/50

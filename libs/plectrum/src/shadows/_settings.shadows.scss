@@ -1,0 +1,465 @@
+/* --------------------------------
+Shadows
+-------------------------------- */
+
+:root {
+  --shadow-none: 0;
+  --shadow-0-5: var(--spacing-0-5); // 0.25rem / 4px
+  --shadow-1: var(--spacing-1); // 0.5rem / 8px
+  --shadow-1-5: calc(var(--spacing-1) + 0.15rem);
+  --shadow-2: var(--spacing-2); // 1 rem / 16px
+  --shadow-3: var(--spacing-3); // 1.5 rem / 24px
+  --shadow-4: var(--spacing-4); // 2 rem / 32px
+  --shadow-5: var(--spacing-5); // 2.5 rem / 40px
+  --shadow-6: var(--spacing-6); // 3 rem / 48px
+  --shadow-7: var(--spacing-7); // 3.5 rem / 54px
+
+
+     /** SHADOW **/
+     // @TODO check why --color--generic--shadow__default won't update on dark mode inside --fb-box-shadow
+     --fb-box-shadow: 0 10px 17px 0 var(--color--generic--shadow__default);
+     --fb-box-shadow-small: 0 3px 8px 0 rgba(0, 0, 0, 0.15);
+     --fb-box-shadow-top: 0 -6px 29px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+
+
+// is-box-shadow set shadow mode to box-shadow or filter
+// filter is more performant but can interfere with z-index --> in case of z-index issue: set is-box-shadow on true
+
+
+$_shadow-props: (
+  component-shadow: (
+    card: (
+      type: raised,
+      level: 1,
+      direction: bottom,
+    ),
+    card-clickable: (
+      type: raised,
+      level: 2,
+      direction: bottom,
+    ),
+    header-elevated: (
+      type: raised,
+      level: 1,
+      direction: bottom,
+    ),
+    overlay: (
+      type: overlays,
+      level: 2,
+      direction: bottom,
+    ),
+    comment: (
+      type: raised,
+      level: 1,
+      direction: bottom,
+    ),
+    panel-right: (
+      type: raised,
+      level: 2,
+      direction: left,
+    ),
+    router-tab: (
+      type: raised,
+      level: 1,
+      direction: bottom,
+    ),
+    scroll: (
+      type: raised,
+      level: 1,
+      direction: bottom,
+    ),
+    sidenav: (
+      type: high-raised,
+      level: 3,
+      direction: right,
+    ),
+  ),
+  custom-shadow: (
+    // Custom shadows
+    input-focus: (
+      offset: 2,
+      direction: all,
+      blur: 2,
+      spread: none,
+      color: focus,
+      secondary-color: default,
+      is-box-shadow: false,
+    ),
+    input-error-focus: (
+      offset: 2,
+      direction: all,
+      blur: 2,
+      spread: none,
+      color: error,
+      secondary-color: default,
+      is-box-shadow: false,
+    ),
+    input-success-focus: (
+      offset: 2,
+      direction: all,
+      blur: 2,
+      spread: none,
+      color: success,
+      secondary-color: default,
+      is-box-shadow: false,
+    ),
+    input-warning-focus: (
+      offset: 2,
+      direction: all,
+      blur: 2,
+      spread: none,
+      color: warning,
+      secondary-color: default,
+      is-box-shadow: false,
+    ),
+    tag-sticker: (
+      offset: 2,
+      direction: all,
+      blur: 2,
+      spread: none,
+      color: default,
+      secondary-color: default,
+      is-box-shadow: false,
+    ),
+    // Thin shadow acting as a second border
+    card-elevated: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    card-both: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    accordion-header: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    card-clickable: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    divider-top: (
+      offset: 'border',
+      direction: 'top',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: none,
+      is-box-shadow: true,
+    ),
+    divider-bottom: (
+      offset: 'border',
+      direction: 'bottom',
+      blur: 'none',
+      spread: none,
+      color: 'border-bottom',
+      secondary-color: none,
+      is-box-shadow: false,
+    ),
+    divider-left: (
+      offset: 'border',
+      direction: 'left',
+      blur: 'none',
+      spread: none,
+      color: 'border-bottom',
+      secondary-color: none,
+      is-box-shadow: false,
+    ),
+    divider-right: (
+      offset: 'border',
+      direction: 'right',
+      blur: 'none',
+      spread: none,
+      color: 'border-bottom',
+      secondary-color: none,
+      is-box-shadow: false,
+    ),
+    divider-vertical: (
+      offset: 'border',
+      direction: 'vertical',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: false,
+    ),
+    divider-horizontal: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: false,
+    ),
+    default: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    button-primary: (
+      offset: 'border',
+      direction: 'top',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'none',
+      is-box-shadow: true,
+    ),
+    default-top: (
+      offset: 'border',
+      direction: 'top',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: none,
+      is-box-shadow: true,
+    ),
+    default-bottom: (
+      offset: 'border',
+      direction: 'bottom',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: none,
+      is-box-shadow: true,
+    ),
+    default-left: (
+      offset: 'border',
+      direction: 'left',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: none,
+      is-box-shadow: true,
+    ),
+    default-right: (
+      offset: 'border',
+      direction: 'right',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: none,
+      is-box-shadow: true,
+    ),
+    default-vertical: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    default-horizontal: (
+      offset: 'border',
+      direction: 'horizontal',
+      blur: 'none',
+      spread: none,
+      color: 'border-top',
+      secondary-color: 'border-bottom',
+      is-box-shadow: true,
+    ),
+    none: (
+      offset: none,
+      direction: all,
+      blur: 'none',
+      spread: none,
+      color: none,
+      secondary-color: none,
+      is-box-shadow: false,
+    ),
+  ),
+  shadow-inset: (
+    true: inset,
+  ),
+  shadow-offset: (
+    'none': var(--shadow-none),
+    border: '1px',
+    '0-5': var(--shadow-0-5),
+    1: var(--shadow-1),
+    2: var(--shadow-2),
+    3: var(--shadow-3),
+    4: var(--shadow-4),
+    5: var(--shadow-5),
+    6: var(--shadow-6),
+    7: var(--shadow-7),
+  ),
+  shadow-directions: (
+    left: (
+      x: -1,
+      y: 0
+    ),
+    top: (
+      x: 0,
+      y: -1
+    ),
+    right: (
+      x: 1,
+      y: 0
+    ),
+    bottom: (
+      x: 0,
+      y: 1
+    ),
+    all: (
+      x: 0,
+      y: 0
+    ),
+    corner-1: (
+      x: -1,
+      y: -1
+    ),
+    corner-2: (
+      x: 1,
+      y: -1
+    ),
+    corner-3: (
+      x: 1,
+      y: 1
+    ),
+    corner-4: (
+      x: -1,
+      y: 1
+    ),
+    horizontal: (
+      x: 0,
+      y: -1,
+      xx: 0,
+      yy: 1,
+    ),
+    vertical: (
+      x: -1,
+      y: 0,
+      xx: 1,
+      yy: 0,
+    )
+  ),
+  shadow-blur: (
+    'none': var(--shadow-none),
+    '0-5': var(--shadow-0-5),
+    1: var(--shadow-1),
+    '1-5': var(--shadow-1-5),
+    2: var(--shadow-2),
+    3: var(--shadow-3),
+    4: var(--shadow-4),
+    5: var(--shadow-5),
+    6: var(--shadow-6),
+    7: var(--shadow-7),
+  ),
+  shadow-spread: (
+    minus-3: calc(-1 * var(--shadow-3)),
+    minus-2: calc(-1 * var(--shadow-2)),
+    minus-1: calc(-1 * var(--shadow-1)),
+    'none': var(--shadow-none),
+    '0-5': var(--shadow-0-5),
+    1: var(--shadow-1),
+    2: var(--shadow-2),
+    3: var(--shadow-3),
+    4: var(--shadow-4),
+    5: var(--shadow-5),
+    6: var(--shadow-6),
+    7: var(--shadow-7),
+  ),
+  shadow-color: (
+    low-contrast: var(--color--palette--shadow__shade-6),
+    light: var(--color--palette--shadow__shade-0),
+    default: var(--color--generic--shadow__default),
+    border-top: var(--color--palette--shadow__border-top),
+    border-bottom: var(--color--palette--shadow__border-bottom),
+    1: var(--color--palette--shadow__shade-1),
+    2: var(--color--palette--shadow__shade-2),
+    3: var(--color--palette--shadow__shade-3),
+    4: var(--color--palette--shadow__shade-4),
+    5: var(--color--palette--shadow__shade-5),
+    high-contrast: var(--color--palette--shadow__shade-0-1),
+    focus: var(--color--generic--shadow__focus),
+    warning: var(--color--status--warning__border),
+    error: var(--color--status--error__border),
+    none: none,
+  ),
+);
+
+// list of arguments accepted for shadows
+$_shadow-inset: (true, false);
+$_shadow-offset: (none, 'border', '0-5', 1, 2, 3, 4, 5, 6 ,7);
+$_shadow-blur: (none, '0-5', 1, '1-5', 2, 3, 4, 5, 6 ,7);
+$_shadow-spread: (minus-one, none, '0-5', 1, 2, 3, 4, 5, 6 ,7);
+$_shadow-color: (none, default,'low-contrast', light, 'border', 'border-top',  1 ,2 ,3 ,4 ,5 , 'high-contrast', focus, warning, error);
+$_shadow-directions: (left, top, right, bottom, all, 'corner-1', 'corner-2', 'corner-3', 'corner-4', horizontal, vertical);
+
+$_custom-shadow: (
+  input-focus,
+  input-error-focus,
+  input-success-focus,
+  input-warning-focus,
+  tag-sticker,
+  card-elevated,
+  card-both,
+  accordion-header,
+  card-clickable,
+  divider-top,
+  divider-bottom,
+  divider-left,
+  divider-right,
+  divider-vertical,
+  divider-horizontal,
+  default,
+  button-primary,
+  default-top,
+  default-bottom,
+  default-left,
+  default-right,
+  default-vertical,
+  default-horizontal,
+  none,
+);
+
+$_shadow-values: (
+  offset,
+  direction,
+  blur,
+  spread,
+  color,
+  secondary-color,
+  is-box-shadow,
+);
+
+$_component-shadow: (
+  card,
+  card-clickable,
+  header-elevated,
+  overlay,
+  comment,
+  panel-right,
+  router-tab,
+  scroll,
+  sidenav,
+);

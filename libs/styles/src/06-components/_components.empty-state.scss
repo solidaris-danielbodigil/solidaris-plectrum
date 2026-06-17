@@ -34,11 +34,9 @@
 .c-empty-state__title {
   @include text-heading-md;
   color: var(--#{$sds-prefix}-color-text);
-  margin: 0;
 }
 
 .c-empty-state__description {
   @include text-body-md;
   color: var(--#{$sds-prefix}-color-text-muted);
-  margin: 0;
 }

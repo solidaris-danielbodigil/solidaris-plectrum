@@ -146,7 +146,7 @@
 
   <p-accordion
 
-    class="c-audit-accordion o-layout--full-width o-layout--min-w-0"
+    class="c-accordion--bordered o-layout--full-width o-layout--min-w-0"
 
     [value]="certPanelValue()"
 
@@ -180,7 +180,7 @@
 
           >
 
-            <span class="c-affiliate-document-detail__cert-title">{{
+            <span class="c-affiliate-document-detail__cert-title o-layout--margin-0">{{
 
               panel.title
 
@@ -310,7 +310,9 @@
             ></button>
           }
 
-          <h3 class="c-affiliate-document-detail__details-heading">
+          <h3
+            class="c-affiliate-document-detail__details-heading o-layout--margin-0 o-layout--margin-block-end-2"
+          >
 
             Détails
 
@@ -354,7 +356,7 @@
 
                     <span
 
-                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
 
                       >{{ field.value.from }}</span
 
@@ -370,7 +372,7 @@
 
                     <span
 
-                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
 
                       >{{ field.value.to }}</span
 
@@ -382,7 +384,7 @@
 
                   <span
 
-                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip"
+                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
 
                     >{{ field.value }}</span
 
@@ -398,7 +400,7 @@
 
 
 
-          <div class="c-affiliate-document-detail__divider">
+          <div class="c-affiliate-document-detail__divider o-layout--padding-block-1">
 
             <p-divider layout="horizontal" />
 

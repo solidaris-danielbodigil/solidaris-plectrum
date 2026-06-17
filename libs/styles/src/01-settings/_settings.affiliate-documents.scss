@@ -24,7 +24,7 @@
 
   // Card chrome — 1px ring (Figma #d1d1d1 → surface-200) + sm elevation (node 324:5772)
   --#{$sds-prefix}-shadow-affiliate-documents-toolbar:
-    0 0 0 1px var(--#{$sds-prefix}-color-surface-200),
+    0 0 0 1px var(--#{$sds-prefix}-color-card-border),
     var(--#{$sds-prefix}-shadow-sm);
 }
 
@@ -32,7 +32,7 @@
 .c-affiliate-documents-toolbar {
   --p-card-body-padding: var(--#{$sds-prefix}-space-affiliate-documents-toolbar-padding);
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-documents-toolbar-bg);
-  --p-card-border-color: var(--#{$sds-prefix}-color-surface-200); // Figma: #d1d1d1 — closest semantic
+  --p-card-border-color: var(--#{$sds-prefix}-color-card-border);
   --p-card-border-radius: var(--#{$sds-prefix}-radius-xl);
   --p-card-shadow: var(--#{$sds-prefix}-shadow-affiliate-documents-toolbar);
 

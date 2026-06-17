@@ -1,0 +1,22 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.drawer.scss
+// c-drawer — shared headless p-drawer shell (header, toolbar, section titles).
+//
+// Layout via o-flex / o-layout in templates. Apply elements inside any drawer panel.
+// =============================================================================
+
+.c-drawer__header {
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
+}
+
+.c-drawer__toolbar {
+  border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
+}
+
+.c-drawer__section-title {
+  @include text-heading-sm;
+  color: var(--#{$sds-prefix}-color-text);
+}

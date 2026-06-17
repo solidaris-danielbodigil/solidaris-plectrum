@@ -1,0 +1,429 @@
+:root {
+
+  // Border Custom Properties
+  @each $_border-prop,
+  $_prop-value in $_border-props {
+    @if $_border-prop != 'custom-shadow' {
+      @each $_border,
+      $_value in $_prop-value {
+        --#{$_border-prop}--#{$_border}: #{$_value};
+      }
+    }
+  }
+
+  @each $_border-prop,
+  $_prop-value in $_border-types-props {
+
+    @each $_border,
+    $_value in $_prop-value {
+      --#{$_border-prop}--#{$_border}: #{$_value};
+    }
+  }
+}
+
+//------------- generating classes from @mixin border
+
+// @extend for general use of borders
+// example of use: @extend %u-border--input-focus;
+
+// specials
+
+#{$bs-utilities}border {
+  @include border();
+}
+
+#{$bs-utilities}border--rounded {
+  @include border($_radius: rounded);
+}
+
+#{$bs-utilities}border--circle {
+  @include border($_radius: circle);
+}
+
+/* class:
+          placeholder: %
+          +  utilities: u
+          +  dash
+          +  border
+          +  ? double dash
+          +  ? first modifier: ( border type + ? dash + type status )
+          +  ? dash
+          +  ? second modifier: ( direction || radius + dash + direction )
+
+          examples: @extend %u-border;
+                    @extend %u-border--input;
+                    @extend %u-border--input-hover;
+                    @extend %u-border--input-hover-top;
+                    ...
+*/
+
+// Card
+/* #{$bs-utilities}border--card {
+  @include border($_radius: regular, $_status: card);
+} */
+
+#{$bs-utilities}border--card-dashed {
+  @include border($_radius: regular, $_style: dashed, $_status: card);
+}
+
+
+// Direction
+
+@each $direction in $_direction {
+  #{$bs-utilities}border--#{$direction} {
+    @if $direction  ==right or $direction  ==left or $direction  ==bottom or $direction  ==top or $direction  ==vertical or $direction  ==horizontal {
+      @include border(
+        $_radius: none,
+        $_direction: $direction,
+        $_shadow: default-#{$direction},
+        $_width: default);
+    }
+
+    @else if $direction ==no-right {
+      @include border(
+        $_radius-direction: left,
+        $_direction: $direction,
+        $_width: default);
+    }
+
+    @else if $direction ==no-left {
+      @include border(
+        $_radius-direction: right,
+        $_direction: $direction,
+        $_width: default);
+    }
+  }
+}
+
+// Input, Button, Checkbox, Tag, Card
+
+@mixin generate-class-types($width, $type) {
+  @each $status in $type {
+
+    // Input shadow
+    @if $status == input-focus or $status == input-warning-focus or $status == input-error-focus or $status == input-success-focus and $width  !=tag and $width  !=badge and $width !=card and $width !=alert {
+      @each $shadow in $_custom-shadow {
+        @if $status == $shadow {
+          #{$bs-utilities}border--#{$status} {
+            @include border(
+              $_status: $status,
+              $_shadow: $shadow,
+              $_width: $width);
+          }
+
+          @each $radius-direction in $_radius-direction {
+            #{$bs-utilities}border--#{$status}-radius-#{$radius-direction} {
+              @include border(
+                $_status: $status,
+                $_radius-direction: $radius-direction,
+                $_shadow: $shadow,
+                $_width: $width);
+            }
+          }
+        }
+      }
+    }
+
+    // Input, Button, Checkbox, tag no shadow
+    @else if $status  !=input-focus and $status  !=input-warning-focus and $status !=input-success-focus and $status !=input-error-focus and $width  !=tag and $width  !=badge and $width !=card and $width !=alert {
+
+      // Status
+      #{$bs-utilities}border--#{$status} {
+        @include border($_status: $status, $_width: $width);
+      }
+
+      @if $status == input {
+        #{$bs-utilities}border--#{$status} {
+          @include border($_status: $status, $_width: $width, $_shadow: none);
+        }
+      }
+
+      @if $status == button-primary {
+        @each $shadow in $_shadow {
+          @if $status == $shadow {
+            #{$bs-utilities}border--#{$status} {
+              @include border($_status: $status, $_width: $width, $_shadow: button-primary);
+            }
+          }
+        }
+      }
+
+      @if $status == button-disabled {
+        #{$bs-utilities}border--#{$status} {
+          @include border($_status: $status, $_width: $width, $_shadow: none);
+        }
+      }
+
+
+      #{$bs-utilities}border--#{$status}-dashed {
+        @include border($_status: $status, $_style: dashed, $_width: $width);
+      }
+
+      #{$bs-utilities}border--#{$status}-no-radius {
+        @include border($_status: $status, $_radius: none, $_width: $width);
+      }
+
+      // Radius direction
+      @each $radius-direction in $_radius-direction {
+        #{$bs-utilities}border--#{$status}-radius-#{$radius-direction} {
+          @include border(
+            $_status: $status,
+            $_radius-direction: $radius-direction,
+            $_width: $width);
+        }
+      }
+
+      // Border direction
+      @each $direction in $_direction {
+
+        @if $status != divider and $status != dark {
+          #{$bs-utilities}border--#{$status}-#{$direction} {
+
+            @if $direction ==no-right {
+              @include border(
+                $_status: $status,
+                $_radius-direction: left,
+                $_direction: $direction,
+                $_width: $width);
+
+            } @else if $direction ==no-left {
+              @include border(
+                $_status: $status,
+                $_radius-direction: right,
+                $_direction: $direction,
+                $_width: $width);
+
+            } @else if $direction ==all {
+              @include border(
+                $_status: $status,
+                $_direction: $direction,
+                $_width: $width);
+
+            } @else if $direction  !=all and $direction  !=no-right and $direction  !=no-left {
+              @include border(
+                $_status: $status,
+                $_radius: none,
+                $_direction: $direction,
+                $_width: $width);
+            }
+          }
+        }
+
+        @else if $status == divider or $status == dark{
+          #{$bs-utilities}border--#{$status}-#{$direction} {
+            @if $direction  ==right or $direction  ==left or $direction  ==bottom or $direction  ==top or $direction  ==vertical or $direction  ==horizontal {
+              @include border(
+                $_status: $status,
+                $_radius: none,
+                $_direction: $direction,
+                $_shadow: divider-#{$direction},
+                $_width: $width);
+            }
+            @else {
+              @include border(
+                $_status: $status,
+                $_radius: none,
+                $_direction: $direction,
+                $_width: $width);
+            }
+          }
+        }
+      }
+    }
+
+    // Tag
+    @else if $width ==tag {
+      @if $status  !=tag-dashed {
+        #{$bs-utilities}border--#{$status} {
+          @include border(
+            $_status: $status,
+            $_radius: extra-big,
+            $_width: $width);
+        }
+      }
+
+      @if $status ==tag-dashed {
+        #{$bs-utilities}border--#{$status} {
+          @include border(
+            $_status: $status,
+            $_radius: extra-big,
+            $_style: dashed,
+            $_width: $width);
+        }
+      }
+
+      @if $status ==tag-sticker {
+        @each $shadow in $_shadow {
+          @if $status ==$shadow {
+            #{$bs-utilities}border--#{$status} {
+              @include border(
+                $_status: $status,
+                $_radius: extra-big,
+                $_width: $width,
+                $_shadow: $shadow);
+            }
+          }
+        }
+      }
+    }
+
+    @else if $width ==badge {
+      #{$bs-utilities}border--#{$status} {
+        @include border(
+          $_status: $status,
+          $_radius: rounded,
+          $_width: $width);
+      }
+    }
+
+    // Card
+    @else if $width ==card {
+      #{$bs-utilities}border--#{$status} {
+        @include border(
+          $_status: $status,
+          $_radius: regular,
+          $_width: $width);
+      }
+
+      @if $status ==card-outlined {
+        @each $radius-direction in $_radius-direction {
+          #{$bs-utilities}border--#{$status}-none-radius-#{$radius-direction} {
+            @include border($_style: none, $_shadow: none, $_width: $width, $_radius: regular, $_radius-direction: $radius-direction, $_status: $status);
+          }
+        }
+
+        // Card Radius
+        @each $radius-direction in $_radius-direction {
+          #{$bs-utilities}border--#{$status}-radius-#{$radius-direction} {
+            @include border($_radius: extra-big, $_radius-direction: $radius-direction, $_status: $status);
+          }
+        }
+
+        // Card Direction
+
+        @each $direction in $_direction {
+          #{$bs-utilities}border--#{$status}-#{$direction} {
+            @if $direction  !=no-right and $direction  !=no-left and $direction  !=no-top and $direction  !=no-bottom {
+              @include border(
+                $_radius: none,
+                $_direction: $direction,
+                $_width: $width,
+                $_status: $status,);
+            } @else if $direction ==no-right {
+              @include border(
+                $_radius: regular,
+                $_radius-direction: left,
+                $_direction: $direction,
+                $_width: $width,
+                $_status: $status,);
+            } @else if $direction ==no-left {
+              @include border(
+                $_radius: regular,
+                $_radius-direction: right,
+                $_direction: $direction,
+                $_width: $width,
+                $_status: $status,);
+            } @else if $direction ==no-top {
+              @include border(
+                $_radius: regular,
+                $_radius-direction: bottom,
+                $_direction: $direction,
+                $_width: $width,
+                $_status: $status,);
+            } @else if $direction ==no-bottom {
+              @include border(
+                $_radius: regular,
+                $_radius-direction: top,
+                $_direction: $direction,
+                $_width: default,
+                $_status: $status);
+            }
+          }
+        }
+        #{$bs-utilities}border--#{$status} {
+          @include border(
+            $_status: $status,
+            $_radius: extra-big,
+            $_style: $width,
+            $_width: $width);
+        }
+      }
+
+      @if $status ==card-elevated and $status ==card-clickable{
+        @each $shadow in $_shadow {
+          @if $status ==$shadow {
+            #{$bs-utilities}border--#{$status} {
+              @include border(
+                $_status: $status,
+                $_radius: extra-big,
+                $_width: $width,
+                $_shadow: $shadow);
+            }
+          }
+        }
+      }
+    }
+
+    // alert
+    @else if $width == alert {
+      #{$bs-utilities}border--#{$status} {
+        @include border(
+          $_status: $status,
+          $_radius: small,
+          $_width: $width);
+      }
+    }
+  }
+}
+
+// include mixin in each types of border
+
+@each $type in $_types {
+  @if $type ==input {
+    @include generate-class-types($type, $_input);
+  }
+
+  @else if $type ==button {
+    @include generate-class-types($type, $_button);
+  }
+
+  @else if $type ==checkbox {
+    @include generate-class-types($type, $_checkbox);
+  }
+
+  @else if $type ==tag {
+    @include generate-class-types($type, $_tag);
+  }
+
+  @else if $type ==badge {
+    @include generate-class-types($type, $_badge);
+  }
+
+  @else if $type ==default {
+    @include generate-class-types($type, $_default);
+  }
+
+  @else if $type ==card {
+    @include generate-class-types($type, $_card);
+  }
+
+  @else if $type ==alert {
+    @include generate-class-types($type, $_alert);
+  }
+}
+
+// border none + Radius
+@each $radius-direction in $_radius-direction {
+  #{$bs-utilities}border--none-radius-#{$radius-direction} {
+    @include border(
+      $_style: none,
+      $_radius: big,
+      $_radius-direction: $radius-direction,
+      $_shadow: none,
+      $_width: none);
+  }
+}
+
+#{$bs-utilities}border--none {
+  @include border($_style: none, $_shadow: none,  $_width: none, $_radius: none);
+}

@@ -14,9 +14,8 @@
 
 .c-list {
   background: var(--#{$sds-prefix}-color-list-bg);
-  border: var(--#{$sds-prefix}-border-width-list) solid var(--#{$sds-prefix}-color-list-border);
+  border: var(--#{$sds-prefix}-border-width-list) solid var(--#{$sds-prefix}-color-panel-border);
   border-radius: var(--#{$sds-prefix}-radius-xl);
-  overflow: hidden;
 }
 
 // ── Section header (Suivi des documents) ────────────────────────────────────
@@ -25,7 +24,6 @@
 .c-list > .c-list__header-row .c-list__title {
   @include text-heading-md;
   color: var(--#{$sds-prefix}-color-list-section-title);
-  margin: 0;
 }
 
 .c-list__count-badge {
@@ -41,19 +39,11 @@
 
 // ── List body ───────────────────────────────────────────────────────────────
 
-.c-list__body {
-  width: 100%;
-  min-width: 0;
-}
-
 .c-list__footnote {
   @include text-body-sm;
-  width: 100%;
-  margin: 0;
-  padding: var(--spacing-2) var(--spacing-3);
   border: 0;
   border-block-start: var(--#{$sds-prefix}-border-width-list) solid
-    var(--#{$sds-prefix}-color-list-border);
+    var(--#{$sds-prefix}-color-panel-border);
   background: var(--#{$sds-prefix}-color-list-bg);
   color: var(--#{$sds-prefix}-color-text-muted);
   text-align: start;
@@ -66,37 +56,38 @@
   }
 }
 
-// ── Tree node gaps (layout only — native PrimeNG toggler/keyboard preserved) ─
+// ── PrimeNG tree variant (c-list — not default tree) ───────────────────────
+// Modes: `.c-list--journey` (timeline gutter) and `.c-list--flat`.
+// Prefer :where() when targeting PrimeNG internals.
 
-.c-list .p-tree {
-  width: 100%;
-  min-width: 0;
-  padding: unset;
-}
-
-.c-list .p-tree-root-children,
-.c-list .p-tree-node-children {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  padding-inline-start: unset;
-}
-
-// Tree layout — label must grow to full row width (flat + journey)
 .c-list {
-  .p-tree-root-children,
-  .p-tree-node {
+  :where(.p-tree) {
+    width: 100%;
+    min-width: 0;
+    padding: unset;
+  }
+
+  :where(.p-tree-root-children),
+  :where(.p-tree-node-children) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    padding-inline-start: unset;
+  }
+
+  :where(.p-tree-root-children),
+  :where(.p-tree-node) {
     width: 100%;
     min-width: 0;
   }
 
-  .p-tree-node {
+  :where(.p-tree-node) {
     gap: var(--spacing-2) calc(2 * calc(1rem / 2));
     display: flex;
     flex-direction: column;
   }
 
-  .p-tree-node-content {
+  :where(.p-tree-node-content) {
     display: flex;
     align-items: flex-start;
     gap: var(--spacing-2);
@@ -105,24 +96,22 @@
     min-width: 0;
   }
 
-  .p-tree-node-toggle-button {
+  :where(.p-tree-node-toggle-button) {
     flex-shrink: 0;
   }
 
-  // PrimeNG renders an empty toggler on leaf nodes for column alignment.
-  // Journey rows use .c-list__timeline for indent; flat rows span full width.
-  .p-tree-node-leaf > .p-tree-node-content > .p-tree-node-toggle-button {
+  :where(.p-tree-node-leaf) > .p-tree-node-content > .p-tree-node-toggle-button {
     display: none;
   }
 
-  .p-tree-node-label {
+  :where(.p-tree-node-label) {
     flex: 1 1 auto;
     min-width: 0;
     width: 100%;
     max-width: 100%;
   }
 
-  .p-tree-node-label > span {
+  :where(.p-tree-node-label) > span {
     display: block;
     width: 100%;
     min-width: 0;
@@ -130,7 +119,7 @@
 }
 
 // Group row card chrome on tree wrapper (toggler + label inside one bordered box)
-.c-list--journey .p-tree-node:not(.p-tree-node-leaf) > .p-tree-node-content {
+:where(.c-list--journey) .p-tree-node:not(.p-tree-node-leaf) > .p-tree-node-content {
   padding: var(--spacing-2);
   background: var(--#{$sds-prefix}-color-list-row-bg);
   border: var(--#{$sds-prefix}-border-width-list-row) solid var(--#{$sds-prefix}-color-list-row-border);
@@ -214,7 +203,6 @@
 .c-list__item .c-list__header-row .c-list__title {
   @include text-label-md;
   color: var(--#{$sds-prefix}-color-list-title-text);
-  margin: 0;
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -230,7 +218,6 @@
   font-size: var(--#{$sds-prefix}-size-list-icon);
   line-height: 1;
   color: var(--#{$sds-prefix}-color-list-icon);
-  flex-shrink: 0;
 }
 
 // ── Dates (group rows) ──────────────────────────────────────────────────────
@@ -242,7 +229,6 @@
 .c-list__date {
   @include text-label-xs;
   color: var(--#{$sds-prefix}-color-list-date-label);
-  margin: 0;
 }
 
 .c-list__date-value {
@@ -360,8 +346,5 @@
 // ── Tag target popover (PrimeNG Select Data pattern) ───────────────────────
 
 .c-list__tag-target-list {
-  margin: 0;
-  padding: 0;
   list-style: none;
-  min-inline-size: 100%;
 }

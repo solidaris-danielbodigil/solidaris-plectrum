@@ -231,6 +231,7 @@ export class AffiliateOverviewCardComponent {
   readonly cardStyleClass = computed(() => {
     const classes = [
       'c-affiliate-overview-card',
+      'c-panel-chrome--border-bottom',
       `c-affiliate-overview-card--${this.effectiveVariant()}`,
     ];
 

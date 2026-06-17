@@ -17,6 +17,7 @@
 //   display                            → use  o-layout--{display}
 //   position                           → use  o-layout--{position}
 //   min-height: 0 / min-width: 0      → use  o-layout--min-h-0 / o-layout--min-w-0
+//   margin: 0 on owned elements        → use  o-layout--margin-0 (spacing scale key `0`)
 //
 // Exception: spacing values that MUST reference a var(--sds-*) token
 // (component-specific sizing, form padding) stay in component SCSS as var() calls.

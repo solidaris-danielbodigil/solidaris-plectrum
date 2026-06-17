@@ -122,8 +122,6 @@
 
   // ── Structural ──────────────────────────────────────────────────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-border: var(--#{$sds-prefix}-color-drawer-border); // Figma 324:5745 — header divider
-
   --#{$sds-prefix}-size-affiliate-overview-card-accent-width: var(--spacing-0-5);
 
   --#{$sds-prefix}-size-affiliate-overview-card-padding: calc(var(--spacing-2) + var(--spacing-0-5));
@@ -161,7 +159,7 @@
 
   --p-card-body-padding: var(--#{$sds-prefix}-size-affiliate-overview-card-padding);
 
-  --p-card-border-color: var(--#{$sds-prefix}-color-drawer-border);
+  --p-card-border-color: var(--#{$sds-prefix}-color-panel-border);
 
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-default);
 
@@ -193,27 +191,5 @@
 
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-danger);
 
-}
-
-
-
-// PrimeNG Button token bridge — display-only header info tag chips (filled secondary, small, rounded).
-// Template renders <button pButton severity="secondary" size="small"> for tags without a filterKey.
-// Scoped to display-only chips so --p-button-* vars never bleed into p-selectbutton filter group.
-.c-affiliate-overview-card__info-tag {
-  --p-button-secondary-background: var(--#{$sds-prefix}-color-affiliate-overview-card-info-tag-bg);
-  --p-button-secondary-color: var(--#{$sds-prefix}-color-affiliate-overview-card-info-tag-text);
-  --p-button-secondary-border-color: transparent;
-  --p-button-secondary-hover-background: var(--#{$sds-prefix}-color-content-hover-bg);
-  --p-button-secondary-hover-color: var(--#{$sds-prefix}-color-primary-interactive-hover);
-  --p-button-secondary-hover-border-color: transparent;
-  --p-button-secondary-active-background: var(--#{$sds-prefix}-color-primary-100);
-  --p-button-secondary-active-color: var(--#{$sds-prefix}-color-primary-interactive-active);
-  --p-button-secondary-active-border-color: transparent;
-  --p-button-padding-x: var(--#{$sds-prefix}-space-affiliate-overview-card-info-tag-padding-inline);
-  --p-button-padding-y: var(--#{$sds-prefix}-space-affiliate-overview-card-info-tag-padding-block);
-  --p-button-border-radius: var(--#{$sds-prefix}-radius-pill);
-  --p-button-label-font-weight: var(--font-weight-regular);
-  --p-button-transition-duration: var(--#{$sds-prefix}-transition-duration);
 }
 

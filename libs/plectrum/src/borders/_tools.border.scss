@@ -1,0 +1,221 @@
+
+// return a map of each prop in $_border-props ( 1 - _settings.border )
+
+@function get-border-width($_width) {
+  $border-widths: map-get($_border-props, border-width);
+  @return map-get($border-widths, $_width);
+}
+
+@function get-border-style($_style) {
+  $border-styles: map-get($_border-props, border-style);
+  @return map-get($border-styles, $_style);
+}
+
+@function get-border-radius($_radius) {
+  $border-radius: map-get($_border-props, border-radius);
+  @return map-get($border-radius, $_radius);
+}
+
+@function get-border-direction($_direction) {
+  $border-directions: map-get($_border-props, border-direction);
+  @return map-get($border-directions, $_direction);
+}
+
+@function get-border-radius-direction($_radius-direction) {
+  $border-radius-directions: map-get($_border-props, border-radius-direction);
+  @return map-get($border-radius-directions, $_radius-direction);
+}
+
+// mixin for border radius
+
+@mixin radius-direction( $_radius: none, $_radius-direction: all) {
+
+  @if get-border-radius-direction($_radius-direction) == all {
+    border-radius: get-border-radius($_radius);
+  }
+  @else if get-border-radius-direction($_radius-direction) == top {
+    border-radius: get-border-radius($_radius) get-border-radius($_radius) 0 0;
+  }
+  @else if get-border-radius-direction($_radius-direction) == right {
+    border-radius: 0 get-border-radius($_radius) get-border-radius($_radius) 0;
+  }
+  @else if get-border-radius-direction($_radius-direction) == bottom {
+    border-radius: 0 0 get-border-radius($_radius) get-border-radius($_radius);
+  }
+  @else if get-border-radius-direction($_radius-direction) == left {
+    border-radius: get-border-radius($_radius) 0 0 get-border-radius($_radius);
+  }
+  @else if get-border-radius-direction($_radius-direction) == corner-1 {
+    border-radius: get-border-radius($_radius) 0 0 0;
+  }
+  @else if get-border-radius-direction($_radius-direction) == corner-2 {
+    border-radius: 0 get-border-radius($_radius) 0 0;
+  }
+  @else if get-border-radius-direction($_radius-direction) == corner-3 {
+    border-radius: 0 0 get-border-radius($_radius) 0;
+  }
+  @else if get-border-radius-direction($_radius-direction) == corner-4 {
+    border-radius: 0 0 0 get-border-radius($_radius);
+  }
+}
+
+// get all status from border-types-props
+// Regroup and generalize all border types under border status
+// in order to be called in the mixin as value of "border-color"
+
+@function map-collect($maps...) {
+  $collection: ();
+
+  @each $map in $maps {
+    $collection: map-merge($collection, $map);
+  }
+
+  @return $collection;
+}
+
+@function get-border-status($_status) {
+
+  $default: map-get($_border-types-props, default);
+  $input: map-get($_border-types-props, input);
+  $button: map-get($_border-types-props, button);
+  $checkbox: map-get($_border-types-props, checkbox);
+  $tag: map-get($_border-types-props, tag);
+  $badge: map-get($_border-types-props, badge);
+  $card: map-get($_border-types-props, card);
+  $alert: map-get($_border-types-props, alert);
+  $_all_status: map-collect($default, $input, $button, $checkbox, $tag, $badge, $card, $alert);
+
+  @return map-get($_all_status, $_status);
+}
+
+
+// -------------------------------------------------------- //
+// mixin (create a border width custom values from _settings.border ) //
+// ------------------------------------------------------ //
+
+
+// @include for use of specific border
+// @extend for use of generic border ( go to _utilities.border for the classes generation )
+
+@mixin border(
+  $_status: default,
+  $_width: default,
+  $_radius: small,
+  $_shadow: default,
+  $_style: solid,
+  $_direction: all,
+  $_radius-direction: all) {
+  border-style: get-border-style($_style);
+  border-color: get-border-status($_status);
+
+  @include radius-direction($_radius, $_radius-direction);
+
+  @if $_shadow != none or get-border-style($_style) != none{
+    @include shadow(
+      $_offset: get-custom-shadow($_shadow, 'offset'),
+      $_direction: get-custom-shadow($_shadow, 'direction'),
+      $_blur: get-custom-shadow($_shadow, 'blur'),
+      $_spread: get-custom-shadow($_shadow, 'spread'),
+      $_color: get-custom-shadow($_shadow, 'color'),
+      $_secondary-color: get-custom-shadow($_shadow, 'secondary-color'),
+      $_box-shadow: get-custom-shadow($_shadow, 'is-box-shadow')
+    );
+  }
+
+  @if $_shadow == none or get-border-style($_style) == none{
+    filter: none;
+  }
+
+  // ----- border direction ->
+
+  // simple direction
+
+  @if get-border-direction($_direction) == top {
+    border-width: 0;
+    border-top-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == bottom {
+    border-width: 0;
+    border-bottom-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == right {
+    border-width: 0;
+    border-right-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == left {
+    border-width: 0;
+    border-left-width: get-border-width($_width);
+  }
+
+  // opposite direction
+
+  @else if get-border-direction($_direction) == horizontal {
+    border-width: 0;
+    border-left-width: get-border-width($_width);
+    border-right-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == vertical {
+    border-width: 0;
+    border-top-width: get-border-width($_width);
+    border-bottom-width: get-border-width($_width);
+  }
+
+  // triple direction
+
+  @else if get-border-direction($_direction) == no-right {
+    border-width: 0;
+    border-top-width: get-border-width($_width);
+    border-bottom-width: get-border-width($_width);
+    border-left-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == no-left {
+    border-width: 0;
+    border-top-width: get-border-width($_width);
+    border-bottom-width: get-border-width($_width);
+    border-right-width: get-border-width($_width);
+  }
+
+  @else if get-border-direction($_direction) == no-bottom {
+    border-width: 0;
+    border-top-width: get-border-width($_width);
+    border-left-width: get-border-width($_width);
+    border-right-width: get-border-width($_width);
+  }
+
+
+  @else if get-border-direction($_direction) == no-top {
+    border-width: 0;
+    border-bottom-width: get-border-width($_width);
+    border-left-width: get-border-width($_width);
+    border-right-width: get-border-width($_width);
+  }
+
+  // corner
+
+  @else if get-border-direction($_direction) == corner-3 {
+    border-width: 0;
+    border-right-width: get-border-width($_width);
+    border-bottom-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == corner-4 {
+    border-width: 0;
+    border-left-width: get-border-width($_width);
+    border-bottom-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == corner-1 {
+    border-width: 0;
+    border-left-width: get-border-width($_width);
+    border-top-width: get-border-width($_width);
+  }
+  @else if get-border-direction($_direction) == corner-2 {
+    border-width: 0;
+    border-right-width: get-border-width($_width);
+    border-top-width: get-border-width($_width);
+  }
+
+  // all directions
+
+  @else if get-border-direction($_direction) == all {
+    border-width: get-border-width($_width);
+  }
+}

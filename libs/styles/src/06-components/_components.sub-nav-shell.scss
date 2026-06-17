@@ -16,7 +16,7 @@
 //   .c-sub-nav-shell__header          app title bar
 //   .c-sub-nav-shell__body            scrollable menu area (flex/overflow via template)
 //   .c-sub-nav-shell__featured        standalone items (no section label)
-//   .c-sub-nav-shell__accordion       PrimeNG Accordion wrapper (bridge in 01-settings)
+//   .c-accordion--nav              PrimeNG Accordion wrapper (bridge in 01-settings)
 //   .c-sub-nav-shell__section-label   uppercase section heading text
 //   .c-sub-nav-shell__items           item list inside accordion content
 //   .c-sub-nav-shell__item            single nav link/button row
@@ -41,16 +41,13 @@
   // Figma: surface/50 — light gray shell background
   background-color: var(--#{$sds-prefix}-color-sub-nav-shell-bg);
   // Figma: transparent/black/100 — subtle right border separating from content
-  border-right: 1px solid var(--#{$sds-prefix}-color-sub-nav-shell-border);
+  border-right: 1px solid var(--#{$sds-prefix}-color-content-border);
 }
 
 // Header — title bar with bottom border
 .c-sub-nav-shell__header {
-  // Fixed height required — structural header that the layout depends on
   height: var(--#{$sds-prefix}-space-sub-nav-shell-header-h);
-  padding: 0 var(--#{$sds-prefix}-space-sub-nav-shell-header-px);
-  // Figma: transparent/black/100 — subtle bottom border separating header from menu
-  border-bottom: 1px solid var(--#{$sds-prefix}-color-sub-nav-shell-border);
+  border-bottom: 1px solid var(--#{$sds-prefix}-color-content-border);
 }
 
 .c-sub-nav-shell__title {
@@ -59,33 +56,17 @@
   white-space: nowrap;
 }
 
-// Scrollable body — flex: 1 1 0 is a structural constraint (no single o-* class)
-.c-sub-nav-shell__body {
-  flex: 1 1 0;
-  min-height: 0;
-}
-
-// Featured section (items without a section heading)
+// Featured section — 14px horizontal padding is non-scale (component token)
 .c-sub-nav-shell__featured {
   padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
-  gap: var(--#{$sds-prefix}-space-sub-nav-shell-section-gap);
 }
 
-// Accordion — structural overrides only (token bridge in 01-settings/_settings.accordion.scss)
-.c-sub-nav-shell__accordion {
-  // Section panel padding
-  .p-accordionpanel {
-    padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
-  }
-}
+// Accordion panel padding lives in _components.accordion.scss (.c-accordion--nav)
 
-// Section label (inside accordion header)
 .c-sub-nav-shell__section-label {
   @include text-label-sm;
   color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
   text-transform: uppercase;
-  flex: 1 0 0;
-  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -94,16 +75,10 @@
 // Menu item list
 .c-sub-nav-shell__items {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  gap: var(--#{$sds-prefix}-space-sub-nav-shell-section-gap);
 }
 
 // Single nav link/button row
 .c-sub-nav-shell__item {
-  padding: var(--#{$sds-prefix}-space-sub-nav-shell-item-py) var(--#{$sds-prefix}-space-sub-nav-shell-item-px);
-  // Component-specific gap (6px, not on global scale) — justified per rules §5 exception
-  gap: var(--#{$sds-prefix}-space-sub-nav-shell-item-gap);
   border-radius: var(--#{$sds-prefix}-radius-lg);
   cursor: pointer;
   text-decoration: none;
@@ -143,8 +118,6 @@
 .c-sub-nav-shell__item-label {
   @include text-label-sm;
   color: inherit;
-  flex: 1 0 0;
-  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -152,7 +125,6 @@
 
 // Footer
 .c-sub-nav-shell__footer {
-  padding: var(--#{$sds-prefix}-space-sub-nav-shell-footer-py) var(--#{$sds-prefix}-space-sub-nav-shell-footer-px);
   text-align: center;
 }
 

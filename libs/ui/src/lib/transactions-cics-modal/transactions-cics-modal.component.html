@@ -4,11 +4,10 @@
   [dismissableMask]="true"
   [draggable]="false"
   [resizable]="false"
-  styleClass="c-transactions-cics-modal__dialog"
   header="Transactions CICS"
   (onHide)="onHide()"
 >
-  <div class="c-transactions-cics-modal__content o-flex o-flex--y o-layout--gap-3">
+  <div class="c-transactions-cics-modal__content o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0">
     <p-message
       severity="warn"
       icon="bi bi-exclamation-triangle-fill"
@@ -25,7 +24,7 @@
         role="searchbox"
         autocomplete="off"
         placeholder="Rechercher une transaction..."
-        class="c-transactions-cics-modal__search-input"
+        class="c-transactions-cics-modal__search-input o-layout--full-width"
         [ngModel]="searchQuery()"
         (ngModelChange)="onSearchChange($event)"
         aria-label="Rechercher une transaction CICS"
@@ -34,7 +33,7 @@
     </p-iconfield>
 
     <p-table
-      class="c-transactions-cics-modal__table"
+      class="c-transactions-cics-modal__table o-layout--full-width"
       [value]="filteredRows()"
       [paginator]="false"
       dataKey="code"

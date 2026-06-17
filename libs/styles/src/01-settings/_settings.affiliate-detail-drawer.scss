@@ -2,58 +2,19 @@
 
 // =============================================================================
 // 01-settings/_settings.affiliate-detail-drawer.scss
-// Affiliate detail drawer ("Carte affilié") component tokens.
-//
-// Design ref: Figma node 7:1012 (iSHARE-Audit) — Carte affilié
-//             https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012
-// Token source consumed by: libs/styles/src/06-components/_components.affiliate-detail-drawer.scss
+// Affiliate detail drawer semantic tokens (tiles, notes, info rows).
+// Drawer chrome uses default PrimeNG + Plectrum theme.
+// Tile padding is expressed via o-layout in the template.
 // =============================================================================
 
 :root {
-  // ── Structure ───────────────────────────────────────────────────────────────
-  // Figma drawer width (498px content + 20px padding each side ≈ 540px).
-  --#{$sds-prefix}-size-affiliate-detail-drawer-width: 540px;
-  --#{$sds-prefix}-color-affiliate-detail-drawer-bg: var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-shadow-affiliate-detail-drawer: var(--#{$sds-prefix}-shadow-xl);
-  // Figma: transparent/black/100 — header divider + section dividers + tile border
-  --#{$sds-prefix}-color-affiliate-detail-drawer-border: var(--#{$sds-prefix}-color-black-alpha-100);
+  --#{$sds-prefix}-color-affiliate-detail-drawer-relationship: var(--#{$sds-prefix}-color-surface-700);
 
-  // Figma: dialog/header/padding 20px + pt 24px / pb 20px
-  --#{$sds-prefix}-space-affiliate-detail-drawer-header-padding-block-start: var(--spacing-3);
-  --#{$sds-prefix}-space-affiliate-detail-drawer-header-padding-block-end: calc(var(--spacing-2) + var(--spacing-0-5));
-  --#{$sds-prefix}-space-affiliate-detail-drawer-padding-inline: calc(var(--spacing-2) + var(--spacing-0-5));
-  // Figma: content gap 20px, section row gap 16px
-  --#{$sds-prefix}-space-affiliate-detail-drawer-content-gap: calc(var(--spacing-2) + var(--spacing-0-5));
-  --#{$sds-prefix}-space-affiliate-detail-drawer-content-padding-block: calc(var(--spacing-2) + var(--spacing-0-5));
-  --#{$sds-prefix}-space-affiliate-detail-drawer-section-gap: var(--spacing-2);
-  // Info card data: label column width 160px
-  --#{$sds-prefix}-size-affiliate-detail-drawer-info-label: 160px;
-
-  // ── Identity / metadata ──────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-affiliate-detail-drawer-metadata-text: var(--#{$sds-prefix}-color-metadata-chip-text); // Figma: #30495c
-  --#{$sds-prefix}-color-affiliate-detail-drawer-metadata-separator: var(--#{$sds-prefix}-color-text-muted);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-info-label: var(--#{$sds-prefix}-color-text); // Figma: black
-  --#{$sds-prefix}-color-affiliate-detail-drawer-info-value: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-relationship: var(--#{$sds-prefix}-color-surface-700); // Figma: surface/700
-
-  // ── Famille tile ─────────────────────────────────────────────────────────────
   --#{$sds-prefix}-color-affiliate-detail-drawer-tile-bg: var(--#{$sds-prefix}-color-surface-0);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-tile-border: var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
-  --#{$sds-prefix}-radius-affiliate-detail-drawer-tile: var(--#{$sds-prefix}-radius-lg); // Figma: radius/lg 10px
-  --#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-start: var(--spacing-2);
-  --#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-inline-end: var(--spacing-0-5);
-  --#{$sds-prefix}-space-affiliate-detail-drawer-tile-padding-block: var(--spacing-0-5);
+  --#{$sds-prefix}-radius-affiliate-detail-drawer-tile: var(--#{$sds-prefix}-radius-lg);
 
-  // ── Notes ────────────────────────────────────────────────────────────────────
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-bg: var(--#{$sds-prefix}-color-surface-50); // Figma: surface/50
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-border: var(--#{$sds-prefix}-color-affiliate-detail-drawer-border);
-  --#{$sds-prefix}-radius-affiliate-detail-drawer-note: var(--#{$sds-prefix}-radius-md); // Figma: radius/md 8px
-  --#{$sds-prefix}-space-affiliate-detail-drawer-note-padding: var(--spacing-1-5); // Figma: 12px
+  --#{$sds-prefix}-color-affiliate-detail-drawer-note-bg: var(--#{$sds-prefix}-color-surface-50);
+  --#{$sds-prefix}-radius-affiliate-detail-drawer-note: var(--#{$sds-prefix}-radius-md);
   --#{$sds-prefix}-color-affiliate-detail-drawer-note-author: var(--#{$sds-prefix}-color-text);
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-timestamp: var(--#{$sds-prefix}-color-black-alpha-700); // Figma: transparent/black/700
-
-  // Sensitive note tag — Figma: bg #fff2f1, text #a8160c
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-bg: #fff2f1;
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-text: #a8160c;
-  --#{$sds-prefix}-color-affiliate-detail-drawer-note-tag-sensitive-border: var(--#{$sds-prefix}-color-black-alpha-50);
+  --#{$sds-prefix}-color-affiliate-detail-drawer-note-timestamp: var(--#{$sds-prefix}-color-black-alpha-700);
 }

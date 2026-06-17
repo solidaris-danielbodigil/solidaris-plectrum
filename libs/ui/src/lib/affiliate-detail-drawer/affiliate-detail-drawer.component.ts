@@ -141,6 +141,9 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   templateUrl: './affiliate-detail-drawer.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'c-affiliate-detail-drawer',
+  },
 })
 export class AffiliateDetailDrawerComponent {
   /** Affiliate content rendered inside the drawer. */

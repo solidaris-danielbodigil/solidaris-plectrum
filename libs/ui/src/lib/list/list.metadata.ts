@@ -65,7 +65,7 @@ export const ListMetadata: ComponentMetadata = {
   tokens: {
     consumed: [
       '--sds-color-list-bg',
-      '--sds-color-list-border',
+      '--sds-color-panel-border',
       '--sds-color-list-section-title',
       '--sds-color-list-count-badge-bg',
       '--sds-color-list-count-badge-text',
@@ -87,12 +87,6 @@ export const ListMetadata: ComponentMetadata = {
       '--sds-size-list-timeline-gutter',
       '--sds-size-list-timeline-marker',
       '--sds-size-list-count-badge-min',
-      '--sds-space-list-section-header-padding',
-      '--sds-space-list-body-padding-inline',
-      '--sds-space-list-row-gap',
-      '--sds-space-list-row-padding-block',
-      '--sds-space-list-row-padding-inline',
-      '--sds-space-list-timeline-marker-offset',
       '--sds-border-width-list',
       '--sds-border-width-list-row',
       '--sds-border-width-list-selected',

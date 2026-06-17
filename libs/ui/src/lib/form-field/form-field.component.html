@@ -1,5 +1,9 @@
 <div
-  class="c-form-field"
+  class="c-form-field o-flex o-layout--min-w-0"
+  [class.o-flex--y]="layout() === 'vertical'"
+  [class.o-layout--gap-1]="layout() === 'vertical'"
+  [class.o-flex--align-items-flex-start]="layout() === 'horizontal'"
+  [class.o-layout--gap-2]="layout() === 'horizontal'"
   [class.c-form-field--vertical]="layout() === 'vertical'"
   [class.c-form-field--horizontal]="layout() === 'horizontal'"
   [class.is-invalid]="invalid()"
@@ -11,12 +15,12 @@
   >
     <span class="c-form-field__label-text">{{ label() }}</span>
     @if (required()) {
-      <span class="c-form-field__required" aria-hidden="true">*</span>
+      <span class="c-form-field__required o-layout--margin-inline-start-0-25" aria-hidden="true">*</span>
       <span class="u-sr-only">({{ requiredLabel() }})</span>
     }
   </label>
 
-  <div class="c-form-field__content">
+  <div class="c-form-field__content o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
     <div class="c-form-field__control">
       <ng-content />
     </div>

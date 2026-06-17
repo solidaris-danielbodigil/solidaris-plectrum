@@ -88,7 +88,7 @@ Scroll the box below. The bottom fade is visible at rest; scroll down and the to
     template: `
     <div class="o-scroll-shadow" style="max-height: 14rem; border: 1px solid #ccc; border-radius: 0.5rem;">
       <div class="o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
-        ${Array.from({ length: 14 }, (_, i) => `<div class="c-demo-cell" style="min-height: 3rem;">Row ${i + 1}</div>`).join('')}
+        ${Array.from({ length: 14 }, (_, i) => `<div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 3rem;">Row ${i + 1}</div>`).join('')}
       </div>
     </div>`,
   }),
@@ -112,7 +112,7 @@ A common layout: a fixed header, a scrollable body with the edge fades, and a fi
       <div class="c-demo-cell o-flex__item--shrink-0 o-layout--padding-2">Fixed header</div>
       <div class="o-scroll-shadow o-flex__item--grow-1 o-layout--min-h-0">
         <div class="o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
-          ${Array.from({ length: 12 }, (_, i) => `<div class="c-demo-cell c-demo-cell--accent" style="min-height: 3rem;">Scrollable row ${i + 1}</div>`).join('')}
+          ${Array.from({ length: 12 }, (_, i) => `<div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 3rem;">Scrollable row ${i + 1}</div>`).join('')}
         </div>
       </div>
       <div class="c-demo-cell o-flex__item--shrink-0 o-layout--padding-2">Fixed footer</div>

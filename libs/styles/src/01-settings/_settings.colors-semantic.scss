@@ -53,7 +53,12 @@
   --#{$sds-prefix}-color-surface-subtle:   var(--#{$sds-prefix}-color-surface-50);
   --#{$sds-prefix}-color-surface-muted:    var(--#{$sds-prefix}-color-surface-75);
   --#{$sds-prefix}-color-surface-border:   var(--#{$sds-prefix}-color-surface-100);
-  --#{$sds-prefix}-color-drawer-border:    var(--#{$sds-prefix}-color-surface-border-drawer);  // Figma: drawer/border/color — 507:7910
+
+  // Structural borders — prefer these over feature-specific aliases in component SCSS.
+  // panel-border: flat chrome dividers (list shell, accordion stack, flush card header rule) — Figma #e7e7e7
+  --#{$sds-prefix}-color-panel-border:     var(--#{$sds-prefix}-color-surface-border-drawer);
+  // card-border: elevated card / row outline — Figma #d1d1d1
+  --#{$sds-prefix}-color-card-border:      var(--#{$sds-prefix}-color-surface-200);
 
   // ===========================================================================
   // DIVIDER  (consumed by 04-elements/_elements.hr.scss)
@@ -161,7 +166,6 @@
   // SECOND-LEVEL NAVIGATION  (Figma: iCRM Audit node 20:1447)
   // ===========================================================================
   --#{$sds-prefix}-color-sub-nav-shell-bg:              var(--#{$sds-prefix}-color-surface-50);         // Figma: surface/50
-  --#{$sds-prefix}-color-sub-nav-shell-border:          var(--#{$sds-prefix}-color-black-alpha-100);    // Figma: transparent/black/100
   --#{$sds-prefix}-color-sub-nav-shell-header-text:     var(--#{$sds-prefix}-color-text);               // Figma: black (bold heading)
   --#{$sds-prefix}-color-sub-nav-shell-section-text:    var(--#{$sds-prefix}-color-black-alpha-500);    // Figma: transparent/black/500
   --#{$sds-prefix}-color-sub-nav-shell-item-text:       var(--#{$sds-prefix}-color-black-alpha-800);    // Figma: transparent/black/800

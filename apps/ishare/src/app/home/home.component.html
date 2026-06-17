@@ -52,7 +52,7 @@
         errorMessage="Ce champ est obligatoire."
       >
         <p-inputgroup class="c-affiliate-search-panel__query o-layout--full-width">
-          <p-iconfield class="c-affiliate-search-panel__query-field">
+          <p-iconfield class="c-affiliate-search-panel__query-field o-flex__item--grow-1 o-layout--min-w-0">
             <input
               #identifier="ngModel"
               pInputText
@@ -73,7 +73,7 @@
           <button
             pButton
             type="submit"
-            class="c-affiliate-search-panel__query-submit"
+            class="c-affiliate-search-panel__query-submit o-flex__item--shrink-0"
             label="Chercher"
             icon="bi bi-search"
             [disabled]="!searchIdentifier.trim()"

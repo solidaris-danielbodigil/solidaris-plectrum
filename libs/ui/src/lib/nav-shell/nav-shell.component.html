@@ -1,6 +1,6 @@
 <!-- Visible nav panel — absolutely positioned so expansion overlays content
      instead of pushing it; the host element stays a fixed-width in-flow slot. -->
-<div class="c-nav-shell__panel o-flex o-flex--col">
+<div class="c-nav-shell__panel o-flex o-flex--col o-flex--align-items-flex-start o-layout--overflow-y-auto">
 <!-- Logo — logomark always visible; wordmark revealed (with the labels) on hover/focus -->
 <div class="c-nav-shell__logo o-flex o-flex--align-items-center o-flex__item--shrink-0" aria-hidden="true">
   <!-- Wordmark — hidden when collapsed, revealed on hover/focus via CSS -->
@@ -138,7 +138,7 @@
 </div>
 
 <!-- Nav item list -->
-<ul class="c-nav-shell__list o-flex o-flex--col o-layout--overflow-y-auto" role="list">
+<ul class="c-nav-shell__list o-flex o-flex--col o-flex__item--grow-1 o-flex__item--align-self-stretch o-layout--gap-2 o-layout--overflow-y-auto o-layout--min-h-0 o-layout--margin-0" role="list">
   @for (item of items(); track item.id) {
     <li class="c-nav-shell__item o-flex o-flex__item--shrink-0">
       <a

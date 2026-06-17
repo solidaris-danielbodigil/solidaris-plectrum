@@ -40,7 +40,7 @@ export const SubNavShellMetadata: ComponentMetadata = {
   tokens: {
     consumed: [
       '--sds-color-sub-nav-shell-bg',
-      '--sds-color-sub-nav-shell-border',
+      '--sds-color-content-border',
       '--sds-color-sub-nav-shell-header-text',
       '--sds-color-sub-nav-shell-section-text',
       '--sds-color-sub-nav-shell-item-text',

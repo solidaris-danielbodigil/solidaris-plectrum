@@ -1,0 +1,10 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.detail-list.scss
+// c-detail-list — fixed label column for description lists.
+// =============================================================================
+
+:root {
+  --#{$sds-prefix}-size-detail-list-label-width: 160px;
+}

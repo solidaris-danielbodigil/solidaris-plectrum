@@ -2,15 +2,28 @@
 
 // =============================================================================
 // 01-settings/_settings.accordion.scss
-// PrimeNG Accordion token bridge
+// Accordion semantic tokens + PrimeNG --p-accordion-* bridges per variant.
 //
-// Maps --p-accordion-* variables to Solidaris design tokens.
-// Scoped by BEM wrapper class so overrides apply only where intended.
+// Variants (apply on <p-accordion>):
+//   c-accordion--bordered   — stacked bordered panels (certificate / audit flows)
+//   c-accordion--nav        — transparent sub-nav sections
+//   c-accordion--chromeless — hidden toggler (list journey groups)
 // =============================================================================
 
-// ── Sub-Nav Shell context ────────────────────────────────────────────────────
+:root {
+  // Bordered panel stack — Figma iSHARE-Audit node 544:6474
+  --#{$sds-prefix}-color-accordion-bordered-section-bg: var(--#{$sds-prefix}-color-content-bg);
+  --#{$sds-prefix}-radius-accordion-bordered-section: var(--#{$sds-prefix}-radius-xl);
+  --#{$sds-prefix}-space-accordion-bordered-padding: calc(17 / 14 * var(--base-unit));
+  --#{$sds-prefix}-radius-accordion-bordered-header: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+  --#{$sds-prefix}-radius-accordion-bordered-content: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+  --#{$sds-prefix}-color-accordion-bordered-header-text: var(--#{$sds-prefix}-color-text);
+  --#{$sds-prefix}-space-accordion-bordered-header-gap: var(--spacing-2);
+}
+
+// ── Nav — sub-nav shell sections ─────────────────────────────────────────────
 // Design ref: Figma IRkr21rHS0w7rI0bgrv1fZ node 1:1476
-.c-sub-nav-shell__accordion {
+.c-accordion--nav {
   --p-accordion-panel-border-width: 0;
   --p-accordion-panel-border-color: transparent;
   --p-accordion-header-background: transparent;
@@ -28,9 +41,9 @@
   --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-sub-nav-shell-section-text);
 }
 
-// ── List context — journey grouped document rows ─────────────────────────────
-// Design ref: Figma iSHARE-Audit node 324:5827 — custom chevron on group headers
-.c-list__accordion {
+// ── Chromeless — list journey group headers ──────────────────────────────────
+// Design ref: Figma iSHARE-Audit node 324:5827
+.c-accordion--chromeless {
   --p-accordion-panel-border-width: 0;
   --p-accordion-panel-border-color: transparent;
   --p-accordion-header-background: transparent;
@@ -48,23 +61,21 @@
   --p-accordion-toggle-icon-active-color: transparent;
 }
 
-// ── iSHARE audit accordion — certificate panels + drawer timeline events ─────
-// Design ref: Figma iSHARE-Audit node 544:6474 — bordered nested panels, 17px padding, radius-xl
-.c-audit-accordion {
+// ── Bordered — certificate panels + drawer timeline events ───────────────────
+.c-accordion--bordered {
   --p-accordion-panel-border-width: 1px;
-  --p-accordion-panel-border-color: var(--#{$sds-prefix}-color-audit-accordion-border);
-  --p-accordion-header-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
-  --p-accordion-header-hover-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
-  --p-accordion-header-active-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
-  --p-accordion-header-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
-  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
-  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-audit-accordion-header-text);
-  --p-accordion-header-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
-  --p-accordion-content-background: var(--#{$sds-prefix}-color-audit-accordion-section-bg);
-  --p-accordion-content-padding: var(--#{$sds-prefix}-space-audit-accordion-padding);
+  --p-accordion-panel-border-color: var(--#{$sds-prefix}-color-panel-border);
+  --p-accordion-header-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-hover-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-active-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-header-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-hover-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-active-color: var(--#{$sds-prefix}-color-accordion-bordered-header-text);
+  --p-accordion-header-padding: var(--#{$sds-prefix}-space-accordion-bordered-padding);
+  --p-accordion-content-background: var(--#{$sds-prefix}-color-accordion-bordered-section-bg);
+  --p-accordion-content-padding: var(--#{$sds-prefix}-space-accordion-bordered-padding);
   --p-accordion-content-border-width: 0;
   --p-accordion-toggle-icon-color: var(--#{$sds-prefix}-color-text-muted);
   --p-accordion-toggle-icon-hover-color: var(--#{$sds-prefix}-color-text);
   --p-accordion-toggle-icon-active-color: var(--#{$sds-prefix}-color-text);
 }
-

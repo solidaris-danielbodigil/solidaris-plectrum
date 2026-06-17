@@ -1,14 +1,14 @@
 <!-- PrimeNG Toast outlet — bottom-center, auto-dismiss 2 s -->
 <p-toast position="bottom-center" [life]="2000" />
 
-<div class="c-iconography">
+<div class="c-iconography o-layout--padding-inline-6 o-layout--padding-block-end-6">
 
   <!-- ── Sticky toolbar ───────────────────────────────────────── -->
   <sds-toolbar [sticky]="true">
 
     <ng-container slot="start">
       <!-- Search — p-iconField + InputText directive -->
-      <p-iconField class="c-iconography-toolbar__search">
+      <p-iconField class="c-iconography-toolbar__search o-flex__item--grow-1">
         <p-inputIcon styleClass="bi bi-search" />
         <input
           pInputText
@@ -65,7 +65,7 @@
   <!-- ── Icon grid ──────────────────────────────────────────────── -->
   <!-- o-flex--wrap: wrapping row | o-layout--gap-2: 1rem gap | o-flex__item--2: 2/12 cols by default,
        narrower on xs, wider on sm so 6 → 4 → 3 → 2 icons per row as the viewport shrinks -->
-  <ul class="c-iconography__grid o-flex o-flex--wrap o-layout--gap-2" role="list">
+  <ul class="c-iconography__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0" role="list">
     @for (name of filteredIcons(); track name) {
       <li
         class="c-iconography__item o-flex__item o-flex__item--4 o-flex__item--3@sm o-flex__item--2@md o-flex__item--2@lg"
@@ -99,7 +99,7 @@
   </ul>
 
   @if (filteredIcons().length === 0) {
-    <p class="c-iconography__empty">
+    <p class="c-iconography__empty o-layout--padding-7">
       No icons match "{{ searchQuery }}"
     </p>
   }

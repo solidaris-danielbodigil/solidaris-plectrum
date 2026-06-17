@@ -5,16 +5,19 @@
   [modal]="true"
   [dismissible]="true"
   [closable]="false"
-  styleClass="c-document-more-details-drawer"
+  appendTo="body"
+  [style]="{
+    width: 'max-content',
+    minWidth: 'var(--sds-size-drawer-min-width)',
+    maxWidth: 'var(--sds-size-drawer-max-width)',
+  }"
 >
   <ng-template #headless>
-    <div
-      class="c-document-more-details-drawer__panel o-flex o-flex--y o-layout--full-height"
-    >
+    <div class="o-flex o-flex--y o-layout--full-height">
       <header
-        class="c-document-more-details-drawer__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0"
+        class="c-drawer__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-inline-3 o-layout--padding-block-2"
       >
-        <h2 class="c-document-more-details-drawer__title">{{ drawerTitle() }}</h2>
+        <h2 class="u-text-heading-md">{{ drawerTitle() }}</h2>
         <button
           pButton
           type="button"
@@ -22,7 +25,6 @@
           [rounded]="true"
           severity="secondary"
           size="small"
-          class="c-document-more-details-drawer__close-button"
           icon="bi bi-x-lg"
           aria-label="Fermer"
           (click)="onClose()"
@@ -30,29 +32,17 @@
       </header>
 
       <div
-        class="c-document-more-details-drawer__body o-flex o-flex--y o-flex__item--grow-1"
+        class="o-flex o-flex--y o-flex__item--grow-1 o-layout--overflow-y-auto o-layout--overflow-x-hidden o-layout--padding-inline-3 o-layout--padding-block-start-3 o-layout--padding-block-end-2 o-layout--gap-1"
       >
         @if (hasEvents()) {
           <p-timeline
-            class="c-document-more-details-drawer__timeline o-layout--full-width"
+            class="c-timeline--content-only o-layout--gap-1"
             [value]="events()"
             align="left"
           >
             <ng-template #marker let-event>
               <span
-                class="c-document-more-details-drawer__marker o-flex o-flex--align-items-center o-flex--justify-content-center"
-                [class.c-document-more-details-drawer__marker--info]="
-                  event.markerTone === 'info'
-                "
-                [class.c-document-more-details-drawer__marker--warn]="
-                  event.markerTone === 'warn'
-                "
-                [class.c-document-more-details-drawer__marker--success]="
-                  event.markerTone === 'success'
-                "
-                [class.c-document-more-details-drawer__marker--secondary]="
-                  event.markerTone === 'secondary'
-                "
+                class="o-flex o-flex--align-items-center o-flex--justify-content-center"
               >
                 <i [class]="event.markerIcon" aria-hidden="true"></i>
               </span>
@@ -60,7 +50,7 @@
 
             <ng-template #content let-event>
               <p-accordion
-                class="c-audit-accordion o-layout--full-width"
+                class="c-accordion--bordered o-layout--full-width"
                 [value]="expandedEventIds()"
                 (valueChange)="onExpandedEventIdsChange($event)"
                 [multiple]="true"
@@ -70,13 +60,9 @@
                 <p-accordion-panel [value]="event.id">
                   <p-accordion-header>
                     <div
-                      class="c-document-more-details-drawer__event-header o-flex o-flex--align-items-center o-layout--gap-2"
+                      class="o-flex o-flex--align-items-center o-layout--gap-2"
                     >
-                      <p-tag
-                        class="c-document-more-details-drawer__date-tag"
-                        severity="secondary"
-                        [value]="event.dateLabel"
-                      />
+                      <p-tag severity="secondary" [value]="event.dateLabel" />
                       <p-tag
                         [severity]="event.status.severity"
                         [value]="event.status.label"
@@ -86,10 +72,7 @@
                   </p-accordion-header>
 
                   <p-accordion-content>
-                    <p-table
-                      class="c-document-more-details-drawer__table"
-                      [value]="event.rows"
-                    >
+                    <p-table [value]="event.rows">
                       <ng-template #header>
                         <tr>
                           <th pSortableColumn="date">
@@ -122,9 +105,7 @@
                                 [icon]="row.description.icon"
                               />
                             } @else if (isAuditMultiline(row.description)) {
-                              <div
-                                class="c-document-more-details-drawer__multiline o-flex o-flex--y"
-                              >
+                              <div class="o-flex o-flex--y">
                                 @for (
                                   line of row.description.lines;
                                   track line
@@ -148,7 +129,7 @@
           </p-timeline>
         } @else {
           <sds-empty-state
-            class="c-document-more-details-drawer__empty o-flex__item--grow-1"
+            class="o-flex__item--grow-1"
             title="Aucun historique disponible"
             description="Aucun événement d'audit n'est enregistré pour ce document."
           />

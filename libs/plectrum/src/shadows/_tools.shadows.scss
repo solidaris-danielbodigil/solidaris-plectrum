@@ -1,0 +1,106 @@
+//------------------------------------------------------------------------------ Shadow system
+
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+  @return $map;
+}
+
+//------------------------------------------------------------------------------ Border system
+@function get-custom-shadow($shadowKey, $property) {
+  $shadowMap: map-get($_shadow-props, custom-shadow);
+  $shadowSubMap: map-get($shadowMap, $shadowKey);
+  @return map-get($shadowSubMap, $property);
+}
+
+//------------------------------------------------------------------------------ Border system
+@function get-component-shadow($shadowKey, $property) {
+  $shadowMap: map-get($_shadow-props, component-shadow);
+  $shadowSubMap: map-get($shadowMap, $shadowKey);
+  @return map-get($shadowSubMap, $property);
+}
+
+// return a map of each prop in $_border-props ( 1 - _settings.shadows )
+
+@function get-shadow-inset($_inset) {
+  $shadow-inset: map-get($_shadow-props, shadow-inset);
+  @return map-get($shadow-inset, $_inset);
+}
+
+@function get-shadow-offset($_offset) {
+  $shadow-offset: map-get($_shadow-props, shadow-offset);
+  @return map-get($shadow-offset, $_offset);
+}
+
+@function get-shadow-directions($_direction) {
+  $shadow-directions: map-get($_shadow-props, shadow-directions);
+  @return map-get($shadow-directions, $_direction);
+}
+
+@function get-shadow-blur($_blur) {
+  $shadow-blur: map-get($_shadow-props, shadow-blur);
+  @return map-get($shadow-blur, $_blur);
+}
+
+@function get-shadow-spread($_spread) {
+  $shadow-spread: map-get($_shadow-props, shadow-spread);
+  @return map-get($shadow-spread, $_spread);
+}
+
+@function get-shadow-color($_color) {
+  $shadow-color: map-get($_shadow-props, shadow-color);
+  @return map-get($shadow-color, $_color);
+}
+
+@mixin shadow(
+  $_inset: false,
+  $_offset: 2,
+  $_direction: all,
+  $_blur: 2,
+  $_spread: none,
+  $_color: default,
+  $_secondary-color: default,
+  $_box-shadow: false) {
+
+  @if ($_inset == true or $_box-shadow == true) and $_color != none {
+    // try to use 'filter: drop-shadow' instead of 'box-shadow', because as unlike box-shadows,
+    // filters are hardware accelerated
+    // 'filter: drop-shadow' doesn't accept 'inset' nor 'spread', if inset is needed, we use Box-shadow
+    @if $_direction != 'horizontal' and $_direction != 'vertical' {
+      box-shadow:
+      get-shadow-inset($_inset)
+      calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'x')} * #{get-shadow-offset($_offset)})
+      calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'y')} * #{get-shadow-offset($_offset)})
+      get-shadow-blur($_blur)
+      get-shadow-spread($_spread)
+      get-shadow-color($_color);
+    }
+    @if $_direction == 'horizontal' or $_direction == 'vertical'{
+        box-shadow:
+        get-shadow-inset(true)
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'x')} * #{get-shadow-offset($_offset)})
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'y')} * #{get-shadow-offset($_offset)})
+        get-shadow-blur($_blur)
+        get-shadow-spread($_spread)
+        get-shadow-color($_secondary-color),
+        get-shadow-inset(true)
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'xx')} * #{get-shadow-offset($_offset)})
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'yy')} * #{get-shadow-offset($_offset)})
+        get-shadow-blur($_blur)
+        get-shadow-spread($_spread)
+        get-shadow-color($_color);
+      }
+  }
+
+  @else if ($_inset == false or $_box-shadow == false) and $_color != none {
+    filter:
+      drop-shadow(
+        get-shadow-inset($_inset)
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'x')} * #{get-shadow-offset($_offset)})
+        calc(#{map-deep-get($_shadow-props, 'shadow-directions', $_direction, 'y')} * #{get-shadow-offset($_offset)})
+        get-shadow-blur($_blur)
+        get-shadow-color($_color)
+      );
+  }
+}

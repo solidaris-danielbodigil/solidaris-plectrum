@@ -1,0 +1,119 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.accordion.scss
+// c-accordion--* — PrimeNG accordion visual variants.
+//
+// Token bridge: 01-settings/_settings.accordion.scss
+// Design ref:    Figma iSHARE-Audit node 544:6474 (bordered stack)
+// =============================================================================
+
+.c-accordion--bordered {
+  min-width: 0;
+
+  .p-accordionpanel.p-disabled {
+    opacity: var(--#{$sds-prefix}-disabled-opacity);
+
+    .p-accordionheader {
+      cursor: not-allowed;
+      color: var(--#{$sds-prefix}-color-text-muted);
+    }
+  }
+
+  // Panel radii adapt to sibling-count() — stacked bordered accordion.
+  .p-accordionpanel {
+    overflow: hidden;
+    border-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+
+    @supports (width: calc(1px * sibling-count())) {
+      --_accordion-panel-sibling-count: sibling-count();
+    }
+
+    .p-accordionheader {
+      gap: var(--#{$sds-prefix}-space-accordion-bordered-header-gap);
+      border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+      border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+
+      &[aria-expanded='true'] {
+        border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
+      }
+
+      &[aria-expanded='false'] {
+        border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+        border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+      }
+    }
+
+    .p-accordioncontent {
+      border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+      border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+    }
+
+    &:not(:only-child) {
+      border-radius: var(--#{$sds-prefix}-radius-none);
+
+      &:first-child {
+        border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+        border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+
+        .p-accordionheader {
+          border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+          border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+
+          &[aria-expanded='false'] {
+            border-end-start-radius: var(--#{$sds-prefix}-radius-none);
+            border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+          }
+        }
+
+        .p-accordioncontent {
+          border-end-start-radius: var(--#{$sds-prefix}-radius-none);
+          border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+        }
+      }
+
+      &:last-child {
+        border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+        border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+
+        .p-accordionheader {
+          border-start-start-radius: var(--#{$sds-prefix}-radius-none);
+          border-start-end-radius: var(--#{$sds-prefix}-radius-none);
+
+          &[aria-expanded='false'] {
+            border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+            border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+          }
+        }
+
+        .p-accordioncontent {
+          border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+          border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+        }
+      }
+
+      &:not(:first-child):not(:last-child) {
+        border-radius: var(--#{$sds-prefix}-radius-none);
+        border-block-start-width: 0;
+        border-block-end-width: 0;
+
+        .p-accordionheader {
+          border-radius: var(--#{$sds-prefix}-radius-none);
+
+          &[aria-expanded='false'] {
+            border-radius: var(--#{$sds-prefix}-radius-none);
+          }
+        }
+
+        .p-accordioncontent {
+          border-radius: var(--#{$sds-prefix}-radius-none);
+        }
+      }
+    }
+  }
+}
+
+// Nav variant — section panel padding (non-scale 14px horizontal; see sub-nav-shell tokens)
+.c-sub-nav-shell .c-accordion--nav .p-accordionpanel {
+  padding: var(--#{$sds-prefix}-space-sub-nav-shell-section-py) var(--#{$sds-prefix}-space-sub-nav-shell-section-px);
+}

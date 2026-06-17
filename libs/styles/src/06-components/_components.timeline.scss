@@ -1,0 +1,33 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.timeline.scss
+// c-timeline--* — PrimeNG timeline visual variants.
+//
+// PrimeNG always renders `.p-timeline-event-opposite` (flex: 1) even without
+// an #opposite template. Hide it when only the content column is used.
+// =============================================================================
+
+.c-timeline--content-only {
+  .p-timeline-event-opposite {
+    display: none;
+  }
+
+  .p-timeline-event-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  // Let nested tables drive panel width inside content-driven drawers.
+  .p-datatable-table-container,
+  .p-datatable-wrapper {
+    overflow: visible !important;
+  }
+
+  .p-datatable-table {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+  }
+}

@@ -18,7 +18,7 @@
 
   // Panel card chrome — 1px ring + sm elevation (Figma node 324:5739; mirrors toolbar)
   --#{$sds-prefix}-shadow-affiliate-details-panel:
-    0 0 0 1px var(--#{$sds-prefix}-color-surface-200),
+    0 0 0 1px var(--#{$sds-prefix}-color-card-border),
     var(--#{$sds-prefix}-shadow-sm);
 
   // Shared p-card header/body spacing — both column panels (Figma: 20px header padding)
@@ -38,7 +38,7 @@
   --p-card-content-padding: 0;
   --p-card-header-padding: var(--#{$sds-prefix}-space-affiliate-details-card-header-padding);
   --p-card-background: var(--#{$sds-prefix}-color-content-bg);
-  --p-card-border-color: var(--#{$sds-prefix}-color-surface-200);
+  --p-card-border-color: var(--#{$sds-prefix}-color-card-border);
   --p-card-border-radius: var(--#{$sds-prefix}-radius-xl);
   --p-card-shadow: var(--#{$sds-prefix}-shadow-affiliate-details-panel);
 }
