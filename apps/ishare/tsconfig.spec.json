@@ -11,5 +11,9 @@
       "@solidaris/ui": ["libs/ui/src/index.ts"]
     }
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "../../libs/plectrum/src/**/*.spec.ts"
+  ]
 }

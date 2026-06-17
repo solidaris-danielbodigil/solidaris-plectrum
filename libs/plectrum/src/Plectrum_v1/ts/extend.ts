@@ -1,4 +1,7 @@
 export default {
+    branding: {
+        800: "{rose.800}"
+    },
     basic: {
         solidaris: {
             50: "#ffedf1ff",

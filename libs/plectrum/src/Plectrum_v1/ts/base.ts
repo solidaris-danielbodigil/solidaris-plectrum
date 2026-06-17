@@ -273,6 +273,9 @@ export default {
         900: "#701a75ff",
         950: "#4a044eff"
     },
+    extremes: {
+        white: "#ffffffff"
+    },
     neutral: {
         50: "#fafafaff",
         100: "#f5f5f5ff",

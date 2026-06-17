@@ -5,6 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs/operators';
 import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { PlectrumPresetMenuService } from '@solidaris/plectrum';
 import {
   AffiliateOverviewCardComponent,
   NavShellComponent,
@@ -32,11 +33,17 @@ export class AppShellComponent {
   private readonly affiliateHeaderService = inject(AffiliateHeaderService);
   private readonly messageService = inject(MessageService);
   private readonly testingSessionMenu = inject(TestingSessionMenuService);
+  private readonly plectrumPresetMenu = inject(PlectrumPresetMenuService);
 
   readonly navItems = ISHARE_NAV_ITEMS;
   readonly testingTelemetryEnabled = isTestingTelemetryEnabled();
-  readonly testingMenuItems = this.testingSessionMenu.menuItems;
   readonly captureElapsedLabel = this.testingSessionMenu.captureElapsedLabel;
+
+  readonly avatarMenuItems = computed(() =>
+    this.plectrumPresetMenu.mergeWithItems(
+      this.testingTelemetryEnabled ? this.testingSessionMenu.menuItems() : [],
+    ),
+  );
 
   readonly homeBreadcrumb: MenuItem = {
     icon: 'bi bi-house',

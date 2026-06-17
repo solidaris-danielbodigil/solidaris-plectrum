@@ -17,10 +17,10 @@
       avatarInitials="IS"
       avatarState="initials"
       avatarAriaLabel="Profil iShare"
-      avatarMenuAriaLabel="Menu session test"
-      [showAvatarMenu]="testingTelemetryEnabled"
+      avatarMenuAriaLabel="Menu utilisateur"
+      [showAvatarMenu]="true"
       [telemetryLabelsEnabled]="testingTelemetryEnabled"
-      [avatarMenuItems]="testingTelemetryEnabled ? testingMenuItems() : []"
+      [avatarMenuItems]="avatarMenuItems()"
       [avatarMenuTimerLabel]="captureElapsedLabel()"
       avatarMenuTimerItemId="session-stop"
     ></sds-top-nav>

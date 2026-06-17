@@ -1,16 +1,52 @@
 import type { Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '@solidaris/plectrum';
+import {
+  PLECTRUM_PRESET_STORAGE_KEY,
+  providePlectrum,
+  readStoredPresetVersion,
+  writeStoredPresetVersion,
+  type PlectrumPresetVersion,
+} from '@solidaris/plectrum';
+
+function readInitialPreset(): PlectrumPresetVersion {
+  if (typeof localStorage === 'undefined') {
+    return 'v1';
+  }
+
+  return readStoredPresetVersion(localStorage) ?? 'v1';
+}
 
 const preview: Preview = {
+  globalTypes: {
+    plectrumPreset: {
+      description: 'Plectrum PrimeNG preset version',
+      toolbar: {
+        title: 'Plectrum',
+        icon: 'paintbrush',
+        dynamicTitle: true,
+        items: [
+          { value: 'v1', title: 'Plectrum v1' },
+          { value: 'v0.6', title: 'Plectrum v0.6' },
+        ],
+      },
+    },
+  },
+  initialGlobals: {
+    plectrumPreset: readInitialPreset(),
+  },
   decorators: [
-    applicationConfig({
-      providers: [
-        provideAnimationsAsync(),
-        providePlectrum(),
-      ],
-    }),
+    (storyFn, context) => {
+      const version = (context.globals['plectrumPreset'] ?? 'v1') as PlectrumPresetVersion;
+
+      if (typeof localStorage !== 'undefined') {
+        writeStoredPresetVersion(version, localStorage);
+      }
+
+      return applicationConfig({
+        providers: [provideAnimationsAsync(), providePlectrum(version)],
+      })(storyFn, context);
+    },
   ],
   parameters: {
     // Use the app's page background (--sds-color-surface-page = gray-50 = #f9f9f9)
@@ -18,7 +54,7 @@ const preview: Preview = {
     backgrounds: {
       default: 'app',
       values: [
-        { name: 'app',   value: '#f9f9f9' },
+        { name: 'app', value: '#f9f9f9' },
         { name: 'white', value: '#ffffff' },
       ],
     },
@@ -26,4 +62,5 @@ const preview: Preview = {
   },
 };
 
+export { PLECTRUM_PRESET_STORAGE_KEY };
 export default preview;
