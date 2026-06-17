@@ -174,7 +174,7 @@ const meta: Meta<AffiliateDetailDrawerStoryArgs> = {
 iSHARE "Carte affilié" detail drawer — a headless \`p-drawer\` wrapper.
 
 - **Figma**: [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012)
-- **BEM block**: \`c-affiliate-detail-drawer\`
+- **BEM block**: \`c-drawer\` (elements: \`__affiliate-detail-*\`, shared \`__header\`, \`__toolbar\`, \`__content\`)
 - **Reuse**: large illustrated \`sds-plectrum-avatar\`, the overview-card copyable identifier chips, and small coloured avatars (blue/green/yellow) for the Famille tiles
 - **PrimeNG**: \`p-drawer\` (headless), \`p-selectButton\`, \`p-accordion\`, \`p-card\`, \`p-tag\`, \`p-button\`
 - **Two-way**: \`[(visible)]\` controls open/close; \`viewChange\` reports the Détails/Documents tab

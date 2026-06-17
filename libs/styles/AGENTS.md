@@ -58,7 +58,7 @@ No `styleClass` on `p-drawer` / `p-dialog` roots.
 ## Custom classes — only when needed
 
 - `c-form-field` (label layout)
-- `c-drawer` — headless drawer shell (`__header`, `__toolbar`, `__section-title`)
+- `c-drawer` — headless drawer shell (`__header`, `__toolbar`, `__content`, `__section`, `__section-title`); feature elements use the block prefix in the element name (e.g. `__affiliate-detail-name`, `__affiliate-detail-note`)
 - `c-detail-list` — label/value description rows (`__label`, `__value`)
 - `c-panel-chrome--border-bottom` — flat panel bottom rule (overview card, etc.)
 - `c-accordion--bordered` (bordered stacked accordion)
@@ -69,6 +69,15 @@ No `styleClass` on `p-drawer` / `p-dialog` roots.
 ## BEMIT
 
 Keep blocks flat; shallow modifiers only. No doubled-class specificity (`.c-foo.c-foo`).
+
+When a shared block has feature-specific children, prefix the **element** name — do not create a nested block:
+
+| Avoid | Prefer |
+|-------|--------|
+| `c-affiliate-detail-drawer__name` | `c-drawer__affiliate-detail-name` |
+| `c-document-more-details-drawer__title` | `c-drawer__document-more-details-title` |
+
+Standalone `libs/ui` components keep their own block (`c-affiliate-overview-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`, `c-panel-chrome`).
 
 ## Specificity over PrimeNG
 

@@ -73,9 +73,9 @@
       "path": "libs\\ui\\src\\lib\\affiliate-detail-drawer\\affiliate-detail-drawer.component.ts",
       "category": "organisms",
       "metadata": true,
-      "bemBlock": "c-affiliate-detail-drawer",
+      "bemBlock": "c-drawer",
       "primeNg": "Accordion",
-      "scssPath": "libs/styles/src/06-components/_components.affiliate-detail-drawer.scss",
+      "scssPath": "libs/styles/src/06-components/_components.drawer.scss",
       "uses": [
         "PlectrumAvatar",
         "CopyableText"

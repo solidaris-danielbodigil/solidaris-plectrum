@@ -19,10 +19,10 @@
           class="c-drawer__header o-flex o-flex--align-items-flex-start o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-block-start-3 o-layout--padding-block-end-2 o-layout--padding-inline-2"
         >
           <div
-            class="c-affiliate-detail-drawer__identity o-flex o-flex--align-items-flex-start o-layout--gap-1-5 o-flex__item--grow-1 o-layout--min-w-0"
+            class="c-drawer__affiliate-detail-identity o-flex o-flex--align-items-flex-start o-layout--gap-1-5 o-flex__item--grow-1 o-layout--min-w-0"
           >
             <sds-plectrum-avatar
-              class="c-affiliate-detail-drawer__avatar o-flex__item--shrink-0"
+              class="c-drawer__affiliate-detail-avatar o-flex__item--shrink-0"
               size="large"
               [initials]="affiliate.avatarInitials ?? ''"
               [gender]="affiliate.avatarGender ?? 'female'"
@@ -31,13 +31,13 @@
             />
 
             <div
-              class="c-affiliate-detail-drawer__identity-body o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
+              class="c-drawer__affiliate-detail-identity-body o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
             >
-              <h2 class="c-affiliate-detail-drawer__name o-layout--margin-0">{{ affiliate.name }}</h2>
+              <h2 class="c-drawer__affiliate-detail-name o-layout--margin-0">{{ affiliate.name }}</h2>
 
               @if (affiliate.identifiers.length > 0) {
                 <div
-                  class="c-affiliate-detail-drawer__identifiers o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1"
+                  class="c-drawer__affiliate-detail-identifiers o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1"
                 >
                   @for (
                     identifier of affiliate.identifiers;
@@ -64,7 +64,7 @@
           </div>
 
           <div
-            class="c-affiliate-detail-drawer__header-actions o-flex o-flex--align-items-center o-layout--gap-0-5 o-flex__item--shrink-0"
+            class="c-drawer__affiliate-detail-header-actions o-flex o-flex--align-items-center o-layout--gap-0-5 o-flex__item--shrink-0"
           >
             <button
               pButton
@@ -95,13 +95,13 @@
         </header>
 
         <div
-          class="c-affiliate-detail-drawer__content o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--overflow-y-auto o-layout--gap-2 o-layout--padding-block-end-2"
+          class="c-drawer__content o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--overflow-y-auto o-layout--gap-2 o-layout--padding-block-end-2"
         >
           <div
             class="c-drawer__toolbar o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--wrap o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-2"
           >
             <p-selectbutton
-              class="c-affiliate-detail-drawer__view-switch"
+              class="c-drawer__affiliate-detail-view-switch"
               [options]="viewOptions"
               optionLabel="label"
               optionValue="value"
@@ -117,7 +117,7 @@
               type="button"
               severity="secondary"
               size="small"
-              class="c-affiliate-detail-drawer__quick-actions"
+              class="c-drawer__affiliate-detail-quick-actions"
               icon="bi bi-three-dots-vertical"
               label="Actions rapides"
               data-telemetry-id="drawer-quick-actions"
@@ -127,7 +127,7 @@
           </div>
 
           <section
-            class="c-affiliate-detail-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2"
+            class="c-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2"
             aria-labelledby="c-affiliate-detail-drawer-general"
           >
             <h3
@@ -140,7 +140,7 @@
             <dl class="c-detail-list o-flex o-flex--y o-layout--gap-2">
               @for (row of affiliate.generalInfo; track row.label) {
                 <div
-                  class="c-affiliate-detail-drawer__info-row o-flex o-flex--align-items-baseline o-layout--gap-2"
+                  class="c-drawer__affiliate-detail-info-row o-flex o-flex--align-items-baseline o-layout--gap-2"
                 >
                   <dt class="c-detail-list__label">{{ row.label }}</dt>
                   <dd class="c-detail-list__value o-layout--margin-0">{{ row.value }}</dd>
@@ -152,11 +152,11 @@
           <hr aria-hidden="true" />
 
           <section
-            class="c-affiliate-detail-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2"
+            class="c-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2"
             aria-labelledby="c-affiliate-detail-drawer-contact"
           >
             <div
-              class="c-affiliate-detail-drawer__section-header o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1-5"
+              class="c-drawer__affiliate-detail-section-header o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1-5"
             >
               <h3
                 id="c-affiliate-detail-drawer-contact"
@@ -170,7 +170,7 @@
                 type="button"
                 severity="secondary"
                 size="small"
-                class="c-affiliate-detail-drawer__contact-action"
+                class="c-drawer__affiliate-detail-contact-action"
                 icon="bi bi-telephone"
                 label="Appeler l'affilié"
                 sdsTelemetryLabel="Appeler l'affilié"
@@ -181,7 +181,7 @@
                 type="button"
                 severity="secondary"
                 size="small"
-                class="c-affiliate-detail-drawer__contact-action"
+                class="c-drawer__affiliate-detail-contact-action"
                 icon="bi bi-envelope"
                 label="Envoyer un e-mail à l'affilié"
                 sdsTelemetryLabel="Envoyer un e-mail à l'affilié"
@@ -192,7 +192,7 @@
             <dl class="c-detail-list o-flex o-flex--y o-layout--gap-2">
               @for (row of affiliate.contactInfo; track row.label) {
                 <div
-                  class="c-affiliate-detail-drawer__info-row o-flex o-flex--align-items-baseline o-layout--gap-2"
+                  class="c-drawer__affiliate-detail-info-row o-flex o-flex--align-items-baseline o-layout--gap-2"
                 >
                   <dt class="c-detail-list__label">{{ row.label }}</dt>
                   <dd class="c-detail-list__value o-layout--margin-0">{{ row.value }}</dd>
@@ -203,7 +203,7 @@
 
           <hr aria-hidden="true" />
 
-          <section class="c-affiliate-detail-drawer__section o-flex__item--shrink-0 o-layout--padding-inline-2">
+          <section class="c-drawer__section o-flex__item--shrink-0 o-layout--padding-inline-2">
             <p-accordion
               class="o-layout--full-width o-layout--min-w-0"
               [value]="familyPanelValue()"
@@ -217,7 +217,7 @@
                 </p-accordion-header>
                 <p-accordion-content>
                   <div
-                    class="c-affiliate-detail-drawer__family o-flex o-flex--y o-layout--gap-1-5"
+                    class="c-drawer__affiliate-detail-family o-flex o-flex--y o-layout--gap-1-5"
                   >
                     @for (
                       member of affiliate.family;
@@ -225,16 +225,16 @@
                     ) {
                       <button
                         type="button"
-                        class="c-affiliate-detail-drawer__family-tile o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-layout--full-width o-layout--padding-block-0-5 o-layout--padding-inline-start-2 o-layout--padding-inline-end-0-5 o-layout--margin-0"
+                        class="c-drawer__affiliate-detail-family-tile o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-layout--full-width o-layout--padding-block-0-5 o-layout--padding-inline-start-2 o-layout--padding-inline-end-0-5 o-layout--margin-0"
                         [attr.aria-label]="familyMemberAriaLabel(member)"
                         [sdsTelemetryLabel]="familyMemberAriaLabel(member)"
                         (click)="onFamilyMemberSelect(member)"
                       >
                         <span
-                          class="c-affiliate-detail-drawer__family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
+                          class="c-drawer__affiliate-detail-family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
                         >
                           <sds-plectrum-avatar
-                            class="c-affiliate-detail-drawer__family-avatar o-flex__item--shrink-0"
+                            class="c-drawer__affiliate-detail-family-avatar o-flex__item--shrink-0"
                             size="small"
                             [initials]="member.initials"
                             [color]="member.color ?? 'red'"
@@ -242,19 +242,19 @@
                             tabindex="-1"
                           />
                           <span
-                            class="c-affiliate-detail-drawer__family-text o-flex o-flex--align-items-baseline o-flex--wrap o-layout--gap-0-75 o-layout--min-w-0"
+                            class="c-drawer__affiliate-detail-family-text o-flex o-flex--align-items-baseline o-flex--wrap o-layout--gap-0-75 o-layout--min-w-0"
                           >
-                            <span class="c-affiliate-detail-drawer__family-name">{{
+                            <span class="c-drawer__affiliate-detail-family-name">{{
                               member.name
                             }}</span>
-                            <span class="c-affiliate-detail-drawer__family-relationship"
+                            <span class="c-drawer__affiliate-detail-family-relationship"
                               >({{ member.relationship }})</span
                             >
                           </span>
                         </span>
 
                         <i
-                          class="c-affiliate-detail-drawer__family-chevron bi bi-arrow-right o-flex__item--shrink-0"
+                          class="c-drawer__affiliate-detail-family-chevron bi bi-arrow-right o-flex__item--shrink-0"
                           aria-hidden="true"
                         ></i>
                       </button>
@@ -268,7 +268,7 @@
           @if (showNotes()) {
             <hr aria-hidden="true" />
 
-            <section class="c-affiliate-detail-drawer__section o-flex__item--shrink-0 o-layout--padding-inline-2">
+            <section class="c-drawer__section o-flex__item--shrink-0 o-layout--padding-inline-2">
               <p-accordion
                 class="o-layout--full-width o-layout--min-w-0"
                 [value]="notesPanelValue()"
@@ -282,20 +282,20 @@
                   </p-accordion-header>
                   <p-accordion-content>
                     <div
-                      class="c-affiliate-detail-drawer__notes o-flex o-flex--y o-layout--gap-1"
+                      class="c-drawer__affiliate-detail-notes o-flex o-flex--y o-layout--gap-1"
                     >
                       @for (note of affiliate.notes; track trackNote($index, note)) {
                         <article
-                          class="c-affiliate-detail-drawer__note o-flex o-flex--y o-layout--gap-0-5 o-layout--padding-1-5"
+                          class="c-drawer__affiliate-detail-note o-flex o-flex--y o-layout--gap-0-5 o-layout--padding-1-5"
                         >
                           <div
-                            class="c-affiliate-detail-drawer__note-header o-flex o-flex--align-items-center o-layout--gap-0-75"
+                            class="c-drawer__affiliate-detail-note-header o-flex o-flex--align-items-center o-layout--gap-0-75"
                           >
-                            <span class="c-affiliate-detail-drawer__note-author">{{
+                            <span class="c-drawer__affiliate-detail-note-author">{{
                               note.author
                             }}</span>
                             <span
-                              class="c-affiliate-detail-drawer__note-timestamp o-flex__item--grow-1 o-layout--min-w-0"
+                              class="c-drawer__affiliate-detail-note-timestamp o-flex__item--grow-1 o-layout--min-w-0"
                               >{{ note.timestamp }}</span
                             >
                             <p-tag
@@ -304,7 +304,7 @@
                               [icon]="noteTagIcon(note)"
                             />
                           </div>
-                          <p class="c-affiliate-detail-drawer__note-body o-layout--margin-0">{{ note.body }}</p>
+                          <p class="c-drawer__affiliate-detail-note-body o-layout--margin-0">{{ note.body }}</p>
                         </article>
                       }
                     </div>

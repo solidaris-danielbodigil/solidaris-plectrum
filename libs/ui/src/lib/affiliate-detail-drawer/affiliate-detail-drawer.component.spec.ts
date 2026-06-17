@@ -110,7 +110,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const avatar = document.querySelector(
-      'sds-plectrum-avatar.c-affiliate-detail-drawer__avatar',
+      'sds-plectrum-avatar.c-drawer__affiliate-detail-avatar',
     );
     expect(avatar).toBeTruthy();
     expect(avatar?.classList.contains('c-plectrum-avatar--large')).toBe(true);
@@ -168,7 +168,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const avatars = document.querySelectorAll(
-      'sds-plectrum-avatar.c-affiliate-detail-drawer__family-avatar',
+      'sds-plectrum-avatar.c-drawer__affiliate-detail-family-avatar',
     );
     expect(avatars.length).toBe(3);
     expect(avatars[0].classList.contains('c-plectrum-avatar--color-blue')).toBe(true);
@@ -176,7 +176,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(avatars[2].classList.contains('c-plectrum-avatar--color-yellow')).toBe(true);
 
     const initials = document.querySelectorAll(
-      '.c-affiliate-detail-drawer__family-avatar .c-plectrum-avatar__initials',
+      '.c-drawer__affiliate-detail-family-avatar .c-plectrum-avatar__initials',
     );
     expect(initials[0].textContent?.trim()).toBe('Q');
     expect(initials[2].textContent?.trim()).toBe('J');
@@ -186,10 +186,10 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const names = document.querySelectorAll(
-      '.c-affiliate-detail-drawer__family-name',
+      '.c-drawer__affiliate-detail-family-name',
     );
     const relationships = document.querySelectorAll(
-      '.c-affiliate-detail-drawer__family-relationship',
+      '.c-drawer__affiliate-detail-family-relationship',
     );
     expect(names[0].textContent?.trim()).toBe('Quinten Mota');
     expect(relationships[0].textContent?.trim()).toBe('(partenaire)');
@@ -202,7 +202,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     const accordions = fixture.debugElement.queryAll(By.directive(Accordion));
     expect(accordions.length).toBe(1);
     expect(
-      document.querySelector('.c-affiliate-detail-drawer__notes'),
+      document.querySelector('.c-drawer__affiliate-detail-notes'),
     ).toBeFalsy();
     expect(
       Array.from(
@@ -214,14 +214,14 @@ describe('AffiliateDetailDrawerComponent', () => {
   it('should render notes with author, timestamp and body', async () => {
     await openDrawer();
 
-    const notes = document.querySelectorAll('.c-affiliate-detail-drawer__note');
+    const notes = document.querySelectorAll('.c-drawer__affiliate-detail-note');
     expect(notes.length).toBe(2);
     expect(
-      notes[0].querySelector('.c-affiliate-detail-drawer__note-author')
+      notes[0].querySelector('.c-drawer__affiliate-detail-note-author')
         ?.textContent?.trim(),
     ).toBe('Eva de Moyer');
     expect(
-      notes[0].querySelector('.c-affiliate-detail-drawer__note-body')
+      notes[0].querySelector('.c-drawer__affiliate-detail-note-body')
         ?.textContent?.trim(),
     ).toBe('Personne agressive');
   });
@@ -234,7 +234,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     expect(tags[0].componentInstance.severity).toBe('danger');
     expect(tags[1].componentInstance.severity).toBe('secondary');
 
-    const sensitiveTag = document.querySelector('.c-affiliate-detail-drawer__note p-tag.p-tag-danger');
+    const sensitiveTag = document.querySelector('.c-drawer__affiliate-detail-note p-tag.p-tag-danger');
     expect(sensitiveTag).toBeTruthy();
   });
 
@@ -286,9 +286,9 @@ describe('AffiliateDetailDrawerComponent', () => {
     component.emailClick.subscribe(onEmail);
 
     (document.querySelector('[aria-label="Plus d\'actions"]') as HTMLButtonElement).click();
-    (document.querySelector('.c-affiliate-detail-drawer__quick-actions') as HTMLButtonElement).click();
+    (document.querySelector('.c-drawer__affiliate-detail-quick-actions') as HTMLButtonElement).click();
     const contactActions = document.querySelectorAll(
-      '.c-affiliate-detail-drawer__contact-action',
+      '.c-drawer__affiliate-detail-contact-action',
     );
     (contactActions[0] as HTMLButtonElement).click();
     (contactActions[1] as HTMLButtonElement).click();
@@ -305,7 +305,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     component.familyMemberSelect.subscribe(onSelect);
 
     const tile = document.querySelector(
-      '.c-affiliate-detail-drawer__family-tile',
+      '.c-drawer__affiliate-detail-family-tile',
     ) as HTMLButtonElement;
     tile.click();
 
@@ -316,7 +316,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     await openDrawer();
 
     const tiles = document.querySelectorAll(
-      '.c-affiliate-detail-drawer__family-tile',
+      '.c-drawer__affiliate-detail-family-tile',
     );
     expect(tiles[0].getAttribute('aria-label')).toBe('Quinten Mota (partenaire)');
     expect(tiles[2].getAttribute('aria-label')).toBe('Jack Mota (enfant à charge)');
@@ -328,7 +328,7 @@ describe('AffiliateDetailDrawerComponent', () => {
     component.familyMemberSelect.subscribe(onSelect);
 
     const name = document.querySelector(
-      '.c-affiliate-detail-drawer__family-name',
+      '.c-drawer__affiliate-detail-family-name',
     ) as HTMLSpanElement;
     name.click();
 

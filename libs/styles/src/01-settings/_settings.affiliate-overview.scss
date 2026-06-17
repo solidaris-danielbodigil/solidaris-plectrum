@@ -1,7 +1,5 @@
 @use 'settings.prefix' as *;
 
-
-
 // =============================================================================
 
 // 01-settings/_settings.affiliate-overview.scss
@@ -18,10 +16,7 @@
 
 // =============================================================================
 
-
-
 :root {
-
   // ── Variant accent borders (left accent for in-order only) ─────────────────
 
   --#{$sds-prefix}-color-affiliate-overview-card-accent-success: var(--#{$sds-prefix}-color-success);
@@ -29,8 +24,6 @@
   --#{$sds-prefix}-color-affiliate-overview-card-accent-warning: var(--#{$sds-prefix}-color-warning);
 
   --#{$sds-prefix}-color-affiliate-overview-card-accent-danger: var(--#{$sds-prefix}-color-danger);
-
-
 
   // ── Variant backgrounds ─────────────────────────────────────────────────────
   // Shared gradient geometry — Figma 507:8227 (88deg, 0% → 23.21%)
@@ -47,37 +40,20 @@
 
   --#{$sds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start: var(--#{$sds-prefix}-color-success-subtle);
 
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-warning: linear-gradient(
-
-    var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-
+  --#{$sds-prefix}-color-affiliate-overview-card-bg-warning: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
     var(--#{$sds-prefix}-color-affiliate-overview-card-bg-warning-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop)
+    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
-  );
-
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-danger: linear-gradient(
-
-    var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-
+  --#{$sds-prefix}-color-affiliate-overview-card-bg-danger: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
     var(--#{$sds-prefix}-color-affiliate-overview-card-bg-danger-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop)
+    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
-  );
-
-  --#{$sds-prefix}-color-affiliate-overview-card-bg-in-order: linear-gradient(
-
-    var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
-
+  --#{$sds-prefix}-color-affiliate-overview-card-bg-in-order: linear-gradient(var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-angle),
     var(--#{$sds-prefix}-color-affiliate-overview-card-bg-in-order-gradient-start) 0%,
 
-    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop)
-
-  );
-
-
+    var(--#{$sds-prefix}-color-surface-0) var(--#{$sds-prefix}-affiliate-overview-card-bg-gradient-stop));
 
   // ── Info tags & metadata chips ──────────────────────────────────────────────
 
@@ -89,19 +65,13 @@
 
   --#{$sds-prefix}-color-affiliate-overview-card-metadata-separator: var(--#{$sds-prefix}-color-text-muted);
 
-
-
   // ── Shortcut badge (splitbutton keyboard hint) ───────────────────────────────
 
-  --#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-bg: color-mix(
-
-    in srgb,
+  --#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-bg: color-mix(in srgb,
 
     var(--#{$sds-prefix}-color-primary-75) 80%,
 
-    transparent
-
-  );
+    transparent);
 
   --#{$sds-prefix}-color-affiliate-overview-card-shortcut-badge-text: var(--#{$sds-prefix}-color-text-muted);
 
@@ -112,13 +82,9 @@
   // Unitless — must fit inside p-button-sm without stretching the button row.
   --#{$sds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height: 1;
 
-
-
   // ── Loading skeleton ────────────────────────────────────────────────────────
 
   --#{$sds-prefix}-color-affiliate-overview-card-skeleton-bg: var(--#{$sds-prefix}-color-surface-muted);
-
-
 
   // ── Structural ──────────────────────────────────────────────────────────────
 
@@ -148,15 +114,11 @@
   // Large illustrated avatar skeleton — matches --sds-size-avatar-large-*
   --#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-w: var(--#{$sds-prefix}-size-avatar-large-w);
   --#{$sds-prefix}-size-affiliate-overview-card-skeleton-avatar-h: var(--#{$sds-prefix}-size-avatar-large-h);
-
 }
-
-
 
 // ── PrimeNG Card token bridge — scoped to affiliate overview card wrapper ─────
 
 .c-affiliate-overview-card {
-
   --p-card-body-padding: var(--#{$sds-prefix}-size-affiliate-overview-card-padding);
 
   --p-card-border-color: var(--#{$sds-prefix}-color-panel-border);
@@ -166,30 +128,16 @@
   --p-card-border-radius: var(--#{$sds-prefix}-radius-none);
 
   --p-card-shadow: none;
-
 }
-
-
 
 .c-affiliate-overview-card--in-order {
-
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-in-order);
-
 }
-
-
 
 .c-affiliate-overview-card--warning {
-
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-warning);
-
 }
-
-
 
 .c-affiliate-overview-card--danger {
-
   --p-card-background: var(--#{$sds-prefix}-color-affiliate-overview-card-bg-danger);
-
 }
-

@@ -142,7 +142,7 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-affiliate-detail-drawer',
+    class: 'c-drawer',
   },
 })
 export class AffiliateDetailDrawerComponent {

@@ -376,7 +376,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(sectionTitles).not.toContain('Notes');
     expect(
-      fixture.nativeElement.querySelector('.c-affiliate-detail-drawer__notes'),
+      fixture.nativeElement.querySelector('.c-drawer__affiliate-detail-notes'),
     ).toBeNull();
   });
 
