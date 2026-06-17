@@ -1,0 +1,132 @@
+// =============================================================================
+// 05-objects/_objects.grid.scss
+// CSS Grid system — generates o-grid and o-grid__item utility classes.
+//
+// ⛔ ENFORCEMENT CONTRACT — read before editing any component SCSS ⛔
+//
+// These classes are the ONLY permitted way to express CSS grid layout.
+// The following CSS properties are FORBIDDEN in 06-components/ SCSS files:
+//
+//   display: grid          → use  o-grid
+//   grid-template-columns  → use  o-grid--cols-{1-12} / --auto-fit / --auto-fill,
+//                            or the --sds-grid-template-columns escape hatch
+//   grid-template-rows     → use  the --sds-grid-template-rows escape hatch
+//   grid-auto-flow         → use  o-grid--{row|col|row-dense|col-dense}
+//   justify/align/place-items / -content
+//                          → use  o-grid--{justify|align|place}-{items|content}-{value}
+//   justify/align/place-self
+//                          → use  o-grid__item--{justify|align|place}-self-{value}
+//
+// Exception (Tier 3): genuinely bespoke layouts (named `grid-template-areas`,
+// complex row templates) own their template in component SCSS — set
+// --sds-grid-template-columns / write `grid-template` directly, exactly like the
+// accordion owns its radii. Document the case with a comment.
+//
+// Gap is NOT defined here — reuse `o-layout--gap-*` as a BEM mix, same contract
+// as o-flex.
+//
+// Apply these classes as BEM mixes directly in HTML templates.
+// See: .ai/rules/08-object-classes.md
+// =============================================================================
+@use 'sass:map';
+@use '../01-settings/settings.prefix' as *;
+@use '../01-settings/settings.grid' as grid;
+@use '../01-settings/settings.breakpoints' as bp-settings;
+@use '../02-tools/tools.breakpoints' as bp;
+@use '../02-tools/tools.responsive-modifiers' as rm;
+
+.o-grid {
+  display: grid;
+
+  // ── Tier 2 — escape hatch ───────────────────────────────────────────────
+  // Arbitrary track lists via custom properties. Default `none` = no template
+  // unless a --cols-* class or the custom property is set. Mutually exclusive
+  // with the --cols-* classes (source order wins).
+  grid-template-columns: var(--#{$sds-prefix}-grid-template-columns, none);
+  grid-template-rows: var(--#{$sds-prefix}-grid-template-rows, none);
+
+  // ── Tier 1a — equal columns 1..12 (+ responsive) ────────────────────────
+  @for $i from 1 through grid.$grid-cols {
+    &--cols-#{$i} {
+      grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+    }
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      @for $i from 1 through grid.$grid-cols {
+        &--cols-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+          }
+        }
+      }
+    }
+  }
+
+  // ── Tier 1b — responsive auto grids (reflow without breakpoints) ─────────
+  // Column count derives from container width and --sds-grid-min.
+  &--auto-fit {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--#{$sds-prefix}-grid-min), 100%), 1fr)
+    );
+  }
+  &--auto-fill {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(min(var(--#{$sds-prefix}-grid-min), 100%), 1fr)
+    );
+  }
+
+  // ── auto-flow shorthand (key IS the modifier name) ──────────────────────
+  @include rm.responsive-shorthand-modifiers(grid.$grid-auto-flow, grid-auto-flow);
+
+  // ── Container alignment (reuse existing settings.grid maps) ─────────────
+  @include rm.responsive-modifiers('justify-items',   grid.$justify-items,   justify-items);
+  @include rm.responsive-modifiers('align-items',     grid.$align-items,     align-items);
+  @include rm.responsive-modifiers('place-items',     grid.$place-items,     place-items);
+  @include rm.responsive-modifiers('justify-content', grid.$justify-content, justify-content);
+  @include rm.responsive-modifiers('align-content',   grid.$align-content,   align-content);
+  @include rm.responsive-modifiers('place-content',   grid.$place-content,   place-content);
+}
+
+.o-grid__item {
+  // ── Span / placement 1..12 (+ responsive) ───────────────────────────────
+  @for $i from 1 through grid.$grid-cols {
+    &--col-span-#{$i} {
+      grid-column: span #{$i};
+    }
+    &--row-span-#{$i} {
+      grid-row: span #{$i};
+    }
+    &--col-start-#{$i} {
+      grid-column-start: #{$i};
+    }
+  }
+  @each $breakpoint in map.keys(bp-settings.$breakpoints) {
+    @if $breakpoint != 'xs' {
+      @for $i from 1 through grid.$grid-cols {
+        &--col-span-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            grid-column: span #{$i};
+          }
+        }
+        &--row-span-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            grid-row: span #{$i};
+          }
+        }
+        &--col-start-#{$i}\@#{$breakpoint} {
+          @include bp.breakpoint($breakpoint) {
+            grid-column-start: #{$i};
+          }
+        }
+      }
+    }
+  }
+
+  // ── Item self-alignment (reuse existing settings.grid maps) ─────────────
+  @include rm.responsive-modifiers('justify-self', grid.$justify-self, justify-self);
+  @include rm.responsive-modifiers('align-self',   grid.$align-self,   align-self);
+  @include rm.responsive-modifiers('place-self',   grid.$place-self,   place-self);
+}

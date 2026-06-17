@@ -77,6 +77,7 @@
 }
 
 // ── Spacing token swatch ─────────────────────────────────────────────────────
+// Pair swatch grids with `o-grid o-grid--cols-3 o-layout--gap-1` in story templates.
 // NOTE: flex layout stays here — doc primitive reused across many inline story
 // templates (rules §5 exception).
 .c-spacing-swatch {
@@ -97,10 +98,4 @@
   height: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
   width: var(--swatch-size, var(--#{$sds-prefix}-size-doc-demo-swatch));
   flex-shrink: 0;
-}
-
-.c-spacing-swatch__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-1);
 }

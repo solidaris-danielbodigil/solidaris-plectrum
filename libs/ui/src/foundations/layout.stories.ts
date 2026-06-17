@@ -262,6 +262,8 @@ Display classes control the \`display\` property with responsive support.
 | \`.o-layout--inline-flex\` | \`display: inline-flex\` |
 | \`.o-layout--contents\` | \`display: contents\` |
 
+> \`.o-layout--grid\` only sets \`display: grid\`. For a full column system (equal cols, auto-fit/fill, span, alignment), use the **\`.o-grid\`** object — see [Foundations/Grid (CSS)](?path=/story/foundations-grid-css--template-columns).
+
 **Responsive:** All display classes support \`@{breakpoint}\` variants.
 
 \`\`\`html

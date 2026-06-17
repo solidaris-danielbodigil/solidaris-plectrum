@@ -18,6 +18,13 @@ import {
 } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
+import {
+  SDS_DRAWER_APPEND_TO,
+  SDS_DRAWER_CONTENT_STYLE,
+  SDS_PANEL_BORDER_BOTTOM_STYLE,
+  type DetailListRow,
+  type DrawerPosition,
+} from '../drawer';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
@@ -26,8 +33,8 @@ import type {
   PlectrumAvatarVariant,
 } from '../plectrum-avatar/plectrum-avatar.types';
 
-/** Edge the drawer slides in from. */
-export type AffiliateDetailDrawerPosition = 'left' | 'right' | 'top' | 'bottom';
+/** @deprecated Use `DrawerPosition` from `@solidaris/ui`. */
+export type AffiliateDetailDrawerPosition = DrawerPosition;
 
 /** Segmented control selection (Détails / Documents). */
 export type AffiliateDetailDrawerView = 'details' | 'documents';
@@ -41,11 +48,8 @@ export interface AffiliateDetailDrawerIdentifier {
   value: string;
 }
 
-/** A label / value row in an information section. */
-export interface AffiliateDetailDrawerInfoRow {
-  label: string;
-  value: string;
-}
+/** @deprecated Use `DetailListRow` from `@solidaris/ui`. */
+export type AffiliateDetailDrawerInfoRow = DetailListRow;
 
 /** A related person rendered as a Famille tile. */
 export interface AffiliateDetailDrawerFamilyMember {
@@ -81,9 +85,9 @@ export interface AffiliateDetailDrawerData {
   /** Copyable identifier tags in the header. */
   identifiers: AffiliateDetailDrawerIdentifier[];
   /** "Informations générales" rows. */
-  generalInfo: AffiliateDetailDrawerInfoRow[];
+  generalInfo: DetailListRow[];
   /** "Coordonnées" rows. */
-  contactInfo: AffiliateDetailDrawerInfoRow[];
+  contactInfo: DetailListRow[];
   /** "Famille" accordion members. */
   family: AffiliateDetailDrawerFamilyMember[];
   /** "Notes" accordion entries. */
@@ -146,6 +150,10 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   },
 })
 export class AffiliateDetailDrawerComponent {
+  protected readonly drawerAppendTo = SDS_DRAWER_APPEND_TO;
+  protected readonly drawerPanelStyle = SDS_DRAWER_CONTENT_STYLE;
+  protected readonly drawerPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
+
   /** Affiliate content rendered inside the drawer. */
   readonly data = input.required<AffiliateDetailDrawerData>();
 
@@ -153,7 +161,7 @@ export class AffiliateDetailDrawerComponent {
   readonly visible = model<boolean>(false);
 
   /** Edge the drawer slides in from. */
-  readonly position = input<AffiliateDetailDrawerPosition>('right');
+  readonly position = input<DrawerPosition>('right');
 
   /** Whether a backdrop mask is shown behind the drawer. */
   readonly modal = input<boolean>(true);
@@ -235,22 +243,6 @@ export class AffiliateDetailDrawerComponent {
     identifier: AffiliateDetailDrawerIdentifier,
   ): void {
     this.identifierCopy.emit(identifier);
-  }
-
-  protected onMenuClick(): void {
-    this.menuClick.emit();
-  }
-
-  protected onQuickActionsClick(): void {
-    this.quickActionsClick.emit();
-  }
-
-  protected onCallClick(): void {
-    this.callClick.emit();
-  }
-
-  protected onEmailClick(): void {
-    this.emailClick.emit();
   }
 
   protected onFamilyMemberSelect(

@@ -83,6 +83,8 @@ Architectural constraints that must never be violated.
 | `.ai/rules/05-bemit-naming.md` | BEMIT class naming conventions |
 | `.ai/rules/06-accessibility.md` | WCAG AA, focus rings, ARIA |
 | `.ai/rules/07-version-control.md` | Branching, commits, PR hygiene |
+| `.ai/rules/08-object-classes.md` | `o-flex` / `o-layout` — layout in templates, not component SCSS |
+| `.ai/rules/09-styling-policy.md` | `o-grid`, `u-border-*` / `u-radius-*` / `u-shadow-*`, overlays, custom-class registry |
 
 ---
 

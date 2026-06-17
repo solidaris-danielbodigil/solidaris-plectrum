@@ -38,7 +38,10 @@
 
   --#{$sds-prefix}-color-danger:          var(--#{$sds-prefix}-color-red-500);
   --#{$sds-prefix}-color-danger-subtle:   var(--#{$sds-prefix}-color-red-75);
-  --#{$sds-prefix}-color-error:           var(--#{$sds-prefix}-color-red-500);
+  // Darker emphasis variant (red-600) — used by invalid labels/placeholders.
+  --#{$sds-prefix}-color-danger-emphasis: var(--#{$sds-prefix}-color-red-600);
+  // error is an alias of danger — funnel through the canonical status token.
+  --#{$sds-prefix}-color-error:           var(--#{$sds-prefix}-color-danger);
 
   --#{$sds-prefix}-color-info:            var(--#{$sds-prefix}-color-blue-500);
   --#{$sds-prefix}-color-info-subtle:     var(--#{$sds-prefix}-color-blue-300);
@@ -130,7 +133,7 @@
   --#{$sds-prefix}-color-form-border:               var(--#{$sds-prefix}-color-black-alpha-200);
   --#{$sds-prefix}-color-form-border-hover:         var(--#{$sds-prefix}-color-black-alpha-400);
   --#{$sds-prefix}-color-form-border-focus:         var(--#{$sds-prefix}-color-primary-interactive);
-  --#{$sds-prefix}-color-form-border-invalid:       var(--#{$sds-prefix}-color-red-500);
+  --#{$sds-prefix}-color-form-border-invalid:       var(--#{$sds-prefix}-color-danger);
   --#{$sds-prefix}-color-form-icon:                 var(--#{$sds-prefix}-color-surface-500);
   --#{$sds-prefix}-color-form-placeholder:          var(--#{$sds-prefix}-color-surface-500);
   --#{$sds-prefix}-color-form-disabled-text:        var(--#{$sds-prefix}-color-surface-500);
@@ -139,8 +142,8 @@
   --#{$sds-prefix}-color-form-float-label:          var(--#{$sds-prefix}-color-surface-500);
   --#{$sds-prefix}-color-form-float-label-focus:    var(--#{$sds-prefix}-color-primary-600);
   --#{$sds-prefix}-color-form-float-label-active:   var(--#{$sds-prefix}-color-surface-500);
-  --#{$sds-prefix}-color-form-float-label-invalid:  var(--#{$sds-prefix}-color-red-600);
-  --#{$sds-prefix}-color-form-invalid-placeholder:  var(--#{$sds-prefix}-color-red-600);
+  --#{$sds-prefix}-color-form-float-label-invalid:  var(--#{$sds-prefix}-color-danger-emphasis);
+  --#{$sds-prefix}-color-form-invalid-placeholder:  var(--#{$sds-prefix}-color-danger-emphasis);
 
   // ===========================================================================
   // MASK  (base.ts: semantic.colorScheme.light.mask)

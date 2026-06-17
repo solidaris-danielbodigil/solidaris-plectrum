@@ -89,7 +89,8 @@ Only these categories belong in `06-components/` SCSS files:
 | Token-referenced gap/padding | `gap: var(--sds-space-4)` | Component-specific spacing not on global scale |
 | Structural flex constraints | `flex: 1 1 0; min-width: 0` | No single `o-flex` equivalent for combined shorthand |
 | Trailing-edge push | `margin-left: auto` | No `o-layout` class for auto margin |
-| Colour, border, radius, shadow | `border: 1px solid var(--sds-color-border-subtle)` | Visual concern, not layout |
+| Colour, border, radius, shadow (state-driven) | `border-color` on `:hover` / `.is-selected` | Tied to component tokens or interaction |
+| Static border, radius, shadow | Template | `u-border-*`, `u-radius-*`, `u-shadow-*` per [09-styling-policy.md](./09-styling-policy.md) |
 | Typography | `font-size: var(--sds-text-label-sm-size)` | Visual concern, not layout |
 | Transition / animation | `transition: border-color 150ms` | Behaviour, not layout |
 | Position / z-index | `position: sticky; top: 0; z-index: var(--sds-z-sticky)` | Stacking concern |
@@ -107,6 +108,7 @@ Only these categories belong in `06-components/` SCSS files:
 | `overflow: hidden` | Template | `o-layout--overflow-hidden` |
 | `overflow-x: hidden; overflow-y: auto` | Template | `o-layout--overflow-x-hidden o-layout--overflow-y-auto` |
 | `gap: var(--spacing-3)` (global scale) | Template | `o-layout--gap-3` |
+| `display: grid` / `grid-template-columns` | Template | `o-grid` per [09-styling-policy.md](./09-styling-policy.md) |
 | PrimeNG `--p-*` variable overrides | `01-settings/_settings.{component}.scss` | Token bridge file |
 
 ### Decision tree: SCSS or template?

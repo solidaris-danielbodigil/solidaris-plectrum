@@ -12,14 +12,6 @@
 
 // ── Shell (all drawers) ──────────────────────────────────────────────────────
 
-.c-drawer__header {
-  border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
-}
-
-.c-drawer__toolbar {
-  border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
-}
-
 .c-drawer__section-title {
   @include text-heading-sm;
   color: var(--#{$sds-prefix}-color-text);

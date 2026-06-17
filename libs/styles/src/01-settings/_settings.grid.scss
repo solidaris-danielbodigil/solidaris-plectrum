@@ -1,12 +1,21 @@
 // =============================================================================
 // 01-settings/_settings.grid.scss
-// Grid configuration — Sass maps for flex-grid system.
-// No CSS output; values consumed by 05-objects/_objects.flex-grid.scss.
+// Grid configuration — Sass maps for the flex-grid (o-flex) and CSS grid
+// (o-grid) systems.
+// Mostly no CSS output; values consumed by 05-objects/_objects.flex-grid.scss
+// and 05-objects/_objects.grid.scss. The --sds-grid-min token below is the one
+// emitted custom property (default min track for o-grid auto-fit/auto-fill).
 // =============================================================================
+@use 'settings.prefix' as *;
+
 $grid-cols: 12 !default;
 
 :root {
   --grid-cols: #{$grid-cols};
+
+  // Default min column width for o-grid --auto-fit / --auto-fill responsive
+  // grids. Override per instance via inline style or component SCSS.
+  --#{$sds-prefix}-grid-min: 16rem;
 }
 
 $overflow: (
@@ -81,6 +90,14 @@ $flex-direction: (
   row-reverse: row-reverse,
   column: column,
   column-reverse: column-reverse,
+);
+
+// grid-auto-flow — consumed by 05-objects/_objects.grid.scss (o-grid)
+$grid-auto-flow: (
+  row: row,
+  col: column,
+  row-dense: row dense,
+  col-dense: column dense,
 );
 
 $align-items: (
@@ -158,82 +175,26 @@ $justify-items: (
   initial: initial,
   unset: unset,
 );
+// Curated single-keyword subset for o-grid (place-items = align + justify
+// shorthand). The full two-value combinations produced underscore keys (e.g.
+// `end_start`) and unclean class names; expose only the common, clean cases.
+// `space-between` is not valid for place-items, so it is omitted here.
 $place-items: (
-  /* Keyword values */
+  center: center,
+  start: start,
+  end: end,
   stretch: stretch,
-  /* Positional alignment */
-  center: center, /* Pack items around the center */
-  flex-start: flex-start, /* Pack items from the start */
-  flex-end: flex-end, /* Pack items from the end */
-  end_start: end start,
-  end_center: end center,
-  end_stretch: end stretch,
-  start_end: start end,
-  start_center: start center,
-  start_stretch: start stretch,
-  center_start: center start,
-  center_end: center end,
-  center_stretch: center stretch,
-  self-start: self-start,
-  self-end: self-end,
-  left: left, /* Pack items from the left */
-  right: right, /* Pack items from the right */
-  normal_start: normal start,
-  /* Positional alignment */
-  center_normal: center normal,
-  start_legacy: start legacy,
-  end_normal: end normal,
-  self-start_legacy: self-start legacy,
-  self-end_normal: self-end normal,
-  left_legacy: left legacy,
-  right_normal: right normal,
-  /* Baseline alignment */
-  baseline: baseline normal,
-  first-baseline_legacy: first baseline legacy,
-  last-baseline_normal: last baseline normal,
-  stretch_legacy: stretch legacy,
-  /* Global values */
-  inherit: inherit,
-  initial: initial,
-  revert: revert,
-  revert-layer: revert-layer,
-  unset: unset,
 );
+// Curated single-keyword subset for o-grid (place-content = align + justify
+// content shorthand). `space-between` is valid here (distributed alignment).
 $place-content: (
-  /* Positional alignment */
+  center: center,
+  start: start,
+  end: end,
   stretch: stretch,
-  center: center, /* Pack items around the center */
-  flex-start: flex-start, /* Pack items from the start */
-  flex-end: flex-end, /* Pack items from the end */
-  self-start: self-start,
-  self-end: self-end,
-  left: left, /* Pack items from the left */
-  right: right, /* Pack items from the right */
-  /* align-content does not take left and right values */
-  end_start: end start,
-  end_center: end center,
-  end_stretch: end stretch,
-  start_end: start end,
-  start_center: start center,
-  start_stretch: start stretch,
-  center_start: center start,
-  center_end: center end,
-  center_stretch: center stretch,
-  /* Baseline alignment */
-  baseline: baseline center,
-  first-baseline_space-even: first baseline space-evenly,
-  last-baseline_right: last baseline right,
-  /* Distributed alignment */
-  space-between_space-evenly: space-between space-evenly,
-  space-around_space-evenly: space-around space-evenly,
-  space-evenly_stretch: space-evenly stretch,
-  stretch_space-evenly: stretch space-evenly,
-  /* Global values */
-  inherit: inherit,
-  initial: initial,
-  revert: revert,
-  revert-layer: revert-layer,
-  unset: unset,
+  space-between: space-between,
+  space-around: space-around,
+  space-evenly: space-evenly,
 );
 $justify-self: (
   /* Basic keywords */
@@ -263,41 +224,14 @@ $justify-self: (
   revert-layer: revert-layer,
   unset: unset,
 );
+// Curated single-keyword subset for o-grid (place-self = align + justify self
+// shorthand on an item). `space-between` is not valid for place-self, so it is
+// omitted here.
 $place-self: (
+  center: center,
+  start: start,
+  end: end,
   stretch: stretch,
-  /* Positional alignment */
-  center: center, /* Pack items around the center */
-  flex-start: flex-start, /* Pack items from the start */
-  flex-end: flex-end, /* Pack items from the end */
-  self-start: self-start,
-  self-end: self-end,
-  left: left, /* Pack items from the left */
-  right: right, /* Pack items from the right */
-  end_start: end start,
-  end_center: end center,
-  end_stretch: end stretch,
-  start_end: start end,
-  start_center: start center,
-  start_stretch: start stretch,
-  center_start: center start,
-  center_end: center end,
-  center_stretch: center stretch,
-  /* Baseline alignment */
-  baseline: baseline center,
-  first-baseline_space-evenly: first baseline space-evenly,
-  last-baseline_right: last baseline right,
-  /* Distributed alignment */
-  space-between_space-evenly: space-between space-evenly,
-  space-around_space-evenly: space-around space-evenly,
-  space-evenly_stretch: space-evenly stretch,
-  stretch_space-evenly: stretch space-evenly,
-  stretch_center: stretch center,
-  /* Global values */
-  inherit: inherit,
-  initial: initial,
-  revert: revert,
-  revert-layer: revert-layer,
-  unset: unset,
 );
 
 

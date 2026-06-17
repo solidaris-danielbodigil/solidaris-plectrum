@@ -1,0 +1,46 @@
+// =============================================================================
+// 02-tools/_tools.radius.scss
+// Parameterized radius mixin — SSOT for u-radius-* utilities and component SCSS.
+// =============================================================================
+@use 'sass:map';
+
+$radius-targets: (
+  top: (
+    border-start-start-radius,
+    border-start-end-radius,
+  ),
+  bottom: (
+    border-end-start-radius,
+    border-end-end-radius,
+  ),
+  start: (
+    border-start-start-radius,
+    border-end-start-radius,
+  ),
+  end: (
+    border-start-end-radius,
+    border-end-end-radius,
+  ),
+  top-start: (
+    border-start-start-radius,
+  ),
+  top-end: (
+    border-start-end-radius,
+  ),
+  bottom-start: (
+    border-end-start-radius,
+  ),
+  bottom-end: (
+    border-end-end-radius,
+  ),
+);
+
+@mixin radius($value, $target: all) {
+  @if $target == all {
+    border-radius: $value;
+  } @else {
+    @each $prop in map.get($radius-targets, $target) {
+      #{$prop}: $value;
+    }
+  }
+}

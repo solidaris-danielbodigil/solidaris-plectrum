@@ -1,4 +1,6 @@
 @use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.radius' as radius;
+@use '../02-tools/tools.borders' as border;
 
 // =============================================================================
 // 06-components/_components.accordion.scss
@@ -23,7 +25,10 @@
   // Panel radii adapt to sibling-count() — stacked bordered accordion.
   .p-accordionpanel {
     overflow: hidden;
-    border-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+    @include radius.radius(
+      var(--#{$sds-prefix}-radius-accordion-bordered-section),
+      all
+    );
 
     @supports (width: calc(1px * sibling-count())) {
       --_accordion-panel-sibling-count: sibling-count();
@@ -31,82 +36,98 @@
 
     .p-accordionheader {
       gap: var(--#{$sds-prefix}-space-accordion-bordered-header-gap);
-      border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
-      border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+      @include radius.radius(
+        var(--#{$sds-prefix}-radius-accordion-bordered-header),
+        top
+      );
 
       &[aria-expanded='true'] {
-        border-block-end: 1px solid var(--#{$sds-prefix}-color-panel-border);
+        @include border.border(
+          bottom,
+          var(--#{$sds-prefix}-color-panel-border)
+        );
       }
 
       &[aria-expanded='false'] {
-        border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
-        border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+        @include radius.radius(
+          var(--#{$sds-prefix}-radius-accordion-bordered-content),
+          bottom
+        );
       }
     }
 
     .p-accordioncontent {
-      border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
-      border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+      @include radius.radius(
+        var(--#{$sds-prefix}-radius-accordion-bordered-content),
+        bottom
+      );
     }
 
     &:not(:only-child) {
-      border-radius: var(--#{$sds-prefix}-radius-none);
+      @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
 
       &:first-child {
-        border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
-        border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+        @include radius.radius(
+          var(--#{$sds-prefix}-radius-accordion-bordered-section),
+          top
+        );
 
         .p-accordionheader {
-          border-start-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
-          border-start-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-header);
+          @include radius.radius(
+            var(--#{$sds-prefix}-radius-accordion-bordered-header),
+            top
+          );
 
           &[aria-expanded='false'] {
-            border-end-start-radius: var(--#{$sds-prefix}-radius-none);
-            border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+            @include radius.radius(0, bottom);
           }
         }
 
         .p-accordioncontent {
-          border-end-start-radius: var(--#{$sds-prefix}-radius-none);
-          border-end-end-radius: var(--#{$sds-prefix}-radius-none);
+          @include radius.radius(0, bottom);
         }
       }
 
       &:last-child {
-        border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
-        border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-section);
+        @include radius.radius(
+          var(--#{$sds-prefix}-radius-accordion-bordered-section),
+          bottom
+        );
 
         .p-accordionheader {
-          border-start-start-radius: var(--#{$sds-prefix}-radius-none);
-          border-start-end-radius: var(--#{$sds-prefix}-radius-none);
+          @include radius.radius(0, top);
 
           &[aria-expanded='false'] {
-            border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
-            border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+            @include radius.radius(
+              var(--#{$sds-prefix}-radius-accordion-bordered-content),
+              bottom
+            );
           }
         }
 
         .p-accordioncontent {
-          border-end-start-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
-          border-end-end-radius: var(--#{$sds-prefix}-radius-accordion-bordered-content);
+          @include radius.radius(
+            var(--#{$sds-prefix}-radius-accordion-bordered-content),
+            bottom
+          );
         }
       }
 
       &:not(:first-child):not(:last-child) {
-        border-radius: var(--#{$sds-prefix}-radius-none);
+        @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
         border-block-start-width: 0;
         border-block-end-width: 0;
 
         .p-accordionheader {
-          border-radius: var(--#{$sds-prefix}-radius-none);
+          @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
 
           &[aria-expanded='false'] {
-            border-radius: var(--#{$sds-prefix}-radius-none);
+            @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
           }
         }
 
         .p-accordioncontent {
-          border-radius: var(--#{$sds-prefix}-radius-none);
+          @include radius.radius(var(--#{$sds-prefix}-radius-none), all);
         }
       }
     }

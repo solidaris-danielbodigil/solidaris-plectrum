@@ -9,6 +9,7 @@ export * from './sub-nav-shell';
 export * from './top-nav';
 export * from './toolbar';
 export * from './affiliate-overview-card';
+export * from './drawer';
 export * from './affiliate-detail-drawer';
 export * from './list';
 export * from './testing-telemetry';

@@ -1,0 +1,40 @@
+// =============================================================================
+// 07-utilities/_utilities.radius.scss
+// u-radius-* — token-driven radius utilities (prefix: u-).
+// Geometry is delegated to the 02-tools radius mixin (single definition).
+//
+//   .u-radius-md             → all corners
+//   .u-radius-top-lg         → top edge
+//   .u-radius-bottom-end-none → single corner
+//
+// No responsive variants — keeps generated output bounded.
+// =============================================================================
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.radius' as radius;
+
+$radii: (none, xs, sm, md, lg, xl, 2xl, pill);
+$targets: (
+  all,
+  top,
+  bottom,
+  start,
+  end,
+  top-start,
+  top-end,
+  bottom-start,
+  bottom-end
+);
+
+@each $r in $radii {
+  @each $t in $targets {
+    @if $t == all {
+      .u-radius-#{$r} {
+        @include radius.radius(var(--#{$sds-prefix}-radius-#{$r}), all);
+      }
+    } @else {
+      .u-radius-#{$t}-#{$r} {
+        @include radius.radius(var(--#{$sds-prefix}-radius-#{$r}), $t);
+      }
+    }
+  }
+}

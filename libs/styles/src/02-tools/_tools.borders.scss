@@ -1,0 +1,40 @@
+// =============================================================================
+// 02-tools/_tools.borders.scss
+// Parameterized border mixin — SSOT for u-border-* utilities and component SCSS.
+// =============================================================================
+@use 'sass:map';
+@use '../01-settings/settings.prefix' as *;
+
+$border-sides: (
+  all: border,
+  top: border-block-start,
+  bottom: border-block-end,
+  inline-start: border-inline-start,
+  inline-end: border-inline-end,
+  block: border-block,
+  inline: border-inline,
+);
+
+/// Custom-prop driven by default (utilities); pass explicit values from components.
+@mixin border($side: all, $color: null, $width: null, $style: null) {
+  $prop: map.get($border-sides, $side);
+  $c: if(
+    sass($color == null): var(
+      --#{$sds-prefix}-border-color,
+      var(--#{$sds-prefix}-color-content-border)
+    );
+    else: $color
+  );
+  $w: if(
+    sass($width == null): var(
+      --#{$sds-prefix}-border-width,
+      var(--#{$sds-prefix}-border-width-default)
+    );
+    else: $width
+  );
+  $s: if(
+    sass($style == null): var(--#{$sds-prefix}-border-style, solid);
+    else: $style
+  );
+  #{$prop}: $w $s $c;
+}

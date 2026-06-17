@@ -287,7 +287,8 @@
     @if (footnote()) {
       <button
         type="button"
-        class="c-list__footnote o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
+        class="c-list__footnote u-border-top o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
+        style="--sds-border-color: var(--sds-color-panel-border); --sds-border-width: var(--sds-border-width-list)"
         (click)="footnoteClick.emit()"
       >
         {{ footnote() }}

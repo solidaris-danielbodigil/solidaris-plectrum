@@ -1,0 +1,41 @@
+// =============================================================================
+// 07-utilities/_utilities.borders.scss
+// u-border-* — token-driven border utilities (prefix: u-).
+// Side classes delegate to the 02-tools border mixin (single definition).
+// Width / style / color are orthogonal modifiers that only set the overridable
+// custom properties — no per-color class matrix.
+//
+//   .u-border-bottom                              → 1px solid content-border
+//   .u-border-top.u-border-thick.u-border-dashed  → composed modifiers
+//   .u-border-danger                              → status color via custom prop
+//
+// Default color: content-border. Default width/style: 1px solid.
+// Override color per instance:  style="--sds-border-color: var(--sds-color-panel-border);"
+// =============================================================================
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.borders' as border;
+
+$sides: (all, top, bottom, inline-start, inline-end, block, inline);
+$statuses: (success, warning, danger, info);
+
+@each $side in $sides {
+  .u-border-#{$side} {
+    @include border.border($side);
+  }
+}
+
+// Orthogonal modifiers — combine freely with any side class.
+.u-border-thick {
+  --#{$sds-prefix}-border-width: var(--#{$sds-prefix}-border-width-thick);
+}
+
+.u-border-dashed {
+  --#{$sds-prefix}-border-style: dashed;
+}
+
+// Status colors reuse the canonical --sds-color-{status} tokens — color only.
+@each $st in $statuses {
+  .u-border-#{$st} {
+    --#{$sds-prefix}-border-color: var(--#{$sds-prefix}-color-#{$st});
+  }
+}

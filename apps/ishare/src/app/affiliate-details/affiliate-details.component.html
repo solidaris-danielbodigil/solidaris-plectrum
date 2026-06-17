@@ -137,7 +137,8 @@
               <p-tablist>
                 @for (cat of categories(); track cat.id) {
                   <p-tab
-                    class="c-affiliate-details__category-tab"
+                    class="c-affiliate-details__category-tab o-grid o-grid--align-items-center o-layout--gap-1-5"
+                    style="--sds-grid-template-columns: auto var(--sds-size-affiliate-details-category-label-min) max-content"
                     [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
                     [value]="cat.id"
                     [attr.data-telemetry-id]="'category-tab-' + cat.id"
@@ -205,7 +206,10 @@
                 [attr.id]="'category-panel-' + cat.id"
               >
                 <p-accordion-header>
-                  <div class="c-affiliate-details__category-panel-header">
+                  <div
+                    class="c-affiliate-details__category-panel-header o-grid o-grid--align-items-center o-grid--justify-content-flex-start o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
+                    style="--sds-grid-template-columns: var(--sds-size-affiliate-details-category-label-min) max-content"
+                  >
                     <span class="c-affiliate-details__category-panel-label">{{
                       cat.label
                     }}</span>

@@ -14,6 +14,10 @@
 //   align-content          → use  o-flex--align-content-{value}
 //   justify-content        → use  o-flex--justify-content-{value}
 //
+// For CSS grid layout (display: grid, grid-template-*, grid-auto-flow,
+// place/justify/align-items|content|self) use the o-grid object instead —
+// see 05-objects/_objects.grid.scss.
+//
 // Apply these classes as BEM mixes directly in HTML templates.
 // See: .ai/rules/08-object-classes.md
 // =============================================================================

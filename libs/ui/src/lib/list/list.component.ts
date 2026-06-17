@@ -46,7 +46,9 @@ export interface ListDocumentNodeData {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-list o-flex o-flex--y o-layout--overflow-hidden',
+    class: 'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout--overflow-hidden',
+    style:
+      '--sds-border-color: var(--sds-color-panel-border); --sds-border-width: var(--sds-border-width-list)',
     '[class.c-list--journey]': 'isJourneyMode()',
     '[class.c-list--flat]': '!isJourneyMode()',
     '[class.is-loading]': 'loading()',

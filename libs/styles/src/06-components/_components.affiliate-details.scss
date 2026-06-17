@@ -5,9 +5,8 @@
 // 06-components/_components.affiliate-details.scss
 // c-affiliate-details — full-width filter toolbar + two-column content row.
 //
-// Layout: o-flex / o-layout in templates.
+// Layout: o-flex / o-layout / o-grid in templates.
 // Exceptions: PrimeNG .p-card-body / .p-accordionheader (no template access),
-//             CSS grid tab/panel headers (no o-grid utility),
 //             scroll-padding on owned scroll wrappers.
 //
 // Design ref:   Figma node 324:5739 (Dossier Affilié — page layout)
@@ -39,13 +38,8 @@
   }
 }
 
-// Category tab — CSS grid (no o-grid); fixed label column from token
+// Category tab — label column width from token (grid layout via o-grid in template)
 .c-affiliate-details__category-tab {
-  display: inline-grid;
-  grid-template-columns: auto var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
-  align-items: center;
-  gap: var(--spacing-1-5);
-
   &--disabled {
     opacity: var(--#{$sds-prefix}-disabled-opacity);
     cursor: not-allowed;
@@ -78,15 +72,9 @@
   color: var(--#{$sds-prefix}-color-text-muted);
 }
 
-// Panel header — CSS grid aligns label + badge before accordion chevron
+// Panel header — label + badge alignment (grid layout via o-grid in template)
 .c-affiliate-details__category-panel-header {
-  display: grid;
-  grid-template-columns: var(--#{$sds-prefix}-size-affiliate-details-category-label-min) max-content;
-  align-items: center;
-  gap: var(--spacing-1);
-  flex: 1 1 auto;
   min-width: 0;
-  justify-content: start;
 }
 
 .c-affiliate-details__category-panel-label {

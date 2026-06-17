@@ -18,6 +18,7 @@ import {
   type SelectButtonChangeEvent,
 } from 'primeng/selectbutton';
 import { CopyableTextComponent } from '../copyable-text';
+import { SDS_PANEL_BORDER_BOTTOM_STYLE } from '../drawer';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { SdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
@@ -217,6 +218,7 @@ export class AffiliateOverviewCardComponent {
   protected readonly titleId = `sds-affiliate-overview-card-title-${nextTitleId++}`;
   protected readonly statusActionTagPrefix =
     AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX;
+  protected readonly cardPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
 
   readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {
     const severity = this.statusAction()?.severity;
@@ -231,7 +233,7 @@ export class AffiliateOverviewCardComponent {
   readonly cardStyleClass = computed(() => {
     const classes = [
       'c-affiliate-overview-card',
-      'c-panel-chrome--border-bottom',
+      'u-border-bottom',
       `c-affiliate-overview-card--${this.effectiveVariant()}`,
     ];
 

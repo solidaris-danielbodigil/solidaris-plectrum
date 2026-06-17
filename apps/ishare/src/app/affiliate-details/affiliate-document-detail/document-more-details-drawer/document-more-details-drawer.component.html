@@ -5,17 +5,14 @@
   [modal]="true"
   [dismissible]="true"
   [closable]="false"
-  appendTo="body"
-  [style]="{
-    width: 'max-content',
-    minWidth: 'var(--sds-size-drawer-min-width)',
-    maxWidth: 'var(--sds-size-drawer-max-width)',
-  }"
+  [appendTo]="drawerAppendTo"
+  [style]="drawerPanelStyle"
 >
   <ng-template #headless>
     <div class="o-flex o-flex--y o-layout--full-height">
       <header
-        class="c-drawer__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-inline-3 o-layout--padding-block-2"
+        class="c-drawer__header u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-inline-3 o-layout--padding-block-2"
+        [style]="drawerPanelBorderStyle"
       >
         <h2 class="u-text-heading-md">{{ drawerTitle() }}</h2>
         <button

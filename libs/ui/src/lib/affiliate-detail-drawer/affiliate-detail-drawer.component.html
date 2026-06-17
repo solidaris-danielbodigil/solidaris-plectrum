@@ -5,18 +5,15 @@
   [modal]="modal()"
   [dismissible]="true"
   [closable]="false"
-  appendTo="body"
-  [style]="{
-    width: 'max-content',
-    minWidth: 'var(--sds-size-drawer-min-width)',
-    maxWidth: 'var(--sds-size-drawer-max-width)',
-  }"
+  [appendTo]="drawerAppendTo"
+  [style]="drawerPanelStyle"
 >
   <ng-template #headless>
     @if (data(); as affiliate) {
       <div class="o-flex o-flex--y o-layout--full-height o-layout--min-h-0">
         <header
-          class="c-drawer__header o-flex o-flex--align-items-flex-start o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-block-start-3 o-layout--padding-block-end-2 o-layout--padding-inline-2"
+          class="c-drawer__header u-border-bottom o-flex o-flex--align-items-flex-start o-flex--justify-content-space-between o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-block-start-3 o-layout--padding-block-end-2 o-layout--padding-inline-2"
+          [style]="drawerPanelBorderStyle"
         >
           <div
             class="c-drawer__affiliate-detail-identity o-flex o-flex--align-items-flex-start o-layout--gap-1-5 o-flex__item--grow-1 o-layout--min-w-0"
@@ -77,7 +74,7 @@
               aria-label="Plus d'actions"
               data-telemetry-id="drawer-menu"
               sdsTelemetryLabel="Plus d'actions"
-              (click)="onMenuClick()"
+              (click)="menuClick.emit()"
             ></button>
             <button
               pButton
@@ -98,7 +95,8 @@
           class="c-drawer__content o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--overflow-y-auto o-layout--gap-2 o-layout--padding-block-end-2"
         >
           <div
-            class="c-drawer__toolbar o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--wrap o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-2"
+            class="c-drawer__toolbar u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--wrap o-layout--gap-1-5 o-flex__item--shrink-0 o-layout--padding-2"
+            [style]="drawerPanelBorderStyle"
           >
             <p-selectbutton
               class="c-drawer__affiliate-detail-view-switch"
@@ -122,7 +120,7 @@
               label="Actions rapides"
               data-telemetry-id="drawer-quick-actions"
               sdsTelemetryLabel="Actions rapides"
-              (click)="onQuickActionsClick()"
+              (click)="quickActionsClick.emit()"
             ></button>
           </div>
 
@@ -174,7 +172,7 @@
                 icon="bi bi-telephone"
                 label="Appeler l'affilié"
                 sdsTelemetryLabel="Appeler l'affilié"
-                (click)="onCallClick()"
+                (click)="callClick.emit()"
               ></button>
               <button
                 pButton
@@ -185,7 +183,7 @@
                 icon="bi bi-envelope"
                 label="Envoyer un e-mail à l'affilié"
                 sdsTelemetryLabel="Envoyer un e-mail à l'affilié"
-                (click)="onEmailClick()"
+                (click)="emailClick.emit()"
               ></button>
             </div>
 

@@ -1,7 +1,7 @@
 // =============================================================================
 // libs/ui/src/foundations/grid.stories.ts
-// Foundations / Grid — o-flex / o-flex__item flex grid docs.
-// Each export is a self-contained live demo wrapped in .sb-demo-wrapper.
+// Foundations / Flex Grid — o-flex / o-flex__item flex grid docs.
+// For CSS Grid, see Foundations/Grid (CSS) (o-grid.stories.ts).
 // =============================================================================
 
 import { componentWrapperDecorator, type Meta } from '@storybook/angular';
@@ -15,7 +15,7 @@ const ALIGN_SELF    = ['center','flex-start','flex-end','baseline','stretch','in
 const BREAKPOINTS   = ['@xs','@sm','@md','@lg','@xl'];
 
 export default {
-  title: 'Foundations/Grid',
+  title: 'Foundations/Flex Grid',
   tags: ['!autodocs'],
   decorators: [
     componentWrapperDecorator((story) => `<div class="sb-demo-wrapper">${story}</div>`),
@@ -26,6 +26,8 @@ export default {
       description: {
         component: `
 A **12-cell mobile-first grid** based on Flex display.
+
+> For **CSS Grid** layout (\`display: grid\`, column templates, auto-fit/fill), see [Foundations/Grid (CSS)](?path=/story/foundations-grid-css--template-columns).
 
 - \`.o-flex\` — flex container (\`row nowrap\` by default)
 - \`.o-flex__item\` — flex child / cell (\`flex: 1 1 100%\` by default)

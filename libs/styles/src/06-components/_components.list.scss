@@ -14,8 +14,6 @@
 
 .c-list {
   background: var(--#{$sds-prefix}-color-list-bg);
-  border: var(--#{$sds-prefix}-border-width-list) solid var(--#{$sds-prefix}-color-panel-border);
-  border-radius: var(--#{$sds-prefix}-radius-xl);
 }
 
 // ── Section header (Suivi des documents) ────────────────────────────────────
@@ -42,8 +40,6 @@
 .c-list__footnote {
   @include text-body-sm;
   border: 0;
-  border-block-start: var(--#{$sds-prefix}-border-width-list) solid
-    var(--#{$sds-prefix}-color-panel-border);
   background: var(--#{$sds-prefix}-color-list-bg);
   color: var(--#{$sds-prefix}-color-text-muted);
   text-align: start;

@@ -8,17 +8,20 @@ import {
   model,
   signal,
 } from '@angular/core';
-import { EmptyStateComponent } from '@solidaris/ui';
+import {
+  EmptyStateComponent,
+  SDS_DRAWER_APPEND_TO,
+  SDS_DRAWER_CONTENT_STYLE,
+  SDS_PANEL_BORDER_BOTTOM_STYLE,
+  normalizeAccordionPanelIds,
+} from '@solidaris/ui';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { Drawer } from 'primeng/drawer';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
-import type {
-  DocumentAuditDescription,
-  DocumentCertificatPanel,
-} from '../affiliate-document-detail.types';
+import type { DocumentCertificatPanel } from '../affiliate-document-detail.types';
 import {
   isDocumentAuditMultiline,
   isDocumentAuditTag,
@@ -49,8 +52,17 @@ import {
   templateUrl: './document-more-details-drawer.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'c-drawer',
+  },
 })
 export class DocumentMoreDetailsDrawerComponent {
+  protected readonly drawerAppendTo = SDS_DRAWER_APPEND_TO;
+  protected readonly drawerPanelStyle = SDS_DRAWER_CONTENT_STYLE;
+  protected readonly drawerPanelBorderStyle = SDS_PANEL_BORDER_BOTTOM_STYLE;
+  protected readonly isAuditTag = isDocumentAuditTag;
+  protected readonly isAuditMultiline = isDocumentAuditMultiline;
+
   readonly panel = input<DocumentCertificatPanel | null>(null);
   readonly visible = model<boolean>(false);
 
@@ -80,25 +92,6 @@ export class DocumentMoreDetailsDrawerComponent {
   protected onExpandedEventIdsChange(
     value: string | number | string[] | number[] | null | undefined,
   ): void {
-    if (value === null || value === undefined) {
-      this.expandedEventIds.set([]);
-      return;
-    }
-
-    if (Array.isArray(value)) {
-      this.expandedEventIds.set(value.map(String));
-      return;
-    }
-
-    this.expandedEventIds.set([String(value)]);
+    this.expandedEventIds.set(normalizeAccordionPanelIds(value));
   }
-
-  protected isAuditTag(description: DocumentAuditDescription): boolean {
-    return isDocumentAuditTag(description);
-  }
-
-  protected isAuditMultiline(description: DocumentAuditDescription): boolean {
-    return isDocumentAuditMultiline(description);
-  }
-
 }

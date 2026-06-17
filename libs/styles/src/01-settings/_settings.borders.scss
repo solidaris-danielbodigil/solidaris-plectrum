@@ -1,0 +1,19 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.borders.scss
+// Border width tokens — the geometric counterpart to the semantic border
+// COLORS in _settings.colors-semantic.scss.
+//
+// RULES:
+//   - Never hardcode border-width values (1px / 2px) inline in components.
+//   - Border COLORS live in _settings.colors-semantic.scss (panel/card/content).
+// =============================================================================
+
+:root {
+
+  --#{$sds-prefix}-border-width-none:     0;
+  --#{$sds-prefix}-border-width-default:  1px;
+  --#{$sds-prefix}-border-width-thick:    2px;
+
+}
