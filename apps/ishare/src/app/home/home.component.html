@@ -1,7 +1,7 @@
 <div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
   <p-card class="c-affiliate-search-panel o-flex o-flex__item--shrink-0 o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
     <form class="o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
-      <(pds|app|lib)-form-field
+      <pds-form-field
         label="O.A."
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'office')"
@@ -25,7 +25,7 @@
         ></p-autocomplete>
       </pds-form-field>
 
-      <(pds|app|lib)-form-field
+      <pds-form-field
         label="Type de recherche"
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'searchType')"
@@ -45,7 +45,7 @@
         ></p-selectbutton>
       </pds-form-field>
 
-      <(pds|app|lib)-form-field
+      <pds-form-field
         [label]="searchIdentifierLabel"
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'identifier')"
@@ -63,7 +63,7 @@
               required
             />
             <p-inputicon>
-              <(pds|app|lib)-input-clear
+              <pds-input-clear
                 [visible]="!!searchIdentifier"
                 ariaLabel="Effacer la référence"
                 (clear)="clearSearchIdentifier()"
@@ -84,7 +84,7 @@
   </p-card>
 
   <p-card class="o-flex o-flex__item--grow-1 o-layout--full-height o-layout--min-w-0" header="Détails du document">
-    <(pds|app|lib)-empty-state
+    <pds-empty-state
       class="o-flex o-flex--col o-flex__item--grow-1"
       title="Aucun résultat pour l'instant"
       description="Lancez une recherche pour afficher le détail du document et les actions disponibles."

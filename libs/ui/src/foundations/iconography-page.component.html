@@ -4,7 +4,7 @@
 <div class="c-iconography o-layout--padding-inline-6 o-layout--padding-block-end-6">
 
   <!-- ── Sticky toolbar ───────────────────────────────────────── -->
-  <(pds|app|lib)-toolbar [sticky]="true">
+  <pds-toolbar [sticky]="true">
 
     <ng-container slot="start">
       <!-- Search — p-iconField + InputText directive -->
@@ -22,7 +22,7 @@
           class="c-iconography-toolbar__search-input"
         />
         <p-inputicon>
-          <(pds|app|lib)-input-clear
+          <pds-input-clear
             [visible]="!!searchQuery()"
             ariaLabel="Clear search"
             (clear)="clearSearchQuery()"

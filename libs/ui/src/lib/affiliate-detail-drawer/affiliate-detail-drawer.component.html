@@ -18,7 +18,7 @@
           <div
             class="c-drawer__affiliate-detail-identity o-flex o-flex--align-items-flex-start o-layout--gap-1-5 o-flex__item--grow-1 o-layout--min-w-0"
           >
-            <(pds|app|lib)-plectrum-avatar
+            <pds-plectrum-avatar
               class="c-drawer__affiliate-detail-avatar o-flex__item--shrink-0"
               size="large"
               [initials]="affiliate.avatarInitials ?? ''"
@@ -41,7 +41,7 @@
                     track trackIdentifier($index, identifier);
                     let last = $last
                   ) {
-                    <(pds|app|lib)-copyable-text
+                    <pds-copyable-text
                       [label]="identifier.label"
                       [value]="identifier.value"
                       (copied)="onIdentifierCopy(identifier)"
@@ -231,7 +231,7 @@
                         <span
                           class="c-drawer__affiliate-detail-family-info o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
                         >
-                          <(pds|app|lib)-plectrum-avatar
+                          <pds-plectrum-avatar
                             class="c-drawer__affiliate-detail-family-avatar o-flex__item--shrink-0"
                             size="small"
                             [initials]="member.initials"

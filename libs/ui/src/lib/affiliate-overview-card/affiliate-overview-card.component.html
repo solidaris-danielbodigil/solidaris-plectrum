@@ -11,7 +11,7 @@
         aria-hidden="true"
       ></span>
     } @else {
-      <(pds|app|lib)-plectrum-avatar
+      <pds-plectrum-avatar
         class="c-affiliate-overview-card__avatar o-flex__item--shrink-0"
         size="large"
         [initials]="avatarInitials()"
@@ -48,7 +48,6 @@
                 [icon]="action.icon"
                 [severity]="statusActionSeverity()!"
                 size="small"
-                [outlined]="true"
                 [disabled]="action.disabled ?? false"
                 [attr.aria-disabled]="action.disabled ? 'true' : null"
                 [attr.aria-label]="statusActionAriaLabel()"
@@ -161,7 +160,7 @@
           class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
         >
           @for (identifier of identifiers(); track identifier.label; let last = $last) {
-            <(pds|app|lib)-copyable-text
+            <pds-copyable-text
               [label]="identifier.label"
               [value]="identifier.value"
               iconSize="sm"

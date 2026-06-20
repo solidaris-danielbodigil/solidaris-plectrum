@@ -1,12 +1,12 @@
 <div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">
-  <(pds|app|lib)-nav-shell
+  <pds-nav-shell
     class="o-layout--relative o-flex__item--shrink-0"
     [items]="navItems"
     activeItemId="ishare"
   ></pds-nav-shell>
 
   <div class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0">
-    <(pds|app|lib)-top-nav
+    <pds-top-nav
       class="o-layout--full-width"
       [home]="homeBreadcrumb"
       [breadcrumbs]="breadcrumbs()"
@@ -26,7 +26,7 @@
     ></pds-top-nav>
 
     @if (affiliateHeader(); as header) {
-      <(pds|app|lib)-affiliate-overview-card
+      <pds-affiliate-overview-card
         class="o-layout--full-width"
         [title]="header.title"
         [variant]="header.variant"
