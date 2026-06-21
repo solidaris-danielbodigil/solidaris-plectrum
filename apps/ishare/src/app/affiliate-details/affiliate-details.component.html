@@ -26,6 +26,7 @@
                 pdsTelemetryLabel="Rechercher"
                 [ngModel]="documentSearch()"
                 (ngModelChange)="documentSearch.set($event)"
+                [disabled]="pageLoading()"
                 pSize="small"
                 placeholder="Rechercher document..."
                 class="c-affiliate-documents-toolbar__field-input o-layout--full-width"
@@ -58,6 +59,7 @@
               [dropdown]="true"
               [forceSelection]="true"
               [showClear]="true"
+              [disabled]="pageLoading()"
               placeholder="Sélectionnez un secteur"
               size="small"
               fluid
@@ -82,6 +84,7 @@
               [dropdown]="true"
               [forceSelection]="true"
               [showClear]="true"
+              [disabled]="pageLoading()"
               placeholder="Sélectionnez un tri"
               size="small"
               fluid
@@ -109,10 +112,19 @@
               <h2 class="c-list__title o-layout--margin-0">
                 Suivi des documents
               </h2>
-              <span
-                class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
-                >{{ documentCount() }}</span
-              >
+              @if (pageLoading()) {
+                <p-skeleton
+                  shape="circle"
+                  size="var(--pds-size-list-count-badge-min)"
+                  styleClass="c-skeleton-count-badge"
+                  aria-hidden="true"
+                />
+              } @else {
+                <span
+                  class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
+                  >{{ documentCount() }}</span
+                >
+              }
             </div>
             <button
               pButton
@@ -124,6 +136,7 @@
               [pdsTelemetryLabel]="startDateSortAriaLabel()"
               [icon]="startDateSortIcon()"
               [attr.aria-label]="startDateSortAriaLabel()"
+              [disabled]="pageLoading()"
               (click)="toggleStartDateSort()"
             ></button>
           </div>
@@ -141,6 +154,7 @@
                     style="--pds-grid-template-columns: auto var(--pds-size-affiliate-details-category-label-min) max-content"
                     [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
                     [value]="cat.id"
+                    [disabled]="pageLoading()"
                     [attr.data-telemetry-id]="'category-tab-' + cat.id"
                     [attr.aria-disabled]="cat.enabled ? null : 'true'"
                     [pTooltip]="cat.enabled ? undefined : categoryTabDisabledHint"
@@ -157,6 +171,7 @@
                       [attr.data-telemetry-id]="'category-toggle-' + cat.id"
                       [attr.aria-disabled]="cat.enabled ? null : 'true'"
                       [attr.tabindex]="cat.enabled ? 0 : -1"
+                      [disabled]="pageLoading()"
                       [pdsTelemetryLabel]="
                         isCategoryOpen(cat.id)
                           ? 'Masquer ' + cat.label
@@ -178,7 +193,16 @@
                       "
                     ></button>
                     <span>{{ cat.label }}</span>
-                    <p-badge [value]="cat.count" />
+                    @if (pageLoading()) {
+                      <p-skeleton
+                        shape="circle"
+                        size="var(--pds-size-list-count-badge-min)"
+                        styleClass="c-skeleton-count-badge"
+                        aria-hidden="true"
+                      />
+                    } @else {
+                      <p-badge [value]="cat.count" />
+                    }
                   </p-tab>
                 }
               </p-tablist>
@@ -188,7 +212,10 @@
       </ng-template>
 
       <div
-        class="c-affiliate-details__documents-scroll o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0"
+        class="c-affiliate-details__documents-scroll o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
+        [class.o-scroll-shadow]="!pageLoading()"
+        [class.o-layout--overflow-y-auto]="!pageLoading()"
+        [class.o-layout--overflow-hidden]="pageLoading()"
       >
       @if (showCategoryTabs()) {
         @if (hasListResults()) {
@@ -217,17 +244,33 @@
                       <span
                         class="c-affiliate-details__category-panel-count o-flex o-flex--align-items-center o-layout--gap-1"
                       >
-                        <p-badge
-                          class="c-affiliate-details__category-panel-badge"
-                          [value]="cat.count"
-                          [attr.aria-label]="cat.count + ' documents'"
-                        />
+                        @if (pageLoading()) {
+                          <p-skeleton
+                            shape="circle"
+                            size="var(--pds-size-list-count-badge-min)"
+                            styleClass="c-skeleton-count-badge"
+                            aria-hidden="true"
+                          />
+                        } @else {
+                          <p-badge
+                            class="c-affiliate-details__category-panel-badge"
+                            [value]="cat.count"
+                            [attr.aria-label]="cat.count + ' documents'"
+                          />
+                        }
                         <span
                           class="c-affiliate-details__category-panel-count-label"
                           aria-hidden="true"
                           >documents</span
                         >
                       </span>
+                    } @else if (pageLoading()) {
+                      <p-skeleton
+                        shape="circle"
+                        size="var(--pds-size-list-count-badge-min)"
+                        styleClass="c-skeleton-count-badge"
+                        aria-hidden="true"
+                      />
                     } @else {
                       <p-badge
                         class="c-affiliate-details__category-panel-badge"
@@ -247,6 +290,7 @@
                     <pds-list
                       class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
+                      [loading]="pageLoading()"
                       [groups]="cat.groups"
                       [items]="[]"
                       [expandedGroupIds]="expandedGroupIds()"
@@ -259,6 +303,7 @@
                     <pds-list
                       class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
+                      [loading]="pageLoading()"
                       [groups]="null"
                       [items]="cat.items"
                       [selectedItemId]="selectedDocumentId()"
@@ -295,48 +340,58 @@
       >
         @if (selectedDocumentId(); as documentId) {
           <ng-template pTemplate="header">
-            @if (selectedDocumentDetail(); as detail) {
-              <div
-                class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
-              >
+            <div
+              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+            >
+              @if (pageLoading()) {
+                <span
+                  class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--title o-flex__item--grow-1 o-layout--min-w-0"
+                  aria-hidden="true"
+                >
+                  <p-skeleton />
+                </span>
+              } @else {
                 <h2
                   class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0 o-layout--margin-0"
                 >
                   {{ selectedDocumentTitle() }}
                 </h2>
+              }
 
-                <div
-                  class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
-                >
-                  <button
-                    pButton
-                    type="button"
-                    severity="secondary"
-                    size="small"
-                    icon="bi bi-skip-backward"
-                    [disabled]="!canGoToPreviousDocument()"
-                    aria-label="Document précédent"
-                    pdsTelemetryLabel="Document précédent"
-                    (click)="goToPreviousDocument()"
-                  ></button>
-                  <button
-                    pButton
-                    type="button"
-                    severity="secondary"
-                    size="small"
-                    icon="bi bi-skip-forward"
-                    [disabled]="!canGoToNextDocument()"
-                    aria-label="Document suivant"
-                    pdsTelemetryLabel="Document suivant"
-                    (click)="goToNextDocument()"
-                  ></button>
-                </div>
+              <div
+                class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+              >
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  size="small"
+                  icon="bi bi-skip-backward"
+                  [disabled]="pageLoading() || !canGoToPreviousDocument()"
+                  aria-label="Document précédent"
+                  pdsTelemetryLabel="Document précédent"
+                  (click)="goToPreviousDocument()"
+                ></button>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  size="small"
+                  icon="bi bi-skip-forward"
+                  [disabled]="pageLoading() || !canGoToNextDocument()"
+                  aria-label="Document suivant"
+                  pdsTelemetryLabel="Document suivant"
+                  (click)="goToNextDocument()"
+                ></button>
               </div>
-            }
+            </div>
           </ng-template>
 
           <div
-            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
+            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
+            [class.o-scroll-shadow]="!pageLoading()"
+            [class.o-layout--overflow-y-auto]="!pageLoading()"
+            [class.o-layout--overflow-hidden]="pageLoading()"
           >
             <app-affiliate-document-detail
               class="o-layout--full-width o-layout--min-w-0"
@@ -344,11 +399,13 @@
               [affiliateRouteId]="affiliateId()"
               [navigableDocuments]="navigableDocuments()"
               [focusTarget]="documentFocus()"
+              [loading]="pageLoading()"
               (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
               (moreDetailsOpen)="onMoreDetailsOpen($event)"
               (transactionsCicsOpen)="onTransactionsCicsOpen()"
               (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
             />
+            @if (!pageLoading()) {
             <p-scrolltop
               class="c-affiliate-details__scrolltop o-flex__item--shrink-0"
               target="parent"
@@ -361,6 +418,7 @@
                 raised: true,
               }"
             />
+            }
           </div>
         } @else {
           <pds-empty-state

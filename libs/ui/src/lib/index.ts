@@ -12,5 +12,6 @@ export * from './affiliate-overview-card';
 export * from './drawer';
 export * from './affiliate-detail-drawer';
 export * from './list';
+export * from './loading/simulated-loading';
 export * from './testing-telemetry';
 export * from './transactions-cics-modal';

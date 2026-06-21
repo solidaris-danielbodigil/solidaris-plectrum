@@ -27,6 +27,11 @@ export interface AffiliateHeaderData {
 @Injectable({ providedIn: 'root' })
 export class AffiliateHeaderService {
   readonly header = signal<AffiliateHeaderData | null>(null);
+  readonly headerLoading = signal(false);
+
+  setHeaderLoading(loading: boolean): void {
+    this.headerLoading.set(loading);
+  }
 
   setHeader(data: AffiliateHeaderData): void {
     this.header.set(data);
@@ -34,5 +39,6 @@ export class AffiliateHeaderService {
 
   clearHeader(): void {
     this.header.set(null);
+    this.headerLoading.set(false);
   }
 }

@@ -15,6 +15,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { MessageModule } from 'primeng/message';
+import { Skeleton } from 'primeng/skeleton';
 import { StepperModule } from 'primeng/stepper';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
@@ -50,6 +51,7 @@ import {
     MessageModule,
     NgTemplateOutlet,
     PdsTelemetryLabelDirective,
+    Skeleton,
     StepperModule,
     TagModule,
   ],
@@ -60,6 +62,8 @@ import {
   host: {
     class:
       'c-affiliate-document-detail o-flex o-flex--y o-layout--min-w-0 o-layout--full-height',
+    '[class.is-loading]': 'loading()',
+    '[attr.aria-busy]': 'loading()',
   },
 })
 export class AffiliateDocumentDetailComponent {
@@ -90,6 +94,12 @@ export class AffiliateDocumentDetailComponent {
   readonly focusTarget = input<{ stepValue: number; panelId: string } | null>(
     null,
   );
+
+  readonly loading = input(false);
+
+  protected readonly skeletonStepSlots = [1, 2, 3] as const;
+  protected readonly skeletonDetailRowSlots = [1, 2, 3] as const;
+  protected readonly skeletonAccordionValue = ['skeleton-panel'] as const;
 
   readonly selectedDocumentIdChange = output<string>();
 

@@ -111,9 +111,21 @@
   // Figma: copy-content-LEGACY icon at 10.5px (0.75rem @ 14px base)
   --#{$pds-prefix}-size-affiliate-overview-card-metadata-icon: var(--#{$pds-prefix}-icon-size-xs);
 
-  // Large illustrated avatar skeleton — matches --pds-size-avatar-large-*
-  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-w: var(--#{$pds-prefix}-size-avatar-large-w);
-  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-h: var(--#{$pds-prefix}-size-avatar-large-h);
+  // Header row — locked to heading-lg line box so loading/loaded share the same block size
+  --#{$pds-prefix}-size-affiliate-overview-card-header-row-h: var(--text-heading-lg-line-height);
+
+  // Skeleton blocks — mirror loaded chrome (iSHARE Eva Martinez reference layout)
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-w: calc(180 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-h: calc(32 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-status-w: calc(171 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-action-h: calc(27 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-info-tags-min-w: calc(185 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-info-tags-h: calc(30 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-h: calc(35 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-1: calc(126 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-2: calc(127 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-3: calc(263 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-4: calc(161 / 14 * var(--base-unit));
 }
 
 // ── PrimeNG Card token bridge — scoped to affiliate overview card wrapper ─────

@@ -4,4 +4,5 @@
 export const environment = {
   production: true,
   enableTestingTelemetry: true,
+  simulateAffiliateLoading: false,
 };

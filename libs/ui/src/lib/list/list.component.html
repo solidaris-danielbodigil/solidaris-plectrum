@@ -15,15 +15,15 @@
 
 @if (loading()) {
   <div class="c-list__body o-flex o-flex--col o-layout--gap-1-5">
-    @for (row of [1, 2, 3]; track row) {
+    @for (row of skeletonRowIndexes; track row) {
       <article class="c-list__item c-list__item--document">
         <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
           <div class="o-flex o-layout--gap-3">
-            <span class="c-list__skeleton-icon"></span>
-            <span class="c-list__skeleton-line c-list__skeleton-line--title"></span>
+            <p-skeleton class="c-list__skeleton-icon o-flex__item--shrink-0" />
+            <p-skeleton class="c-list__skeleton-line c-list__skeleton-line--title" />
           </div>
-          <span class="c-list__skeleton-line c-list__skeleton-line--subtitle"></span>
-          <span class="c-list__skeleton-line c-list__skeleton-line--tag"></span>
+          <p-skeleton class="c-list__skeleton-line c-list__skeleton-line--subtitle" />
+          <p-skeleton class="c-list__skeleton-line c-list__skeleton-line--tag" />
         </div>
       </article>
     }

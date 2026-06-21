@@ -1,0 +1,28 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.skeleton-slot.scss
+// Sized wrappers for PrimeNG p-skeleton — host inline styles ignore BEM sizing.
+// Pattern: <span class="c-skeleton-slot c-skeleton-slot--*"><p-skeleton /></span>
+// =============================================================================
+
+.c-skeleton-slot {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+
+  > .p-skeleton {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: inherit;
+  }
+}
+
+// Circle count-badge skeleton — use with p-skeleton shape="circle"
+// size="var(--pds-size-list-count-badge-min)".
+.c-skeleton-count-badge {
+  flex-shrink: 0;
+  line-height: 0;
+}

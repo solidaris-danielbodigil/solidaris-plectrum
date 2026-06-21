@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import {
   componentWrapperDecorator,
   moduleMetadata,
@@ -16,6 +16,7 @@ import {
   type AffiliateOverviewPrimaryAction,
   type AffiliateOverviewStatusAction,
 } from './affiliate-overview-card.component';
+import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
 
 // =============================================================================
 // Affiliate Overview Card
@@ -405,7 +406,63 @@ export const Loading: Story = {
     docs: {
       description: {
         story:
-          'Loading placeholder with large avatar skeleton (56px), header, and identifier skeletons.',
+          'Static loading state — avatar pill + header row (title, status, info tags, primary action) + identifier chips.',
+      },
+    },
+  },
+};
+
+@Component({
+  selector: 'pds-affiliate-overview-card-simulated-loading-demo',
+  standalone: true,
+  imports: [AffiliateOverviewCardComponent],
+  template: `
+    <pds-affiliate-overview-card
+      [loading]="loading()"
+      variant="warning"
+      title="Dupont, Marie"
+      avatarInitials="DM"
+      avatarGender="female"
+      [avatarVariant]="1"
+      [statusAction]="statusAction"
+      [infoTags]="infoTags"
+      [identifiers]="identifiers"
+      [primaryAction]="primaryAction"
+    />
+  `,
+})
+class AffiliateOverviewCardSimulatedLoadingDemoComponent {
+  readonly loading = signal(true);
+  readonly statusAction: AffiliateOverviewStatusAction = {
+    label: 'C4 non reçu',
+    tagValue: 'C4',
+    icon: 'bi bi-exclamation-triangle-fill',
+    severity: 'warn',
+    ariaLabel: 'Voir le détail — C4 non reçu',
+  };
+  readonly infoTags = DEFAULT_INFO_TAGS;
+  readonly identifiers = DEFAULT_IDENTIFIERS;
+  readonly primaryAction = DEFAULT_PRIMARY_ACTION;
+
+  constructor() {
+    setTimeout(() => this.loading.set(false), SIMULATED_LOADING_MS);
+  }
+}
+
+export const SimulatedLoading: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [AffiliateOverviewCardSimulatedLoadingDemoComponent],
+      providers: plectrumIconProviders,
+    }),
+  ],
+  render: () => ({
+    template: '<pds-affiliate-overview-card-simulated-loading-demo />',
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `Flashes skeleton for ${SIMULATED_LOADING_MS}ms then reveals the warning card — use to preview the shimmer transition.`,
       },
     },
   },

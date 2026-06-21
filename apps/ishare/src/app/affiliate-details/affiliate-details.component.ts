@@ -24,6 +24,7 @@ import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { ScrollTop } from 'primeng/scrolltop';
+import { Skeleton } from 'primeng/skeleton';
 import {
   AffiliateDetailDrawerComponent,
   EmptyStateComponent,
@@ -31,6 +32,7 @@ import {
   InputClearComponent,
   ListComponent,
   PdsTelemetryLabelDirective,
+  SIMULATED_LOADING_MS,
   TestingTelemetryService,
   TESTING_TELEMETRY_ENABLED,
   ToolbarComponent,
@@ -51,6 +53,7 @@ import type {
   ListGroup,
 } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
+import { isSimulatedAffiliateLoadingEnabled } from '../layout/is-simulated-affiliate-loading-enabled';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail/affiliate-document-detail.component';
 import {
@@ -494,6 +497,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
     ScrollTop,
+    Skeleton,
   ],
   templateUrl: './affiliate-details.component.html',
   styleUrl: './affiliate-details.component.scss',
@@ -512,6 +516,11 @@ export class AffiliateDetailsComponent {
   private readonly telemetry = inject(TestingTelemetryService);
   private readonly testingTelemetryEnabled = inject(TESTING_TELEMETRY_ENABLED);
   private readonly destroyRef = inject(DestroyRef);
+
+  private loadingTimerId: ReturnType<typeof setTimeout> | null = null;
+
+  /** Brief skeleton flash for header + document lists (dev / demo). */
+  readonly pageLoading = signal(isSimulatedAffiliateLoadingEnabled());
 
   private readonly routeParams = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
@@ -1994,8 +2003,22 @@ export class AffiliateDetailsComponent {
   }
 
   constructor() {
+    if (isSimulatedAffiliateLoadingEnabled()) {
+      this.affiliateHeaderService.setHeaderLoading(true);
+    }
+
     this.destroyRef.onDestroy(() => {
       this.telemetry.disable();
+      this.clearAffiliatePageLoadingTimer();
+    });
+
+    effect(() => {
+      const routeId = this.affiliateId();
+      if (!routeId) {
+        return;
+      }
+
+      this.scheduleAffiliatePageLoading();
     });
 
     let previousAffiliateRouteId: string | null = null;
@@ -2179,6 +2202,32 @@ export class AffiliateDetailsComponent {
     this.destroyRef.onDestroy(() => {
       this.affiliateHeaderService.clearHeader();
     });
+  }
+
+  private scheduleAffiliatePageLoading(): void {
+    this.clearAffiliatePageLoadingTimer();
+
+    if (!isSimulatedAffiliateLoadingEnabled()) {
+      this.pageLoading.set(false);
+      this.affiliateHeaderService.setHeaderLoading(false);
+      return;
+    }
+
+    this.pageLoading.set(true);
+    this.affiliateHeaderService.setHeaderLoading(true);
+
+    this.loadingTimerId = setTimeout(() => {
+      this.pageLoading.set(false);
+      this.affiliateHeaderService.setHeaderLoading(false);
+      this.loadingTimerId = null;
+    }, SIMULATED_LOADING_MS);
+  }
+
+  private clearAffiliatePageLoadingTimer(): void {
+    if (this.loadingTimerId !== null) {
+      clearTimeout(this.loadingTimerId);
+      this.loadingTimerId = null;
+    }
   }
 }
 

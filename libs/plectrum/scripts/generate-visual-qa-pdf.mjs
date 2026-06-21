@@ -1,0 +1,195 @@
+import { writeFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const outDir = join(__dirname, '..');
+const htmlPath = join(outDir, 'PLECTRUM_V1_VISUAL_QA_REPORT.pdf.html');
+const pdfPath = join(outDir, 'PLECTRUM_V1_VISUAL_QA_REPORT.pdf');
+
+const browser = [
+  process.env.CHROME_PATH,
+  `${process.env.LOCALAPPDATA}\\Google\\Chrome\\Application\\chrome.exe`,
+  `${process.env.ProgramFiles}\\Google\\Chrome\\Application\\chrome.exe`,
+  `${process.env['ProgramFiles(x86)']}\\Google\\Chrome\\Application\\chrome.exe`,
+  `${process.env.ProgramFiles}\\Microsoft\\Edge\\Application\\msedge.exe`,
+]
+  .filter(Boolean)
+  .find((p) => existsSync(p));
+
+if (!browser) {
+  console.error('Chrome or Edge not found. Set CHROME_PATH or install Chrome.');
+  process.exit(1);
+}
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Plectrum v1 — Visual QA</title>
+  <style>
+    @page { margin: 18mm 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: #1a1a1a;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 4px;
+    }
+    h1 { font-size: 20pt; margin: 0 0 4px; font-weight: 700; }
+    .meta { color: #555; font-size: 9.5pt; margin-bottom: 20px; }
+    h2 { font-size: 13pt; margin: 22px 0 8px; border-bottom: 2px solid #487395; padding-bottom: 4px; }
+    h3 { font-size: 11pt; margin: 16px 0 6px; color: #487395; }
+    p { margin: 6px 0; }
+    ul { margin: 6px 0 10px; padding-left: 20px; }
+    li { margin: 4px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 14px; font-size: 9.5pt; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #f3f5f7; font-weight: 600; }
+    .tag { display: inline-block; font-size: 8.5pt; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-right: 6px; }
+    .tag-red { background: #fde8e8; color: #b42318; }
+    .tag-amber { background: #fef3cd; color: #8a6d00; }
+    .tag-green { background: #e8f5e9; color: #2e7d32; }
+    .callout { background: #f6f8fa; border-left: 4px solid #487395; padding: 10px 12px; margin: 12px 0; }
+    .checklist li { list-style: none; margin-left: -20px; }
+    .checklist li::before { content: "☐ "; }
+    .footer { margin-top: 24px; font-size: 9pt; color: #666; border-top: 1px solid #ddd; padding-top: 10px; }
+    a { color: #487395; }
+  </style>
+</head>
+<body>
+
+<h1>Plectrum v1 — visual QA heads-up</h1>
+<p class="meta">17 June 2026 · for design &amp; product · eng detail in PLECTRUM_V1_GAP_REPORT.md</p>
+
+<div class="callout">
+  <strong>TL;DR:</strong> We're moving from Plectrum v0.6 → v1 (closer to current Figma). Almost ready.
+  Eng has one small fix, then we need your eyes — mainly on <strong>tabs</strong> and <strong>accordions</strong>.
+  Toggle old vs new in the avatar menu while reviewing.
+</div>
+
+<h2>The short version</h2>
+<table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>Ready to ship v1?</td><td><strong>Yes</strong> — after 1 eng fix + your sign-off</td></tr>
+  <tr><td>Blockers?</td><td><strong>1</strong> (eng-only, white background token)</td></tr>
+  <tr><td>Need design review?</td><td><strong>2 big ones</strong> — tabs &amp; accordions. Plus a quick colour sweep.</td></tr>
+  <tr><td>Dark mode?</td><td>Nope — later.</td></tr>
+  <tr><td>Compare v0.6 vs v1?</td><td>Yes — avatar menu toggle.</td></tr>
+</table>
+
+<h2>What's actually changing?</h2>
+<ul>
+  <li>Primary blue-grey shifts a bit (Figma v1)</li>
+  <li>Page/card backgrounds use a new grey scale</li>
+  <li>Most screens look fine — tabs &amp; accordions are the ones that might look "off"</li>
+</ul>
+
+<h2>Please look at these</h2>
+
+<h3><span class="tag tag-red">High</span> Tabs — boxed instead of underline</h3>
+<p><strong>Figma says:</strong> thin line under the tab row. Active tab = primary bottom indicator. No boxes.</p>
+<p><strong>What you might see now:</strong> borders on all sides — tabs look boxed, indicator gets lost.</p>
+<p><strong>Where:</strong> iSHARE → Affiliate details → category tabs (above the accordions).</p>
+<p><strong>Fix:</strong> eng adjusts theme tokens. No Figma changes needed.</p>
+
+<h3><span class="tag tag-red">High</span> Accordions — full border instead of dividers</h3>
+<p><strong>Figma says:</strong> thin horizontal dividers between sections.</p>
+<p><strong>What you might see now:</strong> each panel has a border on all four sides — looks like stacked cards.</p>
+<p><strong>Where:</strong></p>
+<ul>
+  <li><strong>Affiliate details</strong> — category accordion (should be dividers)</li>
+  <li><strong>List journey</strong> — chromeless variant (eng still wiring it)</li>
+  <li><strong>Document drawer timeline</strong> — bordered accordion is <em>intentional</em>, leave it</li>
+</ul>
+
+<h3><span class="tag tag-amber">Medium</span> Worth a quick glance</h3>
+<table>
+  <tr><th>What</th><th>Where</th></tr>
+  <tr><td>Avatar background colour</td><td>Top nav avatar</td></tr>
+  <tr><td>Drawer shadow depth</td><td>Any slide-in drawer</td></tr>
+  <tr><td>Ghost / secondary buttons</td><td>Hover &amp; disabled states</td></tr>
+  <tr><td>Divider weight on lists/cards</td><td>Quick scan</td></tr>
+</table>
+
+<h3><span class="tag tag-green">Low / intentional</span></h3>
+<ul>
+  <li>Primary colour slightly different from v0.6 — broader refresh coming later</li>
+  <li>Page background grey (#fafafa vs #f6f6f6) — minor drift, separate project</li>
+  <li>Bordered drawer accordion — that's by design</li>
+</ul>
+
+<h2>Colours (if you're spot-checking)</h2>
+<table>
+  <tr><th>Role</th><th>Figma / v1</th><th>Apps today</th><th>OK?</th></tr>
+  <tr><td>White base</td><td>#ffffff</td><td>#ffffff</td><td>✓ after eng fix</td></tr>
+  <tr><td>Page background</td><td>#fafafa</td><td>#f6f6f6</td><td>minor drift</td></tr>
+  <tr><td>Primary 600</td><td>#487395</td><td>#3f5870</td><td>intentional for now</td></tr>
+  <tr><td>Panel border</td><td>#e7e7e7</td><td>#e7e7e7</td><td>✓</td></tr>
+  <tr><td>Drawer shadow</td><td>Figma token</td><td>custom</td><td>check in QA</td></tr>
+</table>
+
+<h2>Not in this release</h2>
+<ul>
+  <li>Dark mode</li>
+  <li>Full Figma → code token sync</li>
+  <li>Removing v0.6 (kept for comparison)</li>
+</ul>
+
+<h2>Your checklist</h2>
+<p>Toggle v1 in the avatar menu and tick off what you've checked:</p>
+<p><strong>Must do</strong></p>
+<ul class="checklist">
+  <li>Affiliate details — category tabs (underline, no boxes)</li>
+  <li>Affiliate details — category accordion (dividers only)</li>
+  <li>Top nav — colours, avatar, active states</li>
+  <li>Overview / dashboard cards</li>
+</ul>
+<p><strong>Nice to do</strong></p>
+<ul class="checklist">
+  <li>Drawers — shadow, title, borders</li>
+  <li>Lists &amp; tables</li>
+  <li>Buttons (primary, ghost, disabled)</li>
+  <li>Form fields — focus &amp; error</li>
+  <li>Document drawer accordion — still bordered? good.</li>
+</ul>
+
+<table>
+  <tr><th>Reviewer</th><th>Date</th><th>v1 OK?</th><th>Notes</th></tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td><td>☐ Yes &nbsp; ☐ No</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>What happens next</h2>
+<table>
+  <tr><th>#</th><th>What</th><th>Who</th></tr>
+  <tr><td>1</td><td>Fix white background token</td><td>Eng</td></tr>
+  <tr><td>2</td><td>Fix tabs underline</td><td>Eng</td></tr>
+  <tr><td>3</td><td>Fix accordion dividers</td><td>Eng</td></tr>
+  <tr><td>4</td><td>Fix avatar colour</td><td>Eng</td></tr>
+  <tr><td>5</td><td><strong>Visual QA</strong> (above)</td><td><strong>Design</strong></td></tr>
+  <tr><td>6</td><td>Switch default to v1</td><td>Eng</td></tr>
+</table>
+
+<p class="footer">
+  Figma UI Kit:
+  <a href="https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390">Plectrum for PrimeNG</a>
+</p>
+
+</body>
+</html>`;
+
+writeFileSync(htmlPath, html, 'utf8');
+
+execFileSync(browser, [
+  '--headless=new',
+  '--disable-gpu',
+  '--no-pdf-header-footer',
+  `--print-to-pdf=${pdfPath}`,
+  htmlPath,
+], { stdio: 'inherit' });
+
+console.log(`PDF written to ${pdfPath}`);

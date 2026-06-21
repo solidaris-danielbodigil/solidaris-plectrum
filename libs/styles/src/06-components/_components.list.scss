@@ -309,34 +309,30 @@
   opacity: var(--#{$pds-prefix}-disabled-opacity);
 }
 
-.c-list__skeleton-line {
-  display: block;
+// PrimeNG p-skeleton sizing — shimmer from --p-skeleton-* (Plectrum preset).
+.c-list__skeleton-icon.p-skeleton {
+  inline-size: var(--#{$pds-prefix}-size-list-icon);
+  block-size: var(--#{$pds-prefix}-size-list-icon);
   border-radius: var(--#{$pds-prefix}-radius-sm);
-  background: var(--#{$pds-prefix}-color-list-skeleton-bg);
-  block-size: var(--spacing-1);
 }
 
-.c-list__skeleton-line--title {
+.c-list__skeleton-line.p-skeleton {
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+}
+
+.c-list__skeleton-line--title.p-skeleton {
   inline-size: 55%;
   block-size: var(--spacing-2);
 }
 
-.c-list__skeleton-line--subtitle {
+.c-list__skeleton-line--subtitle.p-skeleton {
   inline-size: 35%;
+  block-size: var(--spacing-1);
 }
 
-.c-list__skeleton-line--tag {
+.c-list__skeleton-line--tag.p-skeleton {
   inline-size: var(--spacing-5);
   block-size: var(--spacing-1-5);
-}
-
-.c-list__skeleton-icon {
-  display: block;
-  inline-size: var(--#{$pds-prefix}-size-list-icon);
-  block-size: var(--#{$pds-prefix}-size-list-icon);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
-  background: var(--#{$pds-prefix}-color-list-skeleton-bg);
-  flex-shrink: 0;
 }
 
 // ── Tag target popover (PrimeNG Select Data pattern) ───────────────────────

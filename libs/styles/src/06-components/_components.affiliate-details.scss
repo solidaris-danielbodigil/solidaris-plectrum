@@ -107,10 +107,18 @@
 
 .c-affiliate-details__documents-scroll {
   scroll-padding-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
+
+  &.o-layout--overflow-hidden {
+    overflow: hidden;
+  }
 }
 
 .c-affiliate-details__detail-scroll {
   position: relative;
+
+  &.o-layout--overflow-hidden {
+    overflow: hidden;
+  }
 }
 
 :where(.c-affiliate-details__detail--empty.c-affiliate-details__detail) {
@@ -140,3 +148,7 @@
     min-block-size: 0;
   }
 }
+
+// ── Loading skeleton ─────────────────────────────────────────────────────────
+// Count-badge circle skeletons use p-skeleton shape="circle" with
+// size="var(--pds-size-list-count-badge-min)" and styleClass="c-skeleton-count-badge".

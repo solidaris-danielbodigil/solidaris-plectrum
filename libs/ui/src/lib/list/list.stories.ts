@@ -1,7 +1,9 @@
 import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { Component, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { ListComponent } from './list.component';
 import type { ListDocumentItem, ListGroup } from './list.types';
+import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
 
 // =============================================================================
 // List (pds-list)
@@ -311,7 +313,51 @@ export const Loading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading placeholder with skeleton icon, title, and tag rows.',
+        story: 'Static loading state — PrimeNG `p-skeleton` placeholder rows.',
+      },
+    },
+  },
+};
+
+@Component({
+  selector: 'pds-list-simulated-loading-demo',
+  standalone: true,
+  imports: [ListComponent],
+  template: `
+    <pds-list
+      [loading]="loading()"
+      [groups]="groups"
+      [items]="items"
+      [expandedGroupIds]="expandedGroupIds"
+      [selectedItemId]="selectedItemId"
+    />
+  `,
+})
+class ListSimulatedLoadingDemoComponent {
+  readonly loading = signal(true);
+  readonly groups = EVA_MARTINEZ_GROUPS;
+  readonly items: ListDocumentItem[] = [];
+  readonly expandedGroupIds = ALL_GROUP_IDS;
+  readonly selectedItemId = 'doc-demande-primaire';
+
+  constructor() {
+    setTimeout(() => this.loading.set(false), SIMULATED_LOADING_MS);
+  }
+}
+
+export const SimulatedLoading: Story = {
+  decorators: [
+    moduleMetadata({
+      imports: [ListSimulatedLoadingDemoComponent],
+    }),
+  ],
+  render: () => ({
+    template: '<pds-list-simulated-loading-demo />',
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `Flashes skeleton for ${SIMULATED_LOADING_MS}ms then reveals content — use to preview the shimmer transition.`,
       },
     },
   },

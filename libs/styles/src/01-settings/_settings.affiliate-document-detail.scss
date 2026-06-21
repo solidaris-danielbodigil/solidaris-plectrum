@@ -22,4 +22,24 @@
   // ── Deep-link message pulse (transient) ─────────────────────────────────────
   --#{$pds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
   --#{$pds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
+
+  // ── Loading skeleton (iSHARE Eva Martinez reference layout) ─────────────────
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-w: calc(604 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-h: calc(32 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-w: calc(148 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-h: calc(32 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-w: calc(86 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-h: calc(14 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-w: calc(89 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-h: calc(23 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-sm-w: calc(57 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-lg-w: calc(147 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-h: calc(27 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-w: calc(72 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-h: calc(14 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-detail-row-h: calc(26 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-detail-row-w: 100%;
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-w: calc(171 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-h: calc(32 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-sm-w: calc(143 / 14 * var(--base-unit));
 }

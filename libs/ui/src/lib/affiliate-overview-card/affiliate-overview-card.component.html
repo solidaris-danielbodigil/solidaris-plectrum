@@ -6,10 +6,12 @@
     [attr.aria-busy]="loading() || null"
   >
     @if (loading()) {
-      <span
-        class="c-affiliate-overview-card__skeleton-avatar"
+      <p-skeleton
+        shape="circle"
+        size="var(--pds-size-avatar-large-h)"
+        styleClass="c-affiliate-overview-card__skeleton-avatar o-flex__item--shrink-0"
         aria-hidden="true"
-      ></span>
+      />
     } @else {
       <pds-plectrum-avatar
         class="c-affiliate-overview-card__avatar o-flex__item--shrink-0"
@@ -25,16 +27,55 @@
       class="c-affiliate-overview-card__body o-flex o-flex--y o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
     >
       <div
-        class="c-affiliate-overview-card__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--row-wrap o-layout--gap-1-5"
+        class="c-affiliate-overview-card__header o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0 o-layout--full-width"
       >
         @if (loading()) {
-          <span
-            class="c-affiliate-overview-card__skeleton-line c-affiliate-overview-card__skeleton-line--title"
+          <div
+            class="c-affiliate-overview-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
             aria-hidden="true"
-          ></span>
+          >
+            <span
+              class="c-skeleton-slot c-affiliate-overview-card__skeleton-slot c-affiliate-overview-card__skeleton-slot--title"
+            >
+              <p-skeleton />
+            </span>
+            <span
+              class="c-skeleton-slot c-affiliate-overview-card__skeleton-slot c-affiliate-overview-card__skeleton-slot--status-action"
+            >
+              <p-skeleton />
+            </span>
+            <span
+              class="c-skeleton-slot c-affiliate-overview-card__skeleton-slot c-affiliate-overview-card__skeleton-slot--info-tags o-flex__item--grow-1 o-layout--min-w-0"
+            >
+              <p-skeleton />
+            </span>
+          </div>
+          @if (primaryAction(); as action) {
+            <button
+              pButton
+              type="button"
+              class="c-affiliate-overview-card__primary-action o-flex__item--shrink-0"
+              [icon]="action.icon"
+              severity="secondary"
+              size="small"
+              [disabled]="true"
+              [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
+            >
+              <span class="c-affiliate-overview-card__primary-action-label">{{
+                action.label
+              }}</span>
+              @if (action.shortcut) {
+                <span
+                  class="c-affiliate-overview-card__shortcut-badge"
+                  aria-hidden="true"
+                  >{{ action.shortcut }}</span
+                >
+              }
+            </button>
+          }
         } @else {
           <div
-            class="c-affiliate-overview-card__header-main o-flex o-flex--align-items-center o-layout--gap-1-5 o-flex--wrap o-flex__item--grow-1 o-layout--min-w-0"
+            class="c-affiliate-overview-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
           >
             <h2 [id]="titleId" class="c-affiliate-overview-card__title o-layout--margin-0">{{ title() }}</h2>
 
@@ -72,7 +113,7 @@
 
             @if (infoTags().length > 0) {
               <div
-                class="c-affiliate-overview-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+                class="c-affiliate-overview-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
               >
                 @for (tag of infoTags(); track tag.label; let index = $index) {
                   @if (!tag.filterKey) {
@@ -146,13 +187,15 @@
 
       @if (loading()) {
         <div
-          class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1"
+          class="c-affiliate-overview-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
           aria-hidden="true"
         >
-          @for (identifier of identifiers(); track identifier.label) {
+          @for (slot of skeletonIdentifierSlots; track slot) {
             <span
-              class="c-affiliate-overview-card__skeleton-line c-affiliate-overview-card__skeleton-line--chip"
-            ></span>
+              class="c-skeleton-slot c-affiliate-overview-card__skeleton-slot c-affiliate-overview-card__skeleton-slot--identifier c-affiliate-overview-card__skeleton-slot--identifier-{{ slot }}"
+            >
+              <p-skeleton />
+            </span>
           }
         </div>
       } @else if (identifiers().length > 0) {

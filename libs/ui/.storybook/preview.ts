@@ -11,10 +11,10 @@ import {
 
 function readInitialPreset(): PlectrumPresetVersion {
   if (typeof localStorage === 'undefined') {
-    return 'v1';
+    return 'v0.6';
   }
 
-  return readStoredPresetVersion(localStorage) ?? 'v1';
+  return readStoredPresetVersion(localStorage) ?? 'v0.6';
 }
 
 const preview: Preview = {
@@ -26,8 +26,8 @@ const preview: Preview = {
         icon: 'paintbrush',
         dynamicTitle: true,
         items: [
-          { value: 'v1', title: 'Plectrum v1' },
           { value: 'v0.6', title: 'Plectrum v0.6' },
+          { value: 'v1', title: 'Plectrum v1' },
         ],
       },
     },
@@ -37,7 +37,7 @@ const preview: Preview = {
   },
   decorators: [
     (storyFn, context) => {
-      const version = (context.globals['plectrumPreset'] ?? 'v1') as PlectrumPresetVersion;
+      const version = (context.globals['plectrumPreset'] ?? 'v0.6') as PlectrumPresetVersion;
 
       if (typeof localStorage !== 'undefined') {
         writeStoredPresetVersion(version, localStorage);

@@ -149,6 +149,23 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(card).toBeTruthy();
   });
 
+  it('should render skeleton layout blocks when loading', () => {
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-overview-card__skeleton-avatar',
+      ),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-overview-card__skeleton-slot',
+      ).length,
+    ).toBe(7);
+    expect(fixture.nativeElement.querySelector('h2')).toBeNull();
+  });
+
   it('should render identifier copy buttons with values', () => {
     const buttons = fixture.nativeElement.querySelectorAll('.c-copyable-text');
 
@@ -455,7 +472,7 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onPrimary).not.toHaveBeenCalled();
   });
 
-  it('should hide primary action when loading', () => {
+  it('should render primary action disabled when loading', () => {
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
     });
@@ -464,8 +481,10 @@ describe('AffiliateOverviewCardComponent', () => {
 
     const button = fixture.nativeElement.querySelector(
       '.c-affiliate-overview-card__primary-action',
-    );
-    expect(button).toBeFalsy();
+    ) as HTMLButtonElement;
+    expect(button).toBeTruthy();
+    expect(button.disabled).toBe(true);
+    expect(button.textContent).toContain('Voir carte affilié');
   });
 
   it('should set aria-labelledby when not loading', () => {

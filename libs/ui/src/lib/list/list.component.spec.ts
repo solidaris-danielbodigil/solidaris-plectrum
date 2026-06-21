@@ -740,10 +740,7 @@ describe('ListComponent', () => {
 
     expect(fixture.nativeElement.classList.contains('is-loading')).toBe(true);
 
-    expect(
-      fixture.nativeElement.querySelectorAll('.c-list__skeleton-line--title')
-        .length,
-    ).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('p-skeleton').length).toBeGreaterThanOrEqual(9);
   });
 
   it('should mark decorative sort icon as aria-hidden', () => {

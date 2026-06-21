@@ -15,6 +15,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Popover } from 'primeng/popover';
 import { Ripple } from 'primeng/ripple';
+import { Skeleton } from 'primeng/skeleton';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
 import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
@@ -40,7 +41,16 @@ export interface ListDocumentNodeData {
 @Component({
   selector: 'pds-list',
   standalone: true,
-  imports: [ButtonDirective, Popover, PrimeTemplate, Ripple, PdsTelemetryLabelDirective, Tag, Tree],
+  imports: [
+    ButtonDirective,
+    Popover,
+    PrimeTemplate,
+    Ripple,
+    PdsTelemetryLabelDirective,
+    Skeleton,
+    Tag,
+    Tree,
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -58,6 +68,8 @@ export interface ListDocumentNodeData {
   },
 })
 export class ListComponent {
+  protected readonly skeletonRowIndexes = [0, 1, 2] as const;
+
   readonly groups = input<ListGroup[] | null>(null);
   readonly items = input<ListItem[]>([]);
   readonly loading = input(false);

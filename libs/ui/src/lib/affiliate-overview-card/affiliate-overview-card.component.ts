@@ -13,6 +13,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
+import { Skeleton } from 'primeng/skeleton';
 import {
   SelectButton,
   type SelectButtonChangeEvent,
@@ -189,6 +190,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
     PdsTelemetryLabelDirective,
     SelectButton,
     BadgeModule,
+    Skeleton,
   ],
   templateUrl: './affiliate-overview-card.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -218,6 +220,7 @@ export class AffiliateOverviewCardComponent {
   protected readonly titleId = `pds-affiliate-overview-card-title-${nextTitleId++}`;
   protected readonly statusActionTagPrefix =
     AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX;
+  protected readonly skeletonIdentifierSlots = [1, 2, 3, 4] as const;
   protected readonly cardPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
 
   readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {

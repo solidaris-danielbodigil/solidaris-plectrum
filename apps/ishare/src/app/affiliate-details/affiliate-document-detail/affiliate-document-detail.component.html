@@ -1,4 +1,91 @@
-@if (documentDetail(); as detail) {
+@if (loading()) {
+  <div class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0">
+    <div
+      class="c-affiliate-document-detail__skeleton-step-list o-flex o-flex--align-items-center o-layout--gap-2 o-layout--margin-block-end-2"
+      aria-hidden="true"
+    >
+      @for (step of skeletonStepSlots; track step) {
+        <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--step">
+          <p-skeleton />
+        </span>
+      }
+    </div>
+
+    <p-accordion
+      class="c-accordion--bordered c-affiliate-document-detail__skeleton-accordion o-layout--full-width o-layout--min-w-0"
+      [value]="skeletonAccordionValue"
+      expandIcon="bi bi-chevron-down"
+      collapseIcon="bi bi-chevron-up"
+      [multiple]="true"
+      aria-hidden="true"
+    >
+      <p-accordion-panel value="skeleton-panel">
+        <p-accordion-header>
+          <div
+            class="c-affiliate-document-detail__cert-header o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+          >
+            <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--cert-title">
+              <p-skeleton />
+            </span>
+            <div
+              class="c-affiliate-document-detail__cert-header-slot o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-2 o-layout--min-w-0"
+            >
+              <div
+                class="c-affiliate-document-detail__cert-header-meta o-flex o-flex--align-items-center o-flex__item--grow-1 o-layout--gap-1 o-layout--min-w-0"
+              >
+                <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--tag">
+                  <p-skeleton />
+                </span>
+              </div>
+              <div
+                class="c-affiliate-document-detail__actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+              >
+                <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--action-sm">
+                  <p-skeleton />
+                </span>
+                <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--action-lg">
+                  <p-skeleton />
+                </span>
+              </div>
+            </div>
+            <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--accordion-toggle">
+              <p-skeleton />
+            </span>
+          </div>
+        </p-accordion-header>
+
+        <p-accordion-content>
+          <span
+            class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--heading o-layout--margin-block-end-2"
+          >
+            <p-skeleton />
+          </span>
+          <div class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0">
+            @for (row of skeletonDetailRowSlots; track row) {
+              <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--detail-row">
+                <p-skeleton />
+              </span>
+            }
+          </div>
+          <span
+            class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--btn-md o-layout--margin-block-start-3"
+          >
+            <p-skeleton />
+          </span>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+
+    <div
+      class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1 o-layout--margin-block-start-2"
+      aria-hidden="true"
+    >
+      <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--btn-sm">
+        <p-skeleton />
+      </span>
+    </div>
+  </div>
+} @else if (documentDetail(); as detail) {
 
   <div
 

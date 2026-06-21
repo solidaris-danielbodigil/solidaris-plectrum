@@ -20,6 +20,10 @@
 
 // ── Header row ──────────────────────────────────────────────────────────────
 
+.c-affiliate-overview-card__header {
+  min-block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-header-row-h);
+}
+
 .c-affiliate-overview-card__title {
   @include text-heading-lg;
   color: var(--#{$pds-prefix}-color-text);
@@ -48,7 +52,7 @@
   font-weight: var(--font-weight-bold);
 }
 
-// Status action — outlined warn/success/danger button with optional inline p-badge.
+// Status action — warn/success/danger button with optional inline p-badge.
 .c-affiliate-overview-card__status-action {
   line-height: normal;
 
@@ -87,34 +91,68 @@
 
 .c-affiliate-overview-card.is-loading {
   pointer-events: none;
-  opacity: var(--#{$pds-prefix}-disabled-opacity);
+
+  :where(.p-card-body) {
+    overflow: visible;
+  }
+
+  .c-affiliate-overview-card__content {
+    align-items: flex-start;
+  }
+
+  .c-affiliate-overview-card__identifiers {
+    align-items: center;
+  }
+
+  .c-affiliate-overview-card__skeleton-slot {
+    overflow: visible;
+  }
 }
 
-.c-affiliate-overview-card__skeleton-avatar {
-  display: block;
-  inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-w);
-  block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-avatar-h);
-  border-radius: var(--#{$pds-prefix}-radius-pill);
-  background: var(--#{$pds-prefix}-color-affiliate-overview-card-skeleton-bg);
+.c-affiliate-overview-card__header-main {
+  min-inline-size: 0;
 }
 
-.c-affiliate-overview-card__skeleton-line {
-  display: block;
+.c-affiliate-overview-card__skeleton-slot {
   border-radius: var(--#{$pds-prefix}-radius-sm);
-  background: var(--#{$pds-prefix}-color-affiliate-overview-card-skeleton-bg);
-  block-size: var(--spacing-1);
-}
 
-.c-affiliate-overview-card__skeleton-line--title {
-  inline-size: 60%;
-  block-size: var(--spacing-2);
-}
+  &--title {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-w);
+    block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-h);
+  }
 
-.c-affiliate-overview-card__skeleton-line--tag {
-  inline-size: var(--spacing-4);
-  block-size: var(--spacing-1-5);
-}
+  &--status-action {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-status-w);
+    block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-action-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
 
-.c-affiliate-overview-card__skeleton-line--chip {
-  inline-size: var(--spacing-5);
+  &--info-tags {
+    flex: 1 1 auto;
+    min-inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-info-tags-min-w);
+    max-inline-size: 100%;
+    block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-info-tags-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--identifier {
+    block-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-h);
+    border-radius: var(--#{$pds-prefix}-radius-pill);
+  }
+
+  &--identifier-1 {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-1);
+  }
+
+  &--identifier-2 {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-2);
+  }
+
+  &--identifier-3 {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-3);
+  }
+
+  &--identifier-4 {
+    inline-size: var(--#{$pds-prefix}-size-affiliate-overview-card-skeleton-identifier-w-4);
+  }
 }

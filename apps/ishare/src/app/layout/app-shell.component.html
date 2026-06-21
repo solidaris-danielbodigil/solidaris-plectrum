@@ -28,6 +28,7 @@
     @if (affiliateHeader(); as header) {
       <pds-affiliate-overview-card
         class="o-layout--full-width"
+        [loading]="affiliateHeaderLoading()"
         [title]="header.title"
         [variant]="header.variant"
         [avatarGender]="header.avatarGender"
@@ -42,6 +43,13 @@
         (statusActionClick)="onStatusActionClick(header)"
         (infoTagClick)="onInfoTagClick(header, $event)"
       ></pds-affiliate-overview-card>
+    } @else if (affiliateHeaderLoading()) {
+      <pds-affiliate-overview-card
+        class="o-layout--full-width"
+        variant="warning"
+        [loading]="true"
+        title="Chargement…"
+      />
     }
 
     <main

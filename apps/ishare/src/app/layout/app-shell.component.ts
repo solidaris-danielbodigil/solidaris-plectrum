@@ -52,6 +52,7 @@ export class AppShellComponent {
 
   readonly breadcrumbs = this.breadcrumbService.breadcrumbs;
   readonly affiliateHeader = this.affiliateHeaderService.header;
+  readonly affiliateHeaderLoading = this.affiliateHeaderService.headerLoading;
 
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
