@@ -1,16 +1,52 @@
 @if (loading()) {
-  <div class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0">
+  <div
+    class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+  >
     <div
-      class="c-affiliate-document-detail__skeleton-step-list o-flex o-flex--align-items-center o-layout--gap-2 o-layout--margin-block-end-2"
-      aria-hidden="true"
+      class="c-affiliate-document-detail__step-chrome o-flex__item--shrink-0 o-flex o-flex--row o-flex--align-items-center o-layout--gap-2 o-layout--min-w-0 o-layout--full-width"
     >
-      @for (step of skeletonStepSlots; track step) {
-        <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--step">
-          <p-skeleton />
-        </span>
-      }
+      <span
+        class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--btn-sm o-flex__item--shrink-0"
+        aria-hidden="true"
+      >
+        <p-skeleton />
+      </span>
+
+      <div
+        class="c-affiliate-document-detail__skeleton-step-list-scroll o-scroll-shadow--inline o-flex__item--grow-1 o-layout--min-w-0"
+        aria-hidden="true"
+      >
+        <div
+          class="c-affiliate-document-detail__skeleton-step-list o-flex o-flex--align-items-center o-flex--nowrap o-layout--gap-2"
+          aria-hidden="true"
+        >
+        @for (step of skeletonStepSlots; track step) {
+          <div
+            class="c-affiliate-document-detail__skeleton-step o-flex o-flex--y o-flex--align-items-flex-start o-layout--gap-0-25"
+            aria-hidden="true"
+          >
+            <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--step">
+              <p-skeleton />
+            </span>
+            <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--step-tag">
+              <p-skeleton />
+            </span>
+          </div>
+        }
+        </div>
+      </div>
+
+      <span
+        class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--btn-sm o-flex__item--shrink-0"
+        aria-hidden="true"
+      >
+        <p-skeleton />
+      </span>
     </div>
 
+    <div
+      class="c-affiliate-document-detail__step-content o-layout--min-h-0 o-flex__item--grow-1 o-layout--overflow-hidden"
+    >
     <p-accordion
       class="c-accordion--bordered c-affiliate-document-detail__skeleton-accordion o-layout--full-width o-layout--min-w-0"
       [value]="skeletonAccordionValue"
@@ -75,151 +111,169 @@
         </p-accordion-content>
       </p-accordion-panel>
     </p-accordion>
-
-    <div
-      class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1 o-layout--margin-block-start-2"
-      aria-hidden="true"
-    >
-      <span class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--btn-sm">
-        <p-skeleton />
-      </span>
     </div>
   </div>
 } @else if (documentDetail(); as detail) {
 
   <div
-
-    class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0"
-
+    class="c-affiliate-document-detail__body o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
   >
 
     @if (isStandaloneLayout()) {
 
       @if (standalonePanels().length > 0) {
 
-        <ng-container
-
-          *ngTemplateOutlet="
-
-            certPanelsAccordion;
-
-            context: { panels: standalonePanels(), banner: detail.banner }
-
-          "
-
-        />
+        <div
+          class="c-affiliate-document-detail__step-content o-layout--min-h-0 o-flex__item--grow-1 o-scroll-shadow o-layout--overflow-y-auto"
+        >
+          <ng-container
+            *ngTemplateOutlet="
+              certPanelsAccordion;
+              context: { panels: standalonePanels(), banner: detail.banner }
+            "
+          />
+          <ng-container *ngTemplateOutlet="stepScrollTop" />
+        </div>
 
       }
 
     } @else {
 
-      <p-stepper
+      @if (stepperView() === 'horizontal') {
+        <p-stepper
+          class="c-affiliate-document-detail__stepper o-flex o-flex--y o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+          [class.c-affiliate-document-detail__stepper--unnumbered]="!stepNumbered()"
+          [(value)]="activeStep"
+        >
 
-        class="c-affiliate-document-detail__stepper o-layout--full-width o-layout--min-w-0"
+          <div
+            class="c-affiliate-document-detail__step-chrome o-flex__item--shrink-0 o-flex o-flex--row o-flex--row-nowrap o-flex--align-items-center o-layout--gap-2 o-layout--min-w-0 o-layout--full-width"
+          >
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              size="small"
+              icon="bi bi-arrow-left"
+              class="c-affiliate-document-detail__step-nav o-flex__item--shrink-0"
+              aria-label="Précédent"
+              pTooltip="Étape précédente"
+              tooltipPosition="bottom"
+              pdsTelemetryLabel="step-nav-previous"
+              [disabled]="previousDisabled()"
+              (click)="goToPreviousStep()"
+            ></button>
 
-        [class.c-affiliate-document-detail__stepper--unnumbered]="!stepNumbered()"
-
-        [(value)]="activeStep"
-
-      >
-
-        <p-step-list>
-
-          @for (step of steps(); track step.value) {
-
-            <p-step [value]="step.value" [pdsTelemetryLabel]="step.label">{{ step.label }}</p-step>
-
-          }
-
-        </p-step-list>
-
-
-
-        <p-step-panels>
-
-          @for (step of steps(); track step.value) {
-
-            <p-step-panel [value]="step.value">
-
-              <ng-template #content>
-
-                @if (step.panels && step.panels.length > 0) {
-
-                  <ng-container
-
-                    *ngTemplateOutlet="
-
-                      certPanelsAccordion;
-
-                      context: { panels: step.panels }
-
-                    "
-
-                  />
-
+            <div
+              class="c-affiliate-document-detail__step-list-scroll o-scroll-shadow--inline o-flex__item--grow-1 o-layout--min-w-0"
+            >
+              <p-step-list class="c-affiliate-document-detail__step-list">
+                @for (step of steps(); track step.value; let last = $last) {
+                  <p-step [value]="step.value" [pdsTelemetryLabel]="step.label">
+                    <ng-template
+                      #content
+                      let-activateCallback="activateCallback"
+                      let-value="value"
+                    >
+                      <ng-container
+                        *ngTemplateOutlet="
+                          documentStepHeader;
+                          context: {
+                            step: step,
+                            activateCallback: activateCallback,
+                            value: value,
+                            showSeparator: !last,
+                          }
+                        "
+                      />
+                    </ng-template>
+                  </p-step>
                 }
+              </p-step-list>
+            </div>
 
-              </ng-template>
+            <button
+              pButton
+              type="button"
+              severity="primary"
+              size="small"
+              icon="bi bi-arrow-right"
+              class="c-affiliate-document-detail__step-nav o-flex__item--shrink-0"
+              aria-label="Suivant"
+              pTooltip="Étape suivante"
+              tooltipPosition="bottom"
+              pdsTelemetryLabel="step-nav-next"
+              [disabled]="nextDisabled()"
+              (click)="goToNextStep()"
+            ></button>
+          </div>
 
-            </p-step-panel>
-
+          <div
+            class="c-affiliate-document-detail__step-content o-layout--min-h-0 o-flex__item--grow-1 o-scroll-shadow o-layout--overflow-y-auto"
+          >
+            <p-step-panels>
+              @for (step of steps(); track step.value) {
+                <p-step-panel [value]="step.value">
+                  <ng-template #content>
+                    @if (step.panels && step.panels.length > 0) {
+                      <ng-container
+                        *ngTemplateOutlet="
+                          certPanelsAccordion;
+                          context: { panels: step.panels }
+                        "
+                      />
+                    }
+                  </ng-template>
+                </p-step-panel>
+              }
+            </p-step-panels>
+            <ng-container *ngTemplateOutlet="stepScrollTop" />
+          </div>
+        </p-stepper>
+      } @else {
+        <p-stepper
+          class="c-affiliate-document-detail__stepper c-affiliate-document-detail__stepper--vertical o-flex o-flex--y o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1 o-scroll-shadow o-layout--overflow-y-auto"
+          [class.c-affiliate-document-detail__stepper--unnumbered]="!stepNumbered()"
+          [(value)]="activeStep"
+        >
+          @for (step of steps(); track step.value) {
+            <p-step-item [value]="step.value">
+              <p-step [pdsTelemetryLabel]="step.label">
+                <ng-template
+                  #content
+                  let-activateCallback="activateCallback"
+                  let-value="value"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      documentStepHeader;
+                      context: {
+                        step: step,
+                        activateCallback: activateCallback,
+                        value: value,
+                        showSeparator: false,
+                      }
+                    "
+                  />
+                </ng-template>
+              </p-step>
+              <p-step-panel>
+                <ng-template #content>
+                  @if (step.panels && step.panels.length > 0) {
+                    <ng-container
+                      *ngTemplateOutlet="
+                        certPanelsAccordion;
+                        context: { panels: step.panels }
+                      "
+                    />
+                  }
+                </ng-template>
+              </p-step-panel>
+            </p-step-item>
           }
-
-        </p-step-panels>
-
-      </p-stepper>
-
-
-
-      <div
-
-        class="c-affiliate-document-detail__step-footer o-flex o-flex--justify-content-flex-end o-layout--gap-1"
-
-      >
-
-        <button
-
-          pButton
-
-          type="button"
-
-          severity="secondary"
-
-          icon="bi bi-arrow-left"
-
-          iconPos="right"
-
-          label="Etape précédente"
-
-          pdsTelemetryLabel="Etape précédente"
-
-          [disabled]="previousDisabled()"
-
-          (click)="goToPreviousStep()"
-
-        ></button>
-
-        <button
-
-          pButton
-
-          type="button"
-
-          icon="bi bi-arrow-right"
-
-          iconPos="right"
-
-          label="Etape suivante"
-
-          pdsTelemetryLabel="Etape suivante"
-
-          [disabled]="nextDisabled()"
-
-          (click)="goToNextStep()"
-
-        ></button>
-
-      </div>
+          <ng-container *ngTemplateOutlet="stepScrollTop" />
+        </p-stepper>
+      }
 
     }
 
@@ -228,6 +282,82 @@
 }
 
 
+
+<ng-template
+  #documentStepHeader
+  let-step="step"
+  let-activateCallback="activateCallback"
+  let-value="value"
+  let-showSeparator="showSeparator"
+>
+  <div
+    class="c-affiliate-document-detail__step-head-row o-flex o-layout--gap-1-5 o-flex--row o-flex--row-nowrap o-flex--align-items-center"
+  >
+    <button
+      type="button"
+      class="p-step-header"
+      role="tab"
+      (click)="activateCallback()"
+    >
+      <span class="p-step-number">{{ value }}</span>
+      <span class="p-step-title">
+        <span class="c-affiliate-document-detail__step-label">{{ step.label }}</span>
+      </span>
+    </button>
+    @if (showSeparator) {
+      <p-stepper-separator aria-hidden="true" />
+    }
+  </div>
+  @if (stepSummary(step); as summary) {
+    @if (summary.status) {
+      <div
+        class="c-affiliate-document-detail__step-meta o-flex o-flex--align-items-center o-flex--nowrap o-flex--justify-content-flex-start o-layout--gap-1"
+      >
+        <p-tag
+          [severity]="summary.status.severity"
+          [value]="summary.status.label"
+          [icon]="summary.status.icon"
+        />
+        @for (tag of summary.tags; track tag.severity + tag.label) {
+          @if (tag.targets?.length) {
+            <button
+              type="button"
+              pButton
+              [severity]="tag.severity"
+              outlined
+              rounded
+              size="small"
+              [label]="tag.label"
+              [icon]="tag.icon"
+              [attr.aria-label]="tag.ariaLabel"
+              [attr.data-telemetry-id]="
+                'document-tag-' + selectedDocumentId() + '-' + tag.label
+              "
+              [pdsTelemetryLabel]="tag.label"
+              (click)="onStepTagClick($event, step, tag)"
+              (keydown)="onStepTagKeydown($event, step, tag)"
+            ></button>
+          }
+        }
+      </div>
+    }
+  }
+</ng-template>
+
+<ng-template #stepScrollTop>
+  <p-scrolltop
+    class="c-affiliate-document-detail__scrolltop"
+    target="parent"
+    [threshold]="200"
+    icon="bi bi-arrow-up"
+    buttonAriaLabel="Retour en haut"
+    [buttonProps]="{
+      severity: 'secondary',
+      rounded: true,
+      raised: true,
+    }"
+  />
+</ng-template>
 
 <ng-template #certPanelsAccordion let-panels="panels" let-banner="banner">
 
@@ -523,3 +653,35 @@
   </p-accordion>
 
 </ng-template>
+
+<p-popover
+  #tagPopover
+  [focusOnShow]="false"
+  [style]="tagPopoverStyle()"
+  appendTo="body"
+  (onShow)="onStepTagPopoverShow()"
+  (onHide)="onStepTagPopoverHide()"
+>
+  @let active = activeStepTagContext();
+  @if (active) {
+    <ul
+      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
+      role="listbox"
+      [attr.aria-label]="active.tag.ariaLabel"
+    >
+      @for (target of active.tag.targets; track target.id) {
+        <li
+          role="option"
+          class="p-autocomplete-option"
+          tabindex="0"
+          pRipple
+          [pdsTelemetryLabel]="target.label"
+          (click)="onStepTagTargetSelect($event, target)"
+          (keydown)="onStepTagTargetKeydown($event, target)"
+        >
+          {{ target.label }}
+        </li>
+      }
+    </ul>
+  }
+</p-popover>

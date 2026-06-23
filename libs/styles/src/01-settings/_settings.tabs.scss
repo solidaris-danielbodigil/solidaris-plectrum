@@ -1,0 +1,15 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.tabs.scss
+// PrimeNG Tabs token bridge — PDS spacing for tab chrome.
+// =============================================================================
+
+:root {
+  --#{$pds-prefix}-space-tab-padding-block: var(--spacing-1);
+  --#{$pds-prefix}-space-tab-padding-inline: 0;
+}
+
+.c-affiliate-details__category-tabs {
+  --p-tabs-tab-padding: var(--#{$pds-prefix}-space-tab-padding-block) var(--#{$pds-prefix}-space-tab-padding-inline);
+}

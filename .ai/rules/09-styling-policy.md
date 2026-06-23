@@ -176,7 +176,14 @@ No `styleClass` on `p-drawer` / `p-dialog` roots. Use `appendTo="body"` for draw
 
 ## 12. Scroll Affordance
 
-Owned wrapper + `o-scroll-shadow` on our element — not doubled `.p-card-body` selectors.
+Owned scroll wrapper + scroll-shadow object on our element — not doubled `.p-card-body` selectors.
+
+| Axis | Class | Mixin | Overflow pair |
+|---|---|---|---|
+| Block (vertical) | `o-scroll-shadow` | `scroll-shadow()` | `o-layout--overflow-y-auto` + height constraint (`o-layout--min-h-0`) |
+| Inline (horizontal) | `o-scroll-shadow--inline` | `scroll-shadow-inline()` | `o-layout--overflow-x-auto` + width constraint (`o-layout--min-w-0`) |
+
+Storybook: **Foundations / Scroll Shadow**.
 
 ---
 

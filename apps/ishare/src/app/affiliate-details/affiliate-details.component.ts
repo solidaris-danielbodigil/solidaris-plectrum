@@ -23,7 +23,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
-import { ScrollTop } from 'primeng/scrolltop';
+import { SelectButton } from 'primeng/selectbutton';
 import { Skeleton } from 'primeng/skeleton';
 import {
   AffiliateDetailDrawerComponent,
@@ -72,12 +72,14 @@ import {
   JACK_MOTA_NISS,
 } from './affiliate-mock.constants';
 import {
-  COMMENT_ICONS,
-  commentCountTagSeverity,
+  deriveDocumentTags,
+  PANEL_STATUS_SORT_PRIORITY,
+} from './affiliate-document-detail/affiliate-document-detail.tags';
+import {
   type AffiliateDocumentDetail,
   type DocumentCertificatPanel,
-  type DocumentCertificatPanelStatusSeverity,
   type DocumentCrossReference,
+  type DocumentStepperView,
 } from './affiliate-document-detail/affiliate-document-detail.types';
 
 interface SectorOption {
@@ -90,155 +92,7 @@ interface SortOption {
   value: string;
 }
 
-type ListTagSeverity = ListDocumentTag['severity'];
-
-/** Severities that {@link ListDocumentTag} accepts (panel comments add `contrast`). */
-const LIST_TAG_SEVERITIES: readonly ListTagSeverity[] = [
-  'info',
-  'warn',
-  'success',
-  'danger',
-  'secondary',
-];
-
-/** Icon shown on a derived comment-count tag, keyed by mapped severity. */
-const COMMENT_TAG_ICONS: Record<ListTagSeverity, string> = {
-  info: COMMENT_ICONS.info,
-  warn: COMMENT_ICONS.warn,
-  success: 'bi bi-check-circle-fill',
-  danger: 'bi bi-exclamation-octagon-fill',
-  secondary: COMMENT_ICONS.info,
-};
-
-/** Singular noun used to build the tag `ariaLabel`, keyed by mapped severity. */
-const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
-  info: 'commentaire',
-  warn: 'avertissement',
-  success: 'confirmation',
-  danger: 'alerte',
-  secondary: 'note',
-};
-
-/**
- * Maps a panel comment severity onto a {@link ListDocumentTag} severity. Panel
- * comments may carry `contrast`, which the list tag does not support, so any
- * value outside the supported set falls back to `secondary`.
- */
-function toListTagSeverity(
-  severity: DocumentCertificatPanelStatusSeverity,
-): ListTagSeverity {
-  return LIST_TAG_SEVERITIES.includes(severity as ListTagSeverity)
-    ? (severity as ListTagSeverity)
-    : 'secondary';
-}
-
-/**
- * Visual severity for list comment-count tags. Applies the shared comment-count
- * mapping (info → `secondary`, see {@link commentCountTagSeverity}) and then
- * narrows to a {@link ListTagSeverity}, since the list tag does not support
- * `contrast`.
- */
-function commentCountListTagSeverity(
-  panelSeverity: DocumentCertificatPanelStatusSeverity,
-): ListTagSeverity {
-  return toListTagSeverity(commentCountTagSeverity(panelSeverity));
-}
-
-function commentTagAriaLabel(severity: ListTagSeverity, count: number): string {
-  const noun = COMMENT_TAG_NOUNS[severity];
-  return `${count} ${noun}${count > 1 ? 's' : ''}`;
-}
-
-function commentTagAriaLabelForBucket(
-  displaySeverity: ListTagSeverity,
-  panelSeverities: DocumentCertificatPanelStatusSeverity[],
-  count: number,
-): string {
-  const nounSeverity: ListTagSeverity =
-    displaySeverity === 'secondary' &&
-    panelSeverities.every((severity) => severity === 'info')
-      ? 'info'
-      : displaySeverity;
-
-  return commentTagAriaLabel(nounSeverity, count);
-}
-
-/**
- * Derives a document's count tags from the detail mock so the row badges and the
- * deep-link jump targets share one source of truth. Scans every panel's
- * `workerComment`, groups them by (mapped) severity, and emits one tag per
- * severity whose `targets` point at each commented step/panel. The target `id`
- * is encoded as `` `${stepValue}::${panelId}` `` for the detail component to
- * decode.
- */
-export function deriveDocumentTags(
-  documentId: string,
-  details: Record<
-    string,
-    AffiliateDocumentDetail
-  > = EVA_MARTINEZ_DOCUMENT_DETAILS,
-): ListDocumentTag[] {
-  const detail = details[documentId];
-  if (!detail) {
-    return [];
-  }
-
-  const targetsBySeverity = new Map<
-    ListTagSeverity,
-    {
-      targets: ListDocumentTagTarget[];
-      panelSeverities: DocumentCertificatPanelStatusSeverity[];
-    }
-  >();
-
-  const addTarget = (
-    displaySeverity: ListTagSeverity,
-    panelSeverity: DocumentCertificatPanelStatusSeverity,
-    target: ListDocumentTagTarget,
-  ): void => {
-    const bucket = targetsBySeverity.get(displaySeverity) ?? {
-      targets: [],
-      panelSeverities: [],
-    };
-    bucket.targets.push(target);
-    bucket.panelSeverities.push(panelSeverity);
-    targetsBySeverity.set(displaySeverity, bucket);
-  };
-
-  for (const step of detail.steps) {
-    for (const panel of step.panels ?? []) {
-      if (!panel.workerComment || panel.disabled) {
-        continue;
-      }
-
-      const targetLabel =
-        detail.layout === 'standalone'
-          ? panel.title
-          : `${step.label} - ${panel.title}`;
-
-      addTarget(
-        commentCountListTagSeverity(panel.workerComment.severity),
-        panel.workerComment.severity,
-        {
-          id: `${step.value}::${panel.id}`,
-          label: targetLabel,
-        },
-      );
-    }
-  }
-
-  return [...targetsBySeverity.entries()].map(([severity, bucket]) => ({
-    label: String(bucket.targets.length),
-    severity,
-    icon: COMMENT_TAG_ICONS[severity],
-    ariaLabel: commentTagAriaLabelForBucket(
-      severity,
-      bucket.panelSeverities,
-      bucket.targets.length,
-    ),
-    targets: bucket.targets,
-  }));
-}
+export { deriveDocumentTags } from './affiliate-document-detail/affiliate-document-detail.tags';
 
 function withDerivedTags(
   document: ListDocumentItem,
@@ -420,13 +274,7 @@ const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
   ['doc-jack-certificat', 'medical'],
 ]);
 
-const STATUS_SORT_PRIORITY: Record<string, number> = {
-  'En attente': 0,
-  'En traitement': 1,
-  Reçu: 2,
-  Accepté: 3,
-  Clôturé: 4,
-};
+const STATUS_SORT_PRIORITY = PANEL_STATUS_SORT_PRIORITY;
 
 const JACK_MOTA_DOCUMENTS: ListDocumentItem[] = [
   {
@@ -496,7 +344,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     AffiliateDetailDrawerComponent,
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
-    ScrollTop,
+    SelectButton,
     Skeleton,
   ],
   templateUrl: './affiliate-details.component.html',
@@ -920,6 +768,19 @@ export class AffiliateDetailsComponent {
   readonly selectedDocumentTitle = computed(
     () => this.selectedDocumentDetail()?.title ?? '',
   );
+
+  readonly stepperView = signal<DocumentStepperView>('horizontal');
+
+  readonly stepperViewOptions: { label: string; value: DocumentStepperView }[] =
+    [
+      { label: 'A', value: 'horizontal' },
+      { label: 'B', value: 'vertical' },
+    ];
+
+  readonly showStepperViewToggle = computed(() => {
+    const detail = this.selectedDocumentDetail();
+    return detail != null && detail.layout !== 'standalone';
+  });
 
   readonly canGoToPreviousDocument = computed(() => {
     const selectedId = this.selectedDocumentId();
@@ -2046,6 +1907,11 @@ export class AffiliateDetailsComponent {
       ) {
         this.selectedDocumentId.set(null);
       }
+    });
+
+    effect(() => {
+      this.selectedDocumentId();
+      untracked(() => this.stepperView.set('horizontal'));
     });
 
     effect(() => {

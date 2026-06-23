@@ -2,12 +2,13 @@
 
 // =============================================================================
 // 01-settings/_settings.scroll-shadow.scss
-// Scroll-edge shadow affordance tokens — consumed by the `scroll-shadow()` tool
-// mixin and the `.o-scroll-shadow` object. Rendered with CSS scroll-timeline.
+// Scroll-edge shadow affordance tokens — consumed by `scroll-shadow()` /
+// `scroll-shadow-inline()` and `.o-scroll-shadow` objects. CSS scroll-timeline.
 // =============================================================================
 
 :root {
-  // Depth of each edge fade — drives both pseudo-element height and negative margin.
+  // Edge fade depth — block size on vertical (`.o-scroll-shadow`), inline size on
+  // horizontal (`.o-scroll-shadow--inline`). Also drives negative flow margins.
   --#{$pds-prefix}-size-scroll-shadow-height: var(--spacing-3);
 
   // Fade colour — white scrim by default (softens content under the edge).

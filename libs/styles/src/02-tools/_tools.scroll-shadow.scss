@@ -71,3 +71,61 @@
     animation-name: o-scroll-shadow-bottom;
   }
 }
+
+// =============================================================================
+// scroll-shadow-inline() — inline-axis (horizontal) scroll edge fades.
+//
+// Left fade appears once scrolled away from the start; right fade fades out at
+// the end. Uses absolute overlays (sticky block pseudo-elements do not map to
+// the inline scroll axis).
+//
+// Keyframes: `o-scroll-shadow-inline-start` / `o-scroll-shadow-inline-end` in
+// 05-objects/_objects.scroll-shadow.scss.
+//
+// Pair in templates with `o-layout--overflow-x-auto` and a width constraint
+// (`o-layout--min-w-0`, `max-width`, flex shrink, etc.).
+// =============================================================================
+
+@mixin scroll-shadow-inline($timeline: --o-scroll-shadow-inline) {
+  position: relative;
+  overflow-x: auto;
+  scroll-timeline-name: $timeline;
+  scroll-timeline-axis: inline;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset-block: 0;
+    inline-size: var(--#{$pds-prefix}-size-scroll-shadow-height);
+    opacity: 0;
+    pointer-events: none;
+    animation-timeline: $timeline;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+
+  // Start (left in LTR) — hidden at scroll start, visible once scrolled across.
+  &::before {
+    inset-inline-start: 0;
+    background: linear-gradient(
+      to right,
+      var(--#{$pds-prefix}-color-scroll-shadow),
+      transparent
+    );
+    animation-name: o-scroll-shadow-inline-start;
+  }
+
+  // End (right in LTR) — visible at scroll start, fades out at the end.
+  &::after {
+    inset-inline-end: 0;
+    background: linear-gradient(
+      to left,
+      var(--#{$pds-prefix}-color-scroll-shadow),
+      transparent
+    );
+    animation-name: o-scroll-shadow-inline-end;
+  }
+}

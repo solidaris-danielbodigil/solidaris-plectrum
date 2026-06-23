@@ -21,8 +21,90 @@
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-title-text);
 }
 
-// Stepper — default PrimeNG; hide step numbers when unnumbered variant is active
+// ── Stepper layout (chrome fixed, accordion content scrolls) ─────────────────
+
+.c-affiliate-document-detail__body {
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
+
+.c-affiliate-document-detail__stepper-layout-switch {
+  flex-shrink: 0;
+}
+
 .c-affiliate-document-detail__stepper {
+  flex: 1 1 auto;
+  min-block-size: 0;
+
+  &:not(.c-affiliate-document-detail__stepper--vertical) {
+    .p-step {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--spacing-1);
+      min-inline-size: 0;
+    }
+
+    // Custom separator lives in __step-head-row; hide PrimeNG's trailing instance.
+    .p-step > .p-stepper-separator {
+      display: none;
+    }
+
+    .c-affiliate-document-detail__step-head-row {
+      inline-size: 100%;
+      min-inline-size: 0;
+
+      .p-step-header {
+        flex: 0 0 auto;
+      }
+
+      .p-stepper-separator {
+        flex: 1 1 0;
+        min-inline-size: 0;
+        align-self: center;
+      }
+    }
+
+    .p-step-header {
+      white-space: nowrap;
+    }
+
+    .p-step-title {
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+
+  &--vertical {
+    .p-step {
+      flex: initial;
+      align-items: stretch;
+      gap: var(--spacing-1);
+      min-inline-size: 0;
+    }
+
+    .p-step > .p-stepper-separator {
+      display: none;
+    }
+
+    .c-affiliate-document-detail__step-head-row {
+      .p-step-header {
+        flex: 0 0 auto;
+      }
+    }
+
+    .p-step-header {
+      white-space: nowrap;
+    }
+
+    .p-step-title {
+      white-space: nowrap;
+    }
+
+    .p-steppanel-content {
+      min-block-size: 0;
+    }
+  }
+
   &--unnumbered {
     .p-step-number {
       display: none;
@@ -30,10 +112,58 @@
   }
 }
 
+.c-affiliate-document-detail__step-label {
+  @include text-label-sm;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
+}
+
+.c-affiliate-document-detail__step-meta {
+  flex-wrap: nowrap;
+  align-self: flex-start;
+}
+
+.c-affiliate-document-detail__step-chrome {
+  flex-shrink: 0;
+}
+
+.c-affiliate-document-detail__step-list-scroll {
+  .p-steplist {
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    min-inline-size: 100%;
+  }
+}
+
+.c-affiliate-document-detail__step-list {
+  flex-wrap: nowrap;
+}
+
+.c-affiliate-document-detail__skeleton-step-list-scroll {
+  .c-affiliate-document-detail__skeleton-step-list {
+    flex-wrap: nowrap;
+    min-inline-size: 100%;
+  }
+}
+
+.c-affiliate-document-detail__step-nav {
+  flex-shrink: 0;
+}
+
+.c-affiliate-document-detail__step-content {
+  flex: 1 1 auto;
+  min-block-size: 0;
+
+  &.o-layout--overflow-hidden {
+    overflow: hidden;
+  }
+}
+
 // ── Certificate accordion content ────────────────────────────────────────────
 
 .c-affiliate-document-detail__cert-title,
-.c-affiliate-document-detail__cert-header > span:first-child {
+.c-affiliate-document-detail__cert-header>span:first-child {
   @include text-label-sm;
   line-height: 1;
   color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
@@ -85,8 +215,7 @@
   }
 
   70% {
-    box-shadow: 0 0 0 var(--_spread)
-      color-mix(in srgb, var(--_pulse) 0%, transparent);
+    box-shadow: 0 0 0 var(--_spread) color-mix(in srgb, var(--_pulse) 0%, transparent);
   }
 
   100% {
@@ -115,16 +244,13 @@
     inset: 0;
     border-radius: var(--p-message-border-radius);
     pointer-events: none;
-    animation: c-affiliate-document-detail-message-pulse
-      var(--#{$pds-prefix}-duration-affiliate-document-detail-message-pulse)
-      ease-out 3;
+    animation: c-affiliate-document-detail-message-pulse var(--#{$pds-prefix}-duration-affiliate-document-detail-message-pulse) ease-out 3;
   }
 
   @media (prefers-reduced-motion: reduce) {
     &::after {
       animation: none;
-      box-shadow: 0 0 0 var(--_spread)
-        color-mix(in srgb, var(--_pulse) 45%, transparent);
+      box-shadow: 0 0 0 var(--_spread) color-mix(in srgb, var(--_pulse) 45%, transparent);
     }
   }
 }
@@ -159,9 +285,15 @@
 }
 
 .c-affiliate-document-detail__skeleton-step-list {
-  inline-size: 100%;
-  max-inline-size: 100%;
-  flex-wrap: wrap;
+  inline-size: max-content;
+  min-inline-size: 100%;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.c-affiliate-document-detail__skeleton-step {
+  flex: 1 1 0;
+  min-inline-size: 0;
 }
 
 .c-affiliate-document-detail__skeleton-slot {
@@ -174,11 +306,17 @@
   }
 
   &--step {
-    flex: 1 1 0;
-    min-inline-size: 0;
+    inline-size: 100%;
     max-inline-size: var(--#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-w);
     block-size: var(--#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-h);
     border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--step-tag {
+    inline-size: 100%;
+    max-inline-size: var(--#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-w);
+    block-size: var(--#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-h);
+    border-radius: var(--#{$pds-prefix}-radius-pill);
   }
 
   &--cert-title {

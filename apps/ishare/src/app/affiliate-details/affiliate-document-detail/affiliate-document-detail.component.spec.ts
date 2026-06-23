@@ -49,8 +49,10 @@ function findButtonByLabel(
   root: ParentNode,
   label: string,
 ): HTMLButtonElement | undefined {
-  return [...root.querySelectorAll('button')].find((button) =>
-    button.textContent?.includes(label),
+  return [...root.querySelectorAll('button')].find(
+    (button) =>
+      button.textContent?.includes(label) ||
+      button.getAttribute('aria-label') === label,
   ) as HTMLButtonElement | undefined;
 }
 
@@ -60,6 +62,7 @@ function findButtonByLabel(
       [selectedDocumentId]="selectedDocumentId()"
       [navigableDocuments]="navigableDocuments"
       [focusTarget]="focusTarget()"
+      [stepperView]="stepperView()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
     />
@@ -81,6 +84,7 @@ class DocumentDetailDrawerTestHostComponent {
   readonly focusTarget = signal<{ stepValue: number; panelId: string } | null>(
     null,
   );
+  readonly stepperView = signal<'horizontal' | 'vertical'>('horizontal');
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
   readonly transactionsCicsDialogVisible = signal(false);
@@ -118,6 +122,36 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).nativeElement as HTMLElement;
 
     expect(host.classList.contains('c-affiliate-document-detail')).toBe(true);
+  });
+
+  it('should render horizontal stepper chrome by default', () => {
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('p-step-list')).toBeTruthy();
+    expect(root.querySelector('p-step-item')).toBeFalsy();
+    expect(
+      root.querySelector('.c-affiliate-document-detail__step-chrome'),
+    ).toBeTruthy();
+  });
+
+  it('should render vertical step items when stepperView is vertical', () => {
+    fixture.componentInstance.stepperView.set('vertical');
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('p-step-list')).toBeFalsy();
+    expect(root.querySelectorAll('p-step-item').length).toBe(3);
+    expect(
+      root.querySelector('.c-affiliate-document-detail__step-chrome'),
+    ).toBeFalsy();
+    expect(
+      root.querySelector('.c-affiliate-document-detail__stepper--vertical'),
+    ).toBeTruthy();
+    expect(
+      root.querySelector('.p-step .c-affiliate-document-detail__step-meta'),
+    ).toBeTruthy();
+    expect(root.querySelector('.p-accordion')).toBeTruthy();
   });
 
   it('should expose the selected document title from mock data', () => {
@@ -344,7 +378,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       findButtonByLabel(fixture.nativeElement, 'Voir plus de détails'),
     ).toBeTruthy();
     expect(
-      findButtonByLabel(fixture.nativeElement, 'Etape précédente'),
+      findButtonByLabel(fixture.nativeElement, 'Précédent'),
     ).toBeFalsy();
     expect(
       fixture.nativeElement.querySelector(
@@ -452,6 +486,72 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(statusTag?.textContent).toContain('Accepté');
     expect(fixture.nativeElement.textContent).toContain('Certificat ITT');
   });
+
+  it('should render aggregated step status tags under step titles in the step list', () => {
+    const stepMetas = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.p-step .c-affiliate-document-detail__step-meta',
+      ),
+    ] as HTMLElement[];
+
+    expect(stepMetas).toHaveSize(3);
+
+    const stepOneTag = stepMetas[0].querySelector('p-tag');
+    const stepTwoTag = stepMetas[1].querySelector('p-tag');
+    const stepThreeTag = stepMetas[2].querySelector('p-tag');
+
+    expect(stepOneTag?.textContent).toContain('Accepté');
+    expect(stepOneTag?.classList.contains('p-tag-success')).toBe(true);
+
+    expect(stepTwoTag?.textContent).toContain('Clôturé');
+    expect(stepTwoTag?.classList.contains('p-tag-secondary')).toBe(true);
+
+    expect(stepThreeTag?.textContent).toContain('En attente');
+    expect(stepThreeTag?.classList.contains('p-tag-warn')).toBe(true);
+  });
+
+  it('should render step-level comment and warning count buttons aligned with document list tags', () => {
+    const stepMetas = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.p-step .c-affiliate-document-detail__step-meta',
+      ),
+    ] as HTMLElement[];
+
+    const stepTwoButton = stepMetas[1].querySelector(
+      'button.p-button',
+    ) as HTMLButtonElement | null;
+    expect(stepTwoButton?.textContent).toContain('2');
+    expect(stepTwoButton?.classList.contains('p-button-secondary')).toBe(true);
+    expect(stepTwoButton?.getAttribute('aria-label')).toBe('2 commentaires');
+    expect(stepTwoButton?.getAttribute('data-telemetry-id')).toBe(
+      'document-tag-doc-demande-primaire-2',
+    );
+
+    const stepThreeButton = stepMetas[2].querySelector(
+      'button.p-button',
+    ) as HTMLButtonElement | null;
+    expect(stepThreeButton?.textContent).toContain('1');
+    expect(stepThreeButton?.classList.contains('p-button-warn')).toBe(true);
+    expect(stepThreeButton?.getAttribute('aria-label')).toBe('1 avertissement');
+    expect(stepThreeButton?.getAttribute('data-telemetry-id')).toBe(
+      'document-tag-doc-demande-primaire-1',
+    );
+  });
+
+  it('should jump to the commented panel when a step warning tag is clicked', fakeAsync(() => {
+    const warnButton = fixture.nativeElement.querySelector(
+      '.p-step:nth-child(3) .c-affiliate-document-detail__step-meta button.p-button-warn',
+    ) as HTMLButtonElement;
+
+    warnButton.click();
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(3);
+    expect(component.certPanelValue()).toBe('calcul');
+    expect(component.highlightedPanelId()).toBe('calcul');
+  }));
 
   it('should render the data-driven status icon on the certificate panel', () => {
     const statusTagIcon = fixture.nativeElement.querySelector(
@@ -578,11 +678,11 @@ describe('AffiliateDocumentDetailComponent', () => {
   it('should always render both step navigation buttons in the footer', () => {
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape précédente',
+      'Précédent',
     );
     const nextStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape suivante',
+      'Suivant',
     );
 
     expect(previousStepButton).toBeTruthy();
@@ -594,7 +694,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape précédente',
+      'Précédent',
     );
 
     expect(previousStepButton?.disabled).toBe(true);
@@ -608,7 +708,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape précédente',
+      'Précédent',
     );
 
     expect(previousStepButton?.disabled).toBe(false);
@@ -622,7 +722,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const nextStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape suivante',
+      'Suivant',
     );
 
     expect(nextStepButton?.disabled).toBe(true);
@@ -631,7 +731,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   it('should advance to the next step when Etape suivante is clicked', () => {
     const nextStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape suivante',
+      'Suivant',
     );
 
     nextStepButton?.click();
@@ -692,7 +792,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     const previousStepButton = findButtonByLabel(
       fixture.nativeElement,
-      'Etape précédente',
+      'Précédent',
     );
 
     previousStepButton?.click();

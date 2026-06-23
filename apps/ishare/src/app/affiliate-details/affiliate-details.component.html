@@ -103,7 +103,7 @@
     >
       <ng-template pTemplate="header">
         <div
-          class="c-affiliate-details__card-header o-flex o-flex--y o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+          class="c-affiliate-details__card-header o-flex o-flex--y o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
         >
           <div
             class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width"
@@ -341,7 +341,7 @@
         @if (selectedDocumentId(); as documentId) {
           <ng-template pTemplate="header">
             <div
-              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
             >
               @if (pageLoading()) {
                 <span
@@ -356,6 +356,20 @@
                 >
                   {{ selectedDocumentTitle() }}
                 </h2>
+
+                @if (showStepperViewToggle()) {
+                  <p-selectbutton
+                    class="c-affiliate-document-detail__stepper-layout-switch o-flex__item--shrink-0"
+                    [options]="stepperViewOptions"
+                    optionLabel="label"
+                    optionValue="value"
+                    [ngModel]="stepperView()"
+                    (ngModelChange)="stepperView.set($event)"
+                    [allowEmpty]="false"
+                    size="small"
+                    ariaLabel="Mode d'affichage du parcours"
+                  />
+                }
               }
 
               <div
@@ -388,37 +402,21 @@
           </ng-template>
 
           <div
-            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
-            [class.o-scroll-shadow]="!pageLoading()"
-            [class.o-layout--overflow-y-auto]="!pageLoading()"
-            [class.o-layout--overflow-hidden]="pageLoading()"
+            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0 o-layout--overflow-hidden"
           >
             <app-affiliate-document-detail
-              class="o-layout--full-width o-layout--min-w-0"
+              class="o-layout--full-width o-layout--min-w-0 o-layout--full-height o-flex__item--grow-1 o-layout--min-h-0"
               [selectedDocumentId]="documentId"
               [affiliateRouteId]="affiliateId()"
               [navigableDocuments]="navigableDocuments()"
               [focusTarget]="documentFocus()"
               [loading]="pageLoading()"
+              [stepperView]="stepperView()"
               (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
               (moreDetailsOpen)="onMoreDetailsOpen($event)"
               (transactionsCicsOpen)="onTransactionsCicsOpen()"
               (crossReferenceNavigate)="onCrossReferenceNavigate($event)"
             />
-            @if (!pageLoading()) {
-            <p-scrolltop
-              class="c-affiliate-details__scrolltop o-flex__item--shrink-0"
-              target="parent"
-              [threshold]="200"
-              icon="bi bi-arrow-up"
-              buttonAriaLabel="Retour en haut"
-              [buttonProps]="{
-                severity: 'secondary',
-                rounded: true,
-                raised: true,
-              }"
-            />
-            }
           </div>
         } @else {
           <pds-empty-state
