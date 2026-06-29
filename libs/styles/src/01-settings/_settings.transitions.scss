@@ -11,4 +11,11 @@
   --#{$pds-prefix}-transition-duration:       0.2s;
   --#{$pds-prefix}-transition-duration-mask:  0.15s;
 
+  // Toolbar reveal — Plectrum-aligned easing (Storybook animation guidelines)
+  --#{$pds-prefix}-ease-standard:             cubic-bezier(0.4, 0, 0.2, 1);
+  --#{$pds-prefix}-ease-snappy:               cubic-bezier(0.2, 0.9, 0.4, 1);
+  --#{$pds-prefix}-duration-toolbar-height:   220ms;
+  --#{$pds-prefix}-duration-toolbar-slide:    200ms;
+  --#{$pds-prefix}-duration-toolbar-elevation: 140ms;
+
 }

@@ -1,52 +1,31 @@
 <div
-  class="c-affiliate-details o-flex o-flex--y o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
+  class="c-affiliate-details o-flex o-flex--y o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
 >
-  <pds-toolbar
-    class="c-affiliate-details__toolbar c-affiliate-documents-toolbar o-layout--full-width o-flex__item--shrink-0"
-    [sticky]="true"
+  <div
+    class="c-affiliate-documents-toolbar-shell o-layout--full-width o-flex__item--shrink-0"
+    [class.is-visible]="documentFiltersToolbarVisible()"
+    [attr.aria-hidden]="documentFiltersToolbarVisible() ? null : 'true'"
+    [attr.inert]="documentFiltersToolbarVisible() ? null : ''"
   >
-    <ng-container slot="start">
+    <div class="c-affiliate-documents-toolbar-shell__clip">
+      <pds-toolbar
+        class="c-affiliate-details__toolbar c-affiliate-documents-toolbar c-affiliate-documents-toolbar__panel o-layout--full-width"
+        [sticky]="false"
+      >
+        <ng-container slot="start">
+      @for (
+        toolbarFilterResetKey of [toolbarFilterControlsKey()];
+        track toolbarFilterResetKey
+      ) {
       <div
         class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
       >
-        <div class="c-affiliate-documents-toolbar__field">
-          <pds-form-field label="Rechercher" inputId="document-search">
-            <p-iconfield class="c-affiliate-documents-toolbar__field-input o-layout--full-width">
-              <p-inputicon>
-                <i class="bi bi-search" aria-hidden="true"></i>
-              </p-inputicon>
-              <input
-                pInputText
-                type="text"
-                role="searchbox"
-                autocomplete="off"
-                id="document-search"
-                name="documentSearch"
-                data-telemetry-id="document-search"
-                pdsTelemetryLabel="Rechercher"
-                [ngModel]="documentSearch()"
-                (ngModelChange)="documentSearch.set($event)"
-                [disabled]="pageLoading()"
-                pSize="small"
-                placeholder="Rechercher document..."
-                class="c-affiliate-documents-toolbar__field-input o-layout--full-width"
-              />
-              <p-inputicon>
-                <pds-input-clear
-                  [visible]="!!documentSearch()"
-                  ariaLabel="Effacer la recherche"
-                  (clear)="clearDocumentSearch()"
-                />
-              </p-inputicon>
-            </p-iconfield>
-          </pds-form-field>
-        </div>
-
         <div class="c-affiliate-documents-toolbar__field">
           <pds-form-field label="Secteur" inputId="document-sector">
             <p-autocomplete
               inputId="document-sector"
               name="documentSector"
+              appendTo="body"
               data-telemetry-id="filter-sector"
               pdsTelemetryLabel="Secteur"
               [ngModel]="selectedSector()"
@@ -72,6 +51,7 @@
             <p-autocomplete
               inputId="document-sort"
               name="documentSort"
+              appendTo="body"
               data-telemetry-id="filter-sort"
               pdsTelemetryLabel="Trier par"
               [ngModel]="selectedSort()"
@@ -91,9 +71,53 @@
             ></p-autocomplete>
           </pds-form-field>
         </div>
+
+        <div
+          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--date"
+        >
+          <pds-form-field label="Filtrer par date" inputId="document-date-range">
+            <p-datepicker
+              #documentDateRangePicker
+              inputId="document-date-range"
+              name="documentDateRange"
+              appendTo="body"
+              selectionMode="range"
+              data-telemetry-id="filter-date-range"
+              pdsTelemetryLabel="Filtrer par date"
+              [ngModel]="documentFilterDateRange()"
+              (ngModelChange)="onDocumentFilterDateRangeChange($event)"
+              (onClose)="onDocumentFilterDatePickerClose()"
+              (onClear)="onDocumentFilterDateRangeChange(null)"
+              [showClear]="true"
+              [readonlyInput]="true"
+              [disabled]="pageLoading()"
+              dateFormat="dd/mm/yy"
+              placeholder="Du — Au"
+              size="small"
+              fluid
+            />
+          </pds-form-field>
+        </div>
       </div>
-    </ng-container>
-  </pds-toolbar>
+      }
+      </ng-container>
+
+      <ng-container slot="end">
+        <button
+          pButton
+          type="button"
+          text
+          severity="secondary"
+          icon="bi bi-chevron-up"
+          aria-label="Masquer les filtres"
+          data-telemetry-id="documents-filter-toolbar-close"
+          pdsTelemetryLabel="Masquer les filtres"
+          (click)="closeDocumentFiltersToolbar()"
+        ></button>
+      </ng-container>
+      </pds-toolbar>
+    </div>
+  </div>
 
   <div
     class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
@@ -126,19 +150,81 @@
                 >
               }
             </div>
-            <button
-              pButton
-              type="button"
-              text
-              severity="secondary"
-              class="c-affiliate-details__documents-sort o-flex__item--shrink-0"
-              data-telemetry-id="documents-sort"
-              [pdsTelemetryLabel]="startDateSortAriaLabel()"
-              [icon]="startDateSortIcon()"
-              [attr.aria-label]="startDateSortAriaLabel()"
-              [disabled]="pageLoading()"
-              (click)="toggleStartDateSort()"
-            ></button>
+            <div
+              class="c-affiliate-details__documents-header-actions o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+            >
+              <div class="c-affiliate-details__documents-search">
+                <p-iconfield
+                  class="c-affiliate-details__documents-search-input o-layout--full-width"
+                >
+                  <p-inputicon>
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                  </p-inputicon>
+                  <input
+                    pInputText
+                    type="text"
+                    role="searchbox"
+                    autocomplete="off"
+                    id="document-search"
+                    name="documentSearch"
+                    data-telemetry-id="document-search"
+                    pdsTelemetryLabel="Rechercher"
+                    [ngModel]="documentSearch()"
+                    (ngModelChange)="documentSearch.set($event)"
+                    [disabled]="pageLoading()"
+                    placeholder="Rechercher document..."
+                    class="c-affiliate-details__documents-search-input o-layout--full-width"
+                  />
+                  <p-inputicon>
+                    <pds-input-clear
+                      [visible]="!!documentSearch()"
+                      ariaLabel="Effacer la recherche"
+                      (clear)="clearDocumentSearch()"
+                    />
+                  </p-inputicon>
+                </p-iconfield>
+              </div>
+              <div class="c-affiliate-details__documents-filters-trigger o-flex__item--shrink-0">
+                <p-togglebutton
+                  data-telemetry-id="documents-filters-toggle"
+                  pdsTelemetryLabel="Filtres"
+                  [ngModel]="documentFiltersToolbarVisible()"
+                  (ngModelChange)="documentFiltersToolbarVisible.set($event)"
+                  ariaLabel="Filtres"
+                  size="small"
+                  [disabled]="pageLoading()"
+                >
+                  <ng-template #content>
+                    <span
+                      class="p-togglebutton-icon p-togglebutton-icon-left bi bi-funnel"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="p-togglebutton-label">Filtres</span>
+                    @if (activeToolbarFilterCount() > 0) {
+                      <p-badge
+                        data-telemetry-id="documents-filters-count"
+                        [value]="activeToolbarFilterCount().toString()"
+                        [attr.aria-label]="
+                          activeToolbarFilterCount() + ' filtres actifs'
+                        "
+                      />
+                      <span
+                        class="p-togglebutton-icon bi bi-x"
+                        role="button"
+                        tabindex="0"
+                        data-telemetry-id="documents-filters-clear"
+                        pdsTelemetryLabel="Effacer les filtres"
+                        aria-label="Effacer les filtres"
+                        [attr.aria-disabled]="pageLoading() ? 'true' : null"
+                        (click)="onClearToolbarFilters($event)"
+                        (keydown.enter)="onClearToolbarFilters($event)"
+                        (keydown.space)="onClearToolbarFilters($event)"
+                      ></span>
+                    }
+                  </ng-template>
+                </p-togglebutton>
+              </div>
+            </div>
           </div>
 
           @if (showCategoryTabs()) {

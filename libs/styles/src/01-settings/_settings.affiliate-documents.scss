@@ -11,6 +11,9 @@
   // Fixed control width — Figma: 250px @ 14px base
   --#{$pds-prefix}-size-affiliate-documents-filter-field: calc(250 / 14 * var(--base-unit));
 
+  // Date range picker — wider than autocomplete fields for "Du — Au" placeholder.
+  --#{$pds-prefix}-size-affiliate-documents-filter-date-field: calc(280 / 14 * var(--base-unit));
+
   // Shared control row height — matches p-inputtext / p-autocomplete size="small" (~31px @ 14px base)
   --#{$pds-prefix}-size-affiliate-documents-filter-control: calc(31 / 14 * var(--base-unit));
 
@@ -26,6 +29,11 @@
   --#{$pds-prefix}-shadow-affiliate-documents-toolbar:
     0 0 0 1px var(--#{$pds-prefix}-color-card-border),
     var(--#{$pds-prefix}-shadow-sm);
+
+  // Elevation-off state — ring stays; shadow layers fade for staged reveal
+  --#{$pds-prefix}-shadow-affiliate-documents-toolbar-none:
+    0 0 0 1px var(--#{$pds-prefix}-color-card-border),
+    0 0 0 0 transparent;
 }
 
 // ── PrimeNG Card token bridge — scoped to affiliate documents toolbar wrapper ─
@@ -39,5 +47,11 @@
   // Shared pds-toolbar inner ships o-layout--padding-3 (24px); card body owns 16px inset.
   .c-toolbar__inner {
     padding: var(--#{$pds-prefix}-space-affiliate-documents-toolbar-inner-padding);
+  }
+
+  // PrimeNG reads card chrome on the p-card host — not the toolbar wrapper.
+  > p-card.p-card {
+    box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar);
+    overflow: visible;
   }
 }

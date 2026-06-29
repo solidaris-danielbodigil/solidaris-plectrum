@@ -18,6 +18,27 @@
   background: var(--#{$pds-prefix}-color-affiliate-details-page-bg);
 }
 
+.c-affiliate-details__columns {
+  position: relative;
+  z-index: 1;
+  background: var(--#{$pds-prefix}-color-surface);
+}
+
+.c-affiliate-details__documents-header-actions {
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.c-affiliate-details__documents-search {
+  min-width: 0;
+  flex: 1 1 auto;
+  max-width: var(--#{$pds-prefix}-size-affiliate-details-documents-search-max);
+}
+
+.c-affiliate-details__documents-search-input {
+  width: 100%;
+}
+
 .c-affiliate-details__documents {
   min-width: 0;
   min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-documents-column-min);
@@ -57,6 +78,7 @@
 }
 
 .c-affiliate-details__category-accordion {
+
   // PrimeNG accordion header row — internal flex gap
   .p-accordionheader {
     gap: var(--spacing-2);

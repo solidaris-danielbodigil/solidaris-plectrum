@@ -9,8 +9,8 @@
 // =============================================================================
 
 :root {
-  // Page canvas — contrast behind white section cards (moved from c-affiliate-documents)
-  --#{$pds-prefix}-color-affiliate-details-page-bg: var(--#{$pds-prefix}-color-surface-subtle);
+  // Page canvas — white surface (Figma node 324:5739)
+  --#{$pds-prefix}-color-affiliate-details-page-bg: var(--#{$pds-prefix}-color-surface);
 
   // Column structural min-widths — layout flex/grow via o-flex in template
   --#{$pds-prefix}-size-affiliate-details-documents-column-min: calc(320 / 14 * var(--base-unit));
@@ -29,6 +29,9 @@
 
   // List scroll inset — keeps document rows fully visible inside the documents card scroller.
   --#{$pds-prefix}-space-affiliate-details-list-scroll-inset: var(--spacing-3);
+
+  // Documents card header search field — compact width beside filter/sort actions.
+  --#{$pds-prefix}-size-affiliate-details-documents-search-max: calc(220 / 14 * var(--base-unit));
 }
 
 // ── PrimeNG Card token bridge — two-column content panels ────────────────────

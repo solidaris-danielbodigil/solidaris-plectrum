@@ -40,6 +40,14 @@ function expandJourneyGroup(
   fixture.detectChanges();
 }
 
+function openDocumentFiltersToolbar(
+  component: AffiliateDetailsComponent,
+  fixture: ComponentFixture<AffiliateDetailsComponent>,
+): void {
+  component.documentFiltersToolbarVisible.set(true);
+  fixture.detectChanges();
+}
+
 describe('AffiliateDetailsComponent', () => {
   let component: AffiliateDetailsComponent;
   let fixture: ComponentFixture<AffiliateDetailsComponent>;
@@ -84,13 +92,77 @@ describe('AffiliateDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render sticky affiliate documents toolbar', () => {
-    const toolbar = fixture.nativeElement.querySelector(
-      'pds-toolbar.c-affiliate-documents-toolbar',
+  it('should hide documents filter toolbar by default', () => {
+    expect(component.documentFiltersToolbarVisible()).toBe(false);
+
+    const shell = fixture.nativeElement.querySelector(
+      '.c-affiliate-documents-toolbar-shell',
     );
 
-    expect(toolbar).toBeTruthy();
-    expect(toolbar.classList.contains('c-toolbar--sticky')).toBe(true);
+    expect(shell).toBeTruthy();
+    expect(shell.classList.contains('is-visible')).toBe(false);
+    expect(shell.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should open documents filter toolbar when the header Filtres trigger is clicked', () => {
+    const trigger = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="documents-filters-toggle"]',
+    ) as HTMLElement;
+
+    trigger.click();
+    fixture.detectChanges();
+
+    expect(component.documentFiltersToolbarVisible()).toBe(true);
+    expect(
+      fixture.nativeElement
+        .querySelector('.c-affiliate-documents-toolbar-shell')
+        ?.classList.contains('is-visible'),
+    ).toBe(true);
+    expect(trigger.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('should close documents filter toolbar when the chevron close button is clicked', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
+    const closeButton = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="documents-filter-toolbar-close"]',
+    ) as HTMLButtonElement;
+
+    closeButton.click();
+    fixture.detectChanges();
+
+    expect(component.documentFiltersToolbarVisible()).toBe(false);
+    expect(
+      fixture.nativeElement
+        .querySelector('.c-affiliate-documents-toolbar-shell')
+        ?.classList.contains('is-visible'),
+    ).toBe(false);
+  });
+
+  it('should render the documents search input and Filtres trigger in the card header', () => {
+    const searchInput = fixture.nativeElement.querySelector(
+      '#document-search',
+    ) as HTMLInputElement;
+    const trigger = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="documents-filters-toggle"]',
+    ) as HTMLElement;
+
+    expect(searchInput).toBeTruthy();
+    expect(searchInput.getAttribute('role')).toBe('searchbox');
+    expect(searchInput.placeholder).toBe('Rechercher document...');
+    expect(trigger).toBeTruthy();
+    expect(trigger.textContent).toContain('Filtres');
+    expect(trigger.classList.contains('p-togglebutton')).toBe(true);
+    expect(trigger.querySelector('.bi-funnel')).toBeTruthy();
+    expect(trigger.getAttribute('aria-pressed')).toBe('false');
+    expect(trigger.querySelector('.p-togglebutton-label')?.textContent).toContain(
+      'Filtres',
+    );
+    const defaultFilterBadge = trigger.querySelector(
+      '[data-telemetry-id="documents-filters-count"]',
+    );
+    expect(defaultFilterBadge).toBeTruthy();
+    expect(defaultFilterBadge?.textContent).toContain('1');
   });
 
   it('should initialize document filter state from Figma defaults', () => {
@@ -106,22 +178,26 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.activeCategory()).toBe('parcours');
   });
 
-  it('should render three filter controls with expected labels', () => {
+  it('should render three toolbar filter controls with expected labels', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     const labels = [
       ...fixture.nativeElement.querySelectorAll('.c-form-field__label-text'),
     ].map((label) => (label as Element).textContent?.trim());
 
-    expect(labels).toEqual(['Rechercher', 'Secteur', 'Trier par']);
+    expect(labels).toEqual(['Secteur', 'Trier par', 'Filtrer par date']);
   });
 
   it('should associate labels with controls via matching input ids', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     const associations: Array<{
       labelFor: string | null;
       controlId: string | null;
     }> = [
-      { labelFor: 'document-search', controlId: 'document-search' },
       { labelFor: 'document-sector', controlId: 'document-sector' },
       { labelFor: 'document-sort', controlId: 'document-sort' },
+      { labelFor: 'document-date-range', controlId: 'document-date-range' },
     ];
 
     associations.forEach(({ labelFor, controlId }) => {
@@ -136,19 +212,21 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should not render journey-view or archived-only toolbar toggles', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     expect(fixture.nativeElement.querySelector('#journey-view')).toBeNull();
     expect(fixture.nativeElement.querySelector('#archived-only')).toBeNull();
   });
 
-  it('should mark the search icon as decorative', () => {
+  it('should mark the header search icon as decorative', () => {
     const searchIcon = fixture.nativeElement.querySelector(
-      '.c-affiliate-documents-toolbar__field .bi-search',
+      '.c-affiliate-details__documents-search .bi-search',
     );
 
     expect(searchIcon?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('should render search input as a clearable text searchbox', () => {
+  it('should render header search input as a clearable text searchbox', () => {
     const searchInput = fixture.nativeElement.querySelector(
       '#document-search',
     ) as HTMLInputElement;
@@ -157,10 +235,16 @@ describe('AffiliateDetailsComponent', () => {
     expect(searchInput.getAttribute('role')).toBe('searchbox');
     expect(searchInput.placeholder).toBe('Rechercher document...');
     expect(searchInput.value).toBe('');
-    expect(fixture.nativeElement.querySelector('pds-input-clear')).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__documents-search pds-input-clear',
+      ),
+    ).toBeTruthy();
   });
 
   it('should enable showClear on sector and sort autocompletes', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     const autocompletes = fixture.debugElement.queryAll(
       By.directive(AutoComplete),
     );
@@ -177,6 +261,8 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should render placeholders on sector and sort autocompletes', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     const sectorInput = fixture.nativeElement.querySelector(
       '#document-sector',
     ) as HTMLInputElement;
@@ -189,6 +275,8 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should clear sector autocomplete via showClear', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     component.selectedSector.set({
       label: 'indémnités',
       value: 'indemnites',
@@ -208,6 +296,8 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should clear sort autocomplete via showClear', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
     const sortAutocomplete = fixture.debugElement
       .queryAll(By.directive(AutoComplete))
       .find((autocomplete) =>
@@ -217,18 +307,15 @@ describe('AffiliateDetailsComponent', () => {
     sortAutocomplete?.componentInstance.clear();
     fixture.detectChanges();
 
-    expect(component.selectedSort()).toEqual({
-      label: 'Date de réception',
-      value: 'date-reception',
-    });
+    expect(component.selectedSort()).toBeNull();
   });
 
-  it('should clear document search via pds-input-clear', () => {
+  it('should clear document search via pds-input-clear in the card header', () => {
     component.documentSearch.set('rechute');
     fixture.detectChanges();
 
     const clearButton = fixture.nativeElement.querySelector(
-      'pds-input-clear button',
+      '.c-affiliate-details__documents-search pds-input-clear button',
     ) as HTMLButtonElement;
     clearButton.click();
     fixture.detectChanges();
@@ -241,6 +328,82 @@ describe('AffiliateDetailsComponent', () => {
         ) as HTMLInputElement
       ).value,
     ).toBe('');
+  });
+
+  it('should show an active filter count badge when toolbar filters are applied', () => {
+    component.onSectorChange({ label: 'médical', value: 'medical' });
+    fixture.detectChanges();
+
+    const badge = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+    );
+
+    expect(badge).toBeTruthy();
+    expect(badge.textContent).toContain('2');
+    expect(component.activeToolbarFilterCount()).toBe(2);
+  });
+
+  it('should count date range and default sort as two active toolbar filters', () => {
+    component.documentFilterDateRange.set([
+      new Date(2026, 5, 3),
+      new Date(2026, 5, 11),
+    ]);
+    fixture.detectChanges();
+
+    expect(component.activeToolbarFilterCount()).toBe(2);
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+      )?.textContent,
+    ).toContain('2');
+  });
+
+  it('should count default sort alone as an active toolbar filter', () => {
+    expect(component.activeToolbarFilterCount()).toBe(1);
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+      )?.textContent,
+    ).toContain('1');
+  });
+
+  it('should clear toolbar filters when the filters clear icon is clicked', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
+    component.onSectorChange({ label: 'médical', value: 'medical' });
+    component.onSortChange({ label: 'Nom du document', value: 'nom-document' });
+    component.documentFilterDateRange.set([
+      new Date(2026, 5, 1),
+      new Date(2026, 5, 10),
+    ]);
+    fixture.detectChanges();
+
+    const clearButton = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="documents-filters-clear"]',
+    ) as HTMLButtonElement;
+    clearButton.click();
+    fixture.detectChanges();
+
+    expect(component.selectedSector()).toBeNull();
+    expect(component.selectedSort()).toBeNull();
+    expect(component.documentFilterDateRange()).toBeNull();
+    expect(component.activeToolbarFilterCount()).toBe(0);
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+      ),
+    ).toBeNull();
+
+    const sectorInput = fixture.nativeElement.querySelector(
+      '#document-sector',
+    ) as HTMLInputElement;
+    const dateInput = fixture.nativeElement.querySelector(
+      '#document-date-range',
+    ) as HTMLInputElement;
+
+    expect(sectorInput.value).toBe('');
+    expect(dateInput.value).toBe('');
+    expect(component.selectedSort()).toBeNull();
   });
 
   it('should filter sector suggestions by query', () => {
@@ -369,9 +532,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(drawer).toBeTruthy();
 
     const sectionTitles = [
-      ...fixture.nativeElement.querySelectorAll(
-        '.c-drawer__section-title',
-      ),
+      ...fixture.nativeElement.querySelectorAll('.c-drawer__section-title'),
     ].map((title) => (title as Element).textContent?.trim());
 
     expect(sectionTitles).not.toContain('Notes');
@@ -636,16 +797,9 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should set activeCategory and scroll when a category tab is clicked', fakeAsync(() => {
-    const panel = fixture.nativeElement.querySelector(
-      '#category-panel-isoles',
-    ) as HTMLElement;
-    const scrollSpy = spyOn(
-      HTMLElement.prototype,
-      'scrollIntoView',
-    ).and.callThrough();
-    const scrollBySpy = spyOn(
-      HTMLElement.prototype,
-      'scrollBy',
+    const scrollToCategorySpy = spyOn(
+      component,
+      'scrollToCategory',
     ).and.callThrough();
 
     component.onCategoryTabChange('isoles');
@@ -653,7 +807,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.activeCategory()).toBe('isoles');
     expect(component.openCategories()).toContain('isoles');
-    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
+    expect(scrollToCategorySpy).toHaveBeenCalledWith('isoles');
   }));
 
   it('should show closed-documents info tag when archived documents exist', () => {
@@ -697,7 +851,9 @@ describe('AffiliateDetailsComponent', () => {
     ).toBe(true);
     expect(component.activeCategory()).toBe('archives');
     expect(component.openCategories()).toContain('archives');
-    expect(component.archivesItems()[0].id).toBe('doc-archive-changement-adresse');
+    expect(component.archivesItems()[0].id).toBe(
+      'doc-archive-changement-adresse',
+    );
   });
 
   it('should filter documents by search query across categories', () => {
@@ -721,15 +877,20 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.parcoursGroups()[0].documents[0].id).toBe('doc-rechute');
   });
 
-  it('should place toolbar at page level outside documents column', () => {
-    const toolbar = fixture.nativeElement.querySelector(
-      '.c-affiliate-details > pds-toolbar.c-affiliate-documents-toolbar',
+  it('should place toolbar shell at page level outside documents column', () => {
+    openDocumentFiltersToolbar(component, fixture);
+
+    const shell = fixture.nativeElement.querySelector(
+      '.c-affiliate-details > .c-affiliate-documents-toolbar-shell',
     );
     const toolbarInDocuments = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents pds-toolbar',
+      '.c-affiliate-details__documents .c-affiliate-documents-toolbar-shell',
     );
 
-    expect(toolbar).toBeTruthy();
+    expect(shell).toBeTruthy();
+    expect(
+      shell?.querySelector('pds-toolbar.c-affiliate-documents-toolbar'),
+    ).toBeTruthy();
     expect(toolbarInDocuments).toBeNull();
   });
 
@@ -756,36 +917,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(detailPanel).toBeTruthy();
   });
 
-  it('should render a text secondary sort button in the documents card header', () => {
-    const sortButton = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents-sort',
-    ) as HTMLButtonElement;
-
-    expect(sortButton).toBeTruthy();
-    expect(sortButton.classList.contains('p-button-secondary')).toBe(true);
-    expect(sortButton.getAttribute('aria-label')).toBe(
-      'Trier du plus ancien au plus récent',
-    );
-    expect(sortButton.querySelector('.bi-sort-up')).toBeTruthy();
-  });
-
-  it('should toggle journey group order by start date when the sort button is clicked', () => {
-    const initialGroupIds = component.parcoursGroups().map((group) => group.id);
-
-    const sortButton = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents-sort',
-    ) as HTMLButtonElement;
-    sortButton.click();
-    fixture.detectChanges();
-
-    const toggledGroupIds = component.parcoursGroups().map((group) => group.id);
-
-    expect(component.startDateSortAscending()).toBe(false);
-    expect(toggledGroupIds).not.toEqual(initialGroupIds);
-    expect(sortButton.getAttribute('aria-label')).toBe(
-      'Trier du plus récent au plus ancien',
-    );
-    expect(sortButton.querySelector('.bi-sort-down')).toBeTruthy();
+  it('should not render a separate journey sort button in the documents card header', () => {
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__documents-sort',
+      ),
+    ).toBeNull();
   });
 
   it('should select the first document when a journey group is expanded', () => {
@@ -1138,7 +1275,9 @@ describe('AffiliateDetailsComponent', () => {
     flush();
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
+    expect(component.selectedDocumentId()).toBe(
+      'doc-archive-changement-adresse',
+    );
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
   }));
@@ -1150,7 +1289,9 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
+    expect(component.selectedDocumentId()).toBe(
+      'doc-archive-changement-adresse',
+    );
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
     expect(
@@ -1191,7 +1332,9 @@ describe('AffiliateDetailsComponent', () => {
     flush();
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
+    expect(component.selectedDocumentId()).toBe(
+      'doc-archive-changement-adresse',
+    );
     expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
   }));
@@ -1314,7 +1457,9 @@ describe('AffiliateDetailsComponent', () => {
     tick(32 * 10);
     fixture.detectChanges();
 
-    expect(component.selectedDocumentId()).toBe('doc-archive-changement-adresse');
+    expect(component.selectedDocumentId()).toBe(
+      'doc-archive-changement-adresse',
+    );
 
     const maxTop = scroller.scrollHeight - scroller.clientHeight;
     expect(scroller.scrollTop).toBe(maxTop);

@@ -7,6 +7,7 @@ import {
   inject,
   signal,
   untracked,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,16 +15,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import { BadgeModule } from 'primeng/badge';
+import { DatePicker } from 'primeng/datepicker';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { AccordionModule } from 'primeng/accordion';
-import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { SelectButton } from 'primeng/selectbutton';
+import { ToggleButton } from 'primeng/togglebutton';
 import { Skeleton } from 'primeng/skeleton';
 import {
   AffiliateDetailDrawerComponent,
@@ -325,6 +328,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     PrimeTemplate,
     ButtonModule,
     AutoCompleteModule,
+    DatePicker,
     IconFieldModule,
     InputIconModule,
     InputTextModule,
@@ -345,6 +349,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
     SelectButton,
+    ToggleButton,
     Skeleton,
   ],
   templateUrl: './affiliate-details.component.html',
@@ -364,6 +369,9 @@ export class AffiliateDetailsComponent {
   private readonly telemetry = inject(TestingTelemetryService);
   private readonly testingTelemetryEnabled = inject(TESTING_TELEMETRY_ENABLED);
   private readonly destroyRef = inject(DestroyRef);
+
+  @ViewChild('documentDateRangePicker')
+  private documentDateRangePicker?: DatePicker;
 
   private loadingTimerId: ReturnType<typeof setTimeout> | null = null;
 
@@ -513,14 +521,94 @@ export class AffiliateDetailsComponent {
 
   readonly documentSearch = signal('');
 
+  readonly documentFilterDateRange = signal<Date[] | null>(null);
+
+  readonly documentFiltersToolbarVisible = signal(false);
+
+  /** Bumps when toolbar filter controls must remount after a programmatic reset. */
+  readonly toolbarFilterControlsKey = signal(0);
+
   clearDocumentSearch(): void {
     this.documentSearch.set('');
+  }
+
+  clearToolbarFilters(): void {
+    this.selectedSector.set(null);
+    this.documentFilterDateRange.set(null);
+    this.selectedSort.set(null);
+    this.sectorSuggestions = [...this.sectorOptions];
+    this.sortSuggestions = [...this.sortOptions];
+    this.documentDateRangePicker?.writeControlValue(null);
+    this.toolbarFilterControlsKey.update((key) => key + 1);
+  }
+
+  onClearToolbarFilters(event: Event): void {
+    if (this.pageLoading()) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.clearToolbarFilters();
+  }
+
+  onDocumentFilterDateRangeChange(
+    value: Date | Date[] | null | undefined,
+  ): void {
+    const normalized = normalizeDocumentFilterDateRangeValue(value);
+    this.documentFilterDateRange.set(normalized);
+  }
+
+  onDocumentFilterDatePickerClose(): void {
+    const pickerValue = this.documentDateRangePicker?.value as
+      | Date
+      | Date[]
+      | null
+      | undefined;
+    const normalizedFromPicker =
+      normalizeDocumentFilterDateRangeValue(pickerValue);
+
+    if (normalizedFromPicker) {
+      this.documentFilterDateRange.set(normalizedFromPicker);
+      return;
+    }
+
+    this.documentFilterDateRange.set(null);
+    if (pickerValue) {
+      this.documentDateRangePicker?.writeControlValue(null);
+    }
+  }
+
+  closeDocumentFiltersToolbar(): void {
+    this.documentFiltersToolbarVisible.set(false);
   }
 
   readonly selectedSector = signal<SectorOption | null>(null);
   sectorSuggestions: SectorOption[] = [...this.sectorOptions];
   readonly selectedSort = signal<SortOption | null>(this.sortOptions[1]);
   sortSuggestions: SortOption[] = [...this.sortOptions];
+
+  readonly activeToolbarFilterCount = computed(() => {
+    const sectorActive = isToolbarSectorFilterActive(this.selectedSector());
+    const dateActive = hasActiveDocumentDateFilter(
+      this.documentFilterDateRange(),
+    );
+    const sortValue = this.selectedSort()?.value;
+    const sortActive = !!sortValue;
+
+    let count = 0;
+    if (sectorActive) {
+      count += 1;
+    }
+    if (dateActive) {
+      count += 1;
+    }
+    if (sortActive) {
+      count += 1;
+    }
+
+    return count;
+  });
 
   readonly openCategories = signal<DocCategoryId[]>(['parcours', 'isoles']);
   readonly activeCategory = signal<DocCategoryId>('parcours');
@@ -557,16 +645,6 @@ export class AffiliateDetailsComponent {
     this.activeCategory() === 'parcours'
       ? this.startDateSortAscending()
       : this.flatListSortAscending(),
-  );
-
-  readonly startDateSortIcon = computed(() =>
-    this.activeSortAscending() ? 'bi bi-sort-up' : 'bi bi-sort-down',
-  );
-
-  readonly startDateSortAriaLabel = computed(() =>
-    this.activeSortAscending()
-      ? 'Trier du plus ancien au plus récent'
-      : 'Trier du plus récent au plus ancien',
   );
 
   readonly emptyListTitle = computed(() => {
@@ -813,9 +891,13 @@ export class AffiliateDetailsComponent {
   }
 
   onSortChange(option: SortOption | string | null): void {
-    this.selectedSort.set(
-      this.resolveSortOption(option) ?? this.defaultSortOption,
-    );
+    if (option == null || option === '') {
+      this.selectedSort.set(null);
+      return;
+    }
+
+    const resolved = this.resolveSortOption(option) ?? this.defaultSortOption;
+    this.selectedSort.set(resolved);
   }
 
   private get defaultSortOption(): SortOption {
@@ -871,15 +953,6 @@ export class AffiliateDetailsComponent {
           option.label.toLowerCase().includes(query),
         )
       : [...this.sortOptions];
-  }
-
-  toggleStartDateSort(): void {
-    if (this.activeCategory() === 'parcours') {
-      this.startDateSortAscending.update((ascending) => !ascending);
-      return;
-    }
-
-    this.flatListSortAscending.update((ascending) => !ascending);
   }
 
   isCategoryOpen(id: DocCategoryId): boolean {
@@ -1699,6 +1772,30 @@ export class AffiliateDetailsComponent {
       );
     }
 
+    const normalizedDateRange = normalizeDocumentFilterDateRangeValue(
+      this.documentFilterDateRange(),
+    );
+    if (normalizedDateRange?.[0]) {
+      const fromTime = startOfDay(normalizedDateRange[0]).getTime();
+      const toTime = normalizedDateRange[1]
+        ? endOfDay(normalizedDateRange[1]).getTime()
+        : null;
+
+      filtered = filtered.filter((document) => {
+        const receptionDate = this.receptionDateById(document.id);
+        if (!receptionDate) {
+          return false;
+        }
+
+        const docTime = parseFrenchDate(receptionDate);
+        if (toTime !== null) {
+          return docTime >= fromTime && docTime <= toTime;
+        }
+
+        return docTime >= fromTime;
+      });
+    }
+
     return filtered;
   }
 
@@ -1951,7 +2048,11 @@ export class AffiliateDetailsComponent {
       const search = this.documentSearch();
       const sector = this.selectedSector()?.value ?? '';
       const info = this.documentInfoFilter() ?? '';
-      const filterSnapshot = [search, sector, info].join('\u0000');
+      const dateFrom = this.documentFilterDateRange()?.[0]?.getTime() ?? '';
+      const dateTo = this.documentFilterDateRange()?.[1]?.getTime() ?? '';
+      const filterSnapshot = [search, sector, info, dateFrom, dateTo].join(
+        '\u0000',
+      );
 
       const categories = this.categories();
       const open = untracked(() => this.openCategories());
@@ -1964,13 +2065,14 @@ export class AffiliateDetailsComponent {
       const filterChanged =
         this.categoryFilterSnapshotReady && filterSnapshot !== previousSnapshot;
 
-      const [prevSearch = '', prevSector = '', prevInfo = ''] =
+      const [prevSearch = '', prevSector = '', prevInfo = '', prevDateFrom = ''] =
         previousSnapshot.split('\u0000');
       const filterCleared =
         filterChanged &&
         ((prevInfo !== '' && info === '') ||
           (prevSector !== '' && sector === '') ||
-          (prevSearch !== '' && search === ''));
+          (prevSearch !== '' && search === '') ||
+          (prevDateFrom !== '' && dateFrom === ''));
 
       this.categoryFilterSnapshot = filterSnapshot;
       this.categoryFilterSnapshotReady = true;
@@ -2022,6 +2124,7 @@ export class AffiliateDetailsComponent {
       this.documentSearch();
       this.selectedSort();
       this.selectedSector();
+      this.documentFilterDateRange();
 
       const groups = this.parcoursGroups();
       if (!groups.length) {
@@ -2109,6 +2212,66 @@ function parseFrenchDate(value: string): number {
   const [day, month, year] = value.split('/').map(Number);
 
   return new Date(year, month - 1, day).getTime();
+}
+
+function coerceFilterDate(value: unknown): Date | null {
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return value;
+  }
+
+  if (typeof value === 'string' && value.trim()) {
+    const [day, month, year] = value.split('/').map(Number);
+    if (day && month && year) {
+      const parsed = new Date(year, month - 1, day);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+  }
+
+  return null;
+}
+
+function normalizeDocumentFilterDateRangeValue(
+  value: Date | Date[] | null | undefined,
+): Date[] | null {
+  if (value == null) {
+    return null;
+  }
+
+  const range = Array.isArray(value) ? value : [value];
+  const start = coerceFilterDate(range[0]);
+  if (!start) {
+    return null;
+  }
+
+  const end = coerceFilterDate(range[1]);
+  return end ? [start, end] : [start];
+}
+
+function hasActiveDocumentDateFilter(range: Date[] | null): boolean {
+  return normalizeDocumentFilterDateRangeValue(range) !== null;
+}
+
+function isToolbarSectorFilterActive(
+  sector: SectorOption | null,
+): boolean {
+  const value = sector?.value;
+  return !!value && value !== 'tous';
+}
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function endOfDay(date: Date): Date {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    23,
+    59,
+    59,
+    999,
+  );
 }
 
 function compareStartDates(
