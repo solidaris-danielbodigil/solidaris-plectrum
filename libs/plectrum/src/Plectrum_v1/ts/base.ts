@@ -273,9 +273,6 @@ export default {
         900: "#701a75ff",
         950: "#4a044eff"
     },
-    extremes: {
-        white: "#ffffffff"
-    },
     neutral: {
         50: "#fafafaff",
         100: "#f5f5f5ff",
@@ -424,14 +421,14 @@ export default {
                 color: "{text.color}",
                 background: "{surface.0}",
                 hoverColor: "{text.hover.color}",
-                borderColor: "{surface.400}",
-                hoverBackground: "{surface.100}"
+                borderColor: "{surface.200}",
+                hoverBackground: "{primary.100}"
             },
             overlay: {
                 modal: {
                     color: "{text.color}",
                     background: "{surface.0}",
-                    borderColor: "{surface.200}"
+                    borderColor: "{content.border.color}"
                 },
                 select: {
                     color: "{text.color}",
@@ -462,7 +459,7 @@ export default {
                 contrastColor: "#ffffffff"
             },
             surface: {
-                0: "{extremes.white}",
+                0: "#ffffffff",
                 50: "{neutral.50}",
                 100: "{neutral.100}",
                 200: "{neutral.200}",
@@ -482,15 +479,15 @@ export default {
                 borderColor: "{surface.500}",
                 disabledColor: "{form.field.color}",
                 floatLabelColor: "{text.color}",
-                filledBackground: "{surface.50}",
+                filledBackground: "{primary.100}",
                 focusBorderColor: "{primary.color}",
                 hoverBorderColor: "{surface.700}",
                 placeholderColor: "{form.field.color}",
                 disabledBackground: "{surface.100}",
                 invalidBorderColor: "{red.600}",
                 floatLabelFocusColor: "{primary.600}",
-                filledFocusBackground: "{surface.50}",
-                filledHoverBackground: "{surface.50}",
+                filledFocusBackground: "{primary.100}",
+                filledHoverBackground: "{primary.100}",
                 floatLabelActiveColor: "{form.field.float.label.color}",
                 floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
                 invalidPlaceholderColor: "{form.field.placeholder.color}"
@@ -511,7 +508,7 @@ export default {
                     color: "{text.color}",
                     focusColor: "{text.hover.color}",
                     activeColor: "{text.hover.color}",
-                    focusBackground: "{surface.100}",
+                    focusBackground: "{primary.100}",
                     activeBackground: "{surface.100}"
                 },
                 submenuIcon: {

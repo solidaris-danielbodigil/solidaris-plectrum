@@ -11,7 +11,7 @@ import type { StepperDesignTokens } from '@primeuix/themes/types/stepper';
     separator: {
         size: "2px",
         margin: "0 0 0 1rem",
-        background: "{content.border.color}",
+        background: "{overlay.popover.border.color}",
         activeBackground: "{primary.color}"
     },
     stepTitle: {
@@ -45,7 +45,7 @@ import type { StepperDesignTokens } from '@primeuix/themes/types/stepper';
         background: "{content.background}",
         fontWeight: "500",
         activeColor: "{surface.0}",
-        borderColor: "{content.border.color}",
+        borderColor: "{stepper.separator.background}",
         borderRadius: "1rem",
         activeBackground: "{primary.700}",
         activeBorderColor: "#00000000"

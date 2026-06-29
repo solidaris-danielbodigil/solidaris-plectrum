@@ -18,7 +18,7 @@ import type { TabsDesignTokens } from '@primeuix/themes/types/tabs';
         hoverColor: "{text.color}",
         activeColor: "{text.color}",
         borderColor: "{content.border.color}",
-        borderWidth: "1px",
+        borderWidth: "0",
         hoverBackground: "#00000000",
         activeBackground: "#00000000",
         hoverBorderColor: "{content.border.color}",
@@ -46,7 +46,7 @@ import type { TabsDesignTokens } from '@primeuix/themes/types/tabs';
     },
     activeBar: {
         bottom: "-1px",
-        height: "3px",
+        height: "0.25rem",
         background: "{primary.color}"
     },
     navButton: {

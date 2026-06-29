@@ -199,7 +199,7 @@ import type { MessageDesignTokens } from '@primeuix/themes/types/message';
                 borderColor: "{surface.950}",
                 closeButton: {
                     focusRing: {
-                        color: "{surface.50}"
+                        color: "{text.color}"
                     },
                     hoverBackground: "{surface.800}"
                 }
@@ -213,13 +213,13 @@ import type { MessageDesignTokens } from '@primeuix/themes/types/message';
                     color: "{text.color}",
                     borderColor: "{surface.500}"
                 },
-                background: "{surface.100}",
+                background: "{surface.50}",
                 borderColor: "{surface.200}",
                 closeButton: {
                     focusRing: {
                         color: "{surface.600}"
                     },
-                    hoverBackground: "{surface.200}"
+                    hoverBackground: "{surface.400}"
                 }
             }
         }

@@ -46,20 +46,20 @@ import type { ToggleButtonDesignTokens } from '@primeuix/themes/types/togglebutt
             icon: {
                 color: "{surface.500}",
                 hoverColor: "{surface.700}",
-                checkedColor: "{surface.700}"
+                checkedColor: "{surface.0}"
             },
             root: {
-                color: "{text.color}",
+                color: "{text.muted.color}",
                 background: "{primary.100}",
                 hoverColor: "{text.color}",
                 borderColor: "#e7e7e700",
-                checkedColor: "{text.color}",
-                hoverBackground: "{primary.200}",
+                checkedColor: "{surface.0}",
+                hoverBackground: "{primary.100}",
                 checkedBackground: "{primary.100}",
                 checkedBorderColor: "#eaeff400"
             },
             content: {
-                checkedBackground: "{surface.0}"
+                checkedBackground: "{primary.active.color}"
             }
         }
     }
