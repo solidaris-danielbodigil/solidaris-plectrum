@@ -1,16 +1,4 @@
 export default {
-    form: {
-        field: {
-            invalid: {
-                border: {
-                    weight: "0.125rem"
-                }
-            },
-            disabled: {
-                border: "{surface.200}"
-            }
-        }
-    },
     basic: {
         solidaris: {
             50: "#ffedf1ff",
@@ -25,79 +13,96 @@ export default {
             900: "#2c0009ff"
         }
     },
-    toast: {
-        info: {
-            icon: {
-                color: "{toast.info.close.button.focus.ring.color}"
-            }
-        },
-        warn: {
-            icon: {
-                color: "{toast.warn.close.button.focus.ring.color}"
-            }
-        },
-        error: {
-            icon: {
-                color: "{toast.error.close.button.focus.ring.color}"
-            }
-        },
-        success: {
-            icon: {
-                color: "{toast.success.close.button.focus.ring.color}"
-            }
-        },
-        contrast: {
-            icon: {
-                color: "{toast.contrast.close.button.focus.ring.color}"
-            }
-        },
-        secondary: {
-            icon: {
-                color: "{toast.secondary.close.button.focus.ring.color}"
-            }
+    functional: {
+        link: {
+            visited: "#c822a6ff",
+            hover: "#004c9eff",
+            default: "#006ce0ff"
         }
     },
-    slider: {
-        range: {
-            size: "8px"
+    plectrum: {
+        titularis: {
+            background: "{basic.solidaris.500}",
+            color: "{primary.contrast.color}"
+        },
+        partner: {
+            background: "{blue.800}",
+            color: "{primary.contrast.color}"
+        },
+        three: {
+            background: "{teal.400}",
+            color: "{surface.950}"
+        },
+        four: {
+            background: "{yellow.400}",
+            color: "{surface.950}"
+        },
+        five: {
+            background: "{purple.700}",
+            color: "{primary.contrast.color}"
+        },
+        six: {
+            background: "{pink.400}",
+            color: "{surface.950}"
+        },
+        seven: {
+            background: "{cyan.400}",
+            color: "{surface.950}"
+        },
+        eight: {
+            background: "{amber.500}",
+            color: "{surface.950}"
+        },
+        nine: {
+            background: "{lime.500}",
+            color: "{surface.950}"
+        },
+        deceased: {
+            background: "{form.field.disabled.background}",
+            color: "{surface.950}"
         }
     },
     emutnav: {
         item: {
-            gap: "1rem",
             icon: {
                 color: "{navigation.item.icon.color}",
-                focus: {
-                    color: "{navigation.item.icon.focus.color}"
-                },
                 active: {
                     color: "{emutnav.item.active.color}"
+                },
+                focus: {
+                    color: "{navigation.item.icon.focus.color}"
                 }
             },
+            gap: "1rem",
             color: "{navigation.item.color}",
+            padding: "1rem",
+            active: {
+                color: "{branding.700}",
+                background: "{branding.50}"
+            },
             focus: {
                 color: "{navigation.item.focus.color}",
                 background: "{navigation.item.focus.background}"
             },
             hover: {
                 background: "{navigation.item.focus.background}"
-            },
-            active: {
-                color: "{branding.700}",
-                background: "{branding.50}"
-            },
-            padding: "1rem"
+            }
         },
         list: {
-            gap: "0.5rem",
             mobile: {
                 gap: "0.25rem",
                 padding: "0.75rem"
             },
+            gap: "0.5rem",
             padding: "1.5rem"
         }
     },
     message: {
+        success: {
+            icon: {
+                color: "{message.success.outlined.border.color}"
+            }
+        },
         info: {
             icon: {
                 color: "{message.info.outlined.border.color}"
@@ -113,9 +118,9 @@ export default {
                 color: "{message.error.outlined.border.color}"
             }
         },
-        success: {
+        secondary: {
             icon: {
-                color: "{message.success.outlined.border.color}"
+                color: "{message.secondary.outlined.border.color}"
             }
         },
         contrast: {
@@ -127,10 +132,37 @@ export default {
                     color: "{message.contrast.simple.color}"
                 }
             }
+        }
+    },
+    toast: {
+        success: {
+            icon: {
+                color: "{toast.success.close.button.focus.ring.color}"
+            }
+        },
+        info: {
+            icon: {
+                color: "{toast.info.close.button.focus.ring.color}"
+            }
+        },
+        warn: {
+            icon: {
+                color: "{toast.warn.close.button.focus.ring.color}"
+            }
+        },
+        error: {
+            icon: {
+                color: "{toast.error.close.button.focus.ring.color}"
+            }
         },
         secondary: {
             icon: {
-                color: "{message.secondary.outlined.border.color}"
+                color: "{toast.secondary.close.button.focus.ring.color}"
+            }
+        },
+        contrast: {
+            icon: {
+                color: "{toast.contrast.close.button.focus.ring.color}"
             }
         }
     },
@@ -141,53 +173,16 @@ export default {
             }
         }
     },
-    plectrum: {
-        six: {
-            color: "{surface.950}",
-            background: "{pink.400}"
-        },
-        five: {
-            color: "{primary.contrast.color}",
-            background: "{purple.700}"
-        },
-        four: {
-            color: "{surface.950}",
-            background: "{yellow.400}"
-        },
-        nine: {
-            color: "{surface.950}",
-            background: "{lime.500}"
-        },
-        eight: {
-            color: "{surface.950}",
-            background: "{amber.500}"
-        },
-        seven: {
-            color: "{surface.950}",
-            background: "{cyan.400}"
-        },
-        three: {
-            color: "{surface.950}",
-            background: "{teal.400}"
-        },
-        partner: {
-            color: "{primary.contrast.color}",
-            background: "{blue.800}"
-        },
-        deceased: {
-            color: "{surface.950}",
-            background: "{form.field.disabled.background}"
-        },
-        titularis: {
-            color: "{primary.contrast.color}",
-            background: "{basic.solidaris.500}"
-        }
-    },
-    functional: {
-        link: {
-            hover: "#004c9eff",
-            default: "#006ce0ff",
-            visited: "#c822a6ff"
+    form: {
+        field: {
+            disabled: {
+                border: "{surface.200}"
+            },
+            invalid: {
+                border: {
+                    weight: "0.125rem"
+                }
+            }
         }
     },
     progressbar: {
@@ -201,10 +196,33 @@ export default {
             height: "3px"
         }
     },
+    slider: {
+        range: {
+            size: "8px"
+        }
+    },
     toggleswitch: {
         handle: {
             disabled: {
                 border: "{neutral.600}"
+            }
+        }
+    },
+    tabs: {
+        tablist: {
+            border: {
+                width: {
+                    bottom: "1px"
+                }
+            }
+        }
+    },
+    accordion: {
+        panel: {
+            border: {
+                width: {
+                    bottom: "1px"
+                }
             }
         }
     }

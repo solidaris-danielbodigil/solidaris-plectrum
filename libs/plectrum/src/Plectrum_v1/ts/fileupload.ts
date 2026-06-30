@@ -1,42 +1,42 @@
 import type { FileUploadDesignTokens } from '@primeuix/themes/types/fileupload';
 
  export default {
-    file: {
-        gap: "1rem",
-        info: {
-            gap: "0.5rem"
-        },
-        padding: "1rem",
-        borderColor: "{content.border.color}"
-    },
     root: {
-        color: "{content.color}",
         background: "{content.background}",
         borderColor: "{content.border.color}",
+        color: "{content.color}",
         borderRadius: "{content.border.radius}",
         transitionDuration: "{transition.duration}"
     },
-    basic: {
-        gap: "0.5rem"
-    },
     header: {
-        gap: "0.5rem",
+        background: "#00000000",
         color: "{text.color}",
         padding: "1.125rem",
-        background: "#00000000",
         borderColor: "#00000000",
         borderWidth: "0",
-        borderRadius: "0"
+        borderRadius: "0",
+        gap: "0.5rem"
     },
     content: {
-        gap: "1rem",
+        highlightBorderColor: "{primary.color}",
         padding: "0 1.125rem 1.125rem",
-        highlightBorderColor: "{primary.color}"
+        gap: "1rem"
+    },
+    file: {
+        padding: "1rem",
+        gap: "1rem",
+        borderColor: "{content.border.color}",
+        info: {
+            gap: "0.5rem"
+        }
     },
     fileList: {
         gap: "0.5rem"
     },
     progressbar: {
         height: "0.25rem"
+    },
+    basic: {
+        gap: "0.5rem"
     }
 } satisfies FileUploadDesignTokens;

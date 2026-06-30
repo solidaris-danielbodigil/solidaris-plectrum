@@ -1,41 +1,41 @@
 import type { OrganizationChartDesignTokens } from '@primeuix/themes/types/organizationchart';
 
  export default {
-    node: {
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
-        background: "{content.background}",
-        hoverColor: "{content.hover.color}",
-        borderColor: "{content.border.color}",
-        borderRadius: "{content.border.radius}",
-        selectedColor: "{highlight.color}",
-        hoverBackground: "{content.hover.background}",
-        toggleablePadding: "0.75rem 1rem 1.25rem",
-        selectedBackground: "{highlight.background}"
-    },
     root: {
         gutter: "0.75rem",
         transitionDuration: "{transition.duration}"
     },
-    connector: {
-        color: "{content.border.color}",
-        height: "24px",
+    node: {
+        background: "{content.background}",
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{highlight.background}",
+        borderColor: "{content.border.color}",
+        color: "{content.color}",
+        selectedColor: "{highlight.color}",
+        hoverColor: "{content.hover.color}",
+        padding: "0.75rem 1rem",
+        toggleablePadding: "0.75rem 1rem 1.25rem",
         borderRadius: "{content.border.radius}"
     },
     nodeToggleButton: {
-        size: "1.5rem",
+        background: "{content.background}",
+        hoverBackground: "{content.hover.background}",
+        borderColor: "{content.border.color}",
         color: "{text.muted.color}",
+        hoverColor: "{text.color}",
+        size: "1.5rem",
+        borderRadius: "0.75rem",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        background: "{content.background}",
-        hoverColor: "{text.color}",
-        borderColor: "{content.border.color}",
-        borderRadius: "0.75rem",
-        hoverBackground: "{content.hover.background}"
+        }
+    },
+    connector: {
+        color: "{content.border.color}",
+        borderRadius: "{content.border.radius}",
+        height: "24px"
     }
 } satisfies OrganizationChartDesignTokens;

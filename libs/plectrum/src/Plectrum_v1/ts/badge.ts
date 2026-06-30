@@ -1,61 +1,61 @@
 import type { BadgeDesignTokens } from '@primeuix/themes/types/badge';
 
  export default {
-    lg: {
-        height: "1.75rem",
-        fontSize: "0.875rem",
-        minWidth: "1.75rem"
-    },
-    sm: {
-        height: "1.25rem",
-        fontSize: "0.625rem",
-        minWidth: "1.25rem"
-    },
-    xl: {
-        height: "2rem",
-        fontSize: "1rem",
-        minWidth: "2rem"
+    root: {
+        borderRadius: "{border.radius.md}",
+        padding: "0 0.5rem",
+        fontSize: "0.75rem",
+        fontWeight: "700",
+        minWidth: "1.5rem",
+        height: "1.5rem"
     },
     dot: {
         size: "0.5rem"
     },
-    root: {
-        height: "1.5rem",
-        padding: "0 0.5rem",
-        fontSize: "0.75rem",
-        minWidth: "1.5rem",
-        fontWeight: "700",
-        borderRadius: "{border.radius.md}"
+    sm: {
+        fontSize: "0.625rem",
+        minWidth: "1.25rem",
+        height: "1.25rem"
+    },
+    lg: {
+        fontSize: "0.875rem",
+        minWidth: "1.75rem",
+        height: "1.75rem"
+    },
+    xl: {
+        fontSize: "1rem",
+        minWidth: "2rem",
+        height: "2rem"
     },
     colorScheme: {
         light: {
-            info: {
-                color: "{button.info.color}",
-                background: "{button.info.background}"
-            },
-            warn: {
-                color: "{button.warn.color}",
-                background: "{button.warn.background}"
-            },
-            danger: {
-                color: "{button.danger.color}",
-                background: "{button.danger.background}"
-            },
             primary: {
-                color: "{text.color}",
-                background: "{primary.50}"
-            },
-            success: {
-                color: "{button.success.color}",
-                background: "{button.success.background}"
-            },
-            contrast: {
-                color: "{button.contrast.color}",
-                background: "{button.contrast.background}"
+                background: "{primary.200}",
+                color: "{text.color}"
             },
             secondary: {
-                color: "{text.color}",
-                background: "{surface.50}"
+                background: "{surface.200}",
+                color: "{text.color}"
+            },
+            success: {
+                background: "{button.success.background}",
+                color: "{button.success.color}"
+            },
+            info: {
+                background: "{button.info.background}",
+                color: "{button.info.color}"
+            },
+            warn: {
+                background: "{button.warn.background}",
+                color: "{button.warn.color}"
+            },
+            danger: {
+                background: "{button.danger.background}",
+                color: "{button.danger.color}"
+            },
+            contrast: {
+                background: "{button.contrast.background}",
+                color: "{button.contrast.color}"
             }
         }
     }

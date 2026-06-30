@@ -2,33 +2,33 @@ import type { DataViewDesignTokens } from '@primeuix/themes/types/dataview';
 
  export default {
     root: {
-        padding: "0",
         borderColor: "#00000000",
         borderWidth: "0",
-        borderRadius: "0"
-    },
-    footer: {
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
-        background: "{content.background}",
-        borderColor: "{content.border.color}",
-        borderWidth: "1px",
-        borderRadius: "0"
+        borderRadius: "0",
+        padding: "0"
     },
     header: {
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
         background: "{content.background}",
+        color: "{content.color}",
         borderColor: "{content.border.color}",
         borderWidth: "1px",
+        padding: "0.75rem 1rem",
         borderRadius: "0"
     },
     content: {
-        color: "{content.color}",
-        padding: "0",
         background: "{content.background}",
+        color: "{content.color}",
         borderColor: "#00000000",
         borderWidth: "0",
+        padding: "0",
+        borderRadius: "0"
+    },
+    footer: {
+        background: "{content.background}",
+        color: "{content.color}",
+        borderColor: "{content.border.color}",
+        borderWidth: "1px",
+        padding: "0.75rem 1rem",
         borderRadius: "0"
     },
     paginatorTop: {

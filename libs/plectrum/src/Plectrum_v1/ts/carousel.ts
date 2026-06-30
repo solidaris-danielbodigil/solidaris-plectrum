@@ -7,18 +7,22 @@ import type { CarouselDesignTokens } from '@primeuix/themes/types/carousel';
     content: {
         gap: "0.25rem"
     },
+    indicatorList: {
+        padding: "1rem",
+        gap: "0.5rem"
+    },
     indicator: {
+        activeBackground: "{primary.600}",
         width: "2rem",
         height: "0.25rem",
+        borderRadius: "{content.border.radius}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        borderRadius: "{content.border.radius}",
-        activeBackground: "{primary.600}"
+        }
     },
     colorScheme: {
         light: {
@@ -27,9 +31,5 @@ import type { CarouselDesignTokens } from '@primeuix/themes/types/carousel';
                 hoverBackground: "{surface.300}"
             }
         }
-    },
-    indicatorList: {
-        gap: "0.5rem",
-        padding: "1rem"
     }
 } satisfies CarouselDesignTokens;

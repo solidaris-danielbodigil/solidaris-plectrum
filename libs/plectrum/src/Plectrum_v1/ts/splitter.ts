@@ -2,9 +2,9 @@ import type { SplitterDesignTokens } from '@primeuix/themes/types/splitter';
 
  export default {
     root: {
-        color: "{content.color}",
         background: "{content.background}",
         borderColor: "{content.border.color}",
+        color: "{content.color}",
         transitionDuration: "{transition.duration}"
     },
     gutter: {
@@ -12,14 +12,14 @@ import type { SplitterDesignTokens } from '@primeuix/themes/types/splitter';
     },
     handle: {
         size: "24px",
+        background: "#00000000",
+        borderRadius: "{content.border.radius}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        background: "#00000000",
-        borderRadius: "{content.border.radius}"
+        }
     }
 } satisfies SplitterDesignTokens;

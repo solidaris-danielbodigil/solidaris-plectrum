@@ -1,8 +1,42 @@
 import type { ToastDesignTokens } from '@primeuix/themes/types/toast';
 
  export default {
+    root: {
+        width: "25rem",
+        borderRadius: "{content.border.radius}",
+        borderWidth: "1px",
+        transitionDuration: "{transition.duration}"
+    },
     icon: {
         size: "1.125rem"
+    },
+    content: {
+        padding: "{overlay.popover.padding}",
+        gap: "0.5rem"
+    },
+    text: {
+        gap: "0.5rem"
+    },
+    summary: {
+        fontWeight: "500",
+        fontSize: "1rem"
+    },
+    detail: {
+        fontWeight: "500",
+        fontSize: "0.875rem"
+    },
+    closeButton: {
+        width: "1.75rem",
+        height: "1.75rem",
+        borderRadius: "0.875rem",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            offset: "{focus.ring.offset}"
+        }
+    },
+    closeIcon: {
+        size: "1rem"
     },
     info: {
         shadow: "0 4px 8px 0 #02050a0a",
@@ -12,14 +46,13 @@ import type { ToastDesignTokens } from '@primeuix/themes/types/toast';
             }
         }
     },
-    root: {
-        width: "25rem",
-        borderWidth: "1px",
-        borderRadius: "{content.border.radius}",
-        transitionDuration: "{transition.duration}"
-    },
-    text: {
-        gap: "0.5rem"
+    success: {
+        shadow: "0 4px 8px 0 #0108040a",
+        closeButton: {
+            focusRing: {
+                shadow: "none"
+            }
+        }
     },
     warn: {
         shadow: "0 4px 8px 0 #0907000a",
@@ -37,25 +70,13 @@ import type { ToastDesignTokens } from '@primeuix/themes/types/toast';
             }
         }
     },
-    detail: {
-        fontSize: "0.875rem",
-        fontWeight: "500"
-    },
-    content: {
-        gap: "0.5rem",
-        padding: "{overlay.popover.padding}"
-    },
-    success: {
-        shadow: "0 4px 8px 0 #0108040a",
+    secondary: {
+        shadow: "0 4px 8px 0 #0405060a",
         closeButton: {
             focusRing: {
                 shadow: "none"
             }
         }
-    },
-    summary: {
-        fontSize: "1rem",
-        fontWeight: "500"
     },
     contrast: {
         shadow: "0 4px 8px 0 #0000010a",
@@ -65,103 +86,82 @@ import type { ToastDesignTokens } from '@primeuix/themes/types/toast';
             }
         }
     },
-    closeIcon: {
-        size: "1rem"
-    },
-    secondary: {
-        shadow: "0 4px 8px 0 #0405060a",
-        closeButton: {
-            focusRing: {
-                shadow: "none"
-            }
-        }
-    },
-    closeButton: {
-        width: "1.75rem",
-        height: "1.75rem",
-        focusRing: {
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}"
-        },
-        borderRadius: "0.875rem"
-    },
     colorScheme: {
         light: {
-            info: {
-                color: "{text.color}",
-                background: "#f5f7faf2",
-                borderColor: "{surface.100}",
-                closeButton: {
-                    focusRing: {
-                        color: "{primary.color}"
-                    },
-                    hoverBackground: "{blue.100}"
-                },
-                detailColor: "{text.color}"
-            },
             root: {
                 blur: "1.5px"
             },
-            warn: {
+            info: {
+                background: "#f5f7faf2",
+                borderColor: "{surface.100}",
                 color: "{text.color}",
-                background: "#fff9ebf2",
-                borderColor: "{toast.info.border.color}",
+                detailColor: "{text.color}",
                 closeButton: {
+                    hoverBackground: "{blue.100}",
                     focusRing: {
-                        color: "{yellow.600}"
-                    },
-                    hoverBackground: "{yellow.100}"
-                },
-                detailColor: "{text.color}"
-            },
-            error: {
-                color: "{text.color}",
-                background: "#fff2f1f2",
-                borderColor: "{toast.info.border.color}",
-                closeButton: {
-                    focusRing: {
-                        color: "{red.600}"
-                    },
-                    hoverBackground: "{red.100}"
-                },
-                detailColor: "{surface.700}"
+                        color: "{primary.color}"
+                    }
+                }
             },
             success: {
-                color: "{text.color}",
                 background: "#f1fcf4f2",
                 borderColor: "{toast.info.border.color}",
+                color: "{text.color}",
+                detailColor: "{text.color}",
                 closeButton: {
+                    hoverBackground: "{green.100}",
                     focusRing: {
                         color: "{green.600}"
-                    },
-                    hoverBackground: "{green.100}"
-                },
-                detailColor: "{text.color}"
+                    }
+                }
             },
-            contrast: {
-                color: "{surface.50}",
-                background: "{surface.900}",
-                borderColor: "{surface.950}",
+            warn: {
+                background: "#fff9ebf2",
+                borderColor: "{toast.info.border.color}",
+                color: "{text.color}",
+                detailColor: "{text.color}",
                 closeButton: {
+                    hoverBackground: "{yellow.100}",
                     focusRing: {
-                        color: "{surface.50}"
-                    },
-                    hoverBackground: "{surface.800}"
-                },
-                detailColor: "{surface.0}"
+                        color: "{yellow.600}"
+                    }
+                }
+            },
+            error: {
+                background: "#fff2f1f2",
+                borderColor: "{toast.info.border.color}",
+                color: "{text.color}",
+                detailColor: "{surface.700}",
+                closeButton: {
+                    hoverBackground: "{red.100}",
+                    focusRing: {
+                        color: "{red.600}"
+                    }
+                }
             },
             secondary: {
-                color: "{text.color}",
                 background: "{surface.100}",
                 borderColor: "{toast.info.border.color}",
+                color: "{text.color}",
+                detailColor: "{surface.700}",
                 closeButton: {
+                    hoverBackground: "{surface.200}",
                     focusRing: {
                         color: "{surface.600}"
-                    },
-                    hoverBackground: "{surface.200}"
-                },
-                detailColor: "{surface.700}"
+                    }
+                }
+            },
+            contrast: {
+                background: "{surface.900}",
+                borderColor: "{surface.950}",
+                color: "{surface.50}",
+                detailColor: "{surface.0}",
+                closeButton: {
+                    hoverBackground: "{surface.800}",
+                    focusRing: {
+                        color: "{surface.50}"
+                    }
+                }
             }
         }
     }

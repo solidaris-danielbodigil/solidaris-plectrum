@@ -1,64 +1,64 @@
 import type { MenubarDesignTokens } from '@primeuix/themes/types/menubar';
 
  export default {
+    root: {
+        background: "{content.background}",
+        borderColor: "{content.border.color}",
+        borderRadius: "{content.border.radius}",
+        color: "{content.color}",
+        gap: "0.5rem",
+        padding: "{megamenu.horizontal.orientation.padding}",
+        transitionDuration: "{transition.duration}"
+    },
+    baseItem: {
+        borderRadius: "{content.border.radius}",
+        padding: "{navigation.item.padding}"
+    },
     item: {
+        focusBackground: "{megamenu.item.focus.background}",
+        activeBackground: "{megamenu.item.active.background}",
+        color: "{navigation.item.color}",
+        focusColor: "{navigation.item.focus.color}",
+        activeColor: "{megamenu.item.active.color}",
+        padding: "{navigation.item.padding}",
+        borderRadius: "{navigation.item.border.radius}",
         gap: "{navigation.item.gap}",
         icon: {
             color: "{navigation.item.icon.color}",
             focusColor: "{navigation.item.icon.focus.color}",
             activeColor: "{menubar.item.active.color}"
-        },
-        color: "{navigation.item.color}",
-        padding: "{navigation.item.padding}",
-        focusColor: "{navigation.item.focus.color}",
-        activeColor: "{megamenu.item.active.color}",
-        borderRadius: "{navigation.item.border.radius}",
-        focusBackground: "{megamenu.item.focus.background}",
-        activeBackground: "{megamenu.item.active.background}"
+        }
     },
-    root: {
-        gap: "0.5rem",
-        color: "{content.color}",
-        padding: "{megamenu.horizontal.orientation.padding}",
+    submenu: {
+        padding: "{navigation.list.padding}",
+        gap: "{navigation.list.gap}",
         background: "{content.background}",
         borderColor: "{content.border.color}",
         borderRadius: "{content.border.radius}",
-        transitionDuration: "{transition.duration}"
-    },
-    submenu: {
-        gap: "{navigation.list.gap}",
+        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
+        mobileIndent: "1rem",
         icon: {
             size: "{navigation.submenu.icon.size}",
             color: "{navigation.submenu.icon.color}",
             focusColor: "{navigation.submenu.icon.focus.color}",
             activeColor: "{megamenu.item.active.color}"
-        },
-        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-        padding: "{navigation.list.padding}",
-        background: "{content.background}",
-        borderColor: "{content.border.color}",
-        borderRadius: "{content.border.radius}",
-        mobileIndent: "1rem"
-    },
-    baseItem: {
-        padding: "{navigation.item.padding}",
-        borderRadius: "{content.border.radius}"
+        }
     },
     separator: {
         borderColor: "{content.border.color}"
     },
     mobileButton: {
+        borderRadius: "0.875rem",
         size: "1.75rem",
         color: "{text.muted.color}",
+        hoverColor: "{text.hover.muted.color}",
+        hoverBackground: "{content.hover.background}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        hoverColor: "{text.hover.muted.color}",
-        borderRadius: "0.875rem",
-        hoverBackground: "{content.hover.background}"
+        }
     }
 } satisfies MenubarDesignTokens;

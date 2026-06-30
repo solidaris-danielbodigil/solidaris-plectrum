@@ -2,22 +2,22 @@ import type { KnobDesignTokens } from '@primeuix/themes/types/knob';
 
  export default {
     root: {
+        transitionDuration: "{transition.duration}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        transitionDuration: "{transition.duration}"
+        }
     },
-    text: {
-        color: "{text.muted.color}"
+    value: {
+        background: "{primary.color}"
     },
     range: {
         background: "{content.border.color}"
     },
-    value: {
-        background: "{primary.color}"
+    text: {
+        color: "{text.muted.color}"
     }
 } satisfies KnobDesignTokens;

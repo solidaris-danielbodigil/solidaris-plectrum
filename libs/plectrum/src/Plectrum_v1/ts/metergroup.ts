@@ -2,15 +2,18 @@ import type { MeterGroupDesignTokens } from '@primeuix/themes/types/metergroup';
 
  export default {
     root: {
-        gap: "1rem",
-        borderRadius: "{content.border.radius}"
+        borderRadius: "{content.border.radius}",
+        gap: "1rem"
+    },
+    meters: {
+        background: "{content.border.color}",
+        size: "0.5rem"
     },
     label: {
         gap: "0.5rem"
     },
-    meters: {
-        size: "0.5rem",
-        background: "{content.border.color}"
+    labelMarker: {
+        size: "0.5rem"
     },
     labelIcon: {
         size: "1rem"
@@ -18,8 +21,5 @@ import type { MeterGroupDesignTokens } from '@primeuix/themes/types/metergroup';
     labelList: {
         verticalGap: "0.5rem",
         horizontalGap: "1rem"
-    },
-    labelMarker: {
-        size: "0.5rem"
     }
 } satisfies MeterGroupDesignTokens;

@@ -4,43 +4,43 @@ import type { ImageDesignTokens } from '@primeuix/themes/types/image';
     root: {
         transitionDuration: "{transition.duration}"
     },
-    action: {
-        size: "3rem",
-        color: "{surface.950}",
-        iconSize: "1.5rem",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        hoverColor: "{surface.950}",
-        borderRadius: "1.5rem",
-        hoverBackground: "#ffffff99"
-    },
     preview: {
         icon: {
             size: "1.5rem"
         },
         mask: {
-            color: "{mask.color}",
-            background: "{mask.background}"
+            background: "{mask.background}",
+            color: "{mask.color}"
         }
     },
     toolbar: {
-        gap: "0.5rem",
-        blur: "8px",
-        padding: "0.5rem",
         position: {
-            top: "1rem",
             left: "auto",
             right: "1rem",
+            top: "1rem",
             bottom: "auto"
         },
+        blur: "8px",
         background: "#ffffff33",
         borderColor: "{surface.0}",
         borderWidth: "1px",
-        borderRadius: "100px"
+        borderRadius: "100px",
+        padding: "0.5rem",
+        gap: "0.5rem"
+    },
+    action: {
+        hoverBackground: "#ffffff99",
+        color: "{surface.950}",
+        hoverColor: "{surface.950}",
+        size: "3rem",
+        iconSize: "1.5rem",
+        borderRadius: "1.5rem",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
     }
 } satisfies ImageDesignTokens;

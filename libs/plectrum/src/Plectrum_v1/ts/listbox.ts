@@ -1,39 +1,48 @@
 import type { ListboxDesignTokens } from '@primeuix/themes/types/listbox';
 
  export default {
+    root: {
+        background: "{form.field.background}",
+        disabledBackground: "{form.field.disabled.background}",
+        borderColor: "{overlay.popover.border.color}",
+        invalidBorderColor: "{form.field.invalid.border.color}",
+        color: "{form.field.color}",
+        disabledColor: "{form.field.disabled.color}",
+        shadow: "0 1px 2px 0 #1212170d",
+        borderRadius: "{form.field.border.radius}",
+        transitionDuration: "{form.field.transition.duration}"
+    },
     list: {
+        padding: "{list.padding}",
         gap: "{list.gap}",
         header: {
             padding: "{list.header.padding}"
-        },
-        padding: "{list.padding}"
-    },
-    root: {
-        color: "{form.field.color}",
-        shadow: "0 1px 2px 0 #1212170d",
-        background: "{form.field.background}",
-        borderColor: "{overlay.popover.border.color}",
-        borderRadius: "{form.field.border.radius}",
-        disabledColor: "{form.field.disabled.color}",
-        disabledBackground: "{form.field.disabled.background}",
-        invalidBorderColor: "{form.field.invalid.border.color}",
-        transitionDuration: "{form.field.transition.duration}"
+        }
     },
     option: {
-        color: "{list.option.color}",
-        padding: "{list.option.padding}",
-        focusColor: "{list.option.focus.color}",
-        borderRadius: "{list.option.border.radius}",
-        selectedColor: "{list.option.selected.color}",
         focusBackground: "{list.option.focus.background}",
         selectedBackground: "{list.option.selected.background}",
+        selectedFocusBackground: "{list.option.selected.focus.background}",
+        color: "{list.option.color}",
+        focusColor: "{list.option.focus.color}",
+        selectedColor: "{list.option.selected.color}",
         selectedFocusColor: "{list.option.selected.focus.color}",
-        selectedFocusBackground: "{list.option.selected.focus.background}"
+        padding: "{list.option.padding}",
+        borderRadius: "{list.option.border.radius}"
+    },
+    optionGroup: {
+        background: "{list.option.group.background}",
+        color: "{list.option.group.color}",
+        fontWeight: "{list.option.group.font.weight}",
+        padding: "{list.option.group.padding}"
     },
     checkmark: {
         color: "{list.option.color}",
-        gutterEnd: "0.375rem",
-        gutterStart: "-0.375rem"
+        gutterStart: "-0.375rem",
+        gutterEnd: "0.375rem"
+    },
+    emptyMessage: {
+        padding: "{list.option.padding}"
     },
     colorScheme: {
         light: {
@@ -41,14 +50,5 @@ import type { ListboxDesignTokens } from '@primeuix/themes/types/listbox';
                 stripedBackground: "{surface.50}"
             }
         }
-    },
-    optionGroup: {
-        color: "{list.option.group.color}",
-        padding: "{list.option.group.padding}",
-        background: "{list.option.group.background}",
-        fontWeight: "{list.option.group.font.weight}"
-    },
-    emptyMessage: {
-        padding: "{list.option.padding}"
     }
 } satisfies ListboxDesignTokens;

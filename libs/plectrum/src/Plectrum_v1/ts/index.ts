@@ -1,174 +1,174 @@
 import type { Preset } from "@primeuix/themes/types";
 import base from "./base";
-import tag from "./tag";
-import card from "./card";
-import chip from "./chip";
-import dock from "./dock";
-import knob from "./knob";
-import menu from "./menu";
-import tabs from "./tabs";
-import tree from "./tree";
-import badge from "./badge";
-import image from "./image";
-import panel from "./panel";
-import toast from "./toast";
+import accordion from "./accordion";
+import autocomplete from "./autocomplete";
 import avatar from "./avatar";
+import badge from "./badge";
+import blockui from "./blockui";
+import breadcrumb from "./breadcrumb";
 import button from "./button";
+import card from "./card";
+import carousel from "./carousel";
+import cascadeselect from "./cascadeselect";
+import checkbox from "./checkbox";
+import chip from "./chip";
+import confirmdialog from "./confirmdialog";
+import confirmpopup from "./confirmpopup";
+import contextmenu from "./contextmenu";
+import datatable from "./datatable";
+import dataview from "./dataview";
+import datepicker from "./datepicker";
 import dialog from "./dialog";
+import divider from "./divider";
+import dock from "./dock";
 import drawer from "./drawer";
 import editor from "./editor";
-import rating from "./rating";
-import ripple from "./ripple";
-import select from "./select";
-import slider from "./slider";
-import blockui from "./blockui";
-import divider from "./divider";
-import inplace from "./inplace";
-import listbox from "./listbox";
-import menubar from "./menubar";
-import message from "./message";
-import popover from "./popover";
-import stepper from "./stepper";
-import toolbar from "./toolbar";
-import tooltip from "./tooltip";
-import carousel from "./carousel";
-import checkbox from "./checkbox";
-import dataview from "./dataview";
 import fieldset from "./fieldset";
-import galleria from "./galleria";
-import inputotp from "./inputotp";
-import megamenu from "./megamenu";
-import password from "./password";
-import picklist from "./picklist";
-import skeleton from "./skeleton";
-import splitter from "./splitter";
-import terminal from "./terminal";
-import textarea from "./textarea";
-import timeline from "./timeline";
-import accordion from "./accordion";
-import datatable from "./datatable";
-import iconfield from "./iconfield";
-import iftalabel from "./iftalabel";
-import inputtext from "./inputtext";
-import orderlist from "./orderlist";
-import paginator from "./paginator";
-import panelmenu from "./panelmenu";
-import speeddial from "./speeddial";
-import treetable from "./treetable";
-import breadcrumb from "./breadcrumb";
-import datepicker from "./datepicker";
 import fileupload from "./fileupload";
 import floatlabel from "./floatlabel";
-import inputgroup from "./inputgroup";
-import metergroup from "./metergroup";
-import tieredmenu from "./tieredmenu";
-import treeselect from "./treeselect";
-import contextmenu from "./contextmenu";
-import inputnumber from "./inputnumber";
-import multiselect from "./multiselect";
-import progressbar from "./progressbar";
-import radiobutton from "./radiobutton";
-import scrollpanel from "./scrollpanel";
-import splitbutton from "./splitbutton";
-import autocomplete from "./autocomplete";
-import confirmpopup from "./confirmpopup";
+import galleria from "./galleria";
+import iconfield from "./iconfield";
+import iftalabel from "./iftalabel";
+import image from "./image";
 import imagecompare from "./imagecompare";
+import inplace from "./inplace";
+import inputgroup from "./inputgroup";
+import inputnumber from "./inputnumber";
+import inputotp from "./inputotp";
+import inputtext from "./inputtext";
+import knob from "./knob";
+import listbox from "./listbox";
+import megamenu from "./megamenu";
+import menu from "./menu";
+import menubar from "./menubar";
+import message from "./message";
+import metergroup from "./metergroup";
+import multiselect from "./multiselect";
+import orderlist from "./orderlist";
+import organizationchart from "./organizationchart";
 import overlaybadge from "./overlaybadge";
+import paginator from "./paginator";
+import panel from "./panel";
+import panelmenu from "./panelmenu";
+import password from "./password";
+import picklist from "./picklist";
+import popover from "./popover";
+import progressbar from "./progressbar";
+import progressspinner from "./progressspinner";
+import radiobutton from "./radiobutton";
+import rating from "./rating";
+import ripple from "./ripple";
+import scrollpanel from "./scrollpanel";
+import select from "./select";
 import selectbutton from "./selectbutton";
+import skeleton from "./skeleton";
+import slider from "./slider";
+import speeddial from "./speeddial";
+import splitbutton from "./splitbutton";
+import splitter from "./splitter";
+import stepper from "./stepper";
+import tabs from "./tabs";
+import tag from "./tag";
+import terminal from "./terminal";
+import textarea from "./textarea";
+import tieredmenu from "./tieredmenu";
+import timeline from "./timeline";
+import toast from "./toast";
 import togglebutton from "./togglebutton";
 import toggleswitch from "./toggleswitch";
-import cascadeselect from "./cascadeselect";
-import confirmdialog from "./confirmdialog";
-import progressspinner from "./progressspinner";
+import toolbar from "./toolbar";
+import tooltip from "./tooltip";
+import tree from "./tree";
+import treeselect from "./treeselect";
+import treetable from "./treetable";
 import virtualscroller from "./virtualscroller";
-import organizationchart from "./organizationchart";
 import extend from "./extend";
 
 export default {
     ...base,
     components: {
-        tag,
-        card,
-        chip,
-        dock,
-        knob,
-        menu,
-        tabs,
-        tree,
-        badge,
-        image,
-        panel,
-        toast,
+        accordion,
+        autocomplete,
         avatar,
+        badge,
+        blockui,
+        breadcrumb,
         button,
+        card,
+        carousel,
+        cascadeselect,
+        checkbox,
+        chip,
+        confirmdialog,
+        confirmpopup,
+        contextmenu,
+        datatable,
+        dataview,
+        datepicker,
         dialog,
+        divider,
+        dock,
         drawer,
         editor,
-        rating,
-        ripple,
-        select,
-        slider,
-        blockui,
-        divider,
-        inplace,
-        listbox,
-        menubar,
-        message,
-        popover,
-        stepper,
-        toolbar,
-        tooltip,
-        carousel,
-        checkbox,
-        dataview,
         fieldset,
-        galleria,
-        inputotp,
-        megamenu,
-        password,
-        picklist,
-        skeleton,
-        splitter,
-        terminal,
-        textarea,
-        timeline,
-        accordion,
-        datatable,
-        iconfield,
-        iftalabel,
-        inputtext,
-        orderlist,
-        paginator,
-        panelmenu,
-        speeddial,
-        treetable,
-        breadcrumb,
-        datepicker,
         fileupload,
         floatlabel,
-        inputgroup,
-        metergroup,
-        tieredmenu,
-        treeselect,
-        contextmenu,
-        inputnumber,
-        multiselect,
-        progressbar,
-        radiobutton,
-        scrollpanel,
-        splitbutton,
-        autocomplete,
-        confirmpopup,
+        galleria,
+        iconfield,
+        iftalabel,
+        image,
         imagecompare,
+        inplace,
+        inputgroup,
+        inputnumber,
+        inputotp,
+        inputtext,
+        knob,
+        listbox,
+        megamenu,
+        menu,
+        menubar,
+        message,
+        metergroup,
+        multiselect,
+        orderlist,
+        organizationchart,
         overlaybadge,
+        paginator,
+        panel,
+        panelmenu,
+        password,
+        picklist,
+        popover,
+        progressbar,
+        progressspinner,
+        radiobutton,
+        rating,
+        ripple,
+        scrollpanel,
+        select,
         selectbutton,
+        skeleton,
+        slider,
+        speeddial,
+        splitbutton,
+        splitter,
+        stepper,
+        tabs,
+        tag,
+        terminal,
+        textarea,
+        tieredmenu,
+        timeline,
+        toast,
         togglebutton,
         toggleswitch,
-        cascadeselect,
-        confirmdialog,
-        progressspinner,
-        virtualscroller,
-        organizationchart
+        toolbar,
+        tooltip,
+        tree,
+        treeselect,
+        treetable,
+        virtualscroller
     },
     extend
 } satisfies Preset

@@ -1,56 +1,59 @@
 import type { MegaMenuDesignTokens } from '@primeuix/themes/types/megamenu';
 
  export default {
+    root: {
+        background: "{content.background}",
+        borderColor: "{content.border.color}",
+        borderRadius: "{content.border.radius}",
+        color: "{content.color}",
+        gap: "0.5rem",
+        verticalOrientation: {
+            padding: "{navigation.list.padding}",
+            gap: "{navigation.list.gap}"
+        },
+        horizontalOrientation: {
+            padding: "0.25rem",
+            gap: "0.5rem"
+        },
+        transitionDuration: "{transition.duration}"
+    },
+    baseItem: {
+        borderRadius: "{content.border.radius}",
+        padding: "{navigation.item.padding}"
+    },
     item: {
+        focusBackground: "{highlight.focus.background}",
+        activeBackground: "{stepper.step.number.active.background}",
+        color: "{navigation.item.color}",
+        focusColor: "{navigation.item.focus.color}",
+        activeColor: "{stepper.step.number.active.color}",
+        padding: "{navigation.item.padding}",
+        borderRadius: "{border.radius.md}",
         gap: "{navigation.item.gap}",
         icon: {
             color: "{navigation.item.icon.color}",
             focusColor: "{navigation.item.icon.focus.color}",
             activeColor: "{megamenu.item.active.color}"
-        },
-        color: "{navigation.item.color}",
-        padding: "{navigation.item.padding}",
-        focusColor: "{navigation.item.focus.color}",
-        activeColor: "{stepper.step.number.active.color}",
-        borderRadius: "{border.radius.md}",
-        focusBackground: "{highlight.focus.background}",
-        activeBackground: "{stepper.step.number.active.background}"
-    },
-    root: {
-        gap: "0.5rem",
-        color: "{content.color}",
-        background: "{content.background}",
-        borderColor: "{content.border.color}",
-        borderRadius: "{content.border.radius}",
-        transitionDuration: "{transition.duration}",
-        verticalOrientation: {
-            gap: "{navigation.list.gap}",
-            padding: "{navigation.list.padding}"
-        },
-        horizontalOrientation: {
-            gap: "0.5rem",
-            padding: "0.25rem"
         }
     },
     overlay: {
-        gap: "0.5rem",
-        color: "{content.color}",
-        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
         padding: "0",
         background: "{content.background}",
         borderColor: "{overlay.popover.border.color}",
-        borderRadius: "{content.border.radius}"
+        borderRadius: "{content.border.radius}",
+        color: "{content.color}",
+        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
+        gap: "0.5rem"
     },
     submenu: {
-        gap: "{navigation.list.gap}",
-        padding: "{navigation.list.padding}"
+        padding: "{navigation.list.padding}",
+        gap: "{navigation.list.gap}"
     },
-    baseItem: {
-        padding: "{navigation.item.padding}",
-        borderRadius: "{content.border.radius}"
-    },
-    separator: {
-        borderColor: "{content.border.color}"
+    submenuLabel: {
+        padding: "{navigation.submenu.label.padding}",
+        fontWeight: "{navigation.submenu.label.font.weight}",
+        background: "{navigation.submenu.label.background}",
+        color: "{navigation.submenu.label.color}"
     },
     submenuIcon: {
         size: "{navigation.submenu.icon.size}",
@@ -58,24 +61,21 @@ import type { MegaMenuDesignTokens } from '@primeuix/themes/types/megamenu';
         focusColor: "{navigation.submenu.icon.focus.color}",
         activeColor: "{megamenu.item.active.color}"
     },
+    separator: {
+        borderColor: "{content.border.color}"
+    },
     mobileButton: {
+        borderRadius: "0.875rem",
         size: "1.75rem",
         color: "{text.muted.color}",
+        hoverColor: "{text.hover.muted.color}",
+        hoverBackground: "{content.hover.background}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        hoverColor: "{text.hover.muted.color}",
-        borderRadius: "0.875rem",
-        hoverBackground: "{content.hover.background}"
-    },
-    submenuLabel: {
-        color: "{navigation.submenu.label.color}",
-        padding: "{navigation.submenu.label.padding}",
-        background: "{navigation.submenu.label.background}",
-        fontWeight: "{navigation.submenu.label.font.weight}"
+        }
     }
 } satisfies MegaMenuDesignTokens;

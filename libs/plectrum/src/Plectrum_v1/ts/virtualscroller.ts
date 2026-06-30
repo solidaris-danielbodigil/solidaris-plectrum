@@ -2,12 +2,12 @@ import type { VirtualScrollerDesignTokens } from '@primeuix/themes/types/virtual
 
  export default {
     loader: {
+        mask: {
+            background: "{content.background}",
+            color: "{text.muted.color}"
+        },
         icon: {
             size: "2rem"
-        },
-        mask: {
-            color: "{text.muted.color}",
-            background: "{content.background}"
         }
     }
 } satisfies VirtualScrollerDesignTokens;

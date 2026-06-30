@@ -1,56 +1,56 @@
 import type { TreeDesignTokens } from '@primeuix/themes/types/tree';
 
  export default {
+    root: {
+        background: "{content.background}",
+        color: "{content.color}",
+        padding: "1rem",
+        gap: "2px",
+        indent: "1rem",
+        transitionDuration: "{transition.duration}"
+    },
     node: {
-        gap: "0.75rem",
-        color: "{text.color}",
         padding: "0.25rem 0.5rem",
+        borderRadius: "{content.border.radius}",
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{highlight.background}",
+        color: "{text.color}",
+        hoverColor: "{text.hover.color}",
+        selectedColor: "{highlight.color}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "-1px",
             shadow: "none"
         },
-        hoverColor: "{text.hover.color}",
-        borderRadius: "{content.border.radius}",
-        selectedColor: "{highlight.color}",
-        hoverBackground: "{content.hover.background}",
-        selectedBackground: "{highlight.background}"
-    },
-    root: {
-        gap: "2px",
-        color: "{content.color}",
-        indent: "1rem",
-        padding: "1rem",
-        background: "{content.background}",
-        transitionDuration: "{transition.duration}"
-    },
-    filter: {
-        margin: "0.5rem"
+        gap: "0.75rem"
     },
     nodeIcon: {
         color: "{text.muted.color}",
         hoverColor: "{text.hover.muted.color}",
         selectedColor: "{highlight.color}"
     },
+    nodeToggleButton: {
+        borderRadius: "0.875rem",
+        size: "1.75rem",
+        hoverBackground: "{content.hover.background}",
+        selectedHoverBackground: "{content.background}",
+        color: "{text.muted.color}",
+        hoverColor: "{text.hover.muted.color}",
+        selectedHoverColor: "{primary.color}",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
+    },
     loadingIcon: {
         size: "2rem"
     },
-    nodeToggleButton: {
-        size: "1.75rem",
-        color: "{text.muted.color}",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        hoverColor: "{text.hover.muted.color}",
-        borderRadius: "0.875rem",
-        hoverBackground: "{content.hover.background}",
-        selectedHoverColor: "{primary.color}",
-        selectedHoverBackground: "{content.background}"
+    filter: {
+        margin: "0.5rem"
     }
 } satisfies TreeDesignTokens;

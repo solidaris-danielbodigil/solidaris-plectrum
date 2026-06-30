@@ -1,37 +1,37 @@
 import type { MenuDesignTokens } from '@primeuix/themes/types/menu';
 
  export default {
+    root: {
+        background: "{content.background}",
+        borderColor: "{content.border.color}",
+        color: "{content.color}",
+        borderRadius: "{content.border.radius}",
+        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
+        transitionDuration: "{transition.duration}"
+    },
+    list: {
+        padding: "{navigation.list.padding}",
+        gap: "{navigation.list.gap}"
+    },
     item: {
+        focusBackground: "{megamenu.item.focus.background}",
+        color: "{navigation.item.color}",
+        focusColor: "{navigation.item.focus.color}",
+        padding: "{navigation.item.padding}",
+        borderRadius: "{navigation.item.border.radius}",
         gap: "{navigation.item.gap}",
         icon: {
             color: "{navigation.item.icon.color}",
             focusColor: "{navigation.item.icon.focus.color}"
-        },
-        color: "{navigation.item.color}",
-        padding: "{navigation.item.padding}",
-        focusColor: "{navigation.item.focus.color}",
-        borderRadius: "{navigation.item.border.radius}",
-        focusBackground: "{megamenu.item.focus.background}"
+        }
     },
-    list: {
-        gap: "{navigation.list.gap}",
-        padding: "{navigation.list.padding}"
-    },
-    root: {
-        color: "{content.color}",
-        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-        background: "{content.background}",
-        borderColor: "{content.border.color}",
-        borderRadius: "{content.border.radius}",
-        transitionDuration: "{transition.duration}"
+    submenuLabel: {
+        padding: "{navigation.submenu.label.padding}",
+        fontWeight: "{navigation.submenu.label.font.weight}",
+        background: "{navigation.submenu.label.background}",
+        color: "{navigation.submenu.label.color}"
     },
     separator: {
         borderColor: "{content.border.color}"
-    },
-    submenuLabel: {
-        color: "{navigation.submenu.label.color}",
-        padding: "{navigation.submenu.label.padding}",
-        background: "{navigation.submenu.label.background}",
-        fontWeight: "{navigation.submenu.label.font.weight}"
     }
 } satisfies MenuDesignTokens;

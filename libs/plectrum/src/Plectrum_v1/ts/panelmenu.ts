@@ -1,37 +1,37 @@
 import type { PanelMenuDesignTokens } from '@primeuix/themes/types/panelmenu';
 
  export default {
-    item: {
-        gap: "0.5rem",
-        icon: {
-            color: "{navigation.item.icon.color}",
-            focusColor: "{navigation.item.icon.focus.color}"
-        },
-        color: "{navigation.item.color}",
-        padding: "{navigation.item.padding}",
-        focusColor: "{navigation.item.focus.color}",
-        borderRadius: "{content.border.radius}",
-        focusBackground: "{navigation.item.focus.background}"
-    },
     root: {
         gap: "0.5rem",
         transitionDuration: "{transition.duration}"
     },
     panel: {
-        last: {
-            borderWidth: "1px",
-            bottomBorderRadius: "{content.border.radius}"
-        },
+        background: "{content.background}",
+        borderColor: "{overlay.popover.border.color}",
+        borderWidth: "1px",
         color: "{content.color}",
+        padding: "0.25rem",
+        borderRadius: "{content.border.radius}",
         first: {
             borderWidth: "1px",
             topBorderRadius: "{content.border.radius}"
         },
-        padding: "0.25rem",
-        background: "{content.background}",
-        borderColor: "{overlay.popover.border.color}",
-        borderWidth: "1px",
-        borderRadius: "{content.border.radius}"
+        last: {
+            borderWidth: "1px",
+            bottomBorderRadius: "{content.border.radius}"
+        }
+    },
+    item: {
+        focusBackground: "{navigation.item.focus.background}",
+        color: "{navigation.item.color}",
+        focusColor: "{navigation.item.focus.color}",
+        gap: "0.5rem",
+        padding: "{navigation.item.padding}",
+        borderRadius: "{content.border.radius}",
+        icon: {
+            color: "{navigation.item.icon.color}",
+            focusColor: "{navigation.item.icon.focus.color}"
+        }
     },
     submenu: {
         indent: "1rem"

@@ -1,28 +1,28 @@
 import type { BreadcrumbDesignTokens } from '@primeuix/themes/types/breadcrumb';
 
  export default {
+    root: {
+        padding: "1rem",
+        background: "#ffffff00",
+        gap: "0.5rem",
+        transitionDuration: "{transition.duration}"
+    },
     item: {
+        color: "{text.muted.color}",
+        hoverColor: "{text.color}",
+        borderRadius: "{content.border.radius}",
         gap: "{navigation.item.gap}",
         icon: {
             color: "{navigation.item.icon.color}",
             hoverColor: "{navigation.item.icon.focus.color}"
         },
-        color: "{text.muted.color}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        hoverColor: "{text.color}",
-        borderRadius: "{content.border.radius}"
-    },
-    root: {
-        gap: "0.5rem",
-        padding: "1rem",
-        background: "{content.background}",
-        transitionDuration: "{transition.duration}"
+        }
     },
     separator: {
         color: "{navigation.item.icon.color}"

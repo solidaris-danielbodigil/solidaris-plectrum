@@ -1,134 +1,134 @@
 import type { DatePickerDesignTokens } from '@primeuix/themes/types/datepicker';
 
  export default {
-    date: {
-        color: "{content.color}",
-        width: "2rem",
-        height: "2rem",
-        padding: "0.25rem",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        hoverColor: "{content.hover.color}",
-        borderRadius: "1rem",
-        selectedColor: "{primary.contrast.color}",
-        hoverBackground: "{content.hover.background}",
-        rangeSelectedColor: "{highlight.color}",
-        selectedBackground: "{primary.600}",
-        rangeSelectedBackground: "{highlight.background}"
-    },
     root: {
         transitionDuration: "{form.field.transition.duration}"
     },
-    year: {
-        padding: "0.375rem",
-        borderRadius: "{content.border.radius}"
-    },
-    group: {
-        gap: "{overlay.popover.padding}",
-        borderColor: "{content.border.color}"
-    },
-    month: {
-        padding: "0.375rem",
-        borderRadius: "{content.border.radius}"
-    },
     panel: {
-        color: "{content.color}",
-        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-        padding: "{overlay.popover.padding}",
         background: "{content.background}",
         borderColor: "{content.border.color}",
-        borderRadius: "{content.border.radius}"
+        color: "{content.color}",
+        borderRadius: "{content.border.radius}",
+        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
+        padding: "{overlay.popover.padding}"
+    },
+    header: {
+        background: "{content.background}",
+        borderColor: "{content.border.color}",
+        color: "{content.color}",
+        padding: "0 0 0.5rem"
     },
     title: {
         gap: "0.5rem",
         fontWeight: "500"
     },
-    header: {
+    dropdown: {
+        width: "2.5rem",
+        sm: {
+            width: "2rem"
+        },
+        lg: {
+            width: "3rem"
+        },
+        borderColor: "{form.field.border.color}",
+        hoverBorderColor: "{form.field.border.color}",
+        activeBorderColor: "{form.field.border.color}",
+        borderRadius: "{form.field.border.radius}",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
+    },
+    inputIcon: {
+        color: "{form.field.icon.color}"
+    },
+    selectMonth: {
+        hoverBackground: "{content.hover.background}",
         color: "{content.color}",
-        padding: "0 0 0.5rem",
-        background: "{content.background}",
-        borderColor: "{content.border.color}"
+        hoverColor: "{content.hover.color}",
+        padding: "0.25rem 0.5rem",
+        borderRadius: "{content.border.radius}"
+    },
+    selectYear: {
+        hoverBackground: "{content.hover.background}",
+        color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        padding: "0.25rem 0.5rem",
+        borderRadius: "{content.border.radius}"
+    },
+    group: {
+        borderColor: "{content.border.color}",
+        gap: "{overlay.popover.padding}"
     },
     dayView: {
         margin: "0.5rem 0 0"
     },
     weekDay: {
-        color: "{content.color}",
         padding: "0.25rem",
-        fontWeight: "500"
+        fontWeight: "500",
+        color: "{content.color}"
     },
-    dropdown: {
-        lg: {
-            width: "3rem"
-        },
-        sm: {
-            width: "2rem"
-        },
-        width: "2.5rem",
+    date: {
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{primary.600}",
+        rangeSelectedBackground: "{highlight.background}",
+        color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        selectedColor: "{primary.contrast.color}",
+        rangeSelectedColor: "{highlight.color}",
+        width: "2rem",
+        height: "2rem",
+        borderRadius: "1rem",
+        padding: "0.25rem",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
-        },
-        borderColor: "{form.field.border.color}",
-        borderRadius: "{form.field.border.radius}",
-        hoverBorderColor: "{form.field.border.color}",
-        activeBorderColor: "{form.field.border.color}"
+        }
+    },
+    monthView: {
+        margin: "0.5rem 0 0"
+    },
+    month: {
+        padding: "0.375rem",
+        borderRadius: "{content.border.radius}"
     },
     yearView: {
         margin: "0.5rem 0 0"
+    },
+    year: {
+        padding: "0.375rem",
+        borderRadius: "{content.border.radius}"
     },
     buttonbar: {
         padding: "0.5rem 0 0",
         borderColor: "{content.border.color}"
     },
-    inputIcon: {
-        color: "{form.field.icon.color}"
-    },
-    monthView: {
-        margin: "0.5rem 0 0"
-    },
-    selectYear: {
-        color: "{content.color}",
-        padding: "0.25rem 0.5rem",
-        hoverColor: "{content.hover.color}",
-        borderRadius: "{content.border.radius}",
-        hoverBackground: "{content.hover.background}"
-    },
     timePicker: {
-        gap: "0.5rem",
         padding: "0.5rem 0 0",
-        buttonGap: "0.25rem",
-        borderColor: "{content.border.color}"
+        borderColor: "{content.border.color}",
+        gap: "0.5rem",
+        buttonGap: "0.25rem"
     },
     colorScheme: {
         light: {
-            today: {
-                color: "{surface.0}",
-                background: "{surface.500}"
-            },
             dropdown: {
-                color: "{form.field.color}",
                 background: "{form.field.background}",
-                hoverColor: "{form.field.color}",
-                activeColor: "{form.field.color}",
                 hoverBackground: "{form.field.filled.hover.background}",
-                activeBackground: "{form.field.filled.hover.background}"
+                activeBackground: "{form.field.filled.hover.background}",
+                color: "{form.field.color}",
+                hoverColor: "{form.field.color}",
+                activeColor: "{form.field.color}"
+            },
+            today: {
+                background: "{surface.500}",
+                color: "{surface.0}"
             }
         }
-    },
-    selectMonth: {
-        color: "{content.color}",
-        padding: "0.25rem 0.5rem",
-        hoverColor: "{content.hover.color}",
-        borderRadius: "{content.border.radius}",
-        hoverBackground: "{content.hover.background}"
     }
 } satisfies DatePickerDesignTokens;

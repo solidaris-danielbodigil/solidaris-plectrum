@@ -1,65 +1,65 @@
 import type { ToggleButtonDesignTokens } from '@primeuix/themes/types/togglebutton';
 
  export default {
-    icon: {
-        disabledColor: "{form.field.disabled.color}"
-    },
     root: {
-        lg: {
-            padding: "0.25rem",
-            fontSize: "{form.field.lg.font.size}"
-        },
-        sm: {
-            padding: "0.25rem",
-            fontSize: "{form.field.sm.font.size}"
-        },
-        gap: "0.5rem",
         padding: "0.25rem",
+        borderRadius: "{content.border.radius}",
+        gap: "0.5rem",
+        fontWeight: "500",
+        disabledBackground: "{form.field.disabled.background}",
+        disabledBorderColor: "{form.field.disabled.background}",
+        disabledColor: "{form.field.disabled.color}",
+        invalidBorderColor: "{form.field.invalid.border.color}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
         },
-        fontWeight: "500",
-        borderRadius: "{content.border.radius}",
-        disabledColor: "{form.field.disabled.color}",
-        disabledBackground: "{form.field.disabled.background}",
-        invalidBorderColor: "{form.field.invalid.border.color}",
         transitionDuration: "{form.field.transition.duration}",
-        disabledBorderColor: "{form.field.disabled.background}"
+        sm: {
+            fontSize: "{form.field.sm.font.size}",
+            padding: "0.25rem"
+        },
+        lg: {
+            fontSize: "{form.field.lg.font.size}",
+            padding: "0.25rem"
+        }
+    },
+    icon: {
+        disabledColor: "{form.field.disabled.color}"
     },
     content: {
-        lg: {
-            padding: "0.25rem 0.75rem"
-        },
+        padding: "0.25rem 0.75rem",
+        borderRadius: "{content.border.radius}",
+        checkedShadow: "0 1px 2px 0 #0000000a, 0 1px 2px 0 #00000005",
         sm: {
             padding: "0.25rem 0.75rem"
         },
-        padding: "0.25rem 0.75rem",
-        borderRadius: "{content.border.radius}",
-        checkedShadow: "0 1px 2px 0 #0000000a, 0 1px 2px 0 #00000005"
+        lg: {
+            padding: "0.25rem 0.75rem"
+        }
     },
     colorScheme: {
         light: {
+            root: {
+                background: "{primary.200}",
+                checkedBackground: "{togglebutton.background}",
+                hoverBackground: "{primary.200}",
+                borderColor: "#eaeff400",
+                color: "{text.muted.color}",
+                hoverColor: "{text.color}",
+                checkedColor: "{surface.950}",
+                checkedBorderColor: "#eaeff400"
+            },
             icon: {
                 color: "{surface.500}",
                 hoverColor: "{surface.700}",
-                checkedColor: "{surface.0}"
-            },
-            root: {
-                color: "{text.muted.color}",
-                background: "{primary.100}",
-                hoverColor: "{text.color}",
-                borderColor: "#e7e7e700",
-                checkedColor: "{surface.0}",
-                hoverBackground: "{primary.100}",
-                checkedBackground: "{primary.100}",
-                checkedBorderColor: "#eaeff400"
+                checkedColor: "{togglebutton.checked.color}"
             },
             content: {
-                checkedBackground: "{primary.active.color}"
+                checkedBackground: "{surface.0}"
             }
         }
     }

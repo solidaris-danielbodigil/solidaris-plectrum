@@ -1,195 +1,195 @@
 import type { DataTableDesignTokens } from '@primeuix/themes/types/datatable';
 
  export default {
-    row: {
-        color: "{content.color}",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "-1px",
-            shadow: "none"
-        },
-        background: "{content.background}",
-        hoverColor: "{content.hover.color}",
-        selectedColor: "{highlight.color}",
-        hoverBackground: "{content.hover.background}",
-        selectedBackground: "{highlight.background}"
-    },
     root: {
         transitionDuration: "{transition.duration}"
     },
-    filter: {
-        rule: {
-            borderColor: "{content.border.color}"
-        },
-        inlineGap: "0.5rem",
-        constraint: {
-            color: "{list.option.color}",
-            padding: "{list.option.padding}",
-            separator: {
-                borderColor: "{content.border.color}"
-            },
-            focusColor: "{list.option.focus.color}",
-            borderRadius: "{list.option.border.radius}",
-            selectedColor: "{list.option.selected.color}",
-            focusBackground: "{list.option.focus.background}",
-            selectedBackground: "{list.option.selected.background}",
-            selectedFocusColor: "{list.option.selected.focus.color}",
-            selectedFocusBackground: "{list.option.selected.focus.background}"
-        },
-        overlaySelect: {
-            color: "{overlay.select.color}",
-            shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-            background: "{overlay.select.background}",
-            borderColor: "{overlay.select.border.color}",
-            borderRadius: "{overlay.select.border.radius}"
-        },
-        constraintList: {
-            gap: "{list.gap}",
-            padding: "{list.padding}"
-        },
-        overlayPopover: {
-            gap: "0.5rem",
-            color: "{overlay.popover.color}",
-            shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-            padding: "{overlay.popover.padding}",
-            background: "{overlay.popover.background}",
-            borderColor: "{overlay.popover.border.color}",
-            borderRadius: "{overlay.popover.border.radius}"
-        }
-    },
-    footer: {
-        lg: {
-            padding: "1rem 1.25rem"
-        },
-        sm: {
-            padding: "0.375rem 0.5rem"
-        },
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
-        background: "{content.background}",
-        borderColor: "{datatable.border.color}",
-        borderWidth: "1px"
-    },
     header: {
-        lg: {
-            padding: "1rem 1.25rem"
-        },
-        sm: {
-            padding: "0.375rem 0.5rem"
-        },
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
         background: "#ffffff00",
         borderColor: "{overlay.popover.border.color}",
-        borderWidth: "1px"
-    },
-    bodyCell: {
-        lg: {
-            padding: "1rem 1.25rem"
-        },
-        sm: {
-            padding: "0.375rem 0.5rem"
-        },
-        padding: "0.75rem 1rem",
-        borderColor: "{datatable.header.border.color}"
-    },
-    sortIcon: {
-        size: "0.875rem",
-        color: "{text.muted.color}",
-        hoverColor: "{text.hover.muted.color}"
-    },
-    dropPoint: {
-        color: "{primary.color}"
-    },
-    footerCell: {
-        lg: {
-            padding: "1rem 1.25rem"
-        },
-        sm: {
-            padding: "0.375rem 0.5rem"
-        },
         color: "{content.color}",
+        borderWidth: "1px",
         padding: "0.75rem 1rem",
-        background: "{content.background}",
-        borderColor: "{datatable.border.color}"
+        sm: {
+            padding: "0.375rem 0.5rem"
+        },
+        lg: {
+            padding: "1rem 1.25rem"
+        }
     },
     headerCell: {
-        lg: {
-            padding: "1rem 1.25rem"
-        },
+        background: "{content.background}",
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{highlight.background}",
+        borderColor: "{datatable.header.border.color}",
+        color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        selectedColor: "{highlight.color}",
+        gap: "0.5rem",
+        padding: "0.75rem 1rem",
         sm: {
             padding: "0.375rem 0.5rem"
         },
-        gap: "0.5rem",
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
+        lg: {
+            padding: "1rem 1.25rem"
+        },
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "-1px",
             shadow: "none"
-        },
-        background: "{content.background}",
-        hoverColor: "{content.hover.color}",
-        borderColor: "{datatable.header.border.color}",
-        selectedColor: "{highlight.color}",
-        hoverBackground: "{content.hover.background}",
-        selectedBackground: "{highlight.background}"
-    },
-    colorScheme: {
-        light: {
-            row: {
-                stripedBackground: "{surface.50}"
-            },
-            root: {
-                borderColor: "{content.border.color}"
-            },
-            bodyCell: {
-                selectedBorderColor: "{primary.100}"
-            }
         }
     },
     columnTitle: {
         fontWeight: "600"
     },
-    loadingIcon: {
-        size: "2rem"
+    row: {
+        background: "{content.background}",
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{highlight.background}",
+        color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        selectedColor: "{highlight.color}",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "-1px",
+            shadow: "none"
+        }
+    },
+    bodyCell: {
+        borderColor: "{datatable.header.border.color}",
+        padding: "0.75rem 1rem",
+        sm: {
+            padding: "0.375rem 0.5rem"
+        },
+        lg: {
+            padding: "1rem 1.25rem"
+        }
+    },
+    footerCell: {
+        background: "{content.background}",
+        borderColor: "{datatable.border.color}",
+        color: "{content.color}",
+        padding: "0.75rem 1rem",
+        sm: {
+            padding: "0.375rem 0.5rem"
+        },
+        lg: {
+            padding: "1rem 1.25rem"
+        }
     },
     columnFooter: {
         fontWeight: "600"
+    },
+    footer: {
+        background: "{content.background}",
+        borderColor: "{datatable.border.color}",
+        color: "{content.color}",
+        borderWidth: "1px",
+        padding: "0.75rem 1rem",
+        sm: {
+            padding: "0.375rem 0.5rem"
+        },
+        lg: {
+            padding: "1rem 1.25rem"
+        }
+    },
+    dropPoint: {
+        color: "{primary.color}"
+    },
+    columnResizer: {
+        width: "0.5rem"
+    },
+    resizeIndicator: {
+        width: "1px",
+        color: "{primary.color}"
+    },
+    sortIcon: {
+        color: "{text.muted.color}",
+        hoverColor: "{text.hover.muted.color}",
+        size: "0.875rem"
+    },
+    loadingIcon: {
+        size: "2rem"
+    },
+    rowToggleButton: {
+        hoverBackground: "{content.hover.background}",
+        selectedHoverBackground: "{content.background}",
+        color: "{text.muted.color}",
+        hoverColor: "{text.color}",
+        selectedHoverColor: "{primary.color}",
+        size: "1rem",
+        borderRadius: "14px",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
+    },
+    filter: {
+        inlineGap: "0.5rem",
+        overlaySelect: {
+            background: "{overlay.select.background}",
+            borderColor: "{overlay.select.border.color}",
+            borderRadius: "{overlay.select.border.radius}",
+            color: "{overlay.select.color}",
+            shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a"
+        },
+        overlayPopover: {
+            background: "{overlay.popover.background}",
+            borderColor: "{overlay.popover.border.color}",
+            borderRadius: "{overlay.popover.border.radius}",
+            color: "{overlay.popover.color}",
+            shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
+            padding: "{overlay.popover.padding}",
+            gap: "0.5rem"
+        },
+        rule: {
+            borderColor: "{content.border.color}"
+        },
+        constraintList: {
+            padding: "{list.padding}",
+            gap: "{list.gap}"
+        },
+        constraint: {
+            focusBackground: "{list.option.focus.background}",
+            selectedBackground: "{list.option.selected.background}",
+            selectedFocusBackground: "{list.option.selected.focus.background}",
+            color: "{list.option.color}",
+            focusColor: "{list.option.focus.color}",
+            selectedColor: "{list.option.selected.color}",
+            selectedFocusColor: "{list.option.selected.focus.color}",
+            separator: {
+                borderColor: "{content.border.color}"
+            },
+            padding: "{list.option.padding}",
+            borderRadius: "{list.option.border.radius}"
+        }
     },
     paginatorTop: {
         borderColor: "{datatable.border.color}",
         borderWidth: "1px"
     },
-    columnResizer: {
-        width: "0.5rem"
-    },
     paginatorBottom: {
         borderColor: "{datatable.border.color}",
         borderWidth: "1px"
     },
-    resizeIndicator: {
-        color: "{primary.color}",
-        width: "1px"
-    },
-    rowToggleButton: {
-        size: "1rem",
-        color: "{text.muted.color}",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        hoverColor: "{text.color}",
-        borderRadius: "14px",
-        hoverBackground: "{content.hover.background}",
-        selectedHoverColor: "{primary.color}",
-        selectedHoverBackground: "{content.background}"
+    colorScheme: {
+        light: {
+            root: {
+                borderColor: "{content.border.color}"
+            },
+            row: {
+                stripedBackground: "{surface.50}"
+            },
+            bodyCell: {
+                selectedBorderColor: "{primary.100}"
+            }
+        }
     }
 } satisfies DataTableDesignTokens;

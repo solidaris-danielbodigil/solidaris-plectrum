@@ -5,15 +5,15 @@ import type { SkeletonDesignTokens } from '@primeuix/themes/types/skeleton';
         borderRadius: "{content.border.radius}"
     },
     colorScheme: {
-        dark: {
-            root: {
-                animationBackground: "rgba(255, 255, 255, 0.1)"
-            }
-        },
         light: {
             root: {
                 background: "{surface.200}",
                 animationBackground: "rgba(255, 255, 255, 0.4)"
+            }
+        },
+        dark: {
+            root: {
+                animationBackground: "rgba(255, 255, 255, 0.1)"
             }
         }
     }

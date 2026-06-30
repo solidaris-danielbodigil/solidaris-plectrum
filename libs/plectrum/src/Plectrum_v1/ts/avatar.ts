@@ -1,41 +1,41 @@
 import type { AvatarDesignTokens } from '@primeuix/themes/types/avatar';
 
  export default {
+    root: {
+        width: "2rem",
+        height: "2rem",
+        fontSize: "1rem",
+        background: "{branding.800}",
+        color: "{surface.0}",
+        borderRadius: "{content.border.radius}"
+    },
+    icon: {
+        size: "1rem"
+    },
+    group: {
+        borderColor: "#0000000d",
+        offset: "-0.75rem"
+    },
     lg: {
+        width: "3rem",
+        height: "3rem",
+        fontSize: "1.5rem",
         icon: {
             size: "1.5rem"
         },
         group: {
             offset: "-1rem"
-        },
-        width: "3rem",
-        height: "3rem",
-        fontSize: "1.5rem"
+        }
     },
     xl: {
+        width: "4rem",
+        height: "4rem",
+        fontSize: "2rem",
         icon: {
             size: "2rem"
         },
         group: {
             offset: "-1.5rem"
-        },
-        width: "4rem",
-        height: "4rem",
-        fontSize: "2rem"
-    },
-    icon: {
-        size: "1rem"
-    },
-    root: {
-        color: "{surface.0}",
-        width: "2rem",
-        height: "2rem",
-        fontSize: "1rem",
-        background: "{branding.800}",
-        borderRadius: "{content.border.radius}"
-    },
-    group: {
-        offset: "-0.75rem",
-        borderColor: "#0000000d"
+        }
     }
 } satisfies AvatarDesignTokens;

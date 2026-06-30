@@ -12,15 +12,15 @@ import type { InputNumberDesignTokens } from '@primeuix/themes/types/inputnumber
     colorScheme: {
         light: {
             button: {
-                color: "{form.field.color}",
                 background: "#00000000",
-                hoverColor: "{form.field.color}",
-                activeColor: "{form.field.color}",
-                borderColor: "{form.field.border.color}",
                 hoverBackground: "{form.field.filled.hover.background}",
                 activeBackground: "{form.field.filled.background}",
+                borderColor: "{form.field.border.color}",
                 hoverBorderColor: "{form.field.border.color}",
-                activeBorderColor: "{form.field.border.color}"
+                activeBorderColor: "{form.field.border.color}",
+                color: "{form.field.color}",
+                hoverColor: "{form.field.color}",
+                activeColor: "{form.field.color}"
             }
         }
     }

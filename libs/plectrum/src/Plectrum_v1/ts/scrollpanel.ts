@@ -1,19 +1,19 @@
 import type { ScrollPanelDesignTokens } from '@primeuix/themes/types/scrollpanel';
 
  export default {
-    bar: {
-        size: "9px",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        borderRadius: "{border.radius.sm}"
-    },
     root: {
         transitionDuration: "{transition.duration}"
+    },
+    bar: {
+        size: "9px",
+        borderRadius: "{border.radius.sm}",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
     },
     colorScheme: {
         light: {

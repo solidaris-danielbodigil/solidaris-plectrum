@@ -3,8 +3,8 @@ import type { OverlayBadgeDesignTokens } from '@primeuix/themes/types/overlaybad
  export default {
     root: {
         outline: {
-            color: "{content.background}",
-            width: "2px"
+            width: "2px",
+            color: "{content.background}"
         }
     }
 } satisfies OverlayBadgeDesignTokens;

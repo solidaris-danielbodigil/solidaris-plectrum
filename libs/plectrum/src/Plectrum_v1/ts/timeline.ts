@@ -4,31 +4,31 @@ import type { TimelineDesignTokens } from '@primeuix/themes/types/timeline';
     event: {
         minHeight: "5rem"
     },
-    vertical: {
-        eventContent: {
-            padding: "0 1rem"
-        }
-    },
     horizontal: {
         eventContent: {
             padding: "1rem 0"
         }
     },
+    vertical: {
+        eventContent: {
+            padding: "0 1rem"
+        }
+    },
     eventMarker: {
         size: "1.125rem",
-        content: {
-            size: "0.375rem",
-            background: "{primary.600}",
-            insetShadow: "0 1px 1px 0 #0000001f, 0 1px 0 0 #0000000f",
-            borderRadius: "2px"
-        },
+        borderRadius: "20px",
+        borderWidth: "1px",
         background: "{content.background}",
         borderColor: "{content.border.color}",
-        borderWidth: "1px",
-        borderRadius: "20px"
+        content: {
+            borderRadius: "2px",
+            size: "0.375rem",
+            background: "{primary.600}",
+            insetShadow: "0 1px 1px 0 #0000001f, 0 1px 0 0 #0000000f"
+        }
     },
     eventConnector: {
-        size: "2px",
-        color: "{timeline.event.marker.border.color}"
+        color: "{timeline.event.marker.border.color}",
+        size: "2px"
     }
 } satisfies TimelineDesignTokens;

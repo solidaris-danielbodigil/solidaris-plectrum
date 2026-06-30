@@ -4,53 +4,53 @@ import type { StepperDesignTokens } from '@primeuix/themes/types/stepper';
     root: {
         transitionDuration: "{transition.duration}"
     },
-    step: {
-        gap: "1rem",
-        padding: "0.5rem"
-    },
     separator: {
-        size: "2px",
-        margin: "0 0 0 1rem",
         background: "{overlay.popover.border.color}",
-        activeBackground: "{primary.color}"
+        activeBackground: "{primary.color}",
+        margin: "0 0 0 1rem",
+        size: "2px"
     },
-    stepTitle: {
-        color: "{text.muted.color}",
-        fontWeight: "500",
-        activeColor: "{text.color}"
-    },
-    steppanel: {
-        color: "{content.color}",
-        indent: "1rem",
-        padding: "0",
-        background: "#26262600"
+    step: {
+        padding: "0.5rem",
+        gap: "1rem"
     },
     stepHeader: {
-        gap: "0.5rem",
         padding: "0",
+        borderRadius: "{content.border.radius}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
         },
-        borderRadius: "{content.border.radius}"
+        gap: "0.5rem"
+    },
+    stepTitle: {
+        color: "{text.muted.color}",
+        activeColor: "{text.color}",
+        fontWeight: "500"
     },
     stepNumber: {
-        size: "2rem",
-        color: "{text.muted.color}",
-        shadow: "0 1px 1px 0 #0000001f, 0 1px 0 0 #0000000f",
-        fontSize: "1.143rem",
         background: "{content.background}",
-        fontWeight: "500",
-        activeColor: "{surface.0}",
-        borderColor: "{stepper.separator.background}",
-        borderRadius: "1rem",
         activeBackground: "{primary.700}",
-        activeBorderColor: "#00000000"
+        borderColor: "{stepper.separator.background}",
+        activeBorderColor: "#00000000",
+        color: "{text.muted.color}",
+        activeColor: "{surface.0}",
+        size: "2rem",
+        fontSize: "1.143rem",
+        fontWeight: "500",
+        borderRadius: "1rem",
+        shadow: "0 1px 1px 0 #0000001f, 0 1px 0 0 #0000000f"
     },
     steppanels: {
         padding: "0.875rem 0.5rem 1.125rem"
+    },
+    steppanel: {
+        background: "#26262600",
+        color: "{content.color}",
+        padding: "0",
+        indent: "1rem"
     }
 } satisfies StepperDesignTokens;

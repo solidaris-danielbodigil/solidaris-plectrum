@@ -2,14 +2,14 @@ import type { IftaLabelDesignTokens } from '@primeuix/themes/types/iftalabel';
 
  export default {
     root: {
-        top: "{form.field.padding.y}",
         color: "{form.field.float.label.color}",
-        fontSize: "0.75rem",
-        positionX: "{form.field.padding.x}",
         focusColor: "{form.field.float.label.focus.color}",
-        fontWeight: "400",
         invalidColor: "{form.field.float.label.invalid.color}",
-        transitionDuration: "{form.field.transition.duration}"
+        transitionDuration: "{form.field.transition.duration}",
+        positionX: "{form.field.padding.x}",
+        top: "{form.field.padding.y}",
+        fontSize: "0.75rem",
+        fontWeight: "400"
     },
     input: {
         paddingTop: "1.5rem",

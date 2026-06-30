@@ -5,50 +5,50 @@ import type { AccordionDesignTokens } from '@primeuix/themes/types/accordion';
         transitionDuration: "{transition.duration}"
     },
     panel: {
-        borderColor: "{content.border.color}",
-        borderWidth: "1px"
+        borderWidth: "0",
+        borderColor: "{content.border.color}"
     },
     header: {
-        last: {
-            bottomBorderRadius: "{content.border.radius}",
-            activeBottomBorderRadius: "0"
-        },
         color: "{text.muted.color}",
-        first: {
-            borderWidth: "0",
-            topBorderRadius: "{content.border.radius}"
-        },
+        hoverColor: "{text.color}",
+        activeColor: "{text.color}",
+        activeHoverColor: "{text.color}",
         padding: "1rem",
+        fontWeight: "600",
+        borderRadius: "0",
+        borderWidth: "0",
+        borderColor: "{content.border.color}",
+        background: "{content.background}",
+        hoverBackground: "{content.background}",
+        activeBackground: "{content.background}",
+        activeHoverBackground: "{content.hover.background}",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "{focus.ring.offset}",
             shadow: "none"
         },
-        background: "{content.background}",
-        fontWeight: "600",
-        hoverColor: "{text.color}",
         toggleIcon: {
             color: "{text.muted.color}",
             hoverColor: "{text.color}",
             activeColor: "{text.color}",
             activeHoverColor: "{text.color}"
         },
-        activeColor: "{text.color}",
-        borderColor: "{content.border.color}",
-        borderWidth: "0",
-        borderRadius: "0",
-        hoverBackground: "{content.background}",
-        activeBackground: "{content.background}",
-        activeHoverColor: "{text.color}",
-        activeHoverBackground: "{primary.100}"
+        first: {
+            topBorderRadius: "{content.border.radius}",
+            borderWidth: "0"
+        },
+        last: {
+            bottomBorderRadius: "{content.border.radius}",
+            activeBottomBorderRadius: "0"
+        }
     },
     content: {
-        color: "{text.color}",
-        padding: "0 1rem 1rem",
-        background: "{content.background}",
+        borderWidth: "0",
         borderColor: "{content.border.color}",
-        borderWidth: "0"
+        background: "{content.background}",
+        color: "{text.color}",
+        padding: "0 1rem 1rem"
     }
 } satisfies AccordionDesignTokens;

@@ -1,71 +1,111 @@
 import type { TreeTableDesignTokens } from '@primeuix/themes/types/treetable';
 
  export default {
-    row: {
-        color: "{content.color}",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "-1px",
-            shadow: "none"
-        },
-        background: "{content.background}",
-        hoverColor: "{content.hover.color}",
-        selectedColor: "{highlight.color}",
-        hoverBackground: "{content.hover.background}",
-        selectedBackground: "{highlight.background}"
-    },
     root: {
         transitionDuration: "{transition.duration}"
     },
-    footer: {
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
-        background: "{content.background}",
-        borderColor: "{treetable.border.color}",
-        borderWidth: "1px"
-    },
     header: {
-        color: "{content.color}",
-        padding: "0.75rem 1rem",
         background: "{content.background}",
         borderColor: "{treetable.border.color}",
-        borderWidth: "1px"
-    },
-    bodyCell: {
-        gap: "0.5rem",
-        padding: "0.75rem 1rem",
-        borderColor: "{treetable.border.color}"
-    },
-    sortIcon: {
-        size: "0.875rem",
-        color: "{text.muted.color}",
-        hoverColor: "{text.hover.muted.color}"
-    },
-    footerCell: {
         color: "{content.color}",
-        padding: "0.75rem 1rem",
-        background: "{content.background}",
-        borderColor: "{treetable.border.color}"
+        borderWidth: "1px",
+        padding: "0.75rem 1rem"
     },
     headerCell: {
-        gap: "0.5rem",
+        background: "{content.background}",
+        hoverBackground: "{content.hover.background}",
+        selectedBackground: "{highlight.background}",
+        borderColor: "{treetable.border.color}",
         color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        selectedColor: "{highlight.color}",
+        gap: "0.5rem",
         padding: "0.75rem 1rem",
         focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
             width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
             offset: "-1px",
             shadow: "none"
-        },
+        }
+    },
+    columnTitle: {
+        fontWeight: "600"
+    },
+    row: {
         background: "{content.background}",
-        hoverColor: "{content.hover.color}",
-        borderColor: "{treetable.border.color}",
-        selectedColor: "{highlight.color}",
         hoverBackground: "{content.hover.background}",
-        selectedBackground: "{highlight.background}"
+        selectedBackground: "{highlight.background}",
+        color: "{content.color}",
+        hoverColor: "{content.hover.color}",
+        selectedColor: "{highlight.color}",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "-1px",
+            shadow: "none"
+        }
+    },
+    bodyCell: {
+        borderColor: "{treetable.border.color}",
+        padding: "0.75rem 1rem",
+        gap: "0.5rem"
+    },
+    footerCell: {
+        background: "{content.background}",
+        borderColor: "{treetable.border.color}",
+        color: "{content.color}",
+        padding: "0.75rem 1rem"
+    },
+    columnFooter: {
+        fontWeight: "600"
+    },
+    footer: {
+        background: "{content.background}",
+        borderColor: "{treetable.border.color}",
+        color: "{content.color}",
+        borderWidth: "1px",
+        padding: "0.75rem 1rem"
+    },
+    columnResizer: {
+        width: "0.5rem"
+    },
+    resizeIndicator: {
+        width: "1px",
+        color: "{primary.color}"
+    },
+    sortIcon: {
+        color: "{text.muted.color}",
+        hoverColor: "{text.hover.muted.color}",
+        size: "0.875rem"
+    },
+    loadingIcon: {
+        size: "2rem"
+    },
+    nodeToggleButton: {
+        hoverBackground: "{content.hover.background}",
+        selectedHoverBackground: "{content.background}",
+        color: "{text.muted.color}",
+        hoverColor: "{text.color}",
+        selectedHoverColor: "{primary.color}",
+        size: "1.75rem",
+        borderRadius: "0.875rem",
+        focusRing: {
+            width: "{focus.ring.width}",
+            style: "{focus.ring.style}",
+            color: "{focus.ring.color}",
+            offset: "{focus.ring.offset}",
+            shadow: "none"
+        }
+    },
+    paginatorTop: {
+        borderColor: "{content.border.color}",
+        borderWidth: "1px"
+    },
+    paginatorBottom: {
+        borderColor: "{content.border.color}",
+        borderWidth: "1px"
     },
     colorScheme: {
         light: {
@@ -76,45 +116,5 @@ import type { TreeTableDesignTokens } from '@primeuix/themes/types/treetable';
                 selectedBorderColor: "{primary.100}"
             }
         }
-    },
-    columnTitle: {
-        fontWeight: "600"
-    },
-    loadingIcon: {
-        size: "2rem"
-    },
-    columnFooter: {
-        fontWeight: "600"
-    },
-    paginatorTop: {
-        borderColor: "{content.border.color}",
-        borderWidth: "1px"
-    },
-    columnResizer: {
-        width: "0.5rem"
-    },
-    paginatorBottom: {
-        borderColor: "{content.border.color}",
-        borderWidth: "1px"
-    },
-    resizeIndicator: {
-        color: "{primary.color}",
-        width: "1px"
-    },
-    nodeToggleButton: {
-        size: "1.75rem",
-        color: "{text.muted.color}",
-        focusRing: {
-            color: "{focus.ring.color}",
-            style: "{focus.ring.style}",
-            width: "{focus.ring.width}",
-            offset: "{focus.ring.offset}",
-            shadow: "none"
-        },
-        hoverColor: "{text.color}",
-        borderRadius: "0.875rem",
-        hoverBackground: "{content.hover.background}",
-        selectedHoverColor: "{primary.color}",
-        selectedHoverBackground: "{content.background}"
     }
 } satisfies TreeTableDesignTokens;

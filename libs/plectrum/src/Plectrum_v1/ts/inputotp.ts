@@ -5,12 +5,12 @@ import type { InputOtpDesignTokens } from '@primeuix/themes/types/inputotp';
         gap: "0.5rem"
     },
     input: {
-        lg: {
-            width: "3rem"
-        },
+        width: "2.5rem",
         sm: {
             width: "2rem"
         },
-        width: "2.5rem"
+        lg: {
+            width: "3rem"
+        }
     }
 } satisfies InputOtpDesignTokens;

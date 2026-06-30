@@ -1,85 +1,85 @@
 import type { SelectDesignTokens } from '@primeuix/themes/types/select';
 
  export default {
-    list: {
-        gap: "{list.gap}",
-        header: {
-            padding: "{list.header.padding}"
-        },
-        padding: "{list.padding}"
-    },
     root: {
-        lg: {
-            fontSize: "{form.field.lg.font.size}",
-            paddingX: "{form.field.lg.padding.x}",
-            paddingY: "{form.field.lg.padding.y}"
+        background: "{form.field.background}",
+        disabledBackground: "{form.field.disabled.background}",
+        filledBackground: "{form.field.filled.background}",
+        filledHoverBackground: "{form.field.filled.hover.background}",
+        filledFocusBackground: "{form.field.filled.focus.background}",
+        borderColor: "{form.field.border.color}",
+        hoverBorderColor: "{form.field.hover.border.color}",
+        focusBorderColor: "{form.field.focus.border.color}",
+        invalidBorderColor: "{form.field.invalid.border.color}",
+        color: "{form.field.color}",
+        disabledColor: "{form.field.disabled.color}",
+        placeholderColor: "{form.field.placeholder.color}",
+        invalidPlaceholderColor: "{form.field.invalid.placeholder.color}",
+        shadow: "0 1px 2px 0 #1212170d",
+        paddingX: "{form.field.padding.x}",
+        paddingY: "{form.field.padding.y}",
+        borderRadius: "{form.field.border.radius}",
+        focusRing: {
+            width: "{form.field.focus.ring.width}",
+            style: "{form.field.focus.ring.style}",
+            color: "{form.field.focus.ring.color}",
+            offset: "{form.field.focus.ring.offset}",
+            shadow: "none"
         },
+        transitionDuration: "{form.field.transition.duration}",
         sm: {
             fontSize: "{form.field.sm.font.size}",
             paddingX: "{form.field.sm.padding.x}",
             paddingY: "{form.field.sm.padding.y}"
         },
-        color: "{form.field.color}",
-        shadow: "0 1px 2px 0 #1212170d",
-        paddingX: "{form.field.padding.x}",
-        paddingY: "{form.field.padding.y}",
-        focusRing: {
-            color: "{form.field.focus.ring.color}",
-            style: "{form.field.focus.ring.style}",
-            width: "{form.field.focus.ring.width}",
-            offset: "{form.field.focus.ring.offset}",
-            shadow: "none"
-        },
-        background: "{form.field.background}",
-        borderColor: "{form.field.border.color}",
-        borderRadius: "{form.field.border.radius}",
-        disabledColor: "{form.field.disabled.color}",
-        filledBackground: "{form.field.filled.background}",
-        focusBorderColor: "{form.field.focus.border.color}",
-        hoverBorderColor: "{form.field.hover.border.color}",
-        placeholderColor: "{form.field.placeholder.color}",
-        disabledBackground: "{form.field.disabled.background}",
-        invalidBorderColor: "{form.field.invalid.border.color}",
-        transitionDuration: "{form.field.transition.duration}",
-        filledFocusBackground: "{form.field.filled.focus.background}",
-        filledHoverBackground: "{form.field.filled.hover.background}",
-        invalidPlaceholderColor: "{form.field.invalid.placeholder.color}"
-    },
-    option: {
-        color: "{list.option.color}",
-        padding: "{list.option.padding}",
-        focusColor: "{list.option.focus.color}",
-        borderRadius: "{list.option.border.radius}",
-        selectedColor: "{list.option.selected.color}",
-        focusBackground: "{list.option.focus.background}",
-        selectedBackground: "{list.option.selected.background}",
-        selectedFocusColor: "{list.option.selected.focus.color}",
-        selectedFocusBackground: "{list.option.selected.focus.background}"
-    },
-    overlay: {
-        color: "{overlay.select.color}",
-        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a",
-        background: "{overlay.select.background}",
-        borderColor: "{overlay.select.border.color}",
-        borderRadius: "{overlay.select.border.radius}"
+        lg: {
+            fontSize: "{form.field.lg.font.size}",
+            paddingX: "{form.field.lg.padding.x}",
+            paddingY: "{form.field.lg.padding.y}"
+        }
     },
     dropdown: {
-        color: "{form.field.icon.color}",
-        width: "2.5rem"
+        width: "2.5rem",
+        color: "{form.field.icon.color}"
     },
-    checkmark: {
+    overlay: {
+        background: "{overlay.select.background}",
+        borderColor: "{overlay.select.border.color}",
+        borderRadius: "{overlay.select.border.radius}",
+        color: "{overlay.select.color}",
+        shadow: "0 2px 4px -2px #0000001a, 0 4px 6px -1px #0000001a"
+    },
+    list: {
+        padding: "{list.padding}",
+        gap: "{list.gap}",
+        header: {
+            padding: "{list.header.padding}"
+        }
+    },
+    option: {
+        focusBackground: "{list.option.focus.background}",
+        selectedBackground: "{list.option.selected.background}",
+        selectedFocusBackground: "{list.option.selected.focus.background}",
         color: "{list.option.color}",
-        gutterEnd: "0.375rem",
-        gutterStart: "-0.375rem"
+        focusColor: "{list.option.focus.color}",
+        selectedColor: "{list.option.selected.color}",
+        selectedFocusColor: "{list.option.selected.focus.color}",
+        padding: "{list.option.padding}",
+        borderRadius: "{list.option.border.radius}"
+    },
+    optionGroup: {
+        background: "{list.option.group.background}",
+        color: "{list.option.group.color}",
+        fontWeight: "{list.option.group.font.weight}",
+        padding: "{list.option.group.padding}"
     },
     clearIcon: {
         color: "{form.field.icon.color}"
     },
-    optionGroup: {
-        color: "{list.option.group.color}",
-        padding: "{list.option.group.padding}",
-        background: "{list.option.group.background}",
-        fontWeight: "{list.option.group.font.weight}"
+    checkmark: {
+        color: "{list.option.color}",
+        gutterStart: "-0.375rem",
+        gutterEnd: "0.375rem"
     },
     emptyMessage: {
         padding: "{list.option.padding}"
