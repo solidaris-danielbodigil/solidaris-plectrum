@@ -428,21 +428,47 @@ export class AffiliateDocumentDetailComponent {
     );
   }
 
-  goToPreviousStep(): void {
-    if (this.previousDisabled()) {
-      return;
-    }
+  isStepPreviousDisabled(stepIndex: number): boolean {
+    return stepIndex <= 0;
+  }
 
-    this.activeStep.update((value) => value - 1);
-    this.openFirstPanelOfActiveStep();
+  isStepNextDisabled(stepIndex: number): boolean {
+    return stepIndex < 0 || stepIndex >= this.steps().length - 1;
+  }
+
+  goToPreviousStep(): void {
+    this.goToPreviousStepFromIndex(this.activeStepIndex());
   }
 
   goToNextStep(): void {
-    if (this.nextDisabled()) {
+    this.goToNextStepFromIndex(this.activeStepIndex());
+  }
+
+  goToPreviousStepFromIndex(stepIndex: number): void {
+    if (this.isStepPreviousDisabled(stepIndex)) {
       return;
     }
 
-    this.activeStep.update((value) => value + 1);
+    const previousStep = this.steps()[stepIndex - 1];
+    if (!previousStep) {
+      return;
+    }
+
+    this.activeStep.set(previousStep.value);
+    this.openFirstPanelOfActiveStep();
+  }
+
+  goToNextStepFromIndex(stepIndex: number): void {
+    if (this.isStepNextDisabled(stepIndex)) {
+      return;
+    }
+
+    const nextStep = this.steps()[stepIndex + 1];
+    if (!nextStep) {
+      return;
+    }
+
+    this.activeStep.set(nextStep.value);
     this.openFirstPanelOfActiveStep();
   }
 

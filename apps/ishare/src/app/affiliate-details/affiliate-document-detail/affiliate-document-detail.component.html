@@ -236,7 +236,7 @@
           [class.c-affiliate-document-detail__stepper--unnumbered]="!stepNumbered()"
           [(value)]="activeStep"
         >
-          @for (step of steps(); track step.value) {
+          @for (step of steps(); track step.value; let stepIndex = $index) {
             <p-step-item [value]="step.value">
               <p-step [pdsTelemetryLabel]="step.label">
                 <ng-template
@@ -267,6 +267,12 @@
                       "
                     />
                   }
+                  <ng-container
+                    *ngTemplateOutlet="
+                      verticalStepNav;
+                      context: { stepIndex: stepIndex }
+                    "
+                  />
                 </ng-template>
               </p-step-panel>
             </p-step-item>
@@ -282,6 +288,42 @@
 }
 
 
+
+<ng-template #verticalStepNav let-stepIndex="stepIndex">
+  <div
+    class="c-affiliate-document-detail__vertical-step-nav o-flex o-flex--row o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width"
+  >
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      size="small"
+      label="Précédent"
+      icon="bi bi-arrow-left"
+      class="c-affiliate-document-detail__step-nav"
+      pTooltip="Étape précédente"
+      tooltipPosition="top"
+      pdsTelemetryLabel="step-nav-previous"
+      [disabled]="isStepPreviousDisabled(stepIndex)"
+      (click)="goToPreviousStepFromIndex(stepIndex)"
+    ></button>
+    <button
+      pButton
+      type="button"
+      severity="primary"
+      size="small"
+      label="Suivant"
+      icon="bi bi-arrow-right"
+      iconPos="right"
+      class="c-affiliate-document-detail__step-nav"
+      pTooltip="Étape suivante"
+      tooltipPosition="top"
+      pdsTelemetryLabel="step-nav-next"
+      [disabled]="isStepNextDisabled(stepIndex)"
+      (click)="goToNextStepFromIndex(stepIndex)"
+    ></button>
+  </div>
+</ng-template>
 
 <ng-template
   #documentStepHeader

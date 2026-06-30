@@ -154,6 +154,52 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(root.querySelector('.p-accordion')).toBeTruthy();
   });
 
+  it('should render labeled step navigation buttons inside the active vertical step panel', () => {
+    fixture.componentInstance.stepperView.set('vertical');
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+    const navRows = root.querySelectorAll(
+      '.c-affiliate-document-detail__vertical-step-nav',
+    );
+
+    expect(navRows.length).toBe(1);
+
+    const previousButton = findButtonByLabel(root, 'Précédent');
+    const nextButton = findButtonByLabel(root, 'Suivant');
+
+    expect(previousButton).toBeTruthy();
+    expect(nextButton).toBeTruthy();
+    expect(previousButton?.disabled).toBe(true);
+    expect(nextButton?.disabled).toBe(false);
+  });
+
+  it('should disable vertical Suivant on the last step', () => {
+    fixture.componentInstance.stepperView.set('vertical');
+    component.activeStep.set(3);
+    fixture.detectChanges();
+
+    const root = fixture.nativeElement as HTMLElement;
+    const nextButton = findButtonByLabel(root, 'Suivant');
+
+    expect(nextButton?.disabled).toBe(true);
+  });
+
+  it('should advance to the next step when vertical Suivant is clicked', () => {
+    fixture.componentInstance.stepperView.set('vertical');
+    fixture.detectChanges();
+
+    const nextButton = findButtonByLabel(
+      fixture.nativeElement,
+      'Suivant',
+    );
+
+    nextButton?.click();
+    fixture.detectChanges();
+
+    expect(component.activeStep()).toBe(2);
+  });
+
   it('should expose the selected document title from mock data', () => {
     expect(component.documentTitle()).toBe('Demande Primaire - Régime général');
   });

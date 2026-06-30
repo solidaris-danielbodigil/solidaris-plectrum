@@ -151,6 +151,11 @@
   flex-shrink: 0;
 }
 
+.c-affiliate-document-detail__vertical-step-nav {
+  flex-shrink: 0;
+  padding-block-start: var(--spacing-3);
+}
+
 .c-affiliate-document-detail__step-content {
   flex: 1 1 auto;
   min-block-size: 0;
