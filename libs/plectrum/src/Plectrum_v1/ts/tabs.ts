@@ -5,7 +5,7 @@ import type { TabsDesignTokens } from '@primeuix/themes/types/tabs';
         transitionDuration: "{transition.duration}"
     },
     tablist: {
-        borderWidth: "0",
+        borderWidth: "0 0 {tabs.tablist.border.width.bottom} 0",
         background: "#00000000",
         borderColor: "{content.border.color}"
     },

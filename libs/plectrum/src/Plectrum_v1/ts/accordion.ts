@@ -5,7 +5,7 @@ import type { AccordionDesignTokens } from '@primeuix/themes/types/accordion';
         transitionDuration: "{transition.duration}"
     },
     panel: {
-        borderWidth: "0",
+        borderWidth: "0 0 {accordion.panel.border.width.bottom} 0",
         borderColor: "{content.border.color}"
     },
     header: {
