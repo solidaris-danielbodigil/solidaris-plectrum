@@ -183,6 +183,16 @@
   color: var(--#{$pds-prefix}-color-text);
 }
 
+.c-affiliate-document-detail__details-section--with-prediction {
+  gap: var(--spacing-3);
+}
+
+.c-affiliate-document-detail__delay-prediction {
+  align-self: flex-start;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
 .c-affiliate-document-detail__detail-label {
   @include text-label-xs;
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-detail-label-text);

@@ -1,0 +1,21 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.delay-prediction-card.scss
+// Prédiction du délai card — Figma iSHARE-Audit node 704:11968
+// =============================================================================
+
+:root {
+  --#{$pds-prefix}-color-delay-prediction-metric: #487395; // Figma: primary/color
+  --#{$pds-prefix}-color-delay-prediction-subtitle: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-delay-prediction-border: var(--#{$pds-prefix}-color-card-border);
+  --#{$pds-prefix}-color-delay-prediction-bg: var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-shadow-delay-prediction-card: var(--#{$pds-prefix}-shadow-md);
+  --#{$pds-prefix}-radius-delay-prediction-card: var(--#{$pds-prefix}-radius-md);
+  --#{$pds-prefix}-space-delay-prediction-card-padding-inline: var(--spacing-3);
+  --#{$pds-prefix}-space-delay-prediction-card-padding-block: var(--spacing-2);
+  --#{$pds-prefix}-space-delay-prediction-card-gap: var(--spacing-1);
+  --#{$pds-prefix}-text-delay-prediction-metric-size: 1.857rem; // 26px @ 14px base
+  --#{$pds-prefix}-text-delay-prediction-metric-line-height: 2.286rem; // 32px
+  --#{$pds-prefix}-size-delay-prediction-menu-button: 2.857rem; // 40px
+}

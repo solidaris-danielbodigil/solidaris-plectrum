@@ -578,83 +578,69 @@
           </h3>
 
           <div
-
-            class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
-
+            class="c-affiliate-document-detail__details-section o-flex o-flex--y o-layout--min-w-0"
+            [class.c-affiliate-document-detail__details-section--with-prediction]="
+              !!panel.delayPrediction
+            "
           >
+            <div
+              class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
+            >
+              @for (field of panel.details; track field.label) {
+                <div
+                  class="c-affiliate-document-detail__detail-row o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
+                >
+                  <span class="c-affiliate-document-detail__detail-label">{{
+                    field.label
+                  }}</span>
+                  @if (isPeriodField(field)) {
+                    <div
+                      class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
+                    >
+                      <span
+                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+                        >Du</span
+                      >
+                      <span
+                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                        >{{ field.value.from }}</span
+                      >
+                      <span
+                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+                        >Au</span
+                      >
+                      <span
+                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                        >{{ field.value.to }}</span
+                      >
+                    </div>
+                  } @else {
+                    <span
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                      >{{ field.value }}</span
+                    >
+                  }
+                </div>
+              }
+            </div>
 
-            @for (field of panel.details; track field.label) {
-
+            @if (panel.delayPrediction; as prediction) {
               <div
-
-                class="c-affiliate-document-detail__detail-row o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
-
+                class="c-affiliate-document-detail__delay-prediction-group o-flex o-flex--y o-layout--min-w-0"
               >
-
-                <span class="c-affiliate-document-detail__detail-label">{{
-
-                  field.label
-
-                }}</span>
-
-                @if (isPeriodField(field)) {
-
-                  <div
-
-                    class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
-
-                  >
-
-                    <span
-
-                      class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
-
-                      >Du</span
-
-                    >
-
-                    <span
-
-                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
-
-                      >{{ field.value.from }}</span
-
-                    >
-
-                    <span
-
-                      class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
-
-                      >Au</span
-
-                    >
-
-                    <span
-
-                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
-
-                      >{{ field.value.to }}</span
-
-                    >
-
-                  </div>
-
-                } @else {
-
-                  <span
-
-                    class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
-
-                    >{{ field.value }}</span
-
-                  >
-
-                }
-
+                <h3
+                  class="c-affiliate-document-detail__details-heading o-layout--margin-0 o-layout--margin-block-end-2"
+                >
+                  Prédiction du delai
+                </h3>
+                <pds-delay-prediction-card
+                  class="c-affiliate-document-detail__delay-prediction"
+                  [daysRemaining]="prediction.daysRemaining"
+                  [predictedCloseDate]="prediction.predictedCloseDate"
+                  (menuClick)="onDelayPredictionMenuClick()"
+                />
               </div>
-
             }
-
           </div>
 
 

@@ -87,6 +87,11 @@ export interface DocumentCrossReference {
   panelId: string;
 }
 
+export interface DocumentDelayPrediction {
+  daysRemaining: number;
+  predictedCloseDate: string;
+}
+
 export interface DocumentCertificatPanel {
   id: string;
   title: string;
@@ -105,6 +110,7 @@ export interface DocumentCertificatPanel {
   crossReference?: DocumentCrossReference;
   actions: DocumentCertificatAction[];
   details: DocumentDetailField[];
+  delayPrediction?: DocumentDelayPrediction;
   moreDetailsLabel: string;
   moreDetails?: DocumentMoreDetails;
 }

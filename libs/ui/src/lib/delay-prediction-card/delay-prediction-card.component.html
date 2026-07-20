@@ -1,0 +1,42 @@
+<article
+  class="c-delay-prediction-card o-layout--min-w-0"
+  aria-label="Prédiction du délai"
+>
+  <div
+    class="c-delay-prediction-card__body o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--min-w-0"
+  >
+    <div class="c-delay-prediction-card__metric o-flex__item--shrink-0">
+      <span class="c-delay-prediction-card__value">{{ daysRemaining() }}</span>
+      <span class="c-delay-prediction-card__label">Jours restants</span>
+    </div>
+
+    <p-divider
+      class="c-delay-prediction-card__divider o-flex__item--shrink-0"
+      layout="vertical"
+    />
+
+    <div class="c-delay-prediction-card__metric o-flex__item--shrink-0">
+      <span class="c-delay-prediction-card__value">{{
+        predictedCloseDate()
+      }}</span>
+      <span class="c-delay-prediction-card__label">Clôture prédite</span>
+    </div>
+
+    <p-divider
+      class="c-delay-prediction-card__divider o-flex__item--shrink-0"
+      layout="vertical"
+    />
+
+    <button
+      pButton
+      type="button"
+      class="c-delay-prediction-card__menu"
+      severity="secondary"
+      outlined
+      icon="bi bi-three-dots-vertical"
+      aria-label="Plus d'actions — prédiction du délai"
+      data-telemetry-id="delay-prediction-menu"
+      (click)="onMenuClick()"
+    ></button>
+  </div>
+</article>

@@ -1334,6 +1334,10 @@ export class AffiliateDetailsComponent {
     this.showDrawerFeatureComingSoonToast();
   }
 
+  onDelayPredictionMenuClick(): void {
+    this.showDrawerFeatureComingSoonToast();
+  }
+
   onDrawerQuickActionsClick(): void {
     this.showDrawerFeatureComingSoonToast();
   }

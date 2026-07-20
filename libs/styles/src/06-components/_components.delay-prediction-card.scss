@@ -1,0 +1,56 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.delay-prediction-card.scss
+// c-delay-prediction-card — Figma iSHARE-Audit node 704:11968
+// =============================================================================
+
+.c-delay-prediction-card-host {
+  display: block;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+.c-delay-prediction-card {
+  background: var(--#{$pds-prefix}-color-delay-prediction-bg);
+  border: 1px solid var(--#{$pds-prefix}-color-delay-prediction-border);
+  border-radius: var(--#{$pds-prefix}-radius-delay-prediction-card);
+  box-shadow: var(--#{$pds-prefix}-shadow-delay-prediction-card);
+  padding-block: var(--#{$pds-prefix}-space-delay-prediction-card-padding-block);
+  padding-inline: var(--#{$pds-prefix}-space-delay-prediction-card-padding-inline);
+}
+
+.c-delay-prediction-card__body {
+  gap: var(--#{$pds-prefix}-space-delay-prediction-card-gap);
+}
+
+.c-delay-prediction-card__metric {
+  text-align: center;
+}
+
+.c-delay-prediction-card__value {
+  display: block;
+  font-family: var(--font-family-display);
+  font-size: var(--#{$pds-prefix}-text-delay-prediction-metric-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--#{$pds-prefix}-text-delay-prediction-metric-line-height);
+  color: var(--#{$pds-prefix}-color-delay-prediction-metric);
+}
+
+.c-delay-prediction-card__label {
+  @include text-body-sm;
+  display: block;
+  color: var(--#{$pds-prefix}-color-delay-prediction-subtitle);
+}
+
+.c-delay-prediction-card__divider {
+  align-self: stretch;
+  margin-inline: var(--spacing-1);
+}
+
+.c-delay-prediction-card__menu {
+  flex-shrink: 0;
+  inline-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
+  block-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
+}

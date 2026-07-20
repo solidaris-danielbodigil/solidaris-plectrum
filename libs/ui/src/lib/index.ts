@@ -15,3 +15,4 @@ export * from './list';
 export * from './loading/simulated-loading';
 export * from './testing-telemetry';
 export * from './transactions-cics-modal';
+export * from './delay-prediction-card';

@@ -29,7 +29,7 @@ import type {
   ListDocumentTag,
   ListDocumentTagTarget,
 } from '@solidaris/ui';
-import { PdsTelemetryLabelDirective } from '@solidaris/ui';
+import { PdsTelemetryLabelDirective, DelayPredictionCardComponent } from '@solidaris/ui';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   summarizeDocumentStep,
@@ -66,6 +66,7 @@ import {
     MessageModule,
     NgTemplateOutlet,
     PdsTelemetryLabelDirective,
+    DelayPredictionCardComponent,
     Popover,
     Ripple,
     ScrollTop,
@@ -139,6 +140,8 @@ export class AffiliateDocumentDetailComponent {
   readonly transactionsCicsOpen = output<void>();
 
   readonly crossReferenceNavigate = output<DocumentCrossReference>();
+
+  readonly delayPredictionMenuClick = output<void>();
 
   readonly activeStep = signal(1);
   readonly certPanelValue = signal<string | string[] | undefined>(
@@ -383,6 +386,10 @@ export class AffiliateDocumentDetailComponent {
 
   onCrossReferenceClick(reference: DocumentCrossReference): void {
     this.crossReferenceNavigate.emit(reference);
+  }
+
+  onDelayPredictionMenuClick(): void {
+    this.delayPredictionMenuClick.emit();
   }
 
   goToPreviousDocument(): void {

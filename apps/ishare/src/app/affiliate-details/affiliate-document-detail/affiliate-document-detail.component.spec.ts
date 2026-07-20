@@ -65,6 +65,7 @@ function findButtonByLabel(
       [stepperView]="stepperView()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
+      (delayPredictionMenuClick)="delayPredictionMenuClickCount = delayPredictionMenuClickCount + 1"
     />
     <app-document-more-details-drawer
       [(visible)]="moreDetailsDrawerVisible"
@@ -88,6 +89,7 @@ class DocumentDetailDrawerTestHostComponent {
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
   readonly transactionsCicsDialogVisible = signal(false);
+  delayPredictionMenuClickCount = 0;
 
   onMoreDetailsOpen(panel: DocumentCertificatPanel): void {
     this.moreDetailsPanel.set(panel);
@@ -327,6 +329,56 @@ describe('AffiliateDocumentDetailComponent', () => {
       summary: 'Iris',
       detail: "Ouverture d'Iris…",
     });
+  });
+
+  it('should render delay prediction card on enabled panels with mock data', () => {
+    component.certPanelValue.set(['certificat-itt']);
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector(
+      'pds-delay-prediction-card',
+    ) as HTMLElement | null;
+
+    expect(card).toBeTruthy();
+    expect(card?.textContent).toContain('14');
+    expect(card?.textContent).toContain('08/01/2026');
+    expect(card?.textContent).not.toContain('Prédiction du delai');
+    expect(fixture.nativeElement.textContent).toContain('Prédiction du delai');
+    const predictionHeading = fixture.nativeElement.querySelector(
+      '.c-affiliate-document-detail__delay-prediction-group .c-affiliate-document-detail__details-heading',
+    );
+    expect(predictionHeading?.textContent?.trim()).toBe('Prédiction du delai');
+  });
+
+  it('should not render delay prediction card on disabled panels', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
+
+    component.activeStep.set(1);
+    component.certPanelValue.set('paiement-incapacite');
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="paiement-incapacite"]',
+    ) as HTMLElement | null;
+
+    expect(
+      panel?.querySelector('pds-delay-prediction-card'),
+    ).toBeNull();
+  });
+
+  it('should bubble delay prediction menu click to parent host', () => {
+    component.certPanelValue.set(['certificat-itt']);
+    fixture.detectChanges();
+
+    const menuButton = fixture.nativeElement.querySelector(
+      '.c-delay-prediction-card__menu',
+    ) as HTMLButtonElement;
+
+    menuButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.delayPredictionMenuClickCount).toBe(1);
   });
 
   it('should render incapacité paiement panel as disabled accordion with neutral hint', () => {
@@ -698,6 +750,39 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(warnCommentTag?.classList.contains('p-tag-info')).toBe(false);
   });
 
+  it('should open Calcul more-details with Reçu and En traitement from Gestion des CALC\'s', async () => {
+    component.activeStep.set(3);
+    component.certPanelValue.set('calcul');
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="calcul"]',
+    ) as HTMLElement;
+    const moreDetailsButton = findButtonByLabel(
+      panel,
+      'Voir plus de détails',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('calcul');
+    const drawerText =
+      document.querySelector('.p-drawer')?.textContent ?? '';
+    expect(drawerText).toContain('Reçu');
+    expect(drawerText).toContain('En traitement');
+    expect(drawerText).toContain("Gestion des CALC's");
+    expect(drawerText).toContain('IGED');
+    expect(drawerText).not.toContain('Historique détaillé');
+    expect(
+      document.body.querySelectorAll(
+        '.p-drawer .c-accordion--bordered p-accordion-panel',
+      ).length,
+    ).toBe(2);
+  });
+
   it('should render certificate metadata rows from Figma mock data', () => {
     const content = fixture.nativeElement.textContent ?? '';
 
@@ -954,19 +1039,19 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'fdr-employeur',
     );
+    const drawerText =
+      document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.body.querySelector('.p-timeline')).toBeTruthy();
-    expect(document.body.textContent).toContain('Reçu flux');
-    expect(document.body.textContent).toContain('En traitement');
-    expect(document.body.textContent).toContain('Clôturé');
-    expect(document.body.textContent).toContain('IGED');
-    expect(document.body.textContent).toContain(
-      'Gestion de feuilles de renseignement',
-    );
+    expect(drawerText).toContain('Reçu');
+    expect(drawerText).not.toContain('Reçu flux');
+    expect(drawerText).not.toContain('Clôturé');
+    expect(drawerText).toContain('IGED');
+    expect(drawerText).toContain('Gestion des feuilles de renseignement');
 
     const accordions = document.querySelectorAll(
       '.p-drawer .c-accordion--bordered',
     );
-    expect(accordions.length).toBe(3);
+    expect(accordions.length).toBe(1);
   });
 
   it('should open the more-details drawer when Voir plus de détails is clicked for Certificat ITT', async () => {
@@ -1045,16 +1130,17 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'fdr-employeur',
     );
+    const drawerText =
+      document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.querySelector('.p-timeline')).toBeTruthy();
-    expect(document.body.textContent).toContain('Reçu');
-    expect(document.body.textContent).toContain('Reçu flux');
-    expect(document.body.textContent).toContain('En traitement');
-    expect(document.body.textContent).toContain('Clôturé');
+    expect(drawerText).toContain('Reçu');
+    expect(drawerText).not.toContain('Reçu flux');
+    expect(drawerText).not.toContain('Clôturé');
 
     const accordions = document.querySelectorAll(
       '.p-drawer .c-accordion--bordered',
     );
-    expect(accordions.length).toBe(3);
+    expect(accordions.length).toBe(1);
   });
 
   it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {
@@ -1181,7 +1267,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(panel.querySelector('p-message')).toBeNull();
     });
 
-    it('should open the more-details drawer with two audit events for FDR employeur rechute', async () => {
+    it('should open the more-details drawer with one Reçu audit event for FDR employeur rechute', async () => {
       component.activeStep.set(2);
       component.certPanelValue.set('fdr-employeur-rechute');
       fixture.detectChanges();
@@ -1202,18 +1288,23 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
         'fdr-employeur-rechute',
       );
-      expect(document.body.textContent).toContain('Reçu flux');
-      expect(document.body.textContent).toContain('En traitement');
-      expect(document.body.textContent).toContain('URP01RPA');
-      expect(document.body.textContent).not.toContain('Clôturé');
+      const drawerText =
+        document.querySelector('.p-drawer')?.textContent ?? '';
+      expect(drawerText).toContain('Reçu');
+      expect(drawerText).not.toContain('Reçu flux');
+      expect(drawerText).not.toContain('En traitement');
+      expect(drawerText).toContain('IGED');
+      expect(drawerText).toContain('Gestion des feuilles de renseignement');
+      expect(drawerText).not.toContain('URP01RPA');
+      expect(drawerText).not.toContain('Clôturé');
       expect(
         document.body.querySelectorAll(
           '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
-      ).toBe(2);
+      ).toBe(1);
     });
 
-    it('should open the more-details drawer with two audit events for FDR affilié rechute', async () => {
+    it('should open the more-details drawer with one Reçu audit event for FDR affilié rechute', async () => {
       component.activeStep.set(2);
       component.certPanelValue.set('fdr-affilie-rechute');
       fixture.detectChanges();
@@ -1234,18 +1325,23 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
         'fdr-affilie-rechute',
       );
-      expect(document.body.textContent).toContain('Reçu flux');
-      expect(document.body.textContent).toContain('En attente du flux employeur');
-      expect(document.body.textContent).toContain('URP02RPA');
+      expect(document.body.textContent).toContain('Reçu');
+      expect(document.body.textContent).not.toContain('Reçu flux');
+      expect(document.body.textContent).not.toContain('En attente du flux employeur');
+      expect(document.body.textContent).toContain('IGED');
+      expect(document.body.textContent).toContain(
+        'Gestion des feuilles de renseignement',
+      );
+      expect(document.body.textContent).not.toContain('URP02RPA');
       expect(document.body.textContent).not.toContain('Clôturé');
       expect(
         document.body.querySelectorAll(
           '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
-      ).toBe(2);
+      ).toBe(1);
     });
 
-    it('should open the more-details drawer with two audit events for compte financier rechute', async () => {
+    it('should open the more-details drawer with one Reçu audit event for compte financier rechute', async () => {
       component.activeStep.set(2);
       component.certPanelValue.set('compte-financier-rechute');
       fixture.detectChanges();
@@ -1266,20 +1362,24 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
         'compte-financier-rechute',
       );
-      expect(document.body.textContent).toContain('Reçu flux');
-      expect(document.body.textContent).toContain(
+      expect(document.body.textContent).toContain('Reçu');
+      expect(document.body.textContent).not.toContain('Reçu flux');
+      expect(document.body.textContent).not.toContain(
         'UOPV encodé en 9M à la réception',
       );
-      expect(document.body.textContent).toContain(
+      expect(document.body.textContent).not.toContain(
         'Liasse compte financier en cours de traitement',
       );
-      expect(document.body.textContent).toContain('UOPV01RPA');
-      expect(document.body.textContent).not.toContain('Clôturé');
+      expect(document.body.textContent).toContain('IGED');
+      expect(document.body.textContent).toContain(
+        'Gestion des comptes bancaires',
+      );
+      expect(document.body.textContent).not.toContain('UOPV01RPA');
       expect(
         document.body.querySelectorAll(
           '.p-drawer .c-accordion--bordered p-accordion-panel',
         ).length,
-      ).toBe(2);
+      ).toBe(1);
     });
   });
 

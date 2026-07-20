@@ -8,12 +8,94 @@ import {
 import type {
   AffiliateDocumentDetail,
   DocumentCertificatPanel,
+  DocumentDelayPrediction,
   DocumentMoreDetails,
 } from './affiliate-document-detail.types';
 import {
   COMMENT_ICONS,
   MORE_DETAILS_LABEL,
 } from './affiliate-document-detail.types';
+
+const SOURCE_IGED = 'IGED';
+const APP_GESTION_FEUILLES_RENSEIGNEMENT =
+  'Gestion des feuilles de renseignement';
+const APP_GESTION_COMPTES_BANCAIRES = 'Gestion des comptes bancaires';
+const APP_GESTION_CALCS = "Gestion des CALC's";
+
+function igedRecuOnlyMoreDetails(
+  eventKey: string,
+  dateLabel: string,
+  application: string,
+): DocumentMoreDetails {
+  return {
+    events: [
+      {
+        id: `recu-${eventKey}`,
+        dateLabel,
+        status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+        markerIcon: 'bi bi-save',
+        markerTone: 'info',
+        rows: [
+          {
+            date: `${dateLabel} 00:00:00`,
+            description: {
+              kind: 'tag',
+              label: 'Reçu',
+              severity: 'info',
+              icon: 'bi bi-save',
+            },
+            application,
+            source: SOURCE_IGED,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+const CALC_DEMANDE_PRIMAIRE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-10-12-2025',
+      dateLabel: '10/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '10/12/2025 08:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_GESTION_CALCS,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-15-12-2025',
+      dateLabel: '15/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '15/12/2025 15:56:00',
+          description: 'Calcul en cours de traitement',
+          application: APP_GESTION_CALCS,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+  ],
+};
 
 function placeholderMoreDetails(
   panelTitle: string,
@@ -310,325 +392,43 @@ const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
   ],
 };
 
-// Figma iSHARE-Audit — FDR panels drawer (Reçu → En traitement → Clôturé).
-const FDR_EMPLOYEUR_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-05-12-2025',
-      dateLabel: '05/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '05/12/2025 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-06-12-2025',
-      dateLabel: '06/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '06/12/2025 09:30:00',
-          description: 'En traitement',
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-    {
-      id: 'cloture-09-12-2025',
-      dateLabel: '09/12/2025',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
-      markerIcon: 'bi bi-clock-history',
-      markerTone: 'secondary',
-      rows: [
-        {
-          date: '09/12/2025 14:15:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-  ],
-};
+// Figma iSHARE-Audit — FDR panels drawer (Reçu only, IGED — no flux).
+const FDR_EMPLOYEUR_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'employeur-05-12-2025',
+  '05/12/2025',
+  APP_GESTION_FEUILLES_RENSEIGNEMENT,
+);
 
-const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-05-12-2025',
-      dateLabel: '05/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '05/12/2025 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-08-12-2025',
-      dateLabel: '08/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '08/12/2025 10:00:00',
-          description: 'En traitement',
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-    {
-      id: 'cloture-11-12-2025',
-      dateLabel: '11/12/2025',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
-      markerIcon: 'bi bi-clock-history',
-      markerTone: 'secondary',
-      rows: [
-        {
-          date: '11/12/2025 11:45:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
-          application: 'Gestion de feuilles de renseignement',
-          source: 'IGED',
-        },
-      ],
-    },
-  ],
-};
+const FDR_AFFILIE_INCAPACITE_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'affilie-05-12-2025',
+  '05/12/2025',
+  APP_GESTION_FEUILLES_RENSEIGNEMENT,
+);
 
-const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-05-12-2025',
-      dateLabel: '05/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '05/12/2025 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-        {
-          date: '10/12/2025 15:56',
-          description: 'UOPV encodé en 9M à la réception',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-10-12-2025',
-      dateLabel: '10/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '10/12/2025 16:00:00',
-          description: 'Liasse compte financier en cours de traitement',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-      ],
-    },
-    {
-      id: 'cloture-12-12-2025',
-      dateLabel: '12/12/2025',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
-      markerIcon: 'bi bi-clock-history',
-      markerTone: 'secondary',
-      rows: [
-        {
-          date: '12/12/2025 10:30:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-      ],
-    },
-  ],
-};
+const COMPTE_FINANCIER_LIASSE_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'compte-liasse-05-12-2025',
+  '05/12/2025',
+  APP_GESTION_COMPTES_BANCAIRES,
+);
 
-// doc-rechute step 2 FDR panels — Reçu → En traitement (no Clôturé).
-const FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-06-01-2026',
-      dateLabel: '06/01/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '06/01/2026 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion du flux urp01',
-          source: 'URP01RPA',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-07-01-2026',
-      dateLabel: '07/01/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '07/01/2026 09:30:00',
-          description: 'Flux employeur en cours de traitement',
-          application: 'Gestion du flux urp01',
-          source: 'URP01RPA',
-        },
-      ],
-    },
-  ],
-};
+// doc-rechute step 2 FDR panels — Reçu only (IGED).
+const FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'employeur-rechute-06-01-2026',
+  '06/01/2026',
+  APP_GESTION_FEUILLES_RENSEIGNEMENT,
+);
 
-const FDR_AFFILIE_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-06-01-2026',
-      dateLabel: '06/01/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '06/01/2026 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion du flux urp02',
-          source: 'URP02RPA',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-08-01-2026',
-      dateLabel: '08/01/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '08/01/2026 10:00:00',
-          description: 'En attente du flux employeur',
-          application: 'Gestion du flux urp02',
-          source: 'URP02RPA',
-        },
-      ],
-    },
-  ],
-};
+const FDR_AFFILIE_RECHUTE_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'affilie-rechute-06-01-2026',
+  '06/01/2026',
+  APP_GESTION_FEUILLES_RENSEIGNEMENT,
+);
 
-const COMPTE_FINANCIER_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
-  events: [
-    {
-      id: 'recu-06-01-2026',
-      dateLabel: '06/01/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
-      markerIcon: 'bi bi-save',
-      markerTone: 'info',
-      rows: [
-        {
-          date: '06/01/2026 00:00',
-          description: 'Reçu flux',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-        {
-          date: '08/01/2026 15:56',
-          description: 'UOPV encodé en 9M à la réception',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-      ],
-    },
-    {
-      id: 'en-traitement-08-01-2026',
-      dateLabel: '08/01/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
-      markerIcon: 'bi bi-hourglass-split',
-      markerTone: 'warn',
-      rows: [
-        {
-          date: '08/01/2026 16:00:00',
-          description: 'Liasse compte financier en cours de traitement',
-          application: 'Gestion du compte financier',
-          source: 'UOPV01RPA',
-        },
-      ],
-    },
-  ],
-};
+const COMPTE_FINANCIER_RECHUTE_MORE_DETAILS = igedRecuOnlyMoreDetails(
+  'compte-rechute-06-01-2026',
+  '06/01/2026',
+  APP_GESTION_COMPTES_BANCAIRES,
+);
 
 const FDR_PANEL_DETAILS = [
   { label: 'Date de réception', value: '05/12/2025' },
@@ -713,6 +513,13 @@ const CHANGEMENT_ADRESSE_MORE_DETAILS: DocumentMoreDetails = {
   ],
 };
 
+function mockDelayPrediction(
+  daysRemaining: number,
+  predictedCloseDate: string,
+): DocumentDelayPrediction {
+  return { daysRemaining, predictedCloseDate };
+}
+
 /** 2e demande primaire — required FDR panels not yet received (legacy iSHARE: grayed accordion). */
 const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
   {
@@ -786,6 +593,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '24/11/2025', to: '27/12/2025' },
               },
             ],
+            delayPrediction: mockDelayPrediction(14, '08/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_MORE_DETAILS,
           },
@@ -805,6 +613,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
+            delayPrediction: mockDelayPrediction(11, '19/06/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: FDR_EMPLOYEUR_MORE_DETAILS,
           },
@@ -823,6 +632,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
+            delayPrediction: mockDelayPrediction(10, '18/06/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: FDR_AFFILIE_INCAPACITE_MORE_DETAILS,
           },
@@ -841,6 +651,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
+            delayPrediction: mockDelayPrediction(9, '17/06/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: COMPTE_FINANCIER_LIASSE_MORE_DETAILS,
           },
@@ -870,8 +681,9 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '10/12/2025' },
               { label: 'Numéro de certificat', value: '25/1256332' },
             ],
+            delayPrediction: mockDelayPrediction(7, '22/12/2025'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
-            moreDetails: placeholderMoreDetails('Calcul', '10/12/2025'),
+            moreDetails: CALC_DEMANDE_PRIMAIRE_MORE_DETAILS,
           },
         ],
       },
@@ -929,6 +741,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '25/12/2025', to: '27/12/2025' },
               },
             ],
+            delayPrediction: mockDelayPrediction(12, '06/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_PROLONGATION_MORE_DETAILS,
           },
@@ -965,6 +778,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '01/01/2026', to: '15/01/2026' },
               },
             ],
+            delayPrediction: mockDelayPrediction(13, '18/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_RECHUTE_MORE_DETAILS,
           },
@@ -984,6 +798,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
+            delayPrediction: mockDelayPrediction(8, '14/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS,
           },
@@ -1002,6 +817,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
+            delayPrediction: mockDelayPrediction(8, '14/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: FDR_AFFILIE_RECHUTE_MORE_DETAILS,
           },
@@ -1015,6 +831,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             },
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
+            delayPrediction: mockDelayPrediction(6, '12/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: COMPTE_FINANCIER_RECHUTE_MORE_DETAILS,
           },
@@ -1074,6 +891,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: { from: '20/05/2026', to: '12/06/2026' },
               },
             ],
+            delayPrediction: mockDelayPrediction(15, '27/05/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_ITT_CLOTURE_MORE_DETAILS,
           },
@@ -1135,6 +953,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '16/12/2025' },
               { label: 'Application', value: 'Gestion des indemnités' },
             ],
+            delayPrediction: mockDelayPrediction(5, '21/12/2025'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: {
               events: [
@@ -1195,6 +1014,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Date de réception', value: '09/06/2026' },
               { label: 'Application', value: 'Remboursements AO/AC' },
             ],
+            delayPrediction: mockDelayPrediction(4, '13/06/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: {
               events: [
@@ -1274,6 +1094,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 value: 'Population - Changement d\'adresse',
               },
             ],
+            delayPrediction: mockDelayPrediction(20, '05/07/2024'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CHANGEMENT_ADRESSE_MORE_DETAILS,
           },
@@ -1306,6 +1127,7 @@ export const JACK_MOTA_DOCUMENT_DETAILS: Record<
             },
             actions: [],
             details: [{ label: 'Date de réception', value: '01/03/2026' }],
+            delayPrediction: mockDelayPrediction(3, '04/03/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: placeholderMoreDetails(
               'Certificat médical',

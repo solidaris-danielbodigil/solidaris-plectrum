@@ -590,10 +590,11 @@ describe('AffiliateDetailsComponent', () => {
     component.onDrawerQuickActionsClick();
     component.onDrawerCallClick();
     component.onDrawerEmailClick();
+    component.onDelayPredictionMenuClick();
     component.onDrawerViewChange('documents');
 
-    expect(addSpy).toHaveBeenCalledTimes(5);
-    for (let i = 0; i < 5; i++) {
+    expect(addSpy).toHaveBeenCalledTimes(6);
+    for (let i = 0; i < 6; i++) {
       expect(addSpy.calls.argsFor(i)[0]).toEqual(expectedToast);
     }
   });
