@@ -111,12 +111,16 @@
   // Figma: copy-content-LEGACY icon at 10.5px (0.75rem @ 14px base)
   --#{$pds-prefix}-size-affiliate-overview-card-metadata-icon: var(--#{$pds-prefix}-icon-size-xs);
 
-  // Header row — locked to heading-lg line box so loading/loaded share the same block size
-  --#{$pds-prefix}-size-affiliate-overview-card-header-row-h: var(--text-heading-lg-line-height);
+  // Title action — eye icon beside display-lg affiliate name (Figma display-lg + 1rem icon)
+  --#{$pds-prefix}-size-affiliate-overview-card-title-action-icon: var(--base-unit);
+  --#{$pds-prefix}-color-affiliate-overview-card-title-action-hover-bg: var(--#{$pds-prefix}-color-surface-50);
+
+  // Header row — locked to display-lg line box so loading/loaded share the same block size
+  --#{$pds-prefix}-size-affiliate-overview-card-header-row-h: var(--text-display-lg-line-height);
 
   // Skeleton blocks — mirror loaded chrome (iSHARE Eva Martinez reference layout)
   --#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-w: calc(180 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-h: calc(32 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-overview-card-skeleton-title-h: var(--text-display-lg-size);
   --#{$pds-prefix}-size-affiliate-overview-card-skeleton-status-w: calc(171 / 14 * var(--base-unit));
   --#{$pds-prefix}-size-affiliate-overview-card-skeleton-action-h: calc(27 / 14 * var(--base-unit));
   --#{$pds-prefix}-size-affiliate-overview-card-skeleton-info-tags-min-w: calc(185 / 14 * var(--base-unit));
@@ -152,4 +156,43 @@
 
 .c-affiliate-overview-card--danger {
   --p-card-background: var(--#{$pds-prefix}-color-affiliate-overview-card-bg-danger);
+}
+
+// ── Title action — PrimeNG text button + display-lg label ────────────────────
+
+.c-affiliate-overview-card__title-action.p-button.p-button-text {
+  --p-button-text-secondary-color: var(--#{$pds-prefix}-color-text);
+  --p-button-text-secondary-hover-color: var(--#{$pds-prefix}-color-text);
+  --p-button-text-secondary-hover-background: var(
+    --#{$pds-prefix}-color-affiliate-overview-card-title-action-hover-bg
+  );
+  --p-button-text-secondary-active-background: var(
+    --#{$pds-prefix}-color-affiliate-overview-card-title-action-hover-bg
+  );
+
+  align-self: center;
+  align-items: center;
+  gap: var(--spacing-1-5);
+  min-block-size: var(--text-display-lg-line-height);
+  block-size: auto;
+  padding-inline: var(--spacing-1);
+  padding-block: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  border: 0;
+  box-shadow: none;
+
+  &:enabled:hover {
+    background: var(--#{$pds-prefix}-color-affiliate-overview-card-title-action-hover-bg);
+  }
+
+  &:disabled {
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
+  }
+
+  .c-affiliate-overview-card__shortcut-badge {
+    flex-shrink: 0;
+  }
 }

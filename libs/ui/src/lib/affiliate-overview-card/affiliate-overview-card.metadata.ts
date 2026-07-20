@@ -55,11 +55,12 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
   accessibility: {
     wcagLevel: 'AA',
     ariaAttributes: [
-      'aria-labelledby on article (title h2) when loaded',
+      'aria-labelledby on article (title h2 or title action button) when loaded',
       'aria-label + aria-busy on article when loading',
       'aria-pressed on filterable info-tag select button options (p-selectbutton inner toggle buttons, native role=button)',
       'Alt+A — trigger primary action when primaryAction.shortcut is set (skipped in editable fields)',
-      'aria-keyshortcuts on primary action button when shortcut badge is shown',
+      'aria-keyshortcuts on title action button when shortcut badge is shown',
+      'aria-label on title action button (affiliate name — primary action label)',
       'aria-label on copy identifier buttons (Copier {label})',
       'aria-label on status action button (from statusAction.ariaLabel or label)',
       'aria-hidden on bullet separators, shortcut badge, and skeleton lines',

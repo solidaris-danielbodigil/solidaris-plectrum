@@ -352,6 +352,12 @@ export class AffiliateOverviewCardComponent {
     return shortcut ? toAriaKeyShortcuts(shortcut) : null;
   }
 
+  primaryActionAriaLabel(): string {
+    const action = this.primaryAction();
+
+    return action ? `${this.title()} — ${action.label}` : this.title();
+  }
+
   onInfoTagFilterChange(event: SelectButtonChangeEvent): void {
     if (this.loading()) {
       return;

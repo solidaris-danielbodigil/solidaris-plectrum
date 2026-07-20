@@ -3,5 +3,6 @@
 // Barrel — forwards all element-level base styles.
 // =============================================================================
 
+@forward 'elements.fonts';
 @forward 'elements.typography';
 @forward 'elements.hr';

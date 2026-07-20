@@ -69,6 +69,12 @@
   }
 }
 
+.c-affiliate-details__category-tab-label {
+  @include text-label-sm;
+  line-height: 1;
+  min-width: 0;
+}
+
 .c-affiliate-details__category-eye {
   &--disabled {
     opacity: var(--#{$pds-prefix}-disabled-opacity);
@@ -101,6 +107,8 @@
 }
 
 .c-affiliate-details__category-panel-label {
+  @include text-label-sm;
+  line-height: 1;
   min-width: 0;
 }
 

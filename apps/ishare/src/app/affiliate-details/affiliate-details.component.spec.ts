@@ -612,6 +612,10 @@ describe('AffiliateDetailsComponent', () => {
         '[data-telemetry-id="category-tab-isoles"]',
       ),
     ).toBeTruthy();
+    const isolesLabel = fixture.nativeElement.querySelector(
+      '[data-telemetry-id="category-tab-isoles"] .c-affiliate-details__category-tab-label',
+    );
+    expect(isolesLabel?.textContent?.trim()).toBe('Isolés');
   });
 
   it('should keep all category tabs visible and disable empty ones for active-documents filter', () => {

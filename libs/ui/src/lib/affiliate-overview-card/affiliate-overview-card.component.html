@@ -50,34 +50,48 @@
               <p-skeleton />
             </span>
           </div>
-          @if (primaryAction(); as action) {
-            <button
-              pButton
-              type="button"
-              class="c-affiliate-overview-card__primary-action o-flex__item--shrink-0"
-              [icon]="action.icon"
-              severity="secondary"
-              size="small"
-              [disabled]="true"
-              [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
-            >
-              <span class="c-affiliate-overview-card__primary-action-label">{{
-                action.label
-              }}</span>
-              @if (action.shortcut) {
-                <span
-                  class="c-affiliate-overview-card__shortcut-badge"
-                  aria-hidden="true"
-                  >{{ action.shortcut }}</span
-                >
-              }
-            </button>
-          }
         } @else {
           <div
             class="c-affiliate-overview-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
           >
-            <h2 [id]="titleId" class="c-affiliate-overview-card__title o-layout--margin-0">{{ title() }}</h2>
+            @if (primaryAction(); as action) {
+              <button
+                pButton
+                type="button"
+                text
+                severity="secondary"
+                class="c-affiliate-overview-card__title-action o-flex__item--shrink-0"
+                [id]="titleId"
+                data-telemetry-id="affiliate-overview-primary-action"
+                [pdsTelemetryLabel]="action.label"
+                [attr.aria-label]="primaryActionAriaLabel()"
+                [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
+                [disabled]="loading()"
+                (click)="onPrimaryActionClick()"
+              >
+                @if (action.icon) {
+                  <i
+                    class="c-affiliate-overview-card__title-action-icon"
+                    [class]="action.icon"
+                    aria-hidden="true"
+                  ></i>
+                }
+                <span class="c-affiliate-overview-card__title-action-text">{{
+                  title()
+                }}</span>
+                @if (action.shortcut) {
+                  <span
+                    class="c-affiliate-overview-card__shortcut-badge"
+                    aria-hidden="true"
+                    >{{ action.shortcut }}</span
+                  >
+                }
+              </button>
+            } @else {
+              <h2 [id]="titleId" class="c-affiliate-overview-card__title o-layout--margin-0">
+                {{ title() }}
+              </h2>
+            }
 
             @if (showStatusAction() && statusAction(); as action) {
               <button
@@ -157,31 +171,6 @@
               </div>
             }
           </div>
-
-          @if (primaryAction(); as action) {
-            <button
-              pButton
-              type="button"
-              class="c-affiliate-overview-card__primary-action o-flex__item--shrink-0"
-              [icon]="action.icon"
-              severity="secondary"
-              size="small"
-              [disabled]="loading()"
-              [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
-              (click)="onPrimaryActionClick()"
-            >
-              <span class="c-affiliate-overview-card__primary-action-label">{{
-                action.label
-              }}</span>
-              @if (action.shortcut) {
-                <span
-                  class="c-affiliate-overview-card__shortcut-badge"
-                  aria-hidden="true"
-                  >{{ action.shortcut }}</span
-                >
-              }
-            </button>
-          }
         }
       </div>
 

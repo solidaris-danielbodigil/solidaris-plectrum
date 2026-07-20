@@ -803,6 +803,13 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(component.activeStep()).toBe(2);
     expect(component.certPanelValue()).toBe('certificat-prolongation');
+    const stepLabels = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-document-detail__step-label',
+      ),
+      (el) => (el as HTMLElement).textContent?.trim() ?? '',
+    );
+    expect(stepLabels).toContain('Certificat de prolongation');
   });
 
   it('should leave all panels collapsed when every panel on a step is disabled', () => {

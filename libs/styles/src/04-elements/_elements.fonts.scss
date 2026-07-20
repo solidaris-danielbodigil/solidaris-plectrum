@@ -1,0 +1,38 @@
+// =============================================================================
+// 04-elements/_elements.fonts.scss
+// Plectrum display face (Agenda) — files from Adobe Fonts kit referenced in
+// https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/414795
+// Self-hosted under libs/assets/fonts/agenda/ (served at /assets/fonts/agenda/).
+// =============================================================================
+
+@font-face {
+  font-family: 'Agenda';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/agenda/agenda-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Agenda';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/agenda/agenda-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Agenda';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/fonts/agenda/agenda-semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Agenda';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/agenda/agenda-bold.woff2') format('woff2');
+}

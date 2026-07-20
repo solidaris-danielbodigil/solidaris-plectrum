@@ -363,17 +363,18 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onMenuSelect).toHaveBeenCalledOnceWith(menuItem);
   });
 
-  it('should emit primaryActionClick when primary button is clicked', () => {
+  it('should emit primaryActionClick when title action button is clicked', () => {
     const onPrimary = jasmine.createSpy('primaryActionClick');
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
       shortcut: 'ALT + A',
     });
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__primary-action',
+      '.c-affiliate-overview-card__title-action',
     ) as HTMLButtonElement;
     button.click();
 
@@ -400,32 +401,43 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onPrimary).toHaveBeenCalledTimes(1);
   });
 
-  it('should expose aria-keyshortcuts on the primary action button', () => {
+  it('should expose aria-keyshortcuts on the title action button', () => {
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
       shortcut: 'ALT + A',
     });
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__primary-action',
+      '.c-affiliate-overview-card__title-action',
     ) as HTMLButtonElement;
 
     expect(button.getAttribute('aria-keyshortcuts')).toBe('Alt+A');
   });
 
-  it('should render the primary action as a PrimeNG small button', () => {
+  it('should render affiliate name and eye icon on the title action button', () => {
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
       shortcut: 'ALT + A',
     });
     fixture.detectChanges();
 
     const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__primary-action',
+      '.c-affiliate-overview-card__title-action',
     ) as HTMLButtonElement;
+    const titleText = button.querySelector(
+      '.c-affiliate-overview-card__title-action-text',
+    );
 
-    expect(button.classList.contains('p-button-sm')).toBe(true);
+    expect(button.querySelector('.bi-eye')).toBeTruthy();
+    expect(titleText?.textContent?.trim()).toBe('Dupont, Marie');
+    expect(button.textContent).toContain('ALT + A');
+    expect(button.classList.contains('p-button-text')).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__primary-action'),
+    ).toBeNull();
   });
 
   it('should not emit primaryActionClick for shortcut when loading', () => {
@@ -472,19 +484,20 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onPrimary).not.toHaveBeenCalled();
   });
 
-  it('should render primary action disabled when loading', () => {
+  it('should not render a separate primary action button while loading', () => {
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
     });
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
 
-    const button = fixture.nativeElement.querySelector(
-      '.c-affiliate-overview-card__primary-action',
-    ) as HTMLButtonElement;
-    expect(button).toBeTruthy();
-    expect(button.disabled).toBe(true);
-    expect(button.textContent).toContain('Voir carte affilié');
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__primary-action'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-affiliate-overview-card__title-action'),
+    ).toBeNull();
   });
 
   it('should set aria-labelledby when not loading', () => {
@@ -620,14 +633,23 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(badge.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('should link article aria-labelledby to the title heading id', () => {
-    const article = fixture.nativeElement.querySelector('article');
-    const heading = fixture.nativeElement.querySelector(
-      'h2.c-affiliate-overview-card__title',
-    ) as HTMLHeadingElement;
+  it('should link article aria-labelledby to the title id', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+    });
+    fixture.detectChanges();
 
-    expect(article.getAttribute('aria-labelledby')).toBe(heading.id);
-    expect(heading.id).toBeTruthy();
+    const article = fixture.nativeElement.querySelector('article');
+    const labelledBy = article.getAttribute('aria-labelledby');
+    const titleControl = fixture.nativeElement.querySelector(
+      `#${labelledBy}`,
+    ) as HTMLElement;
+
+    expect(labelledBy).toBeTruthy();
+    expect(titleControl.classList.contains('c-affiliate-overview-card__title-action')).toBe(
+      true,
+    );
   });
 
   it('should show danger status action button for danger severity', () => {

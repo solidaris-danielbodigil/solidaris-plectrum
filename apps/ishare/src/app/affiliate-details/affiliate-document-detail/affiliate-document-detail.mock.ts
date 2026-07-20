@@ -907,7 +907,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
       },
       {
         value: 2,
-        label: 'Certificat',
+        label: 'Certificat de prolongation',
         panels: [
           {
             id: 'certificat-prolongation',
