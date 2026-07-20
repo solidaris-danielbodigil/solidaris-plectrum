@@ -99,16 +99,39 @@
                 type="button"
                 class="c-affiliate-overview-card__status-action"
                 data-telemetry-id="affiliate-overview-status-action"
-                [pdsTelemetryLabel]="action.label"
-                [icon]="action.icon"
+                [pdsTelemetryLabel]="
+                  hasMultipleStatusActions()
+                    ? statusActionsMultipleLabel
+                    : action.label
+                "
+                [icon]="hasMultipleStatusActions() ? null : action.icon"
                 [severity]="statusActionSeverity()!"
                 size="small"
                 [disabled]="action.disabled ?? false"
                 [attr.aria-disabled]="action.disabled ? 'true' : null"
                 [attr.aria-label]="statusActionAriaLabel()"
-                (click)="onStatusActionClick()"
+                [attr.aria-haspopup]="hasMultipleStatusActions() ? 'listbox' : null"
+                [attr.aria-expanded]="
+                  hasMultipleStatusActions() ? statusActionsPopoverExpanded() : null
+                "
+                (click)="onStatusActionClick($event)"
+                (keydown)="onStatusActionKeydown($event)"
               >
-                @if (action.tagValue) {
+                @if (hasMultipleStatusActions()) {
+                  <i
+                    [class]="action.icon ?? 'bi bi-exclamation-triangle-fill'"
+                    class="c-affiliate-overview-card__status-action-icon"
+                    aria-hidden="true"
+                  ></i>
+                  <span class="c-affiliate-overview-card__status-action-label">{{
+                    statusActionsMultipleLabel
+                  }}</span>
+                  <p-badge
+                    class="c-affiliate-overview-card__status-action-badge"
+                    [value]="statusActionCount()"
+                    [severity]="statusActionSeverity()!"
+                  />
+                } @else if (action.tagValue) {
                   <span class="c-affiliate-overview-card__status-action-prefix">{{
                     statusActionTagPrefix
                   }}</span>
@@ -209,3 +232,35 @@
     </div>
   </article>
 </p-card>
+
+<p-popover
+  #statusActionsPopover
+  [focusOnShow]="false"
+  [style]="statusActionsPopoverStyle()"
+  appendTo="body"
+  (onShow)="onStatusActionsPopoverShow()"
+  (onHide)="onStatusActionsPopoverHide()"
+>
+  @if (hasMultipleStatusActions()) {
+    <ul
+      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
+      role="listbox"
+      [attr.aria-label]="statusActionAriaLabel()"
+    >
+      @for (item of statusActionMenuItems(); track item.label) {
+        <li
+          role="option"
+          class="p-autocomplete-option"
+          tabindex="0"
+          pRipple
+          [pdsTelemetryLabel]="item.label"
+          [attr.aria-disabled]="item.disabled ? 'true' : null"
+          (click)="onStatusMenuItemClick(item)"
+          (keydown)="onStatusMenuItemKeydown($event, item)"
+        >
+          {{ item.label }}
+        </li>
+      }
+    </ul>
+  }
+</p-popover>

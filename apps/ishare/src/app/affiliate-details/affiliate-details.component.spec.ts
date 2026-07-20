@@ -475,12 +475,17 @@ describe('AffiliateDetailsComponent', () => {
     expect(header?.onInfoTagClick).toEqual(jasmine.any(Function));
     expect(header?.onPrimaryActionClick).toEqual(jasmine.any(Function));
     expect(header?.onStatusActionClick).toEqual(jasmine.any(Function));
+    expect(header?.onStatusMenuSelect).toEqual(jasmine.any(Function));
     expect(header?.statusAction).toEqual(
       jasmine.objectContaining({
-        label: 'C4 non reçu',
-        tagValue: 'C4',
+        label: 'Actions à réaliser',
         severity: 'warn',
-        ariaLabel: 'Voir le détail — C4 non reçu',
+        menuItems: jasmine.arrayContaining([
+          jasmine.objectContaining({ label: 'C4 non reçu' }),
+          jasmine.objectContaining({
+            label: 'Vérifier document C4 dans les documents isolés',
+          }),
+        ]),
       }),
     );
   });
@@ -520,6 +525,26 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(detail.activeStep()).toBe(3);
     expect(detail.certPanelValue()).toBe('calcul');
+  });
+
+  it('should deep-link to isolated doc-c4 when second status menu item is selected', () => {
+    component.selectedDocumentId.set('doc-incapacite');
+    component.documentFocus.set(null);
+    component.openCategories.set(['parcours']);
+
+    affiliateHeaderService.header()?.onStatusMenuSelect?.({
+      id: 'eva-status-c4-isoles',
+      label: 'Vérifier document C4 dans les documents isolés',
+    });
+    fixture.detectChanges();
+
+    expect(component.openCategories()).toContain('isoles');
+    expect(component.activeCategory()).toBe('isoles');
+    expect(component.selectedDocumentId()).toBe('doc-c4');
+    expect(component.documentFocus()).toEqual({
+      stepValue: 1,
+      panelId: 'c4-isolated',
+    });
   });
 
   it('should hide the Notes section in the affiliate detail drawer', () => {

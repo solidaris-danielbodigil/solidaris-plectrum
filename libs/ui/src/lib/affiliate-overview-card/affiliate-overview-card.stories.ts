@@ -346,6 +346,30 @@ export const Warning: Story = {
   },
 };
 
+export const MultipleStatusActions: Story = {
+  args: {
+    ...Warning.args,
+    statusAction: {
+      label: 'Actions à réaliser',
+      icon: 'bi bi-exclamation-triangle-fill',
+      severity: 'warn',
+      menuItems: [
+        { label: 'C4 non reçu' },
+        { label: 'Paiement non versé' },
+        { label: 'Document manquant' },
+      ],
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Several corrective actions — summary chip (icon + « Actions à réaliser » + count) opens a popover list, same pattern as document comment/alert tags.',
+      },
+    },
+  },
+};
+
 export const Danger: Story = {
   args: {
     variant: 'default',

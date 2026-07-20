@@ -7,12 +7,16 @@ import {
   effect,
   input,
   output,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { BadgeModule } from 'primeng/badge';
+import { Popover } from 'primeng/popover';
+import { Ripple } from 'primeng/ripple';
 import { Skeleton } from 'primeng/skeleton';
 import {
   SelectButton,
@@ -86,6 +90,10 @@ let nextTitleId = 0;
 /** Global prefix for status actions that expose a {@link AffiliateOverviewStatusAction.tagValue}. */
 export const AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX =
   'Actions à réaliser: ';
+
+/** Summary label when several corrective actions are grouped behind a popover. */
+export const AFFILIATE_OVERVIEW_STATUS_ACTIONS_MULTIPLE_LABEL =
+  'Actions à réaliser';
 
 const SHORTCUT_MODIFIER_KEYS = ['ALT', 'CTRL', 'SHIFT', 'META'] as const;
 
@@ -188,6 +196,8 @@ function toAriaKeyShortcuts(shortcut: string): string {
     FormsModule,
     PlectrumAvatarComponent,
     PdsTelemetryLabelDirective,
+    Popover,
+    Ripple,
     SelectButton,
     BadgeModule,
     Skeleton,
@@ -200,6 +210,10 @@ function toAriaKeyShortcuts(shortcut: string): string {
   },
 })
 export class AffiliateOverviewCardComponent {
+  private readonly statusActionsPopover = viewChild<Popover>(
+    'statusActionsPopover',
+  );
+
   readonly title = input.required<string>();
   readonly avatarInitials = input<string>('');
   readonly avatarGender = input<PlectrumAvatarGender>('female');
@@ -220,8 +234,18 @@ export class AffiliateOverviewCardComponent {
   protected readonly titleId = `pds-affiliate-overview-card-title-${nextTitleId++}`;
   protected readonly statusActionTagPrefix =
     AFFILIATE_OVERVIEW_STATUS_ACTION_TAG_PREFIX;
+  protected readonly statusActionsMultipleLabel =
+    AFFILIATE_OVERVIEW_STATUS_ACTIONS_MULTIPLE_LABEL;
   protected readonly skeletonIdentifierSlots = [1, 2, 3, 4] as const;
   protected readonly cardPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
+
+  readonly statusActionsPopoverStyle = signal<
+    Record<string, string> | undefined
+  >(undefined);
+  readonly statusActionsPopoverExpanded = signal(false);
+  private readonly statusActionAnchorRect = signal<DOMRectReadOnly | null>(
+    null,
+  );
 
   readonly effectiveVariant = computed((): AffiliateOverviewCardVariant => {
     const severity = this.statusAction()?.severity;
@@ -258,6 +282,14 @@ export class AffiliateOverviewCardComponent {
 
   readonly statusActionMenuItems = computed(
     () => this.statusAction()?.menuItems ?? [],
+  );
+
+  readonly hasMultipleStatusActions = computed(
+    () => this.statusActionMenuItems().length > 1,
+  );
+
+  readonly statusActionCount = computed(() =>
+    this.hasMultipleStatusActions() ? this.statusActionMenuItems().length : 1,
   );
 
   readonly firstFilterableInfoTagIndex = computed(() =>
@@ -298,20 +330,137 @@ export class AffiliateOverviewCardComponent {
     });
   }
 
-  onStatusActionClick(): void {
+  onStatusActionClick(event?: MouseEvent | KeyboardEvent): void {
     if (this.loading() || this.statusAction()?.disabled) {
+      return;
+    }
+
+    if (this.hasMultipleStatusActions()) {
+      if (!event) {
+        return;
+      }
+
+      this.toggleStatusActionsPopover(event);
       return;
     }
 
     this.statusActionClick.emit();
   }
 
+  onStatusActionKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    event.preventDefault();
+    this.onStatusActionClick(event);
+  }
+
   onStatusMenuItemClick(item: MenuItem): void {
-    if (this.loading()) {
+    if (this.loading() || item.disabled) {
       return;
     }
 
     this.statusMenuSelect.emit(item);
+    this.statusActionsPopover()?.hide();
+  }
+
+  onStatusMenuItemKeydown(event: KeyboardEvent, item: MenuItem): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.onStatusMenuItemClick(item);
+    }
+  }
+
+  onStatusActionsPopoverShow(): void {
+    this.statusActionsPopoverExpanded.set(true);
+    this.scheduleStatusActionsPopoverReposition();
+  }
+
+  onStatusActionsPopoverHide(): void {
+    this.statusActionsPopoverExpanded.set(false);
+    this.statusActionAnchorRect.set(null);
+    this.statusActionsPopoverStyle.set(undefined);
+  }
+
+  private toggleStatusActionsPopover(event: MouseEvent | KeyboardEvent): void {
+    const anchor = this.resolveStatusActionAnchor(event);
+    if (!anchor) {
+      return;
+    }
+
+    const popover = this.statusActionsPopover();
+    if (!popover) {
+      return;
+    }
+
+    const rect = anchor.getBoundingClientRect();
+    this.statusActionAnchorRect.set(rect);
+    this.statusActionsPopoverStyle.set(this.popoverStyleFromRect(rect));
+    popover.toggle(event, anchor);
+    this.scheduleStatusActionsPopoverReposition();
+  }
+
+  private resolveStatusActionAnchor(
+    event: MouseEvent | KeyboardEvent,
+  ): HTMLElement | undefined {
+    if (event.currentTarget instanceof HTMLElement) {
+      return event.currentTarget;
+    }
+
+    const target = event.target;
+    if (target instanceof Element) {
+      return (
+        target.closest<HTMLButtonElement>(
+          '.c-affiliate-overview-card__status-action',
+        ) ?? undefined
+      );
+    }
+
+    return undefined;
+  }
+
+  private scheduleStatusActionsPopoverReposition(): void {
+    const apply = () => this.repositionStatusActionsPopover();
+
+    requestAnimationFrame(() => {
+      apply();
+      requestAnimationFrame(() => {
+        apply();
+        setTimeout(apply, 0);
+        setTimeout(apply, 50);
+      });
+    });
+  }
+
+  private popoverStyleFromRect(rect: DOMRectReadOnly): Record<string, string> {
+    const gutter = 4;
+
+    return {
+      position: 'fixed',
+      top: `${rect.bottom + gutter}px`,
+      left: `${rect.left}px`,
+      insetInlineStart: `${rect.left}px`,
+      marginTop: '0',
+      transform: 'none',
+    };
+  }
+
+  private repositionStatusActionsPopover(): void {
+    const rect = this.statusActionAnchorRect();
+    if (!rect) {
+      return;
+    }
+
+    const style = this.popoverStyleFromRect(rect);
+    this.statusActionsPopoverStyle.set(style);
+
+    const panel = document.body.querySelector('.p-popover') as HTMLElement | null;
+    if (!panel) {
+      return;
+    }
+
+    Object.assign(panel.style, style);
   }
 
   onIdentifierCopy(identifier: AffiliateOverviewIdentifier): void {
@@ -399,7 +548,18 @@ export class AffiliateOverviewCardComponent {
   statusActionAriaLabel(): string {
     const action = this.statusAction();
 
-    return action?.ariaLabel ?? action?.label ?? 'Action';
+    if (action?.ariaLabel) {
+      return action.ariaLabel;
+    }
+
+    if (this.hasMultipleStatusActions()) {
+      const count = this.statusActionCount();
+      return count === 1
+        ? '1 action à réaliser'
+        : `${count} actions à réaliser`;
+    }
+
+    return action?.label ?? 'Action';
   }
 
   statusActionExpandAriaLabel(): string {

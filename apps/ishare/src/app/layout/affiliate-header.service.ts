@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import type { MenuItem } from 'primeng/api';
 import type {
   AffiliateOverviewCardVariant,
   AffiliateOverviewIdentifier,
@@ -22,6 +23,7 @@ export interface AffiliateHeaderData {
   onInfoTagClick?: (tag: AffiliateOverviewInfoTag) => void;
   onPrimaryActionClick?: () => void;
   onStatusActionClick?: () => void;
+  onStatusMenuSelect?: (item: MenuItem) => void;
 }
 
 @Injectable({ providedIn: 'root' })

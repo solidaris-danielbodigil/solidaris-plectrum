@@ -96,6 +96,10 @@ export class AppShellComponent {
     header.onStatusActionClick?.();
   }
 
+  onStatusMenuSelect(header: AffiliateHeaderData, item: MenuItem): void {
+    header.onStatusMenuSelect?.(item);
+  }
+
   onInfoTagClick(header: AffiliateHeaderData, tag: AffiliateOverviewInfoTag): void {
     header.onInfoTagClick?.(tag);
   }

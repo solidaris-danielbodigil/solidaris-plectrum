@@ -363,6 +363,55 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onMenuSelect).toHaveBeenCalledOnceWith(menuItem);
   });
 
+  it('should render multi-action summary with count badge when menuItems length > 1', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      icon: 'bi bi-exclamation-triangle-fill',
+      menuItems: [
+        { label: 'C4 non reçu' },
+        { label: 'Paiement non versé' },
+      ],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    ) as HTMLButtonElement;
+    const label = statusButton.querySelector(
+      '.c-affiliate-overview-card__status-action-label',
+    );
+    const badge = statusButton.querySelector(
+      '.c-affiliate-overview-card__status-action-badge',
+    );
+
+    expect(label?.textContent?.trim()).toBe('Actions à réaliser');
+    expect(badge?.textContent?.trim()).toBe('2');
+    expect(statusButton.getAttribute('aria-label')).toBe('2 actions à réaliser');
+    expect(
+      statusButton.querySelector('.c-affiliate-overview-card__status-action-prefix'),
+    ).toBeFalsy();
+  });
+
+  it('should not emit statusActionClick when multi-action button is clicked', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      menuItems: [{ label: 'A' }, { label: 'B' }],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    ) as HTMLButtonElement;
+    statusButton.click();
+    fixture.detectChanges();
+
+    expect(onStatusAction).not.toHaveBeenCalled();
+  });
+
   it('should emit primaryActionClick when title action button is clicked', () => {
     const onPrimary = jasmine.createSpy('primaryActionClick');
     component.primaryActionClick.subscribe(onPrimary);

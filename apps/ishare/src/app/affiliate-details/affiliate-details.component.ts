@@ -12,7 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, PrimeTemplate } from 'primeng/api';
+import { MessageService, PrimeTemplate, type MenuItem } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { BadgeModule } from 'primeng/badge';
@@ -395,13 +395,24 @@ export class AffiliateDetailsComponent {
 
   readonly affiliateName = computed(() => this.affiliateProfile().name);
 
+  private static readonly EVA_STATUS_MENU_C4_PARCOURS = 'eva-status-c4-parcours';
+  private static readonly EVA_STATUS_MENU_C4_ISOLES = 'eva-status-c4-isoles';
+
   private static readonly EVA_C4_MISSING_STATUS_ACTION: AffiliateOverviewStatusAction =
     {
-      label: 'C4 non reçu',
-      tagValue: 'C4',
+      label: 'Actions à réaliser',
       icon: 'bi bi-exclamation-triangle-fill',
       severity: 'warn',
-      ariaLabel: 'Voir le détail — C4 non reçu',
+      menuItems: [
+        {
+          id: AffiliateDetailsComponent.EVA_STATUS_MENU_C4_PARCOURS,
+          label: 'C4 non reçu',
+        },
+        {
+          id: AffiliateDetailsComponent.EVA_STATUS_MENU_C4_ISOLES,
+          label: 'Vérifier document C4 dans les documents isolés',
+        },
+      ],
     };
 
   private static readonly EVA_C4_MISSING_DEEP_LINK = {
@@ -409,6 +420,12 @@ export class AffiliateDetailsComponent {
     groupId: 'parcours-demande-primaire',
     stepValue: 3,
     panelId: 'calcul',
+  } as const;
+
+  private static readonly EVA_C4_ISOLATED_DEEP_LINK = {
+    documentId: 'doc-c4',
+    stepValue: 1,
+    panelId: 'c4-isolated',
   } as const;
 
   readonly statusAction = computed((): AffiliateOverviewStatusAction | null =>
@@ -1234,6 +1251,23 @@ export class AffiliateDetailsComponent {
   }
 
   onStatusActionClick(): void {
+    this.navigateToEvaC4ParcoursStatusAction();
+  }
+
+  onStatusMenuSelect(item: MenuItem): void {
+    if (!this.isEvaDossier()) {
+      return;
+    }
+
+    if (item.id === AffiliateDetailsComponent.EVA_STATUS_MENU_C4_ISOLES) {
+      this.navigateToEvaC4IsolatedStatusAction();
+      return;
+    }
+
+    this.navigateToEvaC4ParcoursStatusAction();
+  }
+
+  private navigateToEvaC4ParcoursStatusAction(): void {
     if (!this.isEvaDossier()) {
       return;
     }
@@ -1244,6 +1278,24 @@ export class AffiliateDetailsComponent {
     this.ensureParcoursVisible();
     this.ensureGroupExpanded(groupId);
     this.scrollToCategory('parcours');
+    this.selectedDocumentId.set(documentId);
+    this.documentFocus.set({ stepValue, panelId });
+    this.recordTelemetry(
+      'deep_link_status_action',
+      `${documentId}::${stepValue}::${panelId}`,
+    );
+  }
+
+  private navigateToEvaC4IsolatedStatusAction(): void {
+    if (!this.isEvaDossier()) {
+      return;
+    }
+
+    const { documentId, stepValue, panelId } =
+      AffiliateDetailsComponent.EVA_C4_ISOLATED_DEEP_LINK;
+
+    this.ensureCategoryVisible('isoles');
+    this.scrollToCategory('isoles');
     this.selectedDocumentId.set(documentId);
     this.documentFocus.set({ stepValue, panelId });
     this.recordTelemetry(
@@ -2165,6 +2217,7 @@ export class AffiliateDetailsComponent {
         onInfoTagClick: (tag) => this.onInfoTagClick(tag),
         onPrimaryActionClick: () => this.onPrimaryActionClick(),
         onStatusActionClick: () => this.onStatusActionClick(),
+        onStatusMenuSelect: (item) => this.onStatusMenuSelect(item),
       });
     });
 

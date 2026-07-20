@@ -41,6 +41,7 @@
         (identifierCopy)="onIdentifierCopy($event)"
         (primaryActionClick)="onPrimaryActionClick(header)"
         (statusActionClick)="onStatusActionClick(header)"
+        (statusMenuSelect)="onStatusMenuSelect(header, $event)"
         (infoTagClick)="onInfoTagClick(header, $event)"
       ></pds-affiliate-overview-card>
     } @else if (affiliateHeaderLoading()) {
