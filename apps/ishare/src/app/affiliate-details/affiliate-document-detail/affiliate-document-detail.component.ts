@@ -90,6 +90,13 @@ export class AffiliateDocumentDetailComponent {
   /** How long the transient panel highlight stays applied, in milliseconds. */
   private static readonly HIGHLIGHT_DURATION_MS = 2000;
 
+  /** Panel statuses for which delay prediction is no longer relevant. */
+  private static readonly DELAY_PREDICTION_HIDDEN_STATUSES = new Set([
+    'accepté',
+    'clôturé',
+    'fermé',
+  ]);
+
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly messageService = inject(MessageService);
   private readonly tagPopover = viewChild<Popover>('tagPopover');
@@ -288,6 +295,21 @@ export class AffiliateDocumentDetailComponent {
 
   isPeriodField(field: DocumentDetailField): boolean {
     return isDocumentDetailPeriod(field.value);
+  }
+
+  /**
+   * Delay prediction is only relevant for in-progress panels. Closed / accepted
+   * statuses no longer need a predicted remaining delay.
+   */
+  shouldShowDelayPrediction(panel: DocumentCertificatPanel): boolean {
+    if (!panel.delayPrediction) {
+      return false;
+    }
+
+    const status = panel.status.label.trim().toLocaleLowerCase('fr-BE');
+    return !AffiliateDocumentDetailComponent.DELAY_PREDICTION_HIDDEN_STATUSES.has(
+      status,
+    );
   }
 
   stepSummary(step: DocumentStep): DocumentStepSummary | null {

@@ -331,8 +331,9 @@ describe('AffiliateDocumentDetailComponent', () => {
     });
   });
 
-  it('should render delay prediction card on enabled panels with mock data', () => {
-    component.certPanelValue.set(['certificat-itt']);
+  it('should render delay prediction card on in-progress panels with mock data', () => {
+    component.activeStep.set(3);
+    component.certPanelValue.set(['calcul']);
     fixture.detectChanges();
 
     const card = fixture.nativeElement.querySelector(
@@ -340,14 +341,41 @@ describe('AffiliateDocumentDetailComponent', () => {
     ) as HTMLElement | null;
 
     expect(card).toBeTruthy();
-    expect(card?.textContent).toContain('14');
-    expect(card?.textContent).toContain('08/01/2026');
+    expect(card?.textContent).toContain('7');
+    expect(card?.textContent).toContain('22/12/2025');
     expect(card?.textContent).not.toContain('Prédiction du delai');
     expect(fixture.nativeElement.textContent).toContain('Prédiction du delai');
     const predictionHeading = fixture.nativeElement.querySelector(
       '.c-affiliate-document-detail__delay-prediction-group .c-affiliate-document-detail__details-heading',
     );
     expect(predictionHeading?.textContent?.trim()).toBe('Prédiction du delai');
+  });
+
+  it('should not render delay prediction card when panel status is Accepté', () => {
+    component.certPanelValue.set(['certificat-itt']);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="certificat-itt"]',
+    ) as HTMLElement | null;
+
+    expect(panel?.querySelector('pds-delay-prediction-card')).toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain(
+      'Prédiction du delai',
+    );
+  });
+
+  it('should not render delay prediction card when panel status is Clôturé', () => {
+    component.activeStep.set(2);
+    component.certPanelValue.set(['fdr-employeur']);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="fdr-employeur"]',
+    ) as HTMLElement | null;
+
+    expect(panel?.querySelector('pds-delay-prediction-card')).toBeNull();
+    expect(panel?.textContent).not.toContain('Prédiction du delai');
   });
 
   it('should not render delay prediction card on disabled panels', () => {
@@ -368,7 +396,8 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should bubble delay prediction menu click to parent host', () => {
-    component.certPanelValue.set(['certificat-itt']);
+    component.activeStep.set(3);
+    component.certPanelValue.set(['calcul']);
     fixture.detectChanges();
 
     const menuButton = fixture.nativeElement.querySelector(

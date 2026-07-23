@@ -580,7 +580,7 @@
           <div
             class="c-affiliate-document-detail__details-section o-flex o-flex--y o-layout--min-w-0"
             [class.c-affiliate-document-detail__details-section--with-prediction]="
-              !!panel.delayPrediction
+              shouldShowDelayPrediction(panel)
             "
           >
             <div
@@ -624,7 +624,10 @@
               }
             </div>
 
-            @if (panel.delayPrediction; as prediction) {
+            @if (
+              shouldShowDelayPrediction(panel) && panel.delayPrediction;
+              as prediction
+            ) {
               <div
                 class="c-affiliate-document-detail__delay-prediction-group o-flex o-flex--y o-layout--min-w-0"
               >
