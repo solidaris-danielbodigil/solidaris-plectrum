@@ -344,7 +344,10 @@
   .p-autocomplete-option[aria-disabled='true'] {
     background: var(--#{$pds-prefix}-color-form-disabled-bg);
     color: var(--#{$pds-prefix}-color-form-disabled-text);
-    cursor: default;
-    pointer-events: none;
+    // PrimeNG `.p-disabled` sets `pointer-events: none` + `cursor: default`, which
+    // lets hover fall through and hides a forbidden cursor — re-enable hit-testing.
+    pointer-events: auto;
+    cursor: not-allowed;
+    user-select: none;
   }
 }
