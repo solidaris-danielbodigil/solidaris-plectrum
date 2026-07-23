@@ -339,4 +339,12 @@
 
 .c-list__tag-target-list {
   list-style: none;
+
+  .p-autocomplete-option.p-disabled,
+  .p-autocomplete-option[aria-disabled='true'] {
+    background: var(--#{$pds-prefix}-color-form-disabled-bg);
+    color: var(--#{$pds-prefix}-color-form-disabled-text);
+    cursor: default;
+    pointer-events: none;
+  }
 }

@@ -13,6 +13,10 @@
   --#{$pds-prefix}-color-affiliate-document-detail-header-bg: var(--#{$pds-prefix}-color-primary-50);
   --#{$pds-prefix}-color-affiliate-document-detail-title-text: var(--#{$pds-prefix}-color-surface-600);
 
+  // ── Stepper titles ──────────────────────────────────────────────────────────
+  --#{$pds-prefix}-color-affiliate-document-detail-step-title-text: var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-affiliate-document-detail-step-title-text-finished: var(--#{$pds-prefix}-color-text-muted);
+
   // ── Certificate / detail metadata ───────────────────────────────────────────
   --#{$pds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
   --#{$pds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$pds-prefix}-color-text-muted);

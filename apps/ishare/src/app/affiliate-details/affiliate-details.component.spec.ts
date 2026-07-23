@@ -483,7 +483,8 @@ describe('AffiliateDetailsComponent', () => {
         menuItems: jasmine.arrayContaining([
           jasmine.objectContaining({ label: 'C4 non reçu' }),
           jasmine.objectContaining({
-            label: 'Vérifier document C4 dans les documents isolés',
+            label: "Exemple d'autre action à réaliser",
+            disabled: true,
           }),
         ]),
       }),
@@ -527,24 +528,21 @@ describe('AffiliateDetailsComponent', () => {
     expect(detail.certPanelValue()).toBe('calcul');
   });
 
-  it('should deep-link to isolated doc-c4 when second status menu item is selected', () => {
+  it('should ignore disabled status menu placeholder selection', () => {
     component.selectedDocumentId.set('doc-incapacite');
     component.documentFocus.set(null);
     component.openCategories.set(['parcours']);
 
     affiliateHeaderService.header()?.onStatusMenuSelect?.({
-      id: 'eva-status-c4-isoles',
-      label: 'Vérifier document C4 dans les documents isolés',
+      id: 'eva-status-action-placeholder',
+      label: "Exemple d'autre action à réaliser",
+      disabled: true,
     });
     fixture.detectChanges();
 
-    expect(component.openCategories()).toContain('isoles');
-    expect(component.activeCategory()).toBe('isoles');
-    expect(component.selectedDocumentId()).toBe('doc-c4');
-    expect(component.documentFocus()).toEqual({
-      stepValue: 1,
-      panelId: 'c4-isolated',
-    });
+    expect(component.openCategories()).toEqual(['parcours']);
+    expect(component.selectedDocumentId()).toBe('doc-incapacite');
+    expect(component.documentFocus()).toBeNull();
   });
 
   it('should hide the Notes section in the affiliate detail drawer', () => {
@@ -613,7 +611,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(affiliateHeaderService.header()).toBeNull();
   });
 
-  it('should expose category counts Parcours 4 / Isolés 2 / Archivés 1', () => {
+  it('should expose category counts Parcours 4 / Documents 2 / Archivés 1', () => {
     const byId = Object.fromEntries(
       component.categories().map((category) => [category.id, category.count]),
     );
@@ -641,7 +639,7 @@ describe('AffiliateDetailsComponent', () => {
     const isolesLabel = fixture.nativeElement.querySelector(
       '[data-telemetry-id="category-tab-isoles"] .c-affiliate-details__category-tab-label',
     );
-    expect(isolesLabel?.textContent?.trim()).toBe('Isolés');
+    expect(isolesLabel?.textContent?.trim()).toBe('Documents');
   });
 
   it('should keep all category tabs visible and disable empty ones for active-documents filter', () => {

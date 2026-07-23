@@ -257,7 +257,7 @@ const DOC_CATEGORY_SPECS: ReadonlyArray<
     icon: 'bi bi-diagram-3',
     kind: 'journey',
   },
-  { id: 'isoles', label: 'Isolés', icon: 'bi bi-file-earmark', kind: 'flat' },
+  { id: 'isoles', label: 'Documents', icon: 'bi bi-file-earmark', kind: 'flat' },
   { id: 'archives', label: 'Archivés', icon: 'bi bi-archive', kind: 'flat' },
 ];
 
@@ -396,7 +396,8 @@ export class AffiliateDetailsComponent {
   readonly affiliateName = computed(() => this.affiliateProfile().name);
 
   private static readonly EVA_STATUS_MENU_C4_PARCOURS = 'eva-status-c4-parcours';
-  private static readonly EVA_STATUS_MENU_C4_ISOLES = 'eva-status-c4-isoles';
+  private static readonly EVA_STATUS_MENU_PLACEHOLDER =
+    'eva-status-action-placeholder';
 
   private static readonly EVA_C4_MISSING_STATUS_ACTION: AffiliateOverviewStatusAction =
     {
@@ -409,8 +410,9 @@ export class AffiliateDetailsComponent {
           label: 'C4 non reçu',
         },
         {
-          id: AffiliateDetailsComponent.EVA_STATUS_MENU_C4_ISOLES,
-          label: 'Vérifier document C4 dans les documents isolés',
+          id: AffiliateDetailsComponent.EVA_STATUS_MENU_PLACEHOLDER,
+          label: "Exemple d'autre action à réaliser",
+          disabled: true,
         },
       ],
     };
@@ -420,12 +422,6 @@ export class AffiliateDetailsComponent {
     groupId: 'parcours-demande-primaire',
     stepValue: 3,
     panelId: 'calcul',
-  } as const;
-
-  private static readonly EVA_C4_ISOLATED_DEEP_LINK = {
-    documentId: 'doc-c4',
-    stepValue: 1,
-    panelId: 'c4-isolated',
   } as const;
 
   readonly statusAction = computed((): AffiliateOverviewStatusAction | null =>
@@ -1255,12 +1251,7 @@ export class AffiliateDetailsComponent {
   }
 
   onStatusMenuSelect(item: MenuItem): void {
-    if (!this.isEvaDossier()) {
-      return;
-    }
-
-    if (item.id === AffiliateDetailsComponent.EVA_STATUS_MENU_C4_ISOLES) {
-      this.navigateToEvaC4IsolatedStatusAction();
+    if (!this.isEvaDossier() || item.disabled) {
       return;
     }
 
@@ -1278,24 +1269,6 @@ export class AffiliateDetailsComponent {
     this.ensureParcoursVisible();
     this.ensureGroupExpanded(groupId);
     this.scrollToCategory('parcours');
-    this.selectedDocumentId.set(documentId);
-    this.documentFocus.set({ stepValue, panelId });
-    this.recordTelemetry(
-      'deep_link_status_action',
-      `${documentId}::${stepValue}::${panelId}`,
-    );
-  }
-
-  private navigateToEvaC4IsolatedStatusAction(): void {
-    if (!this.isEvaDossier()) {
-      return;
-    }
-
-    const { documentId, stepValue, panelId } =
-      AffiliateDetailsComponent.EVA_C4_ISOLATED_DEEP_LINK;
-
-    this.ensureCategoryVisible('isoles');
-    this.scrollToCategory('isoles');
     this.selectedDocumentId.set(documentId);
     this.documentFocus.set({ stepValue, panelId });
     this.recordTelemetry(

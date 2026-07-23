@@ -110,13 +110,18 @@
       display: none;
     }
   }
+
+  // De-emphasize finished / inactive step titles so the active step reads first.
+  .p-step:not(.p-step-active) .c-affiliate-document-detail__step-label {
+    color: var(--#{$pds-prefix}-color-affiliate-document-detail-step-title-text-finished);
+  }
 }
 
 .c-affiliate-document-detail__step-label {
   @include text-label-sm;
   line-height: 1;
   white-space: nowrap;
-  color: var(--#{$pds-prefix}-color-accordion-bordered-header-text);
+  color: var(--#{$pds-prefix}-color-affiliate-document-detail-step-title-text);
 }
 
 .c-affiliate-document-detail__step-meta {

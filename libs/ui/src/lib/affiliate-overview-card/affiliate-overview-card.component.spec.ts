@@ -363,6 +363,50 @@ describe('AffiliateOverviewCardComponent', () => {
     expect(onMenuSelect).toHaveBeenCalledOnceWith(menuItem);
   });
 
+  it('should not emit statusMenuSelect when a disabled menu item is clicked', () => {
+    const onMenuSelect = jasmine.createSpy('statusMenuSelect');
+    component.statusMenuSelect.subscribe(onMenuSelect);
+
+    component.onStatusMenuItemClick({
+      label: "Exemple d'autre action à réaliser",
+      disabled: true,
+    });
+
+    expect(onMenuSelect).not.toHaveBeenCalled();
+  });
+
+  it('should mark disabled status menu options as non-interactive', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      menuItems: [
+        { label: 'C4 non reçu' },
+        {
+          label: "Exemple d'autre action à réaliser",
+          disabled: true,
+        },
+      ],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-overview-card__status-action',
+    ) as HTMLButtonElement;
+    statusButton.click();
+    fixture.detectChanges();
+
+    const options = Array.from(
+      document.body.querySelectorAll(
+        '.c-list__tag-target-list .p-autocomplete-option',
+      ),
+    ) as HTMLElement[];
+
+    expect(options).toHaveSize(2);
+    expect(options[1].classList.contains('p-disabled')).toBe(true);
+    expect(options[1].getAttribute('aria-disabled')).toBe('true');
+    expect(options[1].getAttribute('tabindex')).toBe('-1');
+  });
+
   it('should render multi-action summary with count badge when menuItems length > 1', () => {
     fixture.componentRef.setInput('statusAction', {
       label: 'Actions groupées',

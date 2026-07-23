@@ -399,17 +399,148 @@ const FDR_EMPLOYEUR_MORE_DETAILS = igedRecuOnlyMoreDetails(
   APP_GESTION_FEUILLES_RENSEIGNEMENT,
 );
 
-const FDR_AFFILIE_INCAPACITE_MORE_DETAILS = igedRecuOnlyMoreDetails(
-  'affilie-05-12-2025',
-  '05/12/2025',
-  APP_GESTION_FEUILLES_RENSEIGNEMENT,
-);
+// FDR affilié / compte financier — full Reçu → En traitement → Clôturé timeline.
+const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-affilie-05-12-2025',
+      dateLabel: '05/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '05/12/2025 00:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_GESTION_FEUILLES_RENSEIGNEMENT,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-affilie-08-12-2025',
+      dateLabel: '08/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '08/12/2025 10:00:00',
+          description: 'En traitement',
+          application: APP_GESTION_FEUILLES_RENSEIGNEMENT,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'cloture-affilie-11-12-2025',
+      dateLabel: '11/12/2025',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'secondary',
+      rows: [
+        {
+          date: '11/12/2025 11:45:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: APP_GESTION_FEUILLES_RENSEIGNEMENT,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+  ],
+};
 
-const COMPTE_FINANCIER_LIASSE_MORE_DETAILS = igedRecuOnlyMoreDetails(
-  'compte-liasse-05-12-2025',
-  '05/12/2025',
-  APP_GESTION_COMPTES_BANCAIRES,
-);
+const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-compte-liasse-05-12-2025',
+      dateLabel: '05/12/2025',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      markerIcon: 'bi bi-save',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '05/12/2025 00:00:00',
+          description: {
+            kind: 'tag',
+            label: 'Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_GESTION_COMPTES_BANCAIRES,
+          source: SOURCE_IGED,
+        },
+        {
+          date: '10/12/2025 15:56:00',
+          description: 'UOPV encodé en 9M à la réception',
+          application: APP_GESTION_COMPTES_BANCAIRES,
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-compte-liasse-10-12-2025',
+      dateLabel: '10/12/2025',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-hourglass-split',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '10/12/2025 16:00:00',
+          description: 'Liasse compte financier en cours de traitement',
+          application: APP_GESTION_COMPTES_BANCAIRES,
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+    {
+      id: 'cloture-compte-liasse-12-12-2025',
+      dateLabel: '12/12/2025',
+      status: {
+        label: 'Clôturé',
+        severity: 'secondary',
+        icon: 'bi bi-clock-history',
+      },
+      markerIcon: 'bi bi-clock-history',
+      markerTone: 'secondary',
+      rows: [
+        {
+          date: '12/12/2025 10:30:00',
+          description: {
+            kind: 'tag',
+            label: 'Clôturé',
+            severity: 'secondary',
+            icon: 'bi bi-clock-history',
+          },
+          application: APP_GESTION_COMPTES_BANCAIRES,
+          source: 'UOPV01RPA',
+        },
+      ],
+    },
+  ],
+};
 
 // doc-rechute step 2 FDR panels — Reçu only (IGED).
 const FDR_EMPLOYEUR_RECHUTE_MORE_DETAILS = igedRecuOnlyMoreDetails(

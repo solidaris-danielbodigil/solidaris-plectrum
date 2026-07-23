@@ -1172,6 +1172,77 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(accordions.length).toBe(1);
   });
 
+  it('should open FDR affilié more-details with Reçu, En traitement and Clôturé', async () => {
+    component.activeStep.set(2);
+    component.certPanelValue.set(['fdr-affilie-incapacite']);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="fdr-affilie-incapacite"]',
+    ) as HTMLElement | null;
+    const moreDetailsButton = findButtonByLabel(
+      panel ?? fixture.nativeElement,
+      'Voir plus de détails',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'fdr-affilie-incapacite',
+    );
+    const drawerText =
+      document.querySelector('.p-drawer')?.textContent ?? '';
+    expect(document.querySelector('.p-timeline')).toBeTruthy();
+    expect(drawerText).toContain('Reçu');
+    expect(drawerText).toContain('En traitement');
+    expect(drawerText).toContain('Clôturé');
+    expect(drawerText).toContain('Gestion des feuilles de renseignement');
+
+    const accordions = document.querySelectorAll(
+      '.p-drawer .c-accordion--bordered',
+    );
+    expect(accordions.length).toBe(3);
+  });
+
+  it('should open compte financier more-details with Reçu, En traitement and Clôturé', async () => {
+    component.activeStep.set(2);
+    component.certPanelValue.set(['compte-financier-liasse']);
+    fixture.detectChanges();
+
+    const panel = fixture.nativeElement.querySelector(
+      '[data-panel-id="compte-financier-liasse"]',
+    ) as HTMLElement | null;
+    const moreDetailsButton = findButtonByLabel(
+      panel ?? fixture.nativeElement,
+      'Voir plus de détails',
+    );
+
+    moreDetailsButton?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
+      'compte-financier-liasse',
+    );
+    const drawerText =
+      document.querySelector('.p-drawer')?.textContent ?? '';
+    expect(document.querySelector('.p-timeline')).toBeTruthy();
+    expect(drawerText).toContain('Reçu');
+    expect(drawerText).toContain('En traitement');
+    expect(drawerText).toContain('Clôturé');
+    expect(drawerText).toContain('UOPV encodé en 9M à la réception');
+    expect(drawerText).toContain('Gestion des comptes bancaires');
+
+    const accordions = document.querySelectorAll(
+      '.p-drawer .c-accordion--bordered',
+    );
+    expect(accordions.length).toBe(3);
+  });
+
   it('should highlight the matching panel for a focusTarget and clear it after the timeout', fakeAsync(() => {
     fixture.componentInstance.focusTarget.set({
       stepValue: 2,

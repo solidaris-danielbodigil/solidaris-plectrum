@@ -251,7 +251,8 @@
         <li
           role="option"
           class="p-autocomplete-option"
-          tabindex="0"
+          [class.p-disabled]="!!item.disabled"
+          [attr.tabindex]="item.disabled ? -1 : 0"
           pRipple
           [pdsTelemetryLabel]="item.label"
           [attr.aria-disabled]="item.disabled ? 'true' : null"
