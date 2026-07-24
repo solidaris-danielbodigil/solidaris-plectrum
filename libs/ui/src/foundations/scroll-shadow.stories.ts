@@ -63,8 +63,7 @@ Start/end fades on an **inline-axis** scroller (left/right in LTR):
 }
 
 .c-my-toolbar__track {
-  display: block;
-  @include scroll-shadow-inline;   // inline / horizontal
+  @include scroll-shadow-inline;   // inline / horizontal (sets display: flex)
 }
 \`\`\`
 

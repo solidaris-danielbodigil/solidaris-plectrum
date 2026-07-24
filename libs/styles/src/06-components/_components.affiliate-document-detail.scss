@@ -37,11 +37,18 @@
   min-block-size: 0;
 
   &:not(.c-affiliate-document-detail__stepper--vertical) {
+    // Match PrimeNG Stepper: steps share free space; last step stays content-sized.
+    // https://primeng.dev/stepper — @primeuix/styles `.p-step` / `.p-step:last-of-type`
     .p-step {
+      flex: 1 1 auto;
       flex-direction: column;
       align-items: stretch;
       gap: var(--spacing-1);
-      min-inline-size: 0;
+      min-inline-size: max-content;
+
+      &:last-of-type {
+        flex: initial;
+      }
     }
 
     // Custom separator lives in __step-head-row; hide PrimeNG's trailing instance.
@@ -51,21 +58,18 @@
 
     .c-affiliate-document-detail__step-head-row {
       inline-size: 100%;
-      min-inline-size: 0;
+      min-inline-size: max-content;
 
       .p-step-header {
         flex: 0 0 auto;
+        max-inline-size: none;
       }
 
       .p-stepper-separator {
         flex: 1 1 0;
-        min-inline-size: 0;
+        min-inline-size: var(--#{$pds-prefix}-space-affiliate-document-detail-step-head-gap);
         align-self: center;
       }
-    }
-
-    .p-step-header {
-      white-space: nowrap;
     }
 
     .p-step-title {
@@ -121,6 +125,8 @@
   @include text-label-sm;
   line-height: 1;
   white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-step-title-text);
 }
 
@@ -134,10 +140,14 @@
 }
 
 .c-affiliate-document-detail__step-list-scroll {
+  min-inline-size: 0;
+
+  // Fill the scrollport on wide screens; grow past it (and scroll) when steps
+  // need more than the available inline size.
   .p-steplist {
+    flex: 1 0 auto;
     flex-wrap: nowrap;
-    overflow-x: visible;
-    min-inline-size: 100%;
+    min-inline-size: max-content;
   }
 }
 
@@ -147,8 +157,9 @@
 
 .c-affiliate-document-detail__skeleton-step-list-scroll {
   .c-affiliate-document-detail__skeleton-step-list {
+    flex: 1 0 auto;
     flex-wrap: nowrap;
-    min-inline-size: 100%;
+    min-inline-size: max-content;
   }
 }
 

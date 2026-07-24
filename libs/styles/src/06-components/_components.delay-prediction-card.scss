@@ -54,3 +54,19 @@
   inline-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
   block-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
 }
+
+.c-delay-prediction-card__unavailable {
+  max-inline-size: calc(28 * var(--base-unit));
+}
+
+.c-delay-prediction-card__unavailable-icon {
+  flex-shrink: 0;
+  color: var(--#{$pds-prefix}-color-delay-prediction-unavailable-icon);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.c-delay-prediction-card__unavailable-text {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-delay-prediction-unavailable-text);
+}

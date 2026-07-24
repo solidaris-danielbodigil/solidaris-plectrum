@@ -18,4 +18,6 @@
   --#{$pds-prefix}-text-delay-prediction-metric-size: 1.857rem; // 26px @ 14px base
   --#{$pds-prefix}-text-delay-prediction-metric-line-height: 2.286rem; // 32px
   --#{$pds-prefix}-size-delay-prediction-menu-button: 2.857rem; // 40px
+  --#{$pds-prefix}-color-delay-prediction-unavailable-icon: var(--#{$pds-prefix}-color-warning);
+  --#{$pds-prefix}-color-delay-prediction-unavailable-text: var(--#{$pds-prefix}-color-text);
 }

@@ -88,8 +88,10 @@ export interface DocumentCrossReference {
 }
 
 export interface DocumentDelayPrediction {
-  daysRemaining: number;
-  predictedCloseDate: string;
+  /** When true, show the empty/unavailable prediction state instead of metrics. */
+  unavailable?: boolean;
+  daysRemaining?: number;
+  predictedCloseDate?: string;
 }
 
 export interface DocumentCertificatPanel {

@@ -379,20 +379,18 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should not render delay prediction card on disabled panels', () => {
-    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.componentInstance.selectedDocumentId.set('doc-rechute');
     fixture.detectChanges();
 
-    component.activeStep.set(1);
-    component.certPanelValue.set('paiement-incapacite');
+    component.activeStep.set(3);
+    component.certPanelValue.set('calcul-rechute');
     fixture.detectChanges();
 
     const panel = fixture.nativeElement.querySelector(
-      '[data-panel-id="paiement-incapacite"]',
+      '[data-panel-id="calcul-rechute"]',
     ) as HTMLElement | null;
 
-    expect(
-      panel?.querySelector('pds-delay-prediction-card'),
-    ).toBeNull();
+    expect(panel?.querySelector('pds-delay-prediction-card')).toBeNull();
   });
 
   it('should bubble delay prediction menu click to parent host', () => {
@@ -410,43 +408,52 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.delayPredictionMenuClickCount).toBe(1);
   });
 
-  it('should render incapacité paiement panel as disabled accordion with neutral hint', () => {
+  it('should render incapacité as a 4-step flow with Paiements first', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    component.activeStep.set(1);
-    component.certPanelValue.set('paiement-incapacite');
-    fixture.detectChanges();
+    expect(component.activeStep()).toBe(1);
+    expect(component.certPanelValue()).toBe('paiements-incapacite');
 
     const panel = fixture.nativeElement.querySelector(
-      '[data-panel-id="paiement-incapacite"]',
+      '[data-panel-id="paiements-incapacite"]',
     ) as HTMLElement | null;
 
-    expect(panel?.classList.contains('p-disabled')).toBe(true);
+    expect(panel?.classList.contains('p-disabled')).toBe(false);
+    expect(panel?.textContent).toContain('Paiements');
+    expect(panel?.textContent).toContain('Accepté');
+    expect(panel?.textContent).toContain('30/06/2026');
+    expect(panel?.textContent).toContain('Voir plus de détails');
+    expect(
+      panel?.querySelector('button[aria-label="Transactions CICS"]'),
+    ).toBeTruthy();
+  });
 
-    const statusLabel =
-      panel?.querySelector('.p-tag')?.textContent?.trim() ?? '';
-    expect(statusLabel).toBe('Non démarré');
+  it('should render delay prediction metrics and unavailable state on déclaration panels', () => {
+    fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
+    fixture.detectChanges();
 
-    expect(panel?.textContent).toContain(
-      'Aucun paiement reçu pour le moment.',
+    component.activeStep.set(2);
+    component.certPanelValue.set(['declaration-revenu-volet-a']);
+    fixture.detectChanges();
+
+    const voletA = fixture.nativeElement.querySelector(
+      '[data-panel-id="declaration-revenu-volet-a"]',
+    ) as HTMLElement | null;
+    expect(voletA?.textContent).toContain('Prédiction du delai');
+    expect(voletA?.textContent).toContain('11');
+    expect(voletA?.textContent).toContain('04/08/2026');
+
+    component.certPanelValue.set(['declaration-revenu-volet-b']);
+    fixture.detectChanges();
+
+    const voletB = fixture.nativeElement.querySelector(
+      '[data-panel-id="declaration-revenu-volet-b"]',
+    ) as HTMLElement | null;
+    expect(voletB?.textContent).toContain('Prédiction du delai');
+    expect(voletB?.textContent).toContain(
+      "Aucune prédiction de délais n'est disponible pour ce document",
     );
-    expect(panel?.textContent).not.toContain('En attente');
-    expect(panel?.textContent).not.toContain('28/12/2025 09:00');
-    expect(panel?.textContent).not.toContain('Voir plus de détails');
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__cross-reference'),
-    ).toBeNull();
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__plain-note'),
-    ).toBeNull();
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__actions'),
-    ).toBeNull();
-    expect(panel?.querySelector('p-message')).toBeNull();
-    expect(
-      panel?.querySelector('.c-affiliate-document-detail__disabled-hint'),
-    ).not.toBeNull();
   });
 
   it('should emit crossReferenceNavigate when cross-reference is clicked', () => {
@@ -900,15 +907,15 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(component.activeStep()).toBe(2);
   });
 
-  it('should keep disabled accordion panels collapsed by default on document load', () => {
+  it('should expand the first enabled panel by default on incapacité load', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
     expect(component.activeStep()).toBe(1);
-    expect(component.certPanelValue()).toBeUndefined();
+    expect(component.certPanelValue()).toBe('paiements-incapacite');
   });
 
-  it('should open the first enabled panel when navigating to a step with disabled panels', () => {
+  it('should open the first déclaration panel when navigating to step 2 of incapacité', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
@@ -916,14 +923,14 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(component.activeStep()).toBe(2);
-    expect(component.certPanelValue()).toBe('certificat-prolongation');
+    expect(component.certPanelValue()).toBe('declaration-revenu-volet-a');
     const stepLabels = Array.from(
       fixture.nativeElement.querySelectorAll(
         '.c-affiliate-document-detail__step-label',
       ),
       (el) => (el as HTMLElement).textContent?.trim() ?? '',
     );
-    expect(stepLabels).toContain('Certificat de prolongation');
+    expect(stepLabels).toContain('Déclaration de revenu');
   });
 
   it('should leave all panels collapsed when every panel on a step is disabled', () => {

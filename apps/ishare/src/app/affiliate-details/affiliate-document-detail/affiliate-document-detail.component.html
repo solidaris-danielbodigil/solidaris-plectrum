@@ -13,7 +13,7 @@
       </span>
 
       <div
-        class="c-affiliate-document-detail__skeleton-step-list-scroll o-scroll-shadow--inline o-flex__item--grow-1 o-layout--min-w-0"
+        class="c-affiliate-document-detail__skeleton-step-list-scroll o-scroll-shadow--inline o-layout--overflow-x-auto o-flex__item--grow-1 o-layout--min-w-0"
         aria-hidden="true"
       >
         <div
@@ -165,7 +165,7 @@
             ></button>
 
             <div
-              class="c-affiliate-document-detail__step-list-scroll o-scroll-shadow--inline o-flex__item--grow-1 o-layout--min-w-0"
+              class="c-affiliate-document-detail__step-list-scroll o-scroll-shadow--inline o-layout--overflow-x-auto o-flex__item--grow-1 o-layout--min-w-0"
             >
               <p-step-list class="c-affiliate-document-detail__step-list">
                 @for (step of steps(); track step.value; let last = $last) {
@@ -638,8 +638,9 @@
                 </h3>
                 <pds-delay-prediction-card
                   class="c-affiliate-document-detail__delay-prediction"
-                  [daysRemaining]="prediction.daysRemaining"
-                  [predictedCloseDate]="prediction.predictedCloseDate"
+                  [unavailable]="!!prediction.unavailable"
+                  [daysRemaining]="prediction.daysRemaining ?? null"
+                  [predictedCloseDate]="prediction.predictedCloseDate ?? null"
                   (menuClick)="onDelayPredictionMenuClick()"
                 />
               </div>

@@ -24,9 +24,28 @@
   background: var(--#{$pds-prefix}-color-surface);
 }
 
-.c-affiliate-details__documents-header-actions {
-  flex-shrink: 0;
+.c-affiliate-details__documents-header-top {
   min-width: 0;
+}
+
+.c-affiliate-details__documents-header-title {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.c-affiliate-details__documents-header-actions {
+  flex: 1 1 auto;
+  min-inline-size: min(
+    100%,
+    var(--#{$pds-prefix}-size-affiliate-details-documents-header-actions-min)
+  );
+  min-width: 0;
+  justify-content: flex-end;
+}
+
+.c-affiliate-details__documents-header-actions .c-affiliate-details__documents-search {
+  flex: 1 1 auto;
+  max-width: var(--#{$pds-prefix}-size-affiliate-details-documents-search-max);
 }
 
 .c-affiliate-details__documents-search {

@@ -6,7 +6,7 @@
 //
 // Block axis (vertical): `.o-scroll-shadow` — top/bottom fades via sticky
 // pseudo-elements. Inline axis (horizontal): `.o-scroll-shadow--inline` — start/
-// end fades via absolute overlays.
+// end fades via sticky flex-edge strips (scroller is a flex row).
 //
 //   <div class="o-scroll-shadow" style="max-height: 20rem">…</div>
 //   <div class="o-scroll-shadow--inline o-layout--overflow-x-auto" style="max-width: 20rem">…</div>
@@ -28,7 +28,8 @@
 }
 
 .o-scroll-shadow--inline {
-  display: block;
+  // `display: flex` comes from `scroll-shadow-inline()` so sticky edge strips
+  // can pin on the inline axis (mirrors vertical sticky on a block scroller).
   @include scroll-shadow-inline;
 }
 

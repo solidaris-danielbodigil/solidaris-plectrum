@@ -12,12 +12,13 @@ describe('DelayPredictionCardComponent', () => {
 
     fixture = TestBed.createComponent(DelayPredictionCardComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('daysRemaining', 11);
-    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
-    fixture.detectChanges();
   });
 
   it('should render days remaining and predicted close date', () => {
+    fixture.componentRef.setInput('daysRemaining', 11);
+    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
+    fixture.detectChanges();
+
     const el = fixture.nativeElement as HTMLElement;
     expect(el.textContent).toContain('11');
     expect(el.textContent).toContain('Jours restants');
@@ -26,6 +27,10 @@ describe('DelayPredictionCardComponent', () => {
   });
 
   it('should expose menu button with aria-label', () => {
+    fixture.componentRef.setInput('daysRemaining', 11);
+    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
+    fixture.detectChanges();
+
     const button = fixture.nativeElement.querySelector(
       '.c-delay-prediction-card__menu',
     ) as HTMLButtonElement;
@@ -35,6 +40,10 @@ describe('DelayPredictionCardComponent', () => {
   });
 
   it('should emit menuClick when menu button is clicked', () => {
+    fixture.componentRef.setInput('daysRemaining', 11);
+    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
+    fixture.detectChanges();
+
     const spy = jasmine.createSpy('menuClick');
     component.menuClick.subscribe(spy);
     const button = fixture.nativeElement.querySelector(
@@ -42,5 +51,17 @@ describe('DelayPredictionCardComponent', () => {
     ) as HTMLButtonElement;
     button.click();
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render unavailable empty state', () => {
+    fixture.componentRef.setInput('unavailable', true);
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain(
+      "Aucune prédiction de délais n'est disponible pour ce document",
+    );
+    expect(el.querySelector('.c-delay-prediction-card__menu')).toBeNull();
+    expect(el.querySelector('.c-delay-prediction-card__value')).toBeNull();
   });
 });

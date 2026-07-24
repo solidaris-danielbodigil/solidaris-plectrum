@@ -16,6 +16,7 @@
   // ── Stepper titles ──────────────────────────────────────────────────────────
   --#{$pds-prefix}-color-affiliate-document-detail-step-title-text: var(--#{$pds-prefix}-color-text);
   --#{$pds-prefix}-color-affiliate-document-detail-step-title-text-finished: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-space-affiliate-document-detail-step-head-gap: var(--spacing-2);
 
   // ── Certificate / detail metadata ───────────────────────────────────────────
   --#{$pds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));

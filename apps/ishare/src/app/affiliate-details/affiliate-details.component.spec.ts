@@ -1163,7 +1163,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(deriveDocumentTags('doc-cloture-primaire')).toEqual([]);
   });
 
-  it('should return no derived tags for doc-incapacite disabled paiement panel', () => {
+  it('should return no derived tags for doc-incapacite without panel comments', () => {
     expect(deriveDocumentTags('doc-incapacite')).toEqual([]);
   });
 

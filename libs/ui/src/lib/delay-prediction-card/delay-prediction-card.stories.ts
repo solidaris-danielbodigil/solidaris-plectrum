@@ -25,6 +25,7 @@ BEM block: \`c-delay-prediction-card\`
     },
   },
   argTypes: {
+    unavailable: { control: 'boolean' },
     daysRemaining: { control: 'number' },
     predictedCloseDate: { control: 'text' },
   },
@@ -38,6 +39,12 @@ export const Default: Story = {
   args: {
     daysRemaining: 11,
     predictedCloseDate: '19/06/2026',
+  },
+};
+
+export const Unavailable: Story = {
+  args: {
+    unavailable: true,
   },
 };
 

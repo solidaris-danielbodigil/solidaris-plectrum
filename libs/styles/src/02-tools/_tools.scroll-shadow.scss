@@ -76,8 +76,10 @@
 // scroll-shadow-inline() — inline-axis (horizontal) scroll edge fades.
 //
 // Left fade appears once scrolled away from the start; right fade fades out at
-// the end. Uses absolute overlays (sticky block pseudo-elements do not map to
-// the inline scroll axis).
+// the end. Mirrors the block-axis sticky approach: the scroller is a flex row so
+// sticky ::before / ::after can pin to the visible inline edges. Absolute
+// overlays are unreliable here — they often paint at the far end of the
+// scrollable overflow (off-screen) instead of the scrollport edge.
 //
 // Keyframes: `o-scroll-shadow-inline-start` / `o-scroll-shadow-inline-end` in
 // 05-objects/_objects.scroll-shadow.scss.
@@ -88,16 +90,23 @@
 
 @mixin scroll-shadow-inline($timeline: --o-scroll-shadow-inline) {
   position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
   overflow-x: auto;
   scroll-timeline-name: $timeline;
   scroll-timeline-axis: inline;
 
+  // Sticky edge fades — overlay content; negative inline margin collapses their
+  // flow size to zero so they never shift the content.
   &::before,
   &::after {
     content: '';
-    position: absolute;
+    position: sticky;
     z-index: 1;
-    inset-block: 0;
+    flex: 0 0 auto;
+    align-self: stretch;
     inline-size: var(--#{$pds-prefix}-size-scroll-shadow-height);
     opacity: 0;
     pointer-events: none;
@@ -110,6 +119,7 @@
   // Start (left in LTR) — hidden at scroll start, visible once scrolled across.
   &::before {
     inset-inline-start: 0;
+    margin-inline-end: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
     background: linear-gradient(
       to right,
       var(--#{$pds-prefix}-color-scroll-shadow),
@@ -121,6 +131,7 @@
   // End (right in LTR) — visible at scroll start, fades out at the end.
   &::after {
     inset-inline-end: 0;
+    margin-inline-start: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
     background: linear-gradient(
       to left,
       var(--#{$pds-prefix}-color-scroll-shadow),

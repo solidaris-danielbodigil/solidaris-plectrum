@@ -32,6 +32,8 @@
 
   // Documents card header search field — compact width beside filter/sort actions.
   --#{$pds-prefix}-size-affiliate-details-documents-search-max: calc(220 / 14 * var(--base-unit));
+  // Min width for search + Filtres row — triggers wrap under title when column is narrow.
+  --#{$pds-prefix}-size-affiliate-details-documents-header-actions-min: calc(280 / 14 * var(--base-unit));
 }
 
 // ── PrimeNG Card token bridge — two-column content panels ────────────────────

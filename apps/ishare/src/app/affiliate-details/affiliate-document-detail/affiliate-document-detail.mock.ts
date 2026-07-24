@@ -21,6 +21,11 @@ const APP_GESTION_FEUILLES_RENSEIGNEMENT =
   'Gestion des feuilles de renseignement';
 const APP_GESTION_COMPTES_BANCAIRES = 'Gestion des comptes bancaires';
 const APP_GESTION_CALCS = "Gestion des CALC's";
+const APP_PAIEMENTS_CICS = 'Paiements extraits du CICS';
+const APP_DECLARATION_REVENUS =
+  'Gestion des déclarations de revenus (225)';
+const APP_CARTES_REPRISE = 'Gestion des cartes de reprise';
+const APP_GESTION_CERTIFICATS_ITT = 'Gestion des certificats ITT';
 
 function igedRecuOnlyMoreDetails(
   eventKey: string,
@@ -277,48 +282,223 @@ const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
   ],
 };
 
+const PAIEMENTS_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'accepte-paiements-30-06-2026',
+      dateLabel: '30/06/2026',
+      status: {
+        label: 'Accepté',
+        severity: 'success',
+        icon: 'bi bi-check-lg',
+      },
+      markerIcon: 'bi bi-check-lg',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '30/06/2026 00:00:00',
+          description: '/B/ 3662103 INDM06/2026 14X 66,19',
+          application: APP_PAIEMENTS_CICS,
+          source: 'CICS',
+        },
+      ],
+    },
+  ],
+};
+
+const DECLARATION_REVENU_VOLET_A_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-declaration-a-16-07-2026',
+      dateLabel: '16/07/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      markerIcon: 'bi bi-envelope',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '16/07/2026 15:28:00',
+          description: {
+            kind: 'tag',
+            label: '000 - Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_DECLARATION_REVENUS,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+  ],
+};
+
+const DECLARATION_REVENU_VOLET_B_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-declaration-b-16-07-2026',
+      dateLabel: '16/07/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      markerIcon: 'bi bi-envelope',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '16/07/2026 15:28:00',
+          description: {
+            kind: 'tag',
+            label: '000 - Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_DECLARATION_REVENUS,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+  ],
+};
+
+const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
+  events: [
+    {
+      id: 'recu-carte-reprise-16-06-2026',
+      dateLabel: '16/06/2026',
+      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      markerIcon: 'bi bi-envelope',
+      markerTone: 'info',
+      rows: [
+        {
+          date: '16/06/2026 14:41:00',
+          description: {
+            kind: 'tag',
+            label: '000 - Reçu',
+            severity: 'info',
+            icon: 'bi bi-save',
+          },
+          application: APP_CARTES_REPRISE,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'en-traitement-carte-reprise-18-06-2026',
+      dateLabel: '18/06/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-three-dots',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '18/06/2026 09:05:00',
+          description: 'Dossier verrouillé pour traitement',
+          application: APP_CARTES_REPRISE,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'cloture-carte-reprise-18-06-2026',
+      dateLabel: '18/06/2026',
+      status: {
+        label: 'Clôturé',
+        severity: 'success',
+        icon: 'bi bi-check-lg',
+      },
+      markerIcon: 'bi bi-check-lg',
+      markerTone: 'success',
+      rows: [
+        {
+          date: '18/06/2026 09:07:00',
+          description: {
+            kind: 'tag',
+            label: '999 - Clôturé',
+            severity: 'success',
+            icon: 'bi bi-check-lg',
+          },
+          application: APP_CARTES_REPRISE,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+  ],
+};
+
 const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
   events: [
     {
-      id: 'recu-25-12-2025',
-      dateLabel: '25/12/2025',
+      id: 'recu-cit-prolongation-16-07-2026',
+      dateLabel: '16/07/2026',
       status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
-          date: '25/12/2025 08:45:00',
+          date: '16/07/2026 15:28:00',
           description: {
             kind: 'tag',
-            label: 'Reçu',
+            label: '000 - Reçu',
             severity: 'info',
             icon: 'bi bi-save',
           },
-          application: 'Gestion des certificats ITT',
-          source: 'IGED',
+          application: APP_GESTION_CERTIFICATS_ITT,
+          source: SOURCE_IGED,
+        },
+        {
+          date: '20/07/2026 07:17:00',
+          description:
+            'Distribution par responsable - Meunier, Isabelle [T17417]',
+          application: APP_GESTION_CERTIFICATS_ITT,
+          source: SOURCE_IGED,
         },
       ],
     },
     {
-      id: 'accepte-27-12-2025',
-      dateLabel: '27/12/2025',
+      id: 'en-traitement-cit-prolongation-20-07-2026',
+      dateLabel: '20/07/2026',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
+      markerIcon: 'bi bi-three-dots',
+      markerTone: 'warn',
+      rows: [
+        {
+          date: '20/07/2026 09:12:00',
+          description: 'Dossier verrouillé pour traitement',
+          application: APP_GESTION_CERTIFICATS_ITT,
+          source: SOURCE_IGED,
+        },
+        {
+          date: '20/07/2026 09:13:00',
+          description:
+            'UCIT encodé ACCEPTE numéro de CIT 26/4026985 PROLONGATION',
+          application: APP_GESTION_CERTIFICATS_ITT,
+          source: SOURCE_IGED,
+        },
+      ],
+    },
+    {
+      id: 'accepte-cit-prolongation-20-07-2026',
+      dateLabel: '20/07/2026',
       status: {
         label: 'Accepté',
         severity: 'success',
-        icon: 'bi bi-check-all',
+        icon: 'bi bi-check-lg',
       },
-      markerIcon: 'bi bi-check-all',
+      markerIcon: 'bi bi-check-lg',
       markerTone: 'success',
       rows: [
         {
-          date: '27/12/2025 16:00:00',
+          date: '20/07/2026 09:13:00',
           description: {
             kind: 'tag',
-            label: 'Accepté - Auto',
+            label: '920 - Accepté auto',
             severity: 'success',
           },
-          application: 'Gestion des certificats ITT',
-          source: 'IGED',
+          application: APP_GESTION_CERTIFICATS_ITT,
+          source: SOURCE_IGED,
         },
       ],
     },
@@ -651,6 +831,10 @@ function mockDelayPrediction(
   return { daysRemaining, predictedCloseDate };
 }
 
+function mockDelayPredictionUnavailable(): DocumentDelayPrediction {
+  return { unavailable: true };
+}
+
 /** 2e demande primaire — required FDR panels not yet received (legacy iSHARE: grayed accordion). */
 const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
   {
@@ -827,34 +1011,108 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
     steps: [
       {
         value: 1,
-        label: 'Paiement',
+        label: 'Paiements',
         panels: [
           {
-            id: 'paiement-incapacite',
-            title: 'Paiement',
-            disabled: true,
+            id: 'paiements-incapacite',
+            title: 'Paiements',
             status: {
-              label: 'Non démarré',
-              severity: 'secondary',
+              label: 'Accepté',
+              severity: 'success',
+              icon: 'bi bi-check-lg',
             },
-            workerComment: {
-              severity: 'info',
-              text: 'Aucun paiement reçu pour le moment.',
-              icon: COMMENT_ICONS.info,
-            },
-            actions: [],
-            details: [],
+            actions: [
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '30/06/2026' },
+              { label: 'Application', value: APP_PAIEMENTS_CICS },
+            ],
             moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: PAIEMENTS_INCAPACITE_MORE_DETAILS,
           },
         ],
       },
       {
         value: 2,
-        label: 'Certificat de prolongation',
+        label: 'Déclaration de revenu',
+        panels: [
+          {
+            id: 'declaration-revenu-volet-a',
+            title:
+              'Déclaration de revenus (modèle 225) pour cohabitant - Volet A',
+            status: {
+              label: 'Reçu',
+              severity: 'info',
+              icon: 'bi bi-envelope',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '16/07/2026' },
+              { label: 'Date du risque', value: '07/05/2026' },
+            ],
+            delayPrediction: mockDelayPrediction(11, '04/08/2026'),
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: DECLARATION_REVENU_VOLET_A_MORE_DETAILS,
+          },
+          {
+            id: 'declaration-revenu-volet-b',
+            title:
+              'Déclaration de revenus (modèle 225) pour cohabitant - Volet B',
+            status: {
+              label: 'Reçu',
+              severity: 'info',
+              icon: 'bi bi-envelope',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '16/07/2026' },
+              { label: 'Date du risque', value: '07/05/2026' },
+            ],
+            delayPrediction: mockDelayPredictionUnavailable(),
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: DECLARATION_REVENU_VOLET_B_MORE_DETAILS,
+          },
+        ],
+      },
+      {
+        value: 3,
+        label: 'Carte de reprise',
+        panels: [
+          {
+            id: 'carte-reprise',
+            title: 'Carte de reprise régime général',
+            status: {
+              label: 'Clôturé',
+              severity: 'success',
+              icon: 'bi bi-check-lg',
+            },
+            actions: [
+              { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
+              { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
+            ],
+            details: [
+              { label: 'Date de réception', value: '16/06/2026' },
+              { label: 'Date du risque', value: '07/05/2026' },
+            ],
+            moreDetailsLabel: MORE_DETAILS_LABEL,
+            moreDetails: CARTE_REPRISE_MORE_DETAILS,
+          },
+        ],
+      },
+      {
+        value: 4,
+        label: 'CIT - Prolongation',
         panels: [
           {
             id: 'certificat-prolongation',
-            title: 'Certificat ITT - Prolongation',
+            title: 'Certificat ITT',
             status: {
               label: 'Accepté',
               severity: 'success',
@@ -865,14 +1123,10 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
             details: [
-              { label: 'Date de réception', value: '25/12/2025' },
-              { label: 'Numéro de certificat', value: '25/1256332' },
-              {
-                label: 'Période',
-                value: { from: '25/12/2025', to: '27/12/2025' },
-              },
+              { label: 'Date de réception', value: '16/07/2026' },
+              { label: 'Numéro de CIT', value: '26/4026985' },
+              { label: 'Date du risque', value: '27/05/2026' },
             ],
-            delayPrediction: mockDelayPrediction(12, '06/01/2026'),
             moreDetailsLabel: MORE_DETAILS_LABEL,
             moreDetails: CERTIFICAT_PROLONGATION_MORE_DETAILS,
           },

@@ -23,8 +23,10 @@ import { Divider } from 'primeng/divider';
   },
 })
 export class DelayPredictionCardComponent {
-  readonly daysRemaining = input.required<number>();
-  readonly predictedCloseDate = input.required<string>();
+  /** Empty state when no delay prediction is available for the document. */
+  readonly unavailable = input(false);
+  readonly daysRemaining = input<number | null>(null);
+  readonly predictedCloseDate = input<string | null>(null);
 
   readonly menuClick = output<void>();
 
