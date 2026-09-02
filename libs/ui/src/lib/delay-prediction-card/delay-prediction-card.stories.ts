@@ -1,7 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { plectrumIconProviders } from '@solidaris/plectrum';
+import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
+
+const plectrumIconProviders = [
+  {
+    provide: IconRegistry,
+    useFactory: () => {
+      const registry = new IconRegistry();
+      registerPlectrumIcons(registry);
+      return registry;
+    },
+  },
+];
 
 const meta: Meta<DelayPredictionCardComponent> = {
   title: 'UI/Delay Prediction Card',
