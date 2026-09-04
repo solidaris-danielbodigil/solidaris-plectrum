@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm';
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
 // webpackFinal is only set for GitHub Pages (STORYBOOK_PUBLIC_PATH).
 
-const pagesPublicPath = process.env.STORYBOOK_PUBLIC_PATH;
+const pagesPublicPath = process.env['STORYBOOK_PUBLIC_PATH'];
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
