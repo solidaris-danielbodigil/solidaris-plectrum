@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './empty-state.stories';
 
 <Meta of={Stories} />
@@ -35,6 +35,7 @@ Pass an illustration id to pin a specific asset — useful in Storybook, visual 
 Random illustration. Use **Autre illustration** to pick another catalog SVG, or pin one with the `illustration` control.
 
 <Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
 
 ## All illustrations
 

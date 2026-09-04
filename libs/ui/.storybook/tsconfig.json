@@ -5,7 +5,8 @@
     "types": ["node"],
     "moduleResolution": "bundler",
     "module": "esnext",
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "rootDir": "../../.."
   },
   "exclude": ["../**/*.spec.ts"],
   "include": [

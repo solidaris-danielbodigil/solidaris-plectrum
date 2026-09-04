@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './form-field.stories';
 
 <Meta of={Stories} />
@@ -14,6 +14,7 @@ Parent forms should pass `[invalid]="isFieldInvalid(form, 'controlName')"` where
 Default stacked label + control.
 
 <Canvas of={Stories.Vertical} />
+<Controls of={Stories.Vertical} />
 
 ### Vertical invalid
 

@@ -1,0 +1,60 @@
+import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './accordion.stories';
+
+<Meta of={Stories} />
+
+# Accordion
+
+PrimeNG `p-accordion` with the Plectrum theme. Certificate and audit panels add **`c-accordion--bordered`** — a BEMIT modifier already in `libs/styles`. There is no Angular wrapper and no `[border]` input. Put the class on `p-accordion`.
+
+Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
+
+Constraints:
+
+- PrimeNG owns expand / collapse and the `.p-accordion*` DOM.
+- Plectrum owns stock `--p-accordion-*` via `providePlectrum()`.
+- `c-accordion--bordered` owns the card-like stack: token bridges in `01-settings/_settings.accordion.scss`, stacked radii in `06-components/_components.accordion.scss`.
+- Do not override `.p-accordionpanel` with hardcoded hex or `!important`.
+
+How to write a story for a layer like this: [Writing stories](?path=/docs/docs-writing-stories--docs).
+
+## Default
+
+Stock Plectrum `p-accordion`. No BEMIT modifier on the host.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Bordered
+
+Same PrimeNG control. The host class is written in the template, as in iSHARE:
+
+```html
+<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0">
+```
+
+<Canvas of={Stories.Bordered} />
+
+## Collapsed
+
+Bordered host class, panel closed.
+
+<Canvas of={Stories.Collapsed} />
+
+## Disabled
+
+`[disabled]="true"` on `p-accordion-panel`.
+
+<Canvas of={Stories.Disabled} />
+
+## Stacked
+
+Two bordered panels. Sibling radii and shared outer edge are why the layer lives in `06-components`.
+
+<Canvas of={Stories.Stacked} />
+
+## API
+
+Story knobs for the canvases above. They are not an Angular Accordion API — there is no wrapper component.
+
+<ArgTypes of={Stories} />

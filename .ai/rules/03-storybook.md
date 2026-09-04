@@ -29,15 +29,15 @@ Every component in `libs/ui` **must** have a `.stories.ts` file **colocated with
 
 ## 2. Required Story Exports
 
-| Export name | When required |
-|---|---|
-| `Default` or primary state | Always |
-| `Expanded` / `Open` | When component has an open/expanded state |
+| Export name                   | When required                               |
+| ----------------------------- | ------------------------------------------- |
+| `Default` or primary state    | Always                                      |
+| `Expanded` / `Open`           | When component has an open/expanded state   |
 | `WithActiveItem` / `Selected` | When component has an active/selected state |
-| `Disabled` | When component has a disabled state |
-| `Empty` | When component can render with no data |
-| `Loading` | When component has a loading state |
-| `Error` | When component has an error state |
+| `Disabled`                    | When component has a disabled state         |
+| `Empty`                       | When component can render with no data      |
+| `Loading`                     | When component has a loading state          |
+| `Error`                       | When component has an error state           |
 
 ---
 
@@ -57,9 +57,10 @@ Each MDX page must include:
 - Which Figma node it maps to (with full URL)
 - Design constraints or usage rules
 - An `h2` / `h3` per canvas so the docs TOC can list sections
+- `<Controls of={Stories.X} />` immediately under the primary canvas (usually `Default`)
 - An `## API` + `<ArgTypes of={Stories} />` block **at the end of the page**, after every canvas — never before the first canvas
 
-Docs tables use `<DocsTable>` from `libs/ui/.storybook/docs-table.ts` (Storybook ArgTypes chrome, no JSX — Angular's Babel loader cannot parse `.jsx`). Do **not** use Markdown pipe tables — Storybook 10 MDX leaves them as a single unreadable line. Do **not** put a PrimeNG `p-table` in a Canvas iframe; it is clipped. Component APIs still use `<ArgTypes of={Stories} />` at the end of the page.
+Docs tables use `<DocsTable>` from `libs/ui/.storybook/docs-table.ts` (Storybook ArgTypes chrome, no JSX — Angular's Babel loader cannot parse `.jsx`). Do **not** use Markdown pipe tables — Storybook 10 MDX leaves them as a single unreadable line. Do **not** put a PrimeNG `p-table` in a Canvas iframe; it is clipped. Custom components and UI pages put `<Controls of={Stories.X} />` under the primary canvas so designers can edit args there. Component APIs still use `<ArgTypes of={Stories} />` at the end of the page.
 
 Process and architecture pages (`libs/ui/src/docs/*.mdx`) are read by designers and architects as well as developers. Write them as reference documentation: noun headings (`Definition`, `Architecture`, `Process`, `Roles`, `Rules`, `Glossary`, `Reference`), short declarative sentences, terms defined on first use, engineering detail in a closing **Reference** section. No narrative framing ("the journey of…", "one picture", "roads"), no rhetorical questions.
 

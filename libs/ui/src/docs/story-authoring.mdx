@@ -1,0 +1,405 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { Diagram } from '../../.storybook/docs-figures';
+import * as Figures from './writing-stories-figures.stories';
+import * as AccordionStories from '../lib/accordion/accordion.stories';
+
+<Meta title="Docs/Writing stories" />
+
+# Writing stories
+
+A story is one rendered state of a Plectrum component. Designers review stories against the Plectrum UI Kit. Developers author them next to the component. This page is the short path for both roles.
+
+Related pages:
+
+- [Accordion](?path=/docs/custom-components-accordion--docs) — PrimeNG `p-accordion` plus `c-accordion--bordered`
+- [Empty State](?path=/docs/custom-components-empty-state--docs) — a finished CSF + attached MDX pair
+- [Form Field](?path=/docs/custom-components-form-field--docs) — PrimeNG control inside a Plectrum shell
+- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how Figma values become `var(--pds-*)`
+
+---
+
+## Definition
+
+**CSF** (Component Story Format) is the TypeScript file that renders states. **Attached MDX** is the prose page that embeds those states as canvases. Storybook discovers both through `libs/ui/.storybook/main.ts`.
+
+<Diagram
+  title="Story files"
+  width={1000}
+  height={150}
+  nodes={[
+    { id: 'figma', x: 20, y: 43, w: 170, tone: 'design', title: 'Figma node', lines: ['states to cover'] },
+    { id: 'csf', x: 260, y: 43, w: 210, tone: 'system', title: 'name.stories.ts', lines: ['CSF · one export per state'], mono: true },
+    { id: 'mdx', x: 540, y: 43, w: 200, tone: 'system', title: 'name.mdx', lines: ['prose · Canvas · Controls'], mono: true },
+    { id: 'docs', x: 810, y: 43, w: 170, tone: 'app', title: 'Docs page', lines: ['sidebar catalogue'] },
+  ]}
+  edges={[
+    { from: 'figma', to: 'csf', label: 'states' },
+    { from: 'csf', to: 'mdx', label: 'Canvas of' },
+    { from: 'mdx', to: 'docs', label: 'Meta of' },
+  ]}
+/>
+
+<DocsTable
+  headers={['File', 'Role']}
+  rows={[
+    ['name.stories.ts', 'Renders each state. Meta tags hide individual stories from the sidebar.'],
+    ['name.mdx', 'What the component does, Figma URL, one heading per canvas, Controls under Default, ArgTypes last.'],
+    ['06-components/_components.name.scss', 'Reusable BEMIT layer only. One-off padding and gap stay on o-layout in the template.'],
+  ]}
+/>
+
+---
+
+## Example
+
+Worked example: PrimeNG **Accordion** with the existing **`c-accordion--bordered`** BEMIT layer. Accordion is already in PrimeNG. Plectrum already themes the stock control (`providePlectrum()`, `--p-accordion-*`). Certificate and audit panels need a card-like bordered stack that the preset does not provide.
+
+Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
+
+<Unstyled>
+  <Story of={Figures.ExampleOnly} />
+</Unstyled>
+
+### Default
+
+`p-accordion` with no BEMIT modifier. Chrome comes from the Plectrum preset only.
+
+<Canvas of={AccordionStories.Default} />
+<Controls of={AccordionStories.Default} />
+
+### Bordered
+
+Same PrimeNG control. The host class is written in the template — `class="c-accordion--bordered"` — as in the iSHARE certificate panels. There is no `[border]` input.
+
+<Canvas of={AccordionStories.Bordered} />
+
+### Collapsed
+
+Same bordered layer, panel closed. A second export with different `args` is enough for a second canvas.
+
+<Canvas of={AccordionStories.Collapsed} />
+
+### Disabled
+
+Required when the panel has a disabled state. `[disabled]="true"` on `p-accordion-panel`.
+
+<Canvas of={AccordionStories.Disabled} />
+
+### Custom CSS layer
+
+One-off spacing on a wrapper we own stays an **object class** (`o-layout`). The bordered accordion is a reusable variant, so it lives in ITCSS:
+
+- Tokens and `--p-accordion-*` bridges: `libs/styles/src/01-settings/_settings.accordion.scss`
+- Stacked panel radii and disabled cursor: `libs/styles/src/06-components/_components.accordion.scss`
+
+```html
+<p-accordion
+  class="c-accordion--bordered o-layout--full-width o-layout--min-w-0"
+  expandIcon="bi bi-chevron-down"
+  collapseIcon="bi bi-chevron-up"
+>
+  <p-accordion-panel value="0">
+    <p-accordion-header>Certificat ITT</p-accordion-header>
+    <p-accordion-content>Date de réception 24/11/2025</p-accordion-content>
+  </p-accordion-panel>
+</p-accordion>
+```
+
+```scss
+// libs/styles/src/01-settings/_settings.accordion.scss
+.c-accordion--bordered {
+  --p-accordion-panel-border-width: 1px;
+  --p-accordion-panel-border-color: var(--pds-color-panel-border);
+  --p-accordion-header-background: var(--pds-color-accordion-bordered-section-bg);
+  --p-accordion-header-padding: var(--pds-space-accordion-bordered-padding);
+  --p-accordion-content-padding: var(--pds-space-accordion-bordered-padding);
+}
+```
+
+Do **not** write this:
+
+```scss
+// Wrong — fights PrimeNG internals and hard-codes a value
+.p-accordionpanel {
+  border: 1px solid #e7e7e7 !important;
+  border-radius: 8px;
+}
+```
+
+<DocsTable
+  headers={['Layer', 'What it owns', 'Accordion today']}
+  rows={[
+    ['PrimeNG', 'Expand / collapse, p-accordion DOM, disabled', 'Use p-accordion as-is'],
+    ['Plectrum preset', 'Stock --p-accordion-* colour, padding, focus', 'Already applied by providePlectrum()'],
+    ['01-settings c-accordion--bordered', 'Token bridges for the card-like variant', '_settings.accordion.scss'],
+    ['06-components c-accordion--bordered', 'Stacked radii, expanded header rule, disabled cursor', '_components.accordion.scss'],
+  ]}
+/>
+
+### Story file
+
+The catalogue pair is [Accordion](?path=/docs/custom-components-accordion--docs). CSF lives in `libs/ui/src/lib/accordion/accordion.stories.ts`. There is no Angular wrapper — stories import `AccordionModule` from `primeng/accordion` with a relative path, not `@solidaris/ui`. Open **Show code** on the canvases above for the live Angular template.
+
+The canvases above are `Default`, `Bordered`, `Collapsed`, and `Disabled`. `Stacked` is a fifth export on the same file. Bordered vs Default is two templates — the class is in the HTML, not an args toggle.
+
+~~~ts
+// libs/ui/src/lib/accordion/accordion.stories.ts
+import type { Meta, StoryObj } from '@storybook/angular';
+import { AccordionModule } from 'primeng/accordion';
+import { Tag } from 'primeng/tag';
+
+interface AccordionStoryArgs {
+  title: string;
+  statusLabel: string;
+  expanded: boolean;
+  disabled: boolean;
+}
+
+const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
+const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
+
+const meta: Meta<AccordionStoryArgs> = {
+  tags: ['!dev'],
+  title: 'Custom components/Accordion',
+  parameters: { layout: 'padded' },
+  argTypes: {
+    title: { control: 'text', description: 'Panel header label.' },
+    statusLabel: {
+      control: 'text',
+      description: 'Status tag next to the header.',
+    },
+    expanded: {
+      control: 'boolean',
+      description: 'When true, the panel value is set so the section is open.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables p-accordion-panel.',
+    },
+  },
+  args: {
+    title: 'Certificat ITT',
+    statusLabel: 'Accepté',
+    expanded: true,
+    disabled: false,
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<AccordionStoryArgs>;
+
+function accordionTemplate(hostClass: string): string {
+  return `
+    <p-accordion
+      class="${hostClass}"
+      [value]="expanded ? '0' : undefined"
+      expandIcon="bi bi-chevron-down"
+      collapseIcon="bi bi-chevron-up"
+    >
+      <p-accordion-panel value="0" [disabled]="disabled">
+        <p-accordion-header>
+          <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+            <span>{{ title }}</span>
+            <p-tag severity="success" icon="bi bi-check-lg" [value]="statusLabel" />
+          </span>
+        </p-accordion-header>
+        <p-accordion-content>
+          <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  `;
+}
+
+function renderWithClass(hostClass: string): Story['render'] {
+  return (args) => ({
+    props: args,
+    moduleMetadata: { imports: [AccordionModule, Tag] },
+    template: accordionTemplate(hostClass),
+  });
+}
+
+export const Default: Story = {
+  render: renderWithClass(STOCK_CLASS),
+};
+
+export const Bordered: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+};
+
+export const Collapsed: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+  args: { expanded: false },
+};
+
+export const Disabled: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+  args: { disabled: true },
+};
+~~~
+
+### Docs page
+
+Attached MDX in `libs/ui/src/lib/accordion/accordion.mdx`. CSF meta hides individual stories from the sidebar so only this page appears.
+
+~~~tsx
+import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './accordion.stories';
+
+<Meta of={Stories} />
+
+# Accordion
+
+PrimeNG `p-accordion` with the Plectrum theme. Certificate and audit panels add **`c-accordion--bordered`** — a BEMIT modifier already in `libs/styles`. There is no Angular wrapper and no `[border]` input. Put the class on `p-accordion`.
+
+Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
+
+Constraints:
+
+- PrimeNG owns expand / collapse and the `.p-accordion*` DOM.
+- Plectrum owns stock `--p-accordion-*` via `providePlectrum()`.
+- `c-accordion--bordered` owns the card-like stack: token bridges in `01-settings/_settings.accordion.scss`, stacked radii in `06-components/_components.accordion.scss`.
+- Do not override `.p-accordionpanel` with hardcoded hex or `!important`.
+
+How to write a story for a layer like this: [Writing stories](?path=/docs/docs-writing-stories--docs).
+
+## Default
+
+Stock Plectrum `p-accordion`. No BEMIT modifier on the host.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Bordered
+
+Same PrimeNG control. The host class is written in the template, as in iSHARE:
+
+```html
+<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0">
+```
+
+<Canvas of={Stories.Bordered} />
+
+## Collapsed
+
+Bordered layer, panel closed.
+
+<Canvas of={Stories.Collapsed} />
+
+## Disabled
+
+`[disabled]="true"` on `p-accordion-panel`.
+
+<Canvas of={Stories.Disabled} />
+
+## Stacked
+
+Two bordered panels. Sibling radii and shared outer edge are why the layer lives in `06-components`.
+
+<Canvas of={Stories.Stacked} />
+
+## API
+
+Story knobs for the canvases above. They are not an Angular Accordion API — there is no wrapper component.
+
+<ArgTypes of={Stories} />
+~~~
+
+<DocsTable
+  headers={['Block', 'Purpose']}
+  rows={[
+    ['import Meta, Canvas, Controls, ArgTypes from @storybook/addon-docs/blocks', 'Storybook docs blocks'],
+    ['import * as Stories from ./accordion.stories', 'The colocated CSF file'],
+    ['Meta of Stories', 'Attaches this page to the CSF meta (title, tags, argTypes)'],
+    ['Heading + Figma URL + constraints', 'What it is, where it lives in the kit, what not to change'],
+    ['Heading per state + Canvas of that story', 'One heading per canvas so On this page can list them'],
+    ['Controls of the Default story', 'Immediately under the Default canvas'],
+    ['API heading + ArgTypes of Stories', 'Always last, after every canvas'],
+  ]}
+/>
+
+---
+
+## Rules
+
+<Unstyled>
+  <Story of={Figures.Rules} />
+</Unstyled>
+
+---
+
+## Glossary
+
+<DocsTable
+  headers={['Term', 'Definition']}
+  rows={[
+    ['Story', 'One rendered state of a component (Default, Disabled, Empty, …).'],
+    ['CSF', 'Component Story Format — the .stories.ts file and its named exports.'],
+    ['MDX', 'Markdown with embedded Storybook blocks (Meta, Canvas, ArgTypes, Story).'],
+    ['Canvas', 'Live preview of one story, with a source toggle, embedded in MDX.'],
+    ['Controls', 'Storybook panel that edits args (label, selected value, disabled).'],
+    ['args', 'The values passed into a story. Changing args is how Selected differs from Default.'],
+    ['Attached docs', 'An MDX page bound to a CSF file with Meta of Stories.'],
+    ['Unattached docs', 'An MDX page with its own Meta title, such as this one or Token pipeline.'],
+    ['Plectrum', 'The Solidaris design system: Figma UI Kit, tokens, PrimeNG preset, Storybook.'],
+    ['PrimeNG', 'The component library. p-accordion, p-button, p-select and the rest.'],
+    ['BEMIT', 'Class prefixes: o- layout objects, c- components, u- utilities, is- / has- state.'],
+    ['--pds-*', 'Plectrum CSS custom property. The only token name written in component SCSS.'],
+    ['--p-*', 'PrimeNG theme custom property. Bridged in 01-settings, not in 06-components.'],
+  ]}
+/>
+
+---
+
+## Reference
+
+### File location
+
+```
+libs/ui/src/lib/component-name/
+├── component-name.component.ts
+├── component-name.stories.ts
+└── component-name.mdx
+```
+
+PrimeNG-first layers that only add a BEMIT class skip the wrapper component. Accordion is that case: `libs/ui/src/lib/accordion/` has `accordion.stories.ts` and `accordion.mdx` only.
+
+Process pages such as this one live in `libs/ui/src/docs/`. Figure content that MDX cannot pass as props lives in a sibling `*.stories.ts` tagged to stay out of the sidebar.
+
+Do not name an unattached docs file `*-stories.mdx`. Webpack treats that as a CSF story and skips the MDX loader.
+
+### Required story exports
+
+<DocsTable
+  headers={['Export', 'When required']}
+  rows={[
+    ['Default (or primary state)', 'Always'],
+    ['Selected / WithActiveItem / Open', 'When the component has a selected or expanded state'],
+    ['Disabled', 'When the component has a disabled state'],
+    ['Empty', 'When the component can render with no data'],
+    ['Loading', 'When the component has a loading state'],
+    ['Error', 'When the component has an error state'],
+  ]}
+/>
+
+### Commands
+
+```bash
+npm run storybook          # this catalogue, port 6006
+npm run pds:component      # scaffold component + story stubs
+```
+
+### Further reading
+
+<DocsTable
+  headers={['Topic', 'Where']}
+  rows={[
+    ['PrimeNG Accordion API', 'https://primeng.org/accordion'],
+    ['Plectrum UI Kit', 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-'],
+    ['Story documentation standard', '.ai/rules/03-storybook.md'],
+    ['PrimeNG-first and docs figures', '.ai/rules/04-primeng.md'],
+    ['When padding is o-layout vs 06-components', '.ai/rules/09-styling-policy.md'],
+  ]}
+/>

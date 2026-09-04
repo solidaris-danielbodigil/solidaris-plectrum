@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
 import * as Stories from './copyable-text.stories';
 
 <Meta of={Stories} />
@@ -30,6 +30,7 @@ Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
 Single identifier chip. Click it to copy the value — a confirmation toast appears after a successful write.
 
 <Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
 
 ## Identifier row
 

@@ -1,0 +1,127 @@
+import type { Meta, StoryObj } from '@storybook/angular';
+import { AccordionModule } from 'primeng/accordion';
+import { Tag } from 'primeng/tag';
+
+interface AccordionStoryArgs {
+  title: string;
+  statusLabel: string;
+  expanded: boolean;
+  disabled: boolean;
+}
+
+const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
+const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
+
+const meta: Meta<AccordionStoryArgs> = {
+  tags: ['!dev'],
+  title: 'Custom components/Accordion',
+  parameters: { layout: 'padded' },
+  argTypes: {
+    title: { control: 'text', description: 'Panel header label.' },
+    statusLabel: {
+      control: 'text',
+      description: 'Status tag next to the header.',
+    },
+    expanded: {
+      control: 'boolean',
+      description: 'When true, the panel value is set so the section is open.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Disables p-accordion-panel.',
+    },
+  },
+  args: {
+    title: 'Certificat ITT',
+    statusLabel: 'Accepté',
+    expanded: true,
+    disabled: false,
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<AccordionStoryArgs>;
+
+function accordionTemplate(hostClass: string): string {
+  return `
+    <p-accordion
+      class="${hostClass}"
+      [value]="expanded ? '0' : undefined"
+      expandIcon="bi bi-chevron-down"
+      collapseIcon="bi bi-chevron-up"
+    >
+      <p-accordion-panel value="0" [disabled]="disabled">
+        <p-accordion-header>
+          <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+            <span>{{ title }}</span>
+            <p-tag severity="success" icon="bi bi-check-lg" [value]="statusLabel" />
+          </span>
+        </p-accordion-header>
+        <p-accordion-content>
+          <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  `;
+}
+
+function renderWithClass(hostClass: string): Story['render'] {
+  return (args) => ({
+    props: args,
+    moduleMetadata: { imports: [AccordionModule, Tag] },
+    template: accordionTemplate(hostClass),
+  });
+}
+
+export const Default: Story = {
+  render: renderWithClass(STOCK_CLASS),
+};
+
+export const Bordered: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+};
+
+export const Collapsed: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+  args: { expanded: false },
+};
+
+export const Disabled: Story = {
+  render: renderWithClass(BORDERED_CLASS),
+  args: { disabled: true },
+};
+
+export const Stacked: Story = {
+  render: () => ({
+    props: { value: ['0'] },
+    moduleMetadata: { imports: [AccordionModule, Tag] },
+    template: `
+      <p-accordion
+        class="c-accordion--bordered o-layout--full-width o-layout--min-w-0"
+        [multiple]="true"
+        [value]="value"
+        expandIcon="bi bi-chevron-down"
+        collapseIcon="bi bi-chevron-up"
+      >
+        <p-accordion-panel value="0">
+          <p-accordion-header>
+            <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+              <span>Certificat ITT</span>
+              <p-tag severity="success" icon="bi bi-check-lg" value="Accepté" />
+            </span>
+          </p-accordion-header>
+          <p-accordion-content>
+            <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+          </p-accordion-content>
+        </p-accordion-panel>
+        <p-accordion-panel value="1">
+          <p-accordion-header>Certificat de reprise</p-accordion-header>
+          <p-accordion-content>
+            <p class="o-layout--margin-0">Date de réception 27/12/2025</p>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    `,
+  }),
+};

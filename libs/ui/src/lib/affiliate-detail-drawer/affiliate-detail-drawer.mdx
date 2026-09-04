@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
 import * as Stories from './affiliate-detail-drawer.stories';
 
 <Meta of={Stories} />
@@ -20,6 +20,7 @@ Figma: [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8Ik
 Click the button to open the Carte affilié. Copying an identifier shows a confirmation toast on the Storybook preview frame.
 
 <Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
 
 ## Without notes
 
