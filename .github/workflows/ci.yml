@@ -23,7 +23,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Audit token drift
         run: npm run tokens:audit
@@ -36,7 +36,7 @@ jobs:
         run: npm run tokens:check-prefix
 
       - name: Rebuild generated tokens (must be committed)
-        run: npm run tokens:build && git diff --exit-code
+        run: npm run tokens:build && git diff --exit-code -- libs/styles/src/01-settings/*.generated.scss libs/ui/src/storybook/tokens.generated.ts
 
       - name: Lint token usage
         run: npm run tokens:lint
@@ -67,7 +67,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Pack libraries and build a throwaway consumer app
         run: npm run pack:smoke
@@ -85,7 +85,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build packed libraries
         run: npm run pack:libs
