@@ -3,7 +3,9 @@ import remarkGfm from 'remark-gfm';
 
 // SCSS includePaths and global styles are configured in angular.json under
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
-// webpackFinal is only set for GitHub Pages (STORYBOOK_PUBLIC_PATH).
+// Static GitHub Pages builds set STORYBOOK_PUBLIC_PATH=./ so iframe
+// module imports stay relative (an absolute /repo/storybook/ path
+// becomes .//repo/storybook/... and 404s).
 
 const pagesPublicPath = process.env['STORYBOOK_PUBLIC_PATH'];
 

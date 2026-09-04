@@ -38,7 +38,7 @@ jobs:
         run: npx ng run ui:build-storybook
         env:
           NODE_OPTIONS: --max-old-space-size=6144
-          STORYBOOK_PUBLIC_PATH: /solidaris-plectrum/storybook/
+          STORYBOOK_PUBLIC_PATH: ./
 
       - name: Assemble Pages site
         run: |
