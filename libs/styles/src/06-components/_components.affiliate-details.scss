@@ -5,7 +5,7 @@
 // 06-components/_components.affiliate-details.scss
 // c-affiliate-details — full-width filter toolbar + two-column content row.
 //
-// Layout: o-flex / o-layout / o-grid in templates.
+// Layout: o-flex / o-layout in templates.
 // Exceptions: PrimeNG .p-card-body / .p-accordionheader (no template access),
 //             scroll-padding on owned scroll wrappers.
 //
@@ -79,7 +79,7 @@
   }
 }
 
-// Category tab — label column width from token (grid layout via o-grid in template)
+// Category tab — label min width from token so badges share one axis.
 .c-affiliate-details__category-tab {
   &--disabled {
     opacity: var(--#{$pds-prefix}-disabled-opacity);
@@ -91,7 +91,7 @@
 .c-affiliate-details__category-tab-label {
   @include text-label-sm;
   line-height: 1;
-  min-width: 0;
+  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-category-label-min);
 }
 
 .c-affiliate-details__category-eye {
@@ -106,7 +106,7 @@
 
   // PrimeNG accordion header row — internal flex gap
   .p-accordionheader {
-    gap: var(--spacing-2);
+    gap: var(--#{$pds-prefix}-spacing-2);
   }
 
   .c-list__item--document,
@@ -120,7 +120,7 @@
   color: var(--#{$pds-prefix}-color-text-muted);
 }
 
-// Panel header — label + badge alignment (grid layout via o-grid in template)
+// Panel header — label + badge alignment (flex in template).
 .c-affiliate-details__category-panel-header {
   min-width: 0;
 }
@@ -128,7 +128,7 @@
 .c-affiliate-details__category-panel-label {
   @include text-label-sm;
   line-height: 1;
-  min-width: 0;
+  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-category-label-min);
 }
 
 .c-affiliate-details__category-panel-count-label {

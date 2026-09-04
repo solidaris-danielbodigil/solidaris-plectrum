@@ -1,0 +1,24 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './token-contracts.stories';
+
+<Meta of={Stories} />
+
+# Token contracts
+
+Every component declares the tokens it consumes in its `.metadata.ts`. Each row is checked against the compiled stylesheet, so a **not declared** row is a broken contract — the component references a token that no longer exists.
+
+<DocsTable
+  headers={['Origin', 'Meaning']}
+  rows={[
+    ['Figma', 'Declared and generated from tokens.json.'],
+    ['Code-owned', 'Declared in 01-settings by hand. Expected for feature tokens.'],
+    ['Not declared', 'Stale metadata. Fix the list or add the token.'],
+  ]}
+/>
+
+Search by component or token. Click a row to copy `var(--pds-…)`.
+
+<Unstyled>
+  <Canvas of={Stories.Consumed} sourceState="none" />
+</Unstyled>

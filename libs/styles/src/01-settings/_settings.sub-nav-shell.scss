@@ -13,24 +13,24 @@
 
   // Header
   --#{$pds-prefix}-space-sub-nav-shell-header-h:  52px;   // Figma: header height
-  --#{$pds-prefix}-space-sub-nav-shell-header-px: var(--spacing-2); // 16px
+  --#{$pds-prefix}-space-sub-nav-shell-header-px: var(--#{$pds-prefix}-spacing-2); // 16px
 
   // Menu sections
-  --#{$pds-prefix}-space-sub-nav-shell-section-py:   var(--spacing-1);    // 8px top/bottom
+  --#{$pds-prefix}-space-sub-nav-shell-section-py:   var(--#{$pds-prefix}-spacing-1);    // 8px top/bottom
   --#{$pds-prefix}-space-sub-nav-shell-section-px:   14px;                // 14px left/right (non-scale)
-  --#{$pds-prefix}-space-sub-nav-shell-section-gap:  var(--spacing-0-5);  // 4px between items
-  --#{$pds-prefix}-space-sub-nav-shell-section-header-py: var(--spacing-0-5); // 4px
-  --#{$pds-prefix}-space-sub-nav-shell-section-header-px: var(--spacing-1);   // 8px
+  --#{$pds-prefix}-space-sub-nav-shell-section-gap:  var(--#{$pds-prefix}-spacing-0-5);  // 4px between items
+  --#{$pds-prefix}-space-sub-nav-shell-section-header-py: var(--#{$pds-prefix}-spacing-0-5); // 4px
+  --#{$pds-prefix}-space-sub-nav-shell-section-header-px: var(--#{$pds-prefix}-spacing-1);   // 8px
 
   // Menu items
-  --#{$pds-prefix}-space-sub-nav-shell-item-py: var(--spacing-0-5);  // 4px
-  --#{$pds-prefix}-space-sub-nav-shell-item-px: var(--spacing-1);    // 8px
-  --#{$pds-prefix}-space-sub-nav-shell-item-gap: var(--spacing-0-75); // 6px icon+label gap — Figma: gap-6px
+  --#{$pds-prefix}-space-sub-nav-shell-item-py: var(--#{$pds-prefix}-spacing-0-5);  // 4px
+  --#{$pds-prefix}-space-sub-nav-shell-item-px: var(--#{$pds-prefix}-spacing-1);    // 8px
+  --#{$pds-prefix}-space-sub-nav-shell-item-gap: var(--#{$pds-prefix}-spacing-0-75); // 6px icon+label gap — Figma: gap-6px
 
   // Icons — Fixed size required: icons collapse to 0 without explicit constraint
   --#{$pds-prefix}-size-sub-nav-shell-item-icon: 20px;
 
   // Footer
-  --#{$pds-prefix}-space-sub-nav-shell-footer-py: var(--spacing-6); // 48px
-  --#{$pds-prefix}-space-sub-nav-shell-footer-px: var(--spacing-2); // 16px
+  --#{$pds-prefix}-space-sub-nav-shell-footer-py: var(--#{$pds-prefix}-spacing-6); // 48px
+  --#{$pds-prefix}-space-sub-nav-shell-footer-px: var(--#{$pds-prefix}-spacing-2); // 16px
 }

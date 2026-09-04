@@ -1,0 +1,16 @@
+<p-timeline [value]="events()" align="left">
+  <ng-template #marker let-event>
+    <p-badge [value]="event.index" size="xlarge" />
+  </ng-template>
+  <ng-template #content let-event>
+    <div class="c-docs-steps__head o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1">
+      <strong class="c-docs-steps__title">{{ event.title }}</strong>
+      @if (event.who) {
+        <p-tag [value]="event.who" [severity]="event.severity" [rounded]="true" />
+      }
+    </div>
+    @if (event.detail) {
+      <p class="c-docs-steps__detail">{{ event.detail }}</p>
+    }
+  </ng-template>
+</p-timeline>

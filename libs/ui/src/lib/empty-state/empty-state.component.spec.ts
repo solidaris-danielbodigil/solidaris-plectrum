@@ -15,15 +15,26 @@ describe('EmptyStateComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should render a random illustration from the catalog', () => {
-    const illustrationSrc = fixture.componentInstance.illustrationSrc;
+  it('should render a random illustration from the catalog by default', () => {
+    const illustrationSrc = fixture.componentInstance.illustrationSrc();
     const illustration = fixture.nativeElement.querySelector(
       '.c-empty-state__illustration',
     ) as HTMLImageElement;
 
-    expect(EMPTY_STATE_ILLUSTRATIONS).toContain(
-      illustrationSrc as (typeof EMPTY_STATE_ILLUSTRATIONS)[number],
-    );
+    expect(EMPTY_STATE_ILLUSTRATIONS).toContain(illustrationSrc);
     expect(illustration.getAttribute('src')).toBe(illustrationSrc);
+  });
+
+  it('should pin a specific catalog illustration', () => {
+    fixture.componentRef.setInput('illustration', 'people-search');
+    fixture.detectChanges();
+
+    const illustration = fixture.nativeElement.querySelector(
+      '.c-empty-state__illustration',
+    ) as HTMLImageElement;
+
+    expect(illustration.getAttribute('src')).toBe(
+      'assets/empty-illustrations/people-search.svg',
+    );
   });
 });

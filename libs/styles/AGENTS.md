@@ -10,3 +10,4 @@ Related rules:
 - [`.ai/rules/02-scss-tokens.md`](../../.ai/rules/02-scss-tokens.md) — ITCSS layers and token authoring
 - [`.ai/rules/04-primeng.md`](../../.ai/rules/04-primeng.md) — PrimeNG-first policy
 - [`.ai/rules/05-bemit-naming.md`](../../.ai/rules/05-bemit-naming.md) — BEMIT prefixes and structure
+- [`.ai/rules/10-css-ssot.md`](../../.ai/rules/10-css-ssot.md) — docs and audits read the CSSOM, never restate token values or class lists

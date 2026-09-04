@@ -14,9 +14,8 @@
 //   align-content          → use  o-flex--align-content-{value}
 //   justify-content        → use  o-flex--justify-content-{value}
 //
-// For CSS grid layout (display: grid, grid-template-*, grid-auto-flow,
-// place/justify/align-items|content|self) use the o-grid object instead —
-// see 05-objects/_objects.grid.scss.
+// Equal columns and responsive spans live here. Bespoke `display: grid` /
+// `grid-template-*` (named areas, asymmetric tracks) stay in component SCSS.
 //
 // Apply these classes as BEM mixes directly in HTML templates.
 // See: .ai/rules/08-object-classes.md

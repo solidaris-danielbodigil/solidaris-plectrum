@@ -1,25 +1,20 @@
-<!-- PrimeNG Toast outlet — bottom-center, auto-dismiss 2 s -->
-<p-toast position="bottom-center" [life]="2000" />
-
-<div class="c-iconography o-layout--padding-inline-6 o-layout--padding-block-end-6">
-
-  <!-- ── Sticky toolbar ───────────────────────────────────────── -->
+<div
+  class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-end-6"
+>
   <pds-toolbar [sticky]="true">
-
     <ng-container slot="start">
-      <!-- Search — p-iconField + InputText directive -->
-      <p-iconField class="c-iconography-toolbar__search o-flex__item--grow-1">
+      <p-iconField class="c-token-explorer__search">
         <p-inputIcon styleClass="bi bi-search" />
         <input
           pInputText
           type="text"
           role="searchbox"
           autocomplete="off"
-          placeholder="Search icons…"
+          placeholder="Search name…"
+          aria-label="Search icons"
+          class="c-token-explorer__search-input"
           [value]="searchQuery()"
           (input)="searchQuery.set($any($event.target).value)"
-          aria-label="Search icons"
-          class="c-iconography-toolbar__search-input"
         />
         <p-inputicon>
           <pds-input-clear
@@ -30,78 +25,77 @@
         </p-inputicon>
       </p-iconField>
 
-      <!-- Variant filter — p-selectButton -->
       <p-selectButton
         [options]="variantOptions"
         [ngModel]="variantFilter()"
         (ngModelChange)="variantFilter.set($event)"
         optionLabel="label"
         optionValue="value"
+        [allowEmpty]="false"
         aria-label="Filter by variant"
       />
 
-      <!-- Size filter — p-selectButton -->
       <p-selectButton
         [options]="sizeOptions"
         [ngModel]="iconSize()"
         (ngModelChange)="iconSize.set($event)"
         optionLabel="label"
         optionValue="value"
+        [allowEmpty]="false"
         aria-label="Icon preview size"
       />
     </ng-container>
 
     <ng-container slot="end">
-      <!-- Live count — PrimeNG Badge -->
       <p-badge
-        [value]="filteredIcons().length + ' icons'"
         severity="secondary"
         aria-live="polite"
+        [value]="filteredIcons().length + ' / ' + totalCount + ' icons'"
       />
     </ng-container>
-
   </pds-toolbar>
 
-  <!-- ── Icon grid ──────────────────────────────────────────────── -->
-  <!-- o-flex--wrap: wrapping row | o-layout--gap-2: 1rem gap | o-flex__item--2: 2/12 cols by default,
-       narrower on xs, wider on sm so 6 → 4 → 3 → 2 icons per row as the viewport shrinks -->
-  <ul class="c-iconography__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0" role="list">
-    @for (name of filteredIcons(); track name) {
-      <li
-        class="c-iconography__item o-flex__item o-flex__item--4 o-flex__item--3@sm o-flex__item--2@md o-flex__item--2@lg"
-        [class.is-hovered]="hoveredIcon() === name"
-        (mouseenter)="hoveredIcon.set(name)"
-        (mouseleave)="hoveredIcon.set(null)"
-        (click)="copyToClipboard(name)"
-        [attr.aria-label]="'Copy bi bi-' + name + ' to clipboard'"
-        role="button"
-        tabindex="0"
-        (keydown.enter)="copyToClipboard(name)"
-        (keydown.space)="$event.preventDefault(); copyToClipboard(name)"
-      >
-        <p-card styleClass="c-iconography__card">
-          <!-- ng-template drives the card's content slot so we can apply o-flex mix -->
-          <ng-template #content>
-            <div class="o-flex o-flex--col o-flex--align-items-center o-layout--gap-2 o-layout--padding-2">
-              <span class="c-iconography__preview" aria-hidden="true">
-                <i class="bi bi-{{ name }}" [style.font-size]="iconSize()"></i>
-              </span>
-              <span class="c-iconography__name">{{ name }}</span>
-            </div>
-          </ng-template>
-        </p-card>
-        <!-- Copy-hint: always in DOM, revealed by CSS opacity transition on li:hover -->
-        <span class="c-iconography__copy-hint" aria-hidden="true">
-          <i class="bi bi-clipboard"></i> Copy
-        </span>
-      </li>
-    }
-  </ul>
+  <section class="c-token-explorer__section">
+    <h3 class="c-token-explorer__section-title">
+      Catalog
+      <span class="c-token-explorer__section-count">{{ filteredIcons().length }}</span>
+    </h3>
+
+    <ul
+      class="c-token-explorer__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0"
+      role="list"
+    >
+      @for (name of filteredIcons(); track name) {
+        <li
+          class="c-token-explorer__item o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
+          (click)="copyToClipboard(name)"
+        >
+          <span
+            class="c-token-explorer__preview c-token-explorer__preview--icon"
+            [style.--pds-token-explorer-icon-size]="previewSize()"
+          >
+            <i class="bi bi-{{ name }}" aria-hidden="true"></i>
+          </span>
+
+          <div class="c-token-explorer__body">
+            <p class="c-token-explorer__name">{{ name }}</p>
+            <p class="c-token-explorer__value">bi bi-{{ name }}</p>
+          </div>
+
+          <button
+            type="button"
+            class="c-token-explorer__copy"
+            [attr.aria-label]="'Copy bi bi-' + name"
+            (click)="copyToClipboard(name); $event.stopPropagation()"
+          >
+            <i class="bi bi-clipboard" aria-hidden="true"></i>
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
 
   @if (filteredIcons().length === 0) {
-    <p class="c-iconography__empty o-layout--padding-7">
-      No icons match "{{ searchQuery }}"
-    </p>
+    <p class="c-token-explorer__empty">No icon matches “{{ searchQuery() }}”.</p>
   }
-
 </div>

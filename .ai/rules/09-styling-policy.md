@@ -2,6 +2,8 @@
 
 > Operational rules for `libs/styles` — when to use template utilities vs component SCSS.
 > Layout object classes (`o-flex`, `o-layout`) are detailed in [08-object-classes.md](./08-object-classes.md).
+> Documenting these utilities is governed by [10-css-ssot.md](./10-css-ssot.md) — enumerate
+> the generated classes from the CSSOM, never retype them in a story.
 
 ---
 
@@ -9,7 +11,7 @@
 
 1. [SSOT Order](#1-ssot-order)
 2. [Layout — Templates First](#2-layout--templates-first)
-3. [CSS Grid — Templates First](#3-css-grid--templates-first)
+3. [Column layout — Flex Grid](#3-column-layout--flex-grid)
 4. [Visual Chrome Utilities](#4-visual-chrome-utilities)
 5. [Allowed Exceptions in Component SCSS](#5-allowed-exceptions-in-component-scss)
 6. [Semantic Border Tokens](#6-semantic-border-tokens)
@@ -47,27 +49,25 @@ Figma is reference only — not SSOT for PrimeNG chrome.
 | `gap`, `padding`, `margin` | `o-layout--gap-*`, `o-layout--padding-*`, `o-layout--margin-*` (use `o-layout--margin-0` for heading resets) |
 | `overflow` | `o-layout--overflow-*` |
 | `min-width: 0` / `min-height: 0` | `o-layout--min-w-0` / `o-layout--min-h-0` |
-| CSS grid layout | `o-grid` + `o-layout--gap-*` (see below) |
+| Equal columns / spans | `o-flex` + `o-flex__item--{n}` (see below) |
 
-Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_objects.layout.scss`, `_objects.grid.scss`
+Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_objects.layout.scss`
 
 ---
 
-## 3. CSS Grid — Templates First
+## 3. Column layout — Flex Grid
 
-**Rule:** `display: grid`, `grid-template-columns` / `rows`, `grid-auto-flow`, and container alignment on elements we own in Angular templates must use `o-grid` — **not** `06-components/` SCSS.
+**Rule:** equal columns and responsive spans use `o-flex` / `o-flex__item--{n}` — **not** a parallel CSS Grid object.
 
 | Need | Use |
 |------|-----|
-| Equal columns (1–12) | `o-grid o-grid--cols-{n}` |
-| Responsive reflow | `o-grid--auto-fit` / `o-grid--auto-fill` (+ optional `--pds-grid-min`) |
-| Bespoke track list | `o-grid` + `style="--pds-grid-template-columns: …"` (Tier 2 escape hatch) |
+| Equal / spanning columns | `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}` suffixes) |
+| Alignment | `o-flex--align-items-*` / `o-flex--justify-content-*` |
 | Gap | `o-layout--gap-*` on the same element (BEM mix) |
-| Alignment | `o-grid--align-items-*`, `o-grid--justify-items-*`, `o-grid--justify-content-*`, etc. |
 
-**Tier 3 exception:** named `grid-template-areas` or complex row templates stay in component SCSS — document with a comment.
+Bespoke `display: grid` / `grid-template-*` (named areas, asymmetric tracks) stay in component SCSS — document with a comment.
 
-Reference: `libs/styles/src/05-objects/_objects.grid.scss`
+Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`
 
 ---
 
@@ -94,12 +94,12 @@ Reference: `libs/styles/src/07-utilities/_utilities.{borders,radius,shadows}.scs
 
 1. **PrimeNG / third-party internals** — `.p-card-body`, `.p-tree-node-content`, `.p-accordionheader`, etc. (no template hook)
 2. **Component-token sizing** — fixed label columns, asymmetric tile padding, bar height when value is not on `--spacing-*` scale
-3. **Tier 3 CSS grid** — named areas / complex row templates only; document with a comment
+3. **Bespoke CSS grid** — named areas / asymmetric tracks only; document with a comment. Prefer `o-flex` for equal columns.
 4. **Scroll affordance** — `scroll-padding-*`, `scroll-margin-*` on owned scroll wrappers
 5. **Typography resets** — `margin: 0` on headings inside components
 6. **State-driven visual chrome** — hover/selected/expanded borders, shadows, radii tied to component tokens
-7. **Absolute positioning / collapse animations** — overlay panels, discrete `display` reveals (`c-nav-shell`, `c-iconography__copy-hint`)
-8. **Doc primitives** — `c-demo-cell` / `c-spacing-swatch` in Storybook inline markup; pair with `o-flex` / `o-layout` / `o-grid` in the story template string
+7. **Absolute positioning / collapse animations** — overlay panels, discrete `display` reveals (`c-nav-shell`, `c-token-explorer__copy`)
+8. **Doc primitives** — `c-demo-cell` / `c-spacing-swatch` in Storybook inline markup; pair with `o-flex` / `o-layout` in the story template string
 
 ---
 

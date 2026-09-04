@@ -77,15 +77,15 @@
 }
 
 // ── Spacing token swatch ─────────────────────────────────────────────────────
-// Pair swatch grids with `o-grid o-grid--cols-3 o-layout--gap-1` in story templates.
+// Pair swatch grids with `o-flex` + `o-flex__item` spans and `o-layout--gap-1` in story templates.
 // NOTE: flex layout stays here — doc primitive reused across many inline story
 // templates (rules §5 exception).
 .c-spacing-swatch {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-0-5);
-  padding: var(--spacing-1);
+  gap: var(--#{$pds-prefix}-spacing-0-5);
+  padding: var(--#{$pds-prefix}-spacing-1);
   border: 1px solid var(--#{$pds-prefix}-color-surface-border);
   border-radius: var(--#{$pds-prefix}-radius-md);
   background: var(--#{$pds-prefix}-color-surface-default);

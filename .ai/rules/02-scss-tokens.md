@@ -1,6 +1,10 @@
 # Rules — 02 SCSS & Design Tokens
 
 > ⛔ = hard stop — violations block merge
+>
+> This file governs where tokens are **declared**. Anything that **reads** them —
+> Storybook pages, audits, generators — must follow [10-css-ssot.md](./10-css-ssot.md):
+> the compiled stylesheet is the source of truth, never a hand-written list.
 
 ---
 
@@ -10,7 +14,7 @@
 2. [CSS Custom Properties Only](#2-css-custom-properties-only-)
 3. [Token-First — Add to 01-settings Before Use](#3-token-first--add-to-01-settings-before-use-)
 4. [ITCSS Layer Discipline](#4-itcss-layer-discipline)
-5. [Use @apply for Layout and Spacing](#5-use-apply-for-layout-and-spacing-)
+5. [Use o-flex / o-layout for Layout and Spacing](#5-use-o-flex--o-layout-bem-mixes-for-layout-and-spacing-)
 6. [Content-First Sizing](#6-content-first-sizing)
 7. [PrimeNG Token Bridge — Declare in 01-settings](#7-primeng-token-bridge--declare-in-01-settings-)
 
@@ -74,15 +78,15 @@ If a Figma value has no existing `--pds-*` token:
 
 | Token type | File |
 |---|---|
-| Colour (raw palette) | `_settings.colors-primitive.scss` |
-| Colour (role/intent) | `_settings.colors-semantic.scss` |
-| Spacing / sizing | `_settings.spacing.scss` |
-| Border radius | `_settings.radius.scss` |
+| Colour (raw palette) | `_settings.colors-primitive.generated.scss` (+ hand extras) |
+| Colour (role/intent) | `_settings.colors-semantic.generated.scss` (+ hand extras) |
+| Spacing / sizing | `_settings.spacing.scss` (code-owned) |
+| Border radius | `_settings.radius.generated.scss` |
 | Typography (raw) | `_settings.typography-primitive.scss` |
 | Typography (roles) | `_settings.typography-semantic.scss` |
-| Shadows | `_settings.shadows.scss` |
-| Transitions | `_settings.transitions.scss` |
-| Focus ring | `_settings.focus.scss` |
+| Shadows | `_settings.shadows.generated.scss` (+ hand extras) |
+| Transitions | `_settings.transitions.generated.scss` |
+| Focus ring | `_settings.focus.generated.scss` |
 | Global (opacity, icon size) | `_settings.globals.scss` |
 | PrimeNG token bridge | `_settings.{primeng-component}.scss` (e.g. `_settings.accordion.scss`) |
 
@@ -96,8 +100,8 @@ If a Figma value has no existing `--pds-*` token:
 | 02-tools | `02-tools/` | — | Mixins, functions — no CSS output |
 | 03-generic | `03-generic/` | — | Reset / normalize |
 | 04-elements | `04-elements/` | — | Bare HTML element defaults |
-| 05-objects | `05-objects/` | `o-` | Layout patterns — `@apply` OK |
-| 06-components | `06-components/` | `c-` | BEM components + PrimeNG wrappers — `@apply` OK |
+| 05-objects | `05-objects/` | `o-` | Layout patterns — BEM object classes only |
+| 06-components | `06-components/` | `c-` | BEM components + PrimeNG wrappers — no Tailwind / `@apply` |
 | 07-utilities | `07-utilities/` | `u-` | Single-purpose helpers |
 
 Every SCSS change must land in the correct layer. Never write styles outside `libs/styles`.
@@ -106,11 +110,11 @@ Every SCSS change must land in the correct layer. Never write styles outside `li
 
 ## 5. Use `o-flex` / `o-layout` BEM mixes for Layout and Spacing ⛔
 
-Layout and spacing on the global `--spacing-*` scale must be expressed as **object-class BEM mixes in HTML templates** — never as CSS properties in `06-components` SCSS files.
+Layout and spacing on the global `--pds-spacing-*` scale must be expressed as **object-class BEM mixes in HTML templates** — never as CSS properties in `06-components` SCSS files.
 
 ```html
 <!-- ❌ Wrong — flex/gap in component SCSS -->
-<!-- 06-components/_components.card.scss: .c-card { display: flex; gap: var(--spacing-2); } -->
+<!-- 06-components/_components.card.scss: .c-card { display: flex; gap: var(--pds-spacing-2); } -->
 
 <!-- ✅ Correct — BEM mix in template -->
 <div class="c-card o-flex o-flex--col o-layout--gap-2">
@@ -147,7 +151,7 @@ Everything else — container heights, item heights, expanded widths — must em
 .c-nav-shell__link { min-height: 40px; }  // ← forces a height that should come from py + line-height
 
 // ✅ Correct — content-driven
-.c-card { @apply flex flex-col; min-width: 0; }
+.c-card { min-width: 0; } /* layout via o-flex o-flex--col in the template */
 .c-nav-shell__logo { padding: var(--pds-space-nav-shell-item-px); } // height = padding + SVG height
 .c-nav-shell__link { padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px); }
 

@@ -19,9 +19,9 @@ import {
 import { TagModule } from 'primeng/tag';
 import { CopyableTextComponent } from '../copyable-text';
 import {
-  PDS_DRAWER_APPEND_TO,
   PDS_DRAWER_CONTENT_STYLE,
   PDS_PANEL_BORDER_BOTTOM_STYLE,
+  pdsOverlayAppendTo,
   type DetailListRow,
   type DrawerPosition,
 } from '../drawer';
@@ -150,7 +150,7 @@ const NOTE_TAG_ICON: Record<AffiliateDetailDrawerNoteSeverity, string> = {
   },
 })
 export class AffiliateDetailDrawerComponent {
-  protected readonly drawerAppendTo = PDS_DRAWER_APPEND_TO;
+  protected readonly drawerAppendTo = pdsOverlayAppendTo();
   protected readonly drawerPanelStyle = PDS_DRAWER_CONTENT_STYLE;
   protected readonly drawerPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
 

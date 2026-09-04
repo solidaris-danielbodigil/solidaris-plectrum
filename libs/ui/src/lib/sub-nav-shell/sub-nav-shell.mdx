@@ -1,0 +1,70 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './sub-nav-shell.stories';
+
+<Meta of={Stories} />
+
+# Sub Nav Shell
+
+Second-level navigation sidebar. Child of `NavShellComponent` — opens when a nav-shell item is clicked.
+
+Renders a fixed-width panel with:
+
+- A heading header with the module/app title
+- Optional featured items (sections without a label) rendered above the accordion
+- Collapsible grouped sections using PrimeNG Accordion (`p-accordion`)
+- Menu items with optional leading icon and PrimeNG Badge (`p-badge`) counter
+- A version/changelog footer
+
+Figma: [Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
+
+## Maatschappelijk Werk
+
+Default state matching the Figma variant. “Lopend” is the active item. Danger badge on “Onvolledig” (red).
+
+<Canvas of={Stories.MaatschappelijkWerk} />
+
+## Processen
+
+“Processen” app variant from Figma.
+
+<Canvas of={Stories.Processen} />
+
+## Financiële Controle
+
+“Financiële Controle” app variant from Figma.
+
+<Canvas of={Stories.FinancieleControle} />
+
+## Collapsed section
+
+Section “Dossiers” rendered collapsed via the `collapsed` property.
+
+<Canvas of={Stories.WithCollapsedSection} />
+
+## Disabled items
+
+Items in their disabled state — reduced opacity, no interaction.
+
+<Canvas of={Stories.WithDisabledItems} />
+
+## No footer
+
+When `version` is empty the footer is hidden entirely.
+
+<Canvas of={Stories.NoFooter} />
+
+## Empty
+
+No sections provided. Header and footer still render.
+
+<Canvas of={Stories.Empty} />
+
+## iCRM
+
+iCRM Audit variant (Figma [node 20:1447](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=20-1447)). Demonstrates **interleaved standalone items** between accordion sections — “Journal de contact”, “Dispatcher”, and “Dispatcher 315” sit between the “Créer Ticket” accordion and the “Files de traitement” / “Liens utiles” accordions.
+
+<Canvas of={Stories.ICRM} />
+
+## API
+
+<ArgTypes of={Stories} />

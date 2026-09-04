@@ -1,0 +1,51 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './icon.stories';
+
+<Meta of={Stories} />
+
+# Icon
+
+Universal icon primitive for the Plectrum Design System. Renders a Bootstrap Icons class or a custom SVG from `IconRegistry`.
+
+- **`source="class"`** (default) — pass any Bootstrap Icons class string, e.g. `bi bi-house`
+- **`source="svg"`** — pass a registry key previously registered via `IconRegistry.register(name, svg)`
+- **`size`** — `xs | sm | md | lg | xl` — maps to `--pds-icon-size-*` tokens
+- **`label`** — when provided the icon is non-decorative (`role="img"`, `aria-label`); when omitted it is `aria-hidden`
+
+Figma: [Icons — Plectrum UI Kit](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-)
+
+The searchable catalog lives under [Foundations / Iconography](?path=/docs/foundations-iconography--docs). This page documents the `pds-icon` component only.
+
+## Default
+
+Default Bootstrap Icons class icon at `md` size, decorative (`aria-hidden`).
+
+<Canvas of={Stories.Default} />
+
+## Size variants
+
+All five size tokens: `xs`, `sm`, `md`, `lg`, `xl`.
+
+<Canvas of={Stories.SizeVariants} />
+
+## Standalone accessible
+
+Non-decorative icon with `label` — gets `role="img"` and `aria-label`.
+
+<Canvas of={Stories.StandaloneAccessible} />
+
+## Custom SVG from registry
+
+Custom SVG registered via `IconRegistry.register()` and rendered via `source="svg"`.
+
+<Canvas of={Stories.CustomSvgFromRegistry} />
+
+## Colour inheritance
+
+Icons inherit `currentColor` from the surrounding text colour.
+
+<Canvas of={Stories.ColourInheritance} />
+
+## API
+
+<ArgTypes of={Stories} />

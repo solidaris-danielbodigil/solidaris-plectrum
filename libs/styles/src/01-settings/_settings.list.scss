@@ -31,13 +31,13 @@
   --#{$pds-prefix}-color-list-skeleton-bg: var(--#{$pds-prefix}-color-surface-muted);
 
   // ── Sizes ───────────────────────────────────────────────────────────────────
-  --#{$pds-prefix}-size-list-icon: calc(24 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-list-timeline-width: calc(6 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-list-timeline-cap-marker: calc(4 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-list-timeline-cap-arrow: calc(9 / 28 * var(--base-unit));
-  --#{$pds-prefix}-size-list-timeline-marker: var(--spacing-1);
-  --#{$pds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-list-icon: calc(24 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-list-timeline-gutter: calc(64 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-list-timeline-width: calc(6 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-list-timeline-cap-marker: calc(4 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-list-timeline-cap-arrow: calc(9 / 28 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-list-timeline-marker: var(--#{$pds-prefix}-spacing-1);
+  --#{$pds-prefix}-size-list-count-badge-min: calc(24 / 14 * var(--#{$pds-prefix}-base-unit));
   --#{$pds-prefix}-border-width-list: 1px;
   --#{$pds-prefix}-border-width-list-row: 1px;
   --#{$pds-prefix}-border-width-list-selected: var(--#{$pds-prefix}-border-width-list-row);

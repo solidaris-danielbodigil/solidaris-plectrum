@@ -5,7 +5,7 @@ export const EmptyStateMetadata: ComponentMetadata = {
     name: 'EmptyState',
     category: 'molecules',
     description:
-      'Reusable empty-state placeholder with a randomly selected illustrated hero and message text.',
+      'Reusable empty-state placeholder with an illustrated hero (random by default, or a pinned catalog id) and message text.',
     type: 'feedback',
     path: 'libs/ui/src/lib/empty-state/empty-state.component.ts',
     primeNgComponent: undefined,
@@ -21,7 +21,15 @@ export const EmptyStateMetadata: ComponentMetadata = {
       {
         name: 'Empty detail panel',
         description: 'Use the component with a short heading and one supporting sentence.',
-        composition: '<(pds|app|lib)-empty-state title="No results" description="Try another search." />',
+        composition:
+          '<pds-empty-state title="No results" description="Try another search." />',
+      },
+      {
+        name: 'Pinned illustration',
+        description:
+          'Pass illustration to lock a catalog SVG instead of the default random pick.',
+        composition:
+          '<pds-empty-state title="No results" description="Try another search." illustration="people-search" />',
       },
     ],
     antiPatterns: [
@@ -37,16 +45,16 @@ export const EmptyStateMetadata: ComponentMetadata = {
   },
   tokens: {
     consumed: [
-      '--text-heading-md-family',
-      '--text-heading-md-size',
-      '--text-heading-md-weight',
-      '--text-heading-md-line-height',
-      '--text-heading-md-spacing',
-      '--text-body-md-family',
-      '--text-body-md-size',
-      '--text-body-md-weight',
-      '--text-body-md-line-height',
-      '--text-body-md-spacing',
+      '--pds-text-heading-md-family',
+      '--pds-text-heading-md-size',
+      '--pds-text-heading-md-weight',
+      '--pds-text-heading-md-line-height',
+      '--pds-text-heading-md-spacing',
+      '--pds-text-body-md-family',
+      '--pds-text-body-md-size',
+      '--pds-text-body-md-weight',
+      '--pds-text-body-md-line-height',
+      '--pds-text-body-md-spacing',
       '--pds-color-text',
       '--pds-color-text-muted',
     ],

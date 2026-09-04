@@ -2,23 +2,10 @@
 
 // =============================================================================
 // 01-settings/_settings.radius.scss
-// Border radius tokens — Figma Foundations: Radius collection (8 stops).
-// Source: Figma Foundations — jH0paYnBCco2Ye6ysNcWrr — Radius collection
-//         libs/plectrum/src/Plectrum_v0.6/base.ts (primitive.borderRadius)
-//
-// RULES:
-//   - Never hardcode border-radius values in components.
+// Code-owned extras — Figma stops (none–xl) are generated.
 // =============================================================================
 
 :root {
-
-  --#{$pds-prefix}-radius-none:  0;
-  --#{$pds-prefix}-radius-xs:    2px;
-  --#{$pds-prefix}-radius-sm:    4px;
-  --#{$pds-prefix}-radius-md:    8px;
-  --#{$pds-prefix}-radius-lg:    10px;
-  --#{$pds-prefix}-radius-xl:    12px;
   --#{$pds-prefix}-radius-2xl:   16px;
   --#{$pds-prefix}-radius-pill:  9999px;
-
 }

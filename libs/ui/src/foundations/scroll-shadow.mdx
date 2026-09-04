@@ -1,0 +1,108 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './scroll-shadow.stories';
+
+<Meta of={Stories} />
+
+# Scroll shadow
+
+Scroll-driven edge fades for scroll containers — a visual cue that more content exists beyond the visible area. **Pure CSS** via [`scroll-timeline`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline); no JavaScript.
+
+## Block axis — `.o-scroll-shadow` (vertical)
+
+Top/bottom fades on a **block-axis** scroller:
+
+- **At the top** → only the **bottom** edge fades in.
+- **Mid-scroll** → **both** edges show.
+- **At the end** → only the **top** edge shows.
+
+```html
+<div class="o-scroll-shadow o-layout--overflow-y-auto o-layout--min-h-0" style="max-height: 20rem">
+  …tall content…
+</div>
+```
+
+## Inline axis — `.o-scroll-shadow--inline` (horizontal)
+
+Start/end fades on an **inline-axis** scroller (left/right in LTR):
+
+- **At the start** → only the **end** edge fades in.
+- **Mid-scroll** → **both** edges show.
+- **At the end** → only the **start** edge shows.
+
+```html
+<div
+  class="o-scroll-shadow--inline o-layout--overflow-x-auto o-layout--min-w-0"
+  style="max-width: 20rem"
+>
+  <div class="o-flex o-flex--row o-layout--gap-1 o-layout--padding-2">
+    …wide content…
+  </div>
+</div>
+```
+
+## Mixins (containers you don't own)
+
+```scss
+@use '../02-tools/tools.scroll-shadow' as *;
+
+.c-my-panel__body {
+  display: block;
+  @include scroll-shadow;          // block / vertical
+}
+
+.c-my-toolbar__track {
+  @include scroll-shadow-inline;   // inline / horizontal (sets display: flex)
+}
+```
+
+## Requirements
+
+- The element must be the **scroll container**.
+- Block axis: constrained **height** (`max-height`, flex `min-h-0`, etc.).
+- Inline axis: constrained **width** (`max-width`, flex `min-w-0`, etc.).
+- Block axis scrollers inside flex columns need `display: block` on the scroller (the object class sets this).
+
+## Tuning
+
+<DocsTable
+  headers={['Token', 'Default', 'Controls']}
+  rows={[
+    ['--pds-size-scroll-shadow-height', '--pds-spacing-3', 'Fade depth (block size on vertical, inline size on horizontal)'],
+    ['--pds-color-scroll-shadow', '--pds-color-transparent-white-80', 'Fade colour'],
+  ]}
+/>
+
+## Browser support
+
+Scroll-driven animations are **Chromium-only** today. Elsewhere it degrades gracefully to **no shadow**.
+
+Styles: `libs/styles/src/05-objects/_objects.scroll-shadow.scss` · Mixins: `libs/styles/src/02-tools/_tools.scroll-shadow.scss` · Tokens: `libs/styles/src/01-settings/_settings.scroll-shadow.scss`
+
+## Vertical (block axis)
+
+Scroll down: bottom fade at rest → both edges mid-scroll → top fade only at the end.
+
+<Canvas of={Stories.Vertical} />
+
+## Horizontal (inline axis)
+
+Scroll sideways: end fade at rest → both edges mid-scroll → start fade only at the end.
+
+<Canvas of={Stories.Horizontal} />
+
+## In a flex column
+
+Fixed header + scrollable body with vertical edge fades + fixed footer. Body uses `o-layout--min-h-0` so it can shrink inside the flex column.
+
+<Canvas of={Stories.InFlexColumn} />
+
+## In a flex row
+
+Fixed start cap + scrollable track with horizontal edge fades + fixed end cap. Track uses `o-layout--min-w-0` so it can shrink inside the flex row.
+
+<Canvas of={Stories.InFlexRow} />
+
+## API
+
+<ArgTypes of={Stories} />

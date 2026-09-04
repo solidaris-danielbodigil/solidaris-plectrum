@@ -19,5 +19,5 @@
 
   // Structural
   --#{$pds-prefix}-size-doc-demo-cell-min-h:  2.5rem;
-  --#{$pds-prefix}-size-doc-demo-swatch:      var(--spacing-1);  // default swatch bar size (8px)
+  --#{$pds-prefix}-size-doc-demo-swatch:      var(--#{$pds-prefix}-spacing-1);  // default swatch bar size (8px)
 }

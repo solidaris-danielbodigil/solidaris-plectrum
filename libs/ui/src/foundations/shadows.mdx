@@ -1,0 +1,45 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './shadows.stories';
+
+<Meta of={Stories} />
+
+# Shadows
+
+Elevation only. Focus rings and status outlines are a separate category. Overlay shadows are generated from the Figma overlay tokens.
+
+Pick by the role of the surface, not by how strong the shadow looks — that keeps a popover and a select panel consistent across every app. Resting card elevation utilities live on [Foundations / Elevation](?path=/docs/foundations-elevation--docs).
+
+## How to use
+
+1. Match the shadow to the surface role: select panels, popovers, modals and navigation each have one.
+2. Use `u-shadow-*` for demos; point a component token at the stop in `01-settings` for real components.
+
+## When to reach for it
+
+- An overlay token for anything that floats above the page.
+- `--pds-shadow-sm` / `md` for resting card and panel chrome.
+
+Do not compose your own `box-shadow` offsets in `06-components`. Do not use elevation to signal focus — use the [Focus](?path=/docs/foundations-focus--docs) tokens.
+
+```scss
+// 01-settings/_settings.drawer.scss
+:root {
+  --pds-shadow-drawer: var(--pds-shadow-overlay-navigation);
+}
+```
+
+Declared in `_settings.shadows.generated.scss` and `_settings.shadows.scss`. Classes: `.u-shadow-{stop}`.
+
+<DocsTable
+  headers={['Section', 'When']}
+  rows={[
+    ['Elevation scale', 'Resting chrome. sm for cards, md for raised panels, xl for drawers.'],
+    ['Overlay', 'Floating surfaces — modal, select, popover, navigation. Generated from Figma.'],
+    ['Form', 'Input chrome.'],
+  ]}
+/>
+
+<Unstyled>
+  <Canvas of={Stories.Overlay} sourceState="none" />
+</Unstyled>

@@ -1,0 +1,32 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './input-clear.stories';
+
+<Meta of={Stories} />
+
+# Input Clear
+
+Reusable clear affordance for `pInputText` fields. Uses the same PrimeNG `times` SVG as `showClear` on autocomplete, select, and multiselect (14×14 via `--p-icon-size`).
+
+Always keep the control in the DOM and toggle `[visible]` so `p-iconfield` padding stays reserved.
+
+## Icon field
+
+Clear button inside a PrimeNG `p-iconfield`.
+
+<Canvas of={Stories.IconField} />
+
+## Search with leading icon
+
+Leading search icon plus trailing clear control.
+
+<Canvas of={Stories.SearchWithLeadingIcon} />
+
+## In input group
+
+Clear control composed inside a PrimeNG input group.
+
+<Canvas of={Stories.InInputGroup} />
+
+## API
+
+<ArgTypes of={Stories} />

@@ -1,23 +1,19 @@
-import { Meta, Story, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './iconography.stories';
 
 <Meta of={Stories} />
 
 # Iconography
 
-The Plectrum Design System uses **Bootstrap Icons** as its default icon set.
-All icons are available via the `<(pds|app|lib)-icon>` component:
+Size tokens and the Bootstrap Icons catalog, on the same token blocks as Colors and Typography. Search, filter, and click a card to copy.
+
+This page is the **inventory**. The Angular primitive that renders one icon is [`pds-icon`](?path=/docs/custom-components-icon--docs) under **Custom components / Icon**. Keep both: this page answers “which icon and which size?”, that page answers “how do I render it?”.
 
 ```html
-<!-- Bootstrap Icon (default) -->
-<(pds|app|lib)-icon icon="bi bi-house" />
-<(pds|app|lib)-icon icon="bi bi-house" size="lg" />
-
-<!-- Non-decorative (standalone) -->
-<(pds|app|lib)-icon icon="bi bi-bell" label="Notifications" />
-
-<!-- Custom SVG from registry -->
-<(pds|app|lib)-icon icon="logo-solidaris" source="svg" size="xl" />
+<pds-icon icon="bi bi-house" />
+<pds-icon icon="bi bi-house" size="lg" />
+<pds-icon icon="bi bi-bell" label="Notifications" />
+<pds-icon icon="logo-solidaris" source="svg" size="xl" />
 ```
 
 Custom icons are exported from Figma as SVG and registered at app startup:
@@ -28,12 +24,35 @@ const registry = inject(IconRegistry);
 registry.register('logo-solidaris', rawSvgString);
 ```
 
----
+Figma: [Foundations — Iconography](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390)
+
+## How to use
+
+1. Pick a glyph from the catalog — copy `bi bi-{name}` into `<pds-icon icon="…">`.
+2. Size with `xs | sm | md | lg | xl`. Those steps are `--pds-icon-size-*` from `_settings.globals.scss`.
+3. In SCSS, size through `var(--pds-icon-size-md)` (or a component token that aliases it). Never hardcode `font-size` on an icon.
+
+## When to reach for it
+
+- Choosing a Bootstrap Icons class for `pds-icon`.
+- Setting or documenting an icon size token.
+
+Do not invent a sixth size. Do not put a raw `<i class="bi …">` in an app template when `pds-icon` covers the case.
+
+Declared in `_settings.globals.scss`. Component: [`pds-icon`](?path=/docs/custom-components-icon--docs).
+
+## Size tokens
+
+Each card is a `--pds-icon-size-*` token. The house glyph is drawn at the real token size. Click to copy `var()`, the name, or the computed value.
+
+<Unstyled>
+  <Canvas of={Stories.Sizes} sourceState="none" />
+</Unstyled>
 
 ## Icon browser
 
-Search by name, filter by variant, and **click any icon** to copy its class string to the clipboard.
+Search by name, filter Regular / Filled, and preview at a size token. **Click any card** to copy `bi bi-{name}`.
 
 <Unstyled>
-  <Story of={Stories.AllIcons} />
+  <Canvas of={Stories.AllIcons} sourceState="none" />
 </Unstyled>

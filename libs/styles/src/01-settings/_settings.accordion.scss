@@ -14,11 +14,11 @@
   // Bordered panel stack — Figma iSHARE-Audit node 544:6474
   --#{$pds-prefix}-color-accordion-bordered-section-bg: var(--#{$pds-prefix}-color-content-bg);
   --#{$pds-prefix}-radius-accordion-bordered-section: var(--#{$pds-prefix}-radius-xl);
-  --#{$pds-prefix}-space-accordion-bordered-padding: calc(17 / 14 * var(--base-unit));
+  --#{$pds-prefix}-space-accordion-bordered-padding: calc(17 / 14 * var(--#{$pds-prefix}-base-unit));
   --#{$pds-prefix}-radius-accordion-bordered-header: var(--#{$pds-prefix}-radius-accordion-bordered-section);
   --#{$pds-prefix}-radius-accordion-bordered-content: var(--#{$pds-prefix}-radius-accordion-bordered-section);
   --#{$pds-prefix}-color-accordion-bordered-header-text: var(--#{$pds-prefix}-color-text);
-  --#{$pds-prefix}-space-accordion-bordered-header-gap: var(--spacing-2);
+  --#{$pds-prefix}-space-accordion-bordered-header-gap: var(--#{$pds-prefix}-spacing-2);
 }
 
 // ── Nav — sub-nav shell sections ─────────────────────────────────────────────

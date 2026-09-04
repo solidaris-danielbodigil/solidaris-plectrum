@@ -1,0 +1,37 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.token-explorer.scss
+// Token explorer foundation page tokens (Storybook docs chrome).
+//
+// The explorer resolves live token values in Angular and passes them down as
+// --#{$pds-prefix}-token-explorer-{swatch|radius|shadow|size|duration|icon-size|font-*}.
+// Those are *inputs* to the preview, declared here with safe defaults so the
+// component SCSS never reads an undefined custom property.
+// =============================================================================
+
+:root {
+  // ── Page chrome ────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-size-token-explorer-search-min: 14rem; // 196px
+  --#{$pds-prefix}-size-token-explorer-search-max: 26rem; // 364px
+  --#{$pds-prefix}-size-token-explorer-filter-min: 11rem; // 154px role dropdown
+  --#{$pds-prefix}-size-token-explorer-preview: 3rem; // 42px square preview
+  --#{$pds-prefix}-size-token-explorer-preview-bar: 0.75rem; // spacing bar height
+  --#{$pds-prefix}-size-token-explorer-focus-travel: 2.5rem; // motion dot travel
+
+  // Checkerboard behind translucent color swatches so alpha is readable.
+  --#{$pds-prefix}-color-token-explorer-checker: var(--#{$pds-prefix}-color-surface-200);
+
+  // ── Preview inputs (overwritten per row by the component) ──────────────────
+  --#{$pds-prefix}-token-explorer-swatch: var(--#{$pds-prefix}-color-surface-100);
+  --#{$pds-prefix}-token-explorer-radius: var(--#{$pds-prefix}-radius-none);
+  --#{$pds-prefix}-token-explorer-shadow: none;
+  --#{$pds-prefix}-token-explorer-size: var(--#{$pds-prefix}-spacing-1);
+  --#{$pds-prefix}-token-explorer-duration: var(--#{$pds-prefix}-transition-duration);
+  --#{$pds-prefix}-token-explorer-font-family: var(--#{$pds-prefix}-font-family-body);
+  --#{$pds-prefix}-token-explorer-font-size: var(--#{$pds-prefix}-font-size-md);
+  --#{$pds-prefix}-token-explorer-font-weight: var(--#{$pds-prefix}-font-weight-regular);
+  --#{$pds-prefix}-token-explorer-line-height: var(--#{$pds-prefix}-line-height-24);
+  --#{$pds-prefix}-token-explorer-letter-spacing: var(--#{$pds-prefix}-letter-spacing-0);
+  --#{$pds-prefix}-token-explorer-icon-size: var(--#{$pds-prefix}-icon-size-md);
+}

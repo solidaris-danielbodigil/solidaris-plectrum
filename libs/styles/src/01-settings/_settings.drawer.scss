@@ -8,5 +8,5 @@
 
 :root {
   --#{$pds-prefix}-size-drawer-min-width: 20rem;
-  --#{$pds-prefix}-size-drawer-max-width: calc(100vw - var(--spacing-4));
+  --#{$pds-prefix}-size-drawer-max-width: calc(100vw - var(--#{$pds-prefix}-spacing-4));
 }

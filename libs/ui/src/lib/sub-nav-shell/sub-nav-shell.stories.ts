@@ -160,31 +160,14 @@ const icrmSections: SubNavShellSection[] = [
 // ---------------------------------------------------------------------------
 
 const meta: Meta<SubNavShellComponent> = {
-  title: 'Navigation/SubNavShell',
+  tags: ['!dev'],
+  title: 'Shell/Navigation/SubNavShell',
   component: SubNavShellComponent,
   decorators: [
     applicationConfig({ providers: [provideRouter([])] }),
   ],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-**SubNavShell** — second-level navigation sidebar.
-
-Renders a fixed-width panel with:
-- A heading header with the module/app title
-- Optional featured items (sections without a label) rendered above the accordion
-- Collapsible grouped sections using PrimeNG Accordion (\`p-accordion\`)
-- Menu items with optional leading icon and PrimeNG Badge (\`p-badge\`) counter
-- A version/changelog footer
-
-Child of \`NavShellComponent\` — opens when a nav-shell item is clicked.
-
-**Figma:** [Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
-        `,
-      },
-    },
   },
   argTypes: {
     title: { control: 'text', description: 'Module/app title in the header' },
@@ -210,15 +193,6 @@ export const MaatschappelijkWerk: Story = {
     version: '0.1.001',
     changelogUrl: '#',
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Default state matching the "Maatschappelijk Werk" Figma variant. ' +
-          '"Lopend" is the active item. Danger badge on "Onvolledig" (red).',
-      },
-    },
-  },
 };
 
 export const Processen: Story = {
@@ -229,11 +203,6 @@ export const Processen: Story = {
     version: '0.1.001',
     changelogUrl: '#',
   },
-  parameters: {
-    docs: {
-      description: { story: '"Processen" app variant from Figma.' },
-    },
-  },
 };
 
 export const FinancieleControle: Story = {
@@ -243,11 +212,6 @@ export const FinancieleControle: Story = {
     activeItemId: 'te-controleren',
     version: '0.1.001',
     changelogUrl: '#',
-  },
-  parameters: {
-    docs: {
-      description: { story: '"Financiële Controle" app variant from Figma.' },
-    },
   },
 };
 
@@ -260,13 +224,6 @@ export const WithCollapsedSection: Story = {
     activeItemId: null,
     version: '0.1.001',
     changelogUrl: '#',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Demonstrates a section ("Dossiers") rendered in its collapsed state via the `collapsed` property.',
-      },
-    },
   },
 };
 
@@ -292,13 +249,6 @@ export const WithDisabledItems: Story = {
     version: '0.1.001',
     changelogUrl: '#',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Shows items in their disabled state — reduced opacity, no interaction.',
-      },
-    },
-  },
 };
 
 export const NoFooter: Story = {
@@ -309,11 +259,6 @@ export const NoFooter: Story = {
     version: '',
     changelogUrl: '#',
   },
-  parameters: {
-    docs: {
-      description: { story: 'When `version` is empty the footer is hidden entirely.' },
-    },
-  },
 };
 
 export const Empty: Story = {
@@ -322,11 +267,6 @@ export const Empty: Story = {
     sections: [],
     version: '0.1.001',
     changelogUrl: '#',
-  },
-  parameters: {
-    docs: {
-      description: { story: 'Empty state — no sections provided. Header and footer still render.' },
-    },
   },
 };
 
@@ -337,15 +277,5 @@ export const ICRM: Story = {
     activeItemId: 'item-mon-compte',
     version: '0.1.001',
     changelogUrl: '#',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'iCRM Audit variant (Figma node 20:1447). Demonstrates **interleaved standalone items** ' +
-          'between accordion sections — standalone items ("Journal de contact", "Dispatcher", "Dispatcher 315") ' +
-          'appear between the "Créer Ticket" accordion and the "Files de traitement" / "Liens utiles" accordions.',
-      },
-    },
   },
 };

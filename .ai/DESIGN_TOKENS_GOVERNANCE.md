@@ -515,6 +515,7 @@ and emit tokens as `--#{$pds-prefix}-*`. The barrel `_settings.core.scss` `@forw
 ├── _components.plectrum-avatar.scss
 ├── _components.empty-state.scss
 ├── _components.doc-demo-box.scss
+├── _components.docs-figures.scss   Storybook Docs figures (c-docs-diagram / -steps / -cards / -callout)
 └── _components.{name}.scss   ← one file per component
 ```
 

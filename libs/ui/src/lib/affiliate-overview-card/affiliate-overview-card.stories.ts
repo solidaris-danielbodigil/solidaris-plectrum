@@ -80,7 +80,7 @@ interface AffiliateOverviewCardStoryArgs {
   providers: [MessageService],
   template: `
     <p-toast />
-    <(pds|app|lib)-affiliate-overview-card
+    <pds-affiliate-overview-card
       [title]="title()"
       [avatarInitials]="avatarInitials()"
       [avatarGender]="avatarGender()"
@@ -133,37 +133,18 @@ const plectrumIconProviders = [
 const meta: Meta<AffiliateOverviewCardStoryArgs> = {
   title: 'UI/Affiliate Overview Card',
   component: AffiliateOverviewCardComponent,
-  tags: ['autodocs'],
+  tags: ['!dev'],
   decorators: [
-    moduleMetadata({ providers: plectrumIconProviders }),
+    moduleMetadata({
+      imports: [AffiliateOverviewCardComponent],
+      providers: plectrumIconProviders,
+    }),
     componentWrapperDecorator(
-      (story) =>
-        `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
+      (story) => `<div style="max-width: 56rem">${story}</div>`,
     ),
   ],
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component: `
-iSHARE affiliate audit summary card — card gradient is driven by \`statusAction.severity\`; the \`variant\` input is a fallback when no status action is set.
-
-- **Figma**: [iSHARE-Audit node 507:8227](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227)
-- **BEM block**: \`c-affiliate-overview-card\`
-- **Avatar**: large illustrated avatar (51.333 × 56px) via \`c-plectrum-avatar--large\`; small initials variant remains 32px
-- **Copy icon**: \`copy-content-LEGACY\` at 10.5px (\`--pds-icon-size-xs\`) on identifier chips
-- **Layout**: horizontal avatar + stacked header / identifier rows via \`o-flex\` / \`o-layout\` with flex-wrap
-- **PrimeNG**: \`p-card\`, \`p-button\` (status + primary actions), \`p-badge\` (status action code), \`p-selectbutton\` (filterable info tags), \`pds-plectrum-avatar\`
-
-| \`statusAction.severity\` | Card modifier | Status button |
-|---|---|---|
-| \`success\` | \`in-order\` | Outlined success — e.g. « En ordre » |
-| \`warn\` | \`warning\` | Outlined warn — e.g. « Actions à réaliser: » + badge « C4 » |
-| \`danger\` | \`danger\` | Outlined danger |
-| _(no statusAction)_ | from \`variant\` input | hidden |
-        `,
-      },
-    },
   },
   argTypes: {
     variant: {
@@ -220,7 +201,7 @@ iSHARE affiliate audit summary card — card gradient is driven by \`statusActio
   render: (args) => ({
     props: args,
     template: `
-      <(pds|app|lib)-affiliate-overview-card
+      <pds-affiliate-overview-card
         [title]="title"
         [avatarInitials]="avatarInitials"
         [avatarGender]="avatarGender"
@@ -252,14 +233,6 @@ export const Default: Story = {
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Neutral affiliate summary with info tags, copyable identifiers, and primary action.',
-      },
-    },
-  },
 };
 
 export const InOrder: Story = {
@@ -285,14 +258,6 @@ export const InOrder: Story = {
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Variant-only fallback — success subtle gradient (green-75 → surface). Prefer statusAction.severity: success for severity-driven setup.',
-      },
-    },
   },
 };
 
@@ -336,14 +301,6 @@ export const Warning: Story = {
     },
     loading: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Severity-driven warning — orange-50 → surface gradient (88deg) from statusAction.severity warn with variant default. Figma node 507:7910.',
-      },
-    },
-  },
 };
 
 export const MultipleStatusActions: Story = {
@@ -358,14 +315,6 @@ export const MultipleStatusActions: Story = {
         { label: 'Paiement non versé' },
         { label: 'Document manquant' },
       ],
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Several corrective actions — summary chip (icon + « Actions à réaliser » + count) opens a popover list, same pattern as document comment/alert tags.',
-      },
     },
   },
 };
@@ -404,14 +353,6 @@ export const Danger: Story = {
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Severity-driven danger — danger subtle → surface gradient (88deg) from statusAction.severity danger.',
-      },
-    },
-  },
 };
 
 export const Loading: Story = {
@@ -425,14 +366,6 @@ export const Loading: Story = {
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Static loading state — avatar pill + header row (title, status, info tags, primary action) + identifier chips.',
-      },
-    },
   },
 };
 
@@ -483,13 +416,6 @@ export const SimulatedLoading: Story = {
   render: () => ({
     template: '<pds-affiliate-overview-card-simulated-loading-demo />',
   }),
-  parameters: {
-    docs: {
-      description: {
-        story: `Flashes skeleton for ${SIMULATED_LOADING_MS}ms then reveals the warning card — use to preview the shimmer transition.`,
-      },
-    },
-  },
 };
 
 export const WrappedLayout: Story = {
@@ -530,14 +456,6 @@ export const WrappedLayout: Story = {
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Narrow container (~24rem) demonstrating flex-wrap on header, metadata, and primary action rows.',
-      },
-    },
-  },
 };
 
 export const CopyWithToast: Story = {
@@ -551,7 +469,7 @@ export const CopyWithToast: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <(pds|app|lib)-affiliate-overview-card-copy-demo
+      <pds-affiliate-overview-card-copy-demo
         [title]="title"
         [avatarInitials]="avatarInitials"
         [avatarGender]="avatarGender"
@@ -575,13 +493,5 @@ export const CopyWithToast: Story = {
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Click an identifier chip to copy its value — confirmation toast via MessageService + p-toast (iconography pattern).',
-      },
-    },
   },
 };

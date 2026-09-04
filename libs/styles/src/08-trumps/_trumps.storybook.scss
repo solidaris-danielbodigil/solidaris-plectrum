@@ -2,9 +2,10 @@
 // 08-trumps/_trumps.storybook.scss
 // Storybook-only demo styles — NOT for production use.
 //
-// Applied exclusively via the `.sb-demo-wrapper` class, which is added by
-// componentWrapperDecorator in stories. Because this class never appears in
-// app HTML, these rules have zero impact on the apps.
+// Applied exclusively via the `.sb-demo-wrapper` class on Foundations
+// Flex Grid / Layout / Borders / Elevation / Scroll Shadow demos.
+// Do not wrap UI component stories in this class — it restyles every
+// `.o-flex` / `.o-flex__item` as a numbered tinted cell.
 //
 // Provides:
 //   - CSS counter auto-numbering for all .o-flex__item children

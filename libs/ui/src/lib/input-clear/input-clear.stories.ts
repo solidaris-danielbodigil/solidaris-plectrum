@@ -8,20 +8,9 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputClearComponent } from './input-clear.component';
 
 const meta: Meta<InputClearComponent> = {
-  title: 'UI/Input Clear',
+  tags: ['!dev'],
+  title: 'Custom components/Input Clear',
   component: InputClearComponent,
-  parameters: {
-    docs: {
-      description: {
-        component: `
-Reusable clear affordance for \`pInputText\` fields. Uses the same PrimeNG \`times\` SVG as
-\`showClear\` on autocomplete, select, and multiselect (14×14 via \`--p-icon-size\`).
-
-Always keep the control in the DOM and toggle \`[visible]\` so \`p-iconfield\` padding stays reserved.
-        `,
-      },
-    },
-  },
   argTypes: {
     visible: { control: 'boolean' },
     ariaLabel: { control: 'text' },
@@ -53,7 +42,7 @@ export const IconField: Story = {
           placeholder="Search"
         />
         <p-inputicon>
-          <(pds|app|lib)-input-clear
+          <pds-input-clear
             [visible]="!!value"
             [ariaLabel]="ariaLabel"
             (clear)="value = ''"
@@ -93,7 +82,7 @@ export const SearchWithLeadingIcon: Story = {
           placeholder="Rechercher document..."
         />
         <p-inputicon>
-          <(pds|app|lib)-input-clear
+          <pds-input-clear
             [visible]="!!query"
             [ariaLabel]="ariaLabel"
             (clear)="query = ''"
@@ -126,7 +115,7 @@ export const InInputGroup: Story = {
         <p-iconfield class="o-flex__item--grow-1 o-layout--min-w-0">
           <input pInputText [(ngModel)]="value" placeholder="Numéro NISS" />
           <p-inputicon>
-            <(pds|app|lib)-input-clear
+            <pds-input-clear
               [visible]="!!value"
               [ariaLabel]="ariaLabel"
               (clear)="value = ''"

@@ -1,0 +1,210 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.docs-figures.scss
+// Docs figures on the Storybook Docs pages (Docs/Token pipeline):
+//   c-docs-diagram   SVG boxes-and-arrows — libs/ui/.storybook/docs-figures.ts
+//                    (no PrimeNG equivalent; every fill/stroke below is a token)
+//   c-docs-steps     pds-docs-steps   → p-timeline + p-badge + p-tag
+//   c-docs-cards     pds-docs-cards   → p-card + p-tag
+//   c-docs-callout   pds-docs-callout → p-message
+//
+// PrimeNG owns the chrome of steps, cards and callouts. Rules here are
+// structural only: grid columns, list bullets the reset removed, text rhythm
+// inside a card body, and one Timeline constraint it cannot express itself.
+// Token source: libs/styles/src/01-settings/_settings.docs-figures.scss
+// =============================================================================
+
+$docs-tones: design, system, app, neutral;
+
+// ── Diagram ──────────────────────────────────────────────────────────────────
+.c-docs-diagram {
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+  overflow-x: auto;
+}
+
+// `color` feeds the currentColor fallbacks in the markup.
+.c-docs-diagram__svg {
+  display: block;
+  width: 100%;
+  min-width: var(--#{$pds-prefix}-size-docs-diagram-min);
+  height: auto;
+  font-family: var(--#{$pds-prefix}-font-family-body);
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-docs-diagram__lane rect {
+  fill: var(--#{$pds-prefix}-color-docs-lane-bg);
+}
+
+.c-docs-diagram__lane-title {
+  @include text-label-xs;
+  fill: var(--#{$pds-prefix}-color-docs-lane-text);
+  text-transform: uppercase;
+}
+
+.c-docs-diagram__lane-subtitle {
+  @include text-body-xs;
+  fill: var(--#{$pds-prefix}-color-docs-lane-text);
+}
+
+.c-docs-diagram__node rect {
+  stroke-width: var(--#{$pds-prefix}-size-docs-stroke);
+}
+
+.c-docs-diagram__node-title {
+  @include text-label-sm;
+}
+
+.c-docs-diagram__node-line {
+  @include text-body-xs;
+  fill: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-diagram__node-line--mono {
+  font-family: monospace;
+}
+
+@each $tone in $docs-tones {
+  .c-docs-diagram__lane--#{$tone} .c-docs-diagram__lane-title {
+    fill: var(--#{$pds-prefix}-color-docs-#{$tone}-text);
+  }
+
+  .c-docs-diagram__node--#{$tone} {
+    rect {
+      fill: var(--#{$pds-prefix}-color-docs-#{$tone}-bg);
+      stroke: var(--#{$pds-prefix}-color-docs-#{$tone}-border);
+    }
+
+    .c-docs-diagram__node-title {
+      fill: var(--#{$pds-prefix}-color-docs-#{$tone}-text);
+    }
+  }
+}
+
+.c-docs-diagram__edge path {
+  fill: none;
+  stroke: var(--#{$pds-prefix}-color-docs-edge);
+  stroke-width: var(--#{$pds-prefix}-size-docs-edge-stroke);
+  stroke-linejoin: round;
+}
+
+.c-docs-diagram__edge--dashed path {
+  stroke-dasharray: 6 5;
+}
+
+.c-docs-diagram__arrowhead {
+  fill: var(--#{$pds-prefix}-color-docs-edge);
+}
+
+// Halo keeps the label legible where it sits on the arrow.
+.c-docs-diagram__edge-label {
+  @include text-label-xs;
+  fill: var(--#{$pds-prefix}-color-text);
+  paint-order: stroke;
+  stroke: var(--#{$pds-prefix}-color-docs-edge-halo);
+  stroke-width: var(--#{$pds-prefix}-size-docs-edge-halo);
+  stroke-linejoin: round;
+}
+
+// ── Steps (p-timeline) ───────────────────────────────────────────────────────
+.c-docs-steps {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+
+  // Timeline reserves an "opposite" column even when no template fills it;
+  // there is no --p-timeline-* token for it, so collapse it here.
+  .p-timeline-event-opposite {
+    flex: 0 0 0;
+    padding: 0;
+  }
+
+  .p-timeline-event-content {
+    padding-block-end: var(--#{$pds-prefix}-spacing-3);
+  }
+
+  .p-timeline-event:last-child .p-timeline-event-content {
+    padding-block-end: 0;
+  }
+}
+
+// min-height matches the badge so a one-line title sits centred on it.
+.c-docs-steps__head {
+  min-height: var(--#{$pds-prefix}-size-docs-steps-index);
+}
+
+.c-docs-steps__title {
+  @include text-label-md;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-docs-steps__detail {
+  @include text-body-sm;
+  margin: var(--#{$pds-prefix}-spacing-0-5) 0 0;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+// ── Cards (p-card) ───────────────────────────────────────────────────────────
+// auto-fit grid: as many equal cards per row as the min width allows.
+.c-docs-cards {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+.c-docs-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--#{$pds-prefix}-size-docs-card-min), 1fr));
+  gap: var(--#{$pds-prefix}-spacing-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-docs-cards--2-up .c-docs-cards__grid {
+  grid-template-columns: repeat(auto-fit, minmax(var(--#{$pds-prefix}-size-docs-card-min-wide), 1fr));
+}
+
+.c-docs-cards__lead {
+  @include text-body-sm;
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+// The generic reset strips bullets; these are real lists, so bring them back.
+.c-docs-cards__list {
+  @include text-body-sm;
+  margin: 0;
+  padding-inline-start: var(--#{$pds-prefix}-spacing-2);
+  list-style: disc outside;
+  color: var(--#{$pds-prefix}-color-text);
+
+  > li + li {
+    margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
+  }
+}
+
+// ── Callout (p-message) ──────────────────────────────────────────────────────
+.c-docs-callout {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+.c-docs-callout__title {
+  @include text-label-md;
+}
+
+.c-docs-callout__text,
+.c-docs-callout__list {
+  @include text-body-sm;
+  margin: var(--#{$pds-prefix}-spacing-0-5) 0 0;
+}
+
+.c-docs-callout__list {
+  padding-inline-start: var(--#{$pds-prefix}-spacing-2);
+  list-style: disc outside;
+
+  > li + li {
+    margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
+  }
+}

@@ -1,3 +1,7 @@
+@use '../01-settings/settings.prefix' as *;
+
+@use '../01-settings/settings.prefix' as *;
+
 // =============================================================================
 // 06-components/_components.card.scss
 // PrimeNG Card — shared layout overrides for internal PrimeNG sections.
@@ -7,5 +11,5 @@
 // =============================================================================
 
 .p-card-title {
-  padding-block-end: var(--spacing-2);
+  padding-block-end: var(--#{$pds-prefix}-spacing-2);
 }

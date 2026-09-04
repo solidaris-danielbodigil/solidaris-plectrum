@@ -1,21 +1,16 @@
 // =============================================================================
 // 01-settings/_settings.grid.scss
-// Grid configuration — Sass maps for the flex-grid (o-flex) and CSS grid
-// (o-grid) systems.
+// Grid configuration — Sass maps for the flex-grid (o-flex) and layout
+// (o-layout) objects.
 // Mostly no CSS output; values consumed by 05-objects/_objects.flex-grid.scss
-// and 05-objects/_objects.grid.scss. The --pds-grid-min token below is the one
-// emitted custom property (default min track for o-grid auto-fit/auto-fill).
+// and 05-objects/layout/_objects.layout.scss. Emitted: --pds-grid-cols.
 // =============================================================================
 @use 'settings.prefix' as *;
 
 $grid-cols: 12 !default;
 
 :root {
-  --grid-cols: #{$grid-cols};
-
-  // Default min column width for o-grid --auto-fit / --auto-fill responsive
-  // grids. Override per instance via inline style or component SCSS.
-  --#{$pds-prefix}-grid-min: 16rem;
+  --#{$pds-prefix}-grid-cols: #{$grid-cols};
 }
 
 $overflow: (
@@ -92,14 +87,6 @@ $flex-direction: (
   column-reverse: column-reverse,
 );
 
-// grid-auto-flow — consumed by 05-objects/_objects.grid.scss (o-grid)
-$grid-auto-flow: (
-  row: row,
-  col: column,
-  row-dense: row dense,
-  col-dense: column dense,
-);
-
 $align-items: (
   /* Basic keywords */
   stretch: stretch,
@@ -160,79 +147,3 @@ $align-self: (
   initial: initial,
   unset: unset,
 );
-
-$justify-items: (
-  /* Basic keywords */
-  stretch: stretch,
-  /* Positional alignment */
-  center: center, /* Pack items around the center */
-  flex-start: flex-start, /* Pack items from the start */
-  flex-end: flex-end, /* Pack items from the end */
-  /* Baseline alignment */
-  baseline: baseline,
-  /* Global values */
-  inherit: inherit,
-  initial: initial,
-  unset: unset,
-);
-// Curated single-keyword subset for o-grid (place-items = align + justify
-// shorthand). The full two-value combinations produced underscore keys (e.g.
-// `end_start`) and unclean class names; expose only the common, clean cases.
-// `space-between` is not valid for place-items, so it is omitted here.
-$place-items: (
-  center: center,
-  start: start,
-  end: end,
-  stretch: stretch,
-);
-// Curated single-keyword subset for o-grid (place-content = align + justify
-// content shorthand). `space-between` is valid here (distributed alignment).
-$place-content: (
-  center: center,
-  start: start,
-  end: end,
-  stretch: stretch,
-  space-between: space-between,
-  space-around: space-around,
-  space-evenly: space-evenly,
-);
-$justify-self: (
-  /* Basic keywords */
-  auto: auto,
-  normal: normal,
-  stretch: stretch,
-  /* Positional alignment */
-  center: center, /* Pack items around the center */
-  flex-start: flex-start, /* Pack items from the start */
-  flex-end: flex-end, /* Pack items from the end */
-  self-start: self-start,
-  self-end: self-end,
-  left: left, /* Pack items from the left */
-  right: right, /* Pack items from the right */
-
-  /* Baseline alignment */
-  baseline: baseline,
-  first-baseline: first baseline,
-  last-baseline: last baseline,
-  /* Overflow alignment (for positional alignment only) */
-  safe-center: safe center,
-  unsafe-center: unsafe center,
-  /* Global values */
-  inherit: inherit,
-  initial: initial,
-  revert: revert,
-  revert-layer: revert-layer,
-  unset: unset,
-);
-// Curated single-keyword subset for o-grid (place-self = align + justify self
-// shorthand on an item). `space-between` is not valid for place-self, so it is
-// omitted here.
-$place-self: (
-  center: center,
-  start: start,
-  end: end,
-  stretch: stretch,
-);
-
-
-

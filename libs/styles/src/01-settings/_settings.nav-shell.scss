@@ -12,7 +12,7 @@
 :root {
   // --- Sizing (structural — icon-only layout depends on these) -------------
   --#{$pds-prefix}-size-nav-shell-logomark:       24px;   // Figma: logomark height (24×32 natural ratio)
-  --#{$pds-prefix}-size-nav-shell-wordmark:       var(--font-size-4xl); // 2.286rem = 32px @ 14px rem base
+  --#{$pds-prefix}-size-nav-shell-wordmark:       var(--#{$pds-prefix}-font-size-4xl); // 2.286rem = 32px @ 14px rem base
   --#{$pds-prefix}-size-nav-shell-icon:           20px;   // Figma: nav icon
   --#{$pds-prefix}-size-nav-shell-trailing-icon:  14px;   // Figma: external-link glyph
 

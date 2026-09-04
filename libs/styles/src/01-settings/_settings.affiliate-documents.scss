@@ -9,17 +9,17 @@
 
 :root {
   // Fixed control width — Figma: 250px @ 14px base
-  --#{$pds-prefix}-size-affiliate-documents-filter-field: calc(250 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-documents-filter-field: calc(250 / 14 * var(--#{$pds-prefix}-base-unit));
 
   // Date range picker — wider than autocomplete fields for "Du — Au" placeholder.
-  --#{$pds-prefix}-size-affiliate-documents-filter-date-field: calc(280 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-documents-filter-date-field: calc(280 / 14 * var(--#{$pds-prefix}-base-unit));
 
   // Shared control row height — matches p-inputtext / p-autocomplete size="small" (~31px @ 14px base)
-  --#{$pds-prefix}-size-affiliate-documents-filter-control: calc(31 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-documents-filter-control: calc(31 / 14 * var(--#{$pds-prefix}-base-unit));
 
   // Toolbar chrome
   --#{$pds-prefix}-color-affiliate-documents-toolbar-bg: var(--#{$pds-prefix}-color-content-bg);
-  --#{$pds-prefix}-space-affiliate-documents-toolbar-padding: var(--spacing-2); // 16px — Figma px-[16px]
+  --#{$pds-prefix}-space-affiliate-documents-toolbar-padding: var(--#{$pds-prefix}-spacing-2); // 16px — Figma px-[16px]
   --#{$pds-prefix}-space-affiliate-documents-toolbar-inner-padding: 0; // cancel o-layout--padding-3 on shared toolbar inner
 
   // Vertical label above control — Figma: label-xs semibold #262626 (Plectrum neutral.800)

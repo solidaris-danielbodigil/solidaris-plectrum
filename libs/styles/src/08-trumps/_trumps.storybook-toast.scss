@@ -1,0 +1,48 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 08-trumps/_trumps.storybook-toast.scss
+// Copy confirmations for Storybook docs — painted with inline styles on the
+// manager frame so they are not clipped by a Canvas or preview iframe.
+// =============================================================================
+
+.sb-preview-toast-host {
+  position: fixed;
+  inset-block-end: var(--#{$pds-prefix}-spacing-4);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--#{$pds-prefix}-z-sticky) + 1000);
+  pointer-events: none;
+}
+
+.sb-preview-toast {
+  @include text-body-sm;
+  display: flex;
+  flex-direction: column;
+  gap: var(--#{$pds-prefix}-spacing-0-5);
+  min-inline-size: 16rem;
+  max-inline-size: min(32rem, calc(100vw - var(--#{$pds-prefix}-spacing-6)));
+  padding: var(--#{$pds-prefix}-spacing-2) var(--#{$pds-prefix}-spacing-3);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  box-shadow: var(--#{$pds-prefix}-shadow-overlay-popover);
+  background: var(--#{$pds-prefix}-color-surface);
+  color: var(--#{$pds-prefix}-color-text);
+
+  &--success {
+    background: var(--#{$pds-prefix}-color-success-subtle);
+  }
+
+  &--error {
+    background: var(--#{$pds-prefix}-color-danger-subtle);
+  }
+}
+
+.sb-preview-toast__summary {
+  @include text-label-sm;
+  margin: 0;
+}
+
+.sb-preview-toast__detail {
+  margin: 0;
+}

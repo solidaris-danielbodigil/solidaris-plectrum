@@ -1,0 +1,27 @@
+name: Figma library publish
+
+# Receives a LIBRARY_PUBLISH webhook (Figma library published after designer merge)
+# and re-runs pull-figma as a safety net. Rate-limit / 4MB / atomic 400 constraints
+# are documented in `node tools/tokens/pull-figma.mjs --help`.
+
+on:
+  repository_dispatch:
+    types: [LIBRARY_PUBLISH]
+  workflow_dispatch:
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    environment: figma-read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm install
+      - name: Flag unpublished Figma variable changes
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+        run: npm run tokens:pull-figma

@@ -122,6 +122,7 @@ Every SCSS change must land in the correct ITCSS layer. Never write styles outsi
 - Always check PrimeNG before writing a custom component
 - Extend or wrap PrimeNG components with BEMIT classes when restyling
 - Never reimplement what PrimeNG already provides (tables, modals, dropdowns, etc.)
+- This includes Storybook docs pages: steps, cards, tags, messages and similar figures are PrimeNG components (`p-timeline`, `p-stepper`, `p-card`, `p-tag`, `p-message`) embedded via Angular stories — never custom React/HTML (see `.ai/rules/04-primeng.md` §6)
 
 ### Rule — Custom Components: Semantic & Minimal
 When no PrimeNG equivalent exists:
@@ -156,7 +157,7 @@ Never apply utility classes directly in HTML templates. Always create a semantic
 ### Rule — BEMIT Naming
 | Type | Prefix | Example |
 |---|---|---|
-| Object (layout) | `o-` | `o-container`, `o-grid` |
+| Object (layout) | `o-` | `o-container`, `o-flex` |
 | Component | `c-` | `c-card`, `c-button` |
 | Utility | `u-` | `u-hidden`, `u-sr-only` |
 | JS hook | `js-` | `js-modal-trigger` |

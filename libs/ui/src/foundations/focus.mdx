@@ -1,0 +1,40 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './focus.stories';
+
+<Meta of={Stories} />
+
+# Focus
+
+One ring for the whole system. Color and width alias the live PrimeNG preset, so a `p-button` and a custom `c-*` row focus identically.
+
+Tab through the samples in the playground to see the composed ring, then copy the four properties you need.
+
+## How to use
+
+1. Style `:focus-visible`, never `:focus` — pointer users should not see the ring.
+2. Set all four properties: width, style, color, offset.
+3. Add `border-radius` matching the component so the ring follows its shape.
+
+## When to reach for it
+
+Every interactive custom component: buttons, rows, cards, list items.
+
+Do not set `outline: none` without a replacement. Do not substitute a box-shadow glow for the ring.
+
+```scss
+// 06-components/_components.list.scss
+.c-list__item:focus-visible {
+  outline:
+    var(--pds-focus-ring-width)
+    var(--pds-focus-ring-style)
+    var(--pds-focus-ring-color);
+  outline-offset: var(--pds-focus-ring-offset);
+  border-radius: var(--pds-radius-md);
+}
+```
+
+Declared in `_settings.focus.generated.scss`.
+
+<Unstyled>
+  <Canvas of={Stories.Ring} sourceState="none" />
+</Unstyled>

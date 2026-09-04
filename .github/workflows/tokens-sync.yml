@@ -1,0 +1,62 @@
+name: Tokens sync
+
+on:
+  push:
+    branches:
+      - design-tokens/sync
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm install
+
+      - name: Copy staging tokens into the ingestion SSOT
+        run: |
+          if [ ! -f libs/plectrum/sync/tokens.json ]; then
+            echo "No staging tokens.json — plugin has not pushed yet."
+            exit 0
+          fi
+          cp libs/plectrum/sync/tokens.json libs/plectrum/src/tokens.json
+
+      - name: Wave 1 audits
+        run: |
+          npm run tokens:audit
+          npm run tokens:validate-preset
+
+      - name: Wave 3 build
+        run: npm run tokens:build
+
+      - name: Promote theme only when validation passed
+        run: |
+          if [ -d libs/plectrum/sync/theme ] && [ -n "$(ls -A libs/plectrum/sync/theme 2>/dev/null)" ]; then
+            if npm run tokens:validate-preset; then
+              mkdir -p libs/plectrum/src/Plectrum_v1
+              cp -R libs/plectrum/sync/theme/. libs/plectrum/src/Plectrum_v1/
+              echo "Theme promoted. Hand-fixes remain in Plectrum_v1/ts/extend.ts."
+            else
+              echo "validate-preset failed — leaving Plectrum_v1/ untouched."
+            fi
+          fi
+
+      - name: Open promotion PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: tokens/promote-staging
+          title: 'chore(tokens): promote Figma plugin staging'
+          commit-message: 'chore(tokens): promote plugin staging into tokens.json'
+          body: |
+            Promotes `libs/plectrum/sync/` after Wave 1 audits and `tokens:build`.
+            Theme files are copied only when `tokens:validate-preset` passes.
+            Hand-fixes stay in `extend.ts`.

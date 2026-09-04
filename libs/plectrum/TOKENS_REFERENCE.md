@@ -2,7 +2,7 @@
 
 ## Purpose
 
-[`src/tokens.json`](src/tokens.json) is the **Figma DTCG export** (~33k lines) of the Plectrum UI Kit. It is a **read-only debugging reference** — not imported at runtime and not mirrored into preset or SCSS.
+[`src/tokens.json`](src/tokens.json) is the **ingestion SSOT** (Figma DTCG dump). Style Dictionary (`npm run tokens:build`) emits `--pds-*` CSS variables (colors as hybrid `var(--p-*, <literal>)`). The PrimeNG preset is still plugin-produced TypeScript and is **validated**, not regenerated.
 
 Use it when you need to answer: *“What value does Figma assign to this semantic role?”*
 
@@ -26,7 +26,7 @@ Use it when you need to answer: *“What value does Figma assign to this semanti
 2. **Search `tokens.json`** — grep for the path fragment (`"drawer"`, `"panel-border"`, `"surface"`).
 3. **Follow `{token.path}` chains** — `$value` may reference another token; resolve until you hit a hex/number.
 4. **Map to code** — primitives → `base.ts` `primitive`; semantics → `base.ts` `semantic` / `colorScheme`; app custom → `extend.ts`.
-5. **PDS primitives** — [`libs/styles/src/01-settings/_settings.colors-primitive.scss`](../styles/src/01-settings/_settings.colors-primitive.scss) is **independent** (hardcoded). Compare when auditing drift; do not auto-sync.
+5. **PDS CSS** — `npm run tokens:build` emits `*.generated.scss` (`--pds-*`, colors as `var(--p-*, <literal>)`). Hand-authored extras stay in the non-generated counterparts. Runtime preset default remains **v0.6**.
 
 ### Example: `surface.0` (white)
 
@@ -48,22 +48,25 @@ PDS exposes this as `--PDS-color-surface-border-drawer` / `--PDS-color-panel-bor
 | Layer | Responsibility |
 |-------|----------------|
 | **PrimeNG preset** (`Plectrum_v1/ts`) | Emits `--p-*` CSS variables for PrimeNG components |
-| **PDS SCSS** (`libs/styles`) | BEMIT components, overrides, semantic aliases (`--PDS-color-*`) |
+| **PDS SCSS** (`libs/styles`) | BEMIT components, overrides, semantic aliases (`--pds-color-*`) |
 
 Apps consume both. A token can be correct in PDS but missing in the preset (or vice versa).
 
-## Audit script
+## Audit scripts
 
 ```bash
-node libs/plectrum/scripts/audit-preset-refs.mjs
+npm run tokens:audit
+npm run tokens:validate-preset
 ```
 
-Read-only scan of unresolved `{token.path}` references in `Plectrum_v1/ts/*.ts`. Output feeds [`PLECTRUM_V1_GAP_REPORT.md`](PLECTRUM_V1_GAP_REPORT.md).
+`tokens:audit` is the three-way Figma / v1 preset / SCSS detector (blocking in CI).
+`tokens:validate-preset` checks every `{token.path}` in `Plectrum_v1/ts` against `tokens.json`.
+The older `libs/plectrum/scripts/audit-preset-refs.mjs` scan still exists for gap-report notes.
 
 ## Version toggle (runtime)
 
 | Key | Values | Default |
 |-----|--------|---------|
-| `solidaris-plectrum-preset` (localStorage) | `v1` \| `v0.6` | `v1` |
+| `solidaris-plectrum-preset` (localStorage) | `v0.6` \| `v1` | **`v0.6`** (`resolvePresetVersion()` in `preset-storage.ts`) |
 
 Set via top-nav avatar menu or Storybook toolbar; requires full reload (PrimeNG preset is bootstrap-bound).

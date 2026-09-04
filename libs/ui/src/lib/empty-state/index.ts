@@ -1,2 +1,2 @@
 export * from './empty-state.component';
-export * from './empty-state.metadata';
+export * from './empty-state-illustrations';

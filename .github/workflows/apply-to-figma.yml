@@ -1,0 +1,36 @@
+name: Apply tokens to Figma
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'Figma branch suffix — proposals/{app}'
+        required: true
+        default: 'scratch'
+      write:
+        description: 'Set true to POST (default is dry-run)'
+        required: false
+        default: 'false'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: figma-write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm install
+      - run: npm run tokens:propose
+      - name: Apply (dry-run unless write=true)
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+        run: |
+          if [ "${{ inputs.write }}" = "true" ]; then
+            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --write
+          else
+            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --dry-run
+          fi

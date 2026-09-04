@@ -51,8 +51,8 @@
 
 // Display-only chips (no filterKey) render as a non-interactive pButton.
 .c-affiliate-overview-card__info-tag {
-  font-family: var(--text-label-sm-family);
-  font-weight: var(--text-label-sm-weight);
+  font-family: var(--#{$pds-prefix}-text-label-sm-family);
+  font-weight: var(--#{$pds-prefix}-text-label-sm-weight);
   line-height: normal;
   cursor: default;
   pointer-events: none;
@@ -63,13 +63,13 @@
   line-height: normal;
 
   .p-togglebutton {
-    font-family: var(--text-label-sm-family);
+    font-family: var(--#{$pds-prefix}-text-label-sm-family);
     cursor: pointer;
   }
 }
 
 .c-affiliate-overview-card__info-tag-value {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
 }
 
 // Status action — warn/success/danger button with optional inline p-badge.
@@ -77,8 +77,8 @@
   line-height: normal;
 
   .c-affiliate-overview-card__status-action-prefix {
-    font-family: var(--text-label-sm-family);
-    font-weight: var(--font-weight-regular);
+    font-family: var(--#{$pds-prefix}-text-label-sm-family);
+    font-weight: var(--#{$pds-prefix}-font-weight-regular);
   }
 
   .c-affiliate-overview-card__status-action-badge {
@@ -93,7 +93,7 @@
 }
 
 .c-affiliate-overview-card__shortcut-badge {
-  font-family: var(--font-family-label);
+  font-family: var(--#{$pds-prefix}-font-family-label);
   font-size: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-size);
   font-weight: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-weight);
   line-height: var(--#{$pds-prefix}-text-affiliate-overview-card-shortcut-badge-line-height);

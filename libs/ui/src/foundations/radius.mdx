@@ -1,0 +1,37 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './radius.stories';
+
+<Meta of={Stories} />
+
+# Radius
+
+Corner radii come straight from Figma `border/radius/*`. Values are unmapped literals — no PrimeNG alias — so they are identical before and after bootstrap. Each preview shows the real corner at the token value.
+
+`md` is **6px** and `lg` is **8px** — the pre-pipeline SCSS used 8px and 10px, so any hardcoded radius in an older component is drift. Use a stop.
+
+For utilities and per-edge targets see [Foundations / Borders](?path=/docs/foundations-borders--docs).
+
+## How to use
+
+1. Use the `u-radius-*` utility when rounding a demo or one-off box.
+2. In a component, point a component token at a stop: `--pds-radius-card: var(--pds-radius-lg)`.
+3. Per-edge and per-corner targets exist: `u-radius-top-lg`, `u-radius-top-start-xl`.
+
+## When to reach for it
+
+A named stop. `md` for inputs and small cards, `lg`/`xl` for panels, `pill` for tags and badges.
+
+Do not hardcode `border-radius: 8px` — `md` is 6px and `lg` is 8px in Figma, so a literal will drift.
+
+```scss
+// 01-settings/_settings.card.scss
+:root {
+  --pds-radius-card: var(--pds-radius-lg);
+}
+```
+
+Declared in `_settings.radius.generated.scss` and `_settings.radius.scss`. Classes: `.u-radius-{stop}` · `.u-radius-{side|corner}-{stop}`. `2xl` and `pill` are code-owned extras; the rest come from Figma.
+
+<Unstyled>
+  <Canvas of={Stories.Stops} sourceState="none" />
+</Unstyled>

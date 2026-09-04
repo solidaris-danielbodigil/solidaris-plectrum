@@ -80,6 +80,7 @@ libs/styles/src/
 │   ├── _components.nav-shell.scss
 │   ├── _components.toolbar.scss
 │   ├── _components.doc-demo-box.scss
+│   ├── _components.docs-figures.scss    Storybook Docs figures (c-docs-diagram / -steps / -cards / -callout)
 │   └── _components.{name}.scss         ← one file per component
 │
 ├── 07-utilities/                        ← Single-purpose helpers  (prefix: u-)

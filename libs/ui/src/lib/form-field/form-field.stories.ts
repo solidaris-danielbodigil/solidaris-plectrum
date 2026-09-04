@@ -4,22 +4,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormFieldComponent } from './form-field.component';
 
 const meta: Meta<FormFieldComponent> = {
-  title: 'UI/Form Field',
+  tags: ['!dev'],
+  title: 'Custom components/Form Field',
   component: FormFieldComponent,
-  parameters: {
-    docs: {
-      description: {
-        component: `
-Optional field shell with a custom static label (not PrimeNG FloatLabel), optional required asterisk,
-invalid label colour, and a built-in \`p-message\` error slot.
-
-Parent forms should pass \`[invalid]="isFieldInvalid(form, 'controlName')"\` where
-\`isFieldInvalid\` checks \`control.invalid && (control.touched || control.dirty || form.submitted)\`
-(SelectButton and similar controls set \`dirty\` but not \`touched\` on click).
-        `,
-      },
-    },
-  },
   argTypes: {
     label: { control: 'text' },
     layout: { control: 'radio', options: ['vertical', 'horizontal'] },
@@ -41,7 +28,7 @@ export const Vertical: Story = {
       imports: [FormsModule, InputTextModule, FormFieldComponent],
     },
     template: `
-      <(pds|app|lib)-form-field
+      <pds-form-field
         [label]="label"
         [layout]="layout"
         [required]="required"
@@ -76,7 +63,7 @@ export const Horizontal: Story = {
       imports: [FormsModule, InputTextModule, FormFieldComponent],
     },
     template: `
-      <(pds|app|lib)-form-field
+      <pds-form-field
         [label]="label"
         [layout]="layout"
         [required]="required"

@@ -1,0 +1,52 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './typography.stories';
+
+<Meta title="Foundations/Typography/Roles" />
+
+# Typography roles
+
+Type is code-owned: the Foundations file exposes it as text styles, not Figma variables. Base is `1rem = 14px`. Semantic roles bundle five properties — family, size, weight, line-height and letter-spacing.
+
+Type your own copy in the playground field to check a real string — long French labels and currency amounts behave differently from lorem ipsum.
+
+## How to use
+
+1. In `06-components`, include a mixin: `@use "../02-tools/tools.typography" as *; .c-x__title { @include text-heading-sm; }`.
+2. Use a raw `--pds-text-{role}-{size}-{prop}` var only when you need one property in isolation.
+3. Take the whole role. Mixing a size from one role with a line-height from another is how vertical rhythm drifts.
+
+Copy gives you `@include text-body-md;` for component SCSS, `.u-text-body-md` for a template, or the resolved `font` shorthand.
+
+## When to reach for it
+
+- A semantic role that matches the content: display for hero numbers, heading for titles, label for form and UI chrome, body for prose.
+- The `u-text-*` utilities for one-off documentation text.
+
+Do not hardcode `font-size` or `font-family`. Do not mix a primitive size with a semantic line-height.
+
+```scss
+// 06-components/_components.card.scss
+@use '../02-tools/tools.typography' as *;
+
+.c-card__title { @include text-heading-sm; }
+.c-card__meta  { @include text-body-xs; }
+```
+
+Declared in `_settings.typography-primitive.scss` and `_settings.typography-semantic.scss`. Classes: `.u-text-{role}-{size}`. Primitives live on [Foundations / Typography / Primitives](?path=/docs/foundations-typography-primitives--docs).
+
+## Roles
+
+<DocsTable
+  headers={['Role', 'When']}
+  rows={[
+    ['Display', 'Hero metrics and page-level figures. Agenda.'],
+    ['Heading', 'Section and card titles. Open Sans, bold.'],
+    ['Label', 'Form labels, table headers, badges, UI chrome.'],
+    ['Body', 'Running copy and descriptions.'],
+  ]}
+/>
+
+<Unstyled>
+  <Canvas of={Stories.Roles} sourceState="none" />
+</Unstyled>

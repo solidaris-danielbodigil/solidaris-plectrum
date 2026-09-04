@@ -15,7 +15,7 @@
 
 | Type | Prefix | Example |
 |---|---|---|
-| Object (layout pattern) | `o-` | `o-container`, `o-grid`, `o-stack` |
+| Object (layout pattern) | `o-` | `o-container`, `o-flex`, `o-layout` |
 | Component | `c-` | `c-card`, `c-nav-shell`, `c-button` |
 | Utility | `u-` | `u-hidden`, `u-sr-only`, `u-visually-hidden` |
 | JS hook | `js-` | `js-modal-trigger`, `js-toggle` |

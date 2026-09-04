@@ -27,7 +27,7 @@
 }
 
 .c-copyable-text__value {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
 }
 
 .c-copyable-text__separator {

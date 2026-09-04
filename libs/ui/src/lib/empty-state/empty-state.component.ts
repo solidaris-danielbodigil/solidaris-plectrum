@@ -1,5 +1,9 @@
-import { Component, input } from '@angular/core';
-import { pickRandomEmptyStateIllustration } from './empty-state-illustrations';
+import { Component, computed, input } from '@angular/core';
+import {
+  pickRandomEmptyStateIllustration,
+  resolveEmptyStateIllustration,
+  type EmptyStateIllustrationChoice,
+} from './empty-state-illustrations';
 
 @Component({
   selector: 'pds-empty-state',
@@ -9,5 +13,12 @@ import { pickRandomEmptyStateIllustration } from './empty-state-illustrations';
 export class EmptyStateComponent {
   readonly title = input.required<string>();
   readonly description = input<string | null>(null);
-  readonly illustrationSrc = pickRandomEmptyStateIllustration();
+  /** Decorative hero. Defaults to a random catalog pick, stable for the instance lifetime. */
+  readonly illustration = input<EmptyStateIllustrationChoice>('random');
+
+  private readonly randomIllustrationSrc = pickRandomEmptyStateIllustration();
+
+  readonly illustrationSrc = computed(() =>
+    resolveEmptyStateIllustration(this.illustration(), this.randomIllustrationSrc),
+  );
 }

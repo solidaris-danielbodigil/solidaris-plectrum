@@ -1,0 +1,49 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.docs-figures.scss
+// Docs-figure tokens for the SVG diagrams on the Storybook Docs pages
+// (libs/ui/.storybook/docs-figures.ts) plus the structural sizes shared with
+// the PrimeNG-based steps and cards (libs/ui/src/storybook/docs-*.component).
+//
+// Tones name the three worlds a token travels through:
+//   design → Figma (warm)   system → this repo (brand)   app → products (green)
+// Steps, cards and callouts paint tones through PrimeNG severities instead
+// (warn / info / success / secondary), so only the diagram reads these.
+// Ramp steps are referenced here, in 01-settings, so 06-components stays on
+// component tokens only.
+// =============================================================================
+
+:root {
+  // ── Tones ──────────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-color-docs-design-bg:      var(--#{$pds-prefix}-color-orange-50);
+  --#{$pds-prefix}-color-docs-design-border:  var(--#{$pds-prefix}-color-orange-500);
+  --#{$pds-prefix}-color-docs-design-text:    var(--#{$pds-prefix}-color-orange-900);
+
+  --#{$pds-prefix}-color-docs-system-bg:      var(--#{$pds-prefix}-color-primary-50);
+  --#{$pds-prefix}-color-docs-system-border:  var(--#{$pds-prefix}-color-primary-600);
+  --#{$pds-prefix}-color-docs-system-text:    var(--#{$pds-prefix}-color-primary-900);
+
+  --#{$pds-prefix}-color-docs-app-bg:         var(--#{$pds-prefix}-color-green-50);
+  --#{$pds-prefix}-color-docs-app-border:     var(--#{$pds-prefix}-color-green-600);
+  --#{$pds-prefix}-color-docs-app-text:       var(--#{$pds-prefix}-color-green-900);
+
+  --#{$pds-prefix}-color-docs-neutral-bg:     var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-docs-neutral-border: var(--#{$pds-prefix}-color-content-border);
+  --#{$pds-prefix}-color-docs-neutral-text:   var(--#{$pds-prefix}-color-text);
+
+  // ── Diagram chrome ─────────────────────────────────────────────────────────
+  --#{$pds-prefix}-color-docs-lane-bg:        var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-color-docs-lane-text:      var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-docs-edge:           var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-docs-edge-halo:      var(--#{$pds-prefix}-color-surface-0);
+
+  // ── Structural ─────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-size-docs-diagram-min:   40rem;   // 560px — narrower viewports scroll the figure sideways
+  --#{$pds-prefix}-size-docs-steps-index:   1.75rem; // p-badge size="xlarge" height (Plectrum badge.xl) the step title centres on
+  --#{$pds-prefix}-size-docs-card-min:      16rem;   // 224px — three cards per row on a docs page
+  --#{$pds-prefix}-size-docs-card-min-wide: 24rem;   // 336px — two cards per row
+  --#{$pds-prefix}-size-docs-stroke:        1.5px;   // node outline (SVG user units)
+  --#{$pds-prefix}-size-docs-edge-stroke:   2px;     // arrows
+  --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow
+}

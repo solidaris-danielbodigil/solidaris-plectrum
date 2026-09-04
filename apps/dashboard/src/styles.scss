@@ -80,19 +80,19 @@ html.dark .c-dashboard-sessions {
 
   .c-dashboard-sessions__table {
     .p-datatable-thead > tr > th {
-      font-family: var(--text-label-sm-family);
-      font-size: var(--text-label-sm-size);
-      font-weight: var(--font-weight-semibold);
-      line-height: var(--text-label-sm-line-height);
+      font-family: var(--pds-text-label-sm-family);
+      font-size: var(--pds-text-label-sm-size);
+      font-weight: var(--pds-font-weight-semibold);
+      line-height: var(--pds-text-label-sm-line-height);
       color: var(--p-text-muted-color);
       background: color-mix(in srgb, var(--p-content-background) 88%, var(--p-surface-950));
     }
 
     .p-datatable-tbody > tr > td {
-      font-family: var(--text-body-sm-family);
-      font-size: var(--text-body-sm-size);
-      font-weight: var(--text-body-sm-weight);
-      line-height: var(--text-body-sm-line-height);
+      font-family: var(--pds-text-body-sm-family);
+      font-size: var(--pds-text-body-sm-size);
+      font-weight: var(--pds-text-body-sm-weight);
+      line-height: var(--pds-text-body-sm-line-height);
       color: var(--p-text-color);
     }
 

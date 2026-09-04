@@ -1,0 +1,149 @@
+// =============================================================================
+// 01-settings/_settings.legacy-aliases.scss
+// DEPRECATED — bare custom property names for one-release compatibility.
+//
+// Re-declares the pre-prefix names as aliases of --#{$pds-prefix}-* so leftover
+// var(--spacing-*), var(--text-*), var(--font-*), and related consumers keep
+// resolving during the Wave 2 cutover.
+//
+// Remove this file and its @forward from _settings.core.scss in the next release.
+// New declarations of --spacing- / --text- / --font- / --line-height- must go
+// through the prefixed tokens, not this file.
+// =============================================================================
+
+@use 'settings.prefix' as *;
+
+:root {
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  --base-unit: var(--#{$pds-prefix}-base-unit);
+  --spacingUnit: var(--#{$pds-prefix}-spacing-unit);
+  --#{$pds-prefix}-spacingUnit: var(--#{$pds-prefix}-spacing-unit);
+  --spacing-0: var(--#{$pds-prefix}-spacing-0);
+  --spacing-0-25: var(--#{$pds-prefix}-spacing-0-25);
+  --spacing-0-5: var(--#{$pds-prefix}-spacing-0-5);
+  --spacing-0-75: var(--#{$pds-prefix}-spacing-0-75);
+  --spacing-1: var(--#{$pds-prefix}-spacing-1);
+  --spacing-1-5: var(--#{$pds-prefix}-spacing-1-5);
+  --spacing-2: var(--#{$pds-prefix}-spacing-2);
+  --spacing-3: var(--#{$pds-prefix}-spacing-3);
+  --spacing-4: var(--#{$pds-prefix}-spacing-4);
+  --spacing-5: var(--#{$pds-prefix}-spacing-5);
+  --spacing-6: var(--#{$pds-prefix}-spacing-6);
+  --spacing-7: var(--#{$pds-prefix}-spacing-7);
+  --spacing-auto: var(--#{$pds-prefix}-spacing-auto);
+
+  // ── Typography primitives ──────────────────────────────────────────────────
+  --font-family-display: var(--#{$pds-prefix}-font-family-display);
+  --font-family-heading: var(--#{$pds-prefix}-font-family-heading);
+  --font-family-label: var(--#{$pds-prefix}-font-family-label);
+  --font-family-body: var(--#{$pds-prefix}-font-family-body);
+  --font-agenda: var(--#{$pds-prefix}-font-agenda);
+  --font-open-sans: var(--#{$pds-prefix}-font-open-sans);
+  --font-size-xs: var(--#{$pds-prefix}-font-size-xs);
+  --font-size-s: var(--#{$pds-prefix}-font-size-s);
+  --font-size-base: var(--#{$pds-prefix}-font-size-base);
+  --font-size-md: var(--#{$pds-prefix}-font-size-md);
+  --font-size-lg: var(--#{$pds-prefix}-font-size-lg);
+  --font-size-xl: var(--#{$pds-prefix}-font-size-xl);
+  --font-size-2xl: var(--#{$pds-prefix}-font-size-2xl);
+  --font-size-3xl: var(--#{$pds-prefix}-font-size-3xl);
+  --font-size-4xl: var(--#{$pds-prefix}-font-size-4xl);
+  --font-size-5xl: var(--#{$pds-prefix}-font-size-5xl);
+  --font-weight-regular: var(--#{$pds-prefix}-font-weight-regular);
+  --font-weight-semibold: var(--#{$pds-prefix}-font-weight-semibold);
+  --font-weight-bold: var(--#{$pds-prefix}-font-weight-bold);
+  --line-height-16: var(--#{$pds-prefix}-line-height-16);
+  --line-height-18: var(--#{$pds-prefix}-line-height-18);
+  --line-height-20: var(--#{$pds-prefix}-line-height-20);
+  --line-height-22: var(--#{$pds-prefix}-line-height-22);
+  --line-height-24: var(--#{$pds-prefix}-line-height-24);
+  --line-height-28: var(--#{$pds-prefix}-line-height-28);
+  --line-height-36: var(--#{$pds-prefix}-line-height-36);
+  --line-height-40: var(--#{$pds-prefix}-line-height-40);
+  --line-height-48: var(--#{$pds-prefix}-line-height-48);
+  --letter-spacing-0: var(--#{$pds-prefix}-letter-spacing-0);
+  --paragraph-spacing-0: var(--#{$pds-prefix}-paragraph-spacing-0);
+
+  // ── Typography semantic ────────────────────────────────────────────────────
+  --text-display-xl-family: var(--#{$pds-prefix}-text-display-xl-family);
+  --text-display-xl-size: var(--#{$pds-prefix}-text-display-xl-size);
+  --text-display-xl-weight: var(--#{$pds-prefix}-text-display-xl-weight);
+  --text-display-xl-line-height: var(--#{$pds-prefix}-text-display-xl-line-height);
+  --text-display-xl-spacing: var(--#{$pds-prefix}-text-display-xl-spacing);
+  --text-display-lg-family: var(--#{$pds-prefix}-text-display-lg-family);
+  --text-display-lg-size: var(--#{$pds-prefix}-text-display-lg-size);
+  --text-display-lg-weight: var(--#{$pds-prefix}-text-display-lg-weight);
+  --text-display-lg-line-height: var(--#{$pds-prefix}-text-display-lg-line-height);
+  --text-display-lg-spacing: var(--#{$pds-prefix}-text-display-lg-spacing);
+  --text-display-md-family: var(--#{$pds-prefix}-text-display-md-family);
+  --text-display-md-size: var(--#{$pds-prefix}-text-display-md-size);
+  --text-display-md-weight: var(--#{$pds-prefix}-text-display-md-weight);
+  --text-display-md-line-height: var(--#{$pds-prefix}-text-display-md-line-height);
+  --text-display-md-spacing: var(--#{$pds-prefix}-text-display-md-spacing);
+
+  --text-heading-lg-family: var(--#{$pds-prefix}-text-heading-lg-family);
+  --text-heading-lg-size: var(--#{$pds-prefix}-text-heading-lg-size);
+  --text-heading-lg-weight: var(--#{$pds-prefix}-text-heading-lg-weight);
+  --text-heading-lg-line-height: var(--#{$pds-prefix}-text-heading-lg-line-height);
+  --text-heading-lg-spacing: var(--#{$pds-prefix}-text-heading-lg-spacing);
+  --text-heading-md-family: var(--#{$pds-prefix}-text-heading-md-family);
+  --text-heading-md-size: var(--#{$pds-prefix}-text-heading-md-size);
+  --text-heading-md-weight: var(--#{$pds-prefix}-text-heading-md-weight);
+  --text-heading-md-line-height: var(--#{$pds-prefix}-text-heading-md-line-height);
+  --text-heading-md-spacing: var(--#{$pds-prefix}-text-heading-md-spacing);
+  --text-heading-sm-family: var(--#{$pds-prefix}-text-heading-sm-family);
+  --text-heading-sm-size: var(--#{$pds-prefix}-text-heading-sm-size);
+  --text-heading-sm-weight: var(--#{$pds-prefix}-text-heading-sm-weight);
+  --text-heading-sm-line-height: var(--#{$pds-prefix}-text-heading-sm-line-height);
+  --text-heading-sm-spacing: var(--#{$pds-prefix}-text-heading-sm-spacing);
+  --text-heading-xs-family: var(--#{$pds-prefix}-text-heading-xs-family);
+  --text-heading-xs-size: var(--#{$pds-prefix}-text-heading-xs-size);
+  --text-heading-xs-weight: var(--#{$pds-prefix}-text-heading-xs-weight);
+  --text-heading-xs-line-height: var(--#{$pds-prefix}-text-heading-xs-line-height);
+  --text-heading-xs-spacing: var(--#{$pds-prefix}-text-heading-xs-spacing);
+
+  --text-label-lg-family: var(--#{$pds-prefix}-text-label-lg-family);
+  --text-label-lg-size: var(--#{$pds-prefix}-text-label-lg-size);
+  --text-label-lg-weight: var(--#{$pds-prefix}-text-label-lg-weight);
+  --text-label-lg-line-height: var(--#{$pds-prefix}-text-label-lg-line-height);
+  --text-label-lg-spacing: var(--#{$pds-prefix}-text-label-lg-spacing);
+  --text-label-md-family: var(--#{$pds-prefix}-text-label-md-family);
+  --text-label-md-size: var(--#{$pds-prefix}-text-label-md-size);
+  --text-label-md-weight: var(--#{$pds-prefix}-text-label-md-weight);
+  --text-label-md-line-height: var(--#{$pds-prefix}-text-label-md-line-height);
+  --text-label-md-spacing: var(--#{$pds-prefix}-text-label-md-spacing);
+  --text-label-sm-family: var(--#{$pds-prefix}-text-label-sm-family);
+  --text-label-sm-size: var(--#{$pds-prefix}-text-label-sm-size);
+  --text-label-sm-weight: var(--#{$pds-prefix}-text-label-sm-weight);
+  --text-label-sm-line-height: var(--#{$pds-prefix}-text-label-sm-line-height);
+  --text-label-sm-spacing: var(--#{$pds-prefix}-text-label-sm-spacing);
+  --text-label-xs-family: var(--#{$pds-prefix}-text-label-xs-family);
+  --text-label-xs-size: var(--#{$pds-prefix}-text-label-xs-size);
+  --text-label-xs-weight: var(--#{$pds-prefix}-text-label-xs-weight);
+  --text-label-xs-line-height: var(--#{$pds-prefix}-text-label-xs-line-height);
+  --text-label-xs-spacing: var(--#{$pds-prefix}-text-label-xs-spacing);
+
+  --text-body-lg-family: var(--#{$pds-prefix}-text-body-lg-family);
+  --text-body-lg-size: var(--#{$pds-prefix}-text-body-lg-size);
+  --text-body-lg-weight: var(--#{$pds-prefix}-text-body-lg-weight);
+  --text-body-lg-line-height: var(--#{$pds-prefix}-text-body-lg-line-height);
+  --text-body-lg-spacing: var(--#{$pds-prefix}-text-body-lg-spacing);
+  --text-body-md-family: var(--#{$pds-prefix}-text-body-md-family);
+  --text-body-md-size: var(--#{$pds-prefix}-text-body-md-size);
+  --text-body-md-weight: var(--#{$pds-prefix}-text-body-md-weight);
+  --text-body-md-line-height: var(--#{$pds-prefix}-text-body-md-line-height);
+  --text-body-md-spacing: var(--#{$pds-prefix}-text-body-md-spacing);
+  --text-body-sm-family: var(--#{$pds-prefix}-text-body-sm-family);
+  --text-body-sm-size: var(--#{$pds-prefix}-text-body-sm-size);
+  --text-body-sm-weight: var(--#{$pds-prefix}-text-body-sm-weight);
+  --text-body-sm-line-height: var(--#{$pds-prefix}-text-body-sm-line-height);
+  --text-body-sm-spacing: var(--#{$pds-prefix}-text-body-sm-spacing);
+  --text-body-xs-family: var(--#{$pds-prefix}-text-body-xs-family);
+  --text-body-xs-size: var(--#{$pds-prefix}-text-body-xs-size);
+  --text-body-xs-weight: var(--#{$pds-prefix}-text-body-xs-weight);
+  --text-body-xs-line-height: var(--#{$pds-prefix}-text-body-xs-line-height);
+  --text-body-xs-spacing: var(--#{$pds-prefix}-text-body-xs-spacing);
+
+  // ── Grid ───────────────────────────────────────────────────────────────────
+  --grid-cols: var(--#{$pds-prefix}-grid-cols);
+}

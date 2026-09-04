@@ -16,6 +16,9 @@
     { "file": ".ai/rules/05-bemit-naming.md" },
     { "file": ".ai/rules/06-accessibility.md" },
     { "file": ".ai/rules/07-version-control.md" },
+    { "file": ".ai/rules/08-object-classes.md" },
+    { "file": ".ai/rules/09-styling-policy.md" },
+    { "file": ".ai/rules/10-css-ssot.md" },
 
     // ── Skills ─────────────────────────────────────────────────────────────────
     { "file": ".ai/skills/01-design-system.md" },

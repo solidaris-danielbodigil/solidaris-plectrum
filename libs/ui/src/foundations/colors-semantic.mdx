@@ -1,0 +1,72 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './colors.stories';
+
+<Meta title="Foundations/Colors/Semantic Common" />
+
+# Semantic Common
+
+Named roles from Figma **Colors / Semantic Common**. Mapped colors emit as `var(--p-*, <literal>)`: the live PrimeNG preset wins, and the literal generated from `tokens.json` is the pre-bootstrap fallback.
+
+Every swatch is resolved with `getComputedStyle`, so what you see is what the running app renders — including the live `--p-*` value behind a mapped token. Click any token to copy it. Use the **var() / Name / Value** switch to copy `var(--pds-…)` for SCSS, the bare name for a review comment, or the resolved value for Figma.
+
+Figma: [Plectrum DS — PrimeNG v21 / Colors](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4-2)
+
+## How to use
+
+1. Reach for a Semantic Common role first — `text`, `surface`, `content`, `form`, `navigation`, `primary`.
+2. Numbered [Primitive](?path=/docs/foundations-colors-primitive--docs) hues (blue, gray, rose…) are only for authoring a new role in `01-settings`.
+3. If no token fits, add one to `01-settings` with a Figma comment, then consume it as `var(--pds-…)`.
+
+## When to reach for it
+
+- Any color in `06-components` — always through `var(--pds-color-…)`.
+- A Primitive step inside `01-settings` when authoring a semantic role.
+
+Do not use hex, `rgb()`, or `hsl()` literals in component SCSS. Do not reference a Primitive step from a component when a role token exists. Do not declare `--p-*` outside `01-settings/_settings.{component}.scss`.
+
+```scss
+// 06-components/_components.card.scss
+.c-card {
+  background: var(--pds-color-content-bg);
+  border: 1px solid var(--pds-color-card-border);
+  color: var(--pds-color-text);
+}
+```
+
+Declared in `_settings.colors-primitive.generated.scss` and `_settings.colors-semantic.generated.scss`. Primitive ramps live on [Foundations / Colors / Primitive](?path=/docs/foundations-colors-primitive--docs).
+
+## Groups
+
+Same names and order as Figma Semantic Common. `primary` and `surface` include the numbered scale and the named roles. Tokens Figma keeps on components (success, warning, danger, info, and other `--pds-color-*` leftovers) land in **Component & feature tokens** at the bottom.
+
+<DocsTable
+  headers={['Group', 'When']}
+  rows={[
+    ['focus', 'Focus ring color — prefer the Focus tokens for width and offset.'],
+    ['form', 'Inputs: border, placeholder, filled and invalid states.'],
+    ['primary', 'Primary scale and interactive roles (color, hover, active, contrast).'],
+    ['content', 'Card and panel chrome — background plus border.'],
+    ['highlight', 'Selected rows and active list options.'],
+    ['list', 'List option colors. Present when CSS declares the tokens.'],
+    ['mask', 'Scrims behind a modal or drawer.'],
+    ['navigation', 'Nav shell, sub-nav and top-nav chrome.'],
+    ['overlay', 'Modal, popover and select panel backgrounds.'],
+    ['surface', 'Page and panel backgrounds, plus the numbered surface scale.'],
+    ['text', 'Foreground copy. text for default, text-muted for secondary.'],
+  ]}
+/>
+
+<Unstyled>
+  <Canvas of={Stories.SemanticCommon} sourceState="none" />
+</Unstyled>
+
+## Semantic Color Scheme
+
+Figma’s next collection is the same groups bound to a theme. Here that binding is the live `--p-*` value — toggle Plectrum v0.6 ↔ v1 in the toolbar.
+
+The canvas below blanks mapped `--p-*` variables on the host. Values fall back to the literals generated from `tokens.json`, which proves hybrid colors resolve before Angular bootstraps. Affected tokens are flagged in amber.
+
+<Unstyled>
+  <Canvas of={Stories.StubbedProvidePlectrum} sourceState="none" />
+</Unstyled>

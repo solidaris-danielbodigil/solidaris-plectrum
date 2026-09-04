@@ -1,0 +1,36 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './spacing.stories';
+
+<Meta of={Stories} />
+
+# Spacing
+
+Code-owned 8-point scale derived from `--pds-base-unit` (`1rem = 14px`). Each step is a multiple of half the base unit. Each bar below is drawn at the real token width, so the steps are comparable at a glance.
+
+In templates you almost never write `var(--pds-spacing-2)` — you write `o-layout--gap-2` or `o-layout--padding-3`. The variable is for component tokens in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
+
+## How to use
+
+1. Express layout and spacing as object-class BEM mixes in the template: `o-layout--gap-2`, `o-layout--padding-3`.
+2. Reach for `var(--pds-spacing-…)` in SCSS only when the value belongs to a component token in `01-settings`.
+3. Never invent an intermediate step. `0-75` is the one non-8pt exception, for icon + label gaps.
+
+## When to reach for it
+
+- Gaps, padding and margins on the global scale — via `o-layout--*` in the template.
+- A component token in `01-settings` that composes the scale, e.g. `calc(var(--pds-spacing-2) + var(--pds-spacing-0-5))`.
+
+Do not write raw `px` or `rem` padding in `06-components`. Do not declare `display: flex; gap: …` in component SCSS when `o-flex` + `o-layout--gap-*` does it.
+
+```html
+<!-- template — spacing lives on object classes, not in component SCSS -->
+<div class="c-card o-flex o-flex--col o-layout--gap-2 o-layout--padding-3">
+  …
+</div>
+```
+
+Declared in `_settings.spacing.scss`. Classes: `.o-layout--{gap|padding|margin}-{step}`. Click a step to copy it. `auto` is for margin centring.
+
+<Unstyled>
+  <Canvas of={Stories.Scale} sourceState="none" />
+</Unstyled>

@@ -16,35 +16,35 @@
   // ── Stepper titles ──────────────────────────────────────────────────────────
   --#{$pds-prefix}-color-affiliate-document-detail-step-title-text: var(--#{$pds-prefix}-color-text);
   --#{$pds-prefix}-color-affiliate-document-detail-step-title-text-finished: var(--#{$pds-prefix}-color-text-muted);
-  --#{$pds-prefix}-space-affiliate-document-detail-step-head-gap: var(--spacing-2);
+  --#{$pds-prefix}-space-affiliate-document-detail-step-head-gap: var(--#{$pds-prefix}-spacing-2);
 
   // ── Certificate / detail metadata ───────────────────────────────────────────
-  --#{$pds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-detail-label-width: calc(124 / 14 * var(--#{$pds-prefix}-base-unit));
   --#{$pds-prefix}-color-affiliate-document-detail-detail-label-text: var(--#{$pds-prefix}-color-text-muted);
   --#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-bg: var(--#{$pds-prefix}-color-primary-75);
   --#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-text: var(--#{$pds-prefix}-color-metadata-chip-text);
 
   // ── Deep-link message pulse (transient) ─────────────────────────────────────
-  --#{$pds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-message-pulse-spread: calc(8 / 14 * var(--#{$pds-prefix}-base-unit));
   --#{$pds-prefix}-duration-affiliate-document-detail-message-pulse: 700ms;
 
   // ── Loading skeleton (iSHARE Eva Martinez reference layout) ─────────────────
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-w: calc(604 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-h: calc(32 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-w: calc(148 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-h: calc(32 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-w: calc(86 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-h: calc(14 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-w: calc(89 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-h: calc(23 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-sm-w: calc(57 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-lg-w: calc(147 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-h: calc(27 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-w: calc(72 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-h: calc(14 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-detail-row-h: calc(26 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-w: calc(604 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-title-h: calc(32 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-w: calc(148 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-step-h: calc(32 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-w: calc(86 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-cert-title-h: calc(14 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-w: calc(89 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-tag-h: calc(23 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-sm-w: calc(57 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-lg-w: calc(147 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-action-h: calc(27 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-w: calc(72 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-heading-h: calc(14 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-detail-row-h: calc(26 / 14 * var(--#{$pds-prefix}-base-unit));
   --#{$pds-prefix}-size-affiliate-document-detail-skeleton-detail-row-w: 100%;
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-w: calc(171 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-h: calc(32 / 14 * var(--base-unit));
-  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-sm-w: calc(143 / 14 * var(--base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-w: calc(171 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-md-h: calc(32 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-affiliate-document-detail-skeleton-btn-sm-w: calc(143 / 14 * var(--#{$pds-prefix}-base-unit));
 }

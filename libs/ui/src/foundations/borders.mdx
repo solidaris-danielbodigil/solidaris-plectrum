@@ -1,0 +1,67 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './borders.stories';
+
+<Meta of={Stories} />
+
+# Borders
+
+Token-driven **border** and **radius** utilities in `07-utilities/`. Geometry is defined once in `02-tools/_tools.radius.scss` and `_tools.borders.scss` — components `@include` the same mixins.
+
+Every list on this page is enumerated from the stylesheet, so it always matches what `libs/styles` generates.
+
+- **Radius:** `.u-radius-{stop}` (all corners) · `.u-radius-{side|corner}-{stop}` (per edge/corner)
+- **Border sides:** `.u-border-{side}` — default `1px solid` using `--pds-color-content-border`
+- **Orthogonal modifiers** (compose freely): `.u-border-thick` · `.u-border-dashed` · `.u-border-{status}`
+- Override color per instance: `style="--pds-border-color: var(--pds-color-panel-border);"`
+
+Styles: `libs/styles/src/07-utilities/_utilities.radius.scss` · `_utilities.borders.scss`. Token values: [Foundations / Radius](?path=/docs/foundations-radius--docs).
+
+## Radius
+
+All-corner stops. Each box uses `.u-radius-{stop}`, which reads `--pds-radius-{stop}`.
+
+<Canvas of={Stories.Radius} />
+
+## Radius targets
+
+Per-edge and per-corner targets, for when only part of a box is rounded. Compose with an all-corner stop to override a single edge.
+
+<Canvas of={Stories.RadiusTargets} />
+
+## Border sides
+
+Side classes delegate to the shared `border()` mixin. Width, style and color come from overridable custom properties.
+
+<Canvas of={Stories.BorderSides} />
+
+## Border modifiers
+
+Modifiers set custom properties only — combine them with any side class.
+
+```html
+<div class="u-border-top u-border-thick u-border-dashed u-border-danger"></div>
+```
+
+<Canvas of={Stories.BorderModifiers} />
+
+## Border status colors
+
+Status modifiers set `--pds-border-color` to the canonical `--pds-color-{status}` token — no per-color matrix.
+
+<Canvas of={Stories.BorderStatus} />
+
+## Border color override
+
+Default border color is `--pds-color-content-border`. Override per instance via `--pds-border-color`:
+
+<DocsTable
+  headers={['Inline style', 'Role']}
+  rows={[
+    ['var(--pds-color-panel-border)', 'Flat panel chrome'],
+    ['var(--pds-color-card-border)', 'Elevated card outline'],
+    ['var(--pds-color-content-border)', 'Subtle inset (default)'],
+  ]}
+/>
+
+<Canvas of={Stories.BorderColorOverride} />

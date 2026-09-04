@@ -1,14 +1,12 @@
-import { Component, inject, input, signal, type OnInit } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import {
-  componentWrapperDecorator,
   moduleMetadata,
   type Meta,
   type StoryObj,
 } from '@storybook/angular';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { Toast } from 'primeng/toast';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
+import { showStorybookToast } from '../../storybook/storybook-toast';
 import {
   AffiliateDetailDrawerComponent,
   type AffiliateDetailDrawerData,
@@ -89,10 +87,8 @@ const plectrumIconProviders = [
 @Component({
   selector: 'pds-affiliate-detail-drawer-demo',
   standalone: true,
-  imports: [AffiliateDetailDrawerComponent, ButtonModule, Toast],
-  providers: [MessageService],
+  imports: [AffiliateDetailDrawerComponent, ButtonModule],
   template: `
-    <p-toast />
     <button
       pButton
       type="button"
@@ -101,7 +97,7 @@ const plectrumIconProviders = [
       (click)="open.set(true)"
     ></button>
 
-    <(pds|app|lib)-affiliate-detail-drawer
+    <pds-affiliate-detail-drawer
       [(visible)]="open"
       [data]="data()"
       [view]="activeView()"
@@ -116,26 +112,17 @@ const plectrumIconProviders = [
     />
   `,
 })
-class AffiliateDetailDrawerDemoComponent implements OnInit {
-  private readonly messageService = inject(MessageService);
-
+class AffiliateDetailDrawerDemoComponent {
   readonly data = input.required<AffiliateDetailDrawerData>();
-  readonly initiallyOpen = input<boolean>(false);
   readonly showNotes = input<boolean>(true);
 
   readonly open = signal(false);
   readonly activeView = signal<AffiliateDetailDrawerView>('details');
 
-  ngOnInit(): void {
-    this.open.set(this.initiallyOpen());
-  }
-
   onIdentifierCopy(identifier: AffiliateDetailDrawerIdentifier): void {
-    this.messageService.add({
-      severity: 'success',
+    showStorybookToast({
       summary: 'Copié !',
       detail: `${identifier.label}: ${identifier.value}`,
-      life: 2000,
     });
   }
 
@@ -145,49 +132,38 @@ class AffiliateDetailDrawerDemoComponent implements OnInit {
   }
 
   notify(detail: string): void {
-    this.messageService.add({ severity: 'info', summary: 'Action', detail, life: 1500 });
+    showStorybookToast({
+      severity: 'info',
+      summary: 'Action',
+      detail,
+      life: 1500,
+    });
   }
 }
 
 interface AffiliateDetailDrawerStoryArgs {
   data: AffiliateDetailDrawerData;
-  initiallyOpen: boolean;
   showNotes: boolean;
 }
 
 const meta: Meta<AffiliateDetailDrawerStoryArgs> = {
-  title: 'UI/Affiliate Detail Drawer',
+  title: 'Custom components/Affiliate Detail Drawer',
   component: AffiliateDetailDrawerComponent,
-  tags: ['autodocs'],
+  tags: ['!dev'],
   decorators: [
     moduleMetadata({
       imports: [AffiliateDetailDrawerDemoComponent],
       providers: plectrumIconProviders,
     }),
-    componentWrapperDecorator((story) => `<div class="sb-demo-wrapper">${story}</div>`),
   ],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-iSHARE "Carte affilié" detail drawer — a headless \`p-drawer\` wrapper.
-
-- **Figma**: [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012)
-- **BEM block**: \`c-drawer\` (elements: \`__affiliate-detail-*\`, shared \`__header\`, \`__toolbar\`, \`__content\`)
-- **Reuse**: large illustrated \`pds-plectrum-avatar\`, the overview-card copyable identifier chips, and small coloured avatars (blue/green/yellow) for the Famille tiles
-- **PrimeNG**: \`p-drawer\` (headless), \`p-selectButton\`, \`p-accordion\`, \`p-card\`, \`p-tag\`, \`p-button\`
-- **Two-way**: \`[(visible)]\` controls open/close; \`viewChange\` reports the Détails/Documents tab
-        `,
-      },
-    },
   },
   render: (args) => ({
     props: args,
     template: `
-      <(pds|app|lib)-affiliate-detail-drawer-demo
+      <pds-affiliate-detail-drawer-demo
         [data]="data"
-        [initiallyOpen]="initiallyOpen"
         [showNotes]="showNotes"
       />
     `,
@@ -198,49 +174,16 @@ export default meta;
 
 type Story = StoryObj<AffiliateDetailDrawerStoryArgs>;
 
-export const Closed: Story = {
+export const Default: Story = {
   args: {
     data: EVA_MARTINEZ,
-    initiallyOpen: false,
     showNotes: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Use the button to open the drawer. Copying an identifier shows a confirmation toast.',
-      },
-    },
-  },
-};
-
-export const Open: Story = {
-  args: {
-    data: EVA_MARTINEZ,
-    initiallyOpen: true,
-    showNotes: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Drawer open by default showing the full Carte affilié: header, segmented control, sections, and the Famille (blue/green/yellow avatars) and Notes accordions.',
-      },
-    },
   },
 };
 
 export const WithoutNotes: Story = {
   args: {
     data: EVA_MARTINEZ,
-    initiallyOpen: true,
     showNotes: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Notes section hidden via `[showNotes]="false"` — used by iSHARE while Storybook and other consumers keep the default.',
-      },
-    },
   },
 };

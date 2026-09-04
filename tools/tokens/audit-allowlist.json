@@ -1,0 +1,32 @@
+{
+  "$comment": "Known tokens.json / v1 gaps that Wave 3 generation cannot close. Review when the plugin dump grows.",
+  "missingAliases": [
+    "accordion.panel.border.width.bottom",
+    "button.contrast.color",
+    "button.contrast.hover.color",
+    "content.background",
+    "emutnav.item.active.color",
+    "extremes.white",
+    "focus.ring.style",
+    "form.field.background",
+    "form.field.focus.ring.style",
+    "form.field.transition.duration",
+    "list.header.padding",
+    "list.option.group.padding",
+    "list.option.padding",
+    "list.padding",
+    "megamenu.horizontal.orientation.padding",
+    "megamenu.item.active.color",
+    "menubar.item.active.color",
+    "navigation.item.padding",
+    "navigation.list.padding",
+    "navigation.submenu.label.padding",
+    "overlay.modal.background",
+    "overlay.popover.background",
+    "overlay.select.background",
+    "stepper.step.number.active.color",
+    "surface.0",
+    "tabs.tablist.border.width.bottom",
+    "transition.duration"
+  ]
+}

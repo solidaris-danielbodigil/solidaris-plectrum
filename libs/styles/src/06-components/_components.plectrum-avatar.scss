@@ -129,7 +129,7 @@
   @include text-heading-xs;
   color: var(--#{$pds-prefix}-color-surface-0);
   text-align: center;
-  letter-spacing: var(--letter-spacing-0);
+  letter-spacing: var(--#{$pds-prefix}-letter-spacing-0);
   pointer-events: none;
 }
 

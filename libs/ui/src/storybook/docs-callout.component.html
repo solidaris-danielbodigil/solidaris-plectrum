@@ -1,0 +1,15 @@
+<p-message [severity]="severity()" [icon]="icon()">
+  <div class="c-docs-callout__body">
+    <strong class="c-docs-callout__title">{{ title() }}</strong>
+    @if (text()) {
+      <p class="c-docs-callout__text">{{ text() }}</p>
+    }
+    @if (items()?.length) {
+      <ul class="c-docs-callout__list">
+        @for (item of items(); track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    }
+  </div>
+</p-message>

@@ -111,7 +111,7 @@
   padding: var(--#{$pds-prefix}-space-nav-shell-item-py) var(--#{$pds-prefix}-space-nav-shell-item-px);
   // Match expanded row height (label line-height) so label reveal does not jump item height
   min-height: calc(
-    (var(--#{$pds-prefix}-space-nav-shell-item-py) * 2) + var(--text-label-sm-line-height)
+    (var(--#{$pds-prefix}-space-nav-shell-item-py) * 2) + var(--#{$pds-prefix}-text-label-sm-line-height)
   );
   gap: var(--#{$pds-prefix}-space-nav-shell-item-gap-inner);
   border-radius: var(--#{$pds-prefix}-radius-nav-shell-item);

@@ -1,37 +1,24 @@
 // =============================================================================
 // libs/ui/src/foundations/iconography.stories.ts
-// Iconography foundation page — searchable, filterable Bootstrap Icons browser.
-//
-// Template: ./iconography-page.component.html
-//
-// PrimeNG components used:
-//   - pds-toolbar    — sticky card toolbar (libs/ui/src/lib/toolbar)
-//   - p-iconField    — search field with leading icon
-//   - p-inputIcon    — icon slot inside IconField
-//   - InputText      — directive on the <input>
-//   - p-selectButton — variant filter (All / Regular / Filled) + size picker (S/M/L/XL)
-//   - p-badge        — icon count
-//   - p-toast        — copy-to-clipboard confirmation
-//
-// Styles: c-iconography* classes from libs/styles/src/06-components/_iconography.scss
+// Iconography foundation — size tokens via <pds-token-explorer>, plus the
+// Bootstrap Icons catalog using the same token-block chrome.
 // =============================================================================
 
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { SelectButton } from 'primeng/selectbutton';
 import { Badge } from 'primeng/badge';
-import { Card } from 'primeng/card';
-import { Toast } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { InputClearComponent } from '../lib/input-clear';
+import { type IconSize } from '../lib/icon/icon.types';
+import { TokenExplorerComponent } from '../storybook/token-explorer.component';
+import { showStorybookToast } from '../storybook/storybook-toast';
 
-// ── Build-time icon list ──────────────────────────────────────────────────────
 const ALL_ICON_NAMES: string[] = (() => {
   try {
     // @ts-expect-error — require.context is a webpack/Storybook API
@@ -49,23 +36,20 @@ const ALL_ICON_NAMES: string[] = (() => {
   }
 })();
 
-// ── Variant filter options for p-selectButton ─────────────────────────────────
-// Bootstrap Icons has two styles: regular (no suffix) and filled (-fill suffix).
 const VARIANT_OPTIONS = [
-  { label: 'All',     value: 'all'     },
+  { label: 'All', value: 'all' },
   { label: 'Regular', value: 'regular' },
-  { label: 'Filled',  value: 'fill'    },
+  { label: 'Filled', value: 'fill' },
 ];
 
-// ── Size options for icon preview ──────────────────────────────────────────────
-const SIZE_OPTIONS = [
-  { label: 'S',   value: '1rem'   },
-  { label: 'M',   value: '1.5rem' },
-  { label: 'L',   value: '2rem'   },
-  { label: 'XL',  value: '3rem'   },
+const SIZE_OPTIONS: { label: string; value: IconSize }[] = [
+  { label: 'XS', value: 'xs' },
+  { label: 'S', value: 'sm' },
+  { label: 'M', value: 'md' },
+  { label: 'L', value: 'lg' },
+  { label: 'XL', value: 'xl' },
 ];
 
-// ── Iconography Page Component ────────────────────────────────────────────────
 @Component({
   selector: 'pds-iconography-page',
   standalone: true,
@@ -78,22 +62,21 @@ const SIZE_OPTIONS = [
     InputClearComponent,
     SelectButton,
     Badge,
-    Card,
-    Toast,
   ],
-  providers: [MessageService],
   templateUrl: './iconography-page.component.html',
 })
 class IconographyPageComponent {
-  private readonly messageService = inject(MessageService);
-
   readonly variantOptions = VARIANT_OPTIONS;
-  readonly sizeOptions    = SIZE_OPTIONS;
+  readonly sizeOptions = SIZE_OPTIONS;
+  readonly totalCount = ALL_ICON_NAMES.length;
 
-  readonly searchQuery   = signal('');
+  readonly searchQuery = signal('');
   readonly variantFilter = signal('all');
-  readonly iconSize      = signal('1.5rem');
-  readonly hoveredIcon   = signal<string | null>(null);
+  readonly iconSize = signal<IconSize>('md');
+
+  readonly previewSize = computed(
+    () => `var(--pds-icon-size-${this.iconSize()})`,
+  );
 
   clearSearchQuery(): void {
     this.searchQuery.set('');
@@ -106,7 +89,7 @@ class IconographyPageComponent {
       const matchesQuery = !q || name.includes(q);
       const matchesVariant =
         v === 'all' ||
-        (v === 'fill'    &&  name.endsWith('-fill')) ||
+        (v === 'fill' && name.endsWith('-fill')) ||
         (v === 'regular' && !name.endsWith('-fill'));
       return matchesQuery && matchesVariant;
     });
@@ -114,55 +97,41 @@ class IconographyPageComponent {
 
   copyToClipboard(iconName: string): void {
     const classString = `bi bi-${iconName}`;
-    navigator.clipboard.writeText(classString).then(() => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Copied!',
-        detail: classString,
-        life: 2000,
-      });
-    });
+    void navigator.clipboard.writeText(classString).then(
+      () =>
+        showStorybookToast({
+          summary: 'Copied',
+          detail: classString,
+        }),
+      () =>
+        showStorybookToast({
+          severity: 'error',
+          summary: 'Copy failed',
+          detail: 'Clipboard access was blocked by the browser.',
+          life: 3000,
+        }),
+    );
   }
 }
 
-// ── Storybook meta ────────────────────────────────────────────────────────────
 const meta: Meta<IconographyPageComponent> = {
   title: 'Foundations/Iconography',
   component: IconographyPageComponent,
+  tags: ['!dev'],
   decorators: [
-    moduleMetadata({ imports: [IconographyPageComponent] }),
+    moduleMetadata({ imports: [IconographyPageComponent, TokenExplorerComponent] }),
   ],
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-**Iconography** — searchable Bootstrap Icons browser for the Plectrum design system.
-
-- All icons are rendered via Bootstrap Icons CSS font (\`bi bi-{name}\`)
-- Click any icon to copy its class string to the clipboard
-- Filter by variant: All / Regular (no suffix) / Filled (-fill suffix)
-- Toolbar uses \`<(pds|app|lib)-toolbar [sticky]="true">\` with named \`slot=start\` / \`slot=end\` projection
-
-Figma: [Foundations — Iconography](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390)
-
-Page styles: \`libs/styles/src/06-components/_iconography.scss\`
-Toolbar styles: \`libs/styles/src/06-components/_components.toolbar.scss\`
-        `,
-      },
-    },
-  },
+  parameters: { layout: 'fullscreen' },
 };
 
 export default meta;
 type Story = StoryObj<IconographyPageComponent>;
 
-export const AllIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Full Bootstrap Icons browser with search and variant filter.',
-      },
-    },
-  },
+export const Sizes: Story = {
+  render: () => ({
+    template: `<pds-token-explorer category="icon" />`,
+    moduleMetadata: { imports: [TokenExplorerComponent] },
+  }),
 };
+
+export const AllIcons: Story = {};

@@ -1,1 +1,0 @@
-Shadows are visual effects that create the illusion of depth and dimension by simulating the way light interacts with objects. They help distinguish elements from the background and each other, making the interface more intuitive and visually appealing.

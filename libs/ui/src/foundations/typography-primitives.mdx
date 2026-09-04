@@ -1,0 +1,34 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './typography.stories';
+
+<Meta title="Foundations/Typography/Primitives" />
+
+# Typography primitives
+
+Families, sizes, weights, line-heights and letter-spacing. These exist to author a semantic role in `_settings.typography-semantic.scss` — reach for a [role](?path=/docs/foundations-typography-roles--docs) in components instead.
+
+## How to use
+
+1. Compose a new role from these primitives in `01-settings`.
+2. Export the role as a mixin in `02-tools` and a `u-text-*` utility.
+3. Components include the mixin. They do not pick a size and a line-height independently.
+
+Base is `1rem = 14px`. Plectrum type is untracked (`letter-spacing: 0`).
+
+## Primitives
+
+<DocsTable
+  headers={['Primitive', 'When']}
+  rows={[
+    ['Font family', 'Agenda for display, Open Sans elsewhere.'],
+    ['Font size', 'rem steps on a 14px base.'],
+    ['Font weight', 'regular / semibold / bold.'],
+    ['Line height', 'Absolute steps, named by px.'],
+    ['Letter spacing', 'Plectrum type is untracked (0).'],
+  ]}
+/>
+
+<Unstyled>
+  <Canvas of={Stories.Primitives} sourceState="none" />
+</Unstyled>

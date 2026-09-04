@@ -9,6 +9,7 @@
 3. [What PrimeNG Owns](#3-what-primeng-owns)
 4. [When Custom Is Justified](#4-when-custom-is-justified)
 5. [Figma → PrimeNG: Default Styles Only](#5-figma--primeng-default-styles-only)
+6. [Storybook Docs Use PrimeNG Too](#6-storybook-docs-use-primeng-too)
 
 ---
 
@@ -159,3 +160,49 @@ unless the user explicitly asks for custom styling.
 - Token bridges scoped to a single feature in `01-settings/_settings.{component}.scss`
   that remap `--p-message-*`, `--p-button-*`, `--p-tag-*`, etc. are **redundant**
   when Plectrum already provides the correct variant — remove them rather than adding more.
+
+---
+
+## 6. Storybook Docs Use PrimeNG Too
+
+PrimeNG-first applies to the Storybook documentation itself, not only to `libs/ui` and the apps.
+Anything shown on a Docs page that PrimeNG can render **is** a PrimeNG component wearing the
+Plectrum theme — the docs demonstrate the design system with the design system.
+
+| Docs need | Use | Not |
+|---|---|---|
+| Numbered process, every step visible | `p-timeline` + `p-badge` marker + `p-tag` actor | Hand-rolled `<ol>` with CSS badges |
+| Guided, one-panel-at-a-time flow | `p-stepper` | Custom accordion |
+| Role / rule / scope cards | `p-card` (+ `p-tag` eyebrow) | `<li>` boxes with border tricks |
+| Guardrail, warning, scope note | `p-message` with `severity` | Coloured `<aside>` |
+| Status, actor, category label | `p-tag` / `p-badge` with `severity` | Span with tone classes |
+| Tabular reference | `<DocsTable>` (Storybook ArgTypes chrome) | Markdown pipe tables |
+
+### How it is wired
+
+- The figure is an Angular component in `libs/ui/src/storybook/` (`pds-docs-steps`, `pds-docs-cards`, `pds-docs-callout`).
+- MDX cannot pass props to Angular, so page content lives in a sibling `*.stories.ts` tagged `['!dev']`
+  (hidden from the sidebar) built with the factories in `libs/ui/src/docs/docs-figure-stories.ts`,
+  and the page embeds it with `<Unstyled><Story of={Figures.X} /></Unstyled>`.
+- Tones map onto PrimeNG severities (`design` → `warn`, `system` → `info`, `app` → `success`,
+  `neutral` → `secondary`); no tone colours are declared in SCSS for these figures.
+- SCSS in `06-components/_components.docs-figures.scss` stays structural (grid columns, list
+  bullets the reset removed, text rhythm). PrimeNG owns the chrome, exactly as in §5.
+- The only custom docs figure is the SVG `<Diagram>` in `libs/ui/.storybook/docs-figures.ts`,
+  because PrimeNG has no boxes-and-arrows component. Document any further exception the same way.
+
+```html
+<!-- ✅ Correct — the docs process is a PrimeNG Timeline -->
+<p-timeline [value]="events()" align="left">
+  <ng-template #marker let-event><p-badge [value]="event.index" /></ng-template>
+  <ng-template #content let-event>
+    <strong>{{ event.title }}</strong>
+    <p-tag [value]="event.who" [severity]="event.severity" [rounded]="true" />
+  </ng-template>
+</p-timeline>
+```
+
+```ts
+// ❌ Wrong — React/HTML re-implementation of a stepper inside .storybook/
+h('ol', { className: 'c-docs-steps' }, steps.map((s, i) => h('li', null, h('span', { className: 'badge' }, i + 1), s.title)));
+```

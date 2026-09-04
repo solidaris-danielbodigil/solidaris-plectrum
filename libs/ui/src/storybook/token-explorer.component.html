@@ -1,0 +1,353 @@
+<div
+  class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-end-6"
+>
+  <!-- ── Playground — only where a live sample teaches more than a swatch ──── -->
+  @switch (category()) {
+    @case ('typography') {
+      <section class="c-token-explorer__playground">
+        <label class="c-token-explorer__playground-label" for="pds-token-sample">
+          Preview your own copy
+        </label>
+        <input
+          pInputText
+          id="pds-token-sample"
+          type="text"
+          autocomplete="off"
+          class="c-token-explorer__playground-input"
+          [value]="sampleText()"
+          (input)="sampleText.set($any($event.target).value)"
+        />
+      </section>
+    }
+    @case ('motion') {
+      <section
+        class="c-token-explorer__playground"
+        [class.is-replaying]="replaying()"
+      >
+        <button
+          type="button"
+          class="c-token-explorer__playground-action"
+          (click)="replay()"
+        >
+          <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Replay
+        </button>
+      </section>
+    }
+    @case ('focus') {
+      <section class="c-token-explorer__playground">
+        <div class="o-flex o-flex--align-items-center o-layout--gap-3">
+          <button type="button" class="c-token-explorer__focus-demo">
+            Custom button
+          </button>
+          <a class="c-token-explorer__focus-demo" href="#pds-token-sample">Link</a>
+          <span
+            class="c-token-explorer__focus-demo"
+            role="button"
+            tabindex="0"
+          >
+            List row
+          </span>
+        </div>
+      </section>
+    }
+  }
+
+  <!-- ── Sticky controls ──────────────────────────────────────────────────── -->
+  <pds-toolbar [sticky]="true">
+    <ng-container slot="start">
+      @if (searchable()) {
+        <p-iconField class="c-token-explorer__search">
+          <p-inputIcon styleClass="bi bi-search" />
+          <input
+            pInputText
+            type="text"
+            role="searchbox"
+            autocomplete="off"
+            placeholder="Search name, value, Figma or --p-* …"
+            aria-label="Search tokens"
+            class="c-token-explorer__search-input"
+            [value]="search()"
+            (input)="search.set($any($event.target).value)"
+          />
+          <p-inputicon>
+            <pds-input-clear
+              [visible]="!!search()"
+              ariaLabel="Clear search"
+              (clear)="clearSearch()"
+            />
+          </p-inputicon>
+        </p-iconField>
+      }
+
+      @if (filterable()) {
+        @if (compactFilter()) {
+          <p-select
+            styleClass="c-token-explorer__filter"
+            [options]="sectionOptions()"
+            [ngModel]="sectionFilter()"
+            (ngModelChange)="sectionFilter.set($event)"
+            optionLabel="label"
+            optionValue="value"
+            [filter]="true"
+            filterBy="label"
+            ariaLabel="Filter by role"
+          />
+        } @else {
+          <p-selectButton
+            [options]="sectionOptions()"
+            [ngModel]="sectionFilter()"
+            (ngModelChange)="sectionFilter.set($event)"
+            optionLabel="label"
+            optionValue="value"
+            [allowEmpty]="false"
+            aria-label="Filter by role"
+          />
+        }
+      }
+
+      <p-selectButton
+        [options]="copyFormatOptions"
+        [ngModel]="copyFormat()"
+        (ngModelChange)="copyFormat.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        [allowEmpty]="false"
+        aria-label="Copy format"
+      />
+
+      <p-selectButton
+        [options]="viewOptions"
+        [ngModel]="activeView()"
+        (ngModelChange)="activeView.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        [allowEmpty]="false"
+        aria-label="View mode"
+      />
+    </ng-container>
+
+    <ng-container slot="end">
+      <p-badge
+        severity="secondary"
+        aria-live="polite"
+        [value]="matchCount() + ' / ' + totalCount() + ' tokens'"
+      />
+    </ng-container>
+  </pds-toolbar>
+
+  <!-- ── Preview cell — shared by grid and table ──────────────────────────── -->
+  <ng-template #preview let-row>
+    @switch (category()) {
+      @case ('color') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--color"
+          [style.--pds-token-explorer-swatch]="
+            row.preview['--pds-token-explorer-swatch']
+          "
+        ></span>
+      }
+      @case ('radius') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--radius"
+          [style.--pds-token-explorer-radius]="
+            row.preview['--pds-token-explorer-radius']
+          "
+        ></span>
+      }
+      @case ('shadow') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--shadow"
+          [style.--pds-token-explorer-shadow]="
+            row.preview['--pds-token-explorer-shadow']
+          "
+        ></span>
+      }
+      @case ('spacing') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--spacing"
+          [style.--pds-token-explorer-size]="
+            row.preview['--pds-token-explorer-size']
+          "
+        ></span>
+      }
+      @case ('motion') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--motion"
+          [style.--pds-token-explorer-duration]="
+            row.preview['--pds-token-explorer-duration']
+          "
+          [class.is-replaying]="replaying()"
+        >
+          <span class="c-token-explorer__motion-dot"></span>
+        </span>
+      }
+      @case ('focus') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--focus"
+        ></span>
+      }
+      @case ('icon') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--icon"
+          [style.--pds-token-explorer-icon-size]="
+            row.preview['--pds-token-explorer-icon-size']
+          "
+        >
+          <i class="bi bi-house" aria-hidden="true"></i>
+        </span>
+      }
+      @case ('typography') {
+        <span
+          class="c-token-explorer__preview c-token-explorer__preview--type"
+          [style.--pds-token-explorer-font-family]="
+            row.preview['--pds-token-explorer-font-family']
+          "
+          [style.--pds-token-explorer-font-size]="
+            row.preview['--pds-token-explorer-font-size']
+          "
+          [style.--pds-token-explorer-font-weight]="
+            row.preview['--pds-token-explorer-font-weight']
+          "
+          [style.--pds-token-explorer-line-height]="
+            row.preview['--pds-token-explorer-line-height']
+          "
+          [style.--pds-token-explorer-letter-spacing]="
+            row.preview['--pds-token-explorer-letter-spacing']
+          "
+          >{{ sampleText() }}</span
+        >
+      }
+    }
+  </ng-template>
+
+  <!-- ── Token sections ───────────────────────────────────────────────────── -->
+  @for (section of sections(); track section.key) {
+    <section class="c-token-explorer__section">
+      <h3 class="c-token-explorer__section-title">
+        {{ section.label }}
+        <span class="c-token-explorer__section-count">{{ section.rows.length }}</span>
+      </h3>
+
+      @if (activeView() === 'grid') {
+        <ul
+          class="c-token-explorer__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0"
+          role="list"
+        >
+          @for (row of section.rows; track row.label) {
+            <li
+              class="c-token-explorer__item o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
+              [class.is-warning]="row.primeEmpty"
+              (click)="copy(row)"
+            >
+              <ng-container
+                [ngTemplateOutlet]="preview"
+                [ngTemplateOutletContext]="{ $implicit: row }"
+              />
+
+              <div class="c-token-explorer__body">
+                <p class="c-token-explorer__name">{{ row.label }}</p>
+                @if (!row.members.length) {
+                  <p class="c-token-explorer__value">{{ row.computed }}</p>
+                }
+
+                @if (row.members.length) {
+                  <dl class="c-token-explorer__members">
+                    @for (member of row.members; track member.cssVar) {
+                      <div class="c-token-explorer__member">
+                        <dt>{{ member.prop }}</dt>
+                        <dd>{{ member.computed }}</dd>
+                      </div>
+                    }
+                  </dl>
+                }
+
+                <p class="c-token-explorer__tags">
+                  @if (row.primeNgVar) {
+                    <span
+                      class="c-token-explorer__tag c-token-explorer__tag--prime"
+                      [class.is-warning]="row.primeEmpty"
+                      >{{ row.primeNgVar }}</span
+                    >
+                  }
+                  @if (row.figmaRef) {
+                    <span class="c-token-explorer__tag">{{ row.figmaRef }}</span>
+                  }
+                  @if (isBundled()) {
+                    <span class="c-token-explorer__tag">.u-{{ row.label }}</span>
+                  }
+                </p>
+              </div>
+
+              <button
+                type="button"
+                class="c-token-explorer__copy"
+                [attr.aria-label]="'Copy ' + row.copy[copyFormat()]"
+                (click)="copy(row); $event.stopPropagation()"
+              >
+                <i class="bi bi-clipboard" aria-hidden="true"></i>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else {
+        <table class="c-token-explorer__table">
+          <thead>
+            <tr>
+              <th scope="col">Preview</th>
+              <th scope="col">Token</th>
+              <th scope="col">{{ isBundled() ? 'Mixin' : 'Authored in CSS' }}</th>
+              <th scope="col">Computed</th>
+              <th scope="col">PrimeNG</th>
+              <th scope="col">Figma</th>
+              <th scope="col"><span class="u-sr-only">Copy</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of section.rows; track row.label) {
+              <tr [class.is-warning]="row.primeEmpty">
+                <td>
+                  <ng-container
+                    [ngTemplateOutlet]="preview"
+                    [ngTemplateOutletContext]="{ $implicit: row }"
+                  />
+                </td>
+                <th scope="row">{{ row.label }}</th>
+                <td>
+                  <code>{{ isBundled() ? row.copy.var : row.authored }}</code>
+                </td>
+                <td><code>{{ row.computed }}</code></td>
+                <td>
+                  @if (row.primeNgVar) {
+                    <code>{{ row.primeNgVar }}</code>
+                    @if (row.primeEmpty) {
+                      <span class="c-token-explorer__warn">
+                        empty — resolved from the authored fallback
+                      </span>
+                    }
+                  } @else {
+                    —
+                  }
+                </td>
+                <td>{{ row.figmaRef ?? '—' }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="c-token-explorer__copy-btn"
+                    [attr.aria-label]="'Copy ' + row.copy[copyFormat()]"
+                    (click)="copy(row)"
+                  >
+                    <i class="bi bi-clipboard" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  }
+
+  @if (matchCount() === 0) {
+    <p class="c-token-explorer__empty">No token matches “{{ search() }}”.</p>
+  }
+</div>

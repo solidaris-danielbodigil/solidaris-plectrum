@@ -1,0 +1,98 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './list.stories';
+
+<Meta of={Stories} />
+
+# List
+
+iSHARE affiliate document list with **journey** (grouped timeline) and **flat** modes.
+
+- **Journey ON**: chevron on group headers, 64px timeline gutter on child document rows
+- **Journey OFF**: full-width document cards — no chevron, no timeline
+- **Selected document**: 1px primary border + `shadow-md` (Figma node 2:125)
+- **Hover document**: 1px primary border, no shadow (Figma node 2:125)
+- **Row chrome**: `c-list__item--document` card with default/hover/selected states
+- **Layout**: flex/gap via `o-flex` / `o-layout` — chrome in `06-components/_components.list.scss`
+- **PrimeNG**: `p-tag` for status/footer tags
+
+BEM block: `c-list`
+
+Figma (iSHARE-Audit): [324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) (journey ON), [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) (journey OFF)
+
+Figma (Custom-components): [pds-list / c-list](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675) → [list/content](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=98-2220) → [_states](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-125) → [_master](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-108)
+
+## Default
+
+Default journey (grouped) list for Eva Martinez — Parcours Indemnités groups with timeline gutter and selected document row.
+
+<Canvas of={Stories.Default} />
+
+## Grouped
+
+Alias of Default — journey ON with expandable groups, chevrons, and timeline gutters.
+
+<Canvas of={Stories.Grouped} />
+
+## Flat
+
+Flat mode (journey OFF) — full-width document cards without chevron or timeline.
+
+<Canvas of={Stories.Flat} />
+
+## Group expanded
+
+All journey groups expanded — child document rows visible beneath each group header.
+
+<Canvas of={Stories.GroupExpanded} />
+
+## Group collapsed
+
+First Parcours Indemnités group collapsed — chevron rotated, child document rows hidden.
+
+<Canvas of={Stories.GroupCollapsed} />
+
+## Selected document
+
+Selected document row — 1px primary border and `shadow-md` elevation.
+
+<Canvas of={Stories.SelectedDocument} />
+
+## Row default
+
+Default document row via `pds-list` — no selection.
+
+<Canvas of={Stories.RowDefault} />
+
+## Row hover
+
+Hover document row via `pds-list` — static capture uses `.sb-list-row--hover`.
+
+<Canvas of={Stories.RowHover} />
+
+## Row selected
+
+Selected document row via `pds-list` and `selectedItemId`.
+
+<Canvas of={Stories.RowSelected} />
+
+## Loading
+
+Static loading state — PrimeNG `p-skeleton` placeholder rows.
+
+<Canvas of={Stories.Loading} />
+
+## Simulated loading
+
+Flashes skeleton for 1000ms then reveals content — use to preview the shimmer transition.
+
+<Canvas of={Stories.SimulatedLoading} />
+
+## Row states
+
+Flat document row chrome — default (neutral border), hover (primary border, no shadow), and selected (primary border + `shadow-md`). Hover column uses `.sb-force-hover` for static docs capture. Group headers do not receive hover/selected chrome.
+
+<Canvas of={Stories.RowStates} />
+
+## API
+
+<ArgTypes of={Stories} />

@@ -8,15 +8,21 @@
 // =============================================================================
 
 @forward 'settings.prefix';
+@forward 'settings.colors-primitive.generated';
 @forward 'settings.colors-primitive';
 @forward 'settings.typography-primitive';
 @forward 'settings.spacing';
+@forward 'settings.radius.generated';
 @forward 'settings.radius';
 @forward 'settings.borders';
+@forward 'settings.colors-semantic.generated';
 @forward 'settings.colors-semantic';
 @forward 'settings.typography-semantic';
+@forward 'settings.shadows.generated';
 @forward 'settings.shadows';
+@forward 'settings.transitions.generated';
 @forward 'settings.transitions';
+@forward 'settings.focus.generated';
 @forward 'settings.focus';
 @forward 'settings.globals';
 @forward 'settings.grid';
@@ -30,7 +36,6 @@
 @forward 'settings.tabs';
 @forward 'settings.card';
 @forward 'settings.empty-state';
-@forward 'settings.iconography';
 @forward 'settings.affiliate-search';
 @forward 'settings.affiliate-overview';
 @forward 'settings.affiliate-detail-drawer';
@@ -42,5 +47,10 @@
 @forward 'settings.form-field';
 @forward 'settings.tag';
 @forward 'settings.doc-demo-box';
+@forward 'settings.docs-figures';
 @forward 'settings.list';
 @forward 'settings.delay-prediction-card';
+@forward 'settings.token-explorer';
+// Bare-name aliases — must stay last so --#{$pds-prefix}-* declarations win.
+// DEPRECATED: remove with _settings.legacy-aliases.scss after one release.
+@forward 'settings.legacy-aliases';

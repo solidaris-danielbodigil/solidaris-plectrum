@@ -1,0 +1,26 @@
+<ul class="c-docs-cards__grid">
+  @for (card of cards(); track card.title) {
+    <li class="c-docs-cards__item">
+      <p-card class="o-layout--full-height">
+        <ng-template #title>
+          <div class="o-flex o-flex--y o-flex--align-items-flex-start o-layout--gap-1">
+            @if (card.eyebrow) {
+              <p-tag [value]="card.eyebrow" [severity]="severity(card.tone)" />
+            }
+            <span>{{ card.title }}</span>
+          </div>
+        </ng-template>
+        @if (card.lead) {
+          <p class="c-docs-cards__lead">{{ card.lead }}</p>
+        }
+        @if (card.items?.length) {
+          <ul class="c-docs-cards__list">
+            @for (item of card.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        }
+      </p-card>
+    </li>
+  }
+</ul>

@@ -1,0 +1,193 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { Diagram } from '../../.storybook/docs-figures';
+import * as Figures from './token-pipeline-figma.stories';
+
+<Meta title="Docs/Token pipeline/Figma sync" />
+
+# Figma sync
+
+Two one-way transports connect the Plectrum UI Kit and the repository.
+
+- **Figma → repository**: the PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
+- **Repository → Figma**: code-owned tokens are written to a Figma branch. A designer merges and publishes.
+
+Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
+
+<Diagram
+  title="Figma sync transports"
+  width={960}
+  height={310}
+  lanes={[
+    { title: 'Figma', subtitle: 'designers', x: 0, w: 300, tone: 'design' },
+    { title: 'Design-system repository', subtitle: 'GitHub', x: 330, w: 630, tone: 'system' },
+  ]}
+  nodes={[
+    { id: 'main', x: 40, y: 70, w: 220, tone: 'design', title: 'Plectrum UI Kit — main', lines: ['edited by designers'] },
+    { id: 'branch', x: 40, y: 210, w: 220, tone: 'design', title: 'Figma branch', lines: ['proposals/{app}'], mono: true },
+    { id: 'staging', x: 370, y: 70, w: 220, tone: 'system', title: 'Staging branch', lines: ['design-tokens/sync'], mono: true },
+    { id: 'json', x: 700, y: 70, w: 220, tone: 'system', title: 'tokens.json', lines: ['after a reviewed pull request'] },
+    { id: 'proposal', x: 370, y: 210, w: 220, tone: 'system', title: 'Proposal file', lines: ['proposed.dtcg.json'], mono: true },
+    { id: 'code', x: 700, y: 210, w: 220, tone: 'system', title: 'Code-owned tokens', lines: ['--pds-* in 01-settings'], mono: true },
+  ]}
+  edges={[
+    { from: 'main', to: 'staging', label: 'plugin sync' },
+    { from: 'staging', to: 'json', label: 'pull request' },
+    { from: 'code', to: 'proposal', label: 'tokens:propose' },
+    { from: 'proposal', to: 'branch', label: 'tokens:apply' },
+    { from: 'branch', to: 'main', label: 'merge + publish', dashed: true },
+  ]}
+/>
+
+Top row: Figma → repository. Bottom row: repository → Figma. Both transports end in a manual merge.
+
+---
+
+## Figma → repository
+
+### Process
+
+<Unstyled>
+  <Story of={Figures.InboundProcess} />
+</Unstyled>
+
+### Plugin configuration
+
+Configured once per designer. Reference: `tools/tokens/PLUGIN_SETUP.md`.
+
+<DocsTable
+  headers={['Field', 'Value', 'Purpose']}
+  rows={[
+    ['Personal access token', 'Fine-grained · this repository only · Contents read + write', 'Personal credential stored in the plugin. Scope it to this repository; rotate on offboarding.'],
+    ['Branch', 'design-tokens/sync', 'Staging branch. Nothing reaches main without a reviewed pull request.'],
+    ['Tokens file', 'libs/plectrum/sync/tokens.json', 'Export target before promotion.'],
+    ['Theme directory', 'libs/plectrum/sync/theme/', 'Generated PrimeNG theme before validation.'],
+  ]}
+/>
+
+<Unstyled>
+  <Story of={Figures.BranchWarning} />
+</Unstyled>
+
+### Repository responsibilities
+
+1. Plugin commits land on `design-tokens/sync`. `Plectrum_v1/ts` is never overwritten in place.
+2. `.github/workflows/tokens-sync.yml` runs the Wave 1 audits and `tokens:build`.
+3. The workflow opens a pull request that promotes staging → `libs/plectrum/src/tokens.json`.
+4. Theme files are copied into `Plectrum_v1/` only if `tokens:validate-preset` passes.
+5. Manual fixes stay in `Plectrum_v1/ts/extend.ts`. The gap report currently lists `{extremes.white}` and `{branding.800}`.
+
+Confirm on the first production sync and update `PLUGIN_SETUP.md`: commit vs pull request, overwrite vs merge, DTCG shape, theme layout.
+
+---
+
+## Single Figma file
+
+Figma variables can only alias variables **in the same file**, and the REST API cannot update remote variables. A separate file per application would break aliases such as `ishare/card/bg → surface/50`. Application-proposed tokens therefore land in a **per-application collection** inside the shared UI Kit.
+
+<Diagram
+  title="Figma collections in the UI Kit"
+  width={960}
+  height={240}
+  lanes={[
+    { title: 'Plectrum UI Kit — one Figma file', subtitle: 'aliases resolve within the file', x: 0, w: 960, tone: 'design' },
+  ]}
+  nodes={[
+    { id: 'prim', x: 40, y: 70, w: 190, h: 48, pill: true, tone: 'design', title: 'Primitive' },
+    { id: 'sem', x: 270, y: 70, w: 190, h: 48, pill: true, tone: 'design', title: 'Semantic Common' },
+    { id: 'comp', x: 500, y: 70, w: 190, h: 48, pill: true, tone: 'design', title: 'Component' },
+    { id: 'icrm', x: 40, y: 170, w: 190, h: 44, pill: true, tone: 'app', title: 'proposals/icrm' },
+    { id: 'ishare', x: 270, y: 170, w: 190, h: 44, pill: true, tone: 'app', title: 'proposals/ishare' },
+  ]}
+  edges={[
+    { from: 'icrm', to: 'prim', label: 'aliases gray/900' },
+    { from: 'ishare', to: 'sem', label: 'aliases surface/50' },
+  ]}
+/>
+
+Consequences:
+
+- Aliasing between application tokens and Primitive / Semantic tokens works without a publish–subscribe hop.
+- Each application has its own namespace.
+- Promoting a token to the design system is a move between collections.
+- Collections stay well below Figma's limits (5 000 variables, 40 modes).
+
+Figma remains the source of truth for primitives and semantics. Component tokens are code-owned and proposed to Figma when they have no Figma node.
+
+---
+
+## Repository → Figma
+
+Tokens that originate in code — a surface step the UI Kit lacks, a feature-specific colour — are proposed to Figma. They are not entered in the UI Kit by hand.
+
+### Process
+
+<Unstyled>
+  <Story of={Figures.OutboundProcess} />
+</Unstyled>
+
+### Guardrails
+
+<Unstyled>
+  <Story of={Figures.Guardrails} />
+</Unstyled>
+
+---
+
+## Package distribution
+
+Applications install published packages. They never copy files from this repository, so the design-system version in use is explicit in each application's `package.json`.
+
+<Diagram
+  title="Package distribution"
+  width={960}
+  height={230}
+  nodes={[
+    { id: 'repo', x: 40, y: 77, w: 220, h: 76, tone: 'system', title: 'Design-system repository', lines: ['libraries versioned together', 'by changesets'] },
+    { id: 'pkgs', x: 370, y: 65, w: 220, h: 100, tone: 'neutral', title: 'Published packages', lines: ['@solidaris/ui', '@solidaris/styles', '@solidaris/plectrum'], mono: true },
+    { id: 'ishare', x: 700, y: 40, w: 220, h: 60, tone: 'app', title: 'iSHARE', lines: ['bump pull request via Renovate'] },
+    { id: 'icrm', x: 700, y: 130, w: 220, h: 60, tone: 'app', title: 'iCRM', lines: ['bump pull request via Renovate'] },
+  ]}
+  edges={[
+    { from: 'repo', to: 'pkgs', label: 'publish' },
+    { from: 'pkgs', to: 'ishare', label: 'install' },
+    { from: 'pkgs', to: 'icrm', label: 'install' },
+  ]}
+/>
+
+<DocsTable
+  headers={['Package', 'Contents']}
+  rows={[
+    ['@solidaris/ui', 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
+    ['@solidaris/plectrum', 'PrimeNG presets, providePlectrum(), tokens.json.'],
+    ['@solidaris/styles', 'ITCSS source. Applications add node_modules/@solidaris/styles/src to their Sass include paths.'],
+    ['@solidaris/tokens-cli', 'propose / apply / lint / pull commands. Application repositories do not copy scripts.'],
+  ]}
+/>
+
+- Changesets version the three libraries together on merge. The registry is abstracted through `publishConfig` and `.npmrc.example`.
+- `npm run pack:smoke` packs the tarballs, installs them into a throwaway Angular application without path aliases, and builds it.
+- Application repositories copy `tools/consumers/renovate.json` or `dependabot.yml` so design-system bumps arrive as pull requests, and run `pds-tokens-lint` so hard-coded hex/px values and unknown `--pds-*` names fail their CI.
+- Storybook has two modes: source (`npm run storybook`) and packed `dist/` in CI (`npm run build-storybook:packed`).
+
+### Component promotion
+
+<Unstyled>
+  <Story of={Figures.ComponentPromotion} />
+</Unstyled>
+
+There is no cross-repository Storybook aggregation; this Storybook is the catalogue. Full procedure: `docs/component-promotion.md`.
+
+---
+
+## Reference
+
+<Unstyled>
+  <Story of={Figures.Reference} />
+</Unstyled>
+
+```bash
+npm run tokens:propose
+npm run tokens:apply -- --app scratch --dry-run
+npm run tokens:pull-figma
+```

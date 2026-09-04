@@ -79,34 +79,17 @@ interface ListStoryArgs {
 }
 
 const meta: Meta<ListStoryArgs> = {
-  title: 'UI/List',
+  title: 'Custom components/List',
   component: ListComponent,
-  tags: ['autodocs'],
+  tags: ['!dev'],
   decorators: [
+    moduleMetadata({ imports: [ListComponent] }),
     componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper" style="max-width: 56rem">${story}</div>`,
+      (story) => `<div style="max-width: 56rem">${story}</div>`,
     ),
   ],
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component: `
-iSHARE affiliate document list with **journey** (grouped timeline) and **flat** modes.
-
-- **Figma (iSHARE-Audit)**: [324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) (journey ON), [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) (journey OFF)
-- **Figma (Custom-components)**: [pds-list / c-list](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675) → [list/content](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=98-2220) → [_states](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-125) → [_master](https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=2-108)
-- **BEM block**: \`c-list\`
-- **Journey ON**: chevron on group headers, 64px timeline gutter on child document rows
-- **Journey OFF**: full-width document cards — no chevron, no timeline
-- **Selected document**: 1px primary border + shadow-md (Figma node 2:125)
-- **Hover document**: 1px primary border, no shadow (Figma node 2:125)
-- **Row chrome**: \`c-list__item--document\` card with default/hover/selected states (Figma 2:125)
-- **Layout**: flex/gap via \`o-flex\` / \`o-layout\` — chrome in \`06-components/_components.list.scss\`
-- **PrimeNG**: \`p-tag\` for status/footer tags
-        `,
-      },
-    },
   },
   argTypes: {
     groups: {
@@ -130,7 +113,7 @@ iSHARE affiliate document list with **journey** (grouped timeline) and **flat** 
   render: (args) => ({
     props: args,
     template: `
-      <(pds|app|lib)-list
+      <pds-list
         [groups]="groups"
         [items]="items"
         [expandedGroupIds]="expandedGroupIds"
@@ -155,25 +138,10 @@ const journeyDefaults: ListStoryArgs = {
 
 export const Default: Story = {
   args: journeyDefaults,
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Default journey (grouped) list for Eva Martinez — Parcours Indemnités groups with timeline gutter and selected document row. Figma node 324:5827.',
-      },
-    },
-  },
 };
 
 export const Grouped: Story = {
   args: journeyDefaults,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Alias of Default — journey ON with expandable groups, chevrons, and timeline gutters.',
-      },
-    },
-  },
 };
 
 export const Flat: Story = {
@@ -184,14 +152,6 @@ export const Flat: Story = {
     selectedItemId: 'doc-demande-primaire',
     loading: false,
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Flat mode (journey OFF) — full-width document cards without chevron or timeline. Figma node 518:48833.',
-      },
-    },
-  },
 };
 
 export const GroupExpanded: Story = {
@@ -199,27 +159,12 @@ export const GroupExpanded: Story = {
     ...journeyDefaults,
     expandedGroupIds: ALL_GROUP_IDS,
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'All journey groups expanded — child document rows visible beneath each group header.',
-      },
-    },
-  },
 };
 
 export const GroupCollapsed: Story = {
   args: {
     ...journeyDefaults,
     expandedGroupIds: ['parcours-rechute'],
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'First Parcours Indemnités group collapsed — chevron rotated, child document rows hidden.',
-      },
-    },
   },
 };
 
@@ -235,14 +180,6 @@ export const SelectedDocument: Story = {
     expandedGroupIds: ['parcours-demande-primaire'],
     selectedItemId: 'doc-demande-primaire',
   },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Selected document row — 1px primary border and shadow-md elevation. Figma nodes 435:7387, 2:125.',
-      },
-    },
-  },
 };
 
 const rowStateDefaults: ListStoryArgs = {
@@ -255,13 +192,6 @@ const rowStateDefaults: ListStoryArgs = {
 
 export const RowDefault: Story = {
   args: rowStateDefaults,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default document row via pds-list — no selection. Figma node 2:125.',
-      },
-    },
-  },
 };
 
 export const RowHover: Story = {
@@ -274,20 +204,12 @@ export const RowHover: Story = {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
-        <div class="sb-list-row-hover-demo sb-demo-wrapper" style="max-width: 56rem">${story}</div>
+        <div class="sb-list-row-hover-demo" style="max-width: 56rem">${story}</div>
       `,
     ),
   ],
   play: async ({ canvasElement }) => {
     canvasElement.querySelector('.c-list__item--document')?.classList.add('sb-list-row--hover');
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Hover document row via pds-list — static capture uses `.sb-list-row--hover`. Figma node 2:125.',
-      },
-    },
   },
 };
 
@@ -296,26 +218,12 @@ export const RowSelected: Story = {
     ...rowStateDefaults,
     selectedItemId: 'doc-demande-primaire',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Selected document row via pds-list and `selectedItemId`. Figma node 2:125.',
-      },
-    },
-  },
 };
 
 export const Loading: Story = {
   args: {
     ...journeyDefaults,
     loading: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Static loading state — PrimeNG `p-skeleton` placeholder rows.',
-      },
-    },
   },
 };
 
@@ -354,13 +262,6 @@ export const SimulatedLoading: Story = {
   render: () => ({
     template: '<pds-list-simulated-loading-demo />',
   }),
-  parameters: {
-    docs: {
-      description: {
-        story: `Flashes skeleton for ${SIMULATED_LOADING_MS}ms then reveals content — use to preview the shimmer transition.`,
-      },
-    },
-  },
 };
 
 const ROW_STATE_DOCUMENT: ListDocumentItem = {
@@ -411,14 +312,6 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
 `;
 
 export const RowStates: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Flat document row chrome — default (neutral border), hover (primary border, no shadow), and selected (primary border + shadow-md). Hover column uses `.sb-force-hover` for static docs capture. Figma Custom-components node 2:125. Group headers do not receive hover/selected chrome.',
-      },
-    },
-  },
   decorators: [
     moduleMetadata({ imports: [Tag] }),
     componentWrapperDecorator(
@@ -428,7 +321,7 @@ export const RowStates: Story = {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
-        <div class="sb-list-row-states sb-demo-wrapper" style="max-width: 56rem">${story}</div>
+        <div class="sb-list-row-states" style="max-width: 56rem">${story}</div>
       `,
     ),
   ],

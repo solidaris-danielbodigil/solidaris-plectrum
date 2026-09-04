@@ -1,0 +1,16 @@
+{
+  "name": "@solidaris/styles",
+  "version": "0.1.0",
+  "description": "Plectrum ITCSS source — consume via stylePreprocessorOptions.includePaths",
+  "files": [
+    "src/**/*.scss",
+    "README.md"
+  ],
+  "exports": {
+    ".": "./src/main.scss",
+    "./src/*": "./src/*"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

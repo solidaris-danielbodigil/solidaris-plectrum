@@ -242,7 +242,23 @@
       "projectType": "library",
       "root": "libs/ui",
       "sourceRoot": "libs/ui/src",
+      "prefix": "pds",
       "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "libs/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
@@ -321,6 +337,34 @@
           }
         }
       }
+    },
+    "plectrum": {
+      "projectType": "library",
+      "root": "libs/plectrum",
+      "sourceRoot": "libs/plectrum/src",
+      "prefix": "pds",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "libs/plectrum/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/plectrum/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/plectrum/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
+    },
+    "styles": {
+      "projectType": "library",
+      "root": "libs/styles",
+      "sourceRoot": "libs/styles/src"
     }
   },
   "cli": {

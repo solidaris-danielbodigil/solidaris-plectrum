@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { CopyableTextComponent } from './copyable-text.component';
 
 function mockClipboard(
@@ -26,8 +27,17 @@ describe('CopyableTextComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('label', 'Territoire');
     fixture.componentRef.setInput('value', '319');
+    registerPlectrumIcons(TestBed.inject(IconRegistry));
     mockClipboard();
     fixture.detectChanges();
+  });
+
+  it('should render the copy icon inside the button', () => {
+    const icon = fixture.nativeElement.querySelector(
+      '.c-copyable-text__icon .c-icon__svg',
+    );
+
+    expect(icon).withContext('copy-content-LEGACY SVG').not.toBeNull();
   });
 
   it('should render label and value', () => {

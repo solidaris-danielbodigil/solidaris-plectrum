@@ -16,10 +16,10 @@
 }
 
 .c-dashboard-shell__brand-title {
-  font-family: var(--text-heading-md-family);
-  font-size: var(--text-heading-md-size);
-  font-weight: var(--text-heading-md-weight);
-  line-height: var(--text-heading-md-line-height);
+  font-family: var(--pds-text-heading-md-family);
+  font-size: var(--pds-text-heading-md-size);
+  font-weight: var(--pds-text-heading-md-weight);
+  line-height: var(--pds-text-heading-md-line-height);
   color: var(--p-text-color);
 }
 
@@ -33,10 +33,10 @@
   align-items: center;
   gap: 0.375rem;
   text-decoration: none;
-  font-family: var(--text-label-md-family);
-  font-size: var(--text-label-md-size);
-  font-weight: var(--text-label-md-weight);
-  line-height: var(--text-label-md-line-height);
+  font-family: var(--pds-text-label-md-family);
+  font-size: var(--pds-text-label-md-size);
+  font-weight: var(--pds-text-label-md-weight);
+  line-height: var(--pds-text-label-md-line-height);
   color: var(--p-text-muted-color);
   padding: 0.375rem 0.625rem;
   border-radius: var(--p-border-radius-md);
@@ -54,5 +54,5 @@
 .c-dashboard-shell__link.is-active {
   background: color-mix(in srgb, var(--p-primary-color) 16%, transparent);
   color: var(--p-primary-color);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--pds-font-weight-semibold);
 }

@@ -1,0 +1,20 @@
+{
+  "name": "@solidaris/tokens-cli",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "bin": {
+    "pds-tokens-propose": "./propose-to-figma.mjs",
+    "pds-tokens-apply": "./apply-to-figma.mjs",
+    "pds-tokens-lint": "./lint-usage.mjs",
+    "pds-tokens-pull": "./pull-figma.mjs"
+  },
+  "files": [
+    "*.mjs",
+    "alias-map.json",
+    "audit-allowlist.json"
+  ]
+}

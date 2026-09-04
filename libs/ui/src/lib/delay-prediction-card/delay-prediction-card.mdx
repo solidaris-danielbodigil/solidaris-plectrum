@@ -1,0 +1,34 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './delay-prediction-card.stories';
+
+<Meta of={Stories} />
+
+# Delay Prediction Card
+
+Prédiction du délai. In iSHARE document detail, the section title **Prédiction du delai** is rendered outside this card (same style as **Détails**).
+
+BEM block: `c-delay-prediction-card`
+
+Figma: [iSHARE-Audit node 704:11968](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=704-11968)
+
+## Default
+
+Predicted close date with days remaining.
+
+<Canvas of={Stories.Default} />
+
+## Unavailable
+
+Prediction not available.
+
+<Canvas of={Stories.Unavailable} />
+
+## Few days remaining
+
+Tight remaining window (3 days).
+
+<Canvas of={Stories.FewDaysRemaining} />
+
+## API
+
+<ArgTypes of={Stories} />

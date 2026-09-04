@@ -1,0 +1,47 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './empty-state.stories';
+
+<Meta of={Stories} />
+
+# Empty State
+
+Reusable placeholder for empty results, document details, or onboarding states.
+
+The hero art is **decorative** — the title and description carry the message. Screen readers ignore the SVG (`aria-hidden` on the art frame, empty `alt` on the image).
+
+Figma: [Empty state illustration](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641)
+
+## Illustrations
+
+`illustration` defaults to **`random`**: one catalog SVG is chosen when the instance is created, and that pick stays for the lifetime of the component.
+
+Pass an illustration id to pin a specific asset — useful in Storybook, visual tests, or a screen that should always show the same drawing.
+
+```html
+<pds-empty-state
+  title="Aucun résultat"
+  description="Lancez une recherche."
+/>
+
+<pds-empty-state
+  title="Aucun résultat"
+  description="Lancez une recherche."
+  illustration="people-search"
+/>
+```
+
+## Default
+
+Random illustration. Use **Autre illustration** to pick another catalog SVG, or pin one with the `illustration` control.
+
+<Canvas of={Stories.Default} />
+
+## All illustrations
+
+Every catalog SVG, each pinned with its id.
+
+<Canvas of={Stories.AllIllustrations} />
+
+## API
+
+<ArgTypes of={Stories} />

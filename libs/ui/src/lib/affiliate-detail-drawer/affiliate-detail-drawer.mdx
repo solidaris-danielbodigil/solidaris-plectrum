@@ -1,0 +1,28 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './affiliate-detail-drawer.stories';
+
+<Meta of={Stories} />
+
+# Affiliate Detail Drawer
+
+iSHARE “Carte affilié” detail drawer — a headless `p-drawer` wrapper.
+
+- **Reuse**: large illustrated `pds-plectrum-avatar`, the overview-card copyable identifier chips, and small coloured avatars (blue/green/yellow) for the Famille tiles
+- **PrimeNG**: `p-drawer` (headless), `p-selectButton`, `p-accordion`, `p-card`, `p-tag`, `p-button`
+- **Two-way**: `[(visible)]` controls open/close; `viewChange` reports the Détails/Documents tab
+
+BEM block: `c-drawer` (elements: `__affiliate-detail-*`, shared `__header`, `__toolbar`, `__content`)
+
+Figma: [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012)
+
+## Default
+
+Click the button to open the Carte affilié. Copying an identifier shows a confirmation toast on the Storybook preview frame.
+
+<Canvas of={Stories.Default} />
+
+## Without notes
+
+Same trigger, with `[showNotes]="false"` — used by iSHARE while Storybook and other consumers keep the default. Click the button to open.
+
+<Canvas of={Stories.WithoutNotes} />

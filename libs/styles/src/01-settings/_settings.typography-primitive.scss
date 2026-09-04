@@ -10,63 +10,65 @@
 //   - Base font: 1rem = 14px
 // =============================================================================
 
+@use 'settings.prefix' as *;
+
 :root {
 
   // ===========================================================================
   // FONT FAMILIES  (Figma: font/family/*)
   // ===========================================================================
-  --font-family-display:  'Agenda', sans-serif;     // Figma: font/family/display
-  --font-family-heading:  'Open Sans', sans-serif;  // Figma: font/family/heading
-  --font-family-label:    'Open Sans', sans-serif;  // Figma: font/family/label
-  --font-family-body:     'Open Sans', sans-serif;  // Figma: font/family/body
+  --#{$pds-prefix}-font-family-display:  'Agenda', sans-serif;     // Figma: font/family/display
+  --#{$pds-prefix}-font-family-heading:  'Open Sans', sans-serif;  // Figma: font/family/heading
+  --#{$pds-prefix}-font-family-label:    'Open Sans', sans-serif;  // Figma: font/family/label
+  --#{$pds-prefix}-font-family-body:     'Open Sans', sans-serif;  // Figma: font/family/body
 
   // Shorthand aliases
-  --font-agenda:    var(--font-family-display);
-  --font-open-sans: var(--font-family-heading);
+  --#{$pds-prefix}-font-agenda:    var(--#{$pds-prefix}-font-family-display);
+  --#{$pds-prefix}-font-open-sans: var(--#{$pds-prefix}-font-family-heading);
 
   // ===========================================================================
   // FONT SIZES  (Figma: font/size/*)
   // Base: 1rem = 14px
   // ===========================================================================
-  --font-size-xs:   0.857rem;  // 12px  — Figma: font/size/xs
-  --font-size-s:    1rem;      // 14px  — Figma: font/size/s   (= base)
-  --font-size-base: 1rem;      // 14px  — base unit
-  --font-size-md:   1.143rem;  // 16px  — Figma: font/size/md
-  --font-size-lg:   1.286rem;  // 18px  — Figma: font/size/lg
-  --font-size-xl:   1.429rem;  // 20px  — Figma: font/size/xl
-  --font-size-2xl:  1.714rem;  // 24px  — Figma: font/size/2xl
-  --font-size-3xl:  2rem;      // 28px  — Figma: font/size/3xl
-  --font-size-4xl:  2.286rem;  // 32px  — Figma: font/size/4xl
-  --font-size-5xl:  2.857rem;  // 40px  — Figma: font/size/5xl
+  --#{$pds-prefix}-font-size-xs:   0.857rem;  // 12px  — Figma: font/size/xs
+  --#{$pds-prefix}-font-size-s:    1rem;      // 14px  — Figma: font/size/s   (= base)
+  --#{$pds-prefix}-font-size-base: 1rem;      // 14px  — base unit
+  --#{$pds-prefix}-font-size-md:   1.143rem;  // 16px  — Figma: font/size/md
+  --#{$pds-prefix}-font-size-lg:   1.286rem;  // 18px  — Figma: font/size/lg
+  --#{$pds-prefix}-font-size-xl:   1.429rem;  // 20px  — Figma: font/size/xl
+  --#{$pds-prefix}-font-size-2xl:  1.714rem;  // 24px  — Figma: font/size/2xl
+  --#{$pds-prefix}-font-size-3xl:  2rem;      // 28px  — Figma: font/size/3xl
+  --#{$pds-prefix}-font-size-4xl:  2.286rem;  // 32px  — Figma: font/size/4xl
+  --#{$pds-prefix}-font-size-5xl:  2.857rem;  // 40px  — Figma: font/size/5xl
 
   // ===========================================================================
   // FONT WEIGHTS  (Figma: font/weight/*)
   // ===========================================================================
-  --font-weight-regular:   400;  // Figma: font/weight/Regular
-  --font-weight-semibold:  600;  // Figma: font/weight/SemiBold
-  --font-weight-bold:      700;  // Figma: font/weight/Bold
+  --#{$pds-prefix}-font-weight-regular:   400;  // Figma: font/weight/Regular
+  --#{$pds-prefix}-font-weight-semibold:  600;  // Figma: font/weight/SemiBold
+  --#{$pds-prefix}-font-weight-bold:      700;  // Figma: font/weight/Bold
 
   // ===========================================================================
   // LINE HEIGHTS  (Figma: line/height/*)
   // ===========================================================================
-  --line-height-16:  1.143rem;  // 16px — Figma: footer text
-  --line-height-18:  1.286rem;  // 18px
-  --line-height-20:  1.429rem;  // 20px
-  --line-height-22:  1.571rem;  // 22px
-  --line-height-24:  1.714rem;  // 24px
-  --line-height-28:  2rem;      // 28px
-  --line-height-36:  2.571rem;  // 36px
-  --line-height-40:  2.857rem;  // 40px
-  --line-height-48:  3.429rem;  // 48px
+  --#{$pds-prefix}-line-height-16:  1.143rem;  // 16px — Figma: footer text
+  --#{$pds-prefix}-line-height-18:  1.286rem;  // 18px
+  --#{$pds-prefix}-line-height-20:  1.429rem;  // 20px
+  --#{$pds-prefix}-line-height-22:  1.571rem;  // 22px
+  --#{$pds-prefix}-line-height-24:  1.714rem;  // 24px
+  --#{$pds-prefix}-line-height-28:  2rem;      // 28px
+  --#{$pds-prefix}-line-height-36:  2.571rem;  // 36px
+  --#{$pds-prefix}-line-height-40:  2.857rem;  // 40px
+  --#{$pds-prefix}-line-height-48:  3.429rem;  // 48px
 
   // ===========================================================================
   // LETTER SPACING  (Figma: letter/spacing/*)
   // ===========================================================================
-  --letter-spacing-0:  0;  // Figma: letter/spacing/0
+  --#{$pds-prefix}-letter-spacing-0:  0;  // Figma: letter/spacing/0
 
   // ===========================================================================
   // PARAGRAPH SPACING  (Figma: paragraph/spacing/*)
   // ===========================================================================
-  --paragraph-spacing-0:  0;  // Figma: paragraph/spacing/0
+  --#{$pds-prefix}-paragraph-spacing-0:  0;  // Figma: paragraph/spacing/0
 
 }

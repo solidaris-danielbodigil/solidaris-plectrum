@@ -26,10 +26,10 @@
 
 .c-list__count-badge {
   @include text-label-xs;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
   min-inline-size: var(--#{$pds-prefix}-size-list-count-badge-min);
   min-block-size: var(--#{$pds-prefix}-size-list-count-badge-min);
-  border-radius: calc(10.5 / 14 * var(--base-unit));
+  border-radius: calc(10.5 / 14 * var(--#{$pds-prefix}-base-unit));
   background: var(--#{$pds-prefix}-color-list-count-badge-bg);
   color: var(--#{$pds-prefix}-color-list-count-badge-text);
   text-align: center;
@@ -67,7 +67,7 @@
   :where(.p-tree-node-children) {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-2);
+    gap: var(--#{$pds-prefix}-spacing-2);
     padding-inline-start: unset;
   }
 
@@ -78,7 +78,7 @@
   }
 
   :where(.p-tree-node) {
-    gap: var(--spacing-2) calc(2 * calc(1rem / 2));
+    gap: var(--#{$pds-prefix}-spacing-2) calc(2 * calc(1rem / 2));
     display: flex;
     flex-direction: column;
   }
@@ -86,7 +86,7 @@
   :where(.p-tree-node-content) {
     display: flex;
     align-items: flex-start;
-    gap: var(--spacing-2);
+    gap: var(--#{$pds-prefix}-spacing-2);
     padding: unset;
     width: 100%;
     min-width: 0;
@@ -116,7 +116,7 @@
 
 // Group row card chrome on tree wrapper (toggler + label inside one bordered box)
 :where(.c-list--journey) .p-tree-node:not(.p-tree-node-leaf) > .p-tree-node-content {
-  padding: var(--spacing-2);
+  padding: var(--#{$pds-prefix}-spacing-2);
   background: var(--#{$pds-prefix}-color-list-row-bg);
   border: var(--#{$pds-prefix}-border-width-list-row) solid var(--#{$pds-prefix}-color-list-row-border);
   border-radius: var(--#{$pds-prefix}-radius-xl);
@@ -189,7 +189,7 @@
 
 .c-list__item--selected .c-list__title {
   color: var(--#{$pds-prefix}-color-list-title-accent);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
 }
 
 .c-list__container {
@@ -322,17 +322,17 @@
 
 .c-list__skeleton-line--title.p-skeleton {
   inline-size: 55%;
-  block-size: var(--spacing-2);
+  block-size: var(--#{$pds-prefix}-spacing-2);
 }
 
 .c-list__skeleton-line--subtitle.p-skeleton {
   inline-size: 35%;
-  block-size: var(--spacing-1);
+  block-size: var(--#{$pds-prefix}-spacing-1);
 }
 
 .c-list__skeleton-line--tag.p-skeleton {
-  inline-size: var(--spacing-5);
-  block-size: var(--spacing-1-5);
+  inline-size: var(--#{$pds-prefix}-spacing-5);
+  block-size: var(--#{$pds-prefix}-spacing-1-5);
 }
 
 // ── Tag target popover (PrimeNG Select Data pattern) ───────────────────────

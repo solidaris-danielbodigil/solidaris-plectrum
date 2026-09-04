@@ -1,0 +1,39 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './transitions.stories';
+
+<Meta of={Stories} />
+
+# Transitions
+
+Duration tokens shared by component transitions, plus two code-owned easing curves used by the toolbar. Plectrum keeps motion short and functional.
+
+Hover a token — or press **Replay** — to watch the dot travel at that speed. Previews honour `prefers-reduced-motion`.
+
+## How to use
+
+1. Use `--pds-transition-duration` for hover, focus and color changes.
+2. Use `--pds-transition-duration-mask` for scrims and overlay fades.
+3. Always name the properties you transition. Never `transition: all`.
+
+Plectrum has no easing scale: transitions use `ease`. If a component needs a named curve, raise it before inventing one.
+
+## When to reach for it
+
+Any `transition` in `06-components`.
+
+Do not write literal `0.2s` / `200ms` values. Do not animate layout properties (width, height, top) — prefer transform and opacity.
+
+```scss
+// 06-components/_components.plectrum-avatar.scss
+.c-plectrum-avatar {
+  transition:
+    box-shadow var(--pds-transition-duration-mask) ease,
+    color var(--pds-transition-duration-mask) ease;
+}
+```
+
+Declared in `_settings.transitions.generated.scss` and `_settings.transitions.scss`.
+
+<Unstyled>
+  <Canvas of={Stories.Duration} sourceState="none" />
+</Unstyled>

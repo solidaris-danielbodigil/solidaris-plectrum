@@ -9,7 +9,7 @@
 :root {
   // Edge fade depth — block size on vertical (`.o-scroll-shadow`), inline size on
   // horizontal (`.o-scroll-shadow--inline`). Also drives negative flow margins.
-  --#{$pds-prefix}-size-scroll-shadow-height: var(--spacing-3);
+  --#{$pds-prefix}-size-scroll-shadow-height: var(--#{$pds-prefix}-spacing-3);
 
   // Fade colour — white scrim by default (softens content under the edge).
   --#{$pds-prefix}-color-scroll-shadow: var(--#{$pds-prefix}-color-transparent-white-80);

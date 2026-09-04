@@ -1,0 +1,145 @@
+import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { Diagram } from '../../.storybook/docs-figures';
+import * as Figures from './token-pipeline-css-first.stories';
+import * as ColorStories from '../foundations/colors.stories';
+import * as ContractStories from '../foundations/token-contracts.stories';
+
+<Meta title="Docs/Token pipeline/CSS-first surface" />
+
+# CSS-first surface
+
+Component authors use **`var(--pds-*)`** and BEMIT classes (`o-*`, `c-*`, `u-*`). No other token API is available to them. The PrimeNG preset TypeScript is generated and validated, not edited; it emits custom properties only and owns no class names outside `.p-*`. ITCSS layering is unchanged.
+
+This page is the developer view of the [pipeline overview](?path=/docs/docs-token-pipeline--docs). Figma transport is documented on [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs). Live swatches are Angular stories under **Foundations**, because `--p-*` exists only after `providePlectrum()` boots.
+
+---
+
+## Scope
+
+<Unstyled>
+  <Story of={Figures.Scope} />
+</Unstyled>
+
+---
+
+## Hybrid colour tokens
+
+A mapped colour token has two sources: the **live PrimeNG preset** (v0.6 or v1, selected in the toolbar) and the **Figma literal** generated from `tokens.json`. The custom property reads the live value and falls back to the literal. Neither value is typed by hand.
+
+<Diagram
+  title="Hybrid colour token resolution"
+  width={960}
+  height={270}
+  nodes={[
+    { id: 'preset', x: 40, y: 40, w: 220, tone: 'neutral', title: 'PrimeNG preset (live)', lines: ['--p-primary-600 · v0.6 or v1'], mono: true },
+    { id: 'figma', x: 40, y: 170, w: 220, tone: 'design', title: 'Figma via tokens.json', lines: ['#487395 · generated literal'], mono: true },
+    { id: 'token', x: 380, y: 98, w: 300, h: 76, tone: 'system', title: 'CSS custom property', lines: ['--pds-color-primary-600:', 'var(--p-primary-600, #487395)'], mono: true },
+    { id: 'comp', x: 770, y: 104, w: 160, tone: 'app', title: '.c-button', lines: ['var(--pds-color-…)'], mono: true },
+  ]}
+  edges={[
+    { from: 'preset', to: 'token', label: 'when defined' },
+    { from: 'figma', to: 'token', label: 'fallback' },
+    { from: 'token', to: 'comp', label: 'var()' },
+  ]}
+/>
+
+<DocsTable
+  headers={['Kind', 'Emitted shape', 'Condition']}
+  rows={[
+    ['Mapped colour', '--pds-color-primary-600: var(--p-primary-600, #487395);', 'alias-map.json has an entry and the v1 preset emits that --p-*'],
+    ['Unmapped / foundation', '--pds-radius-md: 6px;', 'No map entry, or the token is code-owned'],
+    ['PrimeNG bridge', '--p-accordion-*: var(--pds-…);', 'Only in 01-settings/_settings.{component}.scss'],
+  ]}
+/>
+
+Properties of this rule:
+
+- Aliasing is safe before Angular bootstraps: the fallback literal renders until the preset is applied.
+- Toggling v0.6 ↔ v1 in the toolbar changes aliased colour swatches; foundation literals do not change.
+- `alias-map.json` is reviewed. A missing entry emits a literal. CI fails if a mapped `--p-*` is never emitted by the resolved v1 preset, and warns when a `--pds-color-*` shares a `tokens.json` node with an unmapped `--p-*`.
+
+---
+
+## Adding a token
+
+<Unstyled>
+  <Story of={Figures.AddingAToken} />
+</Unstyled>
+
+```scss
+// ✅ settings + components
+.c-card {
+  padding: var(--pds-spacing-2);
+  color: var(--pds-color-text);
+}
+
+// ❌ new bare declarations (legacy file only)
+--spacing-2: 1rem;
+```
+
+---
+
+## Generated vs hand-authored
+
+<DocsTable
+  headers={['Generated (*.generated.scss)', 'Hand-authored']}
+  rows={[
+    ['colors-primitive, colors-semantic', 'prefix, borders, globals, grid maps, breakpoints'],
+    ['radius, shadows, transitions, focus', '~20 feature settings files'],
+    ['', 'All PrimeNG bridges (the accordion file is the template)'],
+    ['', 'Spacing and typography (exposed as text styles, not variables, in the Foundations Figma file)'],
+  ]}
+/>
+
+Generated files are forwarded **before** their hand-authored extras in `_settings.core.scss`. Run `npm run tokens:build` after token or alias-map changes; CI requires `git diff --exit-code` on the output.
+
+---
+
+## Storybook checks
+
+Style Dictionary's third target is `libs/ui/src/storybook/tokens.generated.ts`, one record per token: `{ name, cssVar, category, group, figmaRef, primeNgVar?, fallback }`.
+
+`<pds-token-explorer>` renders every Foundations page from that manifest and resolves each row with `getComputedStyle`. A swatch shows the value the running page renders. A mapped `--p-*` that computes to an empty value is flagged; this is the alias-regression detector.
+
+<DocsTable
+  headers={['Control', 'Function']}
+  rows={[
+    ['Click a token', 'Copies it and confirms with a toast'],
+    ['var() / Name / Value', 'var(--pds-…) for SCSS, the bare name for review, the resolved value for Figma'],
+    ['Search', 'Matches name, computed value, Figma ref and --p-*. Hidden below 8 tokens'],
+    ['Role filter', 'Buttons up to 6 roles, a searchable dropdown beyond'],
+    ['Grid / Table', 'Grid for visual comparison, table for variables and Figma refs'],
+  ]}
+/>
+
+**Fallback check.** This story blanks every mapped `--p-*` on the host. Values resolve from the generated literals:
+
+<Unstyled>
+  <Canvas of={ColorStories.StubbedProvidePlectrum} sourceState="none" />
+</Unstyled>
+
+**Tokens consumed.** Each `.metadata.ts` list joined against the manifest:
+
+<Unstyled>
+  <Canvas of={ContractStories.Consumed} sourceState="none" />
+</Unstyled>
+
+Foundation pages: [Colors / Semantic Common](?path=/docs/foundations-colors-semantic-common--docs) · [Typography / Roles](?path=/docs/foundations-typography-roles--docs) · [Spacing](?path=/docs/foundations-spacing--docs) · [Radius](?path=/docs/foundations-radius--docs) · [Shadows](?path=/docs/foundations-shadows--docs) · [Transitions](?path=/docs/foundations-transitions--docs) · [Focus](?path=/docs/foundations-focus--docs)
+
+---
+
+## Reference
+
+### Prefix migration
+
+Completed before generation, so application repositories never inherit bare `--spacing-*` / `--text-*` / `--font-*` names.
+
+- Declarations in spacing, typography and grid settings are `--#{$pds-prefix}-*` (`--pds-*`), including `--base-unit`, `--spacingUnit` (now `--pds-spacing-unit`), `--letter-spacing-*` and `--grid-cols`.
+- `_settings.legacy-aliases.scss` redeclares the old bare names as `var(--pds-*)` and is `@forward`ed **last** in `_settings.core.scss`. Removal after one release.
+- `$spacing-scale` keys are unchanged; BEM class names such as `o-layout--gap-2` are unchanged.
+- `tokens:check-prefix` rejects new `--spacing-` / `--text-` / `--font-` / `--line-height-` **declarations** outside the legacy file.
+
+<Unstyled>
+  <Story of={Figures.DarkMode} />
+</Unstyled>

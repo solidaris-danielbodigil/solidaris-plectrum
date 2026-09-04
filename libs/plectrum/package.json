@@ -1,0 +1,14 @@
+{
+  "name": "@solidaris/plectrum",
+  "version": "0.1.0",
+  "description": "Plectrum PrimeNG presets and providePlectrum()",
+  "peerDependencies": {
+    "@angular/core": "^21.0.0",
+    "@primeuix/themes": "^2.0.0",
+    "primeng": "^21.0.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "sideEffects": false
+}

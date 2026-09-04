@@ -1,32 +1,97 @@
-import type { Meta, StoryObj } from '@storybook/angular';
+import { Component, inject, input } from '@angular/core';
+import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { IconRegistry, registerPlectrumIcons } from '../icon';
+import type { IconSize } from '../icon/icon.types';
+import { showStorybookToast } from '../../storybook/storybook-toast';
 import { CopyableTextComponent } from './copyable-text.component';
 
+@Component({
+  selector: 'pds-copyable-text-toast-demo',
+  standalone: true,
+  imports: [CopyableTextComponent],
+  template: `
+    <pds-copyable-text
+      [label]="label()"
+      [value]="value()"
+      [ariaLabel]="ariaLabel()"
+      [iconSize]="iconSize()"
+      [disabled]="disabled()"
+      (copied)="onCopied($event)"
+    />
+  `,
+})
+class CopyableTextToastDemoComponent {
+  constructor() {
+    registerPlectrumIcons(inject(IconRegistry));
+  }
+
+  readonly label = input.required<string>();
+  readonly value = input.required<string>();
+  readonly ariaLabel = input<string | undefined>(undefined);
+  readonly iconSize = input<IconSize>('xs');
+  readonly disabled = input(false);
+
+  onCopied(value: string): void {
+    showStorybookToast({
+      summary: 'Copié !',
+      detail: `${this.label()}: ${value}`,
+    });
+  }
+}
+
+@Component({
+  selector: 'pds-copyable-text-row-demo',
+  standalone: true,
+  imports: [CopyableTextComponent],
+  template: `
+    <div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
+      <pds-copyable-text
+        label="Territoire"
+        value="319"
+        [iconSize]="iconSize()"
+        (copied)="onCopied('Territoire', $event)"
+      />
+      <span class="c-copyable-text__separator" aria-hidden="true">•</span>
+      <pds-copyable-text
+        label="NISS"
+        value="85010112345"
+        [iconSize]="iconSize()"
+        (copied)="onCopied('NISS', $event)"
+      />
+      <span class="c-copyable-text__separator" aria-hidden="true">•</span>
+      <pds-copyable-text
+        label="NSI"
+        value="A-123456"
+        [iconSize]="iconSize()"
+        (copied)="onCopied('NSI', $event)"
+      />
+    </div>
+  `,
+})
+class CopyableTextRowDemoComponent {
+  constructor() {
+    registerPlectrumIcons(inject(IconRegistry));
+  }
+
+  readonly iconSize = input<IconSize>('sm');
+
+  onCopied(label: string, value: string): void {
+    showStorybookToast({
+      summary: 'Copié !',
+      detail: `${label}: ${value}`,
+    });
+  }
+}
+
 const meta: Meta<CopyableTextComponent> = {
-  title: 'UI/Copyable Text',
+  tags: ['!dev'],
+  title: 'Custom components/Copyable Text',
   component: CopyableTextComponent,
-  parameters: {
-    docs: {
-      description: {
-        component: `
-Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
-
-**When to use**
-- Stable identifiers users copy often (Territoire, NISS, NSI, dossier numbers)
-- Any \`label + value\` pair where the value must land on the clipboard in one click
-
-**Clipboard behaviour**
-- Writes \`value\` via the async Clipboard API when available
-- Falls back to a temporary textarea + \`document.execCommand('copy')\` in older or non-secure contexts
-- Emits \`(copied)\` with the copied string after a successful write — use for toasts or analytics only
-
-**Accessibility**
-- Renders a PrimeNG text button with \`aria-label\` defaulting to \`Copier {label}\`
-- Override with \`ariaLabel\` when the visible label is insufficient
-- Bullet separators between chips must use \`aria-hidden="true"\`
-        `,
-      },
-    },
-  },
+  decorators: [
+    moduleMetadata({
+      imports: [CopyableTextToastDemoComponent, CopyableTextRowDemoComponent],
+    }),
+  ],
   argTypes: {
     label: { control: 'text' },
     value: { control: 'text' },
@@ -34,6 +99,18 @@ Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
     iconSize: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
   },
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-copyable-text-toast-demo
+        [label]="label"
+        [value]="value"
+        [ariaLabel]="ariaLabel"
+        [iconSize]="iconSize"
+        [disabled]="disabled"
+      />
+    `,
+  }),
 };
 
 export default meta;
@@ -52,29 +129,10 @@ export const Default: Story = {
 export const IdentifierRow: Story = {
   render: (args) => ({
     props: args,
-    moduleMetadata: {
-      imports: [CopyableTextComponent],
-    },
-    template: `
-      <div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
-        <(pds|app|lib)-copyable-text label="Territoire" value="319" [iconSize]="iconSize" />
-        <span class="c-copyable-text__separator" aria-hidden="true">•</span>
-        <(pds|app|lib)-copyable-text label="NISS" value="85010112345" [iconSize]="iconSize" />
-        <span class="c-copyable-text__separator" aria-hidden="true">•</span>
-        <(pds|app|lib)-copyable-text label="NSI" value="A-123456" [iconSize]="iconSize" />
-      </div>
-    `,
+    template: `<pds-copyable-text-row-demo [iconSize]="iconSize" />`,
   }),
   args: {
     iconSize: 'sm',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Multiple identifiers in a row with bullet separators — same layout as the affiliate overview card.',
-      },
-    },
   },
 };
 

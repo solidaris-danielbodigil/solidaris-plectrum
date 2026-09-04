@@ -1,0 +1,107 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './grid.stories';
+
+<Meta of={Stories} />
+
+# Flex Grid
+
+A **12-cell mobile-first grid** based on Flex display.
+
+- `.o-flex` — flex container (`row nowrap` by default)
+- `.o-flex__item` — flex child / cell (`flex: 1 1 100%` by default)
+- Column span: `.o-flex__item--{1–12}`
+- Responsive suffixes: `@sm` `@md` `@lg` `@xl`
+
+The syntax is BEMIT: `.o-` prefix, `__` for elements, `--` for modifiers, `@{breakpoint}` for media queries. Use these classes in templates so you do not invent page-scoped layout SCSS.
+
+> Gap and spacing are forbidden on `.o-flex` / `.o-flex__item` directly. Use `.o-layout--gap-{scale}` as a BEM mix on the same element.
+
+Styles: `libs/styles/src/05-objects/_objects.flex-grid.scss`.
+
+## Responsive layout
+
+This grid is mobile-first. `@xs` is the default — no suffix needed. `@sm`, `@md`, `@lg` and `@xl` take over from that breakpoint **upward**. Add `.o-flex--wrap` if you do not want items to overflow past 12 columns.
+
+<Canvas of={Stories.ResponsiveLayout} />
+
+### Responsive layout in Y axis
+
+Add `.o-flex--y` to set flex-direction to column. Height is not inherited — use `.o-layout--full-height` on ancestors. All breakpoint suffixes still apply.
+
+<Canvas of={Stories.ResponsiveLayoutY} />
+
+## Auto columns
+
+Use `.o-flex__item` without a column modifier. Items share space equally, or take the full width if the only child.
+
+<Canvas of={Stories.AutoCols} />
+
+### Auto columns in Y axis
+
+Add `.o-flex--y` to set flex-direction to column.
+
+<Canvas of={Stories.AutoColsY} />
+
+## Nested grids
+
+Grids can be nested infinitely. Each `.o-flex` restarts the 12-column context.
+
+<Canvas of={Stories.NestedGrids} />
+
+## Flex-flow
+
+Shorthand for `flex-direction` + `flex-wrap`. Default is `row nowrap`. Options: `.o-flex--wrap` `.o-flex--nowrap` `.o-flex--wrap-reverse` `.o-flex--row` `.o-flex--row-reverse` `.o-flex--y` `.o-flex--col` `.o-flex--col-reverse` `.o-flex--col-wrap` `.o-flex--col-nowrap`. Direction also accepts `@{breakpoint}` suffixes.
+
+<Canvas of={Stories.FlexFlow} />
+
+## Flex-shrink and flex-grow
+
+Add `.o-flex__item--grow-{1–12}` or `.o-flex__item--shrink-{1–12}`. Breakpoint suffixes also apply.
+
+<Canvas of={Stories.FlexGrowShrink} />
+
+## Ordering
+
+Add `.o-flex__item--order-{1–12}`. Breakpoint suffixes also apply.
+
+<Canvas of={Stories.Ordering} />
+
+## Offsets
+
+Add `.o-flex__item--offset-{1–12}`. Breakpoint suffixes also apply.
+
+<Canvas of={Stories.Offsets} />
+
+### Offsets in Y axis
+
+Add `.o-flex--y` to set flex-direction to column.
+
+<Canvas of={Stories.OffsetsY} />
+
+## Justify-content
+
+Defines alignment along the main axis. Options: `flex-start` `center` `flex-end` `space-between` `space-around` `space-evenly`. Add `.o-flex--wrap` if columns would overflow. Breakpoint suffixes apply.
+
+<Canvas of={Stories.JustifyContent} />
+
+## Align-items
+
+Controls the alignment of items on the cross axis. Options: `flex-start` `center` `flex-end` `stretch` `baseline`. Breakpoint suffixes apply.
+
+<Canvas of={Stories.AlignItems} />
+
+## Align-content
+
+Aligns a flex container's lines when there is extra space in the cross-axis. Requires `.o-flex--wrap` and enough items to wrap onto multiple lines. A single-line container (`nowrap`) will not reflect `align-content`. Breakpoint suffixes apply.
+
+<Canvas of={Stories.AlignContent} />
+
+## Align-self
+
+Controls the alignment of an individual flex-item along the cross axis, overriding the container's `align-items` value. Options: `flex-start` `center` `flex-end` `baseline` `stretch`. Breakpoint suffixes apply.
+
+<Canvas of={Stories.AlignSelf} />
+
+## API
+
+<ArgTypes of={Stories} />

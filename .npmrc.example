@@ -1,0 +1,3 @@
+# Registry-agnostic. Copy to .npmrc and point at your registry if it is not npmjs.
+# registry=https://registry.npmjs.org/
+# //registry.npmjs.org/:_authToken=${NPM_TOKEN}

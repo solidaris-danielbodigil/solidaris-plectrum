@@ -25,6 +25,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Audit token drift
+        run: npm run tokens:audit
+
+      - name: Validate preset token refs
+        continue-on-error: true
+        run: npm run tokens:validate-preset
+
+      - name: Guard bare token declarations
+        run: npm run tokens:check-prefix
+
+      - name: Rebuild generated tokens (must be committed)
+        run: npm run tokens:build && git diff --exit-code
+
+      - name: Lint token usage
+        run: npm run tokens:lint
+
       - name: Build applications
         run: npm run build
 
@@ -36,3 +52,43 @@ jobs:
 
       - name: Run Storybook
         run: npm run storybook --ci
+
+  pack-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Pack libraries and build a throwaway consumer app
+        run: npm run pack:smoke
+
+  storybook-packed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build packed libraries
+        run: npm run pack:libs
+
+      - name: Build Storybook against packed tarballs
+        run: npm run build-storybook:packed

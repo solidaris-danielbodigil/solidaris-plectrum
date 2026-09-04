@@ -1,0 +1,54 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './copyable-text.stories';
+
+<Meta of={Stories} />
+
+# Copyable Text
+
+Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
+
+## When to use
+
+- Stable identifiers users copy often (Territoire, NISS, NSI, dossier numbers)
+- Any `label + value` pair where the value must land on the clipboard in one click
+
+## Clipboard behaviour
+
+- Writes `value` via the async Clipboard API when available
+- Falls back to a temporary textarea + `document.execCommand('copy')` in older or non-secure contexts
+- Emits `(copied)` with the copied string after a successful write — use for toasts or analytics only
+- These canvases listen to `(copied)` and show a confirmation toast on the Storybook preview frame (`Copié !`) — the chip itself does not own toast UI
+
+## Accessibility
+
+- Renders a PrimeNG text button with `aria-label` defaulting to `Copier {label}`
+- Override with `ariaLabel` when the visible label is insufficient
+- Bullet separators between chips must use `aria-hidden="true"`
+
+## Default
+
+Single identifier chip. Click it to copy the value — a confirmation toast appears after a successful write.
+
+<Canvas of={Stories.Default} />
+
+## Identifier row
+
+Multiple identifiers in a row with bullet separators — same layout as the affiliate overview card. Each chip shows the copy toast.
+
+<Canvas of={Stories.IdentifierRow} />
+
+## Custom aria-label
+
+Override the default `Copier {label}` accessible name.
+
+<Canvas of={Stories.CustomAriaLabel} />
+
+## Disabled
+
+Chip is not interactive and does not write to the clipboard.
+
+<Canvas of={Stories.Disabled} />
+
+## API
+
+<ArgTypes of={Stories} />

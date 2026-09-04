@@ -1,0 +1,4 @@
+// Resolves via stylePreprocessorOptions.includePaths →
+// node_modules/@solidaris/styles/src (same contract as libs/styles/src).
+@use '01-settings/settings.prefix' as *;
+@use 'main';

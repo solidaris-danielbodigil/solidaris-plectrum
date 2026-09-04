@@ -1,23 +1,72 @@
-import type { Meta, StoryObj } from '@storybook/angular';
+import { Component, input, signal } from '@angular/core';
+import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { ButtonModule } from 'primeng/button';
 import { EmptyStateComponent } from './empty-state.component';
+import {
+  EMPTY_STATE_ILLUSTRATION_CHOICES,
+  EMPTY_STATE_ILLUSTRATION_IDS,
+  type EmptyStateIllustrationChoice,
+} from './empty-state-illustrations';
+
+@Component({
+  selector: 'pds-empty-state-random-demo',
+  standalone: true,
+  imports: [EmptyStateComponent, ButtonModule],
+  template: `
+    <div class="o-flex o-flex--y o-flex--align-items-center o-layout--gap-4">
+      @for (generation of [generation()]; track generation) {
+        <pds-empty-state
+          [title]="title()"
+          [description]="description()"
+          [illustration]="illustration()"
+        />
+      }
+      <button
+        pButton
+        type="button"
+        label="Autre illustration"
+        icon="bi bi-arrow-clockwise"
+        severity="secondary"
+        [outlined]="true"
+        [disabled]="illustration() !== 'random'"
+        (click)="reroll()"
+      ></button>
+    </div>
+  `,
+})
+class EmptyStateRandomDemoComponent {
+  readonly title = input.required<string>();
+  readonly description = input<string | null>(null);
+  readonly illustration = input<EmptyStateIllustrationChoice>('random');
+
+  readonly generation = signal(0);
+
+  reroll(): void {
+    this.generation.update((n) => n + 1);
+  }
+}
 
 const meta: Meta<EmptyStateComponent> = {
-  title: 'UI/Empty State',
+  tags: ['!dev'],
+  title: 'Custom components/Empty State',
   component: EmptyStateComponent,
-  parameters: {
-    docs: {
-      description: {
-        component: `
-Reusable placeholder for empty results, document details, or onboarding states.
-- Figma: [Empty state illustration](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641)
-- One illustration is picked at random from the exported Figma SVG assets on each render; the art is decorative and the title and description carry the message.
-        `,
-      },
-    },
-  },
+  decorators: [
+    moduleMetadata({
+      imports: [EmptyStateRandomDemoComponent],
+    }),
+  ],
   argTypes: {
     title: { control: 'text' },
     description: { control: 'text' },
+    illustration: {
+      control: 'select',
+      options: [...EMPTY_STATE_ILLUSTRATION_CHOICES],
+      description:
+        'Decorative hero. `random` (default) picks one catalog SVG per instance. Pass an id to pin a specific illustration.',
+    },
+  },
+  args: {
+    illustration: 'random',
   },
 };
 
@@ -26,15 +75,40 @@ export default meta;
 type Story = StoryObj<EmptyStateComponent>;
 
 export const Default: Story = {
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-empty-state-random-demo
+        [title]="title"
+        [description]="description"
+        [illustration]="illustration"
+      />
+    `,
+  }),
   args: {
     title: 'Aucune recherche pour le moment',
-    description: 'Lancez une recherche pour afficher les informations du document sélectionné.',
+    description:
+      'Lancez une recherche pour afficher les informations du document sélectionné.',
+    illustration: 'random',
   },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default placeholder state used for the iShare document details card.',
-      },
-    },
-  },
+};
+
+export const AllIllustrations: Story = {
+  render: () => ({
+    props: { ids: EMPTY_STATE_ILLUSTRATION_IDS },
+    moduleMetadata: { imports: [EmptyStateComponent] },
+    template: `
+      <div class="o-flex o-flex--wrap o-layout--gap-6">
+        @for (id of ids; track id) {
+          <div class="o-flex__item o-flex__item--4">
+            <pds-empty-state
+              [title]="id"
+              description="Pinned via the illustration input"
+              [illustration]="id"
+            />
+          </div>
+        }
+      </div>
+    `,
+  }),
 };

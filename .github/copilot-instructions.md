@@ -32,7 +32,9 @@ Always query both before implementing any component.
 ## Hard rules (full detail in `.ai/rules/`)
 
 - All values in `06-components/` SCSS via `var(--pds-*)` — no hardcoded hex/px/rem
-- No Tailwind classes in HTML templates — `@apply` in SCSS only
+- No Tailwind classes in HTML templates or SCSS — layout via `o-flex` / `o-layout` BEM mixes
+- Storybook lives in `libs/ui/.storybook/main.ts` (`ng run ui:storybook`)
+- Runtime preset default is **v0.6** (`providePlectrum()` / `resolvePresetVersion()`)
 - Layout/spacing via `o-flex`/`o-layout` BEM mixes in the template, not in SCSS
 - Every component in `libs/ui` needs a colocated `.stories.ts` — not done without it
 - PrimeNG first — never reimplement what PrimeNG provides

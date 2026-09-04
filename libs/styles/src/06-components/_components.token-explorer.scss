@@ -1,0 +1,468 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.token-explorer.scss
+// Token explorer foundation page — <pds-token-explorer>.
+//
+// Token source: libs/styles/src/01-settings/_settings.token-explorer.scss
+// Layout/gaps come from o-flex + o-layout mixes in the template; only the
+// explorer's own chrome, previews and hover states live here.
+// =============================================================================
+
+.c-token-explorer {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+// ── Playground ───────────────────────────────────────────────────────────────
+
+.c-token-explorer__playground {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--#{$pds-prefix}-spacing-2);
+  margin-block: var(--#{$pds-prefix}-spacing-3);
+  padding: var(--#{$pds-prefix}-spacing-2);
+  background: var(--#{$pds-prefix}-color-surface-50);
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+}
+
+.c-token-explorer__playground-label {
+  @include text-label-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
+  margin: 0;
+
+  > code {
+    font-family: monospace;
+  }
+}
+
+.c-token-explorer__playground-input {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.c-token-explorer__playground-action {
+  @include text-label-sm;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--#{$pds-prefix}-spacing-1);
+  padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
+  color: var(--#{$pds-prefix}-color-primary-interactive-contrast);
+  background: var(--#{$pds-prefix}-color-primary-interactive);
+  border: 0;
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--#{$pds-prefix}-color-primary-interactive-hover);
+  }
+
+  &:focus-visible {
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+  }
+}
+
+.c-token-explorer__focus-demo {
+  @include text-label-sm;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
+  color: var(--#{$pds-prefix}-color-text);
+  background: var(--#{$pds-prefix}-color-surface-0);
+  border: 1px solid var(--#{$pds-prefix}-color-content-border);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  cursor: pointer;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+  }
+}
+
+// ── Toolbar fields ───────────────────────────────────────────────────────────
+// Layout of the toolbar row is owned by c-toolbar; only sizing lives here.
+.c-token-explorer__search {
+  min-width: var(--#{$pds-prefix}-size-token-explorer-search-min);
+  max-width: var(--#{$pds-prefix}-size-token-explorer-search-max);
+  flex: 1 1 auto;
+}
+
+.c-token-explorer__search-input {
+  width: 100%;
+}
+
+// Role dropdown — used instead of a button row when a category has many roles.
+.c-token-explorer__filter {
+  min-width: var(--#{$pds-prefix}-size-token-explorer-filter-min);
+}
+
+// ── Sections ─────────────────────────────────────────────────────────────────
+
+.c-token-explorer__section {
+  margin-block-start: var(--#{$pds-prefix}-spacing-4);
+}
+
+.c-token-explorer__section-title {
+  @include text-heading-xs;
+  display: flex;
+  align-items: center;
+  gap: var(--#{$pds-prefix}-spacing-1);
+  margin: 0 0 var(--#{$pds-prefix}-spacing-0-5);
+}
+
+.c-token-explorer__section-count {
+  @include text-label-xs;
+  padding: 0 var(--#{$pds-prefix}-spacing-1);
+  color: var(--#{$pds-prefix}-color-text-muted);
+  background: var(--#{$pds-prefix}-color-surface-100);
+  border-radius: var(--#{$pds-prefix}-radius-pill);
+}
+
+// ── Grid ─────────────────────────────────────────────────────────────────────
+
+.c-token-explorer__grid {
+  list-style: none;
+}
+
+.c-token-explorer__item {
+  position: relative;
+  display: flex;
+  gap: var(--#{$pds-prefix}-spacing-2);
+  align-items: flex-start;
+  min-width: 0;
+  padding: var(--#{$pds-prefix}-spacing-2);
+  cursor: pointer;
+  background: var(--#{$pds-prefix}-color-surface-0);
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  transition:
+    border-color var(--#{$pds-prefix}-transition-duration-mask) ease,
+    box-shadow var(--#{$pds-prefix}-transition-duration-mask) ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--#{$pds-prefix}-color-brand);
+    box-shadow: var(--#{$pds-prefix}-shadow-overlay-select);
+  }
+
+  &.is-warning {
+    border-color: var(--#{$pds-prefix}-color-warning);
+  }
+}
+
+.c-token-explorer__body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.c-token-explorer__name {
+  @include text-label-sm;
+  font-family: monospace;
+  margin: 0;
+  word-break: break-all;
+}
+
+.c-token-explorer__value {
+  @include text-body-xs;
+  color: var(--#{$pds-prefix}-color-text-muted);
+  margin: 0;
+  word-break: break-all;
+}
+
+.c-token-explorer__members {
+  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 var(--#{$pds-prefix}-spacing-1);
+}
+
+// display:contents lets dt/dd land directly on the parent grid tracks.
+.c-token-explorer__member {
+  display: contents;
+
+  > dt,
+  > dd {
+    @include text-body-xs;
+    margin: 0;
+    color: var(--#{$pds-prefix}-color-text-muted);
+  }
+
+  > dd {
+    font-family: monospace;
+    word-break: break-all;
+  }
+}
+
+.c-token-explorer__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--#{$pds-prefix}-spacing-0-5);
+  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
+}
+
+.c-token-explorer__tag {
+  @include text-body-xs;
+  font-family: monospace;
+  padding: 0 var(--#{$pds-prefix}-spacing-0-5);
+  color: var(--#{$pds-prefix}-color-text-muted);
+  background: var(--#{$pds-prefix}-color-surface-50);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+}
+
+.c-token-explorer__tag--prime {
+  color: var(--#{$pds-prefix}-color-brand);
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+
+  &.is-warning {
+    color: var(--#{$pds-prefix}-color-warning);
+    background: var(--#{$pds-prefix}-color-warning-subtle);
+  }
+}
+
+// ── Copy action ──────────────────────────────────────────────────────────────
+// Small corner control — never covers the preview. The card click also copies.
+.c-token-explorer__copy {
+  appearance: none;
+  position: absolute;
+  inset-block-end: var(--#{$pds-prefix}-spacing-1);
+  inset-inline-end: var(--#{$pds-prefix}-spacing-1);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--#{$pds-prefix}-spacing-0-5);
+  color: var(--#{$pds-prefix}-color-text-muted);
+  background: var(--#{$pds-prefix}-color-surface-0);
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--#{$pds-prefix}-transition-duration-mask) ease,
+    color var(--#{$pds-prefix}-transition-duration-mask) ease,
+    border-color var(--#{$pds-prefix}-transition-duration-mask) ease;
+
+  .c-token-explorer__item:hover &,
+  .c-token-explorer__item:focus-within &,
+  &:focus-visible {
+    opacity: 1;
+    color: var(--#{$pds-prefix}-color-brand);
+    border-color: var(--#{$pds-prefix}-color-brand);
+  }
+
+  &:focus-visible {
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+  }
+}
+
+// ── Previews ─────────────────────────────────────────────────────────────────
+
+.c-token-explorer__preview {
+  flex-shrink: 0;
+  display: block;
+  // Fixed size required — an empty span has no intrinsic dimensions
+  width: var(--#{$pds-prefix}-size-token-explorer-preview);
+  height: var(--#{$pds-prefix}-size-token-explorer-preview);
+}
+
+.c-token-explorer__preview--color {
+  background:
+    linear-gradient(var(--#{$pds-prefix}-token-explorer-swatch), var(--#{$pds-prefix}-token-explorer-swatch)),
+    repeating-conic-gradient(
+      var(--#{$pds-prefix}-color-token-explorer-checker) 0% 25%,
+      var(--#{$pds-prefix}-color-surface-0) 0% 50%
+    );
+  background-size:
+    auto,
+    12px 12px;
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+}
+
+.c-token-explorer__preview--radius {
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+  border: 1px solid var(--#{$pds-prefix}-color-brand);
+  border-radius: var(--#{$pds-prefix}-token-explorer-radius);
+}
+
+.c-token-explorer__preview--shadow {
+  background: var(--#{$pds-prefix}-color-surface-0);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  box-shadow: var(--#{$pds-prefix}-token-explorer-shadow);
+}
+
+// Spacing renders as a bar whose inline size *is* the token.
+.c-token-explorer__preview--spacing {
+  width: auto;
+  min-width: var(--#{$pds-prefix}-size-token-explorer-preview);
+  height: var(--#{$pds-prefix}-size-token-explorer-preview);
+  display: flex;
+  align-items: center;
+
+  &::before {
+    content: '';
+    display: block;
+    width: var(--#{$pds-prefix}-token-explorer-size);
+    height: var(--#{$pds-prefix}-size-token-explorer-preview-bar);
+    background: var(--#{$pds-prefix}-color-brand);
+    border-radius: var(--#{$pds-prefix}-radius-sm);
+    // A zero-width step still needs to be visible as a hairline
+    outline: 1px solid var(--#{$pds-prefix}-color-brand);
+  }
+}
+
+.c-token-explorer__preview--focus {
+  background: var(--#{$pds-prefix}-color-surface-0);
+  border-radius: var(--#{$pds-prefix}-radius-md);
+  outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+    var(--#{$pds-prefix}-focus-ring-color);
+  outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+}
+
+// Motion: the dot travels using the row's own duration token.
+.c-token-explorer__preview--motion {
+  display: flex;
+  align-items: center;
+  width: calc(
+    var(--#{$pds-prefix}-size-token-explorer-preview) +
+      var(--#{$pds-prefix}-size-token-explorer-focus-travel)
+  );
+  background: var(--#{$pds-prefix}-color-surface-50);
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-pill);
+}
+
+.c-token-explorer__motion-dot {
+  display: block;
+  width: var(--#{$pds-prefix}-size-token-explorer-preview-bar);
+  height: var(--#{$pds-prefix}-size-token-explorer-preview-bar);
+  margin-inline-start: var(--#{$pds-prefix}-spacing-0-5);
+  background: var(--#{$pds-prefix}-color-brand);
+  border-radius: var(--#{$pds-prefix}-radius-pill);
+  transition: transform var(--#{$pds-prefix}-token-explorer-duration) ease;
+
+  .c-token-explorer__preview--motion:hover &,
+  .c-token-explorer__preview--motion.is-replaying &,
+  .c-token-explorer__item:hover & {
+    transform: translateX(var(--#{$pds-prefix}-size-token-explorer-focus-travel));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-token-explorer__motion-dot {
+    transition: none;
+  }
+}
+
+.c-token-explorer__preview--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--#{$pds-prefix}-color-text);
+  background: var(--#{$pds-prefix}-color-surface-50);
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  font-size: var(--#{$pds-prefix}-token-explorer-icon-size);
+  line-height: 1;
+
+  > .bi {
+    font-size: inherit;
+    line-height: 1;
+  }
+}
+
+.c-token-explorer__preview--type {
+  width: auto;
+  height: auto;
+  font-family: var(--#{$pds-prefix}-token-explorer-font-family);
+  font-size: var(--#{$pds-prefix}-token-explorer-font-size);
+  font-weight: var(--#{$pds-prefix}-token-explorer-font-weight);
+  line-height: var(--#{$pds-prefix}-token-explorer-line-height);
+  letter-spacing: var(--#{$pds-prefix}-token-explorer-letter-spacing);
+  color: var(--#{$pds-prefix}-color-text);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+// Type samples read better full-width above their metadata.
+.c-token-explorer__item:has(.c-token-explorer__preview--type) {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+// ── Table view ───────────────────────────────────────────────────────────────
+
+.c-token-explorer__table {
+  width: 100%;
+  border-collapse: collapse;
+  @include text-body-xs;
+
+  th,
+  td {
+    text-align: start;
+    padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
+    border-bottom: 1px solid var(--#{$pds-prefix}-color-panel-border);
+    vertical-align: middle;
+  }
+
+  thead th {
+    @include text-label-xs;
+    color: var(--#{$pds-prefix}-color-text-muted);
+    text-transform: uppercase;
+  }
+
+  code {
+    font-family: monospace;
+    word-break: break-all;
+  }
+
+  tr.is-warning {
+    background: var(--#{$pds-prefix}-color-warning-subtle);
+  }
+}
+
+.c-token-explorer__warn {
+  display: block;
+  color: var(--#{$pds-prefix}-color-warning);
+}
+
+.c-token-explorer__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--#{$pds-prefix}-spacing-0-5);
+  color: var(--#{$pds-prefix}-color-text-muted);
+  background: transparent;
+  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--#{$pds-prefix}-color-brand);
+    border-color: var(--#{$pds-prefix}-color-brand);
+  }
+
+  &:focus-visible {
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
+      var(--#{$pds-prefix}-focus-ring-color);
+    outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
+  }
+}
+
+// ── Empty state ──────────────────────────────────────────────────────────────
+
+.c-token-explorer__empty {
+  @include text-body-sm;
+  text-align: center;
+  color: var(--#{$pds-prefix}-color-text-muted);
+  padding: var(--#{$pds-prefix}-spacing-6);
+}

@@ -1,0 +1,50 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './colors.stories';
+
+<Meta title="Foundations/Colors/Primitive" />
+
+# Primitive
+
+Numbered hue ramps from Figma **Colors / Primitive**. They exist so a [Semantic Common](?path=/docs/foundations-colors-semantic-common--docs) role can be authored in `01-settings`. Apps and `06-components` consume the role, never a ramp step.
+
+Mapped swatches emit as `var(--p-*, <literal>)`. Toggle Plectrum v0.6 ↔ v1 in the toolbar: aliased swatches change; unmapped literals do not.
+
+Figma: [Plectrum DS — PrimeNG v21 / Colors](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4-2)
+
+## How to use
+
+1. Pick a ramp step only when defining a new semantic token in `01-settings`.
+2. Point the role at the step: `--pds-color-text: var(--pds-color-gray-900);`.
+3. In components, consume the role — `var(--pds-color-text)` — not the ramp.
+
+Do not reach for `blue-600` from a card or button. That is how a new semantic role gets skipped.
+
+```scss
+// 01-settings/_settings.colors-semantic.scss
+:root {
+  --pds-color-text: var(--pds-color-gray-900);
+}
+```
+
+## Groups
+
+Section labels match Figma (`blue`, `gray`, `rose` — not “Blue ramp”). Order is the Figma Primitive order. A group renders only when CSS declares `--pds-color-{group}-{step}`. Figma also lists amber, cyan, emerald, fuchsia, indigo, lime, pink, purple, sky, slate, stone, teal, violet and zinc; those sections appear here the moment the stylesheet does. `primary` and `surface` scales live on Semantic Common, as in Figma.
+
+<DocsTable
+  headers={['Group', 'When']}
+  rows={[
+    ['blue', 'Info and focus primitives.'],
+    ['gray', 'Neutral text, borders and surfaces.'],
+    ['green', 'Success primitives.'],
+    ['neutral', 'PrimeNG surface-adjacent neutrals.'],
+    ['orange', 'Warning primitives.'],
+    ['red', 'Danger primitives.'],
+    ['rose', 'Solidaris red scale.'],
+    ['yellow', 'Avatar and accent fills.'],
+  ]}
+/>
+
+<Unstyled>
+  <Canvas of={Stories.Primitive} sourceState="none" />
+</Unstyled>

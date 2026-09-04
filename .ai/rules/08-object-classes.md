@@ -108,7 +108,8 @@ Only these categories belong in `06-components/` SCSS files:
 | `overflow: hidden` | Template | `o-layout--overflow-hidden` |
 | `overflow-x: hidden; overflow-y: auto` | Template | `o-layout--overflow-x-hidden o-layout--overflow-y-auto` |
 | `gap: var(--spacing-3)` (global scale) | Template | `o-layout--gap-3` |
-| `display: grid` / `grid-template-columns` | Template | `o-grid` per [09-styling-policy.md](./09-styling-policy.md) |
+| Equal columns / spans | Template | `o-flex` / `o-flex__item--{n}` per [09-styling-policy.md](./09-styling-policy.md) |
+| Bespoke `display: grid` / `grid-template-*` | Component SCSS | Named areas or asymmetric tracks — document with a comment |
 | PrimeNG `--p-*` variable overrides | `01-settings/_settings.{component}.scss` | Token bridge file |
 
 ### Decision tree: SCSS or template?

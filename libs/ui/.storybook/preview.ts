@@ -1,3 +1,4 @@
+import { inject, provideAppInitializer } from '@angular/core';
 import type { Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -8,6 +9,10 @@ import {
   writeStoredPresetVersion,
   type PlectrumPresetVersion,
 } from '@solidaris/plectrum';
+import { IconRegistry, registerPlectrumIcons } from '../src/lib/icon';
+import { installStorybookToastListener } from '../src/storybook/storybook-toast';
+
+installStorybookToastListener();
 
 function readInitialPreset(): PlectrumPresetVersion {
   if (typeof localStorage === 'undefined') {
@@ -44,7 +49,13 @@ const preview: Preview = {
       }
 
       return applicationConfig({
-        providers: [provideAnimationsAsync(), providePlectrum(version)],
+        providers: [
+          provideAnimationsAsync(),
+          providePlectrum(version),
+          provideAppInitializer(() => {
+            registerPlectrumIcons(inject(IconRegistry));
+          }),
+        ],
       })(storyFn, context);
     },
   ],
@@ -59,6 +70,12 @@ const preview: Preview = {
       ],
     },
     layout: 'fullscreen',
+    docs: {
+      toc: {
+        headingSelector: 'h2, h3',
+        title: 'On this page',
+      },
+    },
   },
 };
 

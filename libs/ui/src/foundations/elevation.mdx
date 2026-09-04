@@ -1,0 +1,16 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './elevation.stories';
+
+<Meta of={Stories} />
+
+# Elevation
+
+Elevation utilities map directly to `--pds-shadow-*` tokens. Elevation only — status and focus rings are handled separately by the [Focus](?path=/docs/foundations-focus--docs) tokens.
+
+The stops below are read from the stylesheet, so this page always matches `_utilities.shadows.scss`. Token values live on [Foundations / Shadows](?path=/docs/foundations-shadows--docs).
+
+Each card uses `.u-shadow-{stop}`. Pick by the role of the surface, not by how strong the shadow looks.
+
+Styles: `libs/styles/src/07-utilities/_utilities.shadows.scss`.
+
+<Canvas of={Stories.Shadows} />

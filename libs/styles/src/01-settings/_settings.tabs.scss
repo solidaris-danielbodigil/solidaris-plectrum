@@ -6,7 +6,7 @@
 // =============================================================================
 
 :root {
-  --#{$pds-prefix}-space-tab-padding-block: var(--spacing-1);
+  --#{$pds-prefix}-space-tab-padding-block: var(--#{$pds-prefix}-spacing-1);
   --#{$pds-prefix}-space-tab-padding-inline: 0;
 }
 

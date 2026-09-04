@@ -1,0 +1,14 @@
+# Template — copy into the app repo as .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      plectrum-design-system:
+        patterns:
+          - "@solidaris/ui"
+          - "@solidaris/plectrum"
+          - "@solidaris/styles"
+          - "@solidaris/tokens-cli"

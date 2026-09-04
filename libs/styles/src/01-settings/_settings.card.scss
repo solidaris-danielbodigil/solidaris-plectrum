@@ -8,20 +8,6 @@
 // Scoped by BEM wrapper class so overrides apply only where intended.
 // =============================================================================
 
-// ── Iconography card context ─────────────────────────────────────────────────
-// Design ref: Foundations — Iconography browser grid
-.c-iconography__card {
-  --p-card-border-color: var(--#{$pds-prefix}-color-surface-border);
-  // Zero out PrimeNG's default card body padding — o-layout--padding-2 mix in template owns it
-  --p-card-body-padding: 0;
-}
-
-// Hover/active border bridge — activated by the item wrapper hover state.
-.c-iconography__item:hover .c-iconography__card,
-.c-iconography__item.is-hovered .c-iconography__card {
-  --p-card-border-color: var(--#{$pds-prefix}-color-brand);
-}
-
 // ── Structural Height Stretching ─────────────────────────────────────────────
 // Let p-card element fill height when given .o-flex or height-related layout classes
 p-card {

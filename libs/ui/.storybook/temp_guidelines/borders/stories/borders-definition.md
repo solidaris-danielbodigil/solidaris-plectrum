@@ -1,1 +1,0 @@
-Border styles can be used to bound, divide, and highlight content. The styles are designed to maintain visual hierarchy regardless of how complex pages become or how many nested containers they include.

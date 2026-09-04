@@ -1,0 +1,82 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './affiliate-overview-card.stories';
+
+<Meta of={Stories} />
+
+# Affiliate Overview Card
+
+iSHARE affiliate audit summary card — card gradient is driven by `statusAction.severity`; the `variant` input is a fallback when no status action is set.
+
+- **Avatar**: large illustrated avatar (51.333 × 56px) via `c-plectrum-avatar--large`; small initials variant remains 32px
+- **Copy icon**: `copy-content-LEGACY` at 10.5px (`--pds-icon-size-xs`) on identifier chips
+- **Layout**: horizontal avatar + stacked header / identifier rows via `o-flex` / `o-layout` with flex-wrap
+- **PrimeNG**: `p-card`, `p-button` (status + primary actions), `p-badge` (status action code), `p-selectbutton` (filterable info tags), `pds-plectrum-avatar`
+
+BEM block: `c-affiliate-overview-card`
+
+Figma: [iSHARE-Audit node 507:8227](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227)
+
+| `statusAction.severity` | Card modifier | Status button |
+|---|---|---|
+| `success` | `in-order` | Outlined success — e.g. « En ordre » |
+| `warn` | `warning` | Outlined warn — e.g. « Actions à réaliser: » + badge « C4 » |
+| `danger` | `danger` | Outlined danger |
+| _(no statusAction)_ | from `variant` input | hidden |
+
+## Default
+
+Neutral affiliate summary with info tags, copyable identifiers, and primary action.
+
+<Canvas of={Stories.Default} />
+
+## In order
+
+Variant-only fallback — success subtle gradient (green-75 → surface). Prefer `statusAction.severity: success` for severity-driven setup.
+
+<Canvas of={Stories.InOrder} />
+
+## Warning
+
+Severity-driven warning — orange-50 → surface gradient (88deg) from `statusAction.severity` warn with variant default. Figma node 507:7910.
+
+<Canvas of={Stories.Warning} />
+
+## Multiple status actions
+
+Several corrective actions — summary chip (icon + « Actions à réaliser » + count) opens a popover list, same pattern as document comment/alert tags.
+
+<Canvas of={Stories.MultipleStatusActions} />
+
+## Danger
+
+Severity-driven danger — danger subtle → surface gradient (88deg) from `statusAction.severity` danger.
+
+<Canvas of={Stories.Danger} />
+
+## Loading
+
+Static loading state — avatar pill + header row (title, status, info tags, primary action) + identifier chips.
+
+<Canvas of={Stories.Loading} />
+
+## Simulated loading
+
+Flashes skeleton for 1000ms then reveals the warning card — use to preview the shimmer transition.
+
+<Canvas of={Stories.SimulatedLoading} />
+
+## Wrapped layout
+
+Narrow container (~24rem) demonstrating flex-wrap on header, metadata, and primary action rows.
+
+<Canvas of={Stories.WrappedLayout} />
+
+## Copy with toast
+
+Click an identifier chip to copy its value — a confirmation toast appears on the Storybook preview frame.
+
+<Canvas of={Stories.CopyWithToast} />
+
+## API
+
+<ArgTypes of={Stories} />

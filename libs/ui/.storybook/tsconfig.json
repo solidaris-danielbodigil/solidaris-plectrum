@@ -13,10 +13,12 @@
     "../src/**/*.stories.js",
     "../src/**/*.stories.jsx",
     "../src/**/*.stories.tsx",
-    "../src/**/*.stories.mdx"
+    "../src/**/*.mdx"
   ],
   "files": [
     "main.ts",
-    "preview.ts"
+    "preview.ts",
+    "docs-table.ts",
+    "docs-figures.ts"
   ]
 }

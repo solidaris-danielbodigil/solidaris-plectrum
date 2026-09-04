@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/angular';
+import remarkGfm from 'remark-gfm';
 
 // SCSS includePaths and global styles are configured in angular.json under
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
@@ -7,7 +8,16 @@ import type { StorybookConfig } from '@storybook/angular';
 const config: StorybookConfig = {
   stories: ['../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
   addons: [
-    '@storybook/addon-docs',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     '@storybook/addon-a11y',
   ],
   framework: {

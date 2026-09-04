@@ -88,7 +88,7 @@ A component is **not done** until all of these pass:
 ### Storybook
 - [ ] `.stories.ts` created **colocated** in `libs/ui/src/lib/{component-name}/`
 - [ ] Stories cover: default state + all variant states
-- [ ] `parameters.docs.description.component` includes Figma node URL
+- [ ] Attached `{name}.mdx` includes Figma node URL and a canvas per story
 
 ### Index
 - [ ] `npm run generate-index` run and `index.json` committed

@@ -58,7 +58,8 @@ const SAMPLE_ITEMS: NavItem[] = [
 ];
 
 const meta: Meta<NavShellComponent> = {
-  title: 'Navigation/NavShell',
+  tags: ['!dev'],
+  title: 'Shell/Navigation/NavShell',
   component: NavShellComponent,
   decorators: [
     // Match app shell layout — nav-shell stretches via height: 100% inside a full-viewport flex row.
@@ -80,19 +81,6 @@ const meta: Meta<NavShellComponent> = {
   ],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component: `
-**First-level navigation shell** — vertical sidebar for the Solidaris ecosystem.
-
-- **Collapsed** (default): icon-only; width follows the icon column + padding
-- **Expanded**: revealed on \`:hover\` / \`:focus-within\` (CSS only) — labels + wordmark fade in via a discrete \`display\` transition and the panel grows to its widest item. Overlays content — no document-flow push.
-- No PrimeNG equivalent; uses semantic \`<ul>\` with ARIA attributes.
-- Generic API — pass any items via \`[items]\`. No app-specific logic inside the component.
-- Figma: [iCRM Audit node 18:6419](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=18-6419)
-        `,
-      },
-    },
   },
   argTypes: {
     activeItemId: {
@@ -115,9 +103,6 @@ export const Collapsed: Story = {
     items: SAMPLE_ITEMS,
     activeItemId: null,
   },
-  parameters: {
-    docs: { description: { story: 'Icon-only sidebar at rest.' } },
-  },
 };
 
 /** Expanded state — focusing an item triggers the CSS :focus-within reveal. */
@@ -132,9 +117,6 @@ export const Expanded: Story = {
     const link = canvasElement.querySelector('.c-nav-shell__link') as HTMLElement | null;
     link?.focus();
   },
-  parameters: {
-    docs: { description: { story: 'Expanded via :hover / :focus-within — labels + wordmark reveal, panel grows to its widest item, overlaying content.' } },
-  },
 };
 
 /** Active item highlighted — grey rounded background (icon keeps its brand colour). */
@@ -143,9 +125,6 @@ export const WithActiveItem: Story = {
     items: SAMPLE_ITEMS,
     activeItemId: 'icrm',
   },
-  parameters: {
-    docs: { description: { story: 'Active nav item receives the `is-active` background highlight.' } },
-  },
 };
 
 /** Empty state — no items. */
@@ -153,8 +132,5 @@ export const Empty: Story = {
   args: {
     items: [],
     activeItemId: null,
-  },
-  parameters: {
-    docs: { description: { story: 'No items passed — renders the shell structure without menu items.' } },
   },
 };

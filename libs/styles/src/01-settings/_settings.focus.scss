@@ -1,17 +1,4 @@
-@use 'settings.prefix' as *;
-
 // =============================================================================
 // 01-settings/_settings.focus.scss
-// Focus ring tokens — WCAG AA compliant visible focus indicator.
-// Source: libs/plectrum/src/Plectrum_v0.6/extend.ts (focus.color = blue.300)
+// Focus ring tokens are generated — see _settings.focus.generated.scss
 // =============================================================================
-
-:root {
-
-  --#{$pds-prefix}-focus-ring-color:   var(--#{$pds-prefix}-color-blue-300);
-  --#{$pds-prefix}-focus-ring-style:   solid;
-  --#{$pds-prefix}-focus-ring-width:   2px;
-  --#{$pds-prefix}-focus-ring-offset:  0;
-  --#{$pds-prefix}-focus-ring-shadow:  none;
-
-}

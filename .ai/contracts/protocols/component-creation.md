@@ -134,7 +134,7 @@ Required story exports:
 - `Empty` (where applicable)
 - `Loading` (where applicable)
 
-Story `parameters.docs.description` must explain:
+Attached `{name}.mdx` (not CSF `parameters.docs.description`) must explain:
 - What the component does
 - Which Figma node it maps to (with URL)
 - Any design constraints or usage rules

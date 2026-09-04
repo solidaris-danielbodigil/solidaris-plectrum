@@ -19,7 +19,7 @@ import { TransactionsCicsModalComponent } from './transactions-cics-modal.compon
       label="Transactions CICS"
       (click)="visible.set(true)"
     ></button>
-    <(pds|app|lib)-transactions-cics-modal [(visible)]="visible" />
+    <pds-transactions-cics-modal [(visible)]="visible" />
   `,
 })
 class TransactionsCicsModalStoryHostComponent {
@@ -27,7 +27,8 @@ class TransactionsCicsModalStoryHostComponent {
 }
 
 const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
-  title: 'UI/Transactions CICS Modal',
+  tags: ['!dev'],
+  title: 'Custom components/Transactions CICS Modal',
   component: TransactionsCicsModalStoryHostComponent,
   decorators: [
     moduleMetadata({
@@ -37,14 +38,6 @@ const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
       (story) => `<div style="padding: 1.5rem">${story}</div>`,
     ),
   ],
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Legacy iShare Transactions CICS modal — searchable list with per-row CICS launch CTA (Scenario 4).',
-      },
-    },
-  },
 };
 
 export default meta;
@@ -52,11 +45,4 @@ export default meta;
 type Story = StoryObj<TransactionsCicsModalStoryHostComponent>;
 
 export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Open the modal, search for UA38 (jours vacances ONVA), launch CICS.',
-      },
-    },
-  },
 };
