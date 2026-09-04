@@ -3,7 +3,9 @@ import remarkGfm from 'remark-gfm';
 
 // SCSS includePaths and global styles are configured in angular.json under
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
-// No webpackFinal override needed.
+// webpackFinal is only set for GitHub Pages (STORYBOOK_PUBLIC_PATH).
+
+const pagesPublicPath = process.env.STORYBOOK_PUBLIC_PATH;
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
@@ -24,6 +26,17 @@ const config: StorybookConfig = {
     name: '@storybook/angular',
     options: {},
   },
+  ...(pagesPublicPath
+    ? {
+        webpackFinal: async (webpackConfig) => {
+          webpackConfig.output = {
+            ...webpackConfig.output,
+            publicPath: pagesPublicPath,
+          };
+          return webpackConfig;
+        },
+      }
+    : {}),
 };
 
 export default config;

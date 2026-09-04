@@ -1,4 +1,4 @@
-name: Deploy iSHARE to GitHub Pages
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -34,13 +34,23 @@ jobs:
       - name: Build iSHARE for production
         run: npx ng build ishare --configuration=production --base-href=/solidaris-plectrum/
 
-      - name: Add SPA fallback for GitHub Pages
-        run: cp dist/apps/ishare/browser/index.html dist/apps/ishare/browser/404.html
+      - name: Build Storybook
+        run: npx ng run ui:build-storybook
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+          STORYBOOK_PUBLIC_PATH: /solidaris-plectrum/storybook/
+
+      - name: Assemble Pages site
+        run: |
+          mkdir -p dist/pages/storybook
+          cp -R dist/apps/ishare/browser/. dist/pages/
+          cp dist/pages/index.html dist/pages/404.html
+          cp -R dist/storybook/ui/. dist/pages/storybook/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/apps/ishare/browser
+          path: dist/pages
 
   deploy:
     needs: build
