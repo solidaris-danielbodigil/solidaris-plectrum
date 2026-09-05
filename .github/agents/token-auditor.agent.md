@@ -24,22 +24,27 @@ and flag issues — you fix them only when explicitly asked.
 ### 1 — Prefix compliance
 
 Scan `libs/styles/src/` for:
+
 ```
 ❌ ERROR   --pds- hardcoded without #{$pds-prefix} interpolation
 ❌ ERROR   File emits tokens but missing: @use 'settings.prefix' as *
+❌ ERROR   New bare --spacing-* / --text-* / --font-* declaration outside
+           _settings.legacy-aliases.scss (tokens:check-prefix enforces this)
 ⚠️ WARNING Primitive token used directly in 06-components/
-           e.g. var(--color-gray-600) instead of var(--pds-color-text-muted)
+           e.g. var(--pds-color-gray-600) instead of var(--pds-color-text-muted)
 ```
 
 ### 2 — Semantic coverage
 
-For every primitive token (`--color-*`, `--font-*`, `--spacing-*`) used in `06-components/`:
-- Does a semantic alias (`--pds-*`) exist? If not → FLAG for creation
+For every primitive token (`--pds-color-{palette}-{shade}`, `--pds-font-*`, `--pds-spacing-*`) used in `06-components/`:
+
+- Does a semantic alias (`--pds-color-{role}`, `--pds-text-*`) exist? If not → FLAG for creation
 - Is it documented with a Figma node reference? If not → FLAG
 
 ### 3 — PrimeNG sync
 
 For every `--p-*` override in `06-components/`:
+
 - Does it reference an `--pds-*` semantic token? If hardcoded value → ERROR
 - Is the mapping documented in the component's `.metadata.ts`? If not → WARNING
 
@@ -47,6 +52,7 @@ For every `--p-*` override in `06-components/`:
 
 Every SCSS file must follow `_{layer-folder}.{description}.scss`.
 Flag any file that doesn't match:
+
 ```
 ✅ _components.nav-shell.scss
 ❌ _nav-shell.scss
@@ -56,6 +62,7 @@ Flag any file that doesn't match:
 ### 5 — Figma drift
 
 Compare Figma variables (via Figma MCP) against `01-settings/` files:
+
 - New Figma variables without code equivalent → FLAG
 - Code tokens without Figma equivalent → FLAG (may be intentional — note it)
 - Value mismatches → FLAG

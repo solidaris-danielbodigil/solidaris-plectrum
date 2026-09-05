@@ -10,7 +10,7 @@ Load this once per conversation. Follow these rules deterministically.
 ## Context Loading Order
 
 1. **Read `.ai/contracts/index.json`** — workspace map, component inventory, relationships
-2. **Read `.ai/DESIGN_TOKENS_GOVERNANCE.md`** — token architecture rules
+2. **Read `.ai/rules/02-scss-tokens.md` and `.ai/rules/10-css-ssot.md`** — token architecture rules (governance: risk levels, deprecation and review live in `.ai/contracts/protocols/token-audit.md`)
 3. **Read relevant `.metadata.ts`** — only for components you're about to use or create
 
 ---
@@ -59,10 +59,10 @@ Load this once per conversation. Follow these rules deterministically.
 ### "How do I style this?"
 
 ```
-1. Check if PrimeNG --p-* variable override is sufficient
-2. If not → create/extend BEM class in libs/styles/src/06-components/
-3. Use @apply with Tailwind utilities inside SCSS only (never in HTML)
-4. Reference --pds-* semantic tokens via var()
+1. Check if PrimeNG --p-* variable override is sufficient (bridge in 01-settings)
+2. Layout (flex, gap, padding, overflow) → o-flex / o-layout mixes in the template
+3. If not covered → create/extend BEM class in libs/styles/src/06-components/
+4. Reference --pds-* semantic tokens via var(); @apply only for non-layout helpers, never in HTML
 5. Never use !important
 6. Never write inline styles
 ```
@@ -75,7 +75,7 @@ Before marking any implementation complete, verify:
 
 - [ ] Component uses semantic tokens, not primitives
 - [ ] No Tailwind classes in HTML templates
-- [ ] BEM naming follows c-{block}__{element}--{modifier}
+- [ ] BEM naming follows c-{block}\_\_{element}--{modifier}
 - [ ] PrimeNG component used where possible
 - [ ] .metadata.ts exists and covers all states
 - [ ] Storybook story exists
@@ -91,4 +91,4 @@ Before marking any implementation complete, verify:
 2. If you see hardcoded hex values → replace with token reference
 3. If you see Tailwind classes in HTML → refactor to BEM + SCSS
 4. If you see a duplicated component → propose consolidation
-5. If you see --pds-* hardcoded without #{$pds-prefix} → fix it
+5. If you see --pds-\* hardcoded without #{$pds-prefix} → fix it

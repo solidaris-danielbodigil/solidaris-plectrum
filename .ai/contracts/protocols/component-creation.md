@@ -13,113 +13,37 @@
 
 ```
 libs/ui/src/lib/{component-name}/
-├── {component-name}.component.ts
+├── {component-name}.component.ts      → no styleUrl — components have no colocated stylesheet
 ├── {component-name}.component.html
-├── {component-name}.component.scss   → empty or minimal; all real styles in libs/styles
 ├── {component-name}.component.spec.ts
 ├── {component-name}.stories.ts        ← REQUIRED — colocated, all states documented
 └── {component-name}.metadata.ts       ← CONTRACT FILE
 
 libs/styles/src/06-components/
-└── _components.{component-name}.scss  ← BEM styles — CSS custom properties only, o-flex/o-layout BEM mixes in template
+├── _components.{component-name}.scss  ← BEM styles — CSS custom properties only, o-flex/o-layout BEM mixes in template
+└── _components.core.scss              ← must @forward the new partial (pds:component appends it)
 ```
 
-> Storybook discovers stories automatically via `libs/ui/src/**/*.stories.*` in `storybook/.storybook/main.ts` — no manual registration needed.
+> No colocated `.component.scss`. The only allowed exception is a `:host` display rule
+> that cannot live in a global sheet under ViewEncapsulation — added by hand, with a
+> justification comment.
 
-## SCSS Rules (enforced)
+> Storybook discovers stories automatically via the glob in `libs/ui/.storybook/main.ts` — no manual registration needed.
 
-### 1 — No local SCSS `$variables` in component files
-All values **must** live in `libs/styles/src/01-settings/`. If a token is missing, add it there first.
+## SCSS Rules
 
-```scss
-// ❌ Wrong — local variable
-$nav-bg: #f6f6f6;
-.c-nav { background: $nav-bg; }
+Enforced in detail by `.ai/rules/` — this protocol points at them instead of restating them:
 
-// ✅ Correct — token in 01-settings/_settings.colors-semantic.scss
-.c-nav { background: var(--pds-color-nav-shell-bg); }
-```
+| Rule | File | Essence |
+|---|---|---|
+| Token-first, no local `$variables` | `02-scss-tokens.md` §1–3 | Every value lives in `01-settings` as `--pds-*`; add missing tokens there first |
+| CSS custom properties only | `02-scss-tokens.md` §2 | `var(--pds-*)` throughout — no hex/px/rem in `06-components` |
+| Layout via `o-flex` / `o-layout` template mixes ⛔ | `08-object-classes.md` | No flex/gap/padding/overflow CSS in `06-components` when a class exists; no Tailwind in templates; `@apply` never for layout |
+| PrimeNG `--p-*` bridges in `01-settings` ⛔ | `02-scss-tokens.md` §7 · `04-primeng.md` §5 | `_settings.{primeng-component}.scss`, scoped to the BEM wrapper — never inline in `06-components` |
+| Content-first sizing ⛔ | `02-scss-tokens.md` §6 | No arbitrary fixed width/height; the two justified exceptions carry a comment |
+| Static chrome via utilities | `09-styling-policy.md` §4 | Borders, radius, resting shadows as `u-*` classes in templates |
 
-### 2 — CSS custom properties only in components
-Use `var(--pds-*)` throughout. Never hardcode hex, rgba, px, or rem values in `06-components`.
-
-```scss
-// ❌ Wrong
-.c-nav__item { padding: 10px; border-radius: 10px; }
-
-// ✅ Correct
-.c-nav__item {
-  padding: var(--pds-space-nav-shell-item-p);
-  border-radius: var(--pds-radius-lg);
-}
-```
-
-### 3 — Template-first layout via `o-flex` / `o-layout` ⛔
-Layout properties (`display: flex`, `flex-direction`, `align-items`, `overflow`, `width: 100%`, etc.)
-must be expressed as **object-class BEM mixes in the HTML template** when an equivalent class exists.
-
-Tailwind utility classes must **never** appear in HTML templates.
-
-```html
-<!-- ❌ Wrong — flex/overflow in component SCSS -->
-.c-card__body { display: flex; flex-direction: column; overflow-y: auto; }
-
-<!-- ✅ Correct — object classes in template -->
-<div class="c-card__body o-flex o-flex--col o-layout--overflow-y-auto">
-```
-
-**Priority order:**
-1. `o-flex` / `o-layout` class in template — always first if one exists
-2. `@apply` in SCSS — only for properties with no `o-*` equivalent (e.g. `list-none`, `cursor-pointer`, `truncate`)
-3. `var(--pds-*)` in SCSS — for component-specific spacing that's token-backed
-
-### 4 — PrimeNG token bridge in `01-settings/` ⛔
-All PrimeNG `--p-*` variable overrides belong in `libs/styles/src/01-settings/_settings.{primeng-component}.scss`.
-Never declare `--p-*` variables inline in `06-components/`.
-
-```scss
-// ❌ Wrong — --p-* in 06-components
-.c-sub-nav-shell__accordion {
-  --p-accordion-header-background: transparent;
-}
-
-// ✅ Correct — in 01-settings/_settings.accordion.scss
-.c-sub-nav-shell__accordion {
-  --p-accordion-header-background: transparent;
-  --p-accordion-header-color: var(--color-sub-nav-shell-section-text);
-}
-```
-
-### 5 — Content-first sizing ⛔
-Components must **never** have arbitrary fixed `width` or `height`.
-Heights must emerge from `padding` + `line-height`. Widths must emerge from `flex`/`grid`/`max-content`.
-
-Only two categories justify a fixed dimension — both require a justification comment in the SCSS:
-1. **Icon/asset constraints** — icon fonts and SVGs collapse to 0 without a size
-2. **Structural collapsed/icon-only states** — the entire layout depends on the dimension
-
-```scss
-// ❌ Wrong — arbitrary fixed sizes
-.c-nav-shell__logo { height: 52px; }
-.c-nav-shell__link { min-height: 40px; }
-
-// ✅ Correct — content-driven
-.c-nav-shell__logo { padding: var(--pds-space-nav-shell-item-px); }
-.c-nav-shell__link { padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px); }
-
-// ✅ Acceptable — structurally required, with comment
-.c-nav-shell__icon {
-  // Fixed size required — icon fonts collapse to 0 without an explicit constraint
-  width: var(--pds-size-nav-shell-icon);
-  height: var(--pds-size-nav-shell-icon);
-}
-```
-
-### 6 — Token creation when values are missing
-If Figma specifies a value that has no existing `--pds-*` token:
-1. Add it to the correct `01-settings` file with a descriptive comment citing the Figma node
-2. Reference it in the component SCSS via `var(--pds-*)`
-3. Note the new token in the `.metadata.ts` under `tokens.consumed`
+New token: add it to the correct `01-settings` file with a comment citing the Figma variable and node, reference it via `var(--pds-*)`, and list it under `tokens.consumed` in the `.metadata.ts`.
 
 ## Storybook Rule (mandatory)
 
@@ -127,6 +51,7 @@ Every component in `libs/ui` **must** have a `.stories.ts` file **colocated** in
 A component is **not complete** without it.
 
 Required story exports:
+
 - `Default` / the primary resting state
 - `Expanded` / `Open` / variant states (where applicable)
 - `WithActiveItem` / `Selected` (where applicable)
@@ -135,6 +60,7 @@ Required story exports:
 - `Loading` (where applicable)
 
 Attached `{name}.mdx` (not CSF `parameters.docs.description`) must explain:
+
 - What the component does
 - Which Figma node it maps to (with URL)
 - Any design constraints or usage rules
@@ -154,7 +80,7 @@ export const {Name}Metadata: ComponentMetadata = {
     primeNgComponent: undefined, // or 'Button', 'DataTable', etc.
     bemBlock: 'c-{name}',
     itcssLayer: '06-components',
-    scssPath: 'libs/styles/src/06-components/_{name}.scss',
+    scssPath: 'libs/styles/src/06-components/_components.{name}.scss',
     created: '{ISO date}',
     modified: '{ISO date}',
   },
@@ -191,5 +117,6 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] `@apply` only for non-layout concerns (`list-none`, `cursor-pointer`, `truncate`)
 - [ ] Dimensions content-driven; no arbitrary fixed `width`/`height`
 - [ ] No Tailwind classes in HTML templates
-- [ ] `npm run generate-index` run after creation
+- [ ] `_components.core.scss` forwards the new partial (automatic via `pds:component`)
+- [ ] `.ai/contracts/index.json` regenerated (automatic via `pds:component` and the afterFileEdit hook) and committed
 - [ ] No app-specific logic in `libs/ui`

@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated": "2026-06-08T21:43:31.481Z",
+    "generated": "2026-09-05T00:06:57.868Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
-    "prefix": "PDS",
+    "prefix": "pds",
     "baseRemPx": 14
   },
   "workspace": {
@@ -70,7 +70,7 @@
   },
   "components": {
     "AffiliateDetailDrawer": {
-      "path": "libs\\ui\\src\\lib\\affiliate-detail-drawer\\affiliate-detail-drawer.component.ts",
+      "path": "libs/ui/src/lib/affiliate-detail-drawer/affiliate-detail-drawer.component.ts",
       "category": "organisms",
       "metadata": true,
       "bemBlock": "c-drawer",
@@ -83,7 +83,7 @@
       "usedBy": []
     },
     "AffiliateOverviewCard": {
-      "path": "libs\\ui\\src\\lib\\affiliate-overview-card\\affiliate-overview-card.component.ts",
+      "path": "libs/ui/src/lib/affiliate-overview-card/affiliate-overview-card.component.ts",
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-affiliate-overview-card",
@@ -96,7 +96,7 @@
       "usedBy": []
     },
     "CopyableText": {
-      "path": "libs\\ui\\src\\lib\\copyable-text\\copyable-text.component.ts",
+      "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts",
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-copyable-text",
@@ -110,8 +110,18 @@
         "AffiliateOverviewCard"
       ]
     },
+    "DelayPredictionCard": {
+      "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts",
+      "category": "uncategorized",
+      "metadata": false,
+      "bemBlock": "c-delay-prediction-card-host",
+      "primeNg": "Button",
+      "scssPath": "libs/styles/src/06-components/_components.delay-prediction-card.scss",
+      "uses": [],
+      "usedBy": []
+    },
     "DocDemoBox": {
-      "path": "libs\\ui\\src\\lib\\doc-demo-box\\doc-demo-box.component.ts",
+      "path": "libs/ui/src/lib/doc-demo-box/doc-demo-box.component.ts",
       "category": "uncategorized",
       "metadata": false,
       "bemBlock": "c-demo-cell",
@@ -121,7 +131,7 @@
       "usedBy": []
     },
     "EmptyState": {
-      "path": "libs\\ui\\src\\lib\\empty-state\\empty-state.component.ts",
+      "path": "libs/ui/src/lib/empty-state/empty-state.component.ts",
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-empty-state",
@@ -131,7 +141,7 @@
       "usedBy": []
     },
     "FormField": {
-      "path": "libs\\ui\\src\\lib\\form-field\\form-field.component.ts",
+      "path": "libs/ui/src/lib/form-field/form-field.component.ts",
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-form-field",
@@ -141,7 +151,7 @@
       "usedBy": []
     },
     "Icon": {
-      "path": "libs\\ui\\src\\lib\\icon\\icon.component.ts",
+      "path": "libs/ui/src/lib/icon/icon.component.ts",
       "category": "atoms",
       "metadata": true,
       "bemBlock": "c-icon",
@@ -154,7 +164,7 @@
       ]
     },
     "InputClear": {
-      "path": "libs\\ui\\src\\lib\\input-clear\\input-clear.component.ts",
+      "path": "libs/ui/src/lib/input-clear/input-clear.component.ts",
       "category": "atoms",
       "metadata": true,
       "bemBlock": "c-input-clear",
@@ -166,7 +176,7 @@
       ]
     },
     "List": {
-      "path": "libs\\ui\\src\\lib\\list\\list.component.ts",
+      "path": "libs/ui/src/lib/list/list.component.ts",
       "category": "molecules",
       "metadata": true,
       "bemBlock": "c-list",
@@ -176,7 +186,7 @@
       "usedBy": []
     },
     "NavShell": {
-      "path": "libs\\ui\\src\\lib\\nav-shell\\nav-shell.component.ts",
+      "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts",
       "category": "organisms",
       "metadata": true,
       "bemBlock": "c-nav-shell",
@@ -188,7 +198,7 @@
       "usedBy": []
     },
     "PlectrumAvatar": {
-      "path": "libs\\ui\\src\\lib\\plectrum-avatar\\plectrum-avatar.component.ts",
+      "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts",
       "category": "atoms",
       "metadata": true,
       "bemBlock": "c-plectrum-avatar",
@@ -202,7 +212,7 @@
       ]
     },
     "SubNavShell": {
-      "path": "libs\\ui\\src\\lib\\sub-nav-shell\\sub-nav-shell.component.ts",
+      "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts",
       "category": "organisms",
       "metadata": true,
       "bemBlock": "c-sub-nav-shell",
@@ -212,7 +222,7 @@
       "usedBy": []
     },
     "Toolbar": {
-      "path": "libs\\ui\\src\\lib\\toolbar\\toolbar.component.ts",
+      "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
       "category": "uncategorized",
       "metadata": false,
       "bemBlock": "c-toolbar",
@@ -222,7 +232,7 @@
       "usedBy": []
     },
     "TopNav": {
-      "path": "libs\\ui\\src\\lib\\top-nav\\top-nav.component.ts",
+      "path": "libs/ui/src/lib/top-nav/top-nav.component.ts",
       "category": "organisms",
       "metadata": true,
       "bemBlock": "c-top-nav",
@@ -232,6 +242,16 @@
         "InputClear",
         "PlectrumAvatar"
       ],
+      "usedBy": []
+    },
+    "TransactionsCicsModal": {
+      "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts",
+      "category": "uncategorized",
+      "metadata": false,
+      "bemBlock": null,
+      "primeNg": "Button",
+      "scssPath": null,
+      "uses": [],
       "usedBy": []
     }
   },
@@ -259,6 +279,10 @@
         "AffiliateOverviewCard"
       ]
     },
+    "DelayPredictionCard": {
+      "uses": [],
+      "usedBy": []
+    },
     "DocDemoBox": {
       "uses": [],
       "usedBy": []
@@ -316,13 +340,17 @@
         "PlectrumAvatar"
       ],
       "usedBy": []
+    },
+    "TransactionsCicsModal": {
+      "uses": [],
+      "usedBy": []
     }
   },
   "summary": {
-    "totalComponents": 14,
+    "totalComponents": 16,
     "componentsWithMetadata": 12,
     "relationshipsMapped": 16,
     "tokenFiles": 11,
-    "primeNgMappings": 9
+    "primeNgMappings": 11
   }
 }

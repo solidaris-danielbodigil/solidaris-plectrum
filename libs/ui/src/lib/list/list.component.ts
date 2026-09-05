@@ -52,11 +52,11 @@ export interface ListDocumentNodeData {
     Tree,
   ],
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout--overflow-hidden',
+    class:
+      'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout--overflow-hidden',
     style:
       '--pds-border-color: var(--pds-color-panel-border); --pds-border-width: var(--pds-border-width-list)',
     '[class.c-list--journey]': 'isJourneyMode()',
@@ -90,7 +90,9 @@ export class ListComponent {
 
   private readonly tagPopover = viewChild<Popover>('tagPopover');
   private readonly tagAnchorRect = signal<DOMRectReadOnly | null>(null);
-  readonly tagPopoverStyle = signal<Record<string, string> | undefined>(undefined);
+  readonly tagPopoverStyle = signal<Record<string, string> | undefined>(
+    undefined,
+  );
   readonly activeTagContext = signal<{
     doc: ListDocumentItem;
     tag: ListDocumentTag;
@@ -230,7 +232,9 @@ export class ListComponent {
   }
 
   groupTelemetryLabel(group: ListGroup): string {
-    return group.titleAccent ? `${group.title} ${group.titleAccent}` : group.title;
+    return group.titleAccent
+      ? `${group.title} ${group.titleAccent}`
+      : group.title;
   }
 
   documentIcon(doc: ListDocumentItem): string {
@@ -363,7 +367,9 @@ export class ListComponent {
     const style = this.popoverStyleFromRect(rect);
     this.tagPopoverStyle.set(style);
 
-    const panel = document.body.querySelector('.p-popover') as HTMLElement | null;
+    const panel = document.body.querySelector(
+      '.p-popover',
+    ) as HTMLElement | null;
     if (!panel) {
       return;
     }
@@ -382,14 +388,21 @@ export class ListComponent {
     this.tagPopover()?.hide();
   }
 
-  onTagTargetKeydown(event: KeyboardEvent, target: ListDocumentTagTarget): void {
+  onTagTargetKeydown(
+    event: KeyboardEvent,
+    target: ListDocumentTagTarget,
+  ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.onTagTargetSelect(event, target);
     }
   }
 
-  onTagKeydown(event: KeyboardEvent, doc: ListDocumentItem, tag: ListDocumentTag): void {
+  onTagKeydown(
+    event: KeyboardEvent,
+    doc: ListDocumentItem,
+    tag: ListDocumentTag,
+  ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.onTagClick(event, doc, tag);
@@ -442,11 +455,16 @@ export class ListComponent {
       data: { group },
       expanded: false,
       selectable: false,
-      children: group.documents.map((doc) => this.toDocumentTreeNode(doc, true)),
+      children: group.documents.map((doc) =>
+        this.toDocumentTreeNode(doc, true),
+      ),
     };
   }
 
-  private toDocumentTreeNode(doc: ListDocumentItem, showTimeline: boolean): TreeNode {
+  private toDocumentTreeNode(
+    doc: ListDocumentItem,
+    showTimeline: boolean,
+  ): TreeNode {
     return {
       key: doc.id,
       type: 'document',

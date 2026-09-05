@@ -51,6 +51,31 @@ For all --pds-color-text-* and --pds-color-surface-* pairs:
 - Flag any pair below 3:1 (AA large text / UI)
 ```
 
+## Governance
+
+### Change risk levels
+
+| Risk | Examples | Required review |
+|---|---|---|
+| **Low** | New primitive token; documentation; unused aliases | Normal review |
+| **Medium** | Semantic colours; spacing used by several components; component tokens; typography | Design + technical review |
+| **High** | Primary ramp; global surfaces; text colours; focus rings; token renames/removals; PrimeNG mappings across apps | Design + technical review + Storybook validation + migration notes |
+
+### Deprecation
+
+Never delete a token that is used in production:
+
+1. Mark it deprecated with a comment naming the replacement token
+2. Migrate usages progressively
+3. Validate in Storybook
+4. Remove in a later release
+
+### Decision rule
+
+- **Figma** decides visual intent. **The repository** decides implementation. **Storybook** validates.
+- The design-system owner resolves conflicts.
+- No token changes in production only because it changed in Figma; no code change without checking the design impact in Figma or Storybook.
+
 ## Output Format
 
 ```

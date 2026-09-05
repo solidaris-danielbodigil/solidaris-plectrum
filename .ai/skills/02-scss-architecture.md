@@ -36,12 +36,12 @@ libs/styles/src/
 │
 ├── 01-settings/                         ← CSS custom properties — ALL design tokens live here
 │   ├── _settings.core.scss              barrel — @forward all settings files
-│   ├── _settings.prefix.scss            $pds-prefix: 'PDS'
-│   ├── _settings.colors-primitive.scss  --color-{palette}-{shade}
-│   ├── _settings.colors-semantic.scss   --color-{role}
-│   ├── _settings.typography-primitive.scss  --font-family-*, --font-size-*, --line-height-*
-│   ├── _settings.typography-semantic.scss   --text-{category}-{size}-{property}
-│   ├── _settings.spacing.scss           --spacing-*
+│   ├── _settings.prefix.scss            $pds-prefix: 'pds'
+│   ├── _settings.colors-primitive.scss  --pds-color-{palette}-{shade} (+ .generated variant)
+│   ├── _settings.colors-semantic.scss   --pds-color-{role} (+ .generated variant)
+│   ├── _settings.typography-primitive.scss  --pds-font-*, --pds-line-height-*
+│   ├── _settings.typography-semantic.scss   --pds-text-{category}-{size}-{property}
+│   ├── _settings.spacing.scss           --pds-spacing-*
 │   ├── _settings.radius.scss            --pds-radius-*   (pds-prefixed, via $pds-prefix)
 │   ├── _settings.shadows.scss           --pds-shadow-*
 │   ├── _settings.transitions.scss       --pds-transition-*
@@ -102,7 +102,7 @@ The prefix is controlled by a single SCSS variable — change it once to rename 
 
 ```scss
 // libs/styles/src/01-settings/_settings.prefix.scss
-$pds-prefix: 'PDS' !default;
+$pds-prefix: 'pds' !default;
 ```
 
 All settings files use it like this:
@@ -161,15 +161,15 @@ Template for a new component SCSS file:
 //
 // Design ref:   Figma node {id}
 // Token source: libs/styles/src/01-settings/
-//   _settings.colors-semantic.scss → --color-* / --pds-color-*
-//   _settings.spacing.scss         → --spacing-*
+//   _settings.colors-semantic.scss → --pds-color-*
+//   _settings.spacing.scss         → --pds-spacing-*
 //   _settings.radius.scss          → --pds-radius-*
 // =============================================================================
 
 .c-my-component {
-  gap: var(--#{$pds-prefix}-space-4);               // spacing via token
-  background: var(--color-surface-default);          // colour via token
-  border-radius: var(--#{$pds-prefix}-radius-md);   // radius via token
+  gap: var(--#{$pds-prefix}-space-4);                          // component-token spacing (global scale → o-layout in template)
+  background: var(--#{$pds-prefix}-color-surface-default);     // colour via token
+  border-radius: var(--#{$pds-prefix}-radius-md);              // radius via token
 
   &__element { ... }
   &--modifier { ... }
@@ -184,6 +184,7 @@ Template for a new component SCSS file:
 Tailwind v4 is configured via PostCSS. `@apply` is available in all SCSS files.
 
 **Priority order for layout properties:**
+
 1. **`o-flex` / `o-layout` classes in the HTML template** — always first choice when an equivalent class exists
 2. **`@apply` in SCSS** — only for properties that have no `o-*` class AND no `--pds-*` token
 3. **`var(--pds-*)` in SCSS** — for component-specific spacing/sizing tokens
@@ -223,8 +224,13 @@ Examples: `_settings.accordion.scss`, `_settings.inputtext.scss`, `_settings.dat
   --p-accordion-panel-border-color: transparent;
   --p-accordion-header-background: transparent;
   --p-accordion-header-hover-background: transparent;
-  --p-accordion-header-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-header-padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-header-color: var(
+    --#{$pds-prefix}-color-sub-nav-shell-section-text
+  );
+  --p-accordion-header-padding: var(
+      --#{$pds-prefix}-space-sub-nav-shell-section-header-py
+    )
+    var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
   --p-accordion-content-background: transparent;
   --p-accordion-content-padding: 0;
   --p-accordion-content-border-width: 0;
@@ -242,7 +248,8 @@ overrides (like removing padding from generated containers):
 
 // Accordion panel structural spacing (not a token — layout concern)
 .c-sub-nav-shell__accordion .p-accordionpanel {
-  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
+  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py)
+    var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
 }
 ```
 

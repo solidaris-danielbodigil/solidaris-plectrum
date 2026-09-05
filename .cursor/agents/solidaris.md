@@ -25,8 +25,8 @@ The specialist subagents live in `.cursor/agents/`:
 - SCSS file naming: `_{layer-folder}.{description}.scss`
 - Shared components → `libs/ui` · Shared styles → `libs/styles`
 - No Tailwind in HTML templates — `@apply` in SCSS only
-- All colour values via `var(--pds-color-*)`; the type/spacing scales use the
-  foundational `--text-*` / `--font-*` / `--spacing-*` convention
+- All values via `var(--pds-*)` — bare `--spacing-*` / `--text-*` / `--font-*`
+  names are deprecated legacy aliases; never declare new ones
 - Every component needs a colocated `.stories.ts` before it is done
 
 ---
@@ -38,6 +38,7 @@ The specialist subagents live in `.cursor/agents/`:
 In a **single message**, issue two Task calls — do not wait for one before the other:
 
 1. Task → **UX Researcher**:
+
    > "Inspect the Figma node [URL/ID]. Extract all design tokens, states, spacing values,
    > typography, colours, and component variants. Produce a structured design brief."
 
@@ -51,6 +52,7 @@ Wait for both to return before Step 2.
 ### Step 2 — Engineering (sequential — depends on Step 1)
 
 Task → **UX Engineer**:
+
 > "Using this design brief: [paste UX Researcher output] and architectural guidance:
 > [paste Architect output] — add missing `--pds-*` tokens to `01-settings/`, write the
 > SCSS in `06-components/`, register it in `_components.core.scss`, and write all
@@ -61,10 +63,12 @@ Wait for completion before Step 3.
 ### Step 3 — Implementation (sequential — depends on Step 2)
 
 Task → **Frontend Dev**:
+
 > "The SCSS and stories are ready at [paths]. Scaffold the Angular component in
 > `libs/ui/src/lib/[name]/`: TypeScript class, HTML template with BEM + o-flex mixes,
 > ViewEncapsulation.None, OnPush, signal inputs/outputs, ARIA attributes. Create a
-> barrel index.ts and export from `libs/ui/src/lib/index.ts`. Then run `npm run generate-index`."
+> barrel index.ts and export from `libs/ui/src/lib/index.ts`. The scaffolder and the
+> afterFileEdit hook regenerate `.ai/contracts/index.json` — verify it changed."
 
 Wait for completion before Step 4.
 
@@ -73,6 +77,7 @@ Wait for completion before Step 4.
 In a **single message**, issue two Task calls:
 
 1. Task → **Tester**:
+
    > "Component [name] is implemented at [paths]. Audit unit tests, Storybook story
    > coverage (all states documented?), and WCAG 2.1 AA compliance. Fix any issues."
 
@@ -108,4 +113,4 @@ After all three return, synthesise a single prioritised action list (Critical �
 - For parallel steps, issue ALL Task calls in one message.
 - If a step produces blocking issues, surface them to the user before continuing.
 - If a subagent flags an ambiguous architectural decision, escalate to the user.
-- Always end by having the **Frontend Dev** run `npm run generate-index`.
+- The contracts index regenerates automatically (`pds:component`, the afterFileEdit hook, and a CI diff gate) — end by verifying `.ai/contracts/index.json` is fresh and committed.

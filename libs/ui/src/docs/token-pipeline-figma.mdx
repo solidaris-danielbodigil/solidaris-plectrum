@@ -12,7 +12,7 @@ Two one-way transports connect the Plectrum UI Kit and the repository.
 - **Figma → repository**: the PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
 - **Repository → Figma**: code-owned tokens are written to a Figma branch. A designer merges and publishes.
 
-Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
+Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
 
 <Diagram
   title="Figma sync transports"
@@ -185,6 +185,8 @@ There is no cross-repository Storybook aggregation; this Storybook is the catalo
 <Unstyled>
   <Story of={Figures.Reference} />
 </Unstyled>
+
+Flags, inputs and CI wiring for every token script: [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
 
 ```bash
 npm run tokens:propose

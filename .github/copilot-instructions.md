@@ -22,24 +22,25 @@ All agents live in `.github/agents/` — see `.ai/README.md` for the full agent 
 
 ## MCP Servers
 
-| Server | URL |
-|---|---|
+| Server                  | URL                         |
+| ----------------------- | --------------------------- |
 | Figma (Plectrum UI Kit) | `http://127.0.0.1:3845/mcp` |
-| PrimeNG | `https://primeng.org/mcp` |
+| PrimeNG                 | `https://primeng.org/mcp`   |
 
 Always query both before implementing any component.
 
 ## Hard rules (full detail in `.ai/rules/`)
 
 - All values in `06-components/` SCSS via `var(--pds-*)` — no hardcoded hex/px/rem
-- No Tailwind classes in HTML templates or SCSS — layout via `o-flex` / `o-layout` BEM mixes
+- Layout via `o-flex` / `o-layout` BEM mixes in the template, not in SCSS — no Tailwind in templates
+- Components have no colocated `.component.scss` / `styleUrl` — styles live in `libs/styles` (ITCSS)
 - Storybook lives in `libs/ui/.storybook/main.ts` (`ng run ui:storybook`)
 - Runtime preset default is **v0.6** (`providePlectrum()` / `resolvePresetVersion()`)
-- Layout/spacing via `o-flex`/`o-layout` BEM mixes in the template, not in SCSS
 - Every component in `libs/ui` needs a colocated `.stories.ts` — not done without it
 - PrimeNG first — never reimplement what PrimeNG provides
 - Missing token → add to `libs/styles/src/01-settings/` first, then use it
 - SCSS file naming: `_{layer-folder}.{description}.scss` (e.g. `_components.toolbar.scss`)
+- `pds:component` scaffolds and regenerates `.ai/contracts/index.json` — never edit the index by hand
 
 ## Knowledge base
 

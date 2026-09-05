@@ -77,7 +77,6 @@ libs/ui/src/lib/
 └── {component-name}/
     ├── {component-name}.component.ts
     ├── {component-name}.component.html
-    ├── {component-name}.component.scss
     ├── {component-name}.stories.ts   ← CSF (interactive stories)
     └── {component-name}.mdx          ← attached docs page
 ```

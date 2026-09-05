@@ -20,6 +20,8 @@ Related pages:
 - [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) — Figma → repo import, repo → Figma proposals, package distribution
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — the CSS contract for component authors
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX for designers and developers
+- [AI strategy](?path=/docs/docs-ai-strategy--docs) — Contract-Driven Development: index, metadata, protocols
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 - **Foundations** — token browsers, rendered from the compiled CSS by `<pds-token-explorer>`
 
 ---
@@ -165,18 +167,95 @@ Sequence for one token change, from Figma to a running application.
 
 ### Commands
 
+Scripts live in `tools/tokens/`. They are tools, not chores — by default an **agent** runs them while doing the task. Running them yourself is always possible and always a choice. CI runs them regardless.
+
+<DocsTable
+  headers={['Context', 'Trigger', 'Notes']}
+  rows={[
+    ['Agent — default', 'Any task that touches tokens: a token change, a component scaffold, an audit', 'The agent runs the scripts and reads the output. Ask for the change, not for the command.'],
+    ['Manual', 'A terminal at the workspace root', 'Same commands, same output. Useful for spot checks and local debugging.'],
+    ['CI', 'Every push and pull request', 'The blocking gate. Applies to agent and human changes alike.'],
+  ]}
+/>
+
+Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:build` is the only writer. `tokens:resolve` is both a CLI and the shared resolver imported by audit, validate, build, propose and pull.
+
+<DocsTable
+  headers={['npm', 'Script', 'Role', 'CI']}
+  rows={[
+    ['tokens:resolve', 'resolve-dtcg.mjs', 'Flatten the seven DTCG sets in tokens.json and resolve {alias} chains. Detects cycles and missing refs.', 'Library for the other scripts. Not a CI step.'],
+    ['tokens:audit', 'audit-drift.mjs', 'Three-way compare: tokens.json, Plectrum_v1 preset, and --pds-* in 01-settings, plus alias-map.json breaks. Reports only; does not rewrite values.', 'Blocking'],
+    ['tokens:validate-preset', 'validate-preset.mjs', 'Every {token.path} in the imported Plectrum_v1 default export must resolve to a literal in tokens.json.', 'continue-on-error until tokens.json covers every PrimeNG path'],
+    ['tokens:check-prefix', 'check-prefix.mjs', 'Reject new bare --spacing- / --text- / --font- / --line-height- declarations outside _settings.legacy-aliases.scss.', 'Blocking'],
+    ['tokens:build', 'build.mjs', 'Style Dictionary writes hybrid --pds-* SCSS and the Storybook annotation manifest. Spacing and typography stay hand-authored.', 'Blocking — generated files must be committed'],
+    ['tokens:lint', 'lint-usage.mjs', '--p-* declarations outside 01-settings, PrimeUI runtime imports in apps/ or libs/ui, unknown --pds-* names.', 'Blocking. --strict (hex/px) is local only'],
+    ['tokens:propose', 'propose-to-figma.mjs', 'Diff code-owned --pds-* in 01-settings against tokens.json. Emit proposed.dtcg.json.', 'Not in default CI. Used by apply-to-figma.yml'],
+    ['tokens:apply', 'apply-to-figma.mjs', 'POST proposed variables to the Figma branch proposals/{app}. Dry-run is the default. Aborts if the branch is missing. Never writes the main file.', 'Manual / workflow_dispatch with Environment approval'],
+    ['tokens:pull-figma', 'pull-figma.mjs', 'Read-only Variables API check. Flags published Figma variables that never landed in tokens.json.', 'library-publish.yml safety net'],
+    ['pack:smoke', 'tools/packaging/smoke-test.mjs', 'Pack library tarballs, install them in a throwaway Angular app without path aliases, and build it.', 'pack-smoke job'],
+  ]}
+/>
+
+<DocsTable
+  headers={['npm', 'Reads', 'Writes']}
+  rows={[
+    ['tokens:resolve', 'libs/plectrum/src/tokens.json', 'stdout or --out JSON. Nothing in the repo unless --out is set.'],
+    ['tokens:audit', 'tokens.json, Plectrum_v1, 01-settings, tools/tokens/alias-map.json, tools/tokens/audit-allowlist.json', 'stdout report. Exit non-zero on drift.'],
+    ['tokens:validate-preset', 'Plectrum_v1/ts default export, tokens.json', 'stdout. Exit non-zero when a preset path is missing or unresolved.'],
+    ['tokens:check-prefix', 'workspace SCSS (skips node_modules, dist, storybook-static)', 'stdout. Exit non-zero on a new bare declaration.'],
+    ['tokens:build', 'tokens.json, alias-map.json, tools/tokens catalog', 'libs/styles/src/01-settings/_settings.{colors-primitive,colors-semantic,radius,shadows,transitions,focus}.generated.scss and libs/ui/src/storybook/tokens.generated.ts'],
+    ['tokens:lint', 'apps/, libs/ui, 01-settings, tokens.generated.ts', 'stdout. Exit non-zero on a hard failure.'],
+    ['tokens:propose', '01-settings --pds-* decls, tokens.json', 'tools/tokens/proposed.dtcg.json (override with --out)'],
+    ['tokens:apply', 'proposed.dtcg.json, FIGMA_TOKEN, Figma branch list', 'Figma branch only, and only with --write. Dry-run prints the POST payload.'],
+    ['tokens:pull-figma', 'FIGMA_TOKEN, Figma Variables API, tokens.json', 'stdout. Exit 1 when a published variable has no tokens.json path.'],
+  ]}
+/>
+
+<DocsTable
+  headers={['Flag / env', 'Scripts', 'Effect']}
+  rows={[
+    ['--file path', 'tokens:resolve', 'Alternate tokens.json. Default: libs/plectrum/src/tokens.json.'],
+    ['--out path', 'tokens:resolve, tokens:propose', 'Write JSON to a path instead of the default (resolve: stdout; propose: tools/tokens/proposed.dtcg.json).'],
+    ['--quiet', 'tokens:resolve', 'Suppress the summary line.'],
+    ['--strict', 'tokens:lint', 'Fail on hardcoded hex/px in apps/ and libs/ui. Without it those findings are informational.'],
+    ['--app <name>', 'tokens:apply', 'Resolve Figma branch proposals/{name}. Required for a real apply.'],
+    ['--dry-run', 'tokens:apply', 'Default. Print payload and branch key. Zero writes.'],
+    ['--write', 'tokens:apply', 'POST /v1/files/:branchKey/variables. Needs FIGMA_TOKEN and Environment approval.'],
+    ['--proposal path', 'tokens:apply', 'Alternate proposed.dtcg.json.'],
+    ['--file-key KEY', 'tokens:apply, tokens:pull-figma', 'Override FIGMA_FILE_KEY. Default is the Plectrum UI Kit.'],
+    ['FIGMA_TOKEN', 'tokens:apply, tokens:pull-figma', 'Repo secret. Unset: apply stays dry-run; pull skips with a message.'],
+    ['FIGMA_FILE_KEY', 'tokens:apply, tokens:pull-figma', 'Optional file key. Same default as --file-key.'],
+  ]}
+/>
+
+<DocsTable
+  headers={['When', 'Run']}
+  rows={[
+    ['tokens.json or alias-map.json changed', 'tokens:audit, then tokens:build. Commit the generated SCSS and tokens.generated.ts.'],
+    ['A --pds-* declaration was added in 01-settings', 'tokens:check-prefix, tokens:lint, tokens:propose if it should exist in Figma.'],
+    ['Component SCSS uses a new --pds-* name', 'tokens:lint. Add the name to the component .metadata.ts tokens.consumed list.'],
+    ['Proposing a code-owned token to Figma', 'tokens:propose, then tokens:apply -- --app <name> (dry-run first, --write after review).'],
+    ['Suspect the plugin missed a Figma publish', 'tokens:pull-figma (needs FIGMA_TOKEN).'],
+    ['Checking a consumer install', 'pack:smoke. CI also builds Storybook against packed tarballs.'],
+  ]}
+/>
+
 ```bash
+npm run tokens:resolve            # flatten DTCG + resolve {alias} (library + CLI)
 npm run tokens:audit              # three-way Figma / v1 / SCSS + alias-map
 npm run tokens:validate-preset    # every {token.path} in Plectrum_v1/ts
 npm run tokens:check-prefix       # no new bare --spacing- / --text- / --font- decls
 npm run tokens:build              # regenerate *.generated.scss + tokens.generated.ts
 npm run tokens:lint               # --p-* decls, PrimeUI runtime imports, unknown --pds-*
+npm run tokens:lint -- --strict   # also fail hardcoded hex/px
 npm run tokens:propose            # code-only tokens → proposed.dtcg.json
 npm run tokens:apply -- --app scratch --dry-run
+npm run tokens:apply -- --app scratch --write
+npm run tokens:pull-figma         # Variables API safety net (FIGMA_TOKEN)
 npm run pack:smoke                # pack tarballs and build a throwaway app
 ```
 
-CI runs the audit, the prefix guard, `tokens:build && git diff --exit-code`, lint, the pack smoke test, and a packed-Storybook build. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path.
+CI (`.github/workflows/ci.yml`) runs audit, prefix guard, `tokens:build` plus a **scoped** `git diff --exit-code` on `*.generated.scss` and `tokens.generated.ts` only, then lint. A separate `pack-smoke` job runs `pack:smoke`. `storybook-packed` builds Storybook against the packed tarballs. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path. The build diff does not fail on unrelated lockfile or workspace noise.
 
 ### Delivery status
 
@@ -191,16 +270,5 @@ CI runs the audit, the prefix guard, `tokens:build && git diff --exit-code`, lin
     ['6', 'Publishable @solidaris/ui / plectrum / styles, changesets, pack smoke test', 'Done'],
     ['7', 'propose-to-figma + apply-to-figma (dry-run default) + LIBRARY_PUBLISH', 'Done'],
     ['8', 'Renovate/Dependabot templates, token-usage CLI, component promotion', 'Done'],
-  ]}
-/>
-
-### Source plans
-
-<DocsTable
-  headers={['Plan', 'Decisions']}
-  rows={[
-    ['Bidirectional Figma ↔ repo', 'tokens.json is the ingestion SSOT. Plugin GitHub sync is the inbound transport. Repo → Figma writes a Figma branch, never the main file. Preset TypeScript is plugin-produced and validated, not regenerated.'],
-    ['CSS-first surface', 'Prefix --spacing-* / --text-* / --font-* before generation. Colours emit as hybrid var(--p-*, literal). Storybook reads metadata from a generated manifest and values from computed styles.'],
-    ['Implementation plan', 'Ships the full pipeline. Keeps Plectrum_v0.6/ and the Storybook toggle. Documents the real default (v0.6 in resolvePresetVersion()). Does not flip production to v1.'],
   ]}
 />

@@ -74,7 +74,7 @@
 
 | Artifact | When to update |
 |---|---|
-| `index.json` | After adding or removing any component — run `npm run generate-index` |
+| `index.json` | Automatic — `pds:component` regenerates it on scaffold and the `afterFileEdit` Cursor hook regenerates it on edits under `libs/ui`; CI fails when the committed file is stale. Run `npm run generate-index` manually only after hand-deleting files |
 | `*.metadata.ts` | Create with every new component; update on API or token changes |
 | `protocols/` | When architectural decisions change |
 | `schema/` | When metadata structure needs new fields |
@@ -83,9 +83,9 @@
 
 ## 6. Future Automation
 
-- [x] Generator to scaffold `.metadata.ts` with component (`npm run PDS:component`)
-- [x] Script to regenerate `index.json` (`npm run generate-index`)
-- [ ] CI hook: regenerate index on component changes + fail if stale
+- [x] Generator to scaffold `.metadata.ts` with component (`npm run PDS:component`) — also regenerates `index.json`
+- [x] Script to regenerate `index.json` (`npm run generate-index`) — content-stable output
+- [x] CI hook: regenerate index on component changes + fail if stale (`ci.yml` diff gate + `.cursor/hooks/regenerate-contracts-index.mjs` locally)
 - [ ] Drift detection: compare `.metadata.ts` against actual component API
 - [ ] Token audit runner in CI (prefix compliance, semantic coverage, contrast)
 - [ ] Storybook plugin to render metadata alongside stories

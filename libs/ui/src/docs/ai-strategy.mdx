@@ -1,0 +1,230 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { Diagram } from '../../.storybook/docs-figures';
+import * as Figures from './ai-strategy.stories';
+
+<Meta title="Docs/AI strategy" />
+
+# AI strategy
+
+Agents work against **contracts**, not against a full-repo read. Contract-Driven Development (CDD) gives a typed metadata schema, a generated component index, and short protocols. Humans still own Figma, Storybook and the CSS.
+
+Related pages:
+
+- [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX
+- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — Figma → `var(--pds-*)`
+- [Token contracts](?path=/docs/foundations-token-contracts--docs) — `tokens.consumed` vs the compiled CSS
+- [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — what component SCSS may write
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
+
+---
+
+## Definition
+
+A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then one metadata file, then a protocol. They do not invent a second design system.
+
+<Diagram
+  title="Contract layers"
+  width={1000}
+  height={150}
+  nodes={[
+    { id: 'index', x: 20, y: 43, w: 210, tone: 'system', title: 'index.json', lines: ['what exists, where'], mono: true },
+    { id: 'meta', x: 295, y: 43, w: 230, tone: 'system', title: '{name}.metadata.ts', lines: ['how and why to use it'], mono: true },
+    { id: 'proto', x: 590, y: 43, w: 200, tone: 'neutral', title: 'protocols/', lines: ['create · query · audit'] },
+    { id: 'ui', x: 850, y: 43, w: 130, tone: 'app', title: 'libs/ui', lines: ['component'] },
+  ]}
+  edges={[
+    { from: 'index', to: 'meta', label: 'pick one' },
+    { from: 'meta', to: 'proto', label: 'rules' },
+    { from: 'proto', to: 'ui', label: 'implement' },
+  ]}
+/>
+
+<DocsTable
+  headers={['Layer', 'File', 'Owner']}
+  rows={[
+    ['Index', '.ai/contracts/index.json', 'Generated — npm run generate-index'],
+    ['Metadata', 'libs/ui/src/lib/{name}/{name}.metadata.ts', 'Author — typed as ComponentMetadata'],
+    ['Schema', '.ai/contracts/schema/component.metadata.ts', 'Architect — fields agents may read'],
+    ['Token schema', '.ai/contracts/schema/token.contract.ts', 'Architect — token governance shape'],
+    ['Protocols', '.ai/contracts/protocols/*.md', 'Architect — decision trees'],
+    ['Rules / skills', '.ai/rules/, .ai/skills/', 'Architect — hard stops and how-to'],
+  ]}
+/>
+
+---
+
+## Architecture
+
+<Diagram
+  title="What is already wired"
+  width={960}
+  height={360}
+  lanes={[
+    { title: 'Contracts', subtitle: '.ai/contracts', x: 0, w: 305, tone: 'system' },
+    { title: 'Libraries', subtitle: 'ui · styles', x: 327, w: 305, tone: 'system' },
+    { title: 'Checks', subtitle: 'Storybook · CI', x: 655, w: 305, tone: 'neutral' },
+  ]}
+  nodes={[
+    { id: 'schema', x: 42, y: 80, w: 220, h: 70, tone: 'system', title: 'TypeScript schema', lines: ['ComponentMetadata', '@solidaris/contracts'] },
+    { id: 'index', x: 42, y: 170, w: 220, h: 70, tone: 'system', title: 'index.json', lines: ['generate-index.ts', 'uses / usedBy'] },
+    { id: 'proto', x: 42, y: 260, w: 220, h: 70, tone: 'neutral', title: 'Protocols', lines: ['creation, query, audit'] },
+    { id: 'comp', x: 369, y: 80, w: 220, h: 70, tone: 'system', title: 'Component + story', lines: ['pds:component scaffold'] },
+    { id: 'md', x: 369, y: 170, w: 220, h: 70, tone: 'system', title: '.metadata.ts', lines: ['colocated, committed'] },
+    { id: 'scss', x: 369, y: 260, w: 220, h: 70, tone: 'system', title: '06-components SCSS', lines: ['var(--pds-*) only'] },
+    { id: 'sb', x: 697, y: 80, w: 220, h: 70, tone: 'app', title: 'Storybook docs', lines: ['CSF + attached MDX'] },
+    { id: 'tc', x: 697, y: 170, w: 220, h: 70, tone: 'app', title: 'Token contracts', lines: ['tokens.consumed vs CSSOM'] },
+    { id: 'ci', x: 697, y: 260, w: 220, h: 70, tone: 'neutral', title: 'Token CI', lines: ['audit, build, lint'] },
+  ]}
+  edges={[
+    { from: 'schema', to: 'md', label: 'types' },
+    { from: 'comp', to: 'md', label: 'scaffold' },
+    { from: 'md', to: 'index', label: 'scanned' },
+    { from: 'md', to: 'tc', label: 'consumed' },
+    { from: 'scss', to: 'tc', label: 'CSSOM' },
+    { from: 'comp', to: 'sb', label: 'stories' },
+  ]}
+/>
+
+<Unstyled>
+  <Story of={Figures.Layers} />
+</Unstyled>
+
+---
+
+## Process
+
+How an agent is expected to work. Same order as `.ai/contracts/protocols/query-protocol.md`.
+
+<Unstyled>
+  <Story of={Figures.QueryOrder} />
+</Unstyled>
+
+The agent is the **default operator** for this flow: it scaffolds, fills the metadata, and runs the token scripts itself. Nothing here is a manual chore — `pds:component` regenerates the index when it finishes, a Cursor hook (`.cursor/hooks/regenerate-contracts-index.mjs`) re-runs `generate-index` after edits under `libs/ui`, and CI fails when the committed index is stale. Doing a step by hand stays possible; it is a choice, not a requirement.
+
+---
+
+## Roles
+
+<Unstyled>
+  <Story of={Figures.Roles} />
+</Unstyled>
+
+### Subagents
+
+Component work is delegated to specialist subagents. Ask **Solidaris** for a component and it runs the pipeline end to end. Definitions live in `.cursor/agents/*.md` (Cursor) and `.github/agents/*.agent.md` (VS Code / Copilot) — keep both in sync.
+
+<DocsTable
+  headers={['Agent', 'Role']}
+  rows={[
+    ['Solidaris', 'Coordinator. Spawns the specialists below; the only user-facing agent'],
+    ['UX Researcher', 'Figma inspection, token extraction, design brief — read-only'],
+    ['UX Engineer', 'SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories'],
+    ['Frontend Dev', 'Angular implementation: class, template, accessibility, PrimeNG wiring'],
+    ['Tester', 'Unit tests, story coverage, WCAG 2.1 AA'],
+    ['Token Auditor', 'Prefix compliance, semantic coverage, PrimeNG sync, Figma drift — read-only'],
+    ['Architect', 'SSOT enforcement, ITCSS placement, naming, dependency boundaries — read-only'],
+  ]}
+/>
+
+---
+
+## Rules
+
+<Unstyled>
+  <Story of={Figures.Rules} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={Figures.Gaps} />
+</Unstyled>
+
+---
+
+## Glossary
+
+<DocsTable
+  headers={['Term', 'Definition']}
+  rows={[
+    ['CDD', 'Contract-Driven Development. Agents read typed contracts before they write code.'],
+    ['ComponentMetadata', 'TypeScript interface every .metadata.ts must satisfy.'],
+    ['index.json', 'Generated map of libs/ui components, paths, PrimeNG wraps, and relationships.'],
+    ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Checked on Foundations / Token contracts.'],
+    ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
+    ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
+    ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],
+    ['generate-index', 'Scans libs/ui and overwrites .ai/contracts/index.json.'],
+    ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
+  ]}
+/>
+
+---
+
+## Reference
+
+### Metadata file
+
+Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `ComponentMetadata` in `.ai/contracts/schema/component.metadata.ts`.
+
+<DocsTable
+  headers={['Block', 'Purpose']}
+  rows={[
+    ['component', 'Name, category, type, path, PrimeNG wrap, BEM block, ITCSS layer, SCSS path'],
+    ['usage', 'useCases, commonPatterns (with a composition snippet), antiPatterns'],
+    ['variants / props', 'Inputs and option lists when the API is more than a host class'],
+    ['composition', 'Slots, parents, companions, nested components'],
+    ['behavior', 'States, interactions, responsive notes'],
+    ['accessibility', 'Role, ARIA, keyboard, WCAG level'],
+    ['tokens.consumed', '--pds-* list. Must match the stylesheet or Token contracts flags it'],
+    ['tokens.primeNgMappings', 'Optional --p-* bridges this component relies on'],
+    ['aiHints', 'priority, context, selectionCriteria, keywords'],
+    ['examples', 'Copy-paste snippets for agents'],
+  ]}
+/>
+
+Import the type from `@solidaris/contracts`. Export a const (`EmptyStateMetadata`, …). `libs/ui/src/lib/index.ts` re-exports metadata with the component.
+
+### Index
+
+`npm run generate-index` runs `tools/scripts/generate-index.ts`. It walks `libs/ui/src/lib`, reads imports and the colocated `.metadata.ts`, and writes `.ai/contracts/index.json`. The output is content-stable — `meta.generated` only advances when the content changed — so CI regenerates the index on every push and fails when the committed file is stale, the same pattern as the generated token files.
+
+<DocsTable
+  headers={['Field', 'Meaning']}
+  rows={[
+    ['meta', 'Generated timestamp, framework, prefix, 1rem = 14px'],
+    ['workspace', 'Apps and libs with purpose'],
+    ['tokenArchitecture', 'Primitive / semantic file map'],
+    ['components.{Name}', 'path, category, metadata flag, bemBlock, primeNg, scssPath, uses, usedBy'],
+    ['relationships', 'Same uses / usedBy graph, keyed by component name'],
+    ['summary', 'Counts: components, metadata coverage, relationships'],
+  ]}
+/>
+
+### Scaffold
+
+```bash
+npm run pds:component     # interactive: name, category, type, optional PrimeNG wrap
+                          # regenerates .ai/contracts/index.json when it finishes
+npm run generate-index    # manual run — only needed after hand-editing or deleting
+```
+
+`pds:component` creates the Angular files (no colocated stylesheet — see [CSS architecture](?path=/docs/docs-css-architecture--docs)), the `_components.{name}.scss` partial plus its `@forward` in `_components.core.scss`, a stories stub, and a `.metadata.ts` that already imports `ComponentMetadata` — then regenerates the index itself. Fill usage, tokens and aiHints before review; by default the agent does that as part of the task.
+
+### Protocols and agents
+
+<DocsTable
+  headers={['Path', 'Role']}
+  rows={[
+    ['.ai/contracts/protocols/component-creation.md', 'Pre-flight (PrimeNG, Figma, index, tokens) and file checklist'],
+    ['.ai/contracts/protocols/query-protocol.md', 'Load order and decide-trees'],
+    ['.ai/contracts/protocols/token-audit.md', 'Token health questions'],
+    ['.ai/contracts/protocols/ai-prompts.md', 'Prompt templates'],
+    ['.ai/README.md', 'Coordinator + specialist agents (Cursor and Copilot)'],
+    ['.ai/rules/01-architecture.md … 10-css-ssot.md', 'Hard stops'],
+    ['.ai/skills/', 'How to run Figma MCP, ITCSS, component workflow, token checklist'],
+  ]}
+/>
+
+### Token scripts
+
+Command-level detail lives on [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands). Agents that change tokens run those scripts; they do not edit `*.generated.scss` or `tokens.generated.ts` by hand.

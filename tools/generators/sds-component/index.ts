@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
@@ -5,18 +6,27 @@ import * as readline from 'readline';
 interface Schema {
   name: string;
   category: 'atoms' | 'molecules' | 'organisms' | 'templates';
-  type: 'interactive' | 'display' | 'container' | 'input' | 'navigation' | 'feedback';
+  type:
+    | 'interactive'
+    | 'display'
+    | 'container'
+    | 'input'
+    | 'navigation'
+    | 'feedback';
   primeNg?: string;
 }
 
 function toFileName(str: string): string {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 function toClassName(str: string): string {
   return str
     .split(/[-_\s]+/)
-    .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join('');
 }
 
@@ -38,35 +48,51 @@ function generate(schema: Schema): void {
   const root = path.resolve(__dirname, '../../..');
 
   const componentDir = path.join(root, 'libs/ui/src/lib', fileName);
-  const scssPath = path.join(root, 'libs/styles/src/06-components', `_${fileName}.scss`);
+  // ITCSS naming: _components.{name}.scss, forwarded from _components.core.scss.
+  const scssPath = path.join(
+    root,
+    'libs/styles/src/06-components',
+    `_components.${fileName}.scss`,
+  );
+  const coreScssPath = path.join(
+    root,
+    'libs/styles/src/06-components',
+    '_components.core.scss',
+  );
   const indexPath = path.join(root, 'libs/ui/src/index.ts');
 
-  // Component TS
-  writeFile(path.join(componentDir, `${fileName}.component.ts`), `import { Component } from '@angular/core';
+  // Component TS — no styleUrl: styles live in libs/styles (ITCSS 06-components).
+  writeFile(
+    path.join(componentDir, `${fileName}.component.ts`),
+    `import { Component } from '@angular/core';
 
 @Component({
   selector: 'pds-${fileName}',
   standalone: true,
   templateUrl: './${fileName}.component.html',
-  styleUrl: './${fileName}.component.scss',
 })
 export class ${className}Component {}
-`);
+`,
+  );
 
   // Component HTML
-  writeFile(path.join(componentDir, `${fileName}.component.html`), `<div class="c-${fileName}">
+  writeFile(
+    path.join(componentDir, `${fileName}.component.html`),
+    `<div class="c-${fileName}">
   <!-- ${className} component -->
   <ng-content></ng-content>
 </div>
-`);
+`,
+  );
 
-  // Component SCSS
-  writeFile(path.join(componentDir, `${fileName}.component.scss`), `// Styles live in libs/styles/src/06-components/_${fileName}.scss
-// This file is intentionally minimal — only component-specific overrides here.
-`);
+  // No colocated component SCSS — all styles live in the ITCSS layer
+  // (libs/styles/src/06-components). The only allowed exception is a :host
+  // display rule under ViewEncapsulation, added by hand with a comment.
 
   // Component Spec
-  writeFile(path.join(componentDir, `${fileName}.component.spec.ts`), `import { ComponentFixture, TestBed } from '@angular/core/testing';
+  writeFile(
+    path.join(componentDir, `${fileName}.component.spec.ts`),
+    `import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ${className}Component } from './${fileName}.component';
 
 describe('${className}Component', () => {
@@ -87,10 +113,13 @@ describe('${className}Component', () => {
     expect(component).toBeTruthy();
   });
 });
-`);
+`,
+  );
 
   // Storybook Story (colocated)
-  writeFile(path.join(componentDir, `${fileName}.stories.ts`), `import type { Meta, StoryObj } from '@storybook/angular';
+  writeFile(
+    path.join(componentDir, `${fileName}.stories.ts`),
+    `import type { Meta, StoryObj } from '@storybook/angular';
 import { ${className}Component } from './${fileName}.component';
 
 const meta: Meta<${className}Component> = {
@@ -121,10 +150,13 @@ export const Default: Story = {};
 // export const Loading: Story = {};
 // export const Error: Story = {};
 // export const Empty: Story = {};
-`);
+`,
+  );
 
   // Metadata Contract
-  writeFile(path.join(componentDir, `${fileName}.metadata.ts`), `import { ComponentMetadata } from '@solidaris/contracts';
+  writeFile(
+    path.join(componentDir, `${fileName}.metadata.ts`),
+    `import { ComponentMetadata } from '@solidaris/contracts';
 
 export const ${className}Metadata: ComponentMetadata = {
   component: {
@@ -136,7 +168,7 @@ export const ${className}Metadata: ComponentMetadata = {
     ${schema.primeNg ? `primeNgComponent: '${schema.primeNg}',` : `primeNgComponent: undefined,`}
     bemBlock: 'c-${fileName}',
     itcssLayer: '06-components',
-    scssPath: 'libs/styles/src/06-components/_${fileName}.scss',
+    scssPath: 'libs/styles/src/06-components/_components.${fileName}.scss',
     created: '${today}',
     modified: '${today}',
   },
@@ -165,58 +197,92 @@ export const ${className}Metadata: ComponentMetadata = {
     },
   ],
 };
-`);
+`,
+  );
 
-  // BEM SCSS in styles lib
-  writeFile(scssPath, `@use '../01-settings/prefix' as *;
+  // BEM SCSS in styles lib (ITCSS 06-components layer)
+  writeFile(
+    scssPath,
+    `@use '../01-settings/settings.prefix' as *;
 
 // =============================================================================
-// 06-components/_${fileName}.scss
-// BEM block: c-${fileName}
-// Design ref: TODO add Figma node URL
+// 06-components/_components.${fileName}.scss
+// c-${fileName} — TODO: one-line purpose.
+//
+// Design ref:   TODO add Figma node URL
+// Token source: libs/styles/src/01-settings/ (add component tokens there first)
 // =============================================================================
 
 .c-${fileName} {
-  // TODO: Add styles using var(--#{$pds-prefix}-*) tokens
+  // TODO: var(--#{$pds-prefix}-*) tokens only.
+  // Layout (flex, gap, padding, overflow) is o-flex / o-layout in the template.
 
   // &__element {}
   // &--modifier {}
   // &.is-active {}
 }
-`);
+`,
+  );
+
+  // Forward the new partial from the layer barrel so it actually compiles.
+  const forwardLine = `@forward 'components.${fileName}';\n`;
+  const currentCore = fs.existsSync(coreScssPath)
+    ? fs.readFileSync(coreScssPath, 'utf-8')
+    : '';
+  if (!currentCore.includes(forwardLine.trim())) {
+    fs.appendFileSync(coreScssPath, forwardLine, 'utf-8');
+    console.log(
+      `  updated  libs/styles/src/06-components/_components.core.scss`,
+    );
+  }
 
   // Update barrel export
   const exportLine = `export { ${className}Component } from './lib/${fileName}/${fileName}.component';\n`;
-  const currentIndex = fs.existsSync(indexPath) ? fs.readFileSync(indexPath, 'utf-8') : '';
+  const currentIndex = fs.existsSync(indexPath)
+    ? fs.readFileSync(indexPath, 'utf-8')
+    : '';
   if (!currentIndex.includes(exportLine)) {
     fs.appendFileSync(indexPath, exportLine, 'utf-8');
     console.log(`  updated  libs/ui/src/index.ts`);
   }
 
+  // Keep the contracts index in sync — no manual step, no stale index.
+  console.log('\n🔄 Regenerating .ai/contracts/index.json …');
+  execSync('npm run generate-index', { cwd: root, stdio: 'inherit' });
+
   console.log(`
 ✅ Component scaffolded: ${className}
 
 Files created:
-  libs/ui/src/lib/${fileName}/${fileName}.component.ts
+  libs/ui/src/lib/${fileName}/${fileName}.component.ts          (no styleUrl — styles live in ITCSS)
   libs/ui/src/lib/${fileName}/${fileName}.component.html
-  libs/ui/src/lib/${fileName}/${fileName}.component.scss
   libs/ui/src/lib/${fileName}/${fileName}.component.spec.ts
-  libs/ui/src/lib/${fileName}/${fileName}.stories.ts          ← STORYBOOK (colocated)
-  libs/ui/src/lib/${fileName}/${fileName}.metadata.ts         ← CONTRACT
-  libs/styles/src/06-components/_${fileName}.scss             ← BEM STYLES
+  libs/ui/src/lib/${fileName}/${fileName}.stories.ts            ← STORYBOOK (colocated)
+  libs/ui/src/lib/${fileName}/${fileName}.metadata.ts           ← CONTRACT
+  libs/styles/src/06-components/_components.${fileName}.scss    ← BEM STYLES (ITCSS)
+
+_components.core.scss forwards the new partial; .ai/contracts/index.json regenerated.
+Commit both with the component.
 
 Next steps:
   1. Fill in the .metadata.ts TODOs
   2. Add BEM styles using var(--pds-*) tokens
   3. Complete all Storybook story states
-  4. Run: npm run generate-index
   `);
 }
 
 // CLI entry point
 async function prompt(question: string): Promise<string> {
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise(resolve => rl.question(question, ans => { rl.close(); resolve(ans.trim()); }));
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise((resolve) =>
+    rl.question(question, (ans) => {
+      rl.close();
+      resolve(ans.trim());
+    }),
+  );
 }
 
 async function main() {
@@ -227,13 +293,38 @@ async function main() {
     if (k && v) argMap[k] = v;
   }
 
-  const name = argMap['name'] || await prompt('Component name (kebab-case, e.g. data-card): ');
-  const categoryRaw = argMap['category'] || await prompt('Category [atoms/molecules/organisms/templates] (default: atoms): ');
-  const typeRaw = argMap['type'] || await prompt('Type [interactive/display/container/input/navigation/feedback] (default: display): ');
+  const name =
+    argMap['name'] ||
+    (await prompt('Component name (kebab-case, e.g. data-card): '));
+  const categoryRaw =
+    argMap['category'] ||
+    (await prompt(
+      'Category [atoms/molecules/organisms/templates] (default: atoms): ',
+    ));
+  const typeRaw =
+    argMap['type'] ||
+    (await prompt(
+      'Type [interactive/display/container/input/navigation/feedback] (default: display): ',
+    ));
   const primeNg = argMap['primeNg'] || '';
 
-  const category = (['atoms', 'molecules', 'organisms', 'templates'].includes(categoryRaw) ? categoryRaw : 'atoms') as Schema['category'];
-  const type = (['interactive', 'display', 'container', 'input', 'navigation', 'feedback'].includes(typeRaw) ? typeRaw : 'display') as Schema['type'];
+  const category = (
+    ['atoms', 'molecules', 'organisms', 'templates'].includes(categoryRaw)
+      ? categoryRaw
+      : 'atoms'
+  ) as Schema['category'];
+  const type = (
+    [
+      'interactive',
+      'display',
+      'container',
+      'input',
+      'navigation',
+      'feedback',
+    ].includes(typeRaw)
+      ? typeRaw
+      : 'display'
+  ) as Schema['type'];
 
   generate({ name, category, type, primeNg: primeNg || undefined });
 }

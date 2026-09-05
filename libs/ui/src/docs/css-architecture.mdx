@@ -1,0 +1,265 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { Diagram } from '../../.storybook/docs-figures';
+import * as Figures from './css-architecture.stories';
+
+<Meta title="Docs/CSS architecture" />
+
+# CSS architecture
+
+All shared CSS lives in `libs/styles` and is layered with **ITCSS**. Class names follow **BEMIT**. Templates mix a component block with object and utility classes. Component SCSS does not restate layout that an `o-*` class already covers.
+
+Related pages:
+
+- [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — what component SCSS may write (`var(--pds-*)`)
+- [Flex Grid](?path=/docs/foundations-flex-grid--flex-grid) — live `o-flex` catalogue
+- [Layout](?path=/docs/foundations-layout--docs) — live `o-layout` catalogue
+- [Borders](?path=/docs/foundations-borders--docs) — `u-border-*` / `u-radius-*`
+- [Form Field](?path=/docs/custom-components-form-field--docs) — BEM + `o-flex` mix in a real template
+- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts that record `tokens.consumed`
+
+---
+
+## Definition
+
+**ITCSS** (Inverted Triangle CSS) is the folder order under `libs/styles/src/`. Earlier layers are broader and less specific. Later layers override them. A change belongs in exactly one layer.
+
+**BEMIT** is BEM plus a namespace prefix. The prefix says which ITCSS layer owns the class.
+
+<Diagram
+  title="ITCSS cascade"
+  width={1000}
+  height={280}
+  nodes={[
+    { id: 's01', x: 20, y: 36, w: 220, tone: 'system', title: '01-settings', lines: ['--pds-* tokens'], mono: true },
+    { id: 's02', x: 270, y: 36, w: 220, tone: 'system', title: '02-tools', lines: ['mixins · no CSS out'], mono: true },
+    { id: 's03', x: 520, y: 36, w: 220, tone: 'neutral', title: '03-generic', lines: ['reset'] },
+    { id: 's04', x: 770, y: 36, w: 210, tone: 'neutral', title: '04-elements', lines: ['bare HTML'] },
+    { id: 's05', x: 20, y: 176, w: 220, tone: 'system', title: '05-objects', lines: ['o-flex · o-layout'] },
+    { id: 's06', x: 270, y: 176, w: 220, tone: 'app', title: '06-components', lines: ['c- blocks'] },
+    { id: 's07', x: 520, y: 176, w: 220, tone: 'system', title: '07-utilities', lines: ['u- helpers'] },
+    { id: 's08', x: 770, y: 176, w: 210, tone: 'neutral', title: '08-trumps', lines: ['Storybook overrides'] },
+  ]}
+  edges={[
+    { from: 's01', to: 's02' },
+    { from: 's02', to: 's03' },
+    { from: 's03', to: 's04' },
+    { from: 's04', to: 's05' },
+    { from: 's05', to: 's06' },
+    { from: 's06', to: 's07' },
+    { from: 's07', to: 's08' },
+  ]}
+/>
+
+Specificity rises along the cascade. Tokens and mixins come first. Component skin and utilities come last.
+
+---
+
+## Architecture
+
+<DocsTable
+  headers={['Layer', 'Folder', 'Prefix', 'Owns']}
+  rows={[
+    ['01-settings', '01-settings/', '—', 'CSS custom properties. Generated Figma files plus hand-authored spacing, type and PrimeNG bridges.'],
+    ['02-tools', '02-tools/', '—', 'Mixins and functions. No CSS output.'],
+    ['03-generic', '03-generic/', '—', 'Reset / normalize.'],
+    ['04-elements', '04-elements/', '—', 'Bare HTML defaults: type, links, fonts, hr.'],
+    ['05-objects', '05-objects/', 'o-', 'Layout patterns: flex grid, spacing/overflow, scroll-shadow.'],
+    ['06-components', '06-components/', 'c-', 'One BEM file per libs/ui component. PrimeNG wrappers restyle here; --p-* bridges stay in 01-settings.'],
+    ['07-utilities', '07-utilities/', 'u-', 'Single-purpose helpers: type, border, radius, shadow, visibility.'],
+    ['08-trumps', '08-trumps/', '—', 'Highest layer. Today: Storybook demo wrappers (.sb-demo-wrapper). Forwarded from main.scss; apps do not use these classes.'],
+  ]}
+/>
+
+Each layer has a barrel `_{layer}.core.scss` that `@forward`s its files. Files are named `_{layer}.{description}.scss`. Generated tokens use `.generated.scss` and are written only by `tokens:build`.
+
+<Diagram
+  title="BEMIT mix on one element"
+  width={1000}
+  height={150}
+  nodes={[
+    { id: 'bem', x: 20, y: 43, w: 220, tone: 'app', title: 'c-form-field', lines: ['what it is'], mono: true },
+    { id: 'obj', x: 300, y: 43, w: 230, tone: 'system', title: 'o-flex o-flex--y', lines: ['how it is laid out'], mono: true },
+    { id: 'util', x: 590, y: 43, w: 170, tone: 'neutral', title: 'u-sr-only', lines: ['one extra job'], mono: true },
+    { id: 'el', x: 820, y: 43, w: 160, tone: 'app', title: 'template node', lines: ['all three classes'] },
+  ]}
+  edges={[
+    { from: 'bem', to: 'el', label: 'identity' },
+    { from: 'obj', to: 'el', label: 'layout' },
+    { from: 'util', to: 'el', label: 'helper' },
+  ]}
+/>
+
+<Unstyled>
+  <Story of={Figures.Prefixes} />
+</Unstyled>
+
+SSOT order when a control is painted:
+
+1. PrimeNG defaults
+2. Plectrum theme (`providePlectrum()`)
+3. `libs/styles` ITCSS — objects, then the scoped `c-` block, then utilities
+
+Figma is the design reference. It is not a second stylesheet.
+
+---
+
+## Process
+
+How an author decides where a rule goes.
+
+<Unstyled>
+  <Story of={Figures.AuthoringOrder} />
+</Unstyled>
+
+```html
+<div
+  class="c-form-field o-flex o-layout--min-w-0"
+  [class.o-flex--y]="layout() === 'vertical'"
+  [class.o-layout--gap-1]="layout() === 'vertical'"
+  [class.is-invalid]="invalid()"
+>
+  <span class="u-sr-only">({{ requiredLabel() }})</span>
+</div>
+```
+
+`c-form-field` is the block. `o-flex` / `o-flex--y` / `o-layout--*` are the layout mix. `is-invalid` is state. `u-sr-only` is a utility. The SCSS file styles the block, the label and invalid colour — not `display: flex`.
+
+---
+
+## Rules
+
+<Unstyled>
+  <Story of={Figures.Rules} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={Figures.StaysInScss} />
+</Unstyled>
+
+Hard stops:
+
+- Never write `display: flex`, `flex-direction`, `align-items` or `justify-content` in `06-components`.
+- Never write gap, padding, margin or overflow in `06-components` when an `o-layout` modifier exists for that value.
+- Never put a new `--pds-*` value inline. Add it in `01-settings` first.
+- Never `@extend` or mixin an object class into a BEM file. The mix must be visible in the template.
+- Never create a nested feature block (`c-affiliate-detail-drawer__name`). Prefix the **element** on the shared block (`c-drawer__affiliate-detail-name`).
+
+---
+
+## Glossary
+
+<DocsTable
+  headers={['Term', 'Definition']}
+  rows={[
+    ['ITCSS', 'Inverted Triangle CSS. Folder order from tokens to overrides. One layer per concern.'],
+    ['BEM', 'Block, Element, Modifier. .c-card, .c-card__header, .c-card--featured.'],
+    ['BEMIT', 'BEM plus a namespace prefix that names the ITCSS layer: o-, c-, u-, js-, is- / has-.'],
+    ['Mix', 'Two or more BEMIT classes on one HTML node. The block owns identity; the object owns layout.'],
+    ['Object', 'Reusable layout pattern. o-flex, o-layout, o-scroll-shadow. Not a product component.'],
+    ['Utility', 'Single-purpose class. u-sr-only, u-radius-md, u-border-bottom.'],
+    ['Token bridge', '01-settings/_settings.{primeng}.scss. Maps --p-* to --pds-*. The only place --p-* is declared.'],
+    ['Barrel', '_{layer}.core.scss. The file that @forwards every file in that layer.'],
+    ['CSSOM catalogue', 'Foundations pages read compiled selectors at runtime. This page does not retype those lists.'],
+  ]}
+/>
+
+---
+
+## Reference
+
+### File naming
+
+<DocsTable
+  headers={['Kind', 'Pattern', 'Example']}
+  rows={[
+    ['Layer barrel', '_{layer}.core.scss', '_components.core.scss'],
+    ['Layer file', '_{layer}.{description}.scss', '_components.form-field.scss'],
+    ['Generated tokens', '_{layer}.{description}.generated.scss', '_settings.colors-semantic.generated.scss'],
+    ['PrimeNG bridge', '_settings.{primeng}.scss', '_settings.accordion.scss'],
+    ['Angular class', 'PascalCase', 'FormFieldComponent'],
+    ['File / selector / block', 'kebab-case', 'form-field.component.ts · pds-form-field · c-form-field'],
+  ]}
+/>
+
+Components do not declare `styleUrl` — there is no colocated stylesheet. The BEM stylesheet is the `06-components` partial, and `pds:component` appends its `@forward` to `_components.core.scss`. The only exception is a `:host` display rule that cannot live in a global sheet under ViewEncapsulation — added by hand, with a comment saying why.
+
+### BEM anatomy
+
+```
+.c-card                 block
+.c-card__header         element
+.c-card--featured       modifier
+.c-card.is-loading      state (standalone class)
+```
+
+Elements use `__`. Modifiers use `--`. States use `is-` / `has-` on the same node. Do not nest a second block inside a block in SCSS — compose in HTML.
+
+```scss
+.c-card { }
+.c-card__header { }
+.c-card--featured { }
+.c-card.is-loading { }
+```
+
+### Object classes
+
+Do not copy the generated class list here. The compiled stylesheet is the catalogue.
+
+<DocsTable
+  headers={['Need', 'Class family', 'Catalogue']}
+  rows={[
+    ['Flex container, alignment, 12-col spans', 'o-flex · o-flex__item--{n} · o-flex--y', 'Foundations / Flex Grid'],
+    ['Gap, padding, margin, overflow, min-size', 'o-layout--{property}-{scale}', 'Foundations / Layout'],
+    ['Scroll-edge fade', 'o-scroll-shadow · o-scroll-shadow--inline', 'Foundations / Scroll Shadow'],
+    ['Static border / radius / shadow', 'u-border-* · u-radius-* · u-shadow-*', 'Foundations / Borders · Radius · Elevation'],
+  ]}
+/>
+
+Column layout uses `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}`). Bespoke `display: grid` stays in component SCSS and needs a comment.
+
+`o-flex--y` is the column helper. Other flex-flow keys are generated from `settings.grid` — read them on Flex Grid, not from a handwritten list.
+
+### Shared `c-` blocks
+
+Add a new block only when PrimeNG plus objects and utilities are not enough.
+
+<DocsTable
+  headers={['Block', 'Role']}
+  rows={[
+    ['c-form-field', 'Label + control + error layout'],
+    ['c-drawer', 'Headless drawer shell. Feature children use __{feature}-{part}, not a nested block'],
+    ['c-detail-list', 'Label / value description rows'],
+    ['c-accordion--bordered', 'Stacked bordered accordion'],
+    ['c-accordion--nav / --chromeless', 'Transparent accordion chrome for nav lists'],
+    ['c-timeline--content-only', 'Single-column timeline'],
+    ['c-list--journey / --flat', 'Tree list variants'],
+    ['c-nav-shell · c-sub-nav-shell · c-top-nav', 'Application chrome. Standalone libs/ui blocks'],
+  ]}
+/>
+
+### Semantic border roles
+
+Use a shared colour role in SCSS. Do not invent a feature-specific border alias.
+
+<DocsTable
+  headers={['Token', 'Typical use']}
+  rows={[
+    ['--pds-color-panel-border', 'Section dividers, list shell, bordered accordion'],
+    ['--pds-color-card-border', 'p-card rings, selectable rows'],
+    ['--pds-color-content-border', 'Nav shells, tiles, notes'],
+    ['--pds-color-surface-border', 'Iconography cards, doc demos'],
+  ]}
+/>
+
+In templates, pair `u-border-{side}` with `style="--pds-border-color: var(--pds-color-panel-border)"` when the utility default is not the role you need.
+
+### PrimeNG
+
+No scoped `--p-*` or `.p-*` overrides for button, stepper, tag, inputs, drawer, dialog, popover or menu. No `styleClass` on `p-drawer` / `p-dialog` roots. Overlays inside flex or `overflow-hidden` use `appendTo="body"`.
+
+When a wrapper must win over PrimeNG chrome, prefer ITCSS order, then `:is()` / `:where()` on the scoped wrapper, then `@layer components`.
+
+### Agent rules
+
+The same constraints live as hard stops in `.ai/rules/01-architecture.md`, `.ai/rules/05-bemit-naming.md`, `.ai/rules/08-object-classes.md`, `.ai/rules/09-styling-policy.md` and `.ai/rules/10-css-ssot.md`. This page is the human-facing map. Foundations pages remain the live class lists.

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "node .cursor/hooks/regenerate-contracts-index.mjs",
+        "timeout": 60
+      }
+    ]
+  }
+}

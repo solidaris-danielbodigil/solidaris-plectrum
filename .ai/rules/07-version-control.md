@@ -32,4 +32,4 @@
 - All PRs must be reviewed by at least one other developer before merge
 - PRs must pass CI (build, lint, tests) before merge
 - PRs touching shared `libs/` require a design-system review if they change tokens or components
-- Run `npm run generate-index` and commit the updated `index.json` when components are added or modified
+- Commit the regenerated `.ai/contracts/index.json` with component changes — `pds:component` and the afterFileEdit hook regenerate it, and CI fails when it is stale

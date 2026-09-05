@@ -4,9 +4,14 @@
  * Scans libs/ui for Angular components, parses their imports to build
  * a relationship graph, and outputs .ai/contracts/index.json.
  *
- * Run: npx ts-node tools/scripts/generate-index.ts
+ * Run: npm run generate-index   (tsx tools/scripts/generate-index.ts)
  *
- * Dependencies: fs, path, typescript (already in devDeps)
+ * Output is content-stable: meta.generated only advances when the index
+ * content actually changed, so CI can gate staleness with
+ * `npm run generate-index && git diff --exit-code -- .ai/contracts/index.json`
+ * and repeated runs (editor hooks, scaffolder) never produce diff churn.
+ *
+ * Dependencies: fs, path (tsx already in devDeps)
  */
 
 import * as fs from 'fs';
@@ -212,7 +217,9 @@ function generate(): void {
 
   // First pass: register all components
   for (const [name, filePath] of components) {
-    const relativePath = path.relative(WORKSPACE_ROOT, filePath);
+    // Forward slashes regardless of OS — the committed index must not depend
+    // on whether it was generated on Windows or in CI.
+    const relativePath = path.relative(WORKSPACE_ROOT, filePath).split(path.sep).join('/');
     componentEntries[name] = {
       path: relativePath,
       category: getCategory(filePath),
@@ -311,6 +318,17 @@ function generate(): void {
       primeNgMappings,
     },
   };
+
+  // Content-stable write: ignore meta.generated when comparing, keep the old
+  // timestamp (and skip the write) when nothing else changed.
+  const comparable = (index: IndexFile): string =>
+    JSON.stringify({ ...index, meta: { ...index.meta, generated: '' } });
+
+  if (existingIndex && comparable(existingIndex) === comparable(output)) {
+    console.log(`✅ Index up to date — .ai/contracts/index.json unchanged`);
+    console.log(`   Components: ${output.summary.totalComponents}`);
+    return;
+  }
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
   console.log(`✅ Index written to .ai/contracts/index.json`);

@@ -41,6 +41,9 @@ jobs:
       - name: Lint token usage
         run: npm run tokens:lint
 
+      - name: Rebuild contracts index (must be committed)
+        run: npm run generate-index && git diff --exit-code -- .ai/contracts/index.json
+
       - name: Build applications
         run: npm run build
 

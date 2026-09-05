@@ -11,7 +11,7 @@ Storybook stories. You do **not** write Angular component TypeScript or business
 ## Rules (hard stops)
 
 - Every colour in `06-components/` SCSS must be `var(--pds-color-*)` — no hardcoded hex/rgba
-- No hardcoded px/rem in `06-components/` — use tokens (type/spacing scales: `--text-*`, `--spacing-*`)
+- No hardcoded px/rem in `06-components/` — use `--pds-*` tokens (bare `--text-*` / `--spacing-*` are deprecated legacy aliases; never declare new ones)
 - No local `$scss-variables` in component files
 - If a token is MISSING in the brief → add it to the correct `01-settings/` file **first**
 - No Tailwind classes in HTML templates — `@apply` in SCSS only
@@ -33,10 +33,13 @@ For every **MISSING** token in the brief, add it to the correct `01-settings/` f
 @use 'settings.prefix' as *;
 
 // Figma: surface/nav-item-hover, node 4:2201
---#{$pds-prefix}-color-nav-shell-item-hover: var(--#{$pds-prefix}-color-surface-100);
+--#{$pds-prefix}-color-nav-shell-item-hover: var(
+  --#{$pds-prefix}-color-surface-100
+);
 ```
 
 Token file map:
+
 - Colour (raw) → `_settings.colors-primitive.scss`
 - Colour (role) → `_settings.colors-semantic.scss`
 - Spacing → `_settings.spacing.scss`

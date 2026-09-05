@@ -39,13 +39,14 @@ npm run PDS:component
 ### 3 — Implement
 
 Component class:
+
 ```typescript
 @Component({
   selector: 'pds-{name}',
   standalone: true,
   imports: [/* PrimeNG, CommonModule, FormsModule as needed */],
   templateUrl: './{name}.component.html',
-  styleUrl: './{name}.component.scss',
+  // no styleUrl — styles live in libs/styles/src/06-components (ITCSS)
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -59,6 +60,7 @@ export class {Name}Component {
 ```
 
 Template rules:
+
 - Semantic HTML: `<nav>`, `<ul>`, `<button>`, `<article>` etc.
 - ARIA: `aria-label`, `aria-current="page"`, `aria-expanded`, `aria-hidden="true"` on decorative icons
 - BEM classes on elements, `o-flex`/`o-layout` mixes for layout
@@ -67,9 +69,11 @@ Template rules:
 ### 4 — Export
 
 Add to `libs/ui/src/lib/index.ts` (the lib barrel):
+
 ```typescript
 export * from './{name}';
 ```
+
 and ensure the component + its public types are exported from the component's own `index.ts`.
 
 ### 5 — Post-creation
