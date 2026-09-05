@@ -1,0 +1,55 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Figures from './introduction.stories';
+
+<Meta title="Introduction" />
+
+# Plectrum Design System
+
+Plectrum is the Solidaris design system: PrimeNG components wearing a token-driven theme, a shared Angular component library, and an ITCSS stylesheet — one source of truth consumed by iSHARE and iCRM. This Storybook is its living catalogue: every page renders from the same compiled CSS the applications ship.
+
+<Unstyled>
+  <Story of={Figures.Audiences} />
+</Unstyled>
+
+---
+
+## How this Storybook is organized
+
+<DocsTable
+  headers={['Section', 'Contents']}
+  rows={[
+    ['Get started', 'Install Plectrum in an application, or set up this repo to contribute'],
+    ['Docs', 'How the system works: writing stories, CSS architecture, token pipeline, releases, AI strategy'],
+    ['Foundations', 'Live token catalogues — colors, typography, spacing, radius, shadows, layout objects. Read from the CSSOM, always current'],
+    ['Custom components', 'Angular components in libs/ui: one docs page plus one story per state'],
+    ['Patterns', 'Application shells composed from the system (iSHARE dossiers, toolbars)'],
+    ['Shell', 'Navigation chrome: NavShell, SubNavShell, TopNav'],
+  ]}
+/>
+
+## First hour
+
+<Unstyled>
+  <Story of={Figures.FirstHour} />
+</Unstyled>
+
+---
+
+## Sources of truth
+
+<DocsTable
+  headers={['Decision', 'Lives in']}
+  rows={[
+    ['Visual design', 'Figma — Plectrum for PrimeNG (Main) UI Kit'],
+    ['Design documentation', 'zeroheight — Plectrum Design System'],
+    ['Token values', 'libs/plectrum/src/tokens.json → generated --pds-* custom properties'],
+    ['Component behaviour', 'PrimeNG, themed by providePlectrum() — never reimplemented'],
+    ['Shared components', 'libs/ui — documented here, published as @solidaris/ui'],
+    ['All stylesheets', 'libs/styles — ITCSS layers, BEMIT class names'],
+  ]}
+/>
+
+External references: [Plectrum on zeroheight](https://zeroheight.com/5cba76f64/p/8028d1-plectrum-design-system) · [Figma UI Kit](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390)
+
+Start here: [Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs) · [Contribute](?path=/docs/get-started-contribute--docs)

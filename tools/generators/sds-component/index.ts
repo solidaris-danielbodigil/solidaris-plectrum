@@ -89,7 +89,8 @@ export class ${className}Component {}
   // (libs/styles/src/06-components). The only allowed exception is a :host
   // display rule under ViewEncapsulation, added by hand with a comment.
 
-  // Component Spec
+  // Component Spec — Tester-agent checklist as skeletons (fill or delete the
+  // pending cases; a bare "should create" is not enough for review).
   writeFile(
     path.join(componentDir, `${fileName}.component.spec.ts`),
     `import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -111,6 +112,30 @@ describe('${className}Component', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  // Tester checklist (.cursor/agents/tester.md) — implement what applies:
+
+  it('should render the correct semantic element', () => {
+    // e.g. expect(fixture.nativeElement.querySelector('nav')).toBeTruthy();
+    pending('TODO: assert the semantic root element');
+  });
+
+  it('should apply the BEM host class', () => {
+    // e.g. expect(fixture.nativeElement.classList).toContain('c-${fileName}');
+    pending('TODO: assert c-${fileName} on the host');
+  });
+
+  it('should apply modifier classes from inputs', () => {
+    pending('TODO: set an input, assert the --modifier / is-* class');
+  });
+
+  it('should emit outputs when triggered', () => {
+    pending('TODO: trigger the interaction, assert the output emission');
+  });
+
+  it('should project slot content', () => {
+    pending('TODO: render with projected content, assert it appears');
   });
 });
 `,

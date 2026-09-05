@@ -149,7 +149,6 @@ interface AffiliateDetailDrawerStoryArgs {
 const meta: Meta<AffiliateDetailDrawerStoryArgs> = {
   title: 'Custom components/Affiliate Detail Drawer',
   component: AffiliateDetailDrawerComponent,
-  tags: ['!dev'],
   decorators: [
     moduleMetadata({
       imports: [AffiliateDetailDrawerDemoComponent],

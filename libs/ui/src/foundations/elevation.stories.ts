@@ -33,6 +33,32 @@ export default {
   parameters: { layout: 'padded' },
 } as Meta;
 
+export const Playground = {
+  name: 'Playground',
+  tags: ['dev'],
+  args: { level: 'md' },
+  argTypes: {
+    level: {
+      control: 'select',
+      options: stops(),
+      description: 'u-shadow-{stop} — every stop generated in the stylesheet.',
+    },
+  },
+  render: (args: { level: string }) => ({
+    template: `
+      <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3 o-layout--padding-4" style="background: var(--pds-color-surface-100);">
+        <div class="c-demo-cell u-shadow-${args.level} o-flex o-flex--col o-flex--align-items-center o-flex--justify-content-center o-layout--gap-1 o-layout--padding-4"
+             style="width: 14rem; height: 7rem; background: var(--pds-color-surface-0);">
+          <strong>${USE_CASE[args.level] ?? 'Elevation'}</strong>
+        </div>
+        <div class="o-flex o-flex--col o-layout--gap-1">
+          <code>class="u-shadow-${args.level}"</code>
+          <code>var(--pds-shadow-${args.level})</code>
+        </div>
+      </div>`,
+  }),
+};
+
 export const Shadows = {
   name: 'Shadows',
   render: () => ({

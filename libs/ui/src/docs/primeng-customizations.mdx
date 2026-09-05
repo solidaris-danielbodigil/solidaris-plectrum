@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+
+<Meta title="Docs/PrimeNG customizations" />
+
+# PrimeNG customizations
+
+Everything Plectrum changes relative to stock PrimeNG, in one place. The default is **no customization** — `providePlectrum()` themes every component, and rule `04-primeng.md` forbids decorative overrides. What remains below is the complete, intentional list. When you add a bridge or restyle, add a row here.
+
+Related pages:
+
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — where bridges and restyles are allowed to live
+- [Token pipeline / CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — the `--p-*` → `--pds-*` contract
+- [Get started / Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs)
+
+---
+
+## Token bridges (`--p-*` in `01-settings`)
+
+Scoped custom-property overrides. Never inline in `06-components`, never `.p-*` selector overrides.
+
+<DocsTable
+  headers={['PrimeNG', 'Bridge file', 'Scope', 'What changes']}
+  rows={[
+    ['Accordion', '_settings.accordion.scss', 'c-accordion--bordered', 'Bordered stacked panels: padding, borders, header/content backgrounds'],
+    ['Accordion', '_settings.accordion.scss', 'c-accordion--nav', 'Transparent chrome for SubNavShell section accordions'],
+    ['Accordion', '_settings.accordion.scss', 'c-accordion--chromeless', 'Hidden toggler for list journey groups — defined, wiring pending (PLECTRUM_V1_GAP_REPORT, P2)'],
+    ['Tabs', '_settings.tabs.scss', 'c-affiliate-details__category-tabs', 'Tab padding from PDS spacing tokens'],
+    ['Card + Button', '_settings.affiliate-overview.scss', 'c-affiliate-overview-card (+ status modifiers)', 'Card padding/border/background/radius/shadow per status; text-button colors for the title action'],
+    ['Card', '_settings.affiliate-documents.scss', 'c-affiliate-documents-toolbar', 'Toolbar card chrome; zeroes inner padding'],
+    ['Card', '_settings.affiliate-details.scss', 'c-affiliate-details__documents · __detail', 'Two-column panel cards: body padding, header, border, shadow'],
+  ]}
+/>
+
+## Structural restyles (`06-components`)
+
+Rules PrimeNG cannot express through tokens — internal selectors with no template hook.
+
+<DocsTable
+  headers={['PrimeNG', 'File', 'What changes', 'Story']}
+  rows={[
+    ['AutoComplete', '_components.autocomplete.scss', 'Small/large multiple-mode sizing, chip remove-icon alignment', 'Custom components / PrimeNG Tweaks'],
+    ['Card', '_components.card.scss', 'Global p-card-title block-end spacing', 'Custom components / PrimeNG Tweaks'],
+    ['Tag', '_settings.tag.scss', 'p-tag-icon line-height for icon box alignment (approved global parity, rule 09 §13)', 'Custom components / PrimeNG Tweaks'],
+    ['Timeline', '_components.timeline.scss', 'c-timeline--content-only hides the empty opposite column', 'Custom components / Timeline'],
+    ['Skeleton', '_components.skeleton-slot.scss', 'c-skeleton-slot sized wrappers for p-skeleton', 'Custom components / Skeleton Slot'],
+    ['Drawer', '_settings.drawer.scss + _components.drawer.scss', 'Content-driven width tokens; c-drawer headless shell elements', 'Custom components / Drawer'],
+  ]}
+/>
+
+## Deliberately stock
+
+No scoped `--p-*` / `.p-*` overrides exist for button, stepper, tag (beyond the icon line-height), inputs, drawer chrome, dialog, popover, or menu — and none should be added (rule `09-styling-policy.md` §7). No `styleClass` on `p-drawer` / `p-dialog` roots; overlays inside flex or clipped layouts use `appendTo="body"`.
+
+## Maintenance
+
+- New bridge → `01-settings/_settings.{primeng-component}.scss`, scoped to the BEM wrapper, plus a row here.
+- New structural restyle → `06-components` with a justification comment, plus a row here and a story.
+- The [Token contracts](?path=/docs/foundations-token-contracts--docs) page verifies `--p-*` mappings recorded in component metadata against the compiled CSS.

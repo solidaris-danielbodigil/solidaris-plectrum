@@ -125,6 +125,50 @@ export const BorderStatus = {
   }),
 };
 
+// ── Generate — compose a border from Controls ────────────────────────────────
+export const Generate = {
+  name: 'Generate',
+  tags: ['dev'],
+  args: { side: 'all', status: 'default', thick: false, dashed: false, radius: 'none' },
+  argTypes: {
+    side: { control: 'select', options: borderGroups().sides, description: 'u-border-{side}' },
+    status: {
+      control: 'select',
+      options: ['default', ...borderGroups().statuses],
+      description: 'Status colour — sets --pds-border-color.',
+    },
+    thick: { control: 'boolean', description: 'Adds u-border-thick.' },
+    dashed: { control: 'boolean', description: 'Adds u-border-dashed.' },
+    radius: {
+      control: 'select',
+      options: [...new Set(['none', ...allCornerRadii()])],
+      description: 'u-radius-{stop} on the same element.',
+    },
+  },
+  parameters: { layout: 'padded' },
+  render: (args: { side: string; status: string; thick: boolean; dashed: boolean; radius: string }) => {
+    const classes = [
+      `u-border-${args.side}`,
+      args.status !== 'default' ? `u-border-${args.status}` : '',
+      args.thick ? 'u-border-thick' : '',
+      args.dashed ? 'u-border-dashed' : '',
+      args.radius !== 'none' ? `u-radius-${args.radius}` : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+    return {
+      template: `
+        <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
+          <div class="c-demo-cell ${classes} o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-4"
+               style="width: 16rem; height: 6rem; background: var(--pds-color-surface-0);">
+            preview
+          </div>
+          <code>class="${classes}"</code>
+        </div>`,
+    };
+  },
+};
+
 export const BorderColorOverride = {
   name: 'Border Color Override',
   render: () => ({

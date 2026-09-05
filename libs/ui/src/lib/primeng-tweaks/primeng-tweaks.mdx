@@ -1,0 +1,37 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
+import * as Stories from './primeng-tweaks.stories';
+
+<Meta of={Stories} />
+
+# PrimeNG Tweaks
+
+The small, intentional restyles of stock PrimeNG that have no component of their own. The complete inventory with file paths lives on [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs); these canvases make each one visible.
+
+<DocsTable
+  headers={['Tweak', 'File', 'Why']}
+  rows={[
+    ['AutoComplete multiple sizing', '_components.autocomplete.scss', 'small/large paddings and chip remove-icon alignment PrimeNG tokens cannot express'],
+    ['Tag icon line-height', '_settings.tag.scss', 'Icon box alignment — approved global parity (rule 09 §13)'],
+    ['Card title spacing', '_components.card.scss', 'Global p-card-title block-end rhythm'],
+    ['Tabs padding', '_settings.tabs.scss', 'PDS spacing tokens on the affiliate category tabs scope'],
+  ]}
+/>
+
+## AutoComplete sizing
+
+<Canvas of={Stories.AutoCompleteSizing} />
+
+## Tag icon alignment
+
+<Canvas of={Stories.TagIconAlignment} />
+
+## Card title spacing
+
+<Canvas of={Stories.CardTitleSpacing} />
+
+## Tabs padding bridge
+
+Scoped to `c-affiliate-details__category-tabs` — stock everywhere else.
+
+<Canvas of={Stories.TabsPaddingBridge} />

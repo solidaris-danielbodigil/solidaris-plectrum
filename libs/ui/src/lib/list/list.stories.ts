@@ -1,6 +1,7 @@
 import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
 import { Component, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { ListComponent } from './list.component';
 import type { ListDocumentItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
@@ -81,7 +82,6 @@ interface ListStoryArgs {
 const meta: Meta<ListStoryArgs> = {
   title: 'Custom components/List',
   component: ListComponent,
-  tags: ['!dev'],
   decorators: [
     moduleMetadata({ imports: [ListComponent] }),
     componentWrapperDecorator(
@@ -142,6 +142,17 @@ export const Default: Story = {
 
 export const Grouped: Story = {
   args: journeyDefaults,
+  // Interaction test: a journey group header collapses and re-expands its rows.
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [firstGroup] = canvas.getAllByRole('treeitem');
+    await expect(firstGroup).toHaveAttribute('aria-expanded', 'true');
+    const [toggler] = within(firstGroup).getAllByRole('button');
+    await userEvent.click(toggler);
+    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'false'));
+    await userEvent.click(toggler);
+    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'true'));
+  },
 };
 
 export const Flat: Story = {

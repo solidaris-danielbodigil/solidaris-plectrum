@@ -45,7 +45,7 @@ Related pages:
 <DocsTable
   headers={['File', 'Role']}
   rows={[
-    ['name.stories.ts', 'Renders each state. Meta tags hide individual stories from the sidebar.'],
+    ['name.stories.ts', 'Renders each state. Stories stay visible in the sidebar — that is where the Interactions and Accessibility panels live.'],
     ['name.mdx', 'What the component does, Figma URL, one heading per canvas, Controls under Default, ArgTypes last.'],
     ['06-components/_components.name.scss', 'Reusable BEMIT layer only. One-off padding and gap stay on o-layout in the template.'],
   ]}
@@ -162,7 +162,6 @@ const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
 const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
 
 const meta: Meta<AccordionStoryArgs> = {
-  tags: ['!dev'],
   title: 'Custom components/Accordion',
   parameters: { layout: 'padded' },
   argTypes: {
@@ -244,7 +243,7 @@ export const Disabled: Story = {
 
 ### Docs page
 
-Attached MDX in `libs/ui/src/lib/accordion/accordion.mdx`. CSF meta hides individual stories from the sidebar so only this page appears.
+Attached MDX in `libs/ui/src/lib/accordion/accordion.mdx`. Individual stories stay visible in the sidebar under the component — open one to use the Interactions and Accessibility panels. Only docs-figure stories carry `tags: ['!dev']`.
 
 ~~~tsx
 import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';

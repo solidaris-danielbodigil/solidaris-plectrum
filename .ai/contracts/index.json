@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-05T00:06:57.868Z",
+    "generated": "2026-09-05T01:27:04.422Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -112,9 +112,9 @@
     },
     "DelayPredictionCard": {
       "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts",
-      "category": "uncategorized",
-      "metadata": false,
-      "bemBlock": "c-delay-prediction-card-host",
+      "category": "molecules",
+      "metadata": true,
+      "bemBlock": "c-delay-prediction-card",
       "primeNg": "Button",
       "scssPath": "libs/styles/src/06-components/_components.delay-prediction-card.scss",
       "uses": [],
@@ -122,9 +122,9 @@
     },
     "DocDemoBox": {
       "path": "libs/ui/src/lib/doc-demo-box/doc-demo-box.component.ts",
-      "category": "uncategorized",
-      "metadata": false,
-      "bemBlock": "c-demo-cell",
+      "category": "atoms",
+      "metadata": true,
+      "bemBlock": "c-doc-demo-box",
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.doc-demo-box.scss",
       "uses": [],
@@ -223,8 +223,8 @@
     },
     "Toolbar": {
       "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
-      "category": "uncategorized",
-      "metadata": false,
+      "category": "molecules",
+      "metadata": true,
       "bemBlock": "c-toolbar",
       "primeNg": "Card",
       "scssPath": "libs/styles/src/06-components/_components.toolbar.scss",
@@ -246,9 +246,9 @@
     },
     "TransactionsCicsModal": {
       "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts",
-      "category": "uncategorized",
-      "metadata": false,
-      "bemBlock": null,
+      "category": "organisms",
+      "metadata": true,
+      "bemBlock": "c-transactions-cics-modal",
       "primeNg": "Button",
       "scssPath": null,
       "uses": [],
@@ -348,7 +348,7 @@
   },
   "summary": {
     "totalComponents": 16,
-    "componentsWithMetadata": 12,
+    "componentsWithMetadata": 16,
     "relationshipsMapped": 16,
     "tokenFiles": 11,
     "primeNgMappings": 11

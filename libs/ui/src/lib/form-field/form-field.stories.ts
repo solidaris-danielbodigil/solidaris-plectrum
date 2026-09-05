@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { expect, waitFor, within } from 'storybook/test';
 import { FormFieldComponent } from './form-field.component';
 
 const meta: Meta<FormFieldComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/Form Field',
   component: FormFieldComponent,
   argTypes: {
@@ -53,6 +53,16 @@ export const VerticalInvalid: Story = {
   args: {
     ...Vertical.args,
     invalid: true,
+  },
+  // Interaction test: the invalid state must mark the block and show the error.
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvasElement.querySelector('.c-form-field');
+    await expect(field).toHaveClass('is-invalid');
+    // p-message animates in — wait for the enter transition to finish.
+    await waitFor(() =>
+      expect(canvas.getByText('Sélectionnez une O.A.')).toBeVisible(),
+    );
   },
 };
 

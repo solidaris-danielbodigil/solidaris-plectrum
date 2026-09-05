@@ -1,0 +1,30 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
+import * as Stories from './drawer.stories';
+
+<Meta of={Stories} />
+
+# Drawer
+
+`c-drawer` is the headless shell vocabulary for PrimeNG drawers: features render inside `p-drawer`'s `#headless` template using these element classes plus object-class mixes. There is no generic Angular wrapper — the block keeps shared chrome consistent while every feature owns its content.
+
+- **PrimeNG**: `p-drawer` — always `appendTo="body"` inside flex or clipped layouts; no `styleClass` on the root (rule 09 §11)
+- **Styles**: `libs/styles/src/06-components/_components.drawer.scss`; width tokens in `_settings.drawer.scss` (`--pds-size-drawer-min-width` / `--pds-size-drawer-max-width`, `width: max-content`)
+- **Helpers**: `PDS_DRAWER_APPEND_TO`, `PDS_DRAWER_CONTENT_STYLE`, `DrawerPosition`, `DetailListRow` from `libs/ui/src/lib/drawer`
+- **Real integration**: [Affiliate Detail Drawer](?path=/docs/custom-components-affiliate-detail-drawer--docs)
+
+The story below renders the shell statically (no overlay) so the structure is inspectable:
+
+<Canvas of={Stories.Shell} />
+
+## Anatomy
+
+<DocsTable
+  headers={['Class', 'Role']}
+  rows={[
+    ['c-drawer__header', 'Header row — identity, actions, bottom border via u-border-bottom + panel-border'],
+    ['c-drawer__section', 'One content section — vertical flex, shrink-0, inline padding'],
+    ['c-drawer__section-title', 'Section heading typography'],
+    ['c-drawer__{feature}-{part}', 'Feature children prefix the element name on the shared block — never a nested block (rule 09 §9)'],
+  ]}
+/>

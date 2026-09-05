@@ -1,5 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { expect, within } from 'storybook/test';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
@@ -84,7 +85,6 @@ class CopyableTextRowDemoComponent {
 }
 
 const meta: Meta<CopyableTextComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/Copyable Text',
   component: CopyableTextComponent,
   decorators: [
@@ -123,6 +123,13 @@ export const Default: Story = {
     value: '319',
     iconSize: 'xs',
     disabled: false,
+  },
+  // Render contract only — the copy click writes to navigator.clipboard, whose
+  // permission is not granted in headless CI, so the interaction stays manual.
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('319')).toBeVisible();
+    await expect(canvas.getByRole('button')).toHaveAccessibleName();
   },
 };
 

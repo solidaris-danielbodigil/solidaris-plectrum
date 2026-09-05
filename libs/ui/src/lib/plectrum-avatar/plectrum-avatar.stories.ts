@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { PlectrumAvatarComponent } from './plectrum-avatar.component';
 
 const meta: Meta<PlectrumAvatarComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/PlectrumAvatar',
   component: PlectrumAvatarComponent,
   parameters: {

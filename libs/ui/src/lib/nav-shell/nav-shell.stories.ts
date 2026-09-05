@@ -58,7 +58,6 @@ const SAMPLE_ITEMS: NavItem[] = [
 ];
 
 const meta: Meta<NavShellComponent> = {
-  tags: ['!dev'],
   title: 'Shell/Navigation/NavShell',
   component: NavShellComponent,
   decorators: [

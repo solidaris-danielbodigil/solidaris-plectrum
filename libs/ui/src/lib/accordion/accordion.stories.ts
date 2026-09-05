@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 interface AccordionStoryArgs {
   title: string;
@@ -13,7 +14,6 @@ const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
 const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
 
 const meta: Meta<AccordionStoryArgs> = {
-  tags: ['!dev'],
   title: 'Custom components/Accordion',
   parameters: { layout: 'padded' },
   argTypes: {
@@ -76,6 +76,16 @@ function renderWithClass(hostClass: string): Story['render'] {
 
 export const Default: Story = {
   render: renderWithClass(STOCK_CLASS),
+  // Interaction test: the header toggles the panel and mirrors it on aria-expanded.
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const header = canvas.getByRole('button', { name: /Certificat ITT/ });
+    await expect(header).toHaveAttribute('aria-expanded', 'true');
+    await userEvent.click(header);
+    await waitFor(() => expect(header).toHaveAttribute('aria-expanded', 'false'));
+    await userEvent.click(header);
+    await waitFor(() => expect(header).toHaveAttribute('aria-expanded', 'true'));
+  },
 };
 
 export const Bordered: Story = {

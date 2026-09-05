@@ -47,7 +47,6 @@ class EmptyStateRandomDemoComponent {
 }
 
 const meta: Meta<EmptyStateComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/Empty State',
   component: EmptyStateComponent,
   decorators: [

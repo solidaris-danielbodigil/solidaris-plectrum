@@ -1,0 +1,27 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
+import * as Stories from './detail-list.stories';
+
+<Meta of={Stories} />
+
+# Detail List
+
+`c-detail-list` renders label / value description rows on a semantic `<dl>`. The block owns the label column width and typography; layout is `o-flex` mixes in the template. The `DetailListRow` type is exported from `@solidaris/ui` (`libs/ui/src/lib/drawer`).
+
+- **Styles**: `libs/styles/src/06-components/_components.detail-list.scss`
+- **Used by**: [Affiliate Detail Drawer](?path=/docs/custom-components-affiliate-detail-drawer--docs) sections
+
+<Canvas of={Stories.Default} />
+
+## Anatomy
+
+<DocsTable
+  headers={['Class', 'Element', 'Role']}
+  rows={[
+    ['c-detail-list', 'dl', 'Block — rows are flex children'],
+    ['c-detail-list__label', 'dt', 'Fixed-width label column'],
+    ['c-detail-list__value', 'dd', 'Value — margin reset via o-layout--margin-0'],
+  ]}
+/>
+
+<Canvas of={Stories.InASection} />

@@ -133,7 +133,6 @@ const plectrumIconProviders = [
 const meta: Meta<AffiliateOverviewCardStoryArgs> = {
   title: 'Custom components/Affiliate Overview Card',
   component: AffiliateOverviewCardComponent,
-  tags: ['!dev'],
   decorators: [
     moduleMetadata({
       imports: [AffiliateOverviewCardComponent],

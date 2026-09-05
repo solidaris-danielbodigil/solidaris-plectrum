@@ -17,7 +17,6 @@ const meta: Meta<IconComponent> = {
   decorators: [
     moduleMetadata({ imports: [IconComponent] }),
   ],
-  tags: ['!dev'],
   argTypes: {
     icon: { control: 'text' },
     source: { control: 'select', options: ['class', 'svg'] },

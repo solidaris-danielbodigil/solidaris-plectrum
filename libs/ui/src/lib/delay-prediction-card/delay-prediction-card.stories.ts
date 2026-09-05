@@ -17,7 +17,6 @@ const plectrumIconProviders = [
 const meta: Meta<DelayPredictionCardComponent> = {
   title: 'Custom components/Delay Prediction Card',
   component: DelayPredictionCardComponent,
-  tags: ['!dev'],
   decorators: [
     moduleMetadata({ providers: plectrumIconProviders }),
   ],

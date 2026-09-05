@@ -10,7 +10,6 @@ const breadcrumbItems = [
 ];
 
 const meta: Meta<TopNavComponent> = {
-  tags: ['!dev'],
   title: 'Shell/Navigation/TopNav',
   component: TopNavComponent,
   decorators: [moduleMetadata({ imports: [TopNavComponent] })],

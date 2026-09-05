@@ -19,6 +19,7 @@
   "files": [
     "main.ts",
     "preview.ts",
+    "manager.ts",
     "docs-table.ts",
     "docs-figures.ts"
   ]

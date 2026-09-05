@@ -160,7 +160,6 @@ const icrmSections: SubNavShellSection[] = [
 // ---------------------------------------------------------------------------
 
 const meta: Meta<SubNavShellComponent> = {
-  tags: ['!dev'],
   title: 'Shell/Navigation/SubNavShell',
   component: SubNavShellComponent,
   decorators: [

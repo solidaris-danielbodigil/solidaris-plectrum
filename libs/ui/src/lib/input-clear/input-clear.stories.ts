@@ -5,10 +5,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { expect, userEvent, within } from 'storybook/test';
 import { InputClearComponent } from './input-clear.component';
 
 const meta: Meta<InputClearComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/Input Clear',
   component: InputClearComponent,
   argTypes: {
@@ -54,6 +54,14 @@ export const IconField: Story = {
   args: {
     visible: true,
     ariaLabel: 'Clear',
+  },
+  // Interaction test: clicking the clear affordance empties the bound input.
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByPlaceholderText<HTMLInputElement>('Search');
+    await expect(input).toHaveValue('Sample query');
+    await userEvent.click(canvas.getByRole('button', { name: 'Clear' }));
+    await expect(input).toHaveValue('');
   },
 };
 

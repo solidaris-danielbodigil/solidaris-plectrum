@@ -1,0 +1,28 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Stories from './token-finder.stories';
+
+<Meta of={Stories} />
+
+# Token finder
+
+Pick what you are styling; the finder answers with the rule to follow, the snippet shape to write, and the live list of matching tokens — read from the compiled stylesheet, so it is always current.
+
+<Unstyled>
+  <Canvas of={Stories.Finder} sourceState="none" />
+</Unstyled>
+
+## Decision order
+
+<DocsTable
+  headers={['Question', 'Answer']}
+  rows={[
+    ['Is it layout (flex, gap, padding, overflow)?', 'o-flex / o-layout classes in the template — never CSS in 06-components'],
+    ['Is it static chrome (border, radius, resting shadow)?', 'u-* utility classes in the template'],
+    ['Is there a semantic role for it?', 'Use the role (--pds-color-text, panel-border) — never a hue step like blue-500'],
+    ['Is the value component-specific?', 'Add a component token in 01-settings first, then var(--pds-*) in SCSS'],
+    ['Does PrimeNG own the element?', 'Bridge --p-* to --pds-* in 01-settings/_settings.{component}.scss'],
+  ]}
+/>
+
+Playgrounds to compose values visually: [Spacing](?path=/story/foundations-spacing--playground) · [Borders Generate](?path=/story/foundations-borders--generate) · [Elevation](?path=/story/foundations-elevation--playground) · [Typography](?path=/story/foundations-typography--playground) · [Colors](?path=/story/foundations-colors--playground). Full catalogues live on the other Foundations pages; the CSS contract is on [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs).

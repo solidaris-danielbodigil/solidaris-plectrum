@@ -1,0 +1,35 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
+import * as Stories from './toolbar.stories';
+
+<Meta of={Stories} />
+
+# Toolbar
+
+`pds-toolbar` is a sticky-capable action row on a `p-card` surface with two named slots. Layout inside the card is entirely `o-flex` / `o-layout` mixes — the SCSS owns only the sticky position and the wrap constraint.
+
+- **PrimeNG**: wraps `p-card`
+- **BEM block**: `c-toolbar` (host) — `c-toolbar--sticky` bound to the `sticky` input
+- **Styles**: `libs/styles/src/06-components/_components.toolbar.scss`
+- **Domain variants**: apply a domain BEM class on the host for page-specific chrome — e.g. `c-affiliate-documents-toolbar` ([Patterns / iSHARE dossier shells](?path=/docs/patterns-ishare-dossier-shells--docs))
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Sticky
+
+`position: sticky` sits on the host element, so it works against the nearest scroll container — including overflow-constrained app shells.
+
+<Canvas of={Stories.Sticky} />
+
+## Slots
+
+<DocsTable
+  headers={['Slot', 'Purpose']}
+  rows={[
+    ['[slot=start]', 'Left-aligned content — search field, filter buttons. Wraps below on narrow viewports'],
+    ['[slot=end]', 'Right-aligned content — count badge, primary actions. Forced onto its own line by the SCSS wrap constraint'],
+  ]}
+/>
+
+<Canvas of={Stories.StartSlotOnly} />

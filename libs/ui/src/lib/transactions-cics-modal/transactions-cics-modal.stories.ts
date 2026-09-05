@@ -27,7 +27,6 @@ class TransactionsCicsModalStoryHostComponent {
 }
 
 const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
-  tags: ['!dev'],
   title: 'Custom components/Transactions CICS Modal',
   component: TransactionsCicsModalStoryHostComponent,
   decorators: [

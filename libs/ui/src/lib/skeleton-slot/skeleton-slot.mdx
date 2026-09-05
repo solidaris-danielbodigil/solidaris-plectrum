@@ -1,0 +1,18 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './skeleton-slot.stories';
+
+<Meta of={Stories} />
+
+# Skeleton Slot
+
+`c-skeleton-slot` and `c-skeleton-count-badge` are sized wrappers that keep PrimeNG `p-skeleton` placeholders on the same rhythm as the content they stand in for — no layout shift when data arrives.
+
+- **PrimeNG**: `p-skeleton` (never reimplemented)
+- **Styles**: `libs/styles/src/06-components/_components.skeleton-slot.scss`
+- **Used by**: [List](?path=/docs/custom-components-list--docs) and [Affiliate Overview Card](?path=/docs/custom-components-affiliate-overview-card--docs) loading states, iSHARE document detail
+
+<Canvas of={Stories.Slots} />
+
+## In a card
+
+<Canvas of={Stories.CardLoading} />

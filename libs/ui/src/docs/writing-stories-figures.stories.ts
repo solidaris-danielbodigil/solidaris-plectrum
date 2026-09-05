@@ -33,7 +33,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'One export per state',
-    lead: "Default always. Then Selected, Disabled, Empty, Loading and Error when the component has those states. tags: ['!dev'] hide individuals from the sidebar.",
+    lead: "Default always. Then Selected, Disabled, Empty, Loading and Error when the component has those states. Stories stay visible in the sidebar so the Interactions and Accessibility panels are reachable; only docs-figure stories use tags: ['!dev'].",
   },
   {
     title: 'Controls on Default, API last',

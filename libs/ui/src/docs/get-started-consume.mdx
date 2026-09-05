@@ -1,0 +1,89 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Figures from './get-started-consume.stories';
+
+<Meta title="Get started/Use Plectrum in an app" />
+
+# Use Plectrum in an app
+
+An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. The reference implementation of everything below is `tools/packaging/consumer-app/` — CI builds it against packed tarballs on every push.
+
+<Unstyled>
+  <Story of={Figures.InstallFlow} />
+</Unstyled>
+
+---
+
+## Packages
+
+<DocsTable
+  headers={['Package', 'Contents']}
+  rows={[
+    ['@solidaris/ui', 'Angular components (pds-*), Angular Package Format'],
+    ['@solidaris/plectrum', 'providePlectrum(), PrimeNG presets, tokens.json'],
+    ['@solidaris/styles', 'ITCSS SCSS source — objects, components, utilities'],
+    ['primeng · @primeuix/themes', 'Peer dependencies — the component engine and theme runtime'],
+  ]}
+/>
+
+```bash
+npm install @solidaris/ui @solidaris/styles @solidaris/plectrum primeng @primeuix/themes
+```
+
+The three `@solidaris/*` packages version together — always upgrade them as a set.
+
+## Wire the stylesheet
+
+`angular.json` — resolve the ITCSS source from the package:
+
+```json
+"stylePreprocessorOptions": {
+  "includePaths": ["node_modules/@solidaris/styles/src"]
+}
+```
+
+`src/styles.scss` — the whole system is one `@use`:
+
+```scss
+@use '01-settings/settings.prefix' as *;
+@use 'main';
+```
+
+## Boot the theme
+
+```ts
+// app.config.ts
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePlectrum } from '@solidaris/plectrum';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideAnimationsAsync(),
+    providePlectrum(),
+  ],
+};
+```
+
+`providePlectrum()` registers the PrimeNG theme and emits every `--p-*` custom property. The generated `--pds-*` tokens fall back to literals, so styles render even before the theme boots — but PrimeNG components need the provider.
+
+## Build screens
+
+- PrimeNG components as-is — the Plectrum preset already styles them. Check [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs) for the few intentional deviations.
+- `pds-*` components from [Custom components](?path=/docs/custom-components-empty-state--docs) — import from `@solidaris/ui`.
+- Layout with `o-flex` / `o-layout` classes, visual chrome with `u-*` utilities, values via `var(--pds-*)` — never hardcode a hex or px. The catalogues live under **Foundations**.
+
+## Rules for application code
+
+<DocsTable
+  headers={['Rule', 'Detail']}
+  rows={[
+    ['CSS is the API', 'Consume var(--pds-*) and the o-/c-/u- classes. Never import PrimeNG theme helpers ($dt, usePreset) at runtime'],
+    ['No token copies', 'If a value is missing, request it in the design-system repo — do not inline it'],
+    ['Version bumps as PRs', 'Copy tools/consumers/renovate.json (or dependabot.yml) so upgrades arrive as reviewed pull requests'],
+    ['Lint your usage', 'pds-tokens-lint (from @solidaris/tokens-cli) fails hardcoded hex/px and unknown --pds-* names in app CI'],
+  ]}
+/>
+
+Next: [Foundations / Token finder](?path=/docs/foundations-token-finder--docs) to pick the right token, [Troubleshooting](?path=/docs/docs-troubleshooting--docs) when something looks unthemed.

@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+
+<Meta title="Docs/Releases and versioning" />
+
+# Releases and versioning
+
+Changesets version and publish the three packages together. Applications never track `main` — they install published versions and receive bumps as pull requests.
+
+Related pages:
+
+- [Get started / Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs) — the consumer side
+- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how token changes reach a release
+
+---
+
+## Process
+
+1. A change lands with a **changeset** (`npm run changeset`) describing the bump (patch / minor / major) and the affected packages.
+2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR** — `chore(release): version packages` — accumulating pending changesets into version bumps and changelogs.
+3. Merging the version PR publishes with `npm run release` (`changeset publish`) using the `NPM_TOKEN` secret.
+4. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
+
+## Rules
+
+<DocsTable
+  headers={['Rule', 'Detail']}
+  rows={[
+    ['Fixed version group', '@solidaris/ui, @solidaris/plectrum and @solidaris/styles always version together (.changeset/config.json → fixed)'],
+    ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
+    ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
+    ['Registry via config', 'publishConfig + .npmrc.example abstract the registry — no registry URLs in code'],
+    ['Consumer proof', 'pack:smoke installs the packed tarballs into a throwaway app without path aliases and builds it; storybook-packed builds this catalogue against the same tarballs'],
+  ]}
+/>
+
+## What ships
+
+<DocsTable
+  headers={['Package', 'Contents']}
+  rows={[
+    ['@solidaris/ui', 'Angular components (Angular Package Format)'],
+    ['@solidaris/plectrum', 'providePlectrum(), presets, tokens.json'],
+    ['@solidaris/styles', 'ITCSS SCSS source (apps add it to includePaths)'],
+    ['@solidaris/tokens-cli', 'pds-tokens-lint and pipeline commands for consumer repos'],
+  ]}
+/>
+
+This Storybook is not versioned per release — it documents `main`. The packed-Storybook CI job proves the published packages can back it.

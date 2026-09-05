@@ -1,0 +1,86 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import * as Figures from './get-started-contribute.stories';
+
+<Meta title="Get started/Contribute" />
+
+# Contribute
+
+Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install published versions.
+
+<Unstyled>
+  <Story of={Figures.DevLoop} />
+</Unstyled>
+
+---
+
+## Set up
+
+```bash
+git clone <repo> && cd solidaris-nx
+npm install
+npm run storybook     # http://localhost:6006
+```
+
+Node 18.19+, 20.11+ or 22. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
+
+## Where things live
+
+<DocsTable
+  headers={['Concern', 'Location']}
+  rows={[
+    ['Angular components', 'libs/ui/src/lib/{name}/ — component, stories, metadata, no colocated stylesheet'],
+    ['All SCSS', 'libs/styles/src — ITCSS layers 01-settings → 08-trumps'],
+    ['Design tokens', 'libs/styles/src/01-settings as --pds-*; imported values from libs/plectrum/src/tokens.json'],
+    ['Theme integration', 'libs/plectrum — providePlectrum(), presets'],
+    ['Scaffolder + token scripts', 'tools/generators, tools/tokens'],
+    ['Agent knowledge base', '.ai/ — rules, skills, contracts (start at .ai/README.md)'],
+  ]}
+/>
+
+## Create a component
+
+```bash
+npm run pds:component     # name, category, type, optional PrimeNG wrap
+```
+
+The scaffolder creates the Angular files, the `.metadata.ts` contract, a stories stub, the `_components.{name}.scss` partial (forwarded from the core barrel), and regenerates `.ai/contracts/index.json`. Then:
+
+1. Check **PrimeNG MCP** and **Figma MCP** — reuse before inventing ([CSS architecture](?path=/docs/docs-css-architecture--docs) has the authoring order).
+2. Missing tokens go to `01-settings` first, cited with their Figma variable.
+3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
+4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)).
+
+By default the **agents do this work** — ask the Solidaris coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). Every command stays runnable by hand.
+
+## Testing
+
+Stories are the test suite: every story is executed headless in CI, so covering the states covers the smoke tests.
+
+<DocsTable
+  headers={['Layer', 'Command', 'What it checks']}
+  rows={[
+    ['Unit (Karma / Jasmine)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons (semantic element, BEM host class, modifiers, outputs, projection)'],
+    ['Story smoke tests', 'npm run test-storybook', 'Every story renders without error against the dev server (CI: test-storybook:ci against the static build)'],
+    ['Interaction tests', 'same run', 'play functions with storybook/test — clear input, toggle accordion, collapse list group; debug them in the Interactions panel'],
+    ['Accessibility', 'same run + a11y panel', "WCAG 2.1 AA via addon-a11y on every story — currently a non-blocking report (parameters.a11y.test = 'todo'); flips to 'error' once existing violations are fixed"],
+    ['Manual / agent QA', 'Tester subagent', 'Story coverage, missing states, contrast — fixes what it finds'],
+  ]}
+/>
+
+## CI gates
+
+<DocsTable
+  headers={['Gate', 'Fails when']}
+  rows={[
+    ['tokens:audit', 'Figma, preset and SCSS disagree on a token value'],
+    ['tokens:check-prefix', 'A new bare --spacing-/--text-/--font- declaration appears'],
+    ['tokens:build + diff', 'Generated SCSS or the token manifest is stale'],
+    ['generate-index + diff', '.ai/contracts/index.json is stale'],
+    ['tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
+    ['test-storybook:ci', 'A story fails to render, or an interaction test fails, against the built Storybook'],
+    ['build · test · pack:smoke', 'Apps break, unit tests fail, or packed tarballs cannot build a consumer app'],
+  ]}
+/>
+
+Release flow: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs). Full command reference: [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
