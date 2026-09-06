@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './accordion.stories';
 
 <Meta of={Stories} />
 
 # Accordion
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 PrimeNG `p-accordion` with the Plectrum theme. Certificate and audit panels add **`c-accordion--bordered`** — a BEMIT modifier already in `libs/styles`. There is no Angular wrapper and no `[border]` input. Put the class on `p-accordion`.
 

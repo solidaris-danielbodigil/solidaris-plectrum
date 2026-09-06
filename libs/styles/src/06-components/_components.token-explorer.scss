@@ -34,14 +34,16 @@
   color: var(--#{$pds-prefix}-color-text-muted);
   margin: 0;
 
-  > code {
+  >code {
     font-family: monospace;
   }
 }
 
 .c-token-explorer__playground-input {
-  flex: 1 1 18rem;
-  min-width: 0;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  field-sizing: content;
 }
 
 .c-token-explorer__playground-action {
@@ -61,8 +63,7 @@
   }
 
   &:focus-visible {
-    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
-      var(--#{$pds-prefix}-focus-ring-color);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
     outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
@@ -80,27 +81,54 @@
   text-decoration: none;
 
   &:focus-visible {
-    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
-      var(--#{$pds-prefix}-focus-ring-color);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
     outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
 
 // ── Toolbar fields ───────────────────────────────────────────────────────────
 // Layout of the toolbar row is owned by c-toolbar; only sizing lives here.
+// Controls keep their intrinsic width — they must not grow to fill the start slot.
+// field-sizing: content sizes the input to its placeholder or value so long
+// labels are not clipped and short ones do not stretch the column.
 .c-token-explorer__search {
-  min-width: var(--#{$pds-prefix}-size-token-explorer-search-min);
-  max-width: var(--#{$pds-prefix}-size-token-explorer-search-max);
-  flex: 1 1 auto;
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: 100%;
 }
 
 .c-token-explorer__search-input {
-  width: 100%;
+  field-sizing: content;
+  width: auto;
+  max-width: 100%;
 }
 
-// Role dropdown — used instead of a button row when a category has many roles.
+// Role autocomplete — used instead of a button row when a category has many roles.
+// PrimeNG's dropdown input uses width: 1% + flex: 1; a definite min-width
+// keeps the field readable, and max-content lets longer role names grow.
 .c-token-explorer__filter {
+  flex: 0 0 auto;
+  width: max-content;
   min-width: var(--#{$pds-prefix}-size-token-explorer-filter-min);
+
+  .p-autocomplete-input {
+    field-sizing: content;
+    width: auto;
+    flex: 0 1 auto;
+  }
+}
+
+// Token finder intent select — same shrink-wrap as the explorer fields.
+// PrimeNG's label uses width: 1% + flex: 1, so without this it either
+// collapses or stretches with the column (and [fluid] forces 100%).
+.c-token-finder__intent {
+  width: max-content;
+  max-width: 100%;
+
+  .p-select-label {
+    width: auto;
+    flex: 0 1 auto;
+  }
 }
 
 // ── Sections ─────────────────────────────────────────────────────────────────
@@ -142,9 +170,8 @@
   background: var(--#{$pds-prefix}-color-surface-0);
   border: 1px solid var(--#{$pds-prefix}-color-panel-border);
   border-radius: var(--#{$pds-prefix}-radius-md);
-  transition:
-    border-color var(--#{$pds-prefix}-transition-duration-mask) ease,
-    box-shadow var(--#{$pds-prefix}-transition-duration-mask) ease;
+  transition: border-color var(--#{$pds-prefix}-transition-duration-mask) ease,
+  box-shadow var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   &:hover,
   &:focus-within {
@@ -176,6 +203,16 @@
   word-break: break-all;
 }
 
+.c-token-explorer__value-detail {
+  display: block;
+  max-width: var(--#{$pds-prefix}-size-token-explorer-search-max);
+  margin: 0;
+  font-family: monospace;
+  @include text-body-xs;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .c-token-explorer__members {
   margin: var(--#{$pds-prefix}-spacing-1) 0 0;
   display: grid;
@@ -187,14 +224,14 @@
 .c-token-explorer__member {
   display: contents;
 
-  > dt,
-  > dd {
+  >dt,
+  >dd {
     @include text-body-xs;
     margin: 0;
     color: var(--#{$pds-prefix}-color-text-muted);
   }
 
-  > dd {
+  >dd {
     font-family: monospace;
     word-break: break-all;
   }
@@ -244,10 +281,9 @@
   border-radius: var(--#{$pds-prefix}-radius-sm);
   cursor: pointer;
   opacity: 0;
-  transition:
-    opacity var(--#{$pds-prefix}-transition-duration-mask) ease,
-    color var(--#{$pds-prefix}-transition-duration-mask) ease,
-    border-color var(--#{$pds-prefix}-transition-duration-mask) ease;
+  transition: opacity var(--#{$pds-prefix}-transition-duration-mask) ease,
+  color var(--#{$pds-prefix}-transition-duration-mask) ease,
+  border-color var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   .c-token-explorer__item:hover &,
   .c-token-explorer__item:focus-within &,
@@ -258,8 +294,7 @@
   }
 
   &:focus-visible {
-    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
-      var(--#{$pds-prefix}-focus-ring-color);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
     outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }
@@ -275,12 +310,9 @@
 }
 
 .c-token-explorer__preview--color {
-  background:
-    linear-gradient(var(--#{$pds-prefix}-token-explorer-swatch), var(--#{$pds-prefix}-token-explorer-swatch)),
-    repeating-conic-gradient(
-      var(--#{$pds-prefix}-color-token-explorer-checker) 0% 25%,
-      var(--#{$pds-prefix}-color-surface-0) 0% 50%
-    );
+  background: linear-gradient(var(--#{$pds-prefix}-token-explorer-swatch), var(--#{$pds-prefix}-token-explorer-swatch)),
+  repeating-conic-gradient(var(--#{$pds-prefix}-color-token-explorer-checker) 0% 25%,
+    var(--#{$pds-prefix}-color-surface-0) 0% 50%);
   background-size:
     auto,
     12px 12px;
@@ -292,6 +324,19 @@
   background: var(--#{$pds-prefix}-color-brand-subtle);
   border: 1px solid var(--#{$pds-prefix}-color-brand);
   border-radius: var(--#{$pds-prefix}-token-explorer-radius);
+}
+
+// Utility galleries (Elevation, Borders) apply u-* on this tile so the
+// preview matches the token-explorer radius swatch without a CSS variable.
+.c-token-explorer__preview--shape {
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+  border: 1px solid var(--#{$pds-prefix}-color-brand);
+}
+
+// Border-side / status previews — no default stroke; the u-border-* class is
+// the sample.
+.c-token-explorer__preview--box {
+  background: var(--#{$pds-prefix}-color-surface-50);
 }
 
 .c-token-explorer__preview--shadow {
@@ -323,8 +368,7 @@
 .c-token-explorer__preview--focus {
   background: var(--#{$pds-prefix}-color-surface-0);
   border-radius: var(--#{$pds-prefix}-radius-md);
-  outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
-    var(--#{$pds-prefix}-focus-ring-color);
+  outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
   outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
 }
 
@@ -332,10 +376,7 @@
 .c-token-explorer__preview--motion {
   display: flex;
   align-items: center;
-  width: calc(
-    var(--#{$pds-prefix}-size-token-explorer-preview) +
-      var(--#{$pds-prefix}-size-token-explorer-focus-travel)
-  );
+  width: calc(var(--#{$pds-prefix}-size-token-explorer-preview) + var(--#{$pds-prefix}-size-token-explorer-focus-travel));
   background: var(--#{$pds-prefix}-color-surface-50);
   border: 1px solid var(--#{$pds-prefix}-color-panel-border);
   border-radius: var(--#{$pds-prefix}-radius-pill);
@@ -374,7 +415,7 @@
   font-size: var(--#{$pds-prefix}-token-explorer-icon-size);
   line-height: 1;
 
-  > .bi {
+  >.bi {
     font-size: inherit;
     line-height: 1;
   }
@@ -430,6 +471,11 @@
   }
 }
 
+// Token contracts — PrimeNG p-table rows. Warning is a state, not a modifier.
+.c-token-contracts__row.is-warning {
+  background: var(--#{$pds-prefix}-color-warning-subtle);
+}
+
 .c-token-explorer__warn {
   display: block;
   color: var(--#{$pds-prefix}-color-warning);
@@ -452,8 +498,7 @@
   }
 
   &:focus-visible {
-    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style)
-      var(--#{$pds-prefix}-focus-ring-color);
+    outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
     outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
   }
 }

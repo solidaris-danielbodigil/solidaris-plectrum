@@ -1,7 +1,10 @@
 import { Component, input, signal } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertTextVisible } from '../../storybook/story-tests';
 import { EmptyStateComponent } from './empty-state.component';
+import { EmptyStateMetadata } from './empty-state.metadata';
 import {
   EMPTY_STATE_ILLUSTRATION_CHOICES,
   EMPTY_STATE_ILLUSTRATION_IDS,
@@ -73,6 +76,9 @@ export default meta;
 
 type Story = StoryObj<EmptyStateComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(EmptyStateMetadata.governance);
+
 export const Default: Story = {
   render: (args) => ({
     props: args,
@@ -89,6 +95,9 @@ export const Default: Story = {
     description:
       'Lancez une recherche pour afficher les informations du document sélectionné.',
     illustration: 'random',
+  },
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Aucune recherche pour le moment');
   },
 };
 
@@ -110,4 +119,7 @@ export const AllIllustrations: Story = {
       </div>
     `,
   }),
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, EMPTY_STATE_ILLUSTRATION_IDS[0]);
+  },
 };

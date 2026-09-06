@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './plectrum-avatar.stories';
 
 <Meta of={Stories} />
 
 # Plectrum Avatar
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Initials-based and illustrated identity avatar for the Plectrum design system. Not the same as PrimeNG Avatar — this is a custom Plectrum treatment.
 

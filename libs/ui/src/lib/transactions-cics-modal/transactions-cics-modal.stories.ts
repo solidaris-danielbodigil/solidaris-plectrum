@@ -6,7 +6,10 @@ import {
   type StoryObj,
 } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TransactionsCicsModalComponent } from './transactions-cics-modal.component';
+import { TransactionsCicsModalMetadata } from './transactions-cics-modal.metadata';
 
 @Component({
   selector: 'pds-transactions-cics-modal-story-host',
@@ -26,8 +29,9 @@ class TransactionsCicsModalStoryHostComponent {
   readonly visible = signal(false);
 }
 
+// App-owned (governance.status 'app', owner 'ishare') — filed under Patterns/iSHARE.
 const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
-  title: 'Custom components/Transactions CICS Modal',
+  title: 'Patterns/iSHARE/Transactions CICS Modal',
   component: TransactionsCicsModalStoryHostComponent,
   decorators: [
     moduleMetadata({
@@ -43,5 +47,18 @@ export default meta;
 
 type Story = StoryObj<TransactionsCicsModalStoryHostComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(TransactionsCicsModalMetadata.governance);
+
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Transactions CICS' }),
+    );
+    await waitFor(() => {
+      const page = within(canvasElement.ownerDocument.body);
+      expect(page.getByRole('dialog', { name: /Transactions CICS/ })).toBeVisible();
+    });
+  },
 };

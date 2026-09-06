@@ -4,13 +4,17 @@ import * as Figures from './introduction.stories';
 
 <Meta title="Introduction" />
 
-# Plectrum Design System
+<Unstyled>
+  <Story of={Figures.Hero} />
+</Unstyled>
 
-Plectrum is the Solidaris design system: PrimeNG components wearing a token-driven theme, a shared Angular component library, and an ITCSS stylesheet — one source of truth consumed by iSHARE and iCRM. This Storybook is its living catalogue: every page renders from the same compiled CSS the applications ship.
+## Who is this for
 
 <Unstyled>
   <Story of={Figures.Audiences} />
 </Unstyled>
+
+Every component page opens with two badges: its **status** — Core, Candidate, App-specific or Deprecated — and the **team that owns it**. Core is safe everywhere; anything else belongs to an application team until the core team promotes it. Definitions: [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
 
 ---
 
@@ -19,12 +23,12 @@ Plectrum is the Solidaris design system: PrimeNG components wearing a token-driv
 <DocsTable
   headers={['Section', 'Contents']}
   rows={[
-    ['Get started', 'Install Plectrum in an application, or set up this repo to contribute'],
+    ['Get started', 'Install Plectrum in an application, or contribute: who does what, the three answers to a proposal, status and ownership'],
     ['Docs', 'How the system works: writing stories, CSS architecture, token pipeline, releases, AI strategy'],
     ['Foundations', 'Live token catalogues — colors, typography, spacing, radius, shadows, layout objects. Read from the CSSOM, always current'],
-    ['Custom components', 'Angular components in libs/ui: one docs page plus one story per state'],
-    ['Patterns', 'Application shells composed from the system (iSHARE dossiers, toolbars)'],
-    ['Shell', 'Navigation chrome: NavShell, SubNavShell, TopNav'],
+    ['Custom components', 'Core components owned by the design-system team: one docs page plus one story per state'],
+    ['Shell', 'Application chrome shared by every app: NavShell, SubNavShell, TopNav, Affiliate Detail Drawer'],
+    ['Patterns', 'Application-owned work, one group per app: the components iSHARE still owns (Candidate or App-specific)'],
   ]}
 />
 
@@ -51,5 +55,3 @@ Plectrum is the Solidaris design system: PrimeNG components wearing a token-driv
 />
 
 External references: [Plectrum on zeroheight](https://zeroheight.com/5cba76f64/p/8028d1-plectrum-design-system) · [Figma UI Kit](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390)
-
-Start here: [Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs) · [Contribute](?path=/docs/get-started-contribute--docs)

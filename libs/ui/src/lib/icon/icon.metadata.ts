@@ -15,6 +15,10 @@ export const IconMetadata: ComponentMetadata = {
     created: '2026-05-20',
     modified: '2026-05-20',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'Navigation item icons',

@@ -4,7 +4,9 @@ import { expect, within } from 'storybook/test';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
+import { statusStory } from '../../docs/docs-figure-stories';
 import { CopyableTextComponent } from './copyable-text.component';
+import { CopyableTextMetadata } from './copyable-text.metadata';
 
 @Component({
   selector: 'pds-copyable-text-toast-demo',
@@ -117,6 +119,9 @@ export default meta;
 
 type Story = StoryObj<CopyableTextComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(CopyableTextMetadata.governance);
+
 export const Default: Story = {
   args: {
     label: 'Territoire',
@@ -156,5 +161,9 @@ export const Disabled: Story = {
     label: 'Territoire',
     value: '319',
     disabled: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('button')).toBeDisabled();
   },
 };

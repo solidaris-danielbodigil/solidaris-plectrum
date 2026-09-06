@@ -25,6 +25,10 @@
       <ng-content />
     </div>
 
+    @if (hint() && !invalid()) {
+      <p class="c-form-field__hint">{{ hint() }}</p>
+    }
+
     @if (invalid()) {
       @if (errorMessage()) {
         <p-message severity="error" size="small" variant="simple">{{ errorMessage() }}</p-message>

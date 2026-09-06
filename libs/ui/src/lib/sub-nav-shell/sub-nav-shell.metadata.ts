@@ -14,6 +14,10 @@ export const SubNavShellMetadata: ComponentMetadata = {
     created: '2026-05-26',
     modified: '2026-05-31',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'Second-level navigation alongside NavShell',

@@ -15,6 +15,11 @@ export const TransactionsCicsModalMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-05',
   },
+  governance: {
+    status: 'app',
+    owner: 'ishare',
+    note: 'Stock p-dialog with iSHARE transaction content. The pattern is iSHARE-only; the dialog itself is PrimeNG.',
+  },
   usage: {
     useCases: ['Launching legacy CICS transactions from an affiliate dossier'],
     commonPatterns: [

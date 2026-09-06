@@ -1,8 +1,15 @@
-import { inject, provideAppInitializer } from '@angular/core';
+import {
+  createComponent,
+  EnvironmentInjector,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import type { Preview } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { Button } from 'primeng/button';
 import {
+  DEFAULT_PLECTRUM_PRESET_VERSION,
   PLECTRUM_PRESET_STORAGE_KEY,
   providePlectrum,
   readStoredPresetVersion,
@@ -11,15 +18,19 @@ import {
 } from '@solidaris/plectrum';
 import { IconRegistry, registerPlectrumIcons } from '../src/lib/icon';
 import { installStorybookToastListener } from '../src/storybook/storybook-toast';
+import { PlectrumDocsContainer } from './docs-container';
+import { DocsAnchor } from './docs-link';
 
 installStorybookToastListener();
 
 function readInitialPreset(): PlectrumPresetVersion {
   if (typeof localStorage === 'undefined') {
-    return 'v0.6';
+    return DEFAULT_PLECTRUM_PRESET_VERSION;
   }
 
-  return readStoredPresetVersion(localStorage) ?? 'v0.6';
+  return (
+    readStoredPresetVersion(localStorage) ?? DEFAULT_PLECTRUM_PRESET_VERSION
+  );
 }
 
 const preview: Preview = {
@@ -31,8 +42,8 @@ const preview: Preview = {
         icon: 'paintbrush',
         dynamicTitle: true,
         items: [
-          { value: 'v0.6', title: 'Plectrum v0.6' },
           { value: 'v1', title: 'Plectrum v1' },
+          { value: 'v0.6', title: 'Plectrum v0.6' },
         ],
       },
     },
@@ -43,7 +54,7 @@ const preview: Preview = {
   decorators: [
     (storyFn, context) => {
       const version = (context.globals['plectrumPreset'] ??
-        'v0.6') as PlectrumPresetVersion;
+        DEFAULT_PLECTRUM_PRESET_VERSION) as PlectrumPresetVersion;
 
       if (typeof localStorage !== 'undefined') {
         writeStoredPresetVersion(version, localStorage);
@@ -55,6 +66,14 @@ const preview: Preview = {
           providePlectrum(version),
           provideAppInitializer(() => {
             registerPlectrumIcons(inject(IconRegistry));
+            // PrimeNG injects .p-button CSS on first Button create. MDX anchors
+            // only wear those classes — mount a detached link button so prose
+            // links match pds-docs-link on pages that have not rendered one yet.
+            const button = createComponent(Button, {
+              environmentInjector: inject(EnvironmentInjector),
+            });
+            button.instance.link = true;
+            button.changeDetectorRef.detectChanges();
           }),
         ],
       })(storyFn, context);
@@ -74,14 +93,16 @@ const preview: Preview = {
             'Token pipeline',
             'PrimeNG customizations',
             'Releases and versioning',
-            'Troubleshooting',
             'AI strategy',
           ],
           'Foundations',
           ['Token finder'],
-          'Patterns',
+          // Core catalogue first; app-owned (status app / candidate) work sits
+          // under Patterns/{App}.
           'Custom components',
           'Shell',
+          'Patterns',
+          ['iSHARE'],
         ],
       },
     },
@@ -100,8 +121,16 @@ const preview: Preview = {
     // Flip to 'error' once the existing violations are fixed to gate CI.
     a11y: {
       test: 'todo',
+      options: {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
+        },
+      },
     },
     docs: {
+      container: PlectrumDocsContainer,
+      components: { a: DocsAnchor },
       toc: {
         headingSelector: 'h2, h3',
         title: 'On this page',

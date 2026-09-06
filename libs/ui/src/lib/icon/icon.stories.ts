@@ -5,7 +5,10 @@
 
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertRoleVisible, expect } from '../../storybook/story-tests';
 import { IconComponent } from './icon.component';
+import { IconMetadata } from './icon.metadata';
 import { IconRegistry } from './icon.registry';
 
 // Sample SVG for demonstrating the registry-based source.
@@ -28,10 +31,17 @@ const meta: Meta<IconComponent> = {
 export default meta;
 type Story = StoryObj<IconComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(IconMetadata.governance);
+
 // ── Stories ──────────────────────────────────────────────────────────────────
 
 export const Default: Story = {
   args: { icon: 'bi bi-house', source: 'class', size: 'md' },
+  play: async ({ canvasElement }) => {
+    const icon = canvasElement.querySelector('.c-icon');
+    await expect(icon).toHaveAttribute('aria-hidden', 'true');
+  },
 };
 
 export const SizeVariants: Story = {
@@ -47,10 +57,16 @@ export const SizeVariants: Story = {
     `,
     moduleMetadata: { imports: [IconComponent] },
   }),
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelectorAll('.c-icon').length).toBe(5);
+  },
 };
 
 export const StandaloneAccessible: Story = {
   args: { icon: 'bi bi-bell', source: 'class', size: 'md', label: 'Notifications' },
+  play: async ({ canvasElement }) => {
+    await assertRoleVisible(canvasElement, 'img', 'Notifications');
+  },
 };
 
 export const CustomSvgFromRegistry: Story = {

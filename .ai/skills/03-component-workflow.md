@@ -32,7 +32,7 @@ libs/ui/src/lib/{component-name}/
 ├── {component-name}.component.ts       Angular component class — no styleUrl, no colocated stylesheet
 ├── {component-name}.component.html     Template — semantic HTML, BEM classes
 ├── {component-name}.component.spec.ts  Unit tests
-├── {component-name}.stories.ts         ← REQUIRED — colocated, all states
+├── {component-name}.stories.ts         ← REQUIRED — colocated, all states + play tests
 ├── {component-name}.types.ts           Interfaces/types (NavItem, etc.)
 └── {component-name}.metadata.ts        ← CONTRACT — required
 
@@ -55,10 +55,13 @@ under ViewEncapsulation, added by hand with a justification comment.
 Use the workspace generator to scaffold the correct file structure:
 
 ```bash
-npm run PDS:component
+npm run pds:component -- --owner=design-system   # core team → governance.status 'core'
+npm run pds:component -- --owner=ishare          # application team → 'candidate', title Patterns/{App}/…
 ```
 
-This creates the component folder (no colocated stylesheet), the metadata contract, the `_components.{name}.scss` partial with its core-barrel `@forward`, and the Storybook story template — then regenerates `.ai/contracts/index.json`.
+This creates the component folder (no colocated stylesheet), the metadata contract with its `governance` block, the `_components.{name}.scss` partial with its core-barrel `@forward`, and the Storybook story template — then regenerates `.ai/contracts/index.json`.
+
+The owner is not a guess: it is the core team's answer to the proposal (`protocols/component-creation.md` → Pre-flight 0). Missing decision → `.ai/questions/`, not a scaffold.
 
 ---
 
@@ -90,13 +93,19 @@ A component is **not done** until all of these pass:
 ### Metadata
 
 - [ ] `.metadata.ts` created and conforms to `ComponentMetadata` schema
+- [ ] `governance.status` / `governance.owner` match the core-team decision; `note` filled unless `core`
 - [ ] `tokens.consumed` lists all `--pds-*` tokens the component reads
 
 ### Storybook
 
 - [ ] `.stories.ts` created **colocated** in `libs/ui/src/lib/{component-name}/`
-- [ ] Stories cover: default state + all variant states
-- [ ] Attached `{name}.mdx` includes Figma node URL and a canvas per story
+- [ ] Stories cover: default state + all variant states, plus `Status = statusStory(XMetadata.governance)`
+- [ ] Every required canvas story has a `play` function — import from `libs/ui/src/storybook/story-tests.ts`. Interactive: `userEvent` + assert. Display / CSS-only: render contract. Exception: `Status` / `!dev` docs figures (`.ai/rules/03-storybook.md` §5)
+- [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
+- [ ] Accessibility panel is clean or documented; do not set `a11y.test: 'off'` without a comment
+- [ ] Chromatic snapshots left on; do not set `chromatic.disableSnapshot` on a catalogue story without a comment
+- [ ] Attached `{name}.mdx` opens with the Status badge and includes Figma node URL and a canvas per story
+- [ ] Title section matches the owner: `Custom components` / `Shell` for core, `Patterns/{App}` for application-owned
 
 ### Index
 

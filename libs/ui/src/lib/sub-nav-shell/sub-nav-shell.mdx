@@ -1,9 +1,13 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './sub-nav-shell.stories';
 
 <Meta of={Stories} />
 
 # Sub Nav Shell
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Second-level navigation sidebar. Child of `NavShellComponent` — opens when a nav-shell item is clicked.
 

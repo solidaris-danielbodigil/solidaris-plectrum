@@ -111,7 +111,7 @@ Use these rules when working on the Plectrum/Plectrum Design System.
 Architecture:
 - Figma = shared design reference
 - Repository = controlled implementation layer
-- Storybook = documentation and validation  (every component MUST have a story)
+- Storybook = documentation, validation, and tests  (every component MUST have a story + play tests — `.ai/rules/03-storybook.md` §5)
 - PrimeNG = vendor component system  (check before building anything custom)
 - Plectrum/Solidaris = design layer owner
 - ITCSS = cascade organization (01-settings → 08-trumps; file naming: _{layer-folder}.{description}.scss)
@@ -125,7 +125,7 @@ SCSS rules (hard stops):
 - Dimensions content-driven — no arbitrary fixed width/height
 
 Preferred flow:
-Figma MCP → PrimeNG MCP → add missing tokens → implement component → Storybook story → generate-index
+Figma MCP → PrimeNG MCP → add missing tokens → implement component → Storybook story + play tests → test-storybook → generate-index
 
 CSS variable naming:
 - All Solidaris/Plectrum tokens: --pds-* (controlled by $pds-prefix in 01-settings/_settings.prefix.scss)

@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './drawer.stories';
 
@@ -6,12 +6,30 @@ import * as Stories from './drawer.stories';
 
 # Drawer
 
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
 `c-drawer` is the headless shell vocabulary for PrimeNG drawers: features render inside `p-drawer`'s `#headless` template using these element classes plus object-class mixes. There is no generic Angular wrapper — the block keeps shared chrome consistent while every feature owns its content.
+
+## What is custom here
+
+`p-drawer` itself is stock Plectrum — no `--p-drawer-*` token is overridden. The page exists for what PrimeNG leaves to the consumer once `#headless` is used:
+
+<DocsTable
+  headers={['Addition', 'Where', 'Why']}
+  rows={[
+    ['Header / section / section-title classes', '_components.drawer.scss', 'Headless mode ships no header or section chrome; every drawer would otherwise invent its own'],
+    ['Content-driven width', '_settings.drawer.scss + PDS_DRAWER_CONTENT_STYLE', 'width: max-content clamped between --pds-size-drawer-min-width and --pds-size-drawer-max-width, applied via [style] because rule 09 §11 forbids styleClass on the root'],
+    ['Overlay target', 'PDS_DRAWER_APPEND_TO / overlay-append-to.ts', 'appendTo="body" so flex and overflow-hidden layouts do not clip the panel; the Storybook preview frame is resolved for docs canvases'],
+    ['Feature elements', '_components.drawer.scss (c-drawer__affiliate-detail-*)', 'Owned by the Affiliate Detail Drawer; prefixed on the shared block per rule 09 §9'],
+  ]}
+/>
 
 - **PrimeNG**: `p-drawer` — always `appendTo="body"` inside flex or clipped layouts; no `styleClass` on the root (rule 09 §11)
 - **Styles**: `libs/styles/src/06-components/_components.drawer.scss`; width tokens in `_settings.drawer.scss` (`--pds-size-drawer-min-width` / `--pds-size-drawer-max-width`, `width: max-content`)
 - **Helpers**: `PDS_DRAWER_APPEND_TO`, `PDS_DRAWER_CONTENT_STYLE`, `DrawerPosition`, `DetailListRow` from `libs/ui/src/lib/drawer`
-- **Real integration**: [Affiliate Detail Drawer](?path=/docs/custom-components-affiliate-detail-drawer--docs)
+- **Real integration**: [Affiliate Detail Drawer](?path=/docs/shell-affiliate-detail-drawer--docs)
 
 The story below renders the shell statically (no overlay) so the structure is inspectable:
 

@@ -21,7 +21,12 @@ describe('PlectrumPresetMenuService', () => {
       providers: [
         {
           provide: Document,
-          useValue: { defaultView: { localStorage: mockStorage, location: { reload: () => undefined } } },
+          useValue: {
+            defaultView: {
+              localStorage: mockStorage,
+              location: { reload: () => undefined },
+            },
+          },
         },
       ],
     });
@@ -38,7 +43,9 @@ describe('PlectrumPresetMenuService', () => {
 
   it('should place preset item before testing items with a separator', () => {
     storage.set(PLECTRUM_PRESET_STORAGE_KEY, 'v0.6');
-    const merged = service.mergeWithItems([{ label: 'Test session', id: 'session-start' }]);
+    const merged = service.mergeWithItems([
+      { label: 'Test session', id: 'session-start' },
+    ]);
 
     expect(merged.length).toBe(3);
     expect(merged[0]?.id).toBe('plectrum-preset-toggle');
@@ -50,5 +57,6 @@ describe('PlectrumPresetMenuService', () => {
     const merged = service.mergeWithItems([]);
     expect(merged.length).toBe(1);
     expect(merged[0]?.id).toBe('plectrum-preset-toggle');
+    expect(merged[0]?.label).toContain('v1 (active)');
   });
 });

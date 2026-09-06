@@ -7,7 +7,8 @@
 // This component only authors what CSS cannot express — which family serves
 // which intent, and the snippet shape to write.
 //
-// PrimeNG: p-selectbutton (intent choice), p-message (guidance).
+// PrimeNG: p-select (intent — 10 options, over the SelectButton max of 5).
+// Guidance sits on pds-form-field as helper text.
 // =============================================================================
 
 import {
@@ -18,8 +19,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Message } from 'primeng/message';
-import { SelectButton } from 'primeng/selectbutton';
+import { Select } from 'primeng/select';
+import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { TokenExplorerComponent } from './token-explorer.component';
 import type { TokenExplorerBundle } from './token-explorer.component';
 import type { TokenCategory } from './token-taxonomy';
@@ -43,7 +44,10 @@ const INTENTS: readonly TokenIntent[] = [
     groups: ['text'],
     bundle: null,
     hint: 'Use a text role, never a hue step. Roles follow the surface they sit on.',
-    snippets: ['color: var(--pds-color-text);', 'color: var(--pds-color-text-muted);'],
+    snippets: [
+      'color: var(--pds-color-text);',
+      'color: var(--pds-color-text-muted);',
+    ],
   },
   {
     key: 'type-style',
@@ -52,7 +56,10 @@ const INTENTS: readonly TokenIntent[] = [
     groups: [],
     bundle: 'type-role',
     hint: 'In templates use the u-text-{role}-{size} class; in component SCSS use the per-property --pds-text-* tokens. Never hardcode font-size or family.',
-    snippets: ['class="u-text-body-md"', 'font-size: var(--pds-text-body-md-size);'],
+    snippets: [
+      'class="u-text-body-md"',
+      'font-size: var(--pds-text-body-md-size);',
+    ],
   },
   {
     key: 'surface',
@@ -70,7 +77,10 @@ const INTENTS: readonly TokenIntent[] = [
     groups: ['surface', 'content', 'form'],
     bundle: null,
     hint: 'Static borders are u-border-* classes in the template; the colour comes from a shared role (panel-border, card-border, content-border) — never a feature-specific alias. Compose one on Foundations / Borders → Generate.',
-    snippets: ['class="u-border-bottom"', '--pds-border-color: var(--pds-color-panel-border);'],
+    snippets: [
+      'class="u-border-bottom"',
+      '--pds-border-color: var(--pds-color-panel-border);',
+    ],
   },
   {
     key: 'spacing',
@@ -97,7 +107,10 @@ const INTENTS: readonly TokenIntent[] = [
     groups: [],
     bundle: null,
     hint: 'Pick by the role of the surface: resting cards use u-shadow-*, overlays use the overlay-* tokens. Never compose box-shadow offsets by hand in 06-components.',
-    snippets: ['class="u-shadow-md"', 'box-shadow: var(--pds-shadow-overlay-modal);'],
+    snippets: [
+      'class="u-shadow-md"',
+      'box-shadow: var(--pds-shadow-overlay-modal);',
+    ],
   },
   {
     key: 'motion',
@@ -134,22 +147,30 @@ const INTENTS: readonly TokenIntent[] = [
 @Component({
   selector: 'pds-token-finder',
   standalone: true,
-  imports: [FormsModule, Message, SelectButton, TokenExplorerComponent],
+  imports: [FormsModule, FormFieldComponent, Select, TokenExplorerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="o-flex o-flex--col o-layout--gap-3 o-layout--padding-3">
-      <p-selectbutton
-        [options]="intentOptions"
-        optionLabel="label"
-        optionValue="key"
-        [allowEmpty]="false"
-        [ngModel]="intentKey()"
-        (ngModelChange)="intentKey.set($event)"
-        aria-label="What are you styling?"
-      />
-
-      <p-message severity="info" variant="simple">{{ intent().hint }}</p-message>
+      <pds-form-field
+        class="o-flex__item--align-self-flex-start"
+        label="What are you styling?"
+        [hint]="intent().hint"
+        inputId="pds-token-finder-intent"
+      >
+        <p-select
+          class="c-token-finder__intent"
+          inputId="pds-token-finder-intent"
+          [options]="intentOptions"
+          optionLabel="label"
+          optionValue="key"
+          [ngModel]="intentKey()"
+          (ngModelChange)="intentKey.set($event)"
+          [filter]="true"
+          filterBy="label"
+          placeholder="What are you styling?"
+        />
+      </pds-form-field>
 
       <div class="o-flex o-flex--col o-layout--gap-1">
         @for (snippet of intent().snippets; track snippet) {

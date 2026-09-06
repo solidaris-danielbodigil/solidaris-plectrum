@@ -15,6 +15,11 @@ export const ListMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'PrimeNG Tree variant. The input model still speaks iSHARE (documents, journeys) — generic naming is the open follow-up.',
+  },
   usage: {
     useCases: [
       'Affiliate document suivi panel (Suivi des documents)',

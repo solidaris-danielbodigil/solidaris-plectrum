@@ -24,7 +24,7 @@ Keep the two sets in sync when a role's instructions change. Switch to the
 | UX Researcher | `.github/agents/ux-researcher.agent.md` | Figma inspection, token extraction, design briefs |
 | UX Engineer | `.github/agents/ux-engineer.agent.md` | Storybook-first, SCSS authoring, token bridging, design QA |
 | Frontend Dev | `.github/agents/frontend-dev.agent.md` | Angular implementation, PrimeNG, BEMIT, accessibility |
-| Tester | `.github/agents/tester.agent.md` | Story coverage, unit tests, a11y audit, token validation |
+| Tester | `.github/agents/tester.agent.md` | Story tests (play + a11y + visual), unit tests, token validation |
 | Token Auditor | `.github/agents/token-auditor.agent.md` | Token drift, ITCSS discipline, PrimeNG sync, Figma drift |
 | Architect | `.github/agents/architect.agent.md` | SSOT enforcement, refactoring, dependency boundaries, decisions |
 
@@ -78,7 +78,7 @@ Architectural constraints that must never be violated.
 |---|---|
 | `.ai/rules/01-architecture.md` | SSOT, monorepo boundaries, quality principles |
 | `.ai/rules/02-scss-tokens.md` | Token layers, ITCSS, CSS variable strategy |
-| `.ai/rules/03-storybook.md` | Storybook-first development |
+| `.ai/rules/03-storybook.md` | Storybook-first development and required story tests (play, a11y, visual, coverage) |
 | `.ai/rules/04-primeng.md` | PrimeNG-first component policy |
 | `.ai/rules/05-bemit-naming.md` | BEMIT class naming conventions |
 | `.ai/rules/06-accessibility.md` | WCAG AA, focus rings, ARIA |

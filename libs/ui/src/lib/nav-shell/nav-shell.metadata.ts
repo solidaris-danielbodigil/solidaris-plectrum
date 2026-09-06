@@ -14,6 +14,10 @@ export const NavShellMetadata: ComponentMetadata = {
     created: '2025-01-01',
     modified: '2026-05-20',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
 
   usage: {
     useCases: [

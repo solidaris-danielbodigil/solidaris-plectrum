@@ -15,6 +15,10 @@ export const CopyableTextMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'Affiliate identifier chips (Territoire, NISS, NSI)',

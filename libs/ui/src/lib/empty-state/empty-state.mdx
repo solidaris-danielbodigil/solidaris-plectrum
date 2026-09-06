@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './empty-state.stories';
 
 <Meta of={Stories} />
 
 # Empty State
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Reusable placeholder for empty results, document details, or onboarding states.
 

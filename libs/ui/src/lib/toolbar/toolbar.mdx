@@ -1,4 +1,4 @@
-import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './toolbar.stories';
 
@@ -6,12 +6,16 @@ import * as Stories from './toolbar.stories';
 
 # Toolbar
 
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
 `pds-toolbar` is a sticky-capable action row on a `p-card` surface with two named slots. Layout inside the card is entirely `o-flex` / `o-layout` mixes — the SCSS owns only the sticky position and the wrap constraint.
 
 - **PrimeNG**: wraps `p-card`
 - **BEM block**: `c-toolbar` (host) — `c-toolbar--sticky` bound to the `sticky` input
 - **Styles**: `libs/styles/src/06-components/_components.toolbar.scss`
-- **Domain variants**: apply a domain BEM class on the host for page-specific chrome — e.g. `c-affiliate-documents-toolbar` ([Patterns / iSHARE dossier shells](?path=/docs/patterns-ishare-dossier-shells--docs))
+- **Domain variants**: apply a domain BEM class on the host for page-specific chrome — e.g. `c-affiliate-documents-toolbar` on the iSHARE documents toolbar
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />

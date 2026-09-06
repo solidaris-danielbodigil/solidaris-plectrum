@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './transactions-cics-modal.stories';
 
 <Meta of={Stories} />
 
 # Transactions CICS Modal
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Legacy iSHARE Transactions CICS modal — searchable list with per-row CICS launch CTA (Scenario 4).
 

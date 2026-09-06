@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './elevation.stories';
 
 <Meta of={Stories} />
@@ -13,4 +13,6 @@ Each card uses `.u-shadow-{stop}`. Pick by the role of the surface, not by how s
 
 Styles: `libs/styles/src/07-utilities/_utilities.shadows.scss`.
 
-<Canvas of={Stories.Shadows} />
+<Unstyled>
+  <Canvas of={Stories.Shadows} sourceState="none" />
+</Unstyled>

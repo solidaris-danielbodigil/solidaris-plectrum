@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './input-clear.stories';
 
 <Meta of={Stories} />
 
 # Input Clear
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Reusable clear affordance for `pInputText` fields. Uses the same PrimeNG `times` SVG as `showClear` on autocomplete, select, and multiselect (14×14 via `--p-icon-size`).
 

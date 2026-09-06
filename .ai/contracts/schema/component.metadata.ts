@@ -3,7 +3,7 @@
 //
 // This TypeScript interface defines the contract for component metadata files.
 // Every component in libs/ui MUST have a colocated .metadata.ts file conforming
-// to this schema.
+// to this schema, plus Storybook stories and play tests (rules/03-storybook.md §5).
 //
 // Purpose:
 //   - Machine-readable documentation for AI agents
@@ -11,6 +11,28 @@
 //   - Governance enforcement (anti-patterns, accessibility)
 //   - Drift detection between code and design intent
 // =============================================================================
+
+/**
+ * How far a component may be reused.
+ *
+ *   core       — generic, owned by the design-system team, safe for every application
+ *   candidate  — built for one application, flagged for promotion; the owning
+ *                team keeps it until the core team moves it (see docs/component-promotion.md)
+ *   app        — application-specific by design; documented here, not part of the
+ *                design-system contract
+ *   deprecated — scheduled for removal; `governance.note` names the replacement
+ */
+export type ComponentStatus = 'core' | 'candidate' | 'app' | 'deprecated';
+
+/** Team accountable for the component. `design-system` is the core team. */
+export type ComponentOwner = 'design-system' | 'ishare' | 'icrm';
+
+export interface ComponentGovernance {
+  status: ComponentStatus;
+  owner: ComponentOwner;
+  /** Required unless status is `core`: what has to happen next and why. */
+  note?: string;
+}
 
 export interface ComponentMetadata {
   /** Identity and location */
@@ -34,6 +56,12 @@ export interface ComponentMetadata {
     created: string; // ISO date
     modified: string; // ISO date
   };
+
+  /**
+   * Ownership and reuse scope. Rendered as the badge on the component's docs
+   * page (pds-docs-status) and copied into .ai/contracts/index.json.
+   */
+  governance: ComponentGovernance;
 
   /** When and why to use this component */
   usage: {

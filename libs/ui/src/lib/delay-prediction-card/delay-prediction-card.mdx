@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './delay-prediction-card.stories';
 
 <Meta of={Stories} />
 
 # Delay Prediction Card
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Prédiction du délai. In iSHARE document detail, the section title **Prédiction du delai** is rendered outside this card (same style as **Détails**).
 

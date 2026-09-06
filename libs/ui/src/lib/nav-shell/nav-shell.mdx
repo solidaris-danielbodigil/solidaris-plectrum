@@ -1,9 +1,13 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './nav-shell.stories';
 
 <Meta of={Stories} />
 
 # Nav Shell
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 First-level navigation shell — vertical sidebar for the Solidaris ecosystem.
 

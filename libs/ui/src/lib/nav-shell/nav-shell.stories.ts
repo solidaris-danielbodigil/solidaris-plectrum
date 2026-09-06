@@ -2,7 +2,10 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, componentWrapperDecorator } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
 import { inject, provideAppInitializer } from '@angular/core';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { expect, within } from '../../storybook/story-tests';
 import { NavShellComponent } from './nav-shell.component';
+import { NavShellMetadata } from './nav-shell.metadata';
 import { IconRegistry } from '../icon/icon.registry';
 import type { NavItem } from './nav-item.model';
 
@@ -92,6 +95,9 @@ const meta: Meta<NavShellComponent> = {
 export default meta;
 type Story = StoryObj<NavShellComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(NavShellMetadata.governance);
+
 // ---------------------------------------------------------------------------
 // Stories
 // ---------------------------------------------------------------------------
@@ -101,6 +107,11 @@ export const Collapsed: Story = {
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('navigation')).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /iCRM/ })).toBeVisible();
   },
 };
 
@@ -124,6 +135,13 @@ export const WithActiveItem: Story = {
     items: SAMPLE_ITEMS,
     activeItemId: 'icrm',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('link', { name: /iCRM/ })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  },
 };
 
 /** Empty state — no items. */
@@ -131,5 +149,10 @@ export const Empty: Story = {
   args: {
     items: [],
     activeItemId: null,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('navigation')).toBeVisible();
+    await expect(canvas.queryByRole('link')).toBeNull();
   },
 };

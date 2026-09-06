@@ -5,10 +5,12 @@
 // The class list is enumerated from the compiled stylesheet at render time
 // (.ai/rules/10-css-ssot.md). Only the "when to use it" prose is authored here,
 // keyed by stop, with a fallback so a new stop still renders.
+// Cards reuse the token-explorer grid chrome (c-token-explorer__item).
 // =============================================================================
 
-import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import type { Meta } from '@storybook/angular';
 import { readClassSuffixes } from '../storybook/cssom';
+import { tokenExplorerCards } from '../storybook/docs-token-cards';
 
 /** Prose only — CSS cannot express intent. Unknown stops fall back gracefully. */
 const USE_CASE: Record<string, string> = {
@@ -24,12 +26,21 @@ const USE_CASE: Record<string, string> = {
 
 const stops = () => readClassSuffixes(/^u-shadow-(.+)$/);
 
+function shadowCards(levels: readonly string[]): string {
+  return tokenExplorerCards(
+    levels.map((stop) => ({
+      name: `u-shadow-${stop}`,
+      value: USE_CASE[stop] ?? 'See Foundations / Shadows',
+      tag: `var(--pds-shadow-${stop})`,
+      previewClass: 'c-token-explorer__preview--shadow',
+      previewStyle: `--pds-token-explorer-shadow: var(--pds-shadow-${stop})`,
+    })),
+  );
+}
+
 export default {
   title: 'Foundations/Elevation',
   tags: ['!dev'],
-  decorators: [
-    componentWrapperDecorator((story) => `<div class="sb-demo-wrapper">${story}</div>`),
-  ],
   parameters: { layout: 'padded' },
 } as Meta;
 
@@ -46,11 +57,8 @@ export const Playground = {
   },
   render: (args: { level: string }) => ({
     template: `
-      <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3 o-layout--padding-4" style="background: var(--pds-color-surface-100);">
-        <div class="c-demo-cell u-shadow-${args.level} o-flex o-flex--col o-flex--align-items-center o-flex--justify-content-center o-layout--gap-1 o-layout--padding-4"
-             style="width: 14rem; height: 7rem; background: var(--pds-color-surface-0);">
-          <strong>${USE_CASE[args.level] ?? 'Elevation'}</strong>
-        </div>
+      <div class="c-token-explorer o-flex o-flex--col o-layout--gap-3 o-layout--padding-4">
+        ${shadowCards([args.level])}
         <div class="o-flex o-flex--col o-layout--gap-1">
           <code>class="u-shadow-${args.level}"</code>
           <code>var(--pds-shadow-${args.level})</code>
@@ -63,17 +71,8 @@ export const Shadows = {
   name: 'Shadows',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-4 o-layout--padding-4" style="background: var(--pds-color-surface-100);">
-      ${stops()
-        .map(
-          (stop) => `
-      <div class="c-demo-cell u-shadow-${stop} o-flex o-flex--col o-flex--align-items-center o-flex--justify-content-center o-layout--gap-1 o-layout--padding-4"
-           style="width: 11rem; height: 6.5rem; background: var(--pds-color-surface-0);">
-        <code>u-shadow-${stop}</code>
-        <small>${USE_CASE[stop] ?? 'See Foundations / Shadows'}</small>
-      </div>`,
-        )
-        .join('')}
+    <div class="c-token-explorer o-layout--padding-4">
+      ${shadowCards(stops())}
     </div>`,
   }),
 };

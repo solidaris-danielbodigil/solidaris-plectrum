@@ -2,13 +2,16 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { expect, waitFor, within } from 'storybook/test';
+import { statusStory } from '../../docs/docs-figure-stories';
 import { FormFieldComponent } from './form-field.component';
+import { FormFieldMetadata } from './form-field.metadata';
 
 const meta: Meta<FormFieldComponent> = {
   title: 'Custom components/Form Field',
   component: FormFieldComponent,
   argTypes: {
     label: { control: 'text' },
+    hint: { control: 'text' },
     layout: { control: 'radio', options: ['vertical', 'horizontal'] },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -20,6 +23,9 @@ const meta: Meta<FormFieldComponent> = {
 export default meta;
 
 type Story = StoryObj<FormFieldComponent>;
+
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(FormFieldMetadata.governance);
 
 export const Vertical: Story = {
   render: (args) => ({
@@ -45,6 +51,11 @@ export const Vertical: Story = {
     required: true,
     invalid: false,
     errorMessage: 'Sélectionnez une O.A.',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('O.A.')).toBeVisible();
+    await expect(canvas.getByDisplayValue('319')).toBeVisible();
   },
 };
 
@@ -93,6 +104,10 @@ export const Horizontal: Story = {
     errorMessage: 'Ce champ est obligatoire.',
     inputId: 'story-form-field-reference',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText(/NISS/)).toBeVisible();
+  },
 };
 
 export const HorizontalInvalid: Story = {
@@ -100,5 +115,13 @@ export const HorizontalInvalid: Story = {
   args: {
     ...Horizontal.args,
     invalid: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const field = canvasElement.querySelector('.c-form-field');
+    await expect(field).toHaveClass('is-invalid');
+    await waitFor(() =>
+      expect(canvas.getByText('Ce champ est obligatoire.')).toBeVisible(),
+    );
   },
 };

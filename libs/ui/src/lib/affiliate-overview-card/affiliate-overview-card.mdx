@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './affiliate-overview-card.stories';
 
 <Meta of={Stories} />
 
 # Affiliate Overview Card
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 iSHARE affiliate audit summary card — card gradient is driven by `statusAction.severity`; the `variant` input is a fallback when no status action is set.
 

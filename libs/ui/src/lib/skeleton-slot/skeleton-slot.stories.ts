@@ -3,6 +3,8 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { Skeleton } from 'primeng/skeleton';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { expect } from '../../storybook/story-tests';
 
 const meta: Meta = {
   title: 'Custom components/Skeleton Slot',
@@ -13,7 +15,14 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+/** Ownership badge for the docs page — CSS-only block, so declared inline. */
+export const Status = statusStory({ status: 'core', owner: 'design-system' });
+
 export const Slots: Story = {
+  play: async ({ canvasElement }) => {
+    const slots = canvasElement.querySelectorAll('.c-skeleton-slot');
+    await expect(slots.length).toBeGreaterThan(0);
+  },
   render: () => ({
     template: `
       <div class="o-flex o-flex--col o-layout--gap-3" style="max-width: 28rem;">
@@ -30,6 +39,10 @@ export const Slots: Story = {
 
 export const CardLoading: Story = {
   name: 'Card loading state',
+  play: async ({ canvasElement }) => {
+    const slots = canvasElement.querySelectorAll('.c-skeleton-slot');
+    await expect(slots.length).toBeGreaterThan(0);
+  },
   render: () => ({
     template: `
       <div class="u-border-all u-radius-xl o-flex o-flex--col o-layout--gap-2 o-layout--padding-3" style="max-width: 28rem; background: var(--pds-color-surface-0); --pds-border-color: var(--pds-color-card-border);">

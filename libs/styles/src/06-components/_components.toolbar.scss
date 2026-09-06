@@ -32,10 +32,11 @@
   }
 }
 
-// Start slot — structural constraint: grows to fill available row space
+// Start slot — full first row so filters sit side by side.
+// flex-basis 0 + min-width 0 let this shrink away and share a line with
+// the 100% end slot; the controls then wrap in a zero-width flex parent.
 .c-toolbar__start {
-  // flex: 1 1 0 has no o-flex equivalent — structural constraint, required
-  flex: 1 1 0;
+  flex: 1 1 100%;
   min-width: 0;
 }
 

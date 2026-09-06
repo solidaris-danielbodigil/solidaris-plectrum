@@ -157,11 +157,22 @@ describe('TokenExplorerComponent', () => {
   it('resolves a value for every rendered token', async () => {
     await render({ category: 'shadow' });
 
-    const values = cards(fixture).map((card) =>
-      card.querySelector('.c-token-explorer__value')!.textContent!.trim(),
-    );
+    const values = fixture.componentInstance
+      .sections()
+      .flatMap((section) => section.rows.map((row) => row.computed));
     expect(values.length).toBeGreaterThan(0);
     expect(values.every((value) => value.length > 0)).toBe(true);
+  });
+
+  it('keeps long shadow values behind a See value control', async () => {
+    await render({ category: 'shadow' });
+
+    expect(
+      cards(fixture).every((card) => !card.querySelector('.c-token-explorer__value')),
+    ).toBe(true);
+    expect(
+      cards(fixture).every((card) => card.textContent!.includes('See value')),
+    ).toBe(true);
   });
 
   it('hides search below the threshold and shows it for large categories', async () => {
@@ -196,16 +207,33 @@ describe('TokenExplorerComponent', () => {
     ).toBe(true);
   });
 
-  it('uses a button row for few roles and a dropdown for many', async () => {
+  it('uses a button row for few roles and an autocomplete for many', async () => {
     await render({ category: 'shadow' });
     expect(fixture.componentInstance.compactFilter()).toBe(false);
     expect(fixture.nativeElement.querySelector('p-selectbutton')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('p-autocomplete')).toBeFalsy();
 
-    await render({ category: 'color' });
+    await render({ category: 'color', groups: [] });
     expect(fixture.componentInstance.compactFilter()).toBe(true);
-    expect(
-      fixture.nativeElement.querySelector('.c-token-explorer__filter'),
-    ).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('p-autocomplete')).toBeTruthy();
+  });
+
+  it('uses an autocomplete for typography primitives (All plus five axes)', async () => {
+    await render({
+      category: 'typography',
+      groups: ['family', 'size', 'weight', 'line-height', 'spacing'],
+    });
+
+    expect(fixture.componentInstance.sectionOptions().map((option) => option.label)).toEqual([
+      'All',
+      'Font family',
+      'Font size',
+      'Font weight',
+      'Line height',
+      'Letter spacing',
+    ]);
+    expect(fixture.componentInstance.compactFilter()).toBe(true);
+    expect(fixture.nativeElement.querySelector('p-autocomplete')).toBeTruthy();
   });
 
   it('filters to one section', async () => {

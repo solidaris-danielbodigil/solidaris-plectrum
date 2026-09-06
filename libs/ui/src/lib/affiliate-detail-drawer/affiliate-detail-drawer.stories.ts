@@ -7,12 +7,15 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { showStorybookToast } from '../../storybook/storybook-toast';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { userEvent, waitForText, within } from '../../storybook/story-tests';
 import {
   AffiliateDetailDrawerComponent,
   type AffiliateDetailDrawerData,
   type AffiliateDetailDrawerIdentifier,
   type AffiliateDetailDrawerView,
 } from './affiliate-detail-drawer.component';
+import { AffiliateDetailDrawerMetadata } from './affiliate-detail-drawer.metadata';
 
 // =============================================================================
 // Affiliate Detail Drawer
@@ -146,8 +149,9 @@ interface AffiliateDetailDrawerStoryArgs {
   showNotes: boolean;
 }
 
+// Promoted to core and reused across applications — catalogued with the Shell.
 const meta: Meta<AffiliateDetailDrawerStoryArgs> = {
-  title: 'Custom components/Affiliate Detail Drawer',
+  title: 'Shell/Affiliate Detail Drawer',
   component: AffiliateDetailDrawerComponent,
   decorators: [
     moduleMetadata({
@@ -173,10 +177,20 @@ export default meta;
 
 type Story = StoryObj<AffiliateDetailDrawerStoryArgs>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(AffiliateDetailDrawerMetadata.governance);
+
 export const Default: Story = {
   args: {
     data: EVA_MARTINEZ,
     showNotes: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole('button', { name: /Ouvrir la carte affilié/ }),
+    );
+    await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
   },
 };
 
@@ -184,5 +198,12 @@ export const WithoutNotes: Story = {
   args: {
     data: EVA_MARTINEZ,
     showNotes: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole('button', { name: /Ouvrir la carte affilié/ }),
+    );
+    await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
   },
 };

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { statusStory } from '../../docs/docs-figure-stories';
 
 interface AccordionStoryArgs {
   title: string;
@@ -42,6 +43,9 @@ const meta: Meta<AccordionStoryArgs> = {
 export default meta;
 
 type Story = StoryObj<AccordionStoryArgs>;
+
+/** Ownership badge for the docs page — CSS-only block, so declared inline. */
+export const Status = statusStory({ status: 'core', owner: 'design-system' });
 
 function accordionTemplate(hostClass: string): string {
   return `
@@ -90,19 +94,47 @@ export const Default: Story = {
 
 export const Bordered: Story = {
   render: renderWithClass(BORDERED_CLASS),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('button', { name: /Certificat ITT/ }),
+    ).toHaveAttribute('aria-expanded', 'true');
+  },
 };
 
 export const Collapsed: Story = {
   render: renderWithClass(BORDERED_CLASS),
   args: { expanded: false },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const header = canvas.getByRole('button', { name: /Certificat ITT/ });
+    await expect(header).toHaveAttribute('aria-expanded', 'false');
+  },
 };
 
 export const Disabled: Story = {
   render: renderWithClass(BORDERED_CLASS),
   args: { disabled: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const header = canvas.getByRole('button', { name: /Certificat ITT/ });
+    const blocked =
+      (header as HTMLButtonElement).disabled ||
+      header.getAttribute('aria-disabled') === 'true' ||
+      header.getAttribute('data-p-disabled') === 'true' ||
+      header.closest('[data-p-disabled="true"], .p-disabled') !== null;
+    await expect(blocked).toBe(true);
+  },
 };
 
 export const Stacked: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const second = canvas.getByRole('button', { name: /Certificat de reprise/ });
+    await expect(second).toHaveAttribute('aria-expanded', 'false');
+    await userEvent.click(second);
+    await waitFor(() => expect(second).toHaveAttribute('aria-expanded', 'true'));
+  },
   render: () => ({
     props: { value: ['0'] },
     moduleMetadata: { imports: [AccordionModule, Tag] },

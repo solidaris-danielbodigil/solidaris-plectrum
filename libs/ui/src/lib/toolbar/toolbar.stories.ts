@@ -3,10 +3,15 @@ import { moduleMetadata } from '@storybook/angular';
 import { Badge } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { expect, within } from '../../storybook/story-tests';
 import { ToolbarComponent } from './toolbar.component';
+import { ToolbarMetadata } from './toolbar.metadata';
 
+// Promotion candidate owned by iSHARE (governance) — filed under Patterns/iSHARE
+// until the core team moves it to Custom components.
 const meta: Meta<ToolbarComponent> = {
-  title: 'Custom components/Toolbar',
+  title: 'Patterns/iSHARE/Toolbar',
   component: ToolbarComponent,
   decorators: [moduleMetadata({ imports: [Badge, ButtonModule, InputText] })],
   parameters: { layout: 'padded' },
@@ -21,6 +26,9 @@ const meta: Meta<ToolbarComponent> = {
 
 export default meta;
 type Story = StoryObj<ToolbarComponent>;
+
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(ToolbarMetadata.governance);
 
 const SLOTS = `
   <ng-container slot="start">
@@ -37,6 +45,11 @@ export const Default: Story = {
     props: args,
     template: `<pds-toolbar [sticky]="sticky">${SLOTS}</pds-toolbar>`,
   }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('textbox', { name: 'Rechercher' })).toBeVisible();
+    await expect(canvas.getByRole('button', { name: 'Nouveau' })).toBeVisible();
+  },
 };
 
 export const Sticky: Story = {
@@ -61,4 +74,8 @@ export const StartSlotOnly: Story = {
         </ng-container>
       </pds-toolbar>`,
   }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('textbox', { name: 'Rechercher' })).toBeVisible();
+  },
 };

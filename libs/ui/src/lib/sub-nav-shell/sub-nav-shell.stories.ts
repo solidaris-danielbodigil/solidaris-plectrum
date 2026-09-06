@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { expect, within } from '../../storybook/story-tests';
 import { SubNavShellComponent } from './sub-nav-shell.component';
+import { SubNavShellMetadata } from './sub-nav-shell.metadata';
 import { SubNavShellSection } from './sub-nav-shell.types';
 
 // ---------------------------------------------------------------------------
@@ -180,6 +183,9 @@ const meta: Meta<SubNavShellComponent> = {
 export default meta;
 type Story = StoryObj<SubNavShellComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(SubNavShellMetadata.governance);
+
 // ---------------------------------------------------------------------------
 // Stories
 // ---------------------------------------------------------------------------
@@ -192,6 +198,11 @@ export const MaatschappelijkWerk: Story = {
     version: '0.1.001',
     changelogUrl: '#',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Maatschappelijk Werk')).toBeVisible();
+    await expect(canvas.getByText('Openstaand dossier')).toBeVisible();
+  },
 };
 
 export const Processen: Story = {
@@ -201,6 +212,10 @@ export const Processen: Story = {
     activeItemId: 'toegewezen',
     version: '0.1.001',
     changelogUrl: '#',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText('Processen')).toBeVisible();
   },
 };
 

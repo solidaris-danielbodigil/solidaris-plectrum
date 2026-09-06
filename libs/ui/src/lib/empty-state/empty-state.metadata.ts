@@ -15,6 +15,10 @@ export const EmptyStateMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: ['Empty result panes', 'Placeholder document details', 'Onboarding empty states'],
     commonPatterns: [

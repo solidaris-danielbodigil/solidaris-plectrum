@@ -35,7 +35,7 @@ Always query both before implementing any component.
 - Layout via `o-flex` / `o-layout` BEM mixes in the template, not in SCSS — no Tailwind in templates
 - Components have no colocated `.component.scss` / `styleUrl` — styles live in `libs/styles` (ITCSS)
 - Storybook lives in `libs/ui/.storybook/main.ts` (`ng run ui:storybook`)
-- Runtime preset default is **v0.6** (`providePlectrum()` / `resolvePresetVersion()`)
+- Runtime preset default is **v1** (`providePlectrum()` / `resolvePresetVersion()`)
 - Every component in `libs/ui` needs a colocated `.stories.ts` — not done without it
 - PrimeNG first — never reimplement what PrimeNG provides
 - Missing token → add to `libs/styles/src/01-settings/` first, then use it

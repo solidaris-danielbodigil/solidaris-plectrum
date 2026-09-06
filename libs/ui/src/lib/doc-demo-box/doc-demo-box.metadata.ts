@@ -15,6 +15,11 @@ export const DocDemoBoxMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-05',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'Storybook docs tooling — not for application use.',
+  },
   usage: {
     useCases: ['Foundation docs pages — framed live demos with optional source view'],
     commonPatterns: [

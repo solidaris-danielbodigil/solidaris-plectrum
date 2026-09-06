@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { InputClearMetadata } from './input-clear.metadata';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +23,9 @@ export default meta;
 
 type Story = StoryObj<InputClearComponent>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(InputClearMetadata.governance);
+
 export const IconField: Story = {
   render: (args) => ({
     props: { ...args, value: 'Sample query' },
@@ -34,10 +39,9 @@ export const IconField: Story = {
       ],
     },
     template: `
-      <p-iconfield class="o-layout--full-width">
+      <p-iconfield class="c-docs-control">
         <input
           pInputText
-          class="o-layout--full-width"
           [(ngModel)]="value"
           placeholder="Search"
         />
@@ -78,14 +82,13 @@ export const SearchWithLeadingIcon: Story = {
       ],
     },
     template: `
-      <p-iconfield class="o-layout--full-width">
+      <p-iconfield class="c-docs-control">
         <p-inputicon><i class="bi bi-search" aria-hidden="true"></i></p-inputicon>
         <input
           pInputText
           type="text"
           role="searchbox"
           autocomplete="off"
-          class="o-layout--full-width"
           [(ngModel)]="query"
           placeholder="Rechercher document..."
         />
@@ -101,6 +104,15 @@ export const SearchWithLeadingIcon: Story = {
   }),
   args: {
     ariaLabel: 'Effacer la recherche',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole<HTMLInputElement>('searchbox');
+    await expect(input).toHaveValue('Document');
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Effacer la recherche' }),
+    );
+    await expect(input).toHaveValue('');
   },
 };
 
@@ -119,8 +131,8 @@ export const InInputGroup: Story = {
       ],
     },
     template: `
-      <p-inputgroup class="o-layout--full-width">
-        <p-iconfield class="o-flex__item--grow-1 o-layout--min-w-0">
+      <p-inputgroup class="c-docs-control">
+        <p-iconfield>
           <input pInputText [(ngModel)]="value" placeholder="Numéro NISS" />
           <p-inputicon>
             <pds-input-clear

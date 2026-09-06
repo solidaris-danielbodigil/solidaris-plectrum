@@ -22,6 +22,12 @@
   padding-block-start: var(--p-form-field-padding-y);
 }
 
+.c-form-field__hint {
+  @include text-body-xs;
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
 .c-form-field__control {
   min-width: 0;
 

@@ -1,11 +1,15 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './skeleton-slot.stories';
 
 <Meta of={Stories} />
 
 # Skeleton Slot
 
-`c-skeleton-slot` and `c-skeleton-count-badge` are sized wrappers that keep PrimeNG `p-skeleton` placeholders on the same rhythm as the content they stand in for — no layout shift when data arrives.
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+`c-skeleton-slot` and `c-skeleton-count-badge` are sized wrappers that keep PrimeNG `p-skeleton` placeholders on the same rhythm as the content they stand in for — no layout shift when data arrives. Both classes are generic: the slot is a line-height box, the count badge a circle sized by a token.
 
 - **PrimeNG**: `p-skeleton` (never reimplemented)
 - **Styles**: `libs/styles/src/06-components/_components.skeleton-slot.scss`
@@ -14,5 +18,7 @@ import * as Stories from './skeleton-slot.stories';
 <Canvas of={Stories.Slots} />
 
 ## In a card
+
+A composition example only — the card chrome is `u-border-all` / `u-radius-xl` utilities around the same generic slots. Nothing here is specific to one application.
 
 <Canvas of={Stories.CardLoading} />

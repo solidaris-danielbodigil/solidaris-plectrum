@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './borders.stories';
 
@@ -21,19 +21,25 @@ Styles: `libs/styles/src/07-utilities/_utilities.radius.scss` · `_utilities.bor
 
 All-corner stops. Each box uses `.u-radius-{stop}`, which reads `--pds-radius-{stop}`.
 
-<Canvas of={Stories.Radius} />
+<Unstyled>
+  <Canvas of={Stories.Radius} sourceState="none" />
+</Unstyled>
 
 ## Radius targets
 
 Per-edge and per-corner targets, for when only part of a box is rounded. Compose with an all-corner stop to override a single edge.
 
-<Canvas of={Stories.RadiusTargets} />
+<Unstyled>
+  <Canvas of={Stories.RadiusTargets} sourceState="none" />
+</Unstyled>
 
 ## Border sides
 
 Side classes delegate to the shared `border()` mixin. Width, style and color come from overridable custom properties.
 
-<Canvas of={Stories.BorderSides} />
+<Unstyled>
+  <Canvas of={Stories.BorderSides} sourceState="none" />
+</Unstyled>
 
 ## Border modifiers
 
@@ -49,7 +55,9 @@ Modifiers set custom properties only — combine them with any side class.
 
 Status modifiers set `--pds-border-color` to the canonical `--pds-color-{status}` token — no per-color matrix.
 
-<Canvas of={Stories.BorderStatus} />
+<Unstyled>
+  <Canvas of={Stories.BorderStatus} sourceState="none" />
+</Unstyled>
 
 ## Border color override
 

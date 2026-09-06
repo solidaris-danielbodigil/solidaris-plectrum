@@ -25,12 +25,51 @@ export function toneSeverity(tone: FigureTone = 'neutral'): ToneSeverity {
   return TONE_SEVERITY[tone];
 }
 
+/** A Storybook page a figure points at. `path` is the manager route, e.g. `/docs/foundations-spacing--docs`. */
+export interface DocsLink {
+  label: string;
+  path: string;
+}
+
+export type DocsLinkTarget = '_top' | '_blank' | '_self';
+
+export interface DocsLinkAttrs {
+  href: string;
+  target: DocsLinkTarget;
+  rel?: string;
+}
+
+/** Figures render inline in the docs iframe; `./?path=…` + `target="_top"` routes the manager. */
+export function docsHref(link: Pick<DocsLink, 'path'>): string {
+  return `./?path=${link.path}`;
+}
+
+/**
+ * Resolve href + target for a docs page link.
+ * Markdown `?path=` is relative to iframe.html — rewrite to `./?path=` so
+ * `target="_top"` opens the manager, matching Angular figure links.
+ */
+export function docsLinkAttrs(href: string): DocsLinkAttrs {
+  if (href.startsWith('#')) {
+    return { href, target: '_self' };
+  }
+
+  if (/^https?:\/\//i.test(href)) {
+    return { href, target: '_blank', rel: 'noopener noreferrer' };
+  }
+
+  const normalized = href.startsWith('?path=') ? `./${href}` : href;
+  return { href: normalized, target: '_top' };
+}
+
 export interface DocsStep {
   title: string;
   detail?: string;
   /** Who acts — rendered as a p-tag coloured by `tone`. */
   who?: string;
   tone?: FigureTone;
+  /** Pages the step refers to — rendered as a row of links under the detail. */
+  links?: readonly DocsLink[];
 }
 
 export interface DocsCard {

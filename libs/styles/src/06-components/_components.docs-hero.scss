@@ -1,0 +1,126 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+@use '../02-tools/tools.breakpoints' as bp;
+
+// =============================================================================
+// 06-components/_components.docs-hero.scss
+// pds-docs-hero — Storybook Introduction landing banner.
+//
+// PrimeNG components used:
+//   - pButton (link) — the call-to-action anchors; PrimeNG owns the chrome
+//
+// Everything else is brand chrome with no PrimeNG equivalent: a clipped rose
+// panel, three rotated copies of the exported plectrum shape drifting in from
+// the left (Figma node 9967:29548), the Solidaris logo in a white pill, and
+// the Agenda display title. The shape rotations are the design's own values.
+// Token source: libs/styles/src/01-settings/_settings.docs-hero.scss
+// =============================================================================
+
+.c-docs-hero {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0 0 var(--#{$pds-prefix}-spacing-3);
+  border-radius: var(--#{$pds-prefix}-radius-docs-hero);
+  background: var(--#{$pds-prefix}-color-docs-hero-bg);
+  padding: var(--#{$pds-prefix}-space-docs-hero-py) var(--#{$pds-prefix}-space-docs-hero-px);
+
+  @include bp.breakpoint(md) {
+    padding-inline: var(--#{$pds-prefix}-space-docs-hero-px-md);
+  }
+}
+
+// ── Backdrop ─────────────────────────────────────────────────────────────────
+.c-docs-hero__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+// The asset is 1042×1157 with 6% opacity baked in; copies overlap to build
+// the 6 / 12 / 18% bands of the thumbnail. In the Figma frame the three
+// boxes centre just off the left edge at ~73% of the height (0 / −14% / −23%
+// of the width) and rotate 135° / 127° / 122°; `top`/`left` place the centre,
+// the translate recentres the box on it, the rotation is the design's value.
+.c-docs-hero__shape {
+  position: absolute;
+  top: var(--#{$pds-prefix}-position-docs-hero-shape-y);
+  display: block;
+  width: auto;
+  height: var(--#{$pds-prefix}-size-docs-hero-shape);
+  transform-origin: center;
+}
+
+.c-docs-hero__shape--1 {
+  left: 0;
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.c-docs-hero__shape--2 {
+  left: -14%;
+  transform: translate(-50%, -50%) rotate(127deg);
+}
+
+.c-docs-hero__shape--3 {
+  left: -23%;
+  transform: translate(-50%, -50%) rotate(122deg);
+}
+
+// ── Content ──────────────────────────────────────────────────────────────────
+.c-docs-hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--#{$pds-prefix}-space-docs-hero-gap);
+}
+
+.c-docs-hero__logo {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--#{$pds-prefix}-space-docs-hero-logo-py) var(--#{$pds-prefix}-space-docs-hero-logo-px);
+  border-radius: var(--#{$pds-prefix}-radius-docs-hero-logo);
+  background: var(--#{$pds-prefix}-color-docs-hero-logo-bg);
+}
+
+.c-docs-hero__logo-img {
+  display: block;
+  width: auto;
+  height: var(--#{$pds-prefix}-size-docs-hero-logo-h);
+}
+
+.c-docs-hero__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--#{$pds-prefix}-spacing-1);
+}
+
+.c-docs-hero__title {
+  @include text-display-xl;
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-docs-hero-title);
+}
+
+// "PRIMENG v21" in the thumbnail — an uppercase label under the display title.
+.c-docs-hero__eyebrow {
+  @include text-label-lg;
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-docs-hero-eyebrow);
+  text-transform: uppercase;
+}
+
+.c-docs-hero__lead {
+  @include text-body-lg;
+  max-width: var(--#{$pds-prefix}-size-docs-hero-lead-max);
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-docs-hero-lead);
+}
+
+.c-docs-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--#{$pds-prefix}-spacing-1-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

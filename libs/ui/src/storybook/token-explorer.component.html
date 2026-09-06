@@ -81,16 +81,22 @@
 
       @if (filterable()) {
         @if (compactFilter()) {
-          <p-select
-            styleClass="c-token-explorer__filter"
-            [options]="sectionOptions()"
-            [ngModel]="sectionFilter()"
-            (ngModelChange)="sectionFilter.set($event)"
+          <p-autocomplete
+            class="c-token-explorer__filter"
+            [ngModel]="sectionFilterOption()"
+            (ngModelChange)="onSectionFilterChange($event)"
+            [suggestions]="sectionSuggestions()"
+            (completeMethod)="suggestSections($event)"
+            [dropdown]="true"
+            [forceSelection]="true"
+            [completeOnFocus]="true"
+            [minQueryLength]="0"
             optionLabel="label"
-            optionValue="value"
-            [filter]="true"
-            filterBy="label"
+            dataKey="value"
+            placeholder="Filter by role"
             ariaLabel="Filter by role"
+            dropdownAriaLabel="Open role filter"
+            appendTo="body"
           />
         } @else {
           <p-selectButton
@@ -246,7 +252,16 @@
 
               <div class="c-token-explorer__body">
                 <p class="c-token-explorer__name">{{ row.label }}</p>
-                @if (!row.members.length) {
+                @if (hidesComputed(row)) {
+                  <p-button
+                    type="button"
+                    [text]="true"
+                    size="small"
+                    severity="secondary"
+                    label="See value"
+                    (onClick)="toggleValue($event, row)"
+                  />
+                } @else if (!row.members.length) {
                   <p class="c-token-explorer__value">{{ row.computed }}</p>
                 }
 
@@ -315,7 +330,20 @@
                 <td>
                   <code>{{ isBundled() ? row.copy.var : row.authored }}</code>
                 </td>
-                <td><code>{{ row.computed }}</code></td>
+                <td>
+                  @if (hidesComputed(row)) {
+                    <p-button
+                      type="button"
+                      [text]="true"
+                      size="small"
+                      severity="secondary"
+                      label="See value"
+                      (onClick)="toggleValue($event, row)"
+                    />
+                  } @else {
+                    <code>{{ row.computed }}</code>
+                  }
+                </td>
                 <td>
                   @if (row.primeNgVar) {
                     <code>{{ row.primeNgVar }}</code>
@@ -350,4 +378,8 @@
   @if (matchCount() === 0) {
     <p class="c-token-explorer__empty">No token matches “{{ search() }}”.</p>
   }
+
+  <p-popover #valuePopover>
+    <code class="c-token-explorer__value-detail">{{ valuePreview() }}</code>
+  </p-popover>
 </div>

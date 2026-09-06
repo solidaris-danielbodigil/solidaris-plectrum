@@ -1,0 +1,44 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.docs-hero.scss
+// Docs-hero tokens — the Storybook Introduction landing banner
+// (libs/ui/src/storybook/docs-hero.component).
+//
+// Source: Figma "Plectrum DS (PrimeNG v21)" thumbnail, node 9967:29548 —
+// layered plectrum shapes on a rose tint, the Solidaris logo in a white pill,
+// title in Agenda Bold on Solidaris red. The hero is Solidaris brand chrome,
+// so it reads the brand red directly rather than the PrimeNG primary (blue).
+//   Figma #FFEDF1 → rose.50   (nearest ramp step)
+//   Figma #DA002F → solidaris-red.500 (Primary/Primary 500 in the kit)
+//   Figma #333333 → text-muted
+// The shape itself ships as an exported asset (libs/assets/plectrum-shape.svg,
+// 6% opacity baked in, three copies overlap as in the design).
+// =============================================================================
+
+:root {
+  // ── Colour ─────────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-color-docs-hero-bg:      var(--#{$pds-prefix}-color-rose-50);
+  --#{$pds-prefix}-color-docs-hero-title:   var(--#{$pds-prefix}-color-solidaris-red-500);
+  --#{$pds-prefix}-color-docs-hero-eyebrow: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-docs-hero-lead:    var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-docs-hero-logo-bg: var(--#{$pds-prefix}-color-surface-0);
+
+  // ── Shape & radius ─────────────────────────────────────────────────────────
+  --#{$pds-prefix}-radius-docs-hero:      var(--#{$pds-prefix}-radius-2xl);
+  --#{$pds-prefix}-radius-docs-hero-logo: var(--#{$pds-prefix}-radius-pill);
+
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-space-docs-hero-py:      var(--#{$pds-prefix}-spacing-6);   // 48px
+  --#{$pds-prefix}-space-docs-hero-px:      var(--#{$pds-prefix}-spacing-4);   // 32px
+  --#{$pds-prefix}-space-docs-hero-px-md:   var(--#{$pds-prefix}-spacing-7);   // 54px on md+
+  --#{$pds-prefix}-space-docs-hero-gap:     var(--#{$pds-prefix}-spacing-3);   // 24px between blocks
+  --#{$pds-prefix}-space-docs-hero-logo-py: var(--#{$pds-prefix}-spacing-1);   // Figma py-16 at thumbnail scale
+  --#{$pds-prefix}-space-docs-hero-logo-px: var(--#{$pds-prefix}-spacing-3);   // Figma px-40 at thumbnail scale
+
+  // ── Structural ─────────────────────────────────────────────────────────────
+  --#{$pds-prefix}-size-docs-hero-logo-h:  2.5rem;  // 40px — Figma Logo 98×40
+  --#{$pds-prefix}-size-docs-hero-lead-max: 40rem;  // 560px measure for the welcome text
+  --#{$pds-prefix}-size-docs-hero-shape:   200%;    // Figma: shape box 1157px on a 576px frame
+  --#{$pds-prefix}-position-docs-hero-shape-y: 73%; // Figma: shape centres sit at ~423px of 576px
+}

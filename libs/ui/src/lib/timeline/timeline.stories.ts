@@ -4,6 +4,8 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { Tag } from 'primeng/tag';
 import { Timeline } from 'primeng/timeline';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertTextVisible } from '../../storybook/story-tests';
 
 interface TimelineEvent {
   date: string;
@@ -27,8 +29,15 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+/** Ownership badge for the docs page — CSS-only block, so declared inline. */
+export const Status = statusStory({ status: 'core', owner: 'design-system' });
+
 export const ContentOnly: Story = {
   name: 'Content only',
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Document reçu');
+    await assertTextVisible(canvasElement, '24/11/2025');
+  },
   render: () => ({
     props: { events: EVENTS },
     template: `
@@ -46,6 +55,9 @@ export const ContentOnly: Story = {
 
 export const Stock: Story = {
   name: 'Stock (for contrast)',
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Document reçu');
+  },
   render: () => ({
     props: { events: EVENTS },
     template: `

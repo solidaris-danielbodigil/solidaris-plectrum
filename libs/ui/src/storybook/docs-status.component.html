@@ -1,0 +1,9 @@
+<div class="o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1">
+  <p-tag [value]="statusLabel()" [severity]="severity()" [rounded]="true" />
+  <p-tag [value]="ownerLabel()" severity="secondary" [rounded]="true" />
+  <pds-docs-link [path]="definitionsPath" label="What the badges mean" />
+</div>
+<p class="c-docs-status__hint o-layout--margin-0">{{ hint() }}</p>
+@if (note()) {
+  <p class="c-docs-status__note o-layout--margin-0">{{ note() }}</p>
+}

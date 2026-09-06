@@ -10,6 +10,7 @@
 4. [Focus States](#4-focus-states)
 5. [Keyboard Navigation](#5-keyboard-navigation)
 6. [Tokens That Require Accessibility Review](#6-tokens-that-require-accessibility-review)
+7. [Storybook a11y tests](#7-storybook-a11y-tests-)
 
 ---
 
@@ -106,3 +107,14 @@ Any change to these token groups requires an accessibility review before merge:
 --pds-color-success
 --pds-color-warning
 ```
+
+---
+
+## 7. Storybook a11y tests ⛔
+
+Every `libs/ui` component story inherits addon-a11y (WCAG 2.1 AA) from `.storybook/preview.ts`. That is a required test, not optional QA.
+
+- Do **not** set `parameters.a11y.test: 'off'` without a comment that names the violation and the follow-up
+- New components must not add unreviewed violations — debug in the Accessibility panel
+- Interaction and render contracts live in the story `play` function (`.ai/rules/03-storybook.md` §5)
+- `npm run test-storybook` reports a11y alongside play tests; CI runs `test-storybook:ci`

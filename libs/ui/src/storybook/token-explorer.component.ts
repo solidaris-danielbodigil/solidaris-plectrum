@@ -16,9 +16,11 @@
 //   - pds-toolbar    — sticky toolbar shell (libs/ui/src/lib/toolbar)
 //   - p-iconField    — search field with leading icon
 //   - InputText      — directive on the <input>
-//   - p-select       — role filter when a category has many groups
-//   - p-selectButton — role filter, copy format, view switch
+//   - p-autocomplete — role filter when a category has more than 5 groups
+//   - p-selectButton — role filter (≤5), copy format, view switch
 //   - p-badge        — live token count
+//   - p-button       — See value trigger for long computed strings
+//   - p-popover      — computed value overlay (shadow stacks)
 //   - Storybook preview toast — copy confirmation (main preview frame)
 //
 // Styles: c-token-explorer* in libs/styles/src/06-components/_components.token-explorer.scss
@@ -35,19 +37,27 @@ import {
   input,
   linkedSignal,
   signal,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AutoComplete } from 'primeng/autocomplete';
+import type { AutoCompleteCompleteEvent } from 'primeng/types/autocomplete';
 import { Badge } from 'primeng/badge';
+import { Button } from 'primeng/button';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
+import { Popover } from 'primeng/popover';
 import { SelectButton } from 'primeng/selectbutton';
 import { InputClearComponent } from '../lib/input-clear';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { showStorybookToast } from './storybook-toast';
-import { readTokenDeclarations, resolveToken, type TokenDeclaration } from './cssom';
+import {
+  readTokenDeclarations,
+  resolveToken,
+  type TokenDeclaration,
+} from './cssom';
 import { TOKEN_SECTIONS, type TokenCategorySections } from './token-sections';
 import {
   classifyToken,
@@ -68,10 +78,19 @@ export type TokenExplorerBundle = 'type-role' | null;
 /** Search stays hidden below this many tokens — it would only add noise. */
 const SEARCH_THRESHOLD = 8;
 
-/** Above this many sections the filter becomes a searchable dropdown. */
-const FILTER_BUTTON_LIMIT = 6;
+/** SelectButton max — more options become a type-to-search autocomplete (.ai/rules/04-primeng.md). */
+const FILTER_BUTTON_LIMIT = 5;
 
-const TYPE_PROPS = ['family', 'size', 'weight', 'line-height', 'spacing'] as const;
+/** Longer computed strings leave the card and open in a popover. */
+const INLINE_VALUE_MAX = 48;
+
+const TYPE_PROPS = [
+  'family',
+  'size',
+  'weight',
+  'line-height',
+  'spacing',
+] as const;
 /** Shown on the role card. Size and tracking stay on the live preview only. */
 const VISIBLE_TYPE_PROPS = ['family', 'weight', 'line-height'] as const;
 const TYPE_PROP_RE = /-(family|size|weight|line-height|spacing)$/;
@@ -82,6 +101,8 @@ const ANNOTATIONS = new Map(
 
 const COMPONENT_SECTION = {
   label: 'Component & feature tokens',
+  /** Short filter label — the full name is the section heading. */
+  filterLabel: 'Component',
 };
 
 interface RowMember {
@@ -114,6 +135,11 @@ interface ExplorerSection {
   rows: ExplorerRow[];
 }
 
+interface SectionOption {
+  label: string;
+  value: string;
+}
+
 function typeRole(name: string): string {
   const semantic = /^text-([a-z]+)-/.exec(name);
   if (semantic) return semantic[1];
@@ -131,9 +157,11 @@ function typeRole(name: string): string {
     InputIcon,
     InputText,
     InputClearComponent,
-    Select,
+    AutoComplete,
     SelectButton,
     Badge,
+    Button,
+    Popover,
   ],
   templateUrl: './token-explorer.component.html',
   // ViewEncapsulation.None — styles live in the libs/styles global sheet (SSOT).
@@ -162,6 +190,8 @@ export class TokenExplorerComponent {
   /** Editable in the typography playground so real copy can be previewed. */
   readonly sampleText = signal('Mutualité Solidaris — 1 234,56 €');
   readonly replaying = signal(false);
+  readonly valuePreview = signal('');
+  private readonly valuePopover = viewChild<Popover>('valuePopover');
 
   readonly copyFormatOptions = [
     { label: 'var()', value: 'var' as const },
@@ -179,7 +209,10 @@ export class TokenExplorerComponent {
       if (this.stubPrime()) {
         for (const declaration of readTokenDeclarations().values()) {
           if (declaration.primeNgVar) {
-            this.host.nativeElement.style.setProperty(declaration.primeNgVar, 'initial');
+            this.host.nativeElement.style.setProperty(
+              declaration.primeNgVar,
+              'initial',
+            );
           }
         }
       }
@@ -197,11 +230,13 @@ export class TokenExplorerComponent {
     const category = this.category();
     const allowed = this.groups();
 
-    const declarations = [...readTokenDeclarations().values()].filter((declaration) => {
-      const taxon = this.taxonOf(declaration);
-      if (taxon.category !== category) return false;
-      return allowed.length === 0 || allowed.includes(taxon.group);
-    });
+    const declarations = [...readTokenDeclarations().values()].filter(
+      (declaration) => {
+        const taxon = this.taxonOf(declaration);
+        if (taxon.category !== category) return false;
+        return allowed.length === 0 || allowed.includes(taxon.group);
+      },
+    );
 
     return this.bundle() === 'type-role'
       ? this.buildBundles(declarations)
@@ -231,7 +266,10 @@ export class TokenExplorerComponent {
         }
         return { key, label: meta?.label ?? key, rows };
       })
-      .sort((a, b) => this.sectionRank(order, a.key) - this.sectionRank(order, b.key));
+      .sort(
+        (a, b) =>
+          this.sectionRank(order, a.key) - this.sectionRank(order, b.key),
+      );
   });
 
   readonly matchCount = computed(() =>
@@ -248,27 +286,66 @@ export class TokenExplorerComponent {
       .map((section) => ({ label: section.label, value: section.key }));
 
     if (present.has(COMPONENT_GROUP)) {
-      options.push({ label: COMPONENT_SECTION.label, value: COMPONENT_GROUP });
+      options.push({
+        label: COMPONENT_SECTION.filterLabel,
+        value: COMPONENT_GROUP,
+      });
     }
     return [{ label: 'All', value: 'all' }, ...options];
   });
 
   readonly searchable = computed(() => this.totalCount() > SEARCH_THRESHOLD);
   readonly filterable = computed(() => this.sectionOptions().length > 2);
-  /** Colors have 20+ roles — a button row would swamp the toolbar. */
+  /** More than 5 roles — a button row would swamp the toolbar. */
   readonly compactFilter = computed(
     () => this.sectionOptions().length > FILTER_BUTTON_LIMIT,
   );
   readonly isBundled = computed(() => this.bundle() === 'type-role');
+  readonly sectionSuggestions = signal<SectionOption[]>([]);
+  readonly sectionFilterOption = computed(
+    () =>
+      this.sectionOptions().find(
+        (option) => option.value === this.sectionFilter(),
+      ) ?? this.sectionOptions()[0],
+  );
 
   clearSearch(): void {
     this.search.set('');
+  }
+
+  suggestSections(event: AutoCompleteCompleteEvent): void {
+    const query = event.query.trim().toLowerCase();
+    const options = this.sectionOptions();
+    this.sectionSuggestions.set(
+      query
+        ? options.filter((option) => option.label.toLowerCase().includes(query))
+        : options,
+    );
+  }
+
+  onSectionFilterChange(option: SectionOption | string | null): void {
+    if (option == null) {
+      this.sectionFilter.set('all');
+      return;
+    }
+    this.sectionFilter.set(typeof option === 'string' ? option : option.value);
   }
 
   /** Restart the motion previews for keyboard and reduced-pointer users. */
   replay(): void {
     this.replaying.set(false);
     requestAnimationFrame(() => this.replaying.set(true));
+  }
+
+  /** Shadow stacks (and any other long computed string) do not fit a card. */
+  hidesComputed(row: ExplorerRow): boolean {
+    return this.category() === 'shadow' || row.computed.length > INLINE_VALUE_MAX;
+  }
+
+  toggleValue(event: Event, row: ExplorerRow): void {
+    event.stopPropagation();
+    this.valuePreview.set(row.computed);
+    this.valuePopover()?.toggle(event);
   }
 
   copy(row: ExplorerRow): void {
@@ -329,7 +406,8 @@ export class TokenExplorerComponent {
     const annotation = ANNOTATIONS.get(declaration.cssVar);
     // var() fallback means the resolved value is already correct when the
     // aliased --p-* is missing; primeEmpty is informational only.
-    const computedValue = this.resolve(declaration.cssVar) || declaration.fallback;
+    const computedValue =
+      this.resolve(declaration.cssVar) || declaration.fallback;
     const primeEmpty = Boolean(
       declaration.primeNgVar && !this.resolve(declaration.primeNgVar),
     );
@@ -354,7 +432,11 @@ export class TokenExplorerComponent {
         name: declaration.cssVar,
         value: computedValue,
       },
-      preview: this.previewProps(taxon.category, declaration.name, computedValue),
+      preview: this.previewProps(
+        taxon.category,
+        declaration.name,
+        computedValue,
+      ),
     };
   }
 
@@ -448,7 +530,9 @@ export class TokenExplorerComponent {
       case 'shadow':
         return { '--pds-token-explorer-shadow': value };
       case 'spacing':
-        return { '--pds-token-explorer-size': value === 'auto' ? '100%' : value };
+        return {
+          '--pds-token-explorer-size': value === 'auto' ? '100%' : value,
+        };
       case 'motion':
         return { '--pds-token-explorer-duration': value };
       case 'focus':

@@ -15,6 +15,10 @@ export const TopNavMetadata: ComponentMetadata = {
     created: '2026-06-05',
     modified: '2026-06-05',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'Application shell top bar',

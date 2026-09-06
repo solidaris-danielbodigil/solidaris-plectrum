@@ -78,9 +78,10 @@ Before marking any implementation complete, verify:
 - [ ] BEM naming follows c-{block}\_\_{element}--{modifier}
 - [ ] PrimeNG component used where possible
 - [ ] .metadata.ts exists and covers all states
-- [ ] Storybook story exists
+- [ ] Storybook story exists, colocated, covering required states
+- [ ] Required canvas stories have a `play` function (`.ai/rules/03-storybook.md` §5); `npm run test-storybook` passes
+- [ ] Accessibility: ARIA attributes, keyboard support, contrast; a11y not disabled on the story
 - [ ] SCSS lives in correct ITCSS layer
-- [ ] Accessibility: ARIA attributes, keyboard support, contrast
 - [ ] No dead code or duplicated patterns
 
 ---
@@ -88,7 +89,8 @@ Before marking any implementation complete, verify:
 ## Anti-Drift Rules
 
 1. If you see a component without .metadata.ts → flag it, don't silently proceed
-2. If you see hardcoded hex values → replace with token reference
-3. If you see Tailwind classes in HTML → refactor to BEM + SCSS
-4. If you see a duplicated component → propose consolidation
-5. If you see --pds-\* hardcoded without #{$pds-prefix} → fix it
+2. If you see a required canvas story without a `play` function → add it (`.ai/rules/03-storybook.md` §5); the component is not done
+3. If you see hardcoded hex values → replace with token reference
+4. If you see Tailwind classes in HTML → refactor to BEM + SCSS
+5. If you see a duplicated component → propose consolidation
+6. If you see --pds-\* hardcoded without #{$pds-prefix} → fix it

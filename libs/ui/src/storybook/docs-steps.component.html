@@ -12,5 +12,14 @@
     @if (event.detail) {
       <p class="c-docs-steps__detail">{{ event.detail }}</p>
     }
+    @if (event.links?.length) {
+      <ul class="c-docs-steps__links">
+        @for (link of event.links; track link.path) {
+          <li>
+            <pds-docs-link [path]="link.path" [label]="link.label" />
+          </li>
+        }
+      </ul>
+    }
   </ng-template>
 </p-timeline>

@@ -15,6 +15,11 @@ export const ToolbarMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-05',
   },
+  governance: {
+    status: 'candidate',
+    owner: 'ishare',
+    note: 'Built for the iSHARE documents toolbar. The Foundations pages already embed it, so promotion is the expected outcome once a second application needs it.',
+  },
   usage: {
     useCases: [
       'Filter and search row above a list or table',

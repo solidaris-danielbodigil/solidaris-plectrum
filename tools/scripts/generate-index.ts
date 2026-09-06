@@ -24,6 +24,10 @@ const OUTPUT_PATH = path.join(WORKSPACE_ROOT, '.ai/contracts/index.json');
 interface ComponentEntry {
   path: string;
   category: string;
+  /** governance.status from .metadata.ts — core | candidate | app | deprecated */
+  status: string | null;
+  /** governance.owner from .metadata.ts — design-system | ishare | icrm */
+  owner: string | null;
   metadata: boolean;
   bemBlock: string | null;
   primeNg: string | null;
@@ -54,6 +58,8 @@ interface IndexFile {
     relationshipsMapped: number;
     tokenFiles: number;
     primeNgMappings: number;
+    /** Component count per governance.status; `undeclared` = no governance block */
+    byStatus: Record<string, number>;
   };
 }
 
@@ -151,6 +157,21 @@ function readMetadataField(componentPath: string, field: string): string | null 
   return match ? match[1] : null;
 }
 
+/**
+ * Read `status` / `owner` from the `governance: { … }` block only, so a prop
+ * named "status" elsewhere in the file cannot be mistaken for it.
+ */
+function readGovernanceField(componentPath: string, field: 'status' | 'owner'): string | null {
+  const dir = path.dirname(componentPath);
+  const metaFile = fs.readdirSync(dir).find((f: string) => f.endsWith('.metadata.ts'));
+  if (!metaFile) return null;
+  const content = fs.readFileSync(path.join(dir, metaFile), 'utf-8');
+  const block = content.match(/governance:\s*\{([^}]*)\}/);
+  if (!block) return null;
+  const match = block[1].match(new RegExp(`\\b${field}:\\s*['"]([a-z-]+)['"]`));
+  return match ? match[1] : null;
+}
+
 function detectBemBlock(componentPath: string): string | null {
   // Prefer metadata file (source of truth) over SCSS scanning.
   const fromMeta = readMetadataField(componentPath, 'bemBlock');
@@ -223,6 +244,8 @@ function generate(): void {
     componentEntries[name] = {
       path: relativePath,
       category: getCategory(filePath),
+      status: readGovernanceField(filePath, 'status'),
+      owner: readGovernanceField(filePath, 'owner'),
       metadata: hasMetadata(filePath),
       bemBlock: detectBemBlock(filePath),
       primeNg: detectPrimeNg(filePath),
@@ -256,6 +279,16 @@ function generate(): void {
 
   // Count PrimeNG mappings
   const primeNgMappings = Object.values(componentEntries).filter((c) => c.primeNg).length;
+
+  // Governance status distribution — sorted keys keep the output stable.
+  const byStatus: Record<string, number> = {};
+  for (const entry of Object.values(componentEntries)) {
+    const key = entry.status ?? 'undeclared';
+    byStatus[key] = (byStatus[key] ?? 0) + 1;
+  }
+  const byStatusSorted = Object.fromEntries(
+    Object.entries(byStatus).sort(([a], [b]) => a.localeCompare(b)),
+  );
 
   // Build output
   const output: IndexFile = {
@@ -316,6 +349,7 @@ function generate(): void {
       relationshipsMapped: totalRelationships,
       tokenFiles: 11,
       primeNgMappings,
+      byStatus: byStatusSorted,
     },
   };
 
@@ -335,6 +369,7 @@ function generate(): void {
   console.log(`   Components: ${output.summary.totalComponents}`);
   console.log(`   With metadata: ${output.summary.componentsWithMetadata}`);
   console.log(`   Relationships: ${output.summary.relationshipsMapped}`);
+  console.log(`   By status: ${JSON.stringify(output.summary.byStatus)}`);
 }
 
 generate();

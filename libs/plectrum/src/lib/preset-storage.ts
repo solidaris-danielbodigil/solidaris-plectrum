@@ -2,6 +2,8 @@ export const PLECTRUM_PRESET_STORAGE_KEY = 'solidaris-plectrum-preset';
 
 export type PlectrumPresetVersion = 'v0.6' | 'v1';
 
+export const DEFAULT_PLECTRUM_PRESET_VERSION: PlectrumPresetVersion = 'v1';
+
 const VALID_VERSIONS: readonly PlectrumPresetVersion[] = ['v0.6', 'v1'];
 
 export function isPlectrumPresetVersion(value: string | null | undefined): value is PlectrumPresetVersion {
@@ -32,7 +34,7 @@ export function resolvePresetVersion(
     return explicit;
   }
 
-  return readStoredPresetVersion(storage) ?? 'v0.6';
+  return readStoredPresetVersion(storage) ?? DEFAULT_PLECTRUM_PRESET_VERSION;
 }
 
 export function toggleStoredPresetVersion(storage: Storage | null = getBrowserStorage()): PlectrumPresetVersion {

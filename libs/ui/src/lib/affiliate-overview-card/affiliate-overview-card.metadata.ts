@@ -16,6 +16,11 @@ export const AffiliateOverviewCardMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'Promoted from iSHARE — the affiliate summary card is reused across applications.',
+  },
   usage: {
     useCases: [
       'Affiliate audit result summary (Dossier Affilié)',

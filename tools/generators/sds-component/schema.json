@@ -27,7 +27,14 @@
       "type": "string",
       "description": "PrimeNG component this wraps (optional, e.g. 'Button', 'DataTable')",
       "default": ""
+    },
+    "owner": {
+      "type": "string",
+      "description": "Team accountable for the component. design-system scaffolds status 'core'; an application team scaffolds status 'candidate'.",
+      "enum": ["design-system", "ishare", "icrm"],
+      "default": "design-system",
+      "x-prompt": "Owner (design-system/ishare/icrm):"
     }
   },
-  "required": ["name", "category", "type"]
+  "required": ["name", "category", "type", "owner"]
 }

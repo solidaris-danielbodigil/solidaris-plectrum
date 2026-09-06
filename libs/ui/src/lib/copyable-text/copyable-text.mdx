@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './copyable-text.stories';
 
 <Meta of={Stories} />
 
 # Copyable Text
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
 

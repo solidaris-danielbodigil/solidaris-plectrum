@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-05T01:27:04.422Z",
+    "generated": "2026-09-05T23:19:51.504Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -72,6 +72,8 @@
     "AffiliateDetailDrawer": {
       "path": "libs/ui/src/lib/affiliate-detail-drawer/affiliate-detail-drawer.component.ts",
       "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-drawer",
       "primeNg": "Accordion",
@@ -85,6 +87,8 @@
     "AffiliateOverviewCard": {
       "path": "libs/ui/src/lib/affiliate-overview-card/affiliate-overview-card.component.ts",
       "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-affiliate-overview-card",
       "primeNg": "Api",
@@ -98,6 +102,8 @@
     "CopyableText": {
       "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts",
       "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-copyable-text",
       "primeNg": "Button",
@@ -113,6 +119,8 @@
     "DelayPredictionCard": {
       "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts",
       "category": "molecules",
+      "status": "app",
+      "owner": "ishare",
       "metadata": true,
       "bemBlock": "c-delay-prediction-card",
       "primeNg": "Button",
@@ -123,6 +131,8 @@
     "DocDemoBox": {
       "path": "libs/ui/src/lib/doc-demo-box/doc-demo-box.component.ts",
       "category": "atoms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-doc-demo-box",
       "primeNg": null,
@@ -133,6 +143,8 @@
     "EmptyState": {
       "path": "libs/ui/src/lib/empty-state/empty-state.component.ts",
       "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-empty-state",
       "primeNg": null,
@@ -143,6 +155,8 @@
     "FormField": {
       "path": "libs/ui/src/lib/form-field/form-field.component.ts",
       "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-form-field",
       "primeNg": "Message",
@@ -153,6 +167,8 @@
     "Icon": {
       "path": "libs/ui/src/lib/icon/icon.component.ts",
       "category": "atoms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-icon",
       "primeNg": null,
@@ -166,6 +182,8 @@
     "InputClear": {
       "path": "libs/ui/src/lib/input-clear/input-clear.component.ts",
       "category": "atoms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-input-clear",
       "primeNg": "Icons",
@@ -178,6 +196,8 @@
     "List": {
       "path": "libs/ui/src/lib/list/list.component.ts",
       "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-list",
       "primeNg": "Api",
@@ -188,6 +208,8 @@
     "NavShell": {
       "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts",
       "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-nav-shell",
       "primeNg": null,
@@ -200,6 +222,8 @@
     "PlectrumAvatar": {
       "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts",
       "category": "atoms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-plectrum-avatar",
       "primeNg": null,
@@ -214,6 +238,8 @@
     "SubNavShell": {
       "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts",
       "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-sub-nav-shell",
       "primeNg": "Accordion",
@@ -224,6 +250,8 @@
     "Toolbar": {
       "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
       "category": "molecules",
+      "status": "candidate",
+      "owner": "ishare",
       "metadata": true,
       "bemBlock": "c-toolbar",
       "primeNg": "Card",
@@ -234,6 +262,8 @@
     "TopNav": {
       "path": "libs/ui/src/lib/top-nav/top-nav.component.ts",
       "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-top-nav",
       "primeNg": "Api",
@@ -247,6 +277,8 @@
     "TransactionsCicsModal": {
       "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts",
       "category": "organisms",
+      "status": "app",
+      "owner": "ishare",
       "metadata": true,
       "bemBlock": "c-transactions-cics-modal",
       "primeNg": "Button",
@@ -351,6 +383,11 @@
     "componentsWithMetadata": 16,
     "relationshipsMapped": 16,
     "tokenFiles": 11,
-    "primeNgMappings": 11
+    "primeNgMappings": 11,
+    "byStatus": {
+      "app": 2,
+      "candidate": 1,
+      "core": 13
+    }
   }
 }

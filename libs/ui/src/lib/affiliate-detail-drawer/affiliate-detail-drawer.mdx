@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './affiliate-detail-drawer.stories';
 
 <Meta of={Stories} />
 
 # Affiliate Detail Drawer
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 iSHARE “Carte affilié” detail drawer — a headless `p-drawer` wrapper.
 

@@ -97,12 +97,12 @@ export const Dimensions = {
   name: 'Dimensions',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--col" style="height: 200px; border: 1px solid #ccc;">
-      <div class="c-demo-cell o-flex__item--shrink-0">Header (shrink-0)</div>
-      <div class="c-demo-cell c-demo-cell--accent o-layout--min-h-0 o-layout--overflow-y-auto" style="flex: 1 1 0;">
-        <div style="height: 400px; padding: 1rem;">Scrollable content (min-h-0 + overflow-y-auto)</div>
+    <div class="o-flex o-flex--col" style="height: 200px;">
+      <div class="o-flex__item o-flex__item--shrink-0">Header (shrink-0)</div>
+      <div class="o-flex__item o-layout--min-h-0 o-layout--overflow-y-auto">
+        <div style="height: 400px;">Scrollable content (min-h-0 + overflow-y-auto)</div>
       </div>
-      <div class="c-demo-cell o-flex__item--shrink-0">Footer (shrink-0)</div>
+      <div class="o-flex__item o-flex__item--shrink-0">Footer (shrink-0)</div>
     </div>`,
   }),
 };
@@ -113,9 +113,9 @@ export const FullHeight = {
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--full-height" style="height: 300px">
-      <div class="o-flex__item c-demo-cell"></div>
-      <div class="o-flex__item o-flex__item--8 c-demo-cell c-demo-cell--accent"></div>
-      <div class="o-flex__item c-demo-cell"></div>
+      <div class="o-flex__item"></div>
+      <div class="o-flex__item o-flex__item--8"></div>
+      <div class="o-flex__item"></div>
     </div>`,
   }),
 };
@@ -125,10 +125,10 @@ export const Overflow = {
   name: 'Overflow',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 150px; border: 1px solid #ccc;">
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 1</div>
-      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 2</div>
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="min-height: 80px;">Item 3</div>
+    <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 150px;">
+      <div class="o-flex__item o-flex__item--big"></div>
+      <div class="o-flex__item o-flex__item--big"></div>
+      <div class="o-flex__item o-flex__item--big"></div>
     </div>`,
   }),
 };
@@ -138,11 +138,13 @@ export const Display = {
   name: 'Display',
   render: () => ({
     template: `
-    <div style="border: 1px solid #ccc; padding: 1rem;">
-      <div class="c-demo-cell o-layout--block">block (always visible)</div>
-      <div class="c-demo-cell c-demo-cell--accent o-layout--hidden o-layout--block@md">hidden → block@md (resize viewport)</div>
-      <div class="c-demo-cell o-layout--inline-block" style="margin-top: 0.5rem;">inline-block</div>
-      <div class="c-demo-cell c-demo-cell--accent o-layout--inline-block" style="margin-top: 0.5rem;">inline-block</div>
+    <div class="o-flex o-flex--col">
+      <div class="o-flex__item o-layout--block">block (always visible)</div>
+      <div class="o-flex__item o-layout--hidden o-layout--block@md">hidden → block@md (resize viewport)</div>
+      <div class="o-flex">
+        <div class="o-flex__item o-layout--inline-block">inline-block</div>
+        <div class="o-flex__item o-layout--inline-block">inline-block</div>
+      </div>
     </div>`,
   }),
 };
@@ -152,11 +154,11 @@ export const Position = {
   name: 'Position',
   render: () => ({
     template: `
-    <div class="o-layout--overflow-y-auto" style="height: 200px; border: 1px solid #ccc;">
-      <div class="c-demo-cell c-demo-cell--accent o-layout--sticky-top">Sticky header (scroll me)</div>
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 1</div>
-      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 2</div>
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="height: 100px;">Content 3</div>
+    <div class="o-flex o-flex--col o-layout--overflow-y-auto" style="height: 200px;">
+      <div class="o-flex__item o-flex__item--shrink-0 o-layout--sticky-top">Sticky header (scroll me)</div>
+      <div class="o-flex__item o-flex__item--big"></div>
+      <div class="o-flex__item o-flex__item--big"></div>
+      <div class="o-flex__item o-flex__item--big"></div>
     </div>`,
   }),
 };
@@ -167,19 +169,19 @@ export const Spacing = {
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--gap-2">
-      <div class="o-flex__item o-flex__item--3 c-demo-cell">gap-2</div>
-      <div class="o-flex__item c-demo-cell c-demo-cell--accent">gap-2</div>
-      <div class="o-flex__item o-flex__item--3 c-demo-cell">gap-2</div>
+      <div class="o-flex__item o-flex__item--3">gap-2</div>
+      <div class="o-flex__item">gap-2</div>
+      <div class="o-flex__item o-flex__item--3">gap-2</div>
     </div>
-    <div class="o-flex o-layout o-layout--padding-2 o-layout--margin-top-2" style="border: 1px dashed #ccc;">
-      <div class="o-flex__item o-flex__item--4 c-demo-cell">padding-2</div>
-      <div class="o-flex__item o-flex__item--4 c-demo-cell c-demo-cell--accent">padding-2</div>
-      <div class="o-flex__item o-flex__item--4 c-demo-cell">padding-2</div>
+    <div class="o-flex o-layout o-layout--padding-2">
+      <div class="o-flex__item o-flex__item--4">padding-2</div>
+      <div class="o-flex__item o-flex__item--4">padding-2</div>
+      <div class="o-flex__item o-flex__item--4">padding-2</div>
     </div>
-    <div class="o-flex o-layout o-layout--margin-top-2">
-      <div class="o-flex__item o-flex__item--3 c-demo-cell">margin-top-2</div>
-      <div class="o-flex__item o-flex__item--6 c-demo-cell c-demo-cell--accent">margin-top-2</div>
-      <div class="o-flex__item o-flex__item--3 c-demo-cell">margin-top-2</div>
+    <div class="o-flex">
+      <div class="o-flex__item o-flex__item--3">margin-top-2</div>
+      <div class="o-flex__item o-flex__item--6">margin-top-2</div>
+      <div class="o-flex__item o-flex__item--3">margin-top-2</div>
     </div>`,
   }),
 };
@@ -189,16 +191,15 @@ export const Responsive = {
   name: 'Responsive',
   render: () => ({
     template: `
-    <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
-      Resize the viewport to see responsive changes.
-    </p>
     <div class="o-flex o-flex--wrap o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">gap-1 → gap-2@sm → gap-4@lg</div>
-      <div class="c-demo-cell c-demo-cell--accent o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">Resize me</div>
-      <div class="c-demo-cell o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-1" style="flex: 1; min-width: 100px;">to see gap change</div>
+      <div class="o-flex__item">gap-1 → gap-2@sm → gap-4@lg</div>
+      <div class="o-flex__item">Resize me</div>
+      <div class="o-flex__item">to see gap change</div>
     </div>
-    <div class="o-layout--hidden o-layout--block@md c-demo-cell c-demo-cell--accent" style="margin-top: 1rem;">
-      I'm hidden below md, visible from md up
+    <div class="o-flex">
+      <div class="o-flex__item o-layout--hidden o-layout--block@md">
+        I'm hidden below md, visible from md up
+      </div>
     </div>`,
   }),
 };

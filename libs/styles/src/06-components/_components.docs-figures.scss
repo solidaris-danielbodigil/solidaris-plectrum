@@ -9,6 +9,7 @@
 //   c-docs-steps     pds-docs-steps   → p-timeline + p-badge + p-tag
 //   c-docs-cards     pds-docs-cards   → p-card + p-tag
 //   c-docs-callout   pds-docs-callout → p-message
+//   c-docs-status    pds-docs-status  → p-tag (status + owner badge)
 //
 // PrimeNG owns the chrome of steps, cards and callouts. Rules here are
 // structural only: grid columns, list bullets the reset removed, text rhythm
@@ -145,6 +146,24 @@ $docs-tones: design, system, app, neutral;
   color: var(--#{$pds-prefix}-color-text-muted);
 }
 
+// Pages the step refers to — inline row. Each item is pds-docs-link
+// (PrimeNG Button link). Chrome stays with PrimeNG.
+.c-docs-steps__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--#{$pds-prefix}-spacing-0-5) var(--#{$pds-prefix}-spacing-1);
+  margin: var(--#{$pds-prefix}-spacing-0-5) 0 0;
+  padding: 0;
+  list-style: none;
+
+  >li+li::before {
+    content: '·';
+    margin-inline-end: var(--#{$pds-prefix}-spacing-1);
+    color: var(--#{$pds-prefix}-color-text-muted);
+  }
+}
+
 // ── Cards (p-card) ───────────────────────────────────────────────────────────
 // auto-fit grid: as many equal cards per row as the min width allows.
 .c-docs-cards {
@@ -179,9 +198,21 @@ $docs-tones: design, system, app, neutral;
   list-style: disc outside;
   color: var(--#{$pds-prefix}-color-text);
 
-  > li + li {
+  >li+li {
     margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
   }
+}
+
+// ── Status badge (p-tag) ─────────────────────────────────────────────────────
+// Layout is o-flex / o-layout on the host; only the text rhythm lives here.
+.c-docs-status__hint {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-status__note {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text);
 }
 
 // ── Callout (p-message) ──────────────────────────────────────────────────────
@@ -204,7 +235,7 @@ $docs-tones: design, system, app, neutral;
   padding-inline-start: var(--#{$pds-prefix}-spacing-2);
   list-style: disc outside;
 
-  > li + li {
+  >li+li {
     margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
   }
 }

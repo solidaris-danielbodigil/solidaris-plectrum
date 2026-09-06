@@ -6,10 +6,31 @@
 // retyped here (.ai/rules/10-css-ssot.md). Border classes are grouped by the
 // properties their rule declares, so a new side, modifier or status appears in
 // the right section with no edit to this file.
+// Token catalogues reuse the token-explorer grid chrome (c-token-explorer__item).
 // =============================================================================
 
-import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import type { Meta } from '@storybook/angular';
 import { readClassRules, readClassSuffixes } from '../storybook/cssom';
+import { tokenExplorerCards } from '../storybook/docs-token-cards';
+
+/** Longest stop first so `top-2xl` resolves to `2xl`, not `xl`. */
+const RADIUS_STOPS = [
+  '2xl',
+  'none',
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  'pill',
+] as const;
+
+function radiusVar(suffix: string): string {
+  const stop = RADIUS_STOPS.find(
+    (item) => suffix === item || suffix.endsWith(`-${item}`),
+  );
+  return `var(--pds-radius-${stop ?? suffix})`;
+}
 
 /** All-corner stops: a single segment after the prefix (`md`, `2xl`, `pill`). */
 const allCornerRadii = () => readClassSuffixes(/^u-radius-([a-z0-9]+)$/);
@@ -34,7 +55,9 @@ function borderGroups(): BorderGroups {
   const groups: BorderGroups = { sides: [], modifiers: [], statuses: [] };
 
   for (const rule of readClassRules(/^u-border-(.+)$/)) {
-    const setsBorder = rule.properties.some((prop) => /^border($|-)/.test(prop));
+    const setsBorder = rule.properties.some((prop) =>
+      /^border($|-)/.test(prop),
+    );
     const setsColor = rule.properties.includes('--pds-border-color');
 
     if (setsBorder) groups.sides.push(rule.suffix);
@@ -45,23 +68,24 @@ function borderGroups(): BorderGroups {
   return groups;
 }
 
-function cells(items: string[], className: (item: string) => string, style = ''): string {
-  return items
-    .map(
-      (item) => `
-      <div class="c-demo-cell ${className(item)} o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-2" style="${style}">
-        ${item}
-      </div>`,
-    )
-    .join('');
+function utilityCards(
+  items: string[],
+  className: (item: string) => string,
+  previewClass: (item: string) => string,
+  tag?: (item: string) => string,
+): string {
+  return tokenExplorerCards(
+    items.map((item) => ({
+      name: className(item),
+      tag: tag?.(item),
+      previewClass: previewClass(item),
+    })),
+  );
 }
 
 export default {
   title: 'Foundations/Borders',
   tags: ['!dev'],
-  decorators: [
-    componentWrapperDecorator((story) => `<div class="sb-demo-wrapper">${story}</div>`),
-  ],
   parameters: { layout: 'padded' },
 } as Meta;
 
@@ -70,8 +94,13 @@ export const Radius = {
   name: 'Radius',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-2">
-      ${cells(allCornerRadii(), (r) => `u-radius-${r}`, 'width: 6rem; height: 4rem;')}
+    <div class="c-token-explorer">
+      ${utilityCards(
+        allCornerRadii(),
+        (stop) => `u-radius-${stop}`,
+        (stop) => `c-token-explorer__preview--shape u-radius-${stop}`,
+        (stop) => radiusVar(stop),
+      )}
     </div>`,
   }),
 };
@@ -80,8 +109,13 @@ export const RadiusTargets = {
   name: 'Radius Targets',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-2">
-      ${cells(radiusTargets(), (r) => `u-radius-${r}`, 'width: 11rem; height: 3.5rem;')}
+    <div class="c-token-explorer">
+      ${utilityCards(
+        radiusTargets(),
+        (stop) => `u-radius-${stop}`,
+        (stop) => `c-token-explorer__preview--shape u-radius-${stop}`,
+        (stop) => radiusVar(stop),
+      )}
     </div>`,
   }),
 };
@@ -91,8 +125,12 @@ export const BorderSides = {
   name: 'Border Sides',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-3">
-      ${cells(borderGroups().sides, (s) => `u-border-${s}`, 'width: 8rem; height: 4rem;')}
+    <div class="c-token-explorer">
+      ${utilityCards(
+        borderGroups().sides,
+        (side) => `u-border-${side}`,
+        (side) => `c-token-explorer__preview--box u-border-${side}`,
+      )}
     </div>`,
   }),
 };
@@ -119,8 +157,14 @@ export const BorderStatus = {
   name: 'Border Status Colors',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-3">
-      ${cells(borderGroups().statuses, (s) => `u-border-all u-border-${s}`, 'width: 8rem;')}
+    <div class="c-token-explorer">
+      ${utilityCards(
+        borderGroups().statuses,
+        (status) => `u-border-${status}`,
+        (status) =>
+          `c-token-explorer__preview--box u-border-all u-border-${status}`,
+        (status) => `var(--pds-color-${status})`,
+      )}
     </div>`,
   }),
 };
@@ -129,9 +173,19 @@ export const BorderStatus = {
 export const Generate = {
   name: 'Generate',
   tags: ['dev'],
-  args: { side: 'all', status: 'default', thick: false, dashed: false, radius: 'none' },
+  args: {
+    side: 'all',
+    status: 'default',
+    thick: false,
+    dashed: false,
+    radius: 'none',
+  },
   argTypes: {
-    side: { control: 'select', options: borderGroups().sides, description: 'u-border-{side}' },
+    side: {
+      control: 'select',
+      options: borderGroups().sides,
+      description: 'u-border-{side}',
+    },
     status: {
       control: 'select',
       options: ['default', ...borderGroups().statuses],
@@ -146,7 +200,13 @@ export const Generate = {
     },
   },
   parameters: { layout: 'padded' },
-  render: (args: { side: string; status: string; thick: boolean; dashed: boolean; radius: string }) => {
+  render: (args: {
+    side: string;
+    status: string;
+    thick: boolean;
+    dashed: boolean;
+    radius: string;
+  }) => {
     const classes = [
       `u-border-${args.side}`,
       args.status !== 'default' ? `u-border-${args.status}` : '',

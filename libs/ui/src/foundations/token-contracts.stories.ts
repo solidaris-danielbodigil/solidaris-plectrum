@@ -7,15 +7,19 @@
 // entry naming a token that no longer exists shows up as a broken contract
 // rather than passing silently.
 //
-// Reuses the token explorer chrome (c-token-explorer*) for search and copy.
+// PrimeNG: p-table row expansion (one collapsed row per component), p-tag
+// (token count + origin). Search and copy reuse token-explorer chrome.
 // =============================================================================
 
 import { afterNextRender, Component, computed, signal } from '@angular/core';
 import type { Meta, StoryObj } from '@storybook/angular';
 import { Badge } from 'primeng/badge';
+import { Button } from 'primeng/button';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { Tag } from 'primeng/tag';
 import { showStorybookToast } from '../storybook/storybook-toast';
 import { AffiliateDetailDrawerMetadata } from '../lib/affiliate-detail-drawer/affiliate-detail-drawer.metadata';
 import { AffiliateOverviewCardMetadata } from '../lib/affiliate-overview-card/affiliate-overview-card.metadata';
@@ -49,7 +53,9 @@ const METADATA = [
   TopNavMetadata,
 ];
 
-const FROM_FIGMA = new Set(TOKEN_ANNOTATIONS.map((annotation) => annotation.cssVar));
+const FROM_FIGMA = new Set(
+  TOKEN_ANNOTATIONS.map((annotation) => annotation.cssVar),
+);
 
 const CONTRACTS = METADATA.flatMap((meta) =>
   (meta.tokens?.consumed ?? []).map((cssVar) => ({
@@ -58,6 +64,23 @@ const CONTRACTS = METADATA.flatMap((meta) =>
     haystack: `${meta.component.name} ${cssVar}`.toLowerCase(),
   })),
 );
+
+type ContractOrigin = 'not declared' | 'Figma' | 'code-owned';
+
+interface TokenContract {
+  component: string;
+  cssVar: string;
+  haystack: string;
+  declared: boolean;
+  origin: ContractOrigin;
+}
+
+interface TokenContractGroup {
+  component: string;
+  tokens: TokenContract[];
+  count: number;
+  broken: boolean;
+}
 
 @Component({
   standalone: true,
@@ -69,6 +92,9 @@ const CONTRACTS = METADATA.flatMap((meta) =>
     InputText,
     InputClearComponent,
     Badge,
+    Button,
+    TableModule,
+    Tag,
   ],
   template: `
     <div
@@ -87,13 +113,13 @@ const CONTRACTS = METADATA.flatMap((meta) =>
               aria-label="Search token contracts"
               class="c-token-explorer__search-input"
               [value]="search()"
-              (input)="search.set($any($event.target).value)"
+              (input)="onSearch($any($event.target).value)"
             />
             <p-inputicon>
               <pds-input-clear
                 [visible]="!!search()"
                 ariaLabel="Clear search"
-                (clear)="search.set('')"
+                (clear)="onSearch('')"
               />
             </p-inputicon>
           </p-iconField>
@@ -105,46 +131,105 @@ const CONTRACTS = METADATA.flatMap((meta) =>
             [value]="
               brokenCount()
                 ? brokenCount() + ' broken of ' + total
-                : rows().length + ' / ' + total + ' contracts'
+                : matchCount() + ' / ' + total + ' contracts'
             "
           />
         </ng-container>
       </pds-toolbar>
 
       <section class="c-token-explorer__section">
-        <table class="c-token-explorer__table">
-          <thead>
+        <p-table
+          [value]="groups()"
+          dataKey="component"
+          [expandedRowKeys]="expandedRows"
+          [rowHover]="true"
+        >
+          <ng-template #header>
             <tr>
               <th scope="col">Component</th>
-              <th scope="col">Consumed token</th>
-              <th scope="col">Declared in CSS</th>
-              <th scope="col"><span class="u-sr-only">Copy</span></th>
             </tr>
-          </thead>
-          <tbody>
-            @for (row of rows(); track row.component + row.cssVar) {
-              <tr [class.is-warning]="!row.declared">
-                <th scope="row">{{ row.component }}</th>
-                <td><code>{{ row.cssVar }}</code></td>
-                <td>{{ row.origin }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="c-token-explorer__copy-btn"
-                    [attr.aria-label]="'Copy var(' + row.cssVar + ')'"
-                    (click)="copy(row.cssVar)"
-                  >
-                    <i class="bi bi-clipboard" aria-hidden="true"></i>
-                  </button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
+          </ng-template>
 
-        @if (rows().length === 0) {
-          <p class="c-token-explorer__empty">No contract matches “{{ search() }}”.</p>
-        }
+          <ng-template #body let-group let-expanded="expanded">
+            <tr
+              class="c-token-contracts__row"
+              [class.is-warning]="group.broken"
+            >
+              <td>
+                <div class="o-flex o-flex--align-items-center o-layout--gap-1">
+                  <p-button
+                    type="button"
+                    [pRowToggler]="group"
+                    [text]="true"
+                    severity="secondary"
+                    [rounded]="true"
+                    [icon]="
+                      expanded ? 'bi bi-chevron-down' : 'bi bi-chevron-right'
+                    "
+                    [ariaLabel]="
+                      (expanded ? 'Collapse ' : 'Expand ') + group.component
+                    "
+                  />
+                  <span>{{ group.component }}</span>
+                  <p-tag
+                    [value]="
+                      group.count + (group.count === 1 ? ' token' : ' tokens')
+                    "
+                    [severity]="group.broken ? 'danger' : 'secondary'"
+                  />
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template #expandedrow let-group>
+            <tr>
+              <td>
+                <p-table [value]="group.tokens" dataKey="cssVar">
+                  <ng-template #header>
+                    <tr>
+                      <th scope="col">Consumed token</th>
+                      <th scope="col">Declared in CSS</th>
+                      <th scope="col"><span class="u-sr-only">Copy</span></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template #body let-token>
+                    <tr
+                      class="c-token-contracts__row"
+                      [class.is-warning]="!token.declared"
+                    >
+                      <td>
+                        <code>{{ token.cssVar }}</code>
+                      </td>
+                      <td>
+                        <p-tag
+                          [value]="token.origin"
+                          [severity]="originSeverity(token.origin)"
+                        />
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          class="c-token-explorer__copy-btn"
+                          [attr.aria-label]="'Copy var(' + token.cssVar + ')'"
+                          (click)="copy(token.cssVar)"
+                        >
+                          <i class="bi bi-clipboard" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template #emptymessage>
+            <tr>
+              <td>No contract matches “{{ search() }}”.</td>
+            </tr>
+          </ng-template>
+        </p-table>
       </section>
     </div>
   `,
@@ -154,12 +239,14 @@ class TokenContractsPageComponent {
 
   readonly total = CONTRACTS.length;
   readonly search = signal('');
+  /** Empty map — PrimeNG keeps every component row collapsed until toggled. */
+  expandedRows: Record<string, boolean> = {};
 
   constructor() {
     afterNextRender(() => this.rendered.set(true));
   }
 
-  private readonly checked = computed(() => {
+  private readonly checked = computed<TokenContract[]>(() => {
     this.rendered();
     const declared = readTokenDeclarations();
     return CONTRACTS.map((contract) => {
@@ -180,11 +267,44 @@ class TokenContractsPageComponent {
     () => this.checked().filter((row) => !row.declared).length,
   );
 
-  readonly rows = computed(() => {
+  readonly groups = computed<TokenContractGroup[]>(() => {
     const query = this.search().trim().toLowerCase();
-    const checked = this.checked();
-    return query ? checked.filter((row) => row.haystack.includes(query)) : checked;
+    const buckets = new Map<string, TokenContract[]>();
+
+    for (const row of this.checked()) {
+      if (query && !row.haystack.includes(query)) continue;
+      const bucket = buckets.get(row.component);
+      if (bucket) bucket.push(row);
+      else buckets.set(row.component, [row]);
+    }
+
+    return [...buckets.entries()].map(([component, tokens]) => ({
+      component,
+      tokens,
+      count: tokens.length,
+      broken: tokens.some((token) => !token.declared),
+    }));
   });
+
+  readonly matchCount = computed(() =>
+    this.groups().reduce((total, group) => total + group.count, 0),
+  );
+
+  onSearch(value: string): void {
+    this.search.set(value);
+    const query = value.trim();
+    this.expandedRows = query
+      ? Object.fromEntries(
+          this.groups().map((group) => [group.component, true]),
+        )
+      : {};
+  }
+
+  originSeverity(origin: ContractOrigin): 'warn' | 'info' | 'secondary' {
+    if (origin === 'not declared') return 'warn';
+    if (origin === 'Figma') return 'info';
+    return 'secondary';
+  }
 
   copy(cssVar: string): void {
     const text = `var(${cssVar})`;

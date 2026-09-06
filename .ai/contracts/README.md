@@ -40,11 +40,11 @@
 
 ## 2. Three Layers
 
-| Layer | Purpose | File(s) |
-|---|---|---|
-| **Index (WHAT/WHERE)** | Component inventory, relationships, paths | `index.json` |
-| **Metadata (HOW/WHY)** | Per-component usage, anti-patterns, token consumption | `*.metadata.ts` (colocated in `libs/ui`) |
-| **Protocols (RULES)** | Decision trees, validation checklists, audit rules | `protocols/*.md` |
+| Layer                  | Purpose                                                                                   | File(s)                                  |
+| ---------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------- |
+| **Index (WHAT/WHERE)** | Component inventory, relationships, paths, `status` / `owner` per component               | `index.json`                             |
+| **Metadata (HOW/WHY)** | Per-component usage, anti-patterns, token consumption, `governance` (status, owner, note) | `*.metadata.ts` (colocated in `libs/ui`) |
+| **Protocols (RULES)**  | Decision trees, validation checklists, audit rules                                        | `protocols/*.md`                         |
 
 ---
 
@@ -61,23 +61,23 @@
 
 ## 4. Key Decisions
 
-| Decision | Choice | Rationale |
-|---|---|---|
-| Schema format | TypeScript | Type-safe, importable, real code snippets |
-| Index format | JSON | Native to the TS ecosystem, importable, schema-validatable |
-| Protocol format | Markdown | Readable by both humans and agents |
-| Metadata location | Colocated with component | Single responsibility, easy to find |
+| Decision          | Choice                   | Rationale                                                  |
+| ----------------- | ------------------------ | ---------------------------------------------------------- |
+| Schema format     | TypeScript               | Type-safe, importable, real code snippets                  |
+| Index format      | JSON                     | Native to the TS ecosystem, importable, schema-validatable |
+| Protocol format   | Markdown                 | Readable by both humans and agents                         |
+| Metadata location | Colocated with component | Single responsibility, easy to find                        |
 
 ---
 
 ## 5. Maintenance
 
-| Artifact | When to update |
-|---|---|
-| `index.json` | Automatic — `pds:component` regenerates it on scaffold and the `afterFileEdit` Cursor hook regenerates it on edits under `libs/ui`; CI fails when the committed file is stale. Run `npm run generate-index` manually only after hand-deleting files |
-| `*.metadata.ts` | Create with every new component; update on API or token changes |
-| `protocols/` | When architectural decisions change |
-| `schema/` | When metadata structure needs new fields |
+| Artifact        | When to update                                                                                                                                                                                                                                      |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.json`    | Automatic — `pds:component` regenerates it on scaffold and the `afterFileEdit` Cursor hook regenerates it on edits under `libs/ui`; CI fails when the committed file is stale. Run `npm run generate-index` manually only after hand-deleting files |
+| `*.metadata.ts` | Create with every new component; update on API or token changes                                                                                                                                                                                     |
+| `protocols/`    | When architectural decisions change                                                                                                                                                                                                                 |
+| `schema/`       | When metadata structure needs new fields                                                                                                                                                                                                            |
 
 ---
 
@@ -88,4 +88,5 @@
 - [x] CI hook: regenerate index on component changes + fail if stale (`ci.yml` diff gate + `.cursor/hooks/regenerate-contracts-index.mjs` locally)
 - [ ] Drift detection: compare `.metadata.ts` against actual component API
 - [ ] Token audit runner in CI (prefix compliance, semantic coverage, contrast)
+- [x] Storybook test-runner: play + a11y + coverage (`npm run test-storybook` / `test-storybook:ci`) — required per component (`.ai/rules/03-storybook.md` §5)
 - [ ] Storybook plugin to render metadata alongside stories

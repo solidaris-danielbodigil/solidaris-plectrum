@@ -1,0 +1,37 @@
+<div class="c-docs-hero__backdrop" aria-hidden="true">
+  <img class="c-docs-hero__shape c-docs-hero__shape--1" src="assets/plectrum-shape.svg" alt="" />
+  <img class="c-docs-hero__shape c-docs-hero__shape--2" src="assets/plectrum-shape.svg" alt="" />
+  <img class="c-docs-hero__shape c-docs-hero__shape--3" src="assets/plectrum-shape.svg" alt="" />
+</div>
+
+<div class="c-docs-hero__content">
+  <span class="c-docs-hero__logo">
+    <img class="c-docs-hero__logo-img" src="assets/Logo.svg" alt="Solidaris" />
+  </span>
+
+  <div class="c-docs-hero__heading">
+    <h1 class="c-docs-hero__title">{{ title() }}</h1>
+    <p class="c-docs-hero__eyebrow">{{ versionLine }}</p>
+  </div>
+
+  @if (lead()) {
+    <p class="c-docs-hero__lead">{{ lead() }}</p>
+  }
+
+  @if (actions().length) {
+    <ul class="c-docs-hero__actions">
+      @for (action of actions(); track action.path) {
+        <li>
+          <a
+            pButton
+            target="_top"
+            [href]="href(action)"
+            [label]="action.label"
+            [severity]="action.variant === 'secondary' ? 'secondary' : undefined"
+            [outlined]="action.variant === 'secondary'"
+          ></a>
+        </li>
+      }
+    </ul>
+  }
+</div>

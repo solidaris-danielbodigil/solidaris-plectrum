@@ -3,7 +3,7 @@
 > ⛔ = hard stop — a second copy of a token value or class list blocks merge
 >
 > Companion to [02-scss-tokens.md](./02-scss-tokens.md) (where tokens are declared) and
-> [03-storybook.md](./03-storybook.md) (how components are documented). This file governs
+> [03-storybook.md](./03-storybook.md) (how components are documented and tested). This file governs
 > everything that *reads* the design system: docs pages, audits, and generators.
 
 ---

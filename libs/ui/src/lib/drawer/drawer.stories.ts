@@ -3,6 +3,8 @@
 // classes. This story shows the shell statically so the structure is
 // inspectable without an overlay.
 import type { Meta, StoryObj } from '@storybook/angular';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertTextVisible } from '../../storybook/story-tests';
 
 const meta: Meta = {
   title: 'Custom components/Drawer',
@@ -12,7 +14,14 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+/** Ownership badge for the docs page — CSS-only block, so declared inline. */
+export const Status = statusStory({ status: 'core', owner: 'design-system' });
+
 export const Shell: Story = {
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Drawer title');
+    await assertTextVisible(canvasElement, 'Section title');
+  },
   render: () => ({
     template: `
       <div class="u-shadow-xl u-radius-md o-flex o-flex--y o-layout--overflow-hidden"

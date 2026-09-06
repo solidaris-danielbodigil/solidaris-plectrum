@@ -23,6 +23,21 @@ const config: StorybookConfig = {
       },
     },
     '@storybook/addon-a11y',
+    {
+      name: '@storybook/addon-coverage',
+      options: {
+        istanbul: {
+          include: ['**/libs/ui/src/lib/**'],
+          exclude: [
+            '**/*.stories.ts',
+            '**/*.mdx',
+            '**/*.spec.ts',
+            '**/*.metadata.ts',
+          ],
+        },
+      },
+    },
+    '@chromatic-com/storybook',
   ],
   framework: {
     name: '@storybook/angular',

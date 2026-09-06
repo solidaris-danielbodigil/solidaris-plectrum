@@ -2,6 +2,8 @@
 // stories carry the markup directly (same pattern as Accordion).
 import type { Meta, StoryObj } from '@storybook/angular';
 import type { DetailListRow } from '../drawer';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertTextVisible } from '../../storybook/story-tests';
 
 const ROWS: DetailListRow[] = [
   { label: 'Numéro national', value: '85.07.30-033.61' },
@@ -30,6 +32,9 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+/** Ownership badge for the docs page — CSS-only block, so declared inline. */
+export const Status = statusStory({ status: 'core', owner: 'design-system' });
+
 export const Default: Story = {
   render: () => ({
     template: `
@@ -37,10 +42,18 @@ export const Default: Story = {
         ${rows(ROWS)}
       </dl>`,
   }),
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Numéro national');
+    await assertTextVisible(canvasElement, '85.07.30-033.61');
+  },
 };
 
 export const InASection: Story = {
   name: 'In a drawer section',
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Informations générales');
+    await assertTextVisible(canvasElement, 'Numéro national');
+  },
   render: () => ({
     template: `
       <section class="c-drawer__section o-flex o-flex--y o-layout--gap-2" style="max-width: 28rem;" aria-labelledby="detail-list-demo-title">

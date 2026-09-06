@@ -30,6 +30,8 @@ export class FormFieldComponent {
   readonly errorMessage = input<string | null>(null);
   /** Associates the horizontal label with a control id (`inputId` / `id` on the field). */
   readonly inputId = input<string | undefined>(undefined);
+  /** Optional helper text under the control. */
+  readonly hint = input<string | undefined>(undefined);
   /** Screen-reader text appended after the required asterisk. */
   readonly requiredLabel = input('required');
 }

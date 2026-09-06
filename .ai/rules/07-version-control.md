@@ -30,6 +30,7 @@
 ## 3. Pull Requests
 
 - All PRs must be reviewed by at least one other developer before merge
-- PRs must pass CI (build, lint, tests) before merge
+- PRs must pass CI (build, lint, unit tests, `test-storybook:ci`) before merge
+- A `libs/ui` component PR is incomplete without Storybook `play` tests (`.ai/rules/03-storybook.md` §5)
 - PRs touching shared `libs/` require a design-system review if they change tokens or components
 - Commit the regenerated `.ai/contracts/index.json` with component changes — `pds:component` and the afterFileEdit hook regenerate it, and CI fails when it is stale

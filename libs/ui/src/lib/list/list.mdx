@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './list.stories';
 
 <Meta of={Stories} />
 
 # List
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 iSHARE affiliate document list with **journey** (grouped timeline) and **flat** modes.
 

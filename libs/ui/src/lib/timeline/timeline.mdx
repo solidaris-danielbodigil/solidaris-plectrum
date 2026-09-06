@@ -1,15 +1,19 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './timeline.stories';
 
 <Meta of={Stories} />
 
 # Timeline
 
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
 `c-timeline--content-only` is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the class to `p-timeline` directly.
 
 - **PrimeNG**: `p-timeline` (never reimplemented)
 - **Styles**: `libs/styles/src/06-components/_components.timeline.scss`
-- **Used by**: iSHARE document more-details drawer ([Patterns / iSHARE dossier shells](?path=/docs/patterns-ishare-dossier-shells--docs))
+- **Used by**: iSHARE document more-details drawer
 
 <Canvas of={Stories.ContentOnly} />
 

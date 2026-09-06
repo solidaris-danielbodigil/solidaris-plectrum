@@ -14,13 +14,16 @@
     "../src/**/*.stories.js",
     "../src/**/*.stories.jsx",
     "../src/**/*.stories.tsx",
-    "../src/**/*.mdx"
+    "../src/**/*.mdx",
+    "../src/storybook/story-tests.ts"
   ],
   "files": [
     "main.ts",
     "preview.ts",
     "manager.ts",
     "docs-table.ts",
-    "docs-figures.ts"
+    "docs-figures.ts",
+    "docs-link.ts",
+    "docs-container.ts"
   ]
 }

@@ -3,8 +3,10 @@ import { Component, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { ListComponent } from './list.component';
+import { ListMetadata } from './list.metadata';
 import type { ListDocumentItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
+import { statusStory } from '../../docs/docs-figure-stories';
 
 // =============================================================================
 // List (pds-list)
@@ -128,6 +130,9 @@ export default meta;
 
 type Story = StoryObj<ListStoryArgs>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(ListMetadata.governance);
+
 const journeyDefaults: ListStoryArgs = {
   groups: EVA_MARTINEZ_GROUPS,
   items: [],
@@ -138,6 +143,13 @@ const journeyDefaults: ListStoryArgs = {
 
 export const Default: Story = {
   args: journeyDefaults,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('region', { name: 'Suivi des documents' }),
+    ).toBeVisible();
+    await expect(canvas.getByRole('heading', { name: 'Suivi des documents' })).toBeVisible();
+  },
 };
 
 export const Grouped: Story = {
@@ -162,6 +174,13 @@ export const Flat: Story = {
     expandedGroupIds: [],
     selectedItemId: 'doc-demande-primaire',
     loading: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('region', { name: 'Suivi des documents' }),
+    ).toBeVisible();
+    await expect(canvas.getByText(/Régime général/)).toBeVisible();
   },
 };
 

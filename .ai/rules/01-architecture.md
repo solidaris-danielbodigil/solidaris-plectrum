@@ -31,8 +31,20 @@
 | SCSS tokens and utilities | `libs/styles` — never redefined at app level |
 | Design decisions | Plectrum DS + Figma UI Kit |
 | Shared routes, utils, services | `libs/` |
+| Component ownership and reuse scope | `governance` in the component's `.metadata.ts` → `.ai/contracts/index.json` → badge on its docs page |
 
 **If a token is missing from `libs/styles`, add it there first — never inline it.**
+
+### Ownership ⛔
+
+Being in `libs/ui` does not make a component part of the design system. `governance.status` does:
+
+- `core` — generic, owned by `design-system`; the only status allowed under `Custom components/…` and `Shell/…`
+- `candidate` / `app` — owned by an application team (`ishare`, `icrm`); titled `Patterns/{App}/…`; other applications propose instead of importing
+- `deprecated` — scheduled for removal, `note` names the replacement
+
+Every component starts as a proposal to the core design-system team, which answers *exists / system-level / app-specific*.
+Promotion (`candidate` → `core`) is a core-team move, not a rename: generic API, tokens into shared settings, Storybook title into the core sections (`docs/component-promotion.md`).
 
 ---
 
@@ -56,5 +68,6 @@
 
 1. Read the project overview and current phase
 2. Check `.ai/questions/` for open decisions
-3. Ensure all tests pass before making changes
-4. Run `npm run generate-index` after adding or modifying any component
+3. For a new component, confirm the core-team decision and the owner (`.ai/contracts/protocols/component-creation.md` → Pre-flight 0)
+4. Ensure all tests pass before making changes (`npm test` and, for `libs/ui` work, `npm run test-storybook`)
+5. Run `npm run generate-index` after adding or modifying any component

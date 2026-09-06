@@ -5,7 +5,7 @@ export const FormFieldMetadata: ComponentMetadata = {
     name: 'FormField',
     category: 'molecules',
     description:
-      'Optional reusable field shell with custom label, required marker, validation styling, and vertical or horizontal layout.',
+      'Optional reusable field shell with custom label, optional helper text, required marker, validation styling, and vertical or horizontal layout.',
     type: 'input',
     path: 'libs/ui/src/lib/form-field/form-field.component.ts',
     primeNgComponent: undefined,
@@ -14,6 +14,10 @@ export const FormFieldMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.form-field.scss',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
+  },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
   },
   usage: {
     useCases: [

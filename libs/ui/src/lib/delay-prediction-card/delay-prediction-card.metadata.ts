@@ -15,6 +15,11 @@ export const DelayPredictionCardMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-05',
   },
+  governance: {
+    status: 'app',
+    owner: 'ishare',
+    note: 'iSHARE-only by design (delay prediction for dossier follow-up). Other applications propose to the core team instead of importing it.',
+  },
   usage: {
     useCases: [
       'Document detail sidebar — predicted processing delay',

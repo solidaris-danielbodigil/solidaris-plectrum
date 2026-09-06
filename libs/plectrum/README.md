@@ -1,6 +1,6 @@
 # @solidaris/plectrum
 
-PrimeNG theme presets (v0.6 default, v1 optional) and `providePlectrum()`.
+PrimeNG theme presets (v1 default, v0.6 optional) and `providePlectrum()`.
 
 ## Local vs published
 
@@ -14,4 +14,4 @@ export const appConfig = {
 };
 ```
 
-`Plectrum_v0.6/` stays the default. Do not configure PrimeNG theme directly in an app.
+`Plectrum_v1/` is the default. Do not configure PrimeNG theme directly in an app.

@@ -1,9 +1,13 @@
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './icon.stories';
 
 <Meta of={Stories} />
 
 # Icon
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Universal icon primitive for the Plectrum Design System. Renders a Bootstrap Icons class or a custom SVG from `IconRegistry`.
 

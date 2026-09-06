@@ -1,0 +1,30 @@
+// =============================================================================
+// 06-components/_components.docs-control.scss
+// Intrinsic-width field chrome for Storybook docs canvases.
+//
+// PrimeNG iconfield is display: block (fills the column) and inputgroup is
+// width: 100%. Neither shrink-wraps. Docs demos that are not a full-bleed
+// shell opt in with this class so the control is only as wide as its
+// placeholder or value (field-sizing: content).
+// =============================================================================
+
+.c-docs-control {
+  width: max-content;
+  max-width: 100%;
+
+  .p-inputtext {
+    field-sizing: content;
+    width: auto;
+    max-width: 100%;
+    flex: 0 0 auto;
+  }
+}
+
+// Two-class selectors beat PrimeNG's .p-inputgroup { width: 100% } and
+// .p-inputgroup .p-iconfield { width: 100% }.
+.c-docs-control.p-iconfield,
+.c-docs-control.p-inputgroup,
+.c-docs-control.p-inputgroup .p-iconfield {
+  width: max-content;
+  max-width: 100%;
+}

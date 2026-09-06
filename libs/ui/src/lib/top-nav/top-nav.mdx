@@ -1,9 +1,13 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './top-nav.stories';
 
 <Meta of={Stories} />
 
 # Top Nav
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
 Application shell header bar.
 

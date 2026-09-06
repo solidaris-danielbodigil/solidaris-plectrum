@@ -6,6 +6,7 @@
 //   - p-timeline — vertical list with marker + connector, every step visible
 //   - p-badge    — step number as the timeline marker
 //   - p-tag      — actor (Designer / Developer / CI) coloured by tone
+//   - pds-docs-link — PrimeNG Button link variant (pButton + p-button-link)
 //
 // A vertical p-stepper shows one panel at a time; documentation needs the
 // whole process readable at once, so Timeline is the matching primitive.
@@ -25,6 +26,7 @@ import { Badge } from 'primeng/badge';
 import { Tag } from 'primeng/tag';
 import { Timeline } from 'primeng/timeline';
 import { type DocsStep, toneSeverity, type ToneSeverity } from './docs-figures.types';
+import { DocsLinkComponent } from './docs-link.component';
 
 interface StepEvent extends DocsStep {
   index: number;
@@ -33,7 +35,7 @@ interface StepEvent extends DocsStep {
 
 @Component({
   selector: 'pds-docs-steps',
-  imports: [Timeline, Badge, Tag],
+  imports: [Timeline, Badge, Tag, DocsLinkComponent],
   templateUrl: './docs-steps.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

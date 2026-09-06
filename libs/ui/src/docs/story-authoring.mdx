@@ -385,11 +385,29 @@ Do not name an unattached docs file `*-stories.mdx`. Webpack treats that as a CS
   ]}
 />
 
+### Testing
+
+Stories are the component test suite. See [Storybook — How to test UIs](https://storybook.js.org/docs/writing-tests). This workspace is Angular + webpack, so tests run through the [test-runner](https://storybook.js.org/docs/writing-tests/integrations/test-runner) (not the Vite Vitest addon).
+
+<DocsTable
+  headers={['Kind', 'How']}
+  rows={[
+    ['Render', 'Every exported story is a smoke test — it must render without error'],
+    ['Interaction', 'Add a play function with storybook/test (or libs/ui/src/storybook/story-tests.ts). At least the primary story of every component'],
+    ['Accessibility', 'addon-a11y on every story (WCAG 2.1 AA). Panel + test-runner. parameters.a11y.test is todo until existing violations are fixed'],
+    ['Visual', 'Chromatic via @chromatic-com/storybook — Visual tests panel, then npm run chromatic. Docs figures disable snapshots'],
+    ['Coverage', 'npm run test:coverage (Karma) and npm run test-storybook:coverage (stories vs libs/ui/src/lib)'],
+  ]}
+/>
+
 ### Commands
 
 ```bash
-npm run storybook          # this catalogue, port 6006
-npm run pds:component      # scaffold component + story stubs
+npm run storybook                 # this catalogue, port 6006
+npm run test-storybook            # smoke + play + a11y report (Storybook on localhost:6006)
+npm run test-storybook:coverage   # same + Istanbul report in coverage/storybook
+npm run chromatic                 # visual tests (needs a Chromatic project token)
+npm run pds:component             # scaffold component + story stubs
 ```
 
 ### Further reading

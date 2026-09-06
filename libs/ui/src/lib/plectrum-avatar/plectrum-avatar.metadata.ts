@@ -15,6 +15,10 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     created: '2026-06-04',
     modified: '2026-06-06',
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'user initials avatar',

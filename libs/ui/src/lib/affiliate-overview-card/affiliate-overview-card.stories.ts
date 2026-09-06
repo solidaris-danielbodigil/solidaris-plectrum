@@ -16,7 +16,10 @@ import {
   type AffiliateOverviewPrimaryAction,
   type AffiliateOverviewStatusAction,
 } from './affiliate-overview-card.component';
+import { AffiliateOverviewCardMetadata } from './affiliate-overview-card.metadata';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { assertTextVisible } from '../../storybook/story-tests';
 
 // =============================================================================
 // Affiliate Overview Card
@@ -220,6 +223,9 @@ export default meta;
 
 type Story = StoryObj<AffiliateOverviewCardStoryArgs>;
 
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = statusStory(AffiliateOverviewCardMetadata.governance);
+
 export const Default: Story = {
   args: {
     variant: 'default',
@@ -231,6 +237,9 @@ export const Default: Story = {
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
+  },
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Dupont, Marie');
   },
 };
 
@@ -257,6 +266,10 @@ export const InOrder: Story = {
     identifiers: DEFAULT_IDENTIFIERS,
     primaryAction: DEFAULT_PRIMARY_ACTION,
     loading: false,
+  },
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Dupont, Marie');
+    await assertTextVisible(canvasElement, 'Validation 01/06/2026');
   },
 };
 

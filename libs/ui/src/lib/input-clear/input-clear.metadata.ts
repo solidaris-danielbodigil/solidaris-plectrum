@@ -15,6 +15,10 @@ export const InputClearMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+  },
   usage: {
     useCases: [
       'Clearable pInputText fields',

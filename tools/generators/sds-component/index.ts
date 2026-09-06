@@ -14,6 +14,19 @@ interface Schema {
     | 'navigation'
     | 'feedback';
   primeNg?: string;
+  /** Team accountable for the component — decides the initial governance status. */
+  owner: 'design-system' | 'ishare' | 'icrm';
+}
+
+const OWNERS = ['design-system', 'ishare', 'icrm'] as const;
+
+/**
+ * Core-team work is `core` from day one. Anything an application team
+ * scaffolds starts as a `candidate`: the core team promotes it later or
+ * settles it as `app` (docs/component-promotion.md).
+ */
+function initialStatus(owner: Schema['owner']): 'core' | 'candidate' {
+  return owner === 'design-system' ? 'core' : 'candidate';
 }
 
 function toFileName(str: string): string {
@@ -145,6 +158,7 @@ describe('${className}Component', () => {
   writeFile(
     path.join(componentDir, `${fileName}.stories.ts`),
     `import type { Meta, StoryObj } from '@storybook/angular';
+import { expect } from '../../storybook/story-tests';
 import { ${className}Component } from './${fileName}.component';
 
 const meta: Meta<${className}Component> = {
@@ -167,7 +181,11 @@ const meta: Meta<${className}Component> = {
 export default meta;
 type Story = StoryObj<${className}Component>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.firstElementChild).toBeTruthy();
+  },
+};
 
 // TODO: Add stories for all applicable states:
 // export const Hover: Story = {};
@@ -196,6 +214,15 @@ export const ${className}Metadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.${fileName}.scss',
     created: '${today}',
     modified: '${today}',
+  },
+  governance: {
+    status: '${initialStatus(schema.owner)}',
+    owner: '${schema.owner}',${
+      schema.owner === 'design-system'
+        ? ''
+        : `
+    note: 'TODO: what the core team needs before promoting this to core.',`
+    }
   },
   usage: {
     useCases: [],
@@ -289,6 +316,13 @@ Files created:
 _components.core.scss forwards the new partial; .ai/contracts/index.json regenerated.
 Commit both with the component.
 
+Governance: status '${initialStatus(schema.owner)}', owner '${schema.owner}'.
+${
+  schema.owner === 'design-system'
+    ? ''
+    : `A candidate stays with the ${schema.owner} team until the core team promotes it — file the Storybook page under Patterns/{App}.
+`
+}
 Next steps:
   1. Fill in the .metadata.ts TODOs
   2. Add BEM styles using var(--pds-*) tokens
@@ -332,6 +366,11 @@ async function main() {
       'Type [interactive/display/container/input/navigation/feedback] (default: display): ',
     ));
   const primeNg = argMap['primeNg'] || '';
+  const ownerRaw =
+    argMap['owner'] ||
+    (await prompt(
+      'Owner [design-system/ishare/icrm] (default: design-system): ',
+    ));
 
   const category = (
     ['atoms', 'molecules', 'organisms', 'templates'].includes(categoryRaw)
@@ -350,8 +389,11 @@ async function main() {
       ? typeRaw
       : 'display'
   ) as Schema['type'];
+  const owner = (
+    (OWNERS as readonly string[]).includes(ownerRaw) ? ownerRaw : 'design-system'
+  ) as Schema['owner'];
 
-  generate({ name, category, type, primeNg: primeNg || undefined });
+  generate({ name, category, type, primeNg: primeNg || undefined, owner });
 }
 
 main().catch(console.error);

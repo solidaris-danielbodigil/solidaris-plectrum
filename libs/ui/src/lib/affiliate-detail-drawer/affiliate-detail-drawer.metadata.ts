@@ -15,6 +15,11 @@ export const AffiliateDetailDrawerMetadata: ComponentMetadata = {
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'Promoted from iSHARE — management wants the dossier drawer everywhere. Catalogued under Shell.',
+  },
   usage: {
     useCases: [
       'Affiliate detail panel opened from the audit overview',

@@ -12,9 +12,10 @@
 
 :root {
   // ── Page chrome ────────────────────────────────────────────────────────────
-  --#{$pds-prefix}-size-token-explorer-search-min: 14rem; // 196px
+  // Search fields size to their placeholder/value (field-sizing). This max
+  // only caps long computed values on the table/detail line, not the input.
   --#{$pds-prefix}-size-token-explorer-search-max: 26rem; // 364px
-  --#{$pds-prefix}-size-token-explorer-filter-min: 11rem; // 154px role dropdown
+  --#{$pds-prefix}-size-token-explorer-filter-min: 11rem; // 154px role autocomplete
   --#{$pds-prefix}-size-token-explorer-preview: 3rem; // 42px square preview
   --#{$pds-prefix}-size-token-explorer-preview-bar: 0.75rem; // spacing bar height
   --#{$pds-prefix}-size-token-explorer-focus-travel: 2.5rem; // motion dot travel
