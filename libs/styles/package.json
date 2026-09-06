@@ -1,6 +1,6 @@
 {
   "name": "@solidaris/styles",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Plectrum ITCSS source — consume via stylePreprocessorOptions.includePaths",
   "files": [
     "src/**/*.scss",
