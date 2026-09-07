@@ -1,5 +1,11 @@
 name: Apply tokens to Figma
 
+# Repository → Figma through the Variables REST API — Figma Enterprise only.
+# Solidaris is on the Organization plan, so this job stops at the first Variables
+# call with "403 Invalid scope" and writes nothing. Parked until the decision in
+# .ai/questions/2026-09-07-repo-to-figma-transport.md (custom plugin vs Enterprise).
+# Setup once the API is available: tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+
 on:
   workflow_dispatch:
     inputs:
@@ -12,9 +18,8 @@ on:
         required: false
         default: 'false'
       only:
-        description: 'Figma variable names to apply (comma-separated). Required.'
+        description: 'Figma variable names to apply (comma-separated), e.g. color/surface/75. Required.'
         required: true
-        default: 'color/pipeline/probe'
       branch_key:
         description: 'Optional Figma branch file key. Use when GET branch_data returns no branches.'
         required: false

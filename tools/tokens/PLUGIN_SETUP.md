@@ -55,11 +55,23 @@ Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull 
 
 Figma writes **from this repo** never target the main file. `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`), not `FIGMA_FILE_KEY` (that var is the comment target and may be a Figma branch).
 
-## Repo → Figma (`tokens:apply`)
+## Repo → Figma (`tokens:apply`) — parked
 
-1. Create Figma branch **`proposals/scratch`** on the main UI Kit (Full seat). There is no API for branch creation.
-2. Add a code-owned `--pds-*` token in `01-settings` (the first probe is `--pds-color-pipeline-probe` → Figma name `color/pipeline/probe`).
-3. Run **Apply tokens to Figma** (`workflow_dispatch`). Default is dry-run + `--only color/pipeline/probe`. Set `write=true` only after the dry-run payload looks right.
-4. The job writes into collection `proposals/scratch` on that Figma branch. It aborts if the branch is missing.
+**Status 2026-09-07: not available on the Organization plan.** `tokens:apply` and the `tokens:pull-figma` safety net use Figma's Variables REST API (`GET …/variables/local`, `POST …/variables`), which Figma offers on the **Enterprise** plan only. The token dialog shows no `file_variables:*` scope, and the first dry run stopped at the first Variables call with `403 Invalid scope … requires the file_variables:read scope` before anything was written ([run 34127712582](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34127712582)). Figma → repo is unaffected: the plugin sync and the comment thread need no Variables scope.
+
+Open decision — `.ai/questions/2026-09-07-repo-to-figma-transport.md`:
+
+| Option                                                    | What it unlocks                                                                                            | What stays manual                                                              |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| A. Custom Figma plugin (Plugin API, `figma.variables`)    | Writing `proposed.dtcg.json` into the collection `proposals/{app}` on the Organization plan                | A designer runs it with the branch open; we build and maintain the plugin      |
+| B. Enterprise plan                                        | `file_variables:read/write` on a PAT → `apply-to-figma.yml` and `library-publish.yml` run as built         | Creating the Figma branch (no API); a new PAT with the Variables scopes        |
+
+Until then code-owned tokens stay code-only. `tokens:propose` lists what the UI Kit lacks; a designer who needs one of them in Figma creates it on the branch `proposals/{app}` by hand, with the proposed name (e.g. `color/surface/75`).
+
+When the Variables API becomes available:
+
+1. Mint a new PAT with `file_variables:read` + `file_variables:write` (plus the comment scopes) and replace `FIGMA_TOKEN`. Scopes cannot be added to an existing token.
+2. Create Figma branch **`proposals/scratch`** on the main UI Kit (Full seat). There is no API for branch creation.
+3. Run **Apply tokens to Figma** (`workflow_dispatch`) with `only=<one Figma name>`: dry-run first, then `write=true` once the payload looks right. The job writes into the collection `proposals/scratch` on that branch and aborts if the branch is missing. `branch_key` (from the URL `/design/{main}/branch/{key}/`) skips the branch listing when `GET ?branch_data=true` returns none.
 
 The `figma-write` GitHub Environment is the approval gate for real writes.

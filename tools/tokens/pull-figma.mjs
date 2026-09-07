@@ -3,7 +3,10 @@
  * Safety net: GET /v1/files/{key}/variables/local and flag variables that
  * changed in Figma but were never plugin-pushed into tokens.json.
  *
- * Needs FIGMA_TOKEN. Optional FIGMA_FILE_KEY (default: Plectrum UI Kit).
+ * Needs FIGMA_TOKEN with file_variables:read — a scope Figma offers on the
+ * Enterprise plan only. Parked on the Organization plan (403 Invalid scope);
+ * see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+ * Optional FIGMA_FILE_KEY (default: Plectrum UI Kit).
  *
  * Usage:
  *   node tools/tokens/pull-figma.mjs
@@ -63,7 +66,14 @@ async function main() {
     headers: { 'X-Figma-Token': token },
   });
   if (!res.ok) {
-    console.error(`Figma variables GET failed: ${res.status} ${await res.text()}`);
+    const text = await res.text();
+    console.error(`Figma variables GET failed: ${res.status} ${text}`);
+    if (/Invalid scope/i.test(text)) {
+      console.error(
+        'The Variables REST API needs file_variables:read, an Enterprise-only scope. ' +
+          'Parked on the Organization plan — see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".',
+      );
+    }
     process.exitCode = 1;
     return;
   }

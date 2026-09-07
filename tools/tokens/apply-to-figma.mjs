@@ -9,6 +9,10 @@
  *
  * Dry-run is the default. Figma branch creation is a manual Full-seat UI action.
  *
+ * Enterprise only: steps 3–4 need file_variables:read / file_variables:write,
+ * scopes Figma does not offer on the Organization plan (403 Invalid scope).
+ * Parked — see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+ *
  * Usage:
  *   node tools/tokens/apply-to-figma.mjs --app scratch
  *   node tools/tokens/apply-to-figma.mjs --app scratch --only color/pipeline/probe --write

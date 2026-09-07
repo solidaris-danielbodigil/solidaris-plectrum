@@ -81,7 +81,7 @@ export const Roles: StoryObj = cardsStory([
     items: [
       'References tokens as var(--pds-*) with BEMIT classes only',
       'Adds missing values in 01-settings before using them',
-      'Runs tokens:propose to register code-owned tokens with Figma',
+      'Runs tokens:propose to list code-owned tokens for Figma; the write into the branch is by hand while tokens:apply is parked',
       'Keeps PrimeNG --p-* bridges in 01-settings',
     ],
   },
@@ -113,7 +113,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'Branch-only Figma writes',
-    lead: 'Code proposes into proposals/{app}. A designer merges and publishes. Creating the branch is a one-time manual step; Figma has no API for it.',
+    lead: 'Code proposes into proposals/{app}. A designer merges and publishes. Creating the branch is a one-time manual step; Figma has no API for it. The automated write (tokens:apply) needs the Enterprise-only Variables REST API and is parked on the Organization plan.',
   },
   {
     title: 'v1 is the production default',
