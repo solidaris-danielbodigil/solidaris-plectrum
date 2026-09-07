@@ -15,6 +15,10 @@ on:
         description: 'Figma variable names to apply (comma-separated). Required.'
         required: true
         default: 'color/pipeline/probe'
+      branch_key:
+        description: 'Optional Figma branch file key. Use when GET branch_data returns no branches.'
+        required: false
+        default: ''
 
 jobs:
   apply:
@@ -34,6 +38,9 @@ jobs:
           FIGMA_MAIN_FILE_KEY: YNZ1DlSjDNUXrvkxlSp10D
         run: |
           FLAGS=(--app "${{ inputs.app }}" --only "${{ inputs.only }}")
+          if [ -n "${{ inputs.branch_key }}" ]; then
+            FLAGS+=(--branch-key "${{ inputs.branch_key }}")
+          fi
           if [ "${{ inputs.write }}" = "true" ]; then
             node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --write
           else

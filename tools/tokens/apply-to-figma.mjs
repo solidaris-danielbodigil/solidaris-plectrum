@@ -28,6 +28,7 @@ function parseArgs(argv) {
     dryRun: true,
     proposal: DEFAULT_PROPOSAL,
     fileKey: process.env.FIGMA_MAIN_FILE_KEY || DEFAULT_FILE_KEY,
+    branchKey: process.env.FIGMA_PROPOSAL_BRANCH_KEY || '',
     only: [],
     all: false,
     help: false,
@@ -39,6 +40,7 @@ function parseArgs(argv) {
     else if (arg === '--dry-run') out.dryRun = true;
     else if (arg === '--proposal') out.proposal = argv[++i];
     else if (arg === '--file-key') out.fileKey = argv[++i];
+    else if (arg === '--branch-key') out.branchKey = argv[++i];
     else if (arg === '--all') out.all = true;
     else if (arg === '--only') {
       out.only = String(argv[++i] ?? '')
@@ -56,10 +58,11 @@ function help() {
 Resolves Figma branch proposals/{app} from the main UI Kit file.
 Aborts if that branch is missing — never writes to main.
 
---only    comma-separated Figma names (required unless --all), e.g. color/pipeline/probe
---all     include every color in proposed.dtcg.json (do not use for the first write)
---dry-run (default) prints the POST payload + resolved branch key
---write   POST /v1/files/:branchKey/variables (file_variables:write)`);
+--only       comma-separated Figma names (required unless --all), e.g. color/pipeline/probe
+--all        include every color in proposed.dtcg.json (do not use for the first write)
+--branch-key Figma branch file key (from /design/{main}/branch/{key}/…). Skips branch listing.
+--dry-run    (default) prints the POST payload + resolved branch key
+--write      POST /v1/files/:branchKey/variables (file_variables:write)`);
 }
 
 function cssToFigmaColor(value) {
@@ -212,10 +215,14 @@ function explainFigmaError(error) {
 }
 
 async function resolveProposalBranch(mainFileKey, branchName, token) {
-  const file = await figma(`/files/${mainFileKey}?branch_data=true`, token);
+  const file = await figma(`/files/${mainFileKey}?branch_data=true&depth=1`, token);
   const branches = file.branches ?? file.meta?.branches ?? [];
   const branch = branches.find((item) => item.name === branchName) ?? null;
-  return { branch, branches };
+  console.log(
+    `listed ${mainFileKey} name=${file.name ?? '?'} mainFileKey=${file.mainFileKey ?? '—'} ` +
+      `keys=${Object.keys(file).join(',')} branches=${branches.length}`,
+  );
+  return { branch, branches, fileName: file.name ?? null };
 }
 
 async function main() {
@@ -260,27 +267,32 @@ async function main() {
     return;
   }
 
-  let resolved;
-  try {
-    resolved = await resolveProposalBranch(args.fileKey, branchName, token);
-  } catch (error) {
-    console.error(`apply-to-figma: could not list Figma branches (${explainFigmaError(error)})`);
-    process.exitCode = 1;
-    return;
-  }
+  let branchKey = args.branchKey.trim();
+  if (branchKey) {
+    console.log(`using explicit --branch-key ${branchKey} (listing skipped)`);
+  } else {
+    let resolved;
+    try {
+      resolved = await resolveProposalBranch(args.fileKey, branchName, token);
+    } catch (error) {
+      console.error(`apply-to-figma: could not list Figma branches (${explainFigmaError(error)})`);
+      process.exitCode = 1;
+      return;
+    }
 
-  const { branch, branches } = resolved;
-  if (!branch) {
-    const available = branches.map((item) => item.name).join(', ') || '(none)';
-    console.error(
-      `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat) from the main UI Kit. ` +
-        `Aborting — will not write to main file ${args.fileKey}. Available branches: ${available}`,
-    );
-    process.exitCode = 1;
-    return;
+    const { branch, branches } = resolved;
+    if (!branch) {
+      const available = branches.map((item) => item.name).join(', ') || '(none)';
+      console.error(
+        `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat) from the main UI Kit. ` +
+          `Aborting — will not write to main file ${args.fileKey}. Available branches: ${available}. ` +
+          `Or pass --branch-key from the Figma URL /design/{main}/branch/{key}/.`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    branchKey = branch.key;
   }
-
-  const branchKey = branch.key;
   if (!branchKey || branchKey === args.fileKey || branchKey === DEFAULT_FILE_KEY) {
     console.error(
       `apply-to-figma: resolved key is the main file (${branchKey}). Refusing to write to main.`,
