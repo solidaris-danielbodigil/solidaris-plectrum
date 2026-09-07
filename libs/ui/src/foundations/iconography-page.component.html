@@ -65,7 +65,7 @@
       class="c-token-explorer__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0"
       role="list"
     >
-      @for (name of filteredIcons(); track name) {
+      @for (name of visibleIcons(); track name) {
         <li
           class="c-token-explorer__item o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
           (click)="copyToClipboard(name)"
@@ -94,6 +94,17 @@
       }
     </ul>
   </section>
+
+  @if (catalogCapped()) {
+    <div class="c-token-explorer__more">
+      <p-button
+        [label]="'Show all ' + filteredIcons().length + ' icons'"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="showAll.set(true)"
+      />
+    </div>
+  }
 
   @if (filteredIcons().length === 0) {
     <p class="c-token-explorer__empty">No icon matches “{{ searchQuery() }}”.</p>
