@@ -8,16 +8,21 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Badge } from 'primeng/badge';
+import { Button } from 'primeng/button';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { SelectButton } from 'primeng/selectbutton';
-import { Badge } from 'primeng/badge';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { InputClearComponent } from '../lib/input-clear';
 import { type IconSize } from '../lib/icon/icon.types';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';
 import { showStorybookToast } from '../storybook/storybook-toast';
+import { assertRoleVisible, assertTextVisible } from '../storybook/story-tests';
+
+/** Unfiltered catalog is ~2k glyphs — enough to blow the test-runner 60s budget. */
+const CATALOG_PREVIEW = 48;
 
 const ALL_ICON_NAMES: string[] = (() => {
   try {
@@ -56,12 +61,13 @@ const SIZE_OPTIONS: { label: string; value: IconSize }[] = [
   imports: [
     FormsModule,
     ToolbarComponent,
+    Badge,
+    Button,
     IconField,
     InputIcon,
     InputText,
     InputClearComponent,
     SelectButton,
-    Badge,
   ],
   templateUrl: './iconography-page.component.html',
 })
@@ -73,6 +79,7 @@ class IconographyPageComponent {
   readonly searchQuery = signal('');
   readonly variantFilter = signal('all');
   readonly iconSize = signal<IconSize>('md');
+  readonly showAll = signal(false);
 
   readonly previewSize = computed(
     () => `var(--pds-icon-size-${this.iconSize()})`,
@@ -94,6 +101,18 @@ class IconographyPageComponent {
       return matchesQuery && matchesVariant;
     });
   });
+
+  readonly visibleIcons = computed(() => {
+    const list = this.filteredIcons();
+    if (this.showAll() || this.searchQuery().trim() || this.variantFilter() !== 'all') {
+      return list;
+    }
+    return list.slice(0, CATALOG_PREVIEW);
+  });
+
+  readonly catalogCapped = computed(
+    () => this.visibleIcons().length < this.filteredIcons().length,
+  );
 
   copyToClipboard(iconName: string): void {
     const classString = `bi bi-${iconName}`;
@@ -134,4 +153,9 @@ export const Sizes: Story = {
   }),
 };
 
-export const AllIcons: Story = {};
+export const AllIcons: Story = {
+  play: async ({ canvasElement }) => {
+    await assertRoleVisible(canvasElement, 'searchbox', 'Search icons');
+    await assertTextVisible(canvasElement, 'Catalog');
+  },
+};
