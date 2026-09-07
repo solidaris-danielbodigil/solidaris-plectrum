@@ -11,6 +11,10 @@ on:
         description: 'Set true to POST (default is dry-run)'
         required: false
         default: 'false'
+      only:
+        description: 'Figma variable names to apply (comma-separated). Required.'
+        required: true
+        default: 'color/pipeline/probe'
 
 jobs:
   apply:
@@ -27,10 +31,11 @@ jobs:
       - name: Apply (dry-run unless write=true)
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+          FIGMA_MAIN_FILE_KEY: YNZ1DlSjDNUXrvkxlSp10D
         run: |
+          FLAGS=(--app "${{ inputs.app }}" --only "${{ inputs.only }}")
           if [ "${{ inputs.write }}" = "true" ]; then
-            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --write
+            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --write
           else
-            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --dry-run
+            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --dry-run
           fi

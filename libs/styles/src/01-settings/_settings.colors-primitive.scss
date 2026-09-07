@@ -7,6 +7,9 @@
 
 :root {
   --#{$pds-prefix}-color-primary-75:   #edf1f4;
+
+  // Repo → Figma pipeline probe. Not a product token — delete after the first apply.
+  --#{$pds-prefix}-color-pipeline-probe: #c41e3a;
   --#{$pds-prefix}-color-surface-75:    #ededed;
   --#{$pds-prefix}-color-surface-border-drawer: #e7e7e7;
   --#{$pds-prefix}-color-green-75:   #dcfce7;

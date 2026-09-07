@@ -14,7 +14,7 @@
 | `lint-usage.mjs`       | `tokens:lint`            | `--p-*` decls, PrimeUI runtime imports, unknown `--pds-*`. `--strict` adds hex/px                                                                                                                                                                    |
 | `pull-figma.mjs`       | `tokens:pull-figma`      | Variables API safety net (`FIGMA_TOKEN`)                                                                                                                                                                                                             |
 | `propose-to-figma.mjs` | `tokens:propose`         | Code-only tokens → `proposed.dtcg.json`                                                                                                                                                                                                              |
-| `apply-to-figma.mjs`   | `tokens:apply`           | Branch-only write, **dry-run default**, abort if `proposals/{app}` is missing                                                                                                                                                                        |
+| `apply-to-figma.mjs`   | `tokens:apply`           | Branch-only write, **dry-run default**, `--only` required. Aborts if `proposals/{app}` is missing. Never writes the main file.                                                                                                                       |
 
 Foundations Phase 0: spacing and typography stay code-owned (`foundations-phase-0.md`).
 

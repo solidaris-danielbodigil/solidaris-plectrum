@@ -47,10 +47,19 @@ After every push the workflow posts the same summary as a comment in the UI Kit 
 
 | Setting                      | Where                   | Value                                                                                                                                                                          |
 | ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `FIGMA_TOKEN`                | repo secret             | Figma personal access token with `file_comments:write` and `file_comments:read` (the same secret `pull-figma` / `apply-to-figma` use; add the comment scopes if it lacks them) |
+| `FIGMA_TOKEN`                | repo secret             | Figma personal access token. Comments: `file_comments:read` + `file_comments:write`. Repo→Figma variables: also `file_variables:read` + `file_variables:write` (Enterprise, Full seat). Figma cannot add scopes to an existing token — mint a new one. |
 | `FIGMA_FILE_KEY`             | repo variable           | Plectrum UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`)                                                                                                                    |
 | `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Id of a frame (e.g. a "Token sync log" frame on the cover page) the thread is pinned to; without it the pin sits at the canvas origin of the first page                        |
 
 Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull request.
 
-Figma writes **from this repo** (Wave 7) never target the main file. They abort if branch `proposals/{app}` is missing.
+Figma writes **from this repo** never target the main file. `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`), not `FIGMA_FILE_KEY` (that var is the comment target and may be a Figma branch).
+
+## Repo → Figma (`tokens:apply`)
+
+1. Create Figma branch **`proposals/scratch`** on the main UI Kit (Full seat). There is no API for branch creation.
+2. Add a code-owned `--pds-*` token in `01-settings` (the first probe is `--pds-color-pipeline-probe` → Figma name `color/pipeline/probe`).
+3. Run **Apply tokens to Figma** (`workflow_dispatch`). Default is dry-run + `--only color/pipeline/probe`. Set `write=true` only after the dry-run payload looks right.
+4. The job writes into collection `proposals/scratch` on that Figma branch. It aborts if the branch is missing.
+
+The `figma-write` GitHub Environment is the approval gate for real writes.

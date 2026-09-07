@@ -222,6 +222,7 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
     ['--quiet', 'tokens:resolve', 'Suppress the summary line.'],
     ['--strict', 'tokens:lint', 'Fail on hardcoded hex/px in apps/ and libs/ui. Without it those findings are informational.'],
     ['--app <name>', 'tokens:apply', 'Resolve Figma branch proposals/{name}. Required for a real apply.'],
+    ['--only name[,name]', 'tokens:apply', 'Apply only these Figma names. Required unless --all. First write: color/pipeline/probe.'],
     ['--dry-run', 'tokens:apply', 'Default. Print payload and branch key. Zero writes.'],
     ['--write', 'tokens:apply', 'POST /v1/files/:branchKey/variables. Needs FIGMA_TOKEN and Environment approval.'],
     ['--proposal path', 'tokens:apply', 'Alternate proposed.dtcg.json.'],
