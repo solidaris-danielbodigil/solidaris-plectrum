@@ -48,8 +48,8 @@ After every push the workflow posts the same summary as a comment in the UI Kit 
 | Setting                      | Where                   | Value                                                                                                                                                                          |
 | ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `FIGMA_TOKEN`                | repo secret             | Figma personal access token with `file_comments:write` and `file_comments:read` (the same secret `pull-figma` / `apply-to-figma` use; add the comment scopes if it lacks them) |
-| `FIGMA_FILE_KEY`             | repo variable           | Plectrum UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`)                                                                                                                    |
-| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Id of a frame (e.g. a "Token sync log" frame on the cover page) the thread is pinned to; without it the pin sits at the canvas origin of the first page                        |
+| `FIGMA_FILE_KEY`             | repo variable           | **Main** UI Kit file key (`YNZ1DlSjDNUXrvkxlSp10D`). A Figma _branch_ key posts on main as **Unattached**.                                                                     |
+| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Frame id on that same file (`123:456` from `?node-id=123-456`). A URL, a name, or a frame that exists only on a branch becomes Unattached; the script then skips a new thread. |
 
 Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull request.
 

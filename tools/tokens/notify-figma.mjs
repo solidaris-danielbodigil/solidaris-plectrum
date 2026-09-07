@@ -13,8 +13,9 @@
  *
  * Environment:
  *   FIGMA_TOKEN                 PAT with file_comments:write (+ file_comments:read for threading)
- *   FIGMA_FILE_KEY              optional, default Plectrum UI Kit
- *   FIGMA_SYNC_COMMENT_NODE_ID  optional frame the thread is pinned to; default canvas origin
+ *   FIGMA_FILE_KEY              optional, default Plectrum UI Kit (main file, not a branch key)
+ *   FIGMA_SYNC_COMMENT_NODE_ID  frame id on that file (123:456). A branch-only
+ *                               node, a URL, or a name produces an Unattached comment.
  *
  * Usage:
  *   node tools/tokens/notify-figma.mjs --report sync-report.json [--pr-url URL] [--post]
@@ -47,7 +48,48 @@ function parseArgs(argv) {
     else if (arg === '--node-id') out.nodeId = argv[++i];
     else if (arg === '--help' || arg === '-h') out.help = true;
   }
+  out.fileKey = normalizeFileKey(out.fileKey);
+  out.nodeId = normalizeNodeId(out.nodeId);
   return out;
+}
+
+/** Main-file key from a Figma URL, or the string as-is. Branch keys are rejected. */
+export function normalizeFileKey(value) {
+  if (!value) return value;
+  const fromUrl = parseFigmaUrl(value);
+  if (fromUrl) return fromUrl.fileKey;
+  return value.trim();
+}
+
+/** `123:456` from a node id, `123-456`, or a Figma URL `?node-id=`. */
+export function normalizeNodeId(value) {
+  if (!value) return null;
+  const trimmed = value.trim();
+  const fromUrl = parseFigmaUrl(trimmed);
+  if (fromUrl?.nodeId) return fromUrl.nodeId;
+  if (/^https?:\/\//i.test(trimmed) || /\s/.test(trimmed)) return null;
+  if (/^\d+[:-]\d+(?:;\d+[:-]\d+)*$/.test(trimmed)) {
+    return trimmed.replace(/-/g, ':');
+  }
+  return null;
+}
+
+export function parseFigmaUrl(value) {
+  if (!value || !value.includes('figma.com')) return null;
+  try {
+    const url = new URL(value);
+    const match = url.pathname.match(
+      /^\/(?:design|file)\/([a-zA-Z0-9]+)(?:\/branch\/[a-zA-Z0-9]+)?/,
+    );
+    if (!match) return null;
+    const rawNode = url.searchParams.get('node-id');
+    return {
+      fileKey: match[1],
+      nodeId: rawNode ? rawNode.replace(/-/g, ':') : null,
+    };
+  } catch {
+    return null;
+  }
 }
 
 function help() {
@@ -59,8 +101,8 @@ Posts the tokens:report summary as a comment thread in the Figma file.
 
 Environment:
   FIGMA_TOKEN                 required for --post; without it the script exits 0 and skips
-  FIGMA_FILE_KEY              optional, default ${DEFAULT_FILE_KEY}
-  FIGMA_SYNC_COMMENT_NODE_ID  optional frame id to pin the thread to (default: canvas origin)`);
+  FIGMA_FILE_KEY              main file key (default ${DEFAULT_FILE_KEY}). Not a branch key.
+  FIGMA_SYNC_COMMENT_NODE_ID  frame id on that file (123:456). Must exist or a new thread is skipped.`);
 }
 
 function formatTime(iso) {
@@ -274,7 +316,28 @@ async function main() {
     console.error(`notify-figma: could not list comments (${error.message}); posting a new thread.`);
   }
 
-  const body = buildRequest(message, { threadRoot, nodeId: args.nodeId });
+  let nodeId = args.nodeId;
+  if (!threadRoot && nodeId) {
+    const pin = await resolvePinNode(args.fileKey, nodeId, token);
+    if (pin === 'missing') {
+      console.error(
+        `notify-figma: node ${nodeId} is not in file ${args.fileKey} — Figma would store this as Unattached. Not opening a new thread. Merge the Token sync log frame onto this file and set FIGMA_SYNC_COMMENT_NODE_ID to that frame's id (123:456).`,
+      );
+      return;
+    }
+    if (pin === 'unknown') {
+      console.error(
+        `notify-figma: could not verify node ${nodeId} (need file_content:read). Posting anyway.`,
+      );
+    }
+  } else if (!threadRoot && process.env.FIGMA_SYNC_COMMENT_NODE_ID && !nodeId) {
+    console.error(
+      `notify-figma: FIGMA_SYNC_COMMENT_NODE_ID is not a frame id (want 123:456, not a URL or name). Not opening a new thread.`,
+    );
+    return;
+  }
+
+  const body = buildRequest(message, { threadRoot, nodeId });
   const posted = await figma(`/files/${args.fileKey}/comments`, token, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -282,6 +345,21 @@ async function main() {
   console.log(
     `notify-figma: ${threadRoot ? `replied to thread ${threadRoot.id}` : 'opened a new thread'} — comment ${posted?.id ?? '?'} in ${args.fileKey}`,
   );
+}
+
+/** @returns {'ok' | 'missing' | 'unknown'} */
+async function resolvePinNode(fileKey, nodeId, token) {
+  try {
+    const ids = encodeURIComponent(nodeId);
+    const data = await figma(`/files/${fileKey}/nodes?ids=${ids}`, token);
+    const entry = data?.nodes?.[nodeId];
+    if (entry?.document) return 'ok';
+    return 'missing';
+  } catch (error) {
+    const text = String(error.message);
+    if (text.includes('404') || text.includes('400')) return 'missing';
+    return 'unknown';
+  }
 }
 
 if (process.argv[1]?.includes('notify-figma.mjs')) {
