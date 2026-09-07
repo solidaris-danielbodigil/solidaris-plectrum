@@ -116,7 +116,7 @@ export const AppLayer: StoryObj = calloutStory({
   title: 'While a component is app-owned, drift stays contained by tooling — not by trust',
   items: [
     'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose registers them in the proposals/{app} Figma collection.',
+    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them for the proposals/{app} Figma collection; the write into Figma is by hand while the Enterprise-only apply is parked (see Token pipeline → Figma sync).',
     'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
     'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
   ],

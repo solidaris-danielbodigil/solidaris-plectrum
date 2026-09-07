@@ -3,6 +3,10 @@ name: Figma library publish
 # Receives a LIBRARY_PUBLISH webhook (Figma library published after designer merge)
 # and re-runs pull-figma as a safety net. Rate-limit / 4MB / atomic 400 constraints
 # are documented in `node tools/tokens/pull-figma.mjs --help`.
+#
+# Parked: pull-figma reads the Variables REST API (file_variables:read), which
+# Figma offers on the Enterprise plan only. On the Organization plan the GET
+# returns "403 Invalid scope". See .ai/questions/2026-09-07-repo-to-figma-transport.md.
 
 on:
   repository_dispatch:

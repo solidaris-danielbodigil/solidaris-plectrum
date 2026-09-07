@@ -2,18 +2,20 @@
 /**
  * Apply proposed.dtcg.json to a Figma **branch**, never the main file.
  *
- *   1. GET /v1/files/:key?branch_data=true
- *   2. Resolve branch `proposals/{app}`
- *   3. POST /v1/files/:branchKey/variables  — only when --write is passed
+ *   1. GET /v1/files/:mainKey?branch_data=true
+ *   2. Resolve branch `proposals/{app}` — abort if missing
+ *   3. GET /v1/files/:branchKey/variables/local
+ *   4. POST /v1/files/:branchKey/variables  — only when --write is passed
  *
- * Dry-run is the default. Abort if the named branch is missing.
- * Figma branch creation is a manual Full-seat UI action (no API).
+ * Dry-run is the default. Figma branch creation is a manual Full-seat UI action.
  *
- * Real writes: workflow_dispatch + GitHub Environment approval.
+ * Enterprise only: steps 3–4 need file_variables:read / file_variables:write,
+ * scopes Figma does not offer on the Organization plan (403 Invalid scope).
+ * Parked — see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
  *
  * Usage:
- *   node tools/tokens/apply-to-figma.mjs --app ishare
- *   node tools/tokens/apply-to-figma.mjs --app ishare --write
+ *   node tools/tokens/apply-to-figma.mjs --app scratch
+ *   node tools/tokens/apply-to-figma.mjs --app scratch --only color/pipeline/probe --write
  */
 
 import { existsSync, readFileSync } from 'node:fs';
@@ -26,65 +28,205 @@ const DEFAULT_PROPOSAL = join(__dirname, 'proposed.dtcg.json');
 
 function parseArgs(argv) {
   const out = {
-    app: 'app',
+    app: 'scratch',
     dryRun: true,
     proposal: DEFAULT_PROPOSAL,
-    fileKey: process.env.FIGMA_FILE_KEY || DEFAULT_FILE_KEY,
+    fileKey: process.env.FIGMA_MAIN_FILE_KEY || DEFAULT_FILE_KEY,
+    branchKey: process.env.FIGMA_PROPOSAL_BRANCH_KEY || '',
+    only: [],
+    all: false,
+    help: false,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === '--app') {
-      out.app = argv[++i];
-    } else if (arg === '--write') {
-      out.dryRun = false;
-    } else if (arg === '--dry-run') {
-      out.dryRun = true;
-    } else if (arg === '--proposal') {
-      out.proposal = argv[++i];
-    } else if (arg === '--file-key') {
-      out.fileKey = argv[++i];
-    } else if (arg === '--help' || arg === '-h') {
-      out.help = true;
-    }
+    if (arg === '--app') out.app = argv[++i];
+    else if (arg === '--write') out.dryRun = false;
+    else if (arg === '--dry-run') out.dryRun = true;
+    else if (arg === '--proposal') out.proposal = argv[++i];
+    else if (arg === '--file-key') out.fileKey = argv[++i];
+    else if (arg === '--branch-key') out.branchKey = argv[++i];
+    else if (arg === '--all') out.all = true;
+    else if (arg === '--only') {
+      out.only = String(argv[++i] ?? '')
+        .split(',')
+        .map((name) => name.trim())
+        .filter(Boolean);
+    } else if (arg === '--help' || arg === '-h') out.help = true;
   }
   return out;
 }
 
 function help() {
-  console.log(`Usage: node tools/tokens/apply-to-figma.mjs --app <name> [--dry-run|--write]
+  console.log(`Usage: node tools/tokens/apply-to-figma.mjs --app <name> [--only name] [--dry-run|--write]
 
-Resolves Figma branch proposals/{app} via GET /v1/files/:key?branch_data=true.
-Aborts if that branch is missing — never falls back to mainFileKey.
+Resolves Figma branch proposals/{app} from the main UI Kit file.
+Aborts if that branch is missing — never writes to main.
 
---dry-run (default) prints the POST payload + resolved branch key, zero writes.
---write   POST /v1/files/:branchKey/variables (requires FIGMA_TOKEN + Environment approval).
-
-Constraints:
-  - Rate limit / ~4MB body / atomic 400 (one invalid variable fails the batch)
-  - Branch creation is manual in the Figma UI (Full seat)`);
+--only       comma-separated Figma names (required unless --all), e.g. color/pipeline/probe
+--all        include every color in proposed.dtcg.json (do not use for the first write)
+--branch-key Figma branch file key (from /design/{main}/branch/{key}/…). Skips branch listing.
+--dry-run    (default) prints the POST payload + resolved branch key
+--write      POST /v1/files/:branchKey/variables (file_variables:write)`);
 }
 
-async function figmaGet(path, token) {
+function cssToFigmaColor(value) {
+  const raw = String(value).trim();
+  const hex = raw.match(/^#?([0-9a-f]{6})([0-9a-f]{2})?$/i);
+  if (hex) {
+    const n = hex[1];
+    return {
+      r: parseInt(n.slice(0, 2), 16) / 255,
+      g: parseInt(n.slice(2, 4), 16) / 255,
+      b: parseInt(n.slice(4, 6), 16) / 255,
+      a: hex[2] ? parseInt(hex[2], 16) / 255 : 1,
+    };
+  }
+  const rgba = raw.match(
+    /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/i,
+  );
+  if (rgba) {
+    const first = Number(rgba[1]);
+    const scale = first > 1 || Number(rgba[2]) > 1 || Number(rgba[3]) > 1 ? 255 : 1;
+    return {
+      r: Number(rgba[1]) / scale,
+      g: Number(rgba[2]) / scale,
+      b: Number(rgba[3]) / scale,
+      a: rgba[4] != null ? Number(rgba[4]) : 1,
+    };
+  }
+  return null;
+}
+
+async function figma(path, token, init = {}) {
   const res = await fetch(`https://api.figma.com/v1${path}`, {
-    headers: { 'X-Figma-Token': token },
+    ...init,
+    headers: {
+      'X-Figma-Token': token,
+      'Content-Type': 'application/json',
+      ...(init.headers ?? {}),
+    },
   });
   const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`GET ${path} → ${res.status} ${text}`);
-  }
-  return JSON.parse(text);
+  if (!res.ok) throw new Error(`${init.method ?? 'GET'} ${path} → ${res.status} ${text}`);
+  return text ? JSON.parse(text) : null;
 }
 
-function buildPayload(proposal) {
-  const variables = [];
+function pickColors(proposal, only) {
+  const rows = [];
   for (const [name, token] of Object.entries(proposal.codeOwned ?? {})) {
-    variables.push({
+    if (only.length && !only.includes(name)) continue;
+    if (token.$type !== 'color') continue;
+    const color = cssToFigmaColor(token.$value);
+    if (!color) continue;
+    rows.push({
       name,
-      resolvedType: token.$type === 'color' ? 'COLOR' : 'FLOAT',
-      valuesByMode: { placeholder: token.$value },
+      color,
+      cssVar: token.$extensions?.['com.solidaris.pds']?.cssVar ?? null,
+      source: token.$extensions?.['com.solidaris.pds']?.source ?? null,
     });
   }
-  return { variables };
+  return rows;
+}
+
+function buildPayload(rows, { collectionName, existing }) {
+  const collections = Object.values(existing?.meta?.variableCollections ?? {});
+  const variables = Object.values(existing?.meta?.variables ?? {});
+  const found = collections.find((c) => c.name === collectionName && !c.remote);
+
+  const body = {
+    variableCollections: [],
+    variableModes: [],
+    variables: [],
+    variableModeValues: [],
+  };
+
+  let collectionId;
+  let modeId;
+  if (found) {
+    collectionId = found.id;
+    modeId = found.defaultModeId ?? found.modes?.[0]?.modeId;
+  } else {
+    collectionId = 'tmp_collection';
+    modeId = 'tmp_mode';
+    body.variableCollections.push({
+      action: 'CREATE',
+      id: collectionId,
+      name: collectionName,
+      initialModeId: modeId,
+      hiddenFromPublishing: true,
+    });
+    body.variableModes.push({
+      action: 'UPDATE',
+      id: modeId,
+      name: 'Value',
+      variableCollectionId: collectionId,
+    });
+  }
+
+  if (!modeId) {
+    throw new Error(`Collection "${collectionName}" has no mode`);
+  }
+
+  for (const [index, row] of rows.entries()) {
+    const already = variables.find(
+      (variable) => variable.name === row.name && variable.variableCollectionId === (found?.id ?? ''),
+    );
+    if (already) {
+      body.variableModeValues.push({
+        variableId: already.id,
+        modeId: found.defaultModeId ?? found.modes?.[0]?.modeId,
+        value: row.color,
+      });
+      continue;
+    }
+    const tempId = `tmp_var_${index}`;
+    body.variables.push({
+      action: 'CREATE',
+      id: tempId,
+      name: row.name,
+      resolvedType: 'COLOR',
+      variableCollectionId: collectionId,
+      hiddenFromPublishing: true,
+      description: row.cssVar
+        ? `Code-owned token ${row.cssVar}`
+        : 'Code-owned token from the repo',
+      scopes: ['ALL_SCOPES'],
+      codeSyntax: row.cssVar ? { WEB: `var(${row.cssVar})` } : undefined,
+    });
+    body.variableModeValues.push({
+      variableId: tempId,
+      modeId,
+      value: row.color,
+    });
+  }
+
+  return body;
+}
+
+function explainFigmaError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (/Invalid scope/i.test(message)) {
+    return (
+      `${message}\n` +
+      'FIGMA_TOKEN needs file_variables:read (dry-run) and file_variables:write (real apply). ' +
+      'Figma cannot add scopes to an existing token — mint a new one and update the GitHub secret.'
+    );
+  }
+  if (/Limited by Figma plan|Incorrect account type/i.test(message)) {
+    return `${message}\nVariables API requires an Enterprise org and a Full seat.`;
+  }
+  return message;
+}
+
+async function resolveProposalBranch(mainFileKey, branchName, token) {
+  const file = await figma(`/files/${mainFileKey}?branch_data=true&depth=1`, token);
+  const branches = file.branches ?? file.meta?.branches ?? [];
+  const branch = branches.find((item) => item.name === branchName) ?? null;
+  console.log(
+    `listed ${mainFileKey} name=${file.name ?? '?'} mainFileKey=${file.mainFileKey ?? '—'} ` +
+      `keys=${Object.keys(file).join(',')} branches=${branches.length}`,
+  );
+  return { branch, branches, fileName: file.name ?? null };
 }
 
 async function main() {
@@ -94,41 +236,88 @@ async function main() {
     return;
   }
 
-  const branchName = `proposals/${args.app}`;
-  const proposal = existsSync(args.proposal)
-    ? JSON.parse(readFileSync(args.proposal, 'utf8'))
-    : { codeOwned: {} };
-  const payload = buildPayload(proposal);
-  const token = process.env.FIGMA_TOKEN;
-
-  if (!token) {
-    console.log(`apply-to-figma: FIGMA_TOKEN unset — printing dry-run payload only.`);
-    console.log(`requested branch: ${branchName}`);
-    console.log(`resolved branch key: (unavailable without FIGMA_TOKEN)`);
-    console.log(`main file key (never written): ${args.fileKey}`);
-    console.log(JSON.stringify(payload, null, 2));
-    console.log('dry-run: zero writes.');
-    return;
-  }
-
-  const file = await figmaGet(`/files/${args.fileKey}?branch_data=true`, token);
-  const branches = file.branches ?? file.meta?.branches ?? [];
-  const branch = branches.find(
-    (item) => item.name === branchName || item.key === branchName,
-  );
-
-  if (!branch) {
+  if (!args.all && !args.only.length) {
     console.error(
-      `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat). ` +
-        `Aborting — will not write to main file ${args.fileKey}.`,
+      'apply-to-figma: pass --only name[,name] (or --all). Refusing to dump every code-owned color.',
     );
     process.exitCode = 1;
     return;
   }
 
-  const branchKey = branch.key;
+  const branchName = `proposals/${args.app}`;
+  const collectionName = branchName;
+  const proposal = existsSync(args.proposal)
+    ? JSON.parse(readFileSync(args.proposal, 'utf8'))
+    : { codeOwned: {} };
+  const rows = pickColors(proposal, args.only);
+  const token = process.env.FIGMA_TOKEN;
+
+  if (!rows.length) {
+    console.error(
+      args.only.length
+        ? `apply-to-figma: no color tokens matched --only ${args.only.join(',')}`
+        : 'apply-to-figma: no color tokens in proposed.dtcg.json',
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  if (!token) {
+    console.log('apply-to-figma: FIGMA_TOKEN unset — printing dry-run payload only.');
+    console.log(`requested branch: ${branchName}`);
+    console.log(`main file key (never written): ${args.fileKey}`);
+    console.log(JSON.stringify(buildPayload(rows, { collectionName, existing: {} }), null, 2));
+    console.log('dry-run: zero writes.');
+    return;
+  }
+
+  let branchKey = args.branchKey.trim();
+  if (branchKey) {
+    console.log(`using explicit --branch-key ${branchKey} (listing skipped)`);
+  } else {
+    let resolved;
+    try {
+      resolved = await resolveProposalBranch(args.fileKey, branchName, token);
+    } catch (error) {
+      console.error(`apply-to-figma: could not list Figma branches (${explainFigmaError(error)})`);
+      process.exitCode = 1;
+      return;
+    }
+
+    const { branch, branches } = resolved;
+    if (!branch) {
+      const available = branches.map((item) => item.name).join(', ') || '(none)';
+      console.error(
+        `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat) from the main UI Kit. ` +
+          `Aborting — will not write to main file ${args.fileKey}. Available branches: ${available}. ` +
+          `Or pass --branch-key from the Figma URL /design/{main}/branch/{key}/.`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    branchKey = branch.key;
+  }
+  if (!branchKey || branchKey === args.fileKey || branchKey === DEFAULT_FILE_KEY) {
+    console.error(
+      `apply-to-figma: resolved key is the main file (${branchKey}). Refusing to write to main.`,
+    );
+    process.exitCode = 1;
+    return;
+  }
+
   console.log(`resolved branch: ${branchName} → ${branchKey}`);
-  console.log(`payload variables: ${payload.variables.length}`);
+
+  let existing = {};
+  try {
+    existing = await figma(`/files/${branchKey}/variables/local`, token);
+  } catch (error) {
+    console.error(`apply-to-figma: could not read branch variables (${explainFigmaError(error)})`);
+    process.exitCode = 1;
+    return;
+  }
+
+  const payload = buildPayload(rows, { collectionName, existing });
+  console.log(`payload: ${payload.variables.length} create, ${payload.variableModeValues.length} values`);
   console.log(JSON.stringify(payload, null, 2));
 
   if (args.dryRun) {
@@ -136,21 +325,21 @@ async function main() {
     return;
   }
 
-  const res = await fetch(`https://api.figma.com/v1/files/${branchKey}/variables`, {
-    method: 'POST',
-    headers: {
-      'X-Figma-Token': token,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-  const text = await res.text();
-  if (!res.ok) {
-    console.error(`POST variables failed: ${res.status} ${text}`);
+  let posted;
+  try {
+    posted = await figma(`/files/${branchKey}/variables`, token, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  } catch (error) {
+    console.error(`apply-to-figma: POST failed (${explainFigmaError(error)})`);
     process.exitCode = 1;
     return;
   }
   console.log('apply-to-figma: wrote variables to branch', branchKey);
+  if (posted?.meta?.tempIdToRealId) {
+    console.log('tempIdToRealId', JSON.stringify(posted.meta.tempIdToRealId));
+  }
 }
 
 await main();
