@@ -511,3 +511,9 @@
   color: var(--#{$pds-prefix}-color-text-muted);
   padding: var(--#{$pds-prefix}-spacing-6);
 }
+
+.c-token-explorer__more {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--#{$pds-prefix}-spacing-4);
+}

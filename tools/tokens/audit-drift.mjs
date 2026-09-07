@@ -8,10 +8,10 @@
  * Wave 1 detector: reports known drift and exits non-zero. Does not rewrite
  * values. Expected FAIL on the primary ramp and radius md/lg.
  *
- * Usage: tsx tools/tokens/audit-drift.mjs
+ * Usage: tsx tools/tokens/audit-drift.mjs [--json summary.json]
  */
 
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -265,7 +265,19 @@ function summarizeTokensJsonUnresolved(unresolved) {
   }));
 }
 
+function parseArgs(argv) {
+  const out = { jsonPath: null };
+  for (let i = 0; i < argv.length; i += 1) {
+    if (argv[i] === '--json') {
+      out.jsonPath = argv[i + 1];
+      i += 1;
+    }
+  }
+  return out;
+}
+
 function main() {
+  const args = parseArgs(process.argv.slice(2));
   const v1 = asPreset(v1Preset);
   const dtcg = resolveDtcg();
   const scss = parseScssCustomProperties(SETTINGS_DIR);
@@ -486,6 +498,29 @@ function main() {
   );
 
   process.stdout.write(`${lines.join('\n')}\n`);
+
+  if (args.jsonPath) {
+    const summary = {
+      figma: {
+        sets: dtcg.sets,
+        leafCount: dtcg.leafCount,
+        resolvedCount: dtcg.resolvedCount,
+        unresolved: dtcg.unresolved.length,
+        cycles: dtcg.cycles.length,
+      },
+      scssDeclarations: scss.size,
+      mismatches,
+      missingSides,
+      missingAliases,
+      hardcodedHexTotal: hardcodedHex.length,
+      hardcodedLeaks: hardcodedLeaks.map(({ file, line, hex }) => ({ file, line, hex })),
+      aliasMapBreaks,
+      unmappedSuggestions: unmappedSuggestions.slice(0, 20),
+      result: fail ? 'FAIL' : 'PASS',
+    };
+    writeFileSync(args.jsonPath, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+  }
+
   process.exitCode = fail ? 1 : 0;
 }
 

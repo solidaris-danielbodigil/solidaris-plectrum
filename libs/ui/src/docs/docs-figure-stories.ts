@@ -10,10 +10,20 @@ import type { StoryObj } from '@storybook/angular';
 import type { ComponentGovernance } from '@solidaris/contracts';
 import { DocsCalloutComponent } from '../storybook/docs-callout.component';
 import { DocsCardsComponent } from '../storybook/docs-cards.component';
-import type { DocsCalloutTone, DocsCard, DocsStep } from '../storybook/docs-figures.types';
-import { type DocsHeroAction, DocsHeroComponent } from '../storybook/docs-hero.component';
+import type {
+  DocsCalloutTone,
+  DocsCard,
+  DocsStep,
+} from '../storybook/docs-figures.types';
+import {
+  type DocsHeroAction,
+  DocsHeroComponent,
+} from '../storybook/docs-hero.component';
 import { DocsStatusComponent } from '../storybook/docs-status.component';
 import { DocsStepsComponent } from '../storybook/docs-steps.component';
+import { DocsSyncChangesComponent } from '../storybook/docs-sync-changes.component';
+import { DocsSyncChecksComponent } from '../storybook/docs-sync-checks.component';
+import type { SyncReport } from '../storybook/sync-report.types';
 
 export interface HeroContent {
   title: string;
@@ -25,7 +35,11 @@ const DOCS_FIGURE_PARAMETERS = {
   chromatic: { disableSnapshot: true },
 };
 
-export function heroStory({ title, lead, actions = [] }: HeroContent): StoryObj {
+export function heroStory({
+  title,
+  lead,
+  actions = [],
+}: HeroContent): StoryObj {
   return {
     parameters: DOCS_FIGURE_PARAMETERS,
     render: () => ({
@@ -47,7 +61,10 @@ export function stepsStory(steps: readonly DocsStep[]): StoryObj {
   };
 }
 
-export function cardsStory(cards: readonly DocsCard[], columns: 2 | 3 = 3): StoryObj {
+export function cardsStory(
+  cards: readonly DocsCard[],
+  columns: 2 | 3 = 3,
+): StoryObj {
   return {
     parameters: DOCS_FIGURE_PARAMETERS,
     render: () => ({
@@ -65,7 +82,12 @@ export interface CalloutContent {
   items?: readonly string[];
 }
 
-export function calloutStory({ tone = 'info', title, text, items }: CalloutContent): StoryObj {
+export function calloutStory({
+  tone = 'info',
+  title,
+  text,
+  items,
+}: CalloutContent): StoryObj {
   return {
     parameters: DOCS_FIGURE_PARAMETERS,
     render: () => ({
@@ -81,7 +103,11 @@ export function calloutStory({ tone = 'info', title, text, items }: CalloutConte
  * CSS-only blocks without a .metadata.ts declare the object inline.
  * Tagged `!dev` so it never appears in the sidebar — it exists for the MDX page.
  */
-export function statusStory({ status, owner, note }: ComponentGovernance): StoryObj {
+export function statusStory({
+  status,
+  owner,
+  note,
+}: ComponentGovernance): StoryObj {
   return {
     tags: ['!dev'],
     parameters: DOCS_FIGURE_PARAMETERS,
@@ -89,6 +115,30 @@ export function statusStory({ status, owner, note }: ComponentGovernance): Story
       moduleMetadata: { imports: [DocsStatusComponent] },
       props: { status, owner, note },
       template: `<pds-docs-status [status]="status" [owner]="owner" [note]="note" />`,
+    }),
+  };
+}
+
+/** Outcome + check list of a token sync record (Docs/Token pipeline/Sync status). */
+export function syncChecksStory(report: SyncReport): StoryObj {
+  return {
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsSyncChecksComponent] },
+      props: { report },
+      template: `<pds-docs-sync-checks [report]="report" />`,
+    }),
+  };
+}
+
+/** Searchable change list of a token sync record (Docs/Token pipeline/Sync status). */
+export function syncChangesStory(report: SyncReport): StoryObj {
+  return {
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsSyncChangesComponent] },
+      props: { report },
+      template: `<pds-docs-sync-changes [report]="report" />`,
     }),
   };
 }

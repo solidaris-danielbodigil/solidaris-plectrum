@@ -50,11 +50,8 @@ jobs:
       - name: Run tests
         run: npm run test:coverage
 
-      - name: Lint code
-        run: npm run lint
-
-      - name: Run Storybook
-        run: npm run storybook --ci
+      # `ng lint` has no architect target (and no eslint config) yet.
+      # Storybook is built and smoke-tested in the storybook-tests job.
 
   pack-smoke:
     runs-on: ubuntu-latest

@@ -23,40 +23,113 @@ jobs:
       - run: npm install
 
       - name: Copy staging tokens into the ingestion SSOT
+        id: staging
         run: |
           if [ ! -f libs/plectrum/sync/tokens.json ]; then
             echo "No staging tokens.json — plugin has not pushed yet."
+            echo "has_tokens=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           cp libs/plectrum/sync/tokens.json libs/plectrum/src/tokens.json
+          echo "has_tokens=true" >> "$GITHUB_OUTPUT"
 
-      - name: Wave 1 audits
-        run: |
-          npm run tokens:audit
-          npm run tokens:validate-preset
-
-      - name: Wave 3 build
+      - name: Build generated SCSS and the Storybook manifest
+        id: build
+        if: steps.staging.outputs.has_tokens == 'true'
         run: npm run tokens:build
 
-      - name: Promote theme only when validation passed
-        run: |
-          if [ -d libs/plectrum/sync/theme ] && [ -n "$(ls -A libs/plectrum/sync/theme 2>/dev/null)" ]; then
-            if npm run tokens:validate-preset; then
-              mkdir -p libs/plectrum/src/Plectrum_v1
-              cp -R libs/plectrum/sync/theme/. libs/plectrum/src/Plectrum_v1/
-              echo "Theme promoted. Hand-fixes remain in Plectrum_v1/ts/extend.ts."
-            else
-              echo "validate-preset failed — leaving Plectrum_v1/ untouched."
-            fi
-          fi
+      # Blocks the promotion PR. Compares the new dump with the preset and the SCSS just rebuilt.
+      - name: Drift audit
+        id: audit
+        if: steps.staging.outputs.has_tokens == 'true'
+        run: npm run tokens:audit -- --json "$RUNNER_TEMP/audit.json"
 
+      # Never blocks the tokens PR; only decides whether theme files may be promoted.
+      # Runs even when the audit failed so the report is complete.
+      - name: Preset coverage
+        id: validate
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        continue-on-error: true
+        run: npm run tokens:validate-preset -- --json "$RUNNER_TEMP/validate.json"
+
+      - name: Promote theme when preset coverage passed
+        id: theme
+        if: steps.validate.outcome == 'success'
+        run: |
+          if [ -z "$(find libs/plectrum/sync/theme -type f ! -name .gitkeep 2>/dev/null | head -n 1)" ]; then
+            echo "No theme files in this sync — Plectrum_v1/ untouched."
+            exit 0
+          fi
+          mkdir -p libs/plectrum/src/Plectrum_v1
+          rsync -a --exclude .gitkeep libs/plectrum/sync/theme/ libs/plectrum/src/Plectrum_v1/
+          echo "Theme promoted. Hand-fixes remain in Plectrum_v1/ts/extend.ts."
+
+      # Human-readable summary: what changed, which checks passed, what happens next.
+      # Lands in the job summary, becomes the promotion PR body, and — via the
+      # generated TS module committed with the PR — the Storybook page
+      # Docs/Token pipeline/Sync status. Changes are measured against the
+      # tokens.json on main, i.e. what the apps ship, not this branch's copy.
+      - name: Sync report
+        if: ${{ !cancelled() && steps.staging.outputs.has_tokens == 'true' }}
+        run: |
+          git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          node tools/tokens/report.mjs \
+            --base git:origin/main \
+            --outcome "build=${{ steps.build.outcome }}" \
+            --outcome "audit=${{ steps.audit.outcome }}" \
+            --outcome "validate=${{ steps.validate.outcome }}" \
+            --outcome "theme=${{ steps.theme.outcome }}" \
+            --audit "$RUNNER_TEMP/audit.json" \
+            --validate "$RUNNER_TEMP/validate.json" \
+            --md "$RUNNER_TEMP/sync-report.md" \
+            --json "$RUNNER_TEMP/sync-report.json" \
+            --ts libs/ui/src/storybook/sync-report.generated.ts
+          cat "$RUNNER_TEMP/sync-report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      # The promotion PR targets main and carries this whole staging branch plus
+      # the files generated above, as one commit on tokens/promote-staging. The
+      # branch is rebuilt on every push so the open PR always shows the latest
+      # sync; its body is replaced with the new report.
       - name: Open promotion PR
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: tokens/promote-staging
-          title: 'chore(tokens): promote Figma plugin staging'
-          commit-message: 'chore(tokens): promote plugin staging into tokens.json'
-          body: |
-            Promotes `libs/plectrum/sync/` after Wave 1 audits and `tokens:build`.
-            Theme files are copied only when `tokens:validate-preset` passes.
-            Hand-fixes stay in `extend.ts`.
+        id: pr
+        if: steps.audit.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B tokens/promote-staging
+          git add -A
+          git commit -m 'chore(tokens): promote plugin staging into tokens.json' \
+            || echo 'Nothing generated beyond the staging commit.'
+          git push --force origin tokens/promote-staging
+          url="$(gh pr list --head tokens/promote-staging --base main --state open --json url --jq '.[0].url')"
+          if [ -z "$url" ]; then
+            url="$(gh pr create --base main --head tokens/promote-staging \
+              --title 'chore(tokens): promote Figma plugin staging' \
+              --body-file "$RUNNER_TEMP/sync-report.md")"
+          else
+            gh pr edit "$url" --body-file "$RUNNER_TEMP/sync-report.md"
+          fi
+          echo "pull-request-url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Link the promotion PR in the summary
+        if: steps.pr.outputs.pull-request-url != ''
+        run: |
+          echo "Promotion PR: ${{ steps.pr.outputs.pull-request-url }}" >> "$GITHUB_STEP_SUMMARY"
+
+      # Tell designers in Figma — promoted or blocked. Comments are annotations,
+      # not design data. Skips itself when FIGMA_TOKEN is not configured and never
+      # fails the promotion.
+      - name: Comment in the Figma file
+        if: ${{ !cancelled() && steps.staging.outputs.has_tokens == 'true' }}
+        continue-on-error: true
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+          FIGMA_SYNC_COMMENT_NODE_ID: ${{ vars.FIGMA_SYNC_COMMENT_NODE_ID }}
+        run: |
+          node tools/tokens/notify-figma.mjs \
+            --report "$RUNNER_TEMP/sync-report.json" \
+            --pr-url "${{ steps.pr.outputs.pull-request-url }}" \
+            --post

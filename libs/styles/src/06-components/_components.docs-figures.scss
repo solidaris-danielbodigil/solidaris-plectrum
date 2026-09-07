@@ -10,6 +10,8 @@
 //   c-docs-cards     pds-docs-cards   → p-card + p-tag
 //   c-docs-callout   pds-docs-callout → p-message
 //   c-docs-status    pds-docs-status  → p-tag (status + owner badge)
+//   c-docs-sync-checks   pds-docs-sync-checks  → pds-docs-callout + p-tag
+//   c-docs-sync-changes  pds-docs-sync-changes → p-table + p-selectButton + p-tag
 //
 // PrimeNG owns the chrome of steps, cards and callouts. Rules here are
 // structural only: grid columns, list bullets the reset removed, text rhythm
@@ -238,4 +240,95 @@ $docs-tones: design, system, app, neutral;
   >li+li {
     margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
   }
+}
+
+// ── Sync status: checks (pds-docs-callout + p-tag) ───────────────────────────
+.c-docs-sync-checks {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+// Tag column shared by every check (subgrid), text in the second column.
+.c-docs-sync-checks__list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c-docs-sync-checks__item {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: start;
+  gap: var(--#{$pds-prefix}-spacing-1);
+  padding-block: var(--#{$pds-prefix}-spacing-1);
+  border-block-end: var(--#{$pds-prefix}-border-width-default) solid var(--#{$pds-prefix}-color-content-border);
+
+  &:last-child {
+    border-block-end: 0;
+  }
+}
+
+.c-docs-sync-checks__name {
+  @include text-label-md;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-docs-sync-checks__detail {
+  @include text-body-sm;
+  margin: var(--#{$pds-prefix}-spacing-0-5) 0 0;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-sync-checks__items {
+  @include text-body-sm;
+  margin: var(--#{$pds-prefix}-spacing-0-5) 0 0;
+  padding-inline-start: var(--#{$pds-prefix}-spacing-2);
+  list-style: disc outside;
+  color: var(--#{$pds-prefix}-color-text);
+
+  >li+li {
+    margin-block-start: var(--#{$pds-prefix}-spacing-0-5);
+  }
+}
+
+// ── Sync status: change list (p-table) ───────────────────────────────────────
+.c-docs-sync-changes {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+.c-docs-sync-changes__toolbar {
+  margin-block-end: var(--#{$pds-prefix}-spacing-2);
+}
+
+// Values (shadows) may wrap; a token path stays on one line and the table scrolls.
+.c-docs-sync-changes__code {
+  @include text-body-xs;
+  font-family: monospace;
+  overflow-wrap: anywhere;
+}
+
+.c-docs-sync-changes__code--path {
+  white-space: nowrap;
+}
+
+// Paints the row's own value (bound to --pds-docs-sync-swatch in the template).
+.c-docs-sync-changes__swatch {
+  display: inline-block;
+  width: var(--#{$pds-prefix}-size-docs-swatch);
+  height: var(--#{$pds-prefix}-size-docs-swatch);
+  margin-inline-end: var(--#{$pds-prefix}-spacing-0-5);
+  border: var(--#{$pds-prefix}-border-width-default) solid var(--#{$pds-prefix}-color-content-border);
+  border-radius: var(--#{$pds-prefix}-radius-xs);
+  vertical-align: middle;
+  background: var(--#{$pds-prefix}-docs-sync-swatch);
+}
+
+.c-docs-sync-changes__none,
+.c-docs-sync-changes__empty {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
 }

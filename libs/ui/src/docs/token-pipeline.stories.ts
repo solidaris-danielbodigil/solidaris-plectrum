@@ -30,7 +30,7 @@ export const ChangeFlow: StoryObj = stepsStory([
     tone: 'neutral',
     title: 'Audit and promotion pull request',
     detail:
-      'tokens-sync.yml compares Figma, the PrimeNG preset and the SCSS three ways, rebuilds generated files and opens a pull request. Drift fails the check.',
+      'tokens-sync.yml rebuilds generated files from the staging dump, compares Figma, the PrimeNG preset and the SCSS three ways, and opens a pull request whose body lists every changed value and check result. Drift fails the check.',
   },
   {
     who: 'Developer',
@@ -91,7 +91,7 @@ export const Roles: StoryObj = cardsStory([
     title: 'Owns the contract',
     items: [
       'CSS is the only interface between the design system and applications',
-      'Figma main is never written by CI',
+      'CI never writes design data to the main Figma file; it only posts sync comments there',
       'Applications install versions; drift is visible as a package bump',
       'Commands, delivery status and constraints: see Reference',
     ],

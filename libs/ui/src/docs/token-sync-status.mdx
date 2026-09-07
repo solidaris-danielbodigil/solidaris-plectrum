@@ -1,0 +1,67 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { SYNC_REPORT } from '../storybook/sync-report.generated';
+import { formatSyncDate } from '../storybook/sync-report.types';
+import * as Figures from './token-sync-status.stories';
+
+<Meta title="Docs/Token pipeline/Sync status" />
+
+# Sync status
+
+The last Figma → repository token sync that reached `main`. Designers see whether their plugin push landed and what it changed; developers see what the promotion pull request applied — without opening GitHub.
+
+The record is written by `tokens:report` in `tokens-sync.yml`, committed with the promotion pull request, and published with this Storybook. It shows the **before and after of one sync**, not current token values — those are read live on the Foundations pages.
+
+{SYNC_REPORT.result !== 'preview' && (
+  <DocsTable
+    headers={['Field', 'Value']}
+    rows={[
+      ['Recorded', formatSyncDate(SYNC_REPORT.generatedAt)],
+      ['Source', SYNC_REPORT.source ?? 'not stated in tokens.json'],
+      ['Branch', SYNC_REPORT.sha ? `${SYNC_REPORT.branch} @ ${SYNC_REPORT.sha}` : (SYNC_REPORT.branch ?? '—')],
+      ['Pushed by', SYNC_REPORT.actor ?? '—'],
+      ['Token sets', `${SYNC_REPORT.sets.length}: ${SYNC_REPORT.sets.join(', ')}`],
+      ['Tokens', `${SYNC_REPORT.resolvedCount} of ${SYNC_REPORT.leafCount} resolve${SYNC_REPORT.unresolved ? `, ${SYNC_REPORT.unresolved} unresolved` : ''}`],
+    ]}
+  />
+)}
+
+{SYNC_REPORT.runUrl && (
+  <p>
+    <a href={SYNC_REPORT.runUrl}>Workflow run #{SYNC_REPORT.runNumber}</a> (GitHub access required)
+  </p>
+)}
+
+---
+
+## Result and checks
+
+<Unstyled>
+  <Story of={Figures.Checks} />
+</Unstyled>
+
+- **Value integrity** — every alias in the dump resolves to a literal; a warning names references the exporter left dangling.
+- **Build** — `tokens:build` regenerated the `--pds-*` SCSS and the Storybook token manifest from the dump.
+- **Drift audit** — Figma, the PrimeNG preset and the generated SCSS agree on the compared set. A failure blocks the promotion pull request.
+- **Preset coverage** — every `{token.path}` in the PrimeNG preset exists in the dump. Code-owned gaps (spacing, durations, focus style) are allowlisted and only warn; a hard gap keeps theme files out of `Plectrum_v1/`.
+- **Theme** — whether generated theme files were promoted. Tokens-only syncs skip this.
+
+---
+
+## What changed
+
+Every resolved value that differs from the previous `tokens.json`. Search by token path, value or alias; filter by kind. Shadows exported with the same layers in a different order are listed as *Reordered* and are visually identical when the layers share a colour.
+
+<Unstyled>
+  <Story of={Figures.Changes} />
+</Unstyled>
+
+---
+
+## When this page updates
+
+1. A designer pushes from the PrimeUI theme generator plugin to `design-tokens/sync`.
+2. `tokens-sync.yml` builds, audits and writes this record; the same report is the body of the promotion pull request and is posted as a comment thread in the Plectrum UI Kit.
+3. A developer merges the pull request. The next Storybook deploy shows the new record here.
+
+A push that fails a check never reaches this page — it stops at the pull request stage, and the Figma comment says so. The [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) page describes the plugin settings and the branch rule.

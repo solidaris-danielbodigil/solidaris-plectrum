@@ -46,4 +46,7 @@
   --#{$pds-prefix}-size-docs-stroke:        1.5px;   // node outline (SVG user units)
   --#{$pds-prefix}-size-docs-edge-stroke:   2px;     // arrows
   --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow
+  --#{$pds-prefix}-size-docs-swatch:        0.875rem; // 12px colour chip beside a before/after value (sync status)
+  // Instance slot: each sync-status row binds this to the before/after colour.
+  --#{$pds-prefix}-docs-sync-swatch:        transparent;
 }

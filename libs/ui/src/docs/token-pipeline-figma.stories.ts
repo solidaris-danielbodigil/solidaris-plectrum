@@ -11,11 +11,48 @@ const meta: Meta = {
 export default meta;
 
 export const InboundProcess: StoryObj = stepsStory([
-  { who: 'Designer', tone: 'design', title: 'Edit the variable in the Plectrum UI Kit', detail: 'Primitive and Semantic collections are the source of truth. Component collections reference them.' },
-  { who: 'Designer', tone: 'design', title: 'Run the plugin sync', detail: 'The PrimeUI theme generator plugin commits to design-tokens/sync. It has no access to main.' },
-  { who: 'CI', tone: 'neutral', title: 'Audit and promotion pull request', detail: 'tokens-sync.yml compares Figma, the PrimeNG preset and the SCSS, runs tokens:build, and opens a pull request that promotes the staging files to libs/plectrum/src/tokens.json.' },
-  { who: 'Developer', tone: 'system', title: 'Review and merge', detail: 'Theme files are copied into Plectrum_v1/ only when tokens:validate-preset passes. Manual fixes live in extend.ts, never in generated files.' },
-  { who: 'CI', tone: 'neutral', title: 'Publish', detail: 'The change ships in the next package release. Foundations pages update without a documentation edit.' },
+  {
+    who: 'Designer',
+    tone: 'design',
+    title: 'Edit the variable in the Plectrum UI Kit',
+    detail:
+      'Primitive and Semantic collections are the source of truth. Component collections reference them.',
+  },
+  {
+    who: 'Designer',
+    tone: 'design',
+    title: 'Run the plugin sync',
+    detail:
+      'The PrimeUI theme generator plugin commits to design-tokens/sync. It has no access to main.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Audit, report and promotion pull request',
+    detail:
+      'tokens-sync.yml runs tokens:build, compares Figma, the PrimeNG preset and the SCSS, and writes a plain-language report: which values changed, which checks passed, what happens next. The report is the body of the pull request that promotes staging to libs/plectrum/src/tokens.json.',
+  },
+  {
+    who: 'CI',
+    tone: 'design',
+    title: 'Comment in the Figma file',
+    detail:
+      'The same report is posted as a comment thread in the Plectrum UI Kit — promoted or blocked — so the designer who pushed sees the outcome without GitHub. A comment is an annotation; no design data is written.',
+  },
+  {
+    who: 'Developer',
+    tone: 'system',
+    title: 'Review and merge',
+    detail:
+      'Theme files are copied into Plectrum_v1/ only when tokens:validate-preset passes. Manual fixes live in extend.ts, never in generated files.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Publish',
+    detail:
+      'The change ships in the next package release. Foundations pages update without a documentation edit.',
+  },
 ]);
 
 export const BranchWarning: StoryObj = calloutStory({
@@ -25,12 +62,48 @@ export const BranchWarning: StoryObj = calloutStory({
 });
 
 export const OutboundProcess: StoryObj = stepsStory([
-  { who: 'Developer', tone: 'system', title: 'Declare the token in 01-settings', detail: 'Example: --pds-color-surface-75, --pds-color-emutnav-*. The token is usable in applications immediately.' },
-  { who: 'CI', tone: 'neutral', title: 'tokens:propose', detail: 'Compares code-declared --pds-* with tokens.json and writes proposed.dtcg.json. Dotted paths map to Figma groups.' },
-  { who: 'CI', tone: 'neutral', title: 'tokens:apply', detail: 'Writes the proposal to the Figma branch proposals/{app}. Dry run is the default; a real write is a manual workflow run behind the figma-write environment.' },
-  { who: 'Designer', tone: 'design', title: 'Review the Figma branch', detail: 'Rename, regroup or reject. The main file is unchanged at this point.' },
-  { who: 'Designer', tone: 'design', title: 'Merge to main and publish the library', detail: 'Publishing is only possible from main. Other files see the variables after publish.' },
-  { who: 'CI', tone: 'neutral', title: 'Re-pull', detail: 'The LIBRARY_PUBLISH repository_dispatch event runs tokens:pull-figma, so the repository reflects the merged state.' },
+  {
+    who: 'Developer',
+    tone: 'system',
+    title: 'Declare the token in 01-settings',
+    detail:
+      'Example: --pds-color-surface-75, --pds-color-emutnav-*. The token is usable in applications immediately.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'tokens:propose',
+    detail:
+      'Compares code-declared --pds-* with tokens.json and writes proposed.dtcg.json. Dotted paths map to Figma groups.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'tokens:apply',
+    detail:
+      'Writes the proposal to the Figma branch proposals/{app}. Dry run is the default; a real write is a manual workflow run behind the figma-write environment.',
+  },
+  {
+    who: 'Designer',
+    tone: 'design',
+    title: 'Review the Figma branch',
+    detail:
+      'Rename, regroup or reject. The main file is unchanged at this point.',
+  },
+  {
+    who: 'Designer',
+    tone: 'design',
+    title: 'Merge to main and publish the library',
+    detail:
+      'Publishing is only possible from main. Other files see the variables after publish.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Re-pull',
+    detail:
+      'The LIBRARY_PUBLISH repository_dispatch event runs tokens:pull-figma, so the repository reflects the merged state.',
+  },
 ]);
 
 export const Guardrails: StoryObj = calloutStory({
@@ -45,10 +118,27 @@ export const Guardrails: StoryObj = calloutStory({
 });
 
 export const ComponentPromotion: StoryObj = stepsStory([
-  { who: 'Developer', tone: 'app', title: 'Develop in the application while the API is unstable' },
-  { who: 'Developer', tone: 'system', title: 'Open a pull request in this repository with the generic component', detail: 'libs/ui + libs/styles + a story. No application-specific logic.' },
-  { who: 'CI', tone: 'neutral', title: 'Publish @solidaris/ui through changesets' },
-  { who: 'Developer', tone: 'app', title: 'Bump the package, delete the local copy, import from @solidaris/ui' },
+  {
+    who: 'Developer',
+    tone: 'app',
+    title: 'Develop in the application while the API is unstable',
+  },
+  {
+    who: 'Developer',
+    tone: 'system',
+    title: 'Open a pull request in this repository with the generic component',
+    detail: 'libs/ui + libs/styles + a story. No application-specific logic.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Publish @solidaris/ui through changesets',
+  },
+  {
+    who: 'Developer',
+    tone: 'app',
+    title: 'Bump the package, delete the local copy, import from @solidaris/ui',
+  },
 ]);
 
 export const Reference: StoryObj = cardsStory(

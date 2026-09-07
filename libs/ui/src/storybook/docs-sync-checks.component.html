@@ -1,0 +1,30 @@
+<pds-docs-callout
+  [tone]="outcome().tone"
+  [title]="outcome().title"
+  [text]="outcome().text"
+/>
+
+@if (report().result !== 'preview') {
+  <ul class="c-docs-sync-checks__list">
+    @for (check of report().checks; track check.id) {
+      <li class="c-docs-sync-checks__item">
+        <p-tag
+          [value]="check.status"
+          [severity]="severity(check.status)"
+          [rounded]="true"
+        />
+        <div class="c-docs-sync-checks__body">
+          <strong class="c-docs-sync-checks__name">{{ check.name }}</strong>
+          <p class="c-docs-sync-checks__detail">{{ check.detail }}</p>
+          @if (check.items.length) {
+            <ul class="c-docs-sync-checks__items">
+              @for (item of check.items; track $index) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          }
+        </div>
+      </li>
+    }
+  </ul>
+}

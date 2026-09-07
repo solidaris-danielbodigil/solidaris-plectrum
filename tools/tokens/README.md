@@ -2,17 +2,19 @@
 
 `libs/plectrum/src/tokens.json` is the ingestion SSOT. Style Dictionary emits `--pds-*` (colors as hybrid `var(--p-*, <literal>)`).
 
-| Script | npm | Notes |
-|---|---|---|
-| `resolve-dtcg.mjs` | `tokens:resolve` | Flatten 7 DTCG sets, resolve `{alias}` chains |
-| `audit-drift.mjs` | `tokens:audit` | Figma / v1 / SCSS + alias-map breaks. Blocking in CI |
-| `validate-preset.mjs` | `tokens:validate-preset` | Every `{token.path}` in v1 must resolve. Non-blocking until tokens.json grows |
-| `check-prefix.mjs` | `tokens:check-prefix` | No new bare `--spacing-` / `--text-` / `--font-` / `--line-height-` decls |
-| `build.mjs` | `tokens:build` | Hybrid Style Dictionary → `*.generated.scss` + `tokens.generated.ts` |
-| `lint-usage.mjs` | `tokens:lint` | `--p-*` decls, PrimeUI runtime imports, unknown `--pds-*`. `--strict` adds hex/px |
-| `pull-figma.mjs` | `tokens:pull-figma` | Variables API safety net (`FIGMA_TOKEN`) |
-| `propose-to-figma.mjs` | `tokens:propose` | Code-only tokens → `proposed.dtcg.json` |
-| `apply-to-figma.mjs` | `tokens:apply` | Branch-only write, **dry-run default**, abort if `proposals/{app}` is missing |
+| Script                 | npm                      | Notes                                                                                                                                                                                                                                                |
+| ---------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `resolve-dtcg.mjs`     | `tokens:resolve`         | Flatten the DTCG sets, resolve `{alias}` chains. Understands the PrimeUI plugin's quoted segments (`{scale."1"}`)                                                                                                                                    |
+| `audit-drift.mjs`      | `tokens:audit`           | Figma / v1 / SCSS + alias-map breaks. Blocking in CI. `--json` writes a summary                                                                                                                                                                      |
+| `validate-preset.mjs`  | `tokens:validate-preset` | Every `{token.path}` in v1 must resolve. Gaps in `audit-allowlist.json` (code-owned) warn; anything else fails. `--json` writes a summary                                                                                                            |
+| `check-prefix.mjs`     | `tokens:check-prefix`    | No new bare `--spacing-` / `--text-` / `--font-` / `--line-height-` decls                                                                                                                                                                            |
+| `build.mjs`            | `tokens:build`           | Hybrid Style Dictionary → `*.generated.scss` + `tokens.generated.ts`. Shadows accept expanded leaves or composite objects                                                                                                                            |
+| `report.mjs`           | `tokens:report`          | Markdown + JSON + TS summary of one sync: changed values vs `--base` (git HEAD locally, `main` in CI), check results, promotion status. Feeds the job summary, the promotion PR body and (`--ts`) the Storybook page Docs/Token pipeline/Sync status |
+| `notify-figma.mjs`     | `tokens:notify-figma`    | Posts the report as a comment thread in the Plectrum UI Kit (`FIGMA_TOKEN` with `file_comments:write`). Dry-run default, `--post` in `tokens-sync.yml`. Comments are annotations, not design data                                                    |
+| `lint-usage.mjs`       | `tokens:lint`            | `--p-*` decls, PrimeUI runtime imports, unknown `--pds-*`. `--strict` adds hex/px                                                                                                                                                                    |
+| `pull-figma.mjs`       | `tokens:pull-figma`      | Variables API safety net (`FIGMA_TOKEN`)                                                                                                                                                                                                             |
+| `propose-to-figma.mjs` | `tokens:propose`         | Code-only tokens → `proposed.dtcg.json`                                                                                                                                                                                                              |
+| `apply-to-figma.mjs`   | `tokens:apply`           | Branch-only write, **dry-run default**, abort if `proposals/{app}` is missing                                                                                                                                                                        |
 
 Foundations Phase 0: spacing and typography stay code-owned (`foundations-phase-0.md`).
 
