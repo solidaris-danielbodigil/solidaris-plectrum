@@ -12,7 +12,7 @@ Two one-way transports connect the Plectrum UI Kit and the repository. One is li
 - **Figma → repository** — live. The PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
 - **Repository → Figma** — parked. Code-owned tokens are proposed for a Figma branch; the automated write needs Figma's Enterprise-only Variables API. See [Status](#status).
 
-Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
+Neither transport writes the main Figma file automatically. Agents operate the repository side of both — see [Agents](#agents). See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
 
 <Diagram
   title="Figma sync transports"
@@ -151,6 +151,67 @@ Tokens that originate in code — a surface step the UI Kit lacks, a feature-spe
 <Unstyled>
   <Story of={Figures.Guardrails} />
 </Unstyled>
+
+---
+
+## Agents
+
+Agents run the repository side of both transports. They read the UI Kit through the Figma MCP and do not write to it: no agent holds a Variables scope, and the outbound write is parked ([Status](#status)). Plugin sync, branch review, merge and publish stay with the designer. Roles and the component prompts: [AI strategy](?path=/docs/docs-ai-strategy--docs#prompts).
+
+<DocsTable
+  headers={['Agent', 'Transport', 'Does', 'Does not']}
+  rows={[
+    ['UX Researcher', 'Figma → repository', 'Reads one node through the Figma MCP; names the variable behind each value; marks it EXISTS or MISSING against 01-settings', 'Write code or tokens.json; guess a value the node does not show'],
+    ['UX Engineer', 'Repository → Figma', 'Declares MISSING tokens in 01-settings, cited with the intended Figma variable; runs tokens:propose so the name lands in proposed.dtcg.json', 'Edit tokens.json or *.generated.scss; enter variables in the UI Kit'],
+    ['Token Auditor', 'Both', 'tokens:audit and tokens:check-prefix; Figma drift (new, missing, mismatched); review of the promotion pull request from design-tokens/sync', 'Fix anything unless asked; touch the Figma file'],
+    ['Solidaris', 'Both', 'Takes the prompts below and delegates to the three above', 'Run a token script without reporting its output'],
+  ]}
+/>
+
+### Prompts
+
+Cursor: start the message with `/Solidaris`, or write "Use the Solidaris subagent to …". VS Code: select **Solidaris** in the chat agent picker. Templates with placeholders: `.ai/contracts/protocols/ai-prompts.md`, Prompt E; Prompt A and B are the review and translation prompts the examples refer to.
+
+#### Token from a Figma decision
+
+```text
+/Solidaris Translate the Figma decision at {figma-node-url} into --pds-* tokens.
+Use Prompt B from .ai/contracts/protocols/ai-prompts.md. For each value: the Figma
+variable, the closest existing --pds-* token or MISSING, primitive or semantic, the
+01-settings file, and the --p-* bridge when a PrimeNG component is involved.
+Propose first; write nothing until I confirm.
+```
+
+#### Promotion pull request review
+
+```text
+/Solidaris Review the token promotion pull request #{number}
+(design-tokens/sync → libs/plectrum/src/tokens.json).
+Use Prompt A. Compare the sync report with the diff, classify each changed token,
+and flag renamed or removed variables that a component consumes (tokens.consumed
+in the .metadata.ts files). Recommendation: Accept, Accept with small changes,
+Revise before merge, or Reject.
+```
+
+#### Drift check
+
+```text
+/Solidaris Run the Token Auditor on libs/styles/src/01-settings.
+Prefix compliance, semantic coverage, PrimeNG sync, and Figma drift against the
+Primitive and Semantic collections of the Plectrum UI Kit. Report only; no fixes.
+```
+
+#### Code-owned token proposal
+
+```text
+/Solidaris iSHARE needs a surface step between surface/50 and surface/100 for the
+dossier list rows.
+Declare --pds-color-surface-75 in 01-settings with a comment naming the intended
+Figma variable (color/surface/75), use it in
+libs/styles/src/06-components/_components.list.scss, and run
+npm run tokens:propose. Give me the proposed.dtcg.json entry the designer enters
+on the branch proposals/ishare. Do not run tokens:apply.
+```
 
 ---
 

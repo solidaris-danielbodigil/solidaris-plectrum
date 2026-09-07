@@ -60,6 +60,17 @@ export const Layers: StoryObj = cardsStory([
   },
 ]);
 
+export const PromptRules: StoryObj = calloutStory({
+  tone: 'warning',
+  title: 'Keep out of the prompt',
+  items: [
+    'Token values, hex or px — the agent reads 01-settings and the compiled CSS. Name the Figma node instead.',
+    'Class names or SCSS — the BEM block and its modifiers follow .ai/rules/05-bemit-naming.md.',
+    'A request to skip the proposal — without an owner decision the coordinator files a question in .ai/questions/ and stops.',
+    'A screenshot as the only design reference — the Figma MCP reads the node URL, not the image.',
+  ],
+});
+
 export const Rules: StoryObj = cardsStory([
   { title: 'Contracts are code', lead: 'Metadata is TypeScript imported as @solidaris/contracts. A missing or stale .metadata.ts is a defect, not optional docs.' },
   { title: 'Index is generated', lead: 'Do not edit index.json by hand. pds:component and a Cursor hook regenerate it; CI fails when the committed file is stale. A manual run is only needed after deleting files by hand.' },

@@ -6,28 +6,28 @@
 // =============================================================================
 
 :root {
-  --#{$pds-prefix}-color-primary-75:   #edf1f4;
-  --#{$pds-prefix}-color-surface-75:    #ededed;
+  --#{$pds-prefix}-color-primary-75: #edf1f4;
+  --#{$pds-prefix}-color-surface-75: #ededed;
   --#{$pds-prefix}-color-surface-border-drawer: #e7e7e7;
-  --#{$pds-prefix}-color-green-75:   #dcfce7;
-  --#{$pds-prefix}-color-orange-75:   #ffedd5;
-  --#{$pds-prefix}-color-red-75:   #fee2e2;
+  --#{$pds-prefix}-color-green-75: #dcfce7;
+  --#{$pds-prefix}-color-orange-75: #ffedd5;
+  --#{$pds-prefix}-color-red-75: #fee2e2;
 
-  --#{$pds-prefix}-color-transparent-black-5:   rgba(0, 0, 0, 0.05);
-  --#{$pds-prefix}-color-transparent-black-10:  rgba(0, 0, 0, 0.10);
-  --#{$pds-prefix}-color-transparent-black-20:  rgba(0, 0, 0, 0.20);
-  --#{$pds-prefix}-color-transparent-white-10:  rgba(255, 255, 255, 0.10);
-  --#{$pds-prefix}-color-transparent-white-20:  rgba(255, 255, 255, 0.20);
-  --#{$pds-prefix}-color-transparent-white-80:  rgba(255, 255, 255, 0.80);
+  --#{$pds-prefix}-color-transparent-black-5: rgba(0, 0, 0, 0.05);
+  --#{$pds-prefix}-color-transparent-black-10: rgba(0, 0, 0, 0.10);
+  --#{$pds-prefix}-color-transparent-black-20: rgba(0, 0, 0, 0.20);
+  --#{$pds-prefix}-color-transparent-white-10: rgba(255, 255, 255, 0.10);
+  --#{$pds-prefix}-color-transparent-white-20: rgba(255, 255, 255, 0.20);
+  --#{$pds-prefix}-color-transparent-white-80: rgba(255, 255, 255, 0.80);
 
-  --#{$pds-prefix}-color-black-alpha-50:   rgba(0, 0, 0, 0.05);
-  --#{$pds-prefix}-color-black-alpha-100:  rgba(0, 0, 0, 0.10);
-  --#{$pds-prefix}-color-black-alpha-200:  rgba(0, 0, 0, 0.20);
-  --#{$pds-prefix}-color-black-alpha-300:  rgba(0, 0, 0, 0.30);
-  --#{$pds-prefix}-color-black-alpha-400:  rgba(0, 0, 0, 0.40);
-  --#{$pds-prefix}-color-black-alpha-500:  rgba(0, 0, 0, 0.50);
-  --#{$pds-prefix}-color-black-alpha-600:  rgba(0, 0, 0, 0.60);
-  --#{$pds-prefix}-color-black-alpha-700:  rgba(0, 0, 0, 0.70);
-  --#{$pds-prefix}-color-black-alpha-800:  rgba(0, 0, 0, 0.80);
-  --#{$pds-prefix}-color-black-alpha-900:  rgba(0, 0, 0, 0.90);
+  --#{$pds-prefix}-color-black-alpha-50: rgba(0, 0, 0, 0.05);
+  --#{$pds-prefix}-color-black-alpha-100: rgba(0, 0, 0, 0.10);
+  --#{$pds-prefix}-color-black-alpha-200: rgba(0, 0, 0, 0.20);
+  --#{$pds-prefix}-color-black-alpha-300: rgba(0, 0, 0, 0.30);
+  --#{$pds-prefix}-color-black-alpha-400: rgba(0, 0, 0, 0.40);
+  --#{$pds-prefix}-color-black-alpha-500: rgba(0, 0, 0, 0.50);
+  --#{$pds-prefix}-color-black-alpha-600: rgba(0, 0, 0, 0.60);
+  --#{$pds-prefix}-color-black-alpha-700: rgba(0, 0, 0, 0.70);
+  --#{$pds-prefix}-color-black-alpha-800: rgba(0, 0, 0, 0.80);
+  --#{$pds-prefix}-color-black-alpha-900: rgba(0, 0, 0, 0.90);
 }

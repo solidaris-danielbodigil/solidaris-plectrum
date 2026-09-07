@@ -129,6 +129,112 @@ Component work is delegated to specialist subagents. Ask **Solidaris** for a com
 
 ---
 
+## Prompts
+
+What a developer sends to the coordinator. Cursor: start the message with `/Solidaris`, or write "Use the Solidaris subagent to …". VS Code: select **Solidaris** in the chat agent picker. Templates with placeholders: `.ai/contracts/protocols/ai-prompts.md`, Prompt D (components) and Prompt E (Figma sync — examples on [Figma sync → Agents](?path=/docs/docs-token-pipeline-figma-sync--docs#agents)).
+
+The prompt carries what the agent cannot read from the repository. Protocol, rules, scaffolder, token scripts and story tests it loads itself. The owner decision comes from the core team before the prompt is written ([Contribute → Three answers to a proposal](?path=/docs/get-started-contribute--docs#three-answers-to-a-proposal)).
+
+<DocsTable
+  headers={['Input', 'Why the agent needs it']}
+  rows={[
+    ['Owner decision', 'design-system → Core, ishare / icrm → Candidate. Without it the coordinator files a question in .ai/questions/ and stops'],
+    ['Figma node URL', 'The UX Researcher reads exactly this node through the Figma MCP. Without it the brief has no variables to cite'],
+    ['Name and purpose', 'One sentence. Becomes the usage block of the .metadata.ts and the Storybook title'],
+    ['States and variants', 'Each becomes a story with a play test. Hover, focus and disabled come from Figma; product states come from you'],
+    ['PrimeNG base, if known', 'Shortens the PrimeNG MCP check. "custom" is a valid answer; the agent verifies either way'],
+    ['Consumers', 'Which screens or applications use it — decides Patterns/{App} vs Custom components, and what the examples show'],
+  ]}
+/>
+
+<Unstyled>
+  <Story of={Figures.PromptRules} />
+</Unstyled>
+
+### New component
+
+```text
+/Solidaris Create the component Status Badge in libs/ui.
+
+Owner: design-system — core-team decision of 2026-09-07
+  (system-level: iSHARE and iCRM both need it).
+Figma: https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/…?node-id={node-id}
+Purpose: a small coloured label that names the processing status of a dossier.
+PrimeNG base: p-tag if it covers the design — otherwise say so before building
+  custom.
+States: neutral, info, success, warning, danger; each with and without a leading
+  icon.
+Consumers: iSHARE dossier list and dossier header; iCRM contact timeline.
+
+Follow .ai/contracts/protocols/component-creation.md. Missing --pds-* tokens go to
+01-settings first, cited with the Figma variable. Every state is a story with a play
+test; run npm run test-storybook before you report. End with the changed files, the
+new tokens and the open questions.
+```
+
+### Existence check
+
+```text
+/Solidaris Before I propose anything: does Plectrum already cover a dismissible
+inline notice with an action link?
+Check .ai/contracts/index.json, the PrimeNG MCP (p-message, p-toast) and the
+Plectrum UI Kit. Answer with one of: exists (where), variant of an existing
+component (which, and the modifier), missing. No code.
+```
+
+### Variant of an existing component
+
+```text
+/Solidaris Add a compact variant to Detail List (libs/ui/src/lib/detail-list).
+Figma: {figma-node-url}
+Difference: row padding and label size, from the Figma node. One new boolean
+input, compact; the modifier is c-detail-list--compact.
+Add the story Compact with a play test, update detail-list.metadata.ts (variants,
+tokens.consumed) and rerun npm run test-storybook.
+```
+
+### Stories and tests
+
+```text
+/Solidaris Run the Tester on Toolbar (libs/ui/src/lib/toolbar).
+Every required canvas story needs a play function (.ai/rules/03-storybook.md §5).
+Report the addon-a11y violations and fix the ones inside the component; do not set
+a11y.test to off. End with the npm run test-storybook output.
+```
+
+### Review
+
+```text
+/Solidaris Review libs/ui/src/lib/form-field and
+libs/styles/src/06-components/_components.form-field.scss.
+Review workflow: Token Auditor, Architect and Tester in parallel. One prioritised
+list — Critical, Warning, Suggestion — with file and line. Fix nothing yet.
+```
+
+### Promotion
+
+```text
+/Solidaris Promote Toolbar from Candidate (owner ishare) to Core.
+Core-team decision: {date}. Generic name and inputs (no iSHARE vocabulary), tokens
+from its _settings.{feature}.scss into the shared settings files, Storybook title
+Custom components/Toolbar, governance status core and owner design-system. Add a
+changeset. List the iSHARE usages that must migrate after the release.
+```
+
+<DocsTable
+  headers={['Prompt', 'Agents', 'Result']}
+  rows={[
+    ['New component', 'UX Researcher ∥ Architect → UX Engineer → Frontend Dev → Tester ∥ Token Auditor', 'Component folder with .metadata.ts and stories (play tests), the 06-components partial, new 01-settings tokens, refreshed index.json, a summary with open questions'],
+    ['Existence check', 'Architect, with the PrimeNG and Figma MCP', 'An answer — exists, variant, missing. No files'],
+    ['Variant', 'UX Researcher → UX Engineer → Frontend Dev → Tester', 'Modifier class, input, story with play test, metadata update'],
+    ['Stories and tests', 'Tester', 'Play functions, a11y fixes or documented exceptions, test-storybook run'],
+    ['Review', 'Token Auditor ∥ Architect ∥ Tester', 'One prioritised list. No edits'],
+    ['Promotion', 'Architect → UX Engineer → Frontend Dev → Tester', 'Renamed API and block, moved tokens, new Storybook title and governance, changeset'],
+  ]}
+/>
+
+---
+
 ## Rules
 
 <Unstyled>

@@ -29,7 +29,7 @@
 │   ├── component-creation.md        How to create new components correctly
 │   ├── query-protocol.md            How to navigate the codebase
 │   ├── token-audit.md               How to validate token health
-│   └── ai-prompts.md                AI prompt templates for token review and Figma translation
+│   └── ai-prompts.md                Prompt templates: token review, Figma translation, component and Figma-sync requests to Solidaris
 │
 ├── index.json                       Live codebase map — regenerate with npm run generate-index
 │
