@@ -72,7 +72,7 @@ Configured once per designer. Reference: `tools/tokens/PLUGIN_SETUP.md`.
 ### Repository responsibilities
 
 1. Plugin commits land on `design-tokens/sync`. `Plectrum_v1/ts` is never overwritten in place.
-2. `.github/workflows/tokens-sync.yml` runs the Wave 1 audits and `tokens:build`.
+2. `.github/workflows/tokens-sync.yml` runs `tokens:build`, then the Wave 1 audits.
 3. The workflow opens a pull request that promotes staging → `libs/plectrum/src/tokens.json`.
 4. Theme files are copied into `Plectrum_v1/` only if `tokens:validate-preset` passes.
 5. Manual fixes stay in `Plectrum_v1/ts/extend.ts`. The gap report currently lists `{extremes.white}` and `{branding.800}`.

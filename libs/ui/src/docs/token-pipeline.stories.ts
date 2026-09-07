@@ -30,7 +30,7 @@ export const ChangeFlow: StoryObj = stepsStory([
     tone: 'neutral',
     title: 'Audit and promotion pull request',
     detail:
-      'tokens-sync.yml compares Figma, the PrimeNG preset and the SCSS three ways, rebuilds generated files and opens a pull request. Drift fails the check.',
+      'tokens-sync.yml rebuilds generated files from the staging dump, then compares Figma, the PrimeNG preset and the SCSS three ways and opens a pull request. Drift fails the check.',
   },
   {
     who: 'Developer',
