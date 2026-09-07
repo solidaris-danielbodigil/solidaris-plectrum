@@ -72,12 +72,14 @@ Configured once per designer. Reference: `tools/tokens/PLUGIN_SETUP.md`.
 ### Repository responsibilities
 
 1. Plugin commits land on `design-tokens/sync`. `Plectrum_v1/ts` is never overwritten in place.
-2. `.github/workflows/tokens-sync.yml` runs `tokens:build`, then the Wave 1 audits.
-3. The workflow opens a pull request that promotes staging → `libs/plectrum/src/tokens.json`.
-4. Theme files are copied into `Plectrum_v1/` only if `tokens:validate-preset` passes.
-5. Manual fixes stay in `Plectrum_v1/ts/extend.ts`. The gap report currently lists `{extremes.white}` and `{branding.800}`.
+2. `.github/workflows/tokens-sync.yml` runs `tokens:build`, then `tokens:audit` (blocking) and `tokens:validate-preset` (theme gate only).
+3. `tokens:report` summarises the sync — changed values against the current `tokens.json`, check results, what happens next. It is written to the Actions job summary, becomes the pull request body, and is committed as `sync-report.generated.ts` so the [Sync status](?path=/docs/docs-token-pipeline-sync-status--docs) page shows it to everyone without GitHub access once the pull request merges.
+4. `tokens:notify-figma` posts the same summary as a comment thread in the Plectrum UI Kit (`FIGMA_TOKEN` with `file_comments:write`; optional `FIGMA_SYNC_COMMENT_NODE_ID` pins the thread to a frame). Promoted and blocked syncs both reach the designer in Figma. Without the secret the step skips itself; it never blocks the promotion.
+5. The workflow opens a pull request that promotes staging → `libs/plectrum/src/tokens.json` when the audit passed.
+6. Theme files are copied into `Plectrum_v1/` only if `tokens:validate-preset` passes. Code-owned gaps listed in `audit-allowlist.json` warn instead of failing.
+7. Manual fixes stay in `Plectrum_v1/ts/extend.ts`.
 
-Confirm on the first production sync and update `PLUGIN_SETUP.md`: commit vs pull request, overwrite vs merge, DTCG shape, theme layout.
+The first sync confirmed the plugin's shape (`aura/*` sets, quoted numeric names, composite shadows, hex8 colours); see `tools/tokens/PLUGIN_SETUP.md`.
 
 ---
 

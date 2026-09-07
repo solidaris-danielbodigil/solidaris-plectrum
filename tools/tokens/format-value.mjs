@@ -34,20 +34,49 @@ export function normalizeHex(value) {
 
 export function formatCssLiteral(value) {
   if (value == null) return null;
+  if (typeof value === 'object') return formatShadowValue(value);
   if (typeof value === 'number') {
     return value === 0 ? '0' : `${value}px`;
   }
   const raw = String(value).trim();
   const hex = normalizeHex(raw);
   if (hex) return hex;
-  if (raw === '0') return '0';
-  if (/^\d+(\.\d+)?$/.test(raw)) {
+  if (/^-?\d+(\.\d+)?$/.test(raw)) {
     return Number(raw) === 0 ? '0' : `${raw}px`;
   }
   return raw;
 }
 
-export function composeDropShadow(resolved, prefix) {
+function isShadowLayer(value) {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    ['x', 'y', 'blur', 'spread', 'color'].some((key) => key in value)
+  );
+}
+
+/**
+ * Layers of a DTCG composite shadow as exported by the PrimeUI plugin
+ * (`aura/effects`): one `{ x, y, blur, spread, color }` object or an array.
+ * Figma lists effects bottom-most first; CSS paints the first box-shadow on
+ * top, so arrays are reversed. This matches the PrimeUI Aura preset, Tailwind,
+ * and the order the earlier Tokens Studio dumps used.
+ * Returns null for anything that is not shadow-shaped.
+ */
+export function shadowLayersFromValue(value) {
+  const layers = Array.isArray(value) ? [...value].reverse() : [value];
+  if (layers.length === 0 || !layers.every(isShadowLayer)) return null;
+  return layers.map((layer) =>
+    formatShadowLayer(layer.x, layer.y, layer.blur, layer.spread, layer.color),
+  );
+}
+
+/**
+ * Layers of a shadow stored as expanded leaves (`prefix.x` or `prefix.0.x`, …),
+ * the shape older Tokens Studio dumps used. Null when no such leaves exist.
+ */
+export function shadowLayersFromPaths(resolved, prefix) {
   const layers = [];
   for (let i = 0; i < 8; i += 1) {
     const x = resolved[`${prefix}.${i}.x`];
@@ -63,13 +92,27 @@ export function composeDropShadow(resolved, prefix) {
         const ss = resolved[`${prefix}.spread`];
         const sc = resolved[`${prefix}.color`];
         if (sx == null && sy == null && sc == null) return null;
-        return formatShadowLayer(sx, sy, sb, ss, sc);
+        return [formatShadowLayer(sx, sy, sb, ss, sc)];
       }
       break;
     }
     layers.push(formatShadowLayer(x, y, blur, spread, color));
   }
-  return layers.length ? layers.join(', ') : null;
+  return layers.length ? layers : null;
+}
+
+export function formatShadowValue(value) {
+  const layers = shadowLayersFromValue(value);
+  return layers ? layers.join(', ') : null;
+}
+
+export function composeDropShadow(resolved, prefix) {
+  const direct = resolved[prefix];
+  const layers =
+    direct !== null && typeof direct === 'object'
+      ? shadowLayersFromValue(direct)
+      : shadowLayersFromPaths(resolved, prefix);
+  return layers ? layers.join(', ') : null;
 }
 
 function formatShadowLayer(x, y, blur, spread, color) {

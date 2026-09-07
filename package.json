@@ -36,6 +36,8 @@
     "tokens:validate-preset": "tsx tools/tokens/validate-preset.mjs",
     "tokens:check-prefix": "node tools/tokens/check-prefix.mjs",
     "tokens:build": "node tools/tokens/build.mjs",
+    "tokens:report": "node tools/tokens/report.mjs",
+    "tokens:notify-figma": "node tools/tokens/notify-figma.mjs",
     "tokens:pull-figma": "node tools/tokens/pull-figma.mjs",
     "tokens:propose": "node tools/tokens/propose-to-figma.mjs",
     "tokens:apply": "node tools/tokens/apply-to-figma.mjs",

@@ -195,7 +195,7 @@ Plectrum theme — the docs demonstrate the design system with the design system
 
 ### How it is wired
 
-- The figure is an Angular component in `libs/ui/src/storybook/` (`pds-docs-steps`, `pds-docs-cards`, `pds-docs-callout`, `pds-docs-status`, `pds-docs-link`).
+- The figure is an Angular component in `libs/ui/src/storybook/` (`pds-docs-steps`, `pds-docs-cards`, `pds-docs-callout`, `pds-docs-status`, `pds-docs-link`, `pds-docs-sync-checks`, `pds-docs-sync-changes` — the last two render the generated sync record `sync-report.generated.ts` with `p-tag`, `p-message` and `p-table`).
 - MDX prose links cannot host `[pButton]`. `PlectrumDocsContainer` remaps MDX `a` to the same `p-button-link` chrome; `?path=` is rewritten to `./?path=` + `target="_top"`.
 - MDX cannot pass props to Angular, so page content lives in a sibling `*.stories.ts` tagged `['!dev']`
   (hidden from the sidebar) built with the factories in `libs/ui/src/docs/docs-figure-stories.ts`,

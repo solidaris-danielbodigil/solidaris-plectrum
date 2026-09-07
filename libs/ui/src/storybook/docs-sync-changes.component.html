@@ -1,0 +1,146 @@
+@if (!report().diff.base.available) {
+  <pds-docs-callout
+    tone="info"
+    title="No comparison available"
+    [text]="
+      'The previous tokens.json could not be read (' +
+      report().diff.base.label +
+      '), so there is no change list for this sync.'
+    "
+  />
+} @else if (report().result === 'preview') {
+  <pds-docs-callout
+    tone="info"
+    title="No promoted sync recorded yet"
+    text="The change list appears with the first promotion pull request merged from design-tokens/sync."
+  />
+} @else if (rows().length === 0) {
+  <pds-docs-callout
+    tone="info"
+    title="No value changes"
+    text="The last promoted sync did not change any resolved token value."
+  />
+} @else {
+  <div
+    class="c-docs-sync-changes__toolbar o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-2"
+  >
+    <p-iconfield class="c-docs-control">
+      <p-inputicon styleClass="bi bi-search" />
+      <input
+        pInputText
+        type="search"
+        role="searchbox"
+        autocomplete="off"
+        placeholder="Search token, value or alias"
+        aria-label="Search changes"
+        [value]="search()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </p-iconfield>
+
+    <p-selectButton
+      [options]="kindOptions()"
+      [ngModel]="kind()"
+      (ngModelChange)="onKind($event)"
+      optionLabel="label"
+      optionValue="value"
+      [allowEmpty]="false"
+      aria-label="Filter by change kind"
+    />
+
+    <p-badge
+      severity="secondary"
+      aria-live="polite"
+      [value]="visible().length + ' / ' + rows().length + ' changes'"
+    />
+  </div>
+
+  <p-table
+    [value]="visible()"
+    dataKey="path"
+    size="small"
+    sortField="path"
+    [sortOrder]="1"
+    [paginator]="visible().length > pageSize()"
+    [rows]="pageSize()"
+    [rowsPerPageOptions]="[25, 50, 100]"
+    [first]="first()"
+    (firstChange)="first.set($event)"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{first}–{last} of {totalRecords}"
+  >
+    <ng-template #header>
+      <tr>
+        <th scope="col" pSortableColumn="kind">
+          Change <p-sortIcon field="kind" />
+        </th>
+        <th scope="col" pSortableColumn="path">
+          Token <p-sortIcon field="path" />
+        </th>
+        <th scope="col">Before</th>
+        <th scope="col">After</th>
+        <th scope="col">Alias</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-row>
+      <tr>
+        <td>
+          <p-tag
+            [value]="kindLabel(row.kind)"
+            [severity]="kindSeverity(row.kind)"
+          />
+        </td>
+        <td>
+          <code
+            class="c-docs-sync-changes__code c-docs-sync-changes__code--path"
+            >{{ row.path }}</code
+          >
+        </td>
+        <td>
+          @if (row.before != null) {
+            @if (isColor(row.before)) {
+              <span
+                class="c-docs-sync-changes__swatch"
+                [style.--pds-docs-sync-swatch]="row.before"
+                aria-hidden="true"
+              ></span>
+            }
+            <code class="c-docs-sync-changes__code">{{ row.before }}</code>
+          } @else {
+            <span class="c-docs-sync-changes__none">—</span>
+          }
+        </td>
+        <td>
+          @if (row.after != null) {
+            @if (isColor(row.after)) {
+              <span
+                class="c-docs-sync-changes__swatch"
+                [style.--pds-docs-sync-swatch]="row.after"
+                aria-hidden="true"
+              ></span>
+            }
+            <code class="c-docs-sync-changes__code">{{ row.after }}</code>
+          } @else {
+            <span class="c-docs-sync-changes__none">—</span>
+          }
+        </td>
+        <td>
+          @if (row.alias) {
+            <code class="c-docs-sync-changes__code">{{
+              '{' + row.alias + '}'
+            }}</code>
+          } @else {
+            <span class="c-docs-sync-changes__none">—</span>
+          }
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="5" class="c-docs-sync-changes__empty">
+          No change matches “{{ search() }}”.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+}

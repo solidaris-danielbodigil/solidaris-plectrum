@@ -28,9 +28,16 @@ export const InboundProcess: StoryObj = stepsStory([
   {
     who: 'CI',
     tone: 'neutral',
-    title: 'Audit and promotion pull request',
+    title: 'Audit, report and promotion pull request',
     detail:
-      'tokens-sync.yml runs tokens:build, then compares Figma, the PrimeNG preset and the SCSS, and opens a pull request that promotes the staging files to libs/plectrum/src/tokens.json.',
+      'tokens-sync.yml runs tokens:build, compares Figma, the PrimeNG preset and the SCSS, and writes a plain-language report: which values changed, which checks passed, what happens next. The report is the body of the pull request that promotes staging to libs/plectrum/src/tokens.json.',
+  },
+  {
+    who: 'CI',
+    tone: 'design',
+    title: 'Comment in the Figma file',
+    detail:
+      'The same report is posted as a comment thread in the Plectrum UI Kit — promoted or blocked — so the designer who pushed sees the outcome without GitHub. A comment is an annotation; no design data is written.',
   },
   {
     who: 'Developer',

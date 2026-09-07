@@ -81,23 +81,27 @@ export interface DocsCard {
   tone?: FigureTone;
 }
 
-export type DocsCalloutTone = 'info' | 'warning' | 'success';
+export type DocsCalloutTone = 'info' | 'warning' | 'success' | 'error';
 
-export type CalloutSeverity = 'info' | 'warn' | 'success';
+export type CalloutSeverity = 'info' | 'warn' | 'success' | 'error';
 
 const CALLOUT_SEVERITY: Readonly<Record<DocsCalloutTone, CalloutSeverity>> = {
   info: 'info',
   warning: 'warn',
   success: 'success',
+  error: 'error',
 };
 
 const CALLOUT_ICON: Readonly<Record<DocsCalloutTone, string>> = {
   info: 'bi bi-info-circle-fill',
   warning: 'bi bi-exclamation-triangle-fill',
   success: 'bi bi-check-circle-fill',
+  error: 'bi bi-x-circle-fill',
 };
 
-export function calloutSeverity(tone: DocsCalloutTone = 'info'): CalloutSeverity {
+export function calloutSeverity(
+  tone: DocsCalloutTone = 'info',
+): CalloutSeverity {
   return CALLOUT_SEVERITY[tone];
 }
 

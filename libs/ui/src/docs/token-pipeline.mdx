@@ -18,6 +18,7 @@ Drift between Figma and CSS fails CI. No automated step writes the main Figma fi
 Related pages:
 
 - [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) — Figma → repo import, repo → Figma proposals, package distribution
+- [Sync status](?path=/docs/docs-token-pipeline-sync-status--docs) — the last promoted plugin sync: what changed, which checks passed
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — the CSS contract for component authors
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX for designers and developers
 - [AI strategy](?path=/docs/docs-ai-strategy--docs) — Contract-Driven Development: index, metadata, protocols
@@ -106,7 +107,7 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
 
 Constraints:
 
-- Automated writes target Figma branches only. The main Figma file is edited and published by designers.
+- Automated writes of design data (variables, styles, nodes) target Figma branches only. The main Figma file is edited and published by designers; CI only posts sync comments on it.
 - Applications install a package version. Token values are never copied into an application repository.
 - Code-owned tokens (spacing, typography, feature-specific values) compile into the same stylesheet as imported tokens.
 
@@ -183,9 +184,10 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
 <DocsTable
   headers={['npm', 'Script', 'Role', 'CI']}
   rows={[
-    ['tokens:resolve', 'resolve-dtcg.mjs', 'Flatten the seven DTCG sets in tokens.json and resolve {alias} chains. Detects cycles and missing refs.', 'Library for the other scripts. Not a CI step.'],
+    ['tokens:resolve', 'resolve-dtcg.mjs', 'Flatten the DTCG sets in tokens.json and resolve {alias} chains. Detects cycles and missing refs.', 'Library for the other scripts. Not a CI step.'],
     ['tokens:audit', 'audit-drift.mjs', 'Three-way compare: tokens.json, Plectrum_v1 preset, and --pds-* in 01-settings, plus alias-map.json breaks. Reports only; does not rewrite values.', 'Blocking'],
-    ['tokens:validate-preset', 'validate-preset.mjs', 'Every {token.path} in the imported Plectrum_v1 default export must resolve to a literal in tokens.json.', 'continue-on-error until tokens.json covers every PrimeNG path'],
+    ['tokens:validate-preset', 'validate-preset.mjs', 'Every {token.path} in the imported Plectrum_v1 default export must resolve to a literal in tokens.json. Code-owned gaps in audit-allowlist.json warn instead of failing.', 'continue-on-error; gates the theme copy in tokens-sync.yml'],
+    ['tokens:report', 'report.mjs', 'Markdown + JSON + TS summary of a sync: changed values against main, check results, promotion status.', 'tokens-sync.yml job summary, PR body and the Sync status page'],
     ['tokens:check-prefix', 'check-prefix.mjs', 'Reject new bare --spacing- / --text- / --font- / --line-height- declarations outside _settings.legacy-aliases.scss.', 'Blocking'],
     ['tokens:build', 'build.mjs', 'Style Dictionary writes hybrid --pds-* SCSS and the Storybook annotation manifest. Spacing and typography stay hand-authored.', 'Blocking — generated files must be committed'],
     ['tokens:lint', 'lint-usage.mjs', '--p-* declarations outside 01-settings, PrimeUI runtime imports in apps/ or libs/ui, unknown --pds-* names.', 'Blocking. --strict (hex/px) is local only'],
@@ -201,7 +203,8 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
   rows={[
     ['tokens:resolve', 'libs/plectrum/src/tokens.json', 'stdout or --out JSON. Nothing in the repo unless --out is set.'],
     ['tokens:audit', 'tokens.json, Plectrum_v1, 01-settings, tools/tokens/alias-map.json, tools/tokens/audit-allowlist.json', 'stdout report. Exit non-zero on drift.'],
-    ['tokens:validate-preset', 'Plectrum_v1/ts default export, tokens.json', 'stdout. Exit non-zero when a preset path is missing or unresolved.'],
+    ['tokens:validate-preset', 'Plectrum_v1/ts default export, tokens.json, audit-allowlist.json', 'stdout, optional --json file. Exit non-zero when a non-allowlisted preset path is missing or unresolved.'],
+    ['tokens:report', 'tokens.json (working tree vs --base, main in CI), --audit / --validate JSON, --outcome step results', 'Markdown (--md), JSON (--json) and TS (--ts). Never fails the run.'],
     ['tokens:check-prefix', 'workspace SCSS (skips node_modules, dist, storybook-static)', 'stdout. Exit non-zero on a new bare declaration.'],
     ['tokens:build', 'tokens.json, alias-map.json, tools/tokens catalog', 'libs/styles/src/01-settings/_settings.{colors-primitive,colors-semantic,radius,shadows,transitions,focus}.generated.scss and libs/ui/src/storybook/tokens.generated.ts'],
     ['tokens:lint', 'apps/, libs/ui, 01-settings, tokens.generated.ts', 'stdout. Exit non-zero on a hard failure.'],
