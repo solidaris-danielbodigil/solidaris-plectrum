@@ -23,11 +23,23 @@ export const DEFAULT_TOKENS_PATH = join(
   'libs/plectrum/src/tokens.json',
 );
 
-const META_KEYS = new Set(['$themes', '$metadata']);
-/** Whole-value alias: `{primary.600}` */
-export const ALIAS_RE = /^\{([a-zA-Z0-9._-]+)\}$/;
+const META_KEYS = new Set(['$themes', '$metadata', 'source']);
+/**
+ * Whole-value alias: `{primary.600}`.
+ * The PrimeUI plugin quotes numeric-looking segments (`{scale."1"}`, key `"1"`);
+ * `normalizeSegment` / `normalizeRef` strip those quotes so paths stay plain.
+ */
+export const ALIAS_RE = /^\{([a-zA-Z0-9._"-]+)\}$/;
 /** Any `{token.path}` occurrence, including embedded refs. */
-export const TOKEN_REF_RE = /\{([a-zA-Z0-9._-]+)\}/g;
+export const TOKEN_REF_RE = /\{([a-zA-Z0-9._"-]+)\}/g;
+
+function normalizeSegment(key) {
+  return key.replace(/^"([^"]*)"$/, '$1');
+}
+
+export function normalizeRef(name) {
+  return name.replaceAll('"', '');
+}
 
 export function loadTokensFile(filePath = DEFAULT_TOKENS_PATH) {
   return JSON.parse(readFileSync(filePath, 'utf8'));
@@ -75,7 +87,7 @@ export function flattenSet(setTree, setName) {
     }
     for (const [key, child] of Object.entries(node)) {
       if (key.startsWith('$')) continue;
-      walk(child, [...parts, key]);
+      walk(child, [...parts, normalizeSegment(key)]);
     }
   }
 
@@ -104,7 +116,7 @@ export function flattenAllSets(raw) {
 function aliasName(value) {
   if (typeof value !== 'string') return null;
   const match = value.trim().match(ALIAS_RE);
-  return match ? match[1] : null;
+  return match ? normalizeRef(match[1]) : null;
 }
 
 export function resolveAliases(byPath) {
@@ -167,7 +179,8 @@ export function resolveAliases(byPath) {
       if (embeds.length > 0) {
         let out = rawValue;
         for (const embed of embeds) {
-          const inner = resolvePath(embed[1], [...stack, path]);
+          const ref = normalizeRef(embed[1]);
+          const inner = resolvePath(ref, [...stack, path]);
           if (inner.status !== 'ok') {
             const chain = [path, ...inner.chain];
             const result = {
@@ -176,7 +189,7 @@ export function resolveAliases(byPath) {
               chain,
             };
             cache.set(path, result);
-            rememberUnresolved(path, embed[1], inner.status, chain);
+            rememberUnresolved(path, ref, inner.status, chain);
             return result;
           }
           out = out.replaceAll(embed[0], String(inner.value));
@@ -219,7 +232,7 @@ export function resolveAliases(byPath) {
 export function collectRefs(node, acc = new Map(), trail = []) {
   if (typeof node === 'string') {
     for (const match of node.matchAll(TOKEN_REF_RE)) {
-      const ref = match[1];
+      const ref = normalizeRef(match[1]);
       if (!acc.has(ref)) acc.set(ref, []);
       acc.get(ref).push(trail.join('.') || '(root)');
     }
