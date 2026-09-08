@@ -48,6 +48,7 @@
     "storybook:packed": "node tools/packaging/storybook-packed.mjs",
     "build-storybook:packed": "node tools/packaging/storybook-packed.mjs",
     "changeset": "changeset",
+    "changeset:version": "changeset version && npm run changelog:build",
     "release": "changeset publish"
   },
   "dependencies": {
