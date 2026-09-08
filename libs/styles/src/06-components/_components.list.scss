@@ -168,11 +168,11 @@
   box-shadow: var(--#{$pds-prefix}-shadow-list-row-selected);
 }
 
-.c-list__item--document {
+.c-list__item--entry {
   width: 100%;
 }
 
-.c-list__item--document[role='button'] {
+.c-list__item--entry[role='button'] {
   cursor: pointer;
   transition: var(--#{$pds-prefix}-transition-list-row);
 

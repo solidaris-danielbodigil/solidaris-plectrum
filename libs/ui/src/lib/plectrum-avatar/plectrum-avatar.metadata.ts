@@ -12,6 +12,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     bemBlock: 'c-plectrum-avatar',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.plectrum-avatar.scss',
+    figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1586',
     created: '2026-06-04',
     modified: '2026-06-06',
   },

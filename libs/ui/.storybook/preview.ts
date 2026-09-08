@@ -16,6 +16,7 @@ import {
   writeStoredPresetVersion,
   type PlectrumPresetVersion,
 } from '@solidaris/plectrum';
+import { providePdsLocale, type PdsLocale } from '../src/lib/i18n';
 import { IconRegistry, registerPlectrumIcons } from '../src/lib/icon';
 import { installStorybookToastListener } from '../src/storybook/storybook-toast';
 import { PlectrumDocsContainer } from './docs-container';
@@ -35,26 +36,40 @@ function readInitialPreset(): PlectrumPresetVersion {
 
 const preview: Preview = {
   globalTypes: {
+    locale: {
+      description: 'Plectrum UI locale',
+      toolbar: {
+        title: 'Locale',
+        icon: 'globe',
+        dynamicTitle: true,
+        items: [
+          { value: 'fr', title: 'FR' },
+          { value: 'nl', title: 'NL' },
+        ],
+      },
+    },
     plectrumPreset: {
       description: 'Plectrum PrimeNG preset version',
       toolbar: {
-        title: 'Plectrum',
+        title: 'Preset',
         icon: 'paintbrush',
         dynamicTitle: true,
         items: [
-          { value: 'v1', title: 'Plectrum v1' },
-          { value: 'v0.6', title: 'Plectrum v0.6' },
+          { value: 'v1', title: 'Preset v1 (default)' },
+          { value: 'v0.6', title: 'Preset v0.6 (legacy)' },
         ],
       },
     },
   },
   initialGlobals: {
+    locale: 'fr',
     plectrumPreset: readInitialPreset(),
   },
   decorators: [
     (storyFn, context) => {
       const version = (context.globals['plectrumPreset'] ??
         DEFAULT_PLECTRUM_PRESET_VERSION) as PlectrumPresetVersion;
+      const locale = (context.globals['locale'] ?? 'fr') as PdsLocale;
 
       if (typeof localStorage !== 'undefined') {
         writeStoredPresetVersion(version, localStorage);
@@ -64,6 +79,7 @@ const preview: Preview = {
         providers: [
           provideAnimationsAsync(),
           providePlectrum(version),
+          providePdsLocale(locale),
           provideAppInitializer(() => {
             registerPlectrumIcons(inject(IconRegistry));
             // PrimeNG injects .p-button CSS on first Button create. MDX anchors
@@ -94,9 +110,14 @@ const preview: Preview = {
             'PrimeNG customizations',
             'Releases and versioning',
             'AI strategy',
+            'Testing telemetry',
+            'Troubleshooting',
+            "What's new",
+            'Component status',
           ],
           'Foundations',
           ['Token finder'],
+          'PrimeNG',
           // Core catalogue first; app-owned (status app / candidate) work sits
           // under Patterns/{App}.
           'Custom components',
@@ -116,11 +137,41 @@ const preview: Preview = {
       ],
     },
     layout: 'fullscreen',
+    // Pixel widths from $breakpoints in libs/styles/src/01-settings/_settings.breakpoints.scss
+    // (xs 36rem/576 · sm 48rem/768 · md 62rem/992 · lg 75rem/1200 · xl 87.5rem/1400).
+    viewport: {
+      options: {
+        xs: {
+          name: 'xs · 576px',
+          styles: { width: '576px', height: '100%' },
+          type: 'mobile',
+        },
+        sm: {
+          name: 'sm · 768px',
+          styles: { width: '768px', height: '100%' },
+          type: 'tablet',
+        },
+        md: {
+          name: 'md · 992px',
+          styles: { width: '992px', height: '100%' },
+          type: 'desktop',
+        },
+        lg: {
+          name: 'lg · 1200px',
+          styles: { width: '1200px', height: '100%' },
+          type: 'desktop',
+        },
+        xl: {
+          name: 'xl · 1400px',
+          styles: { width: '1400px', height: '100%' },
+          type: 'desktop',
+        },
+      },
+    },
     // addon-a11y × test-runner: WCAG 2.1 AA per story (rules/06-accessibility.md).
-    // 'todo' = non-blocking report in the test run and the a11y panel.
-    // Flip to 'error' once the existing violations are fixed to gate CI.
+    // WCAG 2.1 AA — addon-a11y fails the story when a violation is found.
     a11y: {
-      test: 'todo',
+      test: 'error',
       options: {
         runOnly: {
           type: 'tag',

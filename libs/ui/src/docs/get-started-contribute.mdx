@@ -72,31 +72,12 @@ Until step 3 the component stays the application's, whatever `libs/` folder it s
 
 ## Audit outcome
 
-The catalogue was audited in September 2026 against the statuses above. The badge on each page is authoritative; this table records the decisions.
+The live table is [Component status](?path=/docs/docs-component-status--docs) — it reads `.ai/contracts/index.json`. Decisions from the September 2026 catalogue audit:
 
-<DocsTable
-  headers={['Component', 'Status', 'Owner', 'Section', 'Decision']}
-  rows={[
-    ['Accordion', 'Core', 'design-system', 'Custom components', 'A variant of p-accordion (c-accordion--bordered)'],
-    ['Affiliate Detail Drawer', 'Core', 'design-system', 'Shell', 'Reused everywhere — moved next to the navigation shells'],
-    ['Affiliate Overview Card', 'Core', 'design-system', 'Custom components', 'Reused everywhere'],
-    ['Copyable Text', 'Core', 'design-system', 'Custom components', 'Generic pattern; part of the overview card'],
-    ['Delay Prediction Card', 'App-specific', 'ishare', 'Patterns / iSHARE', 'iSHARE dossier follow-up only'],
-    ['Detail List', 'Core', 'design-system', 'Custom components', 'Generic label / value pattern'],
-    ['Drawer', 'Core', 'design-system', 'Custom components', 'Headless p-drawer shell — stock p-drawer, see its page for what is custom'],
-    ['Empty State', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Form Field', 'Core', 'design-system', 'Custom components', 'Generic pattern'],
-    ['Icon', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Input Clear', 'Core', 'design-system', 'Custom components', 'Generic pattern'],
-    ['List', 'Core', 'design-system', 'Custom components', 'p-tree variant; generic input naming is the open follow-up'],
-    ['Plectrum Avatar', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Skeleton Slot', 'Core', 'design-system', 'Custom components', 'Generic slots; the card story is a composition example'],
-    ['Timeline', 'Core', 'design-system', 'Custom components', 'A variant of p-timeline (c-timeline--content-only)'],
-    ['Toolbar', 'Candidate', 'ishare', 'Patterns / iSHARE', 'Built for iSHARE; the Foundations pages already embed it'],
-    ['Transactions CICS Modal', 'App-specific', 'ishare', 'Patterns / iSHARE', 'Stock p-dialog with iSHARE content'],
-    ['NavShell · SubNavShell · TopNav', 'Core', 'design-system', 'Shell', 'Navigation chrome'],
-  ]}
-/>
+- Core stays generic: List, Profile Card, Profile Drawer, Copyable Text, Form Field, Empty State, Icon, Avatar, Input Clear, Detail List, Drawer, Accordion, Timeline, Skeleton Slot, and the navigation shells.
+- Toolbar stays a Candidate owned by iSHARE until the core team promotes it.
+- Delay Prediction Card and Transactions CICS Modal stay App-specific (iSHARE).
+- CSS-only blocks (Accordion bordered, Timeline content-only, iSHARE page-shell bridges) stay documented on their own pages, not in the Angular index.
 
 ---
 
@@ -142,6 +123,12 @@ The scaffolder asks for name, category, type and optional PrimeNG wrap, then cre
 
 By default the **agents do this work** — ask the Solidaris coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). Every command stays runnable by hand. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
 
+## Language
+
+User-facing copy in `libs/ui` lives in a colocated `{name}.i18n.ts` (`fr` + `nl`). Components resolve it with `injectPdsMessages()` from the `PDS_LOCALE` token. The token factory reads Angular `LOCALE_ID` (`nl*` → `nl`, otherwise `fr`); apps can also call `providePdsLocale('nl')`. String inputs still win when the host passes them.
+
+This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story per migrated component pins `globals: { locale: 'nl' }` and asserts a Dutch string. Terminology decisions live in `.ai/questions/nl-copy-review.md`. Telemetry `pdsTelemetryLabel` values stay static — they are analytics identity, not UI copy.
+
 ## Testing
 
 Stories are the test suite: every story is executed headless in CI, so covering the states covers the smoke tests.
@@ -153,7 +140,7 @@ Stories are the test suite: every story is executed headless in CI, so covering 
     ['Unit coverage', 'npm run test:coverage', 'Istanbul / lcov under coverage/ — CI runs this instead of npm test'],
     ['Story smoke + interaction', 'npm run test-storybook', 'Every story renders; play functions run (storybook/test). Debug in the Interactions panel'],
     ['Story coverage', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
-    ['Accessibility', 'same run + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y on every story — currently a non-blocking report (parameters.a11y.test = 'todo'); flip to 'error' to gate CI"],
+    ['Accessibility', 'same run + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y on every story — parameters.a11y.test = 'error' fails the story when a violation is found"],
     ['Visual tests', 'npm run chromatic', 'Pixel diffs against Chromatic baselines. Sign in via the Visual tests panel, then set CHROMATIC_PROJECT_TOKEN and repo variable CHROMATIC_ENABLED=true for CI'],
     ['Manual / agent QA', 'Tester subagent', 'Story coverage, missing states, contrast — fixes what it finds'],
   ]}

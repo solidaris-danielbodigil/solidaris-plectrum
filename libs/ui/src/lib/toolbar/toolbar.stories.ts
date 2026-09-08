@@ -4,6 +4,7 @@ import { Badge } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { ToolbarComponent } from './toolbar.component';
 import { ToolbarMetadata } from './toolbar.metadata';
@@ -14,7 +15,10 @@ const meta: Meta<ToolbarComponent> = {
   title: 'Patterns/iSHARE/Toolbar',
   component: ToolbarComponent,
   decorators: [moduleMetadata({ imports: [Badge, ButtonModule, InputText] })],
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    ...storyDesign(ToolbarMetadata.component.figmaUrl),
+  },
   argTypes: {
     sticky: {
       control: 'boolean',
@@ -63,6 +67,19 @@ export const Sticky: Story = {
         </div>
       </div>`,
   }),
+  play: async ({ canvasElement }) => {
+    const scroller = canvasElement.querySelector(
+      '.o-layout--overflow-y-auto',
+    ) as HTMLElement | null;
+    const toolbar = canvasElement.querySelector('pds-toolbar') as HTMLElement | null;
+
+    await expect(toolbar).toHaveClass('c-toolbar--sticky');
+    await expect(getComputedStyle(toolbar!).position).toBe('sticky');
+
+    scroller!.scrollTop = 240;
+    await expect(toolbar).toHaveClass('c-toolbar--sticky');
+    await expect(getComputedStyle(toolbar!).position).toBe('sticky');
+  },
 };
 
 export const StartSlotOnly: Story = {

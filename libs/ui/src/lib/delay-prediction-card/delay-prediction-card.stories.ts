@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 import { DelayPredictionCardMetadata } from './delay-prediction-card.metadata';
@@ -27,6 +28,7 @@ const meta: Meta<DelayPredictionCardComponent> = {
   ],
   parameters: {
     layout: 'padded',
+    ...storyDesign(DelayPredictionCardMetadata.component.figmaUrl),
   },
   argTypes: {
     unavailable: { control: 'boolean' },
@@ -50,6 +52,18 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'article', /Prédiction du délai/);
     await assertTextVisible(canvasElement, 'Jours restants');
+  },
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    daysRemaining: 11,
+    predictedCloseDate: '19/06/2026',
+  },
+  play: async ({ canvasElement }) => {
+    await assertRoleVisible(canvasElement, 'article', /Termijnvoorspelling/);
+    await assertTextVisible(canvasElement, 'Resterende dagen');
   },
 };
 

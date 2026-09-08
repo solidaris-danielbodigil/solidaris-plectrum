@@ -1,5 +1,7 @@
 import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './copyable-text.stories';
+import { CopyableTextMetadata } from './copyable-text.metadata';
 
 <Meta of={Stories} />
 
@@ -16,18 +18,40 @@ Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
 - Stable identifiers users copy often (Territoire, NISS, NSI, dossier numbers)
 - Any `label + value` pair where the value must land on the clipboard in one click
 
-## Clipboard behaviour
+## When not to use
 
-- Writes `value` via the async Clipboard API when available
-- Falls back to a temporary textarea + `document.execCommand('copy')` in older or non-secure contexts
-- Emits `(copied)` with the copied string after a successful write — use for toasts or analytics only
-- These canvases listen to `(copied)` and show a confirmation toast on the Storybook preview frame (`Copié !`) — the chip itself does not own toast UI
+- Duplicating clipboard logic in a parent handler — listen to `(copied)` for toasts or analytics only
+- A plain text span for a copyable identifier — there is no keyboard action and no shared affordance
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['c-copyable-text', 'PrimeNG text button host — copies value on activate'],
+    ['c-copyable-text__icon', 'Copy glyph (pds-icon, decorative)'],
+    ['c-copyable-text__label', 'Visible field name'],
+    ['c-copyable-text__value', 'Value written to the clipboard'],
+    ['c-copyable-text__separator', 'Parent-owned bullet between chips — aria-hidden'],
+  ]}
+/>
 
 ## Accessibility
 
 - Renders a PrimeNG text button with `aria-label` defaulting to `Copier {label}`
 - Override with `ariaLabel` when the visible label is insufficient
 - Bullet separators between chips must use `aria-hidden="true"`
+
+## Figma
+
+There is no Plectrum UI Kit node for this chip. <a href={CopyableTextMetadata.component.figmaUrl}>iSHARE-Audit reference usage</a> on the profile card. The same URL feeds the Design panel via `parameters.design`.
+
+## Clipboard behaviour
+
+- Writes `value` via the async Clipboard API when available
+- Falls back to a temporary textarea + `document.execCommand('copy')` in older or non-secure contexts
+- Emits `(copied)` with the copied string after a successful write — use for toasts or analytics only
+- These canvases listen to `(copied)` and show a confirmation toast on the Storybook preview frame (`Copié !`) — the chip itself does not own toast UI
 
 ## Default
 

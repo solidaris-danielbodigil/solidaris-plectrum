@@ -19,18 +19,18 @@
 
 // ── Affiliate detail (Carte affilié) ─────────────────────────────────────────
 // Design ref: Figma node 7:1012 (iSHARE-Audit)
-// Tokens:   libs/styles/src/01-settings/_settings.affiliate-detail-drawer.scss
+// Tokens:   libs/styles/src/01-settings/_settings.profile-drawer.scss
 
-.c-drawer__affiliate-detail-name {
+.c-drawer__profile-name {
   @include text-heading-sm;
   color: var(--#{$pds-prefix}-color-text);
 }
 
-.c-drawer__affiliate-detail-family-tile {
+.c-drawer__profile-family-tile {
   appearance: none;
-  background: var(--#{$pds-prefix}-color-affiliate-detail-drawer-tile-bg);
+  background: var(--#{$pds-prefix}-color-profile-drawer-tile-bg);
   border: 1px solid var(--#{$pds-prefix}-color-content-border);
-  border-radius: var(--#{$pds-prefix}-radius-affiliate-detail-drawer-tile);
+  border-radius: var(--#{$pds-prefix}-radius-profile-drawer-tile);
   box-shadow: none;
   color: inherit;
   font: inherit;
@@ -49,40 +49,40 @@
   }
 }
 
-.c-drawer__affiliate-detail-family-chevron {
+.c-drawer__profile-family-chevron {
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text-muted);
   line-height: 1;
 }
 
-.c-drawer__affiliate-detail-family-name {
+.c-drawer__profile-family-name {
   @include text-label-sm;
   color: var(--#{$pds-prefix}-color-text);
 }
 
-.c-drawer__affiliate-detail-family-relationship {
+.c-drawer__profile-family-relationship {
   @include text-body-sm;
-  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-relationship);
+  color: var(--#{$pds-prefix}-color-profile-drawer-relationship);
 }
 
-.c-drawer__affiliate-detail-note {
+.c-drawer__profile-note {
   inline-size: 100%;
-  background: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-bg);
+  background: var(--#{$pds-prefix}-color-profile-drawer-note-bg);
   border: 1px solid var(--#{$pds-prefix}-color-content-border);
-  border-radius: var(--#{$pds-prefix}-radius-affiliate-detail-drawer-note);
+  border-radius: var(--#{$pds-prefix}-radius-profile-drawer-note);
 }
 
-.c-drawer__affiliate-detail-note-author {
+.c-drawer__profile-note-author {
   @include text-label-sm;
-  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-author);
+  color: var(--#{$pds-prefix}-color-profile-drawer-note-author);
 }
 
-.c-drawer__affiliate-detail-note-timestamp {
+.c-drawer__profile-note-timestamp {
   @include text-body-xs;
-  color: var(--#{$pds-prefix}-color-affiliate-detail-drawer-note-timestamp);
+  color: var(--#{$pds-prefix}-color-profile-drawer-note-timestamp);
 }
 
-.c-drawer__affiliate-detail-note-body {
+.c-drawer__profile-note-body {
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text);
 }

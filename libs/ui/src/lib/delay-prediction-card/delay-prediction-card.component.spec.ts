@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE } from '../i18n';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 
 describe('DelayPredictionCardComponent', () => {
@@ -63,5 +64,27 @@ describe('DelayPredictionCardComponent', () => {
     );
     expect(el.querySelector('.c-delay-prediction-card__menu')).toBeNull();
     expect(el.querySelector('.c-delay-prediction-card__value')).toBeNull();
+  });
+});
+
+describe('DelayPredictionCardComponent (nl)', () => {
+  let fixture: ComponentFixture<DelayPredictionCardComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [DelayPredictionCardComponent],
+      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DelayPredictionCardComponent);
+    fixture.componentRef.setInput('daysRemaining', 11);
+    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
+    fixture.detectChanges();
+  });
+
+  it('should render Dutch metric labels', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain('Resterende dagen');
+    expect(el.textContent).toContain('Voorspelde sluiting');
   });
 });

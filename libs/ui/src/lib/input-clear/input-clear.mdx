@@ -1,4 +1,5 @@
 import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './input-clear.stories';
 
 <Meta of={Stories} />
@@ -12,6 +13,40 @@ import * as Stories from './input-clear.stories';
 Reusable clear affordance for `pInputText` fields. Uses the same PrimeNG `times` SVG as `showClear` on autocomplete, select, and multiselect (14×14 via `--p-icon-size`).
 
 Always keep the control in the DOM and toggle `[visible]` so `p-iconfield` padding stays reserved.
+
+## When to use
+
+- Clearable `pInputText` fields
+- Search inputs with an inline clear
+- Input group query fields and toolbar filter search
+
+## When not to use
+
+- Bootstrap `bi-x-lg` inside `p-inputicon` — metrics differ from PrimeNG `showClear`
+- `type="search"` with this control — the browser draws a second clear
+- PrimeNG autocomplete, select, or multiselect — use native `showClear` instead
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['c-input-clear', 'Button host — stays in the DOM when hidden'],
+    ['is-hidden', 'Inert + aria-hidden when visible is false'],
+    ['times SVG', 'PrimeNG icon, decorative'],
+    ['p-iconfield / p-inputicon', 'Required PrimeNG wrappers around the input'],
+  ]}
+/>
+
+## Accessibility
+
+- The button `aria-label` defaults to `Clear` — override for search (`Clear search`)
+- When hidden, the control is `aria-hidden` and `tabindex="-1"`
+- Pair search fields with `type="text"` and `role="searchbox"` so only this clear is announced
+
+## Figma
+
+There is no Plectrum UI Kit node for this clear control. [Plectrum for PrimeNG (Main)](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-) IconField / InputText pages are the kit reference; [Top Nav](?path=/docs/shell-top-nav--docs) search is product reference usage.
 
 ## Icon field
 

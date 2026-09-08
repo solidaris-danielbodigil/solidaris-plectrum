@@ -35,6 +35,8 @@
 
 **If a token is missing from `libs/styles`, add it there first — never inline it.**
 
+User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (`{name}.i18n.ts`). String inputs may override a message; they must not be the only source of default copy. Telemetry labels stay static.
+
 ### Ownership ⛔
 
 Being in `libs/ui` does not make a component part of the design system. `governance.status` does:

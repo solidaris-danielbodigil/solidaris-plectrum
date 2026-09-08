@@ -12,6 +12,7 @@ export const IconMetadata: ComponentMetadata = {
     bemBlock: 'c-icon',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.icon.scss',
+    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
     created: '2026-05-20',
     modified: '2026-05-20',
   },

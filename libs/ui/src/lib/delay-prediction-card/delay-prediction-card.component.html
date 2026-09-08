@@ -1,6 +1,6 @@
 <article
   class="c-delay-prediction-card o-layout--min-w-0"
-  aria-label="Prédiction du délai"
+  [attr.aria-label]="messages.regionLabel"
 >
   @if (unavailable()) {
     <div
@@ -11,7 +11,7 @@
         aria-hidden="true"
       ></i>
       <p class="c-delay-prediction-card__unavailable-text o-layout--margin-0">
-        Aucune prédiction de délais n'est disponible pour ce document
+        {{ messages.empty }}
       </p>
     </div>
   } @else {
@@ -20,7 +20,7 @@
     >
       <div class="c-delay-prediction-card__metric o-flex__item--shrink-0">
         <span class="c-delay-prediction-card__value">{{ daysRemaining() }}</span>
-        <span class="c-delay-prediction-card__label">Jours restants</span>
+        <span class="c-delay-prediction-card__label">{{ messages.daysRemaining }}</span>
       </div>
 
       <p-divider
@@ -32,7 +32,7 @@
         <span class="c-delay-prediction-card__value">{{
           predictedCloseDate()
         }}</span>
-        <span class="c-delay-prediction-card__label">Clôture prédite</span>
+        <span class="c-delay-prediction-card__label">{{ messages.predictedClose }}</span>
       </div>
 
       <p-divider
@@ -47,7 +47,7 @@
         severity="secondary"
         outlined
         icon="bi bi-three-dots-vertical"
-        aria-label="Plus d'actions — prédiction du délai"
+        [attr.aria-label]="messages.menu"
         data-telemetry-id="delay-prediction-menu"
         (click)="onMenuClick()"
       ></button>

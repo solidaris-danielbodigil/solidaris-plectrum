@@ -52,4 +52,8 @@ const plectrumTheme = create({
 
 addons.setConfig({
   theme: plectrumTheme,
+  // Hide the stock “Level up / What’s new” onboarding widget when the manager
+  // exposes the flag (Storybook 10). If a future release ignores this, leave
+  // the widget and document it on Docs/Troubleshooting.
+  enableOnboarding: false,
 });

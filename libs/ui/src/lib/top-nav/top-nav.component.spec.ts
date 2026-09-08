@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE } from '../i18n';
 import { TopNavComponent } from './top-nav.component';
 import type { MenuItem } from 'primeng/api';
 
@@ -204,5 +205,30 @@ describe('TopNavComponent', () => {
     fixture.detectChanges();
 
     expect(openSpy).toHaveBeenCalledWith(false);
+  });
+});
+
+describe('TopNavComponent (nl)', () => {
+  let fixture: ComponentFixture<TopNavComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TopNavComponent],
+      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TopNavComponent);
+    fixture.componentRef.setInput('breadcrumbs', [{ label: 'Home' }]);
+    fixture.componentRef.setInput('avatarInitials', 'IS');
+    fixture.componentRef.setInput('showAvatarMenu', true);
+    fixture.detectChanges();
+  });
+
+  it('should use the Dutch avatar menu label', () => {
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    ) as HTMLButtonElement;
+
+    expect(trigger.getAttribute('aria-label')).toBe('Gebruikersmenu');
   });
 });

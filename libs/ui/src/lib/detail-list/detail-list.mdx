@@ -1,4 +1,4 @@
-import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './detail-list.stories';
 
@@ -12,10 +12,15 @@ import * as Stories from './detail-list.stories';
 
 `c-detail-list` renders label / value description rows on a semantic `<dl>`. The block owns the label column width and typography; layout is `o-flex` mixes in the template. The `DetailListRow` type is exported from `@solidaris/ui` (`libs/ui/src/lib/drawer`).
 
-- **Styles**: `libs/styles/src/06-components/_components.detail-list.scss`
-- **Used by**: [Affiliate Detail Drawer](?path=/docs/shell-affiliate-detail-drawer--docs) sections
+## When to use
 
-<Canvas of={Stories.Default} />
+- Read-only label / value rows in a drawer or card section
+- Shared description lists that need a fixed label column
+
+## When not to use
+
+- Editable fields — use Form Field
+- Tabular data with many columns — use a data table
 
 ## Anatomy
 
@@ -28,4 +33,30 @@ import * as Stories from './detail-list.stories';
   ]}
 />
 
+## Accessibility
+
+- Keep the semantic `<dl>` / `<dt>` / `<dd>` pairing — do not flatten rows into generic divs without those roles
+- When the list sits in a drawer section, point `aria-labelledby` at the section title
+- Values that are links or copy actions must expose their own accessible names
+
+## Figma
+
+There is no Plectrum UI Kit node. [Profile Drawer](?path=/docs/shell-profile-drawer--docs) / [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012) is reference usage.
+
+- **Styles**: `libs/styles/src/06-components/_components.detail-list.scss`
+- **Used by**: [Affiliate Detail Drawer](?path=/docs/shell-profile-drawer--docs) sections
+
+## Default
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## In a section
+
 <Canvas of={Stories.InASection} />
+
+## API
+
+CSS-only block — story knobs are empty. Rows are markup using `DetailListRow`.
+
+<ArgTypes of={Stories} />

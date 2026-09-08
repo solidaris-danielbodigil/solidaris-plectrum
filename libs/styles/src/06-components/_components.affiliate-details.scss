@@ -109,7 +109,7 @@
     gap: var(--#{$pds-prefix}-spacing-2);
   }
 
-  .c-list__item--document,
+  .c-list__item--entry,
   .c-list__item--group {
     scroll-margin-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
   }

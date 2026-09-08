@@ -12,6 +12,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     bemBlock: 'c-toolbar',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.toolbar.scss',
+    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772',
     created: '2026-09-05',
     modified: '2026-09-05',
   },

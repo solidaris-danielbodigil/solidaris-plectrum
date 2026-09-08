@@ -38,6 +38,9 @@ jobs:
       - name: Rebuild generated tokens (must be committed)
         run: npm run tokens:build && git diff --exit-code -- libs/styles/src/01-settings/*.generated.scss libs/ui/src/storybook/tokens.generated.ts
 
+      - name: Rebuild changelog feed (must be committed)
+        run: npm run changelog:build && git diff --exit-code -- libs/ui/src/storybook/changelog.generated.ts
+
       - name: Lint token usage
         run: npm run tokens:lint
 
@@ -121,7 +124,7 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: build-storybook
-          exitZeroOnChanges: true
+          exitZeroOnChanges: false
           zip: true
 
   storybook-packed:

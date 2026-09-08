@@ -12,6 +12,7 @@ export const FormFieldMetadata: ComponentMetadata = {
     bemBlock: 'c-form-field',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.form-field.scss',
+    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },

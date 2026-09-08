@@ -1,4 +1,4 @@
-import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './drawer.stories';
 
@@ -12,28 +12,17 @@ import * as Stories from './drawer.stories';
 
 `c-drawer` is the headless shell vocabulary for PrimeNG drawers: features render inside `p-drawer`'s `#headless` template using these element classes plus object-class mixes. There is no generic Angular wrapper — the block keeps shared chrome consistent while every feature owns its content.
 
-## What is custom here
+## When to use
 
-`p-drawer` itself is stock Plectrum — no `--p-drawer-*` token is overridden. The page exists for what PrimeNG leaves to the consumer once `#headless` is used:
+- A headless `p-drawer` that needs shared header and section chrome
+- Feature drawers that prefix elements on `c-drawer` (rule 09 §9)
+- Overlay panels that must `appendTo="body"` to escape clipped layouts
 
-<DocsTable
-  headers={['Addition', 'Where', 'Why']}
-  rows={[
-    ['Header / section / section-title classes', '_components.drawer.scss', 'Headless mode ships no header or section chrome; every drawer would otherwise invent its own'],
-    ['Content-driven width', '_settings.drawer.scss + PDS_DRAWER_CONTENT_STYLE', 'width: max-content clamped between --pds-size-drawer-min-width and --pds-size-drawer-max-width, applied via [style] because rule 09 §11 forbids styleClass on the root'],
-    ['Overlay target', 'PDS_DRAWER_APPEND_TO / overlay-append-to.ts', 'appendTo="body" so flex and overflow-hidden layouts do not clip the panel; the Storybook preview frame is resolved for docs canvases'],
-    ['Feature elements', '_components.drawer.scss (c-drawer__affiliate-detail-*)', 'Owned by the Affiliate Detail Drawer; prefixed on the shared block per rule 09 §9'],
-  ]}
-/>
+## When not to use
 
-- **PrimeNG**: `p-drawer` — always `appendTo="body"` inside flex or clipped layouts; no `styleClass` on the root (rule 09 §11)
-- **Styles**: `libs/styles/src/06-components/_components.drawer.scss`; width tokens in `_settings.drawer.scss` (`--pds-size-drawer-min-width` / `--pds-size-drawer-max-width`, `width: max-content`)
-- **Helpers**: `PDS_DRAWER_APPEND_TO`, `PDS_DRAWER_CONTENT_STYLE`, `DrawerPosition`, `DetailListRow` from `libs/ui/src/lib/drawer`
-- **Real integration**: [Affiliate Detail Drawer](?path=/docs/shell-affiliate-detail-drawer--docs)
-
-The story below renders the shell statically (no overlay) so the structure is inspectable:
-
-<Canvas of={Stories.Shell} />
+- `styleClass` on the `p-drawer` root (rule 09 §11) — use `PDS_DRAWER_CONTENT_STYLE` instead
+- Inventing a nested BEM block for feature chrome — prefix on `c-drawer`
+- An always-visible side panel — use a static column layout
 
 ## Anatomy
 
@@ -46,3 +35,45 @@ The story below renders the shell statically (no overlay) so the structure is in
     ['c-drawer__{feature}-{part}', 'Feature children prefix the element name on the shared block — never a nested block (rule 09 §9)'],
   ]}
 />
+
+## Accessibility
+
+- Label each section with `aria-labelledby` pointing at the section title id
+- PrimeNG `p-drawer` owns the focus trap, Escape, and overlay semantics
+- Close and overflow actions need accessible names; decorative separators stay `aria-hidden`
+
+## Figma
+
+There is no Plectrum UI Kit node for the `c-drawer` shell. Stock Drawer lives in [Plectrum for PrimeNG (Main)](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-). [Profile Drawer](?path=/docs/shell-profile-drawer--docs) / [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012) is reference usage.
+
+## What is custom here
+
+`p-drawer` itself is stock Plectrum — no `--p-drawer-*` token is overridden. The page exists for what PrimeNG leaves to the consumer once `#headless` is used:
+
+<DocsTable
+  headers={['Addition', 'Where', 'Why']}
+  rows={[
+    ['Header / section / section-title classes', '_components.drawer.scss', 'Headless mode ships no header or section chrome; every drawer would otherwise invent its own'],
+    ['Content-driven width', '_settings.drawer.scss + PDS_DRAWER_CONTENT_STYLE', 'width: max-content clamped between --pds-size-drawer-min-width and --pds-size-drawer-max-width, applied via [style] because rule 09 §11 forbids styleClass on the root'],
+    ['Overlay target', 'PDS_DRAWER_APPEND_TO / overlay-append-to.ts', 'appendTo="body" so flex and overflow-hidden layouts do not clip the panel; the Storybook preview frame is resolved for docs canvases'],
+    ['Feature elements', '_components.drawer.scss (c-drawer__profile-*)', 'Owned by the Affiliate Detail Drawer; prefixed on the shared block per rule 09 §9'],
+  ]}
+/>
+
+- **PrimeNG**: `p-drawer` — always `appendTo="body"` inside flex or clipped layouts; no `styleClass` on the root (rule 09 §11)
+- **Styles**: `libs/styles/src/06-components/_components.drawer.scss`; width tokens in `_settings.drawer.scss` (`--pds-size-drawer-min-width` / `--pds-size-drawer-max-width`, `width: max-content`)
+- **Helpers**: `PDS_DRAWER_APPEND_TO`, `PDS_DRAWER_CONTENT_STYLE`, `DrawerPosition`, `DetailListRow` from `libs/ui/src/lib/drawer`
+- **Real integration**: [Affiliate Detail Drawer](?path=/docs/shell-profile-drawer--docs)
+
+The story below renders the shell statically (no overlay) so the structure is inspectable:
+
+## Shell
+
+<Canvas of={Stories.Shell} />
+<Controls of={Stories.Shell} />
+
+## API
+
+Story knobs for the static shell. There is no generic Angular Drawer wrapper.
+
+<ArgTypes of={Stories} />

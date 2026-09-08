@@ -1,4 +1,5 @@
-import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './timeline.stories';
 
 <Meta of={Stories} />
@@ -11,12 +12,55 @@ import * as Stories from './timeline.stories';
 
 `c-timeline--content-only` is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the class to `p-timeline` directly.
 
+## When to use
+
+- Single-column journey timelines where dates sit with the content, not in `#opposite`
+- iSHARE document more-details drawers and similar follow-up histories
+
+## When not to use
+
+- Two-column timelines that need the `#opposite` slot — use stock `p-timeline`
+- Reimplementing markers or connectors outside PrimeNG
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['p-timeline', 'PrimeNG host — never reimplemented'],
+    ['c-timeline--content-only', 'Modifier — drops the empty opposite column'],
+    ['Marker / connector', 'PrimeNG timeline chrome'],
+    ['Content template', 'Event title, date, and status tag'],
+  ]}
+/>
+
+## Accessibility
+
+- Keep event titles and dates as visible text in the content template
+- Status tags need a text label — not colour alone
+- PrimeNG owns list semantics for the events
+
+## Figma
+
+There is no Plectrum UI Kit node for this modifier. Stock Timeline lives in [Plectrum for PrimeNG (Main)](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-). iSHARE document more-details is reference usage.
+
 - **PrimeNG**: `p-timeline` (never reimplemented)
 - **Styles**: `libs/styles/src/06-components/_components.timeline.scss`
 - **Used by**: iSHARE document more-details drawer
 
+## Content only
+
 <Canvas of={Stories.ContentOnly} />
+<Controls of={Stories.ContentOnly} />
 
 Stock PrimeNG reserves a full column for the `#opposite` template even when only dates live there:
 
+## Stock
+
 <Canvas of={Stories.Stock} />
+
+## API
+
+Story knobs for the canvases. There is no Angular Timeline wrapper.
+
+<ArgTypes of={Stories} />

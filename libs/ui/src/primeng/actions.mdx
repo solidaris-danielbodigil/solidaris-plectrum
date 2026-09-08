@@ -1,0 +1,75 @@
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './actions.stories';
+
+<Meta of={Stories} />
+
+# Actions
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+Theme proof for PrimeNG actions. Plectrum styles `p-button`, `p-togglebutton` and `p-selectbutton` through `providePlectrum()` — there is no Angular wrapper.
+
+What Plectrum changes: none for this family. Buttons stay [deliberately stock](?path=/docs/docs-primeng-customizations--docs#deliberately-stock).
+
+## Endorsed composition
+
+- Icons are Bootstrap Icons (`bi bi-*`), never PrimeIcons
+- Prefer `size="small"` in toolbars; default size on page actions
+- Use `severity` for meaning, not custom colours
+
+Figma: [Button](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49717) · [ToggleButton](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-46435) · [SelectButton](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-46433)
+
+API: [primeng.org/button](https://primeng.org/button) · [togglebutton](https://primeng.org/togglebutton) · [selectbutton](https://primeng.org/selectbutton)
+
+## Severities
+
+Stock filled buttons. The Preset toolbar is a v1 / v0.6 diff.
+
+<Canvas of={Stories.Severities} />
+<Controls of={Stories.Severities} />
+
+## Outlined
+
+<Canvas of={Stories.Outlined} />
+
+## Text
+
+<Canvas of={Stories.Text} />
+
+## Link
+
+<Canvas of={Stories.Link} />
+
+## Sizes
+
+<Canvas of={Stories.Sizes} />
+
+## Icon
+
+Icon-only needs an `ariaLabel`. Labelled buttons use `icon` plus Bootstrap Icons.
+
+<Canvas of={Stories.Icon} />
+
+## Loading
+
+<Canvas of={Stories.Loading} />
+
+## Disabled
+
+<Canvas of={Stories.Disabled} />
+
+## ToggleButton
+
+<Canvas of={Stories.Toggle} />
+
+## SelectButton
+
+<Canvas of={Stories.Select} />
+
+## API
+
+Story knobs for the canvases above. They are not a Plectrum wrapper API.
+
+<ArgTypes of={Stories} />

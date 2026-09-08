@@ -7,11 +7,11 @@ import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { PlectrumPresetMenuService } from '@solidaris/plectrum';
 import {
-  AffiliateOverviewCardComponent,
+  ProfileCardComponent,
   NavShellComponent,
   TopNavComponent,
-  type AffiliateOverviewIdentifier,
-  type AffiliateOverviewInfoTag,
+  type ProfileCardIdentifier,
+  type ProfileCardInfoTag,
 } from '@solidaris/ui';
 import { AffiliateHeaderService, type AffiliateHeaderData } from './affiliate-header.service';
 import { BreadcrumbService } from './breadcrumb.service';
@@ -22,7 +22,7 @@ import { isTestingTelemetryEnabled } from '../testing/is-testing-telemetry-enabl
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, NavShellComponent, TopNavComponent, AffiliateOverviewCardComponent],
+  imports: [RouterOutlet, NavShellComponent, TopNavComponent, ProfileCardComponent],
   templateUrl: './app-shell.component.html',
 })
 export class AppShellComponent {
@@ -80,7 +80,7 @@ export class AppShellComponent {
     return (this.document.defaultView?.history.length ?? 1) > 1;
   }
 
-  onIdentifierCopy(identifier: AffiliateOverviewIdentifier): void {
+  onIdentifierCopy(identifier: ProfileCardIdentifier): void {
     this.messageService.add({
       severity: 'success',
       summary: 'Copié !',
@@ -100,7 +100,7 @@ export class AppShellComponent {
     header.onStatusMenuSelect?.(item);
   }
 
-  onInfoTagClick(header: AffiliateHeaderData, tag: AffiliateOverviewInfoTag): void {
+  onInfoTagClick(header: AffiliateHeaderData, tag: ProfileCardInfoTag): void {
     header.onInfoTagClick?.(tag);
   }
 }

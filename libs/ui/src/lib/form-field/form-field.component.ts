@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  afterRenderEffect,
+  inject,
+  input,
+} from '@angular/core';
 import { MessageModule } from 'primeng/message';
 import type { FormFieldLayout } from './form-field.types';
 
@@ -19,9 +26,51 @@ import type { FormFieldLayout } from './form-field.types';
 })
 export class FormFieldComponent {
   private static nextLabelId = 0;
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   /** Stable id for `aria-labelledby` when `inputId` is not set on the control. */
   protected readonly labelId = `pds-form-field-label-${FormFieldComponent.nextLabelId++}`;
+  protected readonly hintId = `${this.labelId}-hint`;
+  protected readonly errorId = `${this.labelId}-error`;
+
+  constructor() {
+    afterRenderEffect(() => {
+      this.syncControlAria();
+    });
+  }
+
+  private syncControlAria(): void {
+    const control = this.host.nativeElement.querySelector(
+      '.c-form-field__control input, .c-form-field__control textarea, .c-form-field__control select, .c-form-field__control [role="combobox"]',
+    ) as HTMLElement | null;
+
+    if (!control) {
+      return;
+    }
+
+    const invalid = this.invalid();
+    control.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+
+    if (this.required()) {
+      control.setAttribute('aria-required', 'true');
+    } else {
+      control.removeAttribute('aria-required');
+    }
+
+    const describedBy: string[] = [];
+    if (this.hint() && !invalid) {
+      describedBy.push(this.hintId);
+    }
+    if (invalid && (this.errorMessage() || this.host.nativeElement.querySelector('[pdsFormFieldError]'))) {
+      describedBy.push(this.errorId);
+    }
+
+    if (describedBy.length) {
+      control.setAttribute('aria-describedby', describedBy.join(' '));
+    } else {
+      control.removeAttribute('aria-describedby');
+    }
+  }
 
   readonly label = input.required<string>();
   readonly layout = input<FormFieldLayout>('vertical');

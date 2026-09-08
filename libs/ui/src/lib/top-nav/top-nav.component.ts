@@ -15,9 +15,11 @@ import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { RippleModule } from 'primeng/ripple';
+import { injectPdsMessages } from '../i18n';
 import { InputClearComponent } from '../input-clear';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
+import { TopNavMessages } from './top-nav.i18n';
 
 /**
  * TopNavComponent — application top navigation bar.
@@ -55,6 +57,7 @@ import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
   },
 })
 export class TopNavComponent {
+  private readonly messages = injectPdsMessages(TopNavMessages);
   /** When true, renders a text back button before the breadcrumb. */
   readonly showBackButton = input<boolean>(false);
 
@@ -115,8 +118,11 @@ export class TopNavComponent {
   /** When true, renders the avatar as a menu trigger even if items is empty. */
   readonly showAvatarMenu = input<boolean>(false);
 
-  /** Accessible label for the avatar menu trigger button. */
-  readonly avatarMenuAriaLabel = input<string>('Menu utilisateur');
+  /** Accessible label for the avatar menu trigger button. Locale default when omitted. */
+  readonly avatarMenuAriaLabel = input<string | undefined>(undefined);
+
+  /** Accessible name for the breadcrumb. Locale default when omitted. */
+  readonly breadcrumbAriaLabel = input<string | undefined>(undefined);
 
   /** When true, menu items expose `data-test` with their visible label (moderated testing). */
   readonly telemetryLabelsEnabled = input<boolean>(false);
@@ -159,6 +165,14 @@ export class TopNavComponent {
   );
 
   readonly avatarMenuExpanded = computed(() => this._avatarMenuOpen());
+
+  readonly resolvedAvatarMenuAriaLabel = computed(
+    () => this.avatarMenuAriaLabel() ?? this.messages.userMenu,
+  );
+
+  readonly resolvedBreadcrumbAriaLabel = computed(
+    () => this.breadcrumbAriaLabel() ?? this.messages.breadcrumb,
+  );
 
   /** Resolved sub-navigation state — controlled input wins, otherwise use the local fallback. */
   readonly resolvedSubNavExpanded = computed(() => {

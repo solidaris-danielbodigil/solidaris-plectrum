@@ -12,6 +12,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
     bemBlock: 'c-copyable-text',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.copyable-text.scss',
+    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
@@ -86,7 +87,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-affiliate-overview-card and pds-affiliate-detail-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
+      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-profile-card and pds-profile-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
     selectionCriteria: {},
     keywords: ['copy', 'clipboard', 'identifier', 'metadata chip', 'Territoire', 'NISS'],
   },

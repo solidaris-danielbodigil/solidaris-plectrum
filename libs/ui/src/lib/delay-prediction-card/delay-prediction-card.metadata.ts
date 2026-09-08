@@ -12,6 +12,7 @@ export const DelayPredictionCardMetadata: ComponentMetadata = {
     bemBlock: 'c-delay-prediction-card',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.delay-prediction-card.scss',
+    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=704-11968',
     created: '2026-09-05',
     modified: '2026-09-05',
   },

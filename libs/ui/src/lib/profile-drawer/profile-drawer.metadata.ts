@@ -1,0 +1,142 @@
+import type { ComponentMetadata } from '@solidaris/contracts';
+
+export const ProfileDrawerMetadata: ComponentMetadata = {
+  component: {
+    name: 'ProfileDrawer',
+    category: 'organisms',
+    description:
+      'Profile detail drawer wrapping PrimeNG p-drawer: header (avatar, name, copyable identifiers, menu + close), details/documents segmented control, quick actions, general and contact rows, and related-people / notes accordions.',
+    type: 'container',
+    path: 'libs/ui/src/lib/profile-drawer/profile-drawer.component.ts',
+    primeNgComponent: 'Drawer, SelectButton, Accordion, Card, Tag, Button',
+    bemBlock: 'c-drawer',
+    itcssLayer: '06-components',
+    scssPath: 'libs/styles/src/06-components/_components.drawer.scss',
+    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012',
+    created: new Date().toISOString(),
+    modified: new Date().toISOString(),
+  },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'Promoted from iSHARE — management wants the dossier drawer everywhere. Catalogued under Shell.',
+  },
+  usage: {
+    useCases: [
+      'Affiliate detail panel opened from the audit overview',
+      'Read-only affiliate identity, contact, family and notes summary',
+      'Slide-in detail drawer for the Dossier Affilié flow',
+    ],
+    commonPatterns: [
+      {
+        name: 'Open affiliate detail drawer',
+        description:
+          'Bind visibility two-way and pass the full affiliate data object.',
+        composition:
+          '<(pds|app|lib)-profile-drawer [(visible)]="open" [data]="affiliate" (identifierCopy)="copy($event)" />',
+      },
+      {
+        name: 'Controlled segmented view',
+        description:
+          'Listen to viewChange to swap between the Détails and Documents tabs.',
+        composition:
+          '<(pds|app|lib)-profile-drawer [(visible)]="open" [data]="affiliate" [view]="view" (viewChange)="view = $event" />',
+      },
+    ],
+    antiPatterns: [
+      {
+        scenario: 'Inline always-visible panel',
+        reason: 'The drawer is an overlay surface controlled by visibility.',
+        alternative: 'Use a static card/section layout for always-visible content.',
+      },
+      {
+        scenario: 'Editing affiliate data in place',
+        reason: 'The drawer is a read-only summary with action triggers.',
+        alternative: 'Open a dedicated form view from the drawer actions.',
+      },
+    ],
+  },
+  accessibility: {
+    wcagLevel: 'AA',
+    ariaAttributes: [
+      'aria-label on copy identifier buttons (Copier {label})',
+      'aria-label on header menu (Plus d\'actions) and close (Fermer) buttons',
+      'aria-label on family arrow buttons ({name} ({relationship}))',
+      'aria-labelledby links sections to their heading ids',
+      'aria-hidden on bullet separators and section dividers',
+      'p-drawer focus trap + Escape handling for the overlay surface',
+    ],
+    contrastRequirements: [
+      'Yellow family avatar uses dark initials (rgba(0,0,0,0.9)) for contrast; blue/green use white.',
+      'Sensitive note tag pairs an icon and label text — not colour alone.',
+    ],
+  },
+  tokens: {
+    consumed: [
+      '--pds-size-drawer-min-width',
+      '--pds-size-drawer-max-width',
+      '--pds-color-profile-drawer-bg',
+      '--pds-shadow-profile-drawer',
+      '--pds-shadow-xl',
+      '--pds-color-panel-border',
+      '--pds-color-content-border',
+      '--pds-space-profile-drawer-header-padding-block-start',
+      '--pds-space-profile-drawer-header-padding-block-end',
+      '--pds-space-profile-drawer-padding-inline',
+      '--pds-space-profile-drawer-content-gap',
+      '--pds-space-profile-drawer-content-padding-block',
+      '--pds-space-profile-drawer-section-gap',
+      '--pds-size-detail-list-label-width',
+      '--pds-color-profile-drawer-metadata-text',
+      '--pds-color-profile-drawer-relationship',
+      '--pds-color-profile-drawer-tile-bg',
+      '--pds-radius-profile-drawer-tile',
+      '--pds-color-profile-drawer-note-bg',
+      '--pds-radius-profile-drawer-note',
+      '--pds-color-profile-drawer-note-author',
+      '--pds-color-profile-drawer-note-timestamp',
+      '--pds-color-profile-drawer-note-tag-sensitive-bg',
+      '--pds-color-profile-drawer-note-tag-sensitive-text',
+      '--pds-color-avatar-color-blue',
+      '--pds-color-avatar-color-green',
+      '--pds-color-avatar-color-yellow',
+      '--pds-color-avatar-initials-on-yellow',
+      '--pds-text-heading-lg-size',
+      '--pds-text-heading-sm-size',
+      '--pds-text-label-sm-size',
+      '--pds-text-body-sm-size',
+      '--p-card-body-padding',
+      '--p-accordion-header-padding',
+      '--p-tag-danger-background',
+      '--p-tag-danger-color',
+    ],
+  },
+  aiHints: {
+    priority: 'high',
+    context:
+      'Affiliate detail drawer for iSHARE audit flows. Headless p-drawer wrapper rendering the full Carte affilié per Figma 7:1012. Reuses pds-plectrum-avatar (large illustrated + small coloured) and the overview-card copyable identifier pattern.',
+    selectionCriteria: {
+      'detail drawer': 'Slide-in affiliate detail surface with sections and accordions',
+      'overview card': 'Use pds-profile-card for the inline summary instead',
+    },
+    keywords: [
+      'affiliate',
+      'drawer',
+      'carte affilié',
+      'detail',
+      'famille',
+      'notes',
+      'coordonnées',
+      'iSHARE',
+    ],
+  },
+  props: [
+    { name: 'data', type: 'ProfileDrawerData', required: true, description: 'Full affiliate content rendered inside the drawer' },
+    { name: 'visible', type: 'boolean', required: false, default: 'false', description: 'Two-way visibility ([(visible)]) controlling open/close' },
+    { name: 'position', type: 'ProfileDrawerPosition', required: false, default: 'right', description: 'Edge the drawer slides in from' },
+    { name: 'modal', type: 'boolean', required: false, default: 'true', description: 'Whether a backdrop mask is shown behind the drawer' },
+    { name: 'view', type: 'ProfileDrawerView', required: false, default: 'details', description: 'Active segmented-control view (Détails / Documents)' },
+    { name: 'showNotes', type: 'boolean', required: false, default: 'true', description: 'Whether the Notes accordion section is rendered' },
+  ],
+  examples: [],
+};

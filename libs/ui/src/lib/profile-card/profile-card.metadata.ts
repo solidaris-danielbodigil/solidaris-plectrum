@@ -1,0 +1,230 @@
+import type { ComponentMetadata } from '@solidaris/contracts';
+
+export const ProfileCardMetadata: ComponentMetadata = {
+  component: {
+    name: 'ProfileCard',
+    category: 'molecules',
+    description:
+      'Horizontal profile summary card: avatar, title, status action, info tags, copyable identifiers, and a primary action.',
+    type: 'display',
+    path: 'libs/ui/src/lib/profile-card/profile-card.component.ts',
+    primeNgComponent: 'Card, Button, SelectButton',
+    bemBlock: 'c-profile-card',
+    itcssLayer: '06-components',
+    scssPath:
+      'libs/styles/src/06-components/_components.profile-card.scss',
+    figmaUrl:
+      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
+    created: new Date().toISOString(),
+    modified: new Date().toISOString(),
+  },
+  governance: {
+    status: 'core',
+    owner: 'design-system',
+    note: 'Promoted from iSHARE — reused as the generic profile summary card.',
+  },
+  usage: {
+    useCases: [
+      'Affiliate audit result summary (Dossier Affilié)',
+      'Post-search affiliate detail panel',
+      'Status-driven affiliate overview with corrective actions',
+    ],
+    commonPatterns: [
+      {
+        name: 'Audit result card',
+        description:
+          'Show affiliate identity, info tags, and copyable identifiers after a successful lookup.',
+        composition:
+          '<(pds|app|lib)-profile-card variant="in-order" [title]="name" [avatarInitials]="initials" [infoTags]="tags" [identifiers]="ids" />',
+      },
+      {
+        name: 'Action required',
+        description:
+          'Surface a non-blocking audit issue with a warn status button and identifier chips.',
+        composition:
+          '<(pds|app|lib)-profile-card variant="default" [statusAction]="{ label: \'C4 non reçu\', tagValue: \'C4\', severity: \'warn\' }" [infoTags]="tags" [identifiers]="ids" />',
+      },
+    ],
+    antiPatterns: [
+      {
+        scenario: 'Full-page form layout',
+        reason: 'The card is a read-only summary container, not a form shell.',
+        alternative: 'Use form-field groups inside a dedicated form card.',
+      },
+      {
+        scenario: 'Inline table of many affiliates',
+        reason:
+          'Identifier chips are designed for a single affiliate snapshot.',
+        alternative: 'Use a data table component for multi-row listings.',
+      },
+    ],
+  },
+  accessibility: {
+    wcagLevel: 'AA',
+    ariaAttributes: [
+      'aria-labelledby on article (title h2 or title action button) when loaded',
+      'aria-label + aria-busy on article when loading',
+      'aria-pressed on filterable info-tag select button options (p-selectbutton inner toggle buttons, native role=button)',
+      'Alt+A — trigger primary action when primaryAction.shortcut is set (skipped in editable fields)',
+      'aria-keyshortcuts on title action button when shortcut badge is shown',
+      'aria-label on title action button (affiliate name — primary action label)',
+      'aria-label on copy identifier buttons (Copier {label})',
+      'aria-label on status action button (from statusAction.ariaLabel or label)',
+      'aria-hidden on bullet separators, shortcut badge, and skeleton lines',
+    ],
+    contrastRequirements: [
+      'Status button must include visible French label text — not colour alone.',
+      'Info tag buttons must pair label and value text — not colour alone.',
+    ],
+  },
+  tokens: {
+    consumed: [
+      '--pds-color-profile-card-bg-default',
+      '--pds-profile-card-bg-gradient-angle',
+      '--pds-profile-card-bg-gradient-stop',
+      '--pds-color-profile-card-bg-warning-gradient-start',
+      '--pds-color-profile-card-bg-warning',
+      '--pds-color-profile-card-bg-danger-gradient-start',
+      '--pds-color-profile-card-bg-danger',
+      '--pds-color-profile-card-bg-in-order-gradient-start',
+      '--pds-color-profile-card-bg-in-order',
+      '--pds-color-profile-card-info-tag-bg',
+      '--pds-color-profile-card-info-tag-text',
+      '--pds-color-profile-card-metadata-text',
+      '--pds-color-profile-card-metadata-separator',
+      '--pds-color-profile-card-shortcut-badge-bg',
+      '--pds-color-profile-card-shortcut-badge-text',
+      '--pds-text-profile-card-shortcut-badge-size',
+      '--pds-text-profile-card-shortcut-badge-weight',
+      '--pds-text-profile-card-shortcut-badge-line-height',
+      '--pds-color-profile-card-skeleton-bg',
+      '--pds-size-profile-card-padding',
+      '--pds-space-profile-card-avatar-gap',
+      '--pds-space-profile-card-header-gap',
+      '--pds-space-profile-card-header-inner-gap',
+      '--pds-space-profile-card-metadata-gap',
+      '--pds-space-profile-card-info-tag-padding-inline',
+      '--pds-space-profile-card-info-tag-padding-block',
+      '--pds-space-profile-card-shortcut-badge-padding-inline',
+      '--pds-space-profile-card-shortcut-badge-padding-block',
+      '--pds-size-profile-card-metadata-icon',
+      '--pds-size-profile-card-skeleton-avatar',
+      '--pds-color-panel-border',
+      '--pds-color-orange-50',
+      '--pds-color-danger-subtle',
+      '--pds-color-success-subtle',
+      '--pds-color-surface-0',
+      '--pds-color-info-tag-text',
+      '--pds-color-metadata-chip-text',
+      '--pds-color-text',
+      '--pds-color-text-muted',
+      '--pds-color-surface-border',
+      '--pds-radius-none',
+      '--pds-spacing-0-25',
+      '--pds-spacing-0-5',
+      '--pds-spacing-1',
+      '--pds-spacing-1-5',
+      '--pds-spacing-2',
+      '--pds-spacing-5',
+      '--pds-text-heading-lg-family',
+      '--pds-text-heading-lg-size',
+      '--pds-text-heading-lg-weight',
+      '--pds-text-heading-lg-line-height',
+      '--pds-text-heading-lg-spacing',
+      '--pds-text-label-sm-family',
+      '--pds-text-label-sm-size',
+      '--pds-text-label-sm-weight',
+      '--pds-text-label-sm-line-height',
+      '--pds-text-label-sm-spacing',
+      '--pds-text-body-sm-family',
+      '--pds-text-body-sm-size',
+      '--pds-text-body-sm-weight',
+      '--pds-text-body-sm-line-height',
+      '--pds-text-body-sm-spacing',
+      '--p-card-body-padding',
+      '--p-card-border-color',
+      '--p-card-background',
+      '--p-card-border-radius',
+      '--p-card-shadow',
+    ],
+  },
+  aiHints: {
+    priority: 'high',
+    context:
+      'Primary affiliate summary card for iSHARE audit flows. Horizontal layout per Figma 507:7910. Card gradient driven by statusAction.severity; variant input is fallback when no status action.',
+    selectionCriteria: {
+      'statusAction.severity success':
+        'Affiliate audit passes — in-order gradient + success button',
+      'statusAction.severity warn':
+        'Action required — warning gradient + warn button',
+      'statusAction.severity danger':
+        'Critical issue — danger gradient + danger button',
+      'variant in-order (no statusAction)':
+        'Success gradient via variant fallback only',
+      'variant default (no statusAction)':
+        'Neutral lookup result without status emphasis',
+    },
+    keywords: [
+      'affiliate',
+      'audit',
+      'overview',
+      'NISS',
+      'NSI',
+      'status',
+      'metadata',
+      'iSHARE',
+    ],
+  },
+  props: [
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      description: 'Affiliate display name (card heading)',
+    },
+    {
+      name: 'avatarInitials',
+      type: 'string',
+      required: false,
+      default: "''",
+      description: 'Initials fallback for the Plectrum avatar',
+    },
+    {
+      name: 'avatarGender',
+      type: 'PlectrumAvatarGender',
+      required: false,
+      default: 'female',
+      description: 'Illustrated avatar gender passed to pds-plectrum-avatar',
+    },
+    {
+      name: 'avatarVariant',
+      type: 'PlectrumAvatarVariant',
+      required: false,
+      default: '1',
+      description: 'Illustrated avatar variant passed to pds-plectrum-avatar',
+    },
+    {
+      name: 'variant',
+      type: 'ProfileCardVariant',
+      required: false,
+      default: 'default',
+      description: 'Fallback card treatment when statusAction is absent',
+    },
+    {
+      name: 'statusAction',
+      type: 'ProfileCardStatusAction | null',
+      required: false,
+      default: 'null',
+      description:
+        'Outlined status button config. severity (success | warn | danger) drives card gradient when set.',
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Skeleton placeholder state',
+    },
+  ],
+  examples: [],
+};

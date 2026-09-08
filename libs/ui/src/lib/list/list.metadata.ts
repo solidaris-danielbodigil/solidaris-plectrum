@@ -5,20 +5,21 @@ export const ListMetadata: ComponentMetadata = {
     name: 'List',
     category: 'molecules',
     description:
-      'iSHARE affiliate document list with journey (grouped) and flat modes rendered via PrimeNG Tree node templates with card row chrome.',
+      'Grouped or flat entry list rendered via PrimeNG Tree node templates with card row chrome.',
     type: 'display',
     path: 'libs/ui/src/lib/list/list.component.ts',
     primeNgComponent: 'Tree',
     bemBlock: 'c-list',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.list.scss',
+    figmaUrl: 'https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
   governance: {
     status: 'core',
     owner: 'design-system',
-    note: 'PrimeNG Tree variant. The input model still speaks iSHARE (documents, journeys) — generic naming is the open follow-up.',
+    note: 'PrimeNG Tree variant. Rows are generic entries; apps supply icons and copy.',
   },
   usage: {
     useCases: [
@@ -59,7 +60,7 @@ export const ListMetadata: ComponentMetadata = {
       'role="region" + aria-label on host',
       'aria-busy on host when loading',
       'PrimeNG Tree treeitem semantics for groups and documents',
-      'role="button" + tabindex + aria-selected on document row cards',
+      'aria-selected on the selected document treeitem',
       'aria-hidden on decorative sort icon',
     ],
     contrastRequirements: [

@@ -1,9 +1,12 @@
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   ViewEncapsulation,
   computed,
   effect,
+  inject,
   input,
   output,
   signal,
@@ -18,23 +21,24 @@ import { Ripple } from 'primeng/ripple';
 import { Skeleton } from 'primeng/skeleton';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
+import { injectPdsMessages } from '../i18n';
 import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
-  ListDocumentItem,
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ListEntryItem,
+  ListEntryTag,
+  ListEntryTagTarget,
   ListGroup,
   ListItem,
 } from './list.types';
-import { resolveListDocumentIcon } from './list-document-icon';
 import { isListGroup } from './list.types';
+import { ListMessages } from './list.i18n';
 
 export interface ListGroupNodeData {
   group: ListGroup;
 }
 
-export interface ListDocumentNodeData {
-  doc: ListDocumentItem;
+export interface ListEntryNodeData {
+  doc: ListEntryItem;
   showTimeline: boolean;
 }
 
@@ -63,11 +67,25 @@ export interface ListDocumentNodeData {
     '[class.c-list--flat]': '!isJourneyMode()',
     '[class.is-loading]': 'loading()',
     role: 'region',
-    'aria-label': 'Suivi des documents',
+    '[attr.aria-label]': 'messages.regionLabel',
     '[attr.aria-busy]': 'loading()',
   },
 })
 export class ListComponent {
+  protected readonly messages = injectPdsMessages(ListMessages);
+  protected readonly treePassThrough = {
+    nodeToggleButton: { 'aria-label': this.messages.toggleGroup },
+  };
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly labelTreeTogglers = afterRenderEffect(() => {
+    this.treeNodes();
+    this.expandedGroupIds();
+    const label = this.messages.toggleGroup;
+    const root = this.host.nativeElement as HTMLElement;
+    root.querySelectorAll('.p-tree-node-toggle-button').forEach((button) => {
+      button.setAttribute('aria-label', label);
+    });
+  });
   protected readonly skeletonRowIndexes = [0, 1, 2] as const;
 
   readonly groups = input<ListGroup[] | null>(null);
@@ -83,9 +101,9 @@ export class ListComponent {
   readonly footnoteClick = output<void>();
   readonly itemClick = output<ListItem>();
   readonly tagTargetClick = output<{
-    doc: ListDocumentItem;
-    tag: ListDocumentTag;
-    target: ListDocumentTagTarget;
+    doc: ListEntryItem;
+    tag: ListEntryTag;
+    target: ListEntryTagTarget;
   }>();
 
   private readonly tagPopover = viewChild<Popover>('tagPopover');
@@ -94,8 +112,8 @@ export class ListComponent {
     undefined,
   );
   readonly activeTagContext = signal<{
-    doc: ListDocumentItem;
-    tag: ListDocumentTag;
+    doc: ListEntryItem;
+    tag: ListEntryTag;
   } | null>(null);
 
   readonly isJourneyMode = computed(() => this.groups() !== null);
@@ -140,14 +158,24 @@ export class ListComponent {
     return this.flatDocuments().length;
   });
 
-  readonly flatDocuments = computed((): ListDocumentItem[] =>
-    this.items().filter((item): item is ListDocumentItem => !isListGroup(item)),
+  readonly flatDocuments = computed((): ListEntryItem[] =>
+    this.items().filter((item): item is ListEntryItem => !isListGroup(item)),
   );
 
   /** Stable tree node references — rebuilt only when groups/items change, not on expand toggle. */
   private readonly treeNodesInternal = signal<TreeNode[]>([]);
 
   readonly treeNodes = this.treeNodesInternal.asReadonly();
+
+  /** PrimeNG Tree selection — drives aria-selected on treeitems, not nested buttons. */
+  readonly selectedTreeNode = computed((): TreeNode | null => {
+    const selectedId = this.resolvedSelectedDocumentId();
+    if (!selectedId) {
+      return null;
+    }
+
+    return this.findEntryNode(this.treeNodes(), selectedId);
+  });
 
   private readonly rebuildTreeNodes = effect(() => {
     if (this.loading()) {
@@ -210,24 +238,55 @@ export class ListComponent {
     return this.expandedGroupIds().includes(groupId);
   }
 
-  isDocumentSelected(doc: ListDocumentItem): boolean {
+  isDocumentSelected(doc: ListEntryItem): boolean {
+    const selectedId = this.resolvedSelectedDocumentId();
+    return selectedId !== null && doc.id === selectedId;
+  }
+
+  private resolvedSelectedDocumentId(): string | null {
     const selectedId = this.selectedItemId();
     if (selectedId !== null) {
-      return doc.id === selectedId;
+      return selectedId;
     }
 
-    return doc.selected === true;
+    const selected = this.collectDocuments().find((doc) => doc.selected === true);
+    return selected?.id ?? null;
+  }
+
+  private collectDocuments(): ListEntryItem[] {
+    if (this.isJourneyMode()) {
+      return (this.groups() ?? []).flatMap((group) => group.documents);
+    }
+
+    return this.flatDocuments();
+  }
+
+  private findEntryNode(nodes: TreeNode[], id: string): TreeNode | null {
+    for (const node of nodes) {
+      if (node.type === 'entry' && node.key === id) {
+        return node;
+      }
+
+      const child = node.children
+        ? this.findEntryNode(node.children, id)
+        : null;
+      if (child) {
+        return child;
+      }
+    }
+
+    return null;
   }
 
   groupFromNode(node: TreeNode): ListGroup {
     return (node.data as ListGroupNodeData).group;
   }
 
-  documentFromNode(node: TreeNode): ListDocumentNodeData {
-    return node.data as ListDocumentNodeData;
+  documentFromNode(node: TreeNode): ListEntryNodeData {
+    return node.data as ListEntryNodeData;
   }
 
-  documentDisplayTitle(doc: ListDocumentItem): string {
+  documentDisplayTitle(doc: ListEntryItem): string {
     return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
   }
 
@@ -237,12 +296,16 @@ export class ListComponent {
       : group.title;
   }
 
-  documentIcon(doc: ListDocumentItem): string {
-    return resolveListDocumentIcon(doc);
+  documentIcon(doc: ListEntryItem): string {
+    if (!doc.icon) {
+      return 'bi bi-file-earmark-text';
+    }
+
+    return doc.icon.startsWith('bi ') ? doc.icon : `bi ${doc.icon}`;
   }
 
   /** True when a document row has footer content (tags, dates, …) below the header. */
-  documentHasFooterContent(doc: ListDocumentItem): boolean {
+  documentHasFooterContent(doc: ListEntryItem): boolean {
     return Boolean(doc.tags?.length);
   }
 
@@ -251,16 +314,17 @@ export class ListComponent {
     return Boolean(group.startDate || group.endDate);
   }
 
-  onDocumentRowClick(event: MouseEvent, doc: ListDocumentItem): void {
+  onDocumentRowClick(event: MouseEvent, doc: ListEntryItem): void {
     const target = event.target;
     if (target instanceof Element && target.closest('.c-list__tags button')) {
       return;
     }
 
+    event.stopPropagation();
     this.onDocumentClick(doc);
   }
 
-  onDocumentClick(doc: ListDocumentItem): void {
+  onDocumentClick(doc: ListEntryItem): void {
     if (this.loading()) {
       return;
     }
@@ -268,17 +332,26 @@ export class ListComponent {
     this.itemClick.emit(doc);
   }
 
-  onDocumentKeydown(event: KeyboardEvent, doc: ListDocumentItem): void {
+  onTreeNodeSelect(event: { node: TreeNode }): void {
+    if (event.node.type !== 'entry') {
+      return;
+    }
+
+    this.onDocumentClick(this.documentFromNode(event.node).doc);
+  }
+
+  onDocumentKeydown(event: KeyboardEvent, doc: ListEntryItem): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
+      event.stopPropagation();
       this.onDocumentClick(doc);
     }
   }
 
   onTagClick(
     event: MouseEvent | KeyboardEvent,
-    doc: ListDocumentItem,
-    tag: ListDocumentTag,
+    doc: ListEntryItem,
+    tag: ListEntryTag,
   ): void {
     const targets = tag.targets ?? [];
     event.stopPropagation();
@@ -377,7 +450,7 @@ export class ListComponent {
     Object.assign(panel.style, style);
   }
 
-  onTagTargetSelect(event: Event, target: ListDocumentTagTarget): void {
+  onTagTargetSelect(event: Event, target: ListEntryTagTarget): void {
     event.stopPropagation();
     const active = this.activeTagContext();
     if (!active) {
@@ -390,7 +463,7 @@ export class ListComponent {
 
   onTagTargetKeydown(
     event: KeyboardEvent,
-    target: ListDocumentTagTarget,
+    target: ListEntryTagTarget,
   ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -400,8 +473,8 @@ export class ListComponent {
 
   onTagKeydown(
     event: KeyboardEvent,
-    doc: ListDocumentItem,
-    tag: ListDocumentTag,
+    doc: ListEntryItem,
+    tag: ListEntryTag,
   ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -462,15 +535,15 @@ export class ListComponent {
   }
 
   private toDocumentTreeNode(
-    doc: ListDocumentItem,
+    doc: ListEntryItem,
     showTimeline: boolean,
   ): TreeNode {
     return {
       key: doc.id,
-      type: 'document',
+      type: 'entry',
       data: { doc, showTimeline },
       leaf: true,
-      selectable: false,
+      selectable: true,
     };
   }
 

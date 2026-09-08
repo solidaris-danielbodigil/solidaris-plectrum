@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './overlays.stories';
+
+<Meta of={Stories} />
+
+# Overlays
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+Theme proof for PrimeNG overlays. Every overlay in an app **must** use `appendTo="body"` so it is not clipped by `overflow` on a flex column or card.
+
+What Plectrum changes: [Drawer width tokens and `c-drawer` shell](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components). Dialog, Popover, Toast, Tooltip and Menu stay stock. Feature drawers compose the [Drawer](?path=/docs/custom-components-drawer--docs) shell inside `p-drawer` `#headless`.
+
+## Endorsed composition
+
+- `appendTo="body"` on Dialog, Drawer, Popover, Select, DatePicker, AutoComplete, Toast
+- No `styleClass` on `p-drawer` / `p-dialog` roots
+- Icons are Bootstrap Icons
+- Toast is a singleton near the app root; do not mount one per feature
+
+Figma: [Dialog](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50209) · [Drawer](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50210) · [Popover](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50211) · [Toast](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-53165) · [Tooltip](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50212) · [Menu](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-52936)
+
+API: [primeng.org/dialog](https://primeng.org/dialog) · [drawer](https://primeng.org/drawer) · [popover](https://primeng.org/popover) · [toast](https://primeng.org/toast) · [tooltip](https://primeng.org/tooltip) · [menu](https://primeng.org/menu)
+
+## Dialog
+
+Opened for the snapshot. `appendTo="body"`.
+
+<Canvas of={Stories.DialogOpen} />
+<Controls of={Stories.DialogOpen} />
+
+## Drawer (stock)
+
+Stock chrome. Headless `c-drawer` composition is on [Drawer](?path=/docs/custom-components-drawer--docs).
+
+<Canvas of={Stories.DrawerOpen} />
+
+## Popover
+
+<Canvas of={Stories.PopoverOpen} />
+
+## Toast
+
+<Canvas of={Stories.ToastMessage} />
+
+## Tooltip
+
+<Canvas of={Stories.TooltipTrigger} />
+
+## Menu
+
+Inline (non-popup) so the theme is visible without a click.
+
+<Canvas of={Stories.MenuInline} />
+
+## API
+
+Story knobs for the canvases above. They are not a Plectrum wrapper API.
+
+<ArgTypes of={Stories} />

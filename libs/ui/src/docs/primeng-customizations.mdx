@@ -24,9 +24,8 @@ Scoped custom-property overrides. Never inline in `06-components`, never `.p-*` 
   rows={[
     ['Accordion', '_settings.accordion.scss', 'c-accordion--bordered', 'Bordered stacked panels: padding, borders, header/content backgrounds'],
     ['Accordion', '_settings.accordion.scss', 'c-accordion--nav', 'Transparent chrome for SubNavShell section accordions'],
-    ['Accordion', '_settings.accordion.scss', 'c-accordion--chromeless', 'Hidden toggler for list journey groups — defined, wiring pending (PLECTRUM_V1_GAP_REPORT, P2)'],
     ['Tabs', '_settings.tabs.scss', 'c-affiliate-details__category-tabs', 'Tab padding from PDS spacing tokens'],
-    ['Card + Button', '_settings.affiliate-overview.scss', 'c-affiliate-overview-card (+ status modifiers)', 'Card padding/border/background/radius/shadow per status; text-button colors for the title action'],
+    ['Card + Button', '_settings.profile-card.scss', 'c-profile-card (+ status modifiers)', 'Card padding/border/background/radius/shadow per status; text-button colors for the title action'],
     ['Card', '_settings.affiliate-documents.scss', 'c-affiliate-documents-toolbar', 'Toolbar card chrome; zeroes inner padding'],
     ['Card', '_settings.affiliate-details.scss', 'c-affiliate-details__documents · __detail', 'Two-column panel cards: body padding, header, border, shadow'],
   ]}
@@ -39,9 +38,9 @@ Rules PrimeNG cannot express through tokens — internal selectors with no templ
 <DocsTable
   headers={['PrimeNG', 'File', 'What changes', 'Story']}
   rows={[
-    ['AutoComplete', '_components.autocomplete.scss', 'Small/large multiple-mode sizing, chip remove-icon alignment', '—'],
-    ['Card', '_components.card.scss', 'Global p-card-title block-end spacing', '—'],
-    ['Tag', '_settings.tag.scss', 'p-tag-icon line-height for icon box alignment (approved global parity, rule 09 §13)', '—'],
+    ['AutoComplete', '_components.autocomplete.scss', 'Small/large multiple-mode sizing, chip remove-icon alignment', 'PrimeNG / Forms'],
+    ['Card', '_components.card.scss', 'Global p-card-title block-end spacing', 'PrimeNG / Content and navigation'],
+    ['Tag', '_settings.tag.scss', 'p-tag-icon line-height for icon box alignment (approved global parity, rule 09 §13)', 'PrimeNG / Content and navigation'],
     ['Timeline', '_components.timeline.scss', 'c-timeline--content-only hides the empty opposite column', 'Custom components / Timeline'],
     ['Skeleton', '_components.skeleton-slot.scss', 'c-skeleton-slot sized wrappers for p-skeleton', 'Custom components / Skeleton Slot'],
     ['Drawer', '_settings.drawer.scss + _components.drawer.scss', 'Content-driven width tokens; c-drawer headless shell elements', 'Custom components / Drawer'],

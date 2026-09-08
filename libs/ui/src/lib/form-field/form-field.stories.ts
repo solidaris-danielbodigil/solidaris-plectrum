@@ -3,10 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { expect, waitFor, within } from 'storybook/test';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { FormFieldComponent } from './form-field.component';
 import { FormFieldMetadata } from './form-field.metadata';
 
 const meta: Meta<FormFieldComponent> = {
+  parameters: {
+    ...storyDesign(FormFieldMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Form Field',
   component: FormFieldComponent,
   argTypes: {
@@ -40,8 +44,9 @@ export const Vertical: Story = {
         [required]="required"
         [invalid]="invalid"
         [errorMessage]="errorMessage"
+        [inputId]="inputId"
       >
-        <input pInputText [(ngModel)]="value" [required]="required" />
+        <input pInputText [id]="inputId" [(ngModel)]="value" [required]="required" />
       </pds-form-field>
     `,
   }),
@@ -51,11 +56,12 @@ export const Vertical: Story = {
     required: true,
     invalid: false,
     errorMessage: 'Sélectionnez une O.A.',
+    inputId: 'story-form-field-oa',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText('O.A.')).toBeVisible();
-    await expect(canvas.getByDisplayValue('319')).toBeVisible();
+    const input = canvas.getByRole('textbox', { name: /O\.A\./ });
+    await expect(input).toHaveAttribute('aria-invalid', 'false');
   },
 };
 
@@ -70,10 +76,15 @@ export const VerticalInvalid: Story = {
     const canvas = within(canvasElement);
     const field = canvasElement.querySelector('.c-form-field');
     await expect(field).toHaveClass('is-invalid');
-    // p-message animates in — wait for the enter transition to finish.
-    await waitFor(() =>
-      expect(canvas.getByText('Sélectionnez une O.A.')).toBeVisible(),
-    );
+    await waitFor(() => {
+      const input = canvas.getByRole('textbox', { name: /O\.A\./ });
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+      const describedBy = input.getAttribute('aria-describedby');
+      expect(describedBy).toBeTruthy();
+      expect(
+        canvasElement.ownerDocument.getElementById(describedBy ?? ''),
+      ).not.toBeNull();
+    });
   },
 };
 

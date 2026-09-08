@@ -3,7 +3,7 @@
     class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
   >
     <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
-      <h2 class="c-list__title o-layout--margin-0">Suivi des documents</h2>
+      <p class="c-list__title o-layout--margin-0">{{ messages.regionLabel }}</p>
       <span
         class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
         >{{ documentCount() }}</span
@@ -16,7 +16,7 @@
 @if (loading()) {
   <div class="c-list__body o-flex o-flex--col o-layout--gap-1-5">
     @for (row of skeletonRowIndexes; track row) {
-      <article class="c-list__item c-list__item--document">
+      <article class="c-list__item c-list__item--entry">
         <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
           <div class="o-flex o-layout--gap-3">
             <p-skeleton class="c-list__skeleton-icon o-flex__item--shrink-0" />
@@ -63,7 +63,12 @@
     <p-tree
       [value]="treeNodes()"
       [indentation]="0"
-      togglerAriaLabel="Développer ou réduire le groupe"
+      selectionMode="single"
+      [selection]="selectedTreeNode()"
+      [metaKeySelection]="false"
+      [togglerAriaLabel]="messages.toggleGroup"
+      [pt]="treePassThrough"
+      (onNodeSelect)="onTreeNodeSelect($event)"
       (onNodeExpand)="onTreeNodeExpand($event)"
       (onNodeCollapse)="onTreeNodeCollapse($event)"
     >
@@ -71,9 +76,6 @@
         @let group = groupFromNode(node);
         <article
           class="c-list__item c-list__item--group"
-          role="button"
-          tabindex="0"
-          [attr.aria-expanded]="isGroupExpanded(group.id) ? 'true' : 'false'"
           [pdsTelemetryLabel]="groupTelemetryLabel(group)"
           (click)="onGroupClick($event, group)"
           (keydown)="onGroupKeydown($event, group)"
@@ -101,11 +103,11 @@
             @if (groupHasFooterContent(group)) {
               <div class="c-list__dates o-flex o-layout--gap-0-25">
                 <p class="c-list__date o-flex__item--grow-1 o-layout--margin-0">
-                  Date de début :
+                  {{ messages.startDate }} :
                   <span class="c-list__date-value">{{ group.startDate }}</span>
                 </p>
                 <p class="c-list__date c-list__date--end o-flex__item--grow-1 o-layout--margin-0">
-                  Date de fin :
+                  {{ messages.endDate }} :
                   <span class="c-list__date-value">{{ group.endDate }}</span>
                 </p>
               </div>
@@ -114,7 +116,7 @@
         </article>
       </ng-template>
 
-      <ng-template let-node pTemplate="document">
+      <ng-template let-node pTemplate="entry">
         @let documentData = documentFromNode(node);
         @let doc = documentData.doc;
         @if (documentData.showTimeline) {
@@ -149,11 +151,8 @@
               </svg>
             </div>
             <article
-              class="c-list__item c-list__item--document o-flex__item--grow-1 o-layout--min-w-0"
+              class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--min-w-0"
               [class.c-list__item--selected]="isDocumentSelected(doc)"
-              role="button"
-              tabindex="0"
-              [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
               [attr.data-telemetry-id]="'document-row-' + doc.id"
               [pdsTelemetryLabel]="documentDisplayTitle(doc)"
               (click)="onDocumentRowClick($event, doc)"
@@ -216,11 +215,8 @@
           </div>
         } @else {
           <article
-            class="c-list__item c-list__item--document o-flex__item--grow-1 o-layout--min-w-0"
+            class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--min-w-0"
             [class.c-list__item--selected]="isDocumentSelected(doc)"
-            role="button"
-            tabindex="0"
-            [attr.aria-selected]="isDocumentSelected(doc) ? 'true' : null"
             [attr.data-telemetry-id]="'document-row-' + doc.id"
             [pdsTelemetryLabel]="documentDisplayTitle(doc)"
             (click)="onDocumentRowClick($event, doc)"

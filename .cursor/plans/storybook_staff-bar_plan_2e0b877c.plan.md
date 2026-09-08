@@ -4,55 +4,55 @@ overview: "Close the gaps from the staff-level Storybook audit: put the PrimeNG 
 todos:
   - id: primeng-gallery
     content: "Create libs/ui/src/primeng/ theme gallery: Actions, Forms, Data, Overlays, Content and navigation (CSF + MDX, Status badge, endorsed composition, Figma node, primeng.org API links, Chromatic on); add PrimeNG to storySort, Introduction table, Consume page, customizations Story cells"
-    status: pending
+    status: completed
   - id: genericise-core
     content: Genericise List (ListEntry*, c-list__item--entry, move keyword icon inference to apps/ishare), Affiliate Overview Card -> pds-profile-card, Affiliate Detail Drawer -> pds-profile-drawer (ProfileDrawerData, c-drawer__profile-*, labels override); rename settings/components SCSS, metadata, stories, Figma links; update iSHARE call sites and specs, Contribute table, customizations rows, rule 09 example; regenerate index; add changeset
-    status: pending
+    status: completed
   - id: dead-code
     content: Delete doc-demo-box (component, metadata, _components/_settings SCSS, @forward lines) and c-accordion--chromeless (bridge, customizations row, rule 09 mention); regenerate index
-    status: pending
+    status: completed
   - id: scaffolder-template
     content: "Fix pds:component: owner-based title, no autodocs/docs.description, Status story, Default with play, emit {name}.mdx with Copyable Text template sections, emit lib index.ts, append component + metadata exports to libs/ui/src/lib/index.ts"
-    status: pending
+    status: completed
   - id: rules-alignment
     content: Update .ai/rules/03-storybook.md section 3 (template sections; stories visible, !dev only for figures), story-authoring.mdx figure wording (Default or primary state), component-creation.md checklist
-    status: pending
+    status: completed
   - id: docs-backfill
     content: Backfill When to use / When not / Anatomy / Accessibility / Figma on all Custom components, Shell and Patterns pages; replace pipe tables in affiliate-overview-card.mdx with DocsTable; add Patterns/iSHARE/Page shells and Docs/Testing telemetry pages
-    status: pending
+    status: completed
   - id: a11y-gate
     content: Run test-storybook, fix all WCAG 2.1 AA violations, flip a11y.test to 'error' in preview.ts, update Contribute Testing table and story-authoring note
-    status: pending
+    status: completed
   - id: chromatic-gate
     content: "After user sets CHROMATIC_PROJECT_TOKEN and CHROMATIC_ENABLED, set exitZeroOnChanges: false in ci.yml; confirm gallery/component snapshots on and figure/Status snapshots off"
-    status: pending
+    status: completed
   - id: play-depth
     content: "Add real interaction play tests: Toolbar Sticky, Form Field invalid aria linkage, Empty State reroll, List group toggle emits expandedGroupIdsChange, TopNav avatar menu aria-expanded"
-    status: pending
+    status: completed
   - id: ci-cleanup
     content: Remove the 'Run Storybook' (npm run storybook --ci) step from the build job in .github/workflows/ci.yml
-    status: pending
+    status: completed
   - id: i18n-foundation
     content: "Add libs/ui/src/lib/i18n: PdsLocale, PDS_LOCALE token with LOCALE_ID-derived factory, providePdsLocale, injectPdsMessages, PdsMessages with plural functions; export from barrel"
-    status: pending
+    status: completed
   - id: i18n-migrate
     content: Move baked-in French copy to colocated {name}.i18n.ts (fr + drafted nl) for Copyable Text, TopNav, List, Profile Card, Profile Drawer, Delay Prediction Card, Transactions CICS Modal; inputs keep precedence; telemetry labels stay static; add NL unit spec cases; open .ai/questions/nl-copy-review.md
-    status: pending
+    status: completed
   - id: i18n-storybook
     content: Add locale global toolbar (FR/NL) and providePdsLocale in the preview.ts decorator; add a Dutch story with play per migrated component; fix html lang in ishare/icrm; add Language section to Contribute and the copy rule to 01-architecture.md and the creation checklist
-    status: pending
+    status: completed
   - id: figma-embed
     content: Install @storybook/addon-designs@^11; add optional figmaUrl to the metadata schema, scaffolder and existing metadata; set parameters.design from metadata in CSF metas and reuse the field in MDX links
-    status: pending
+    status: completed
   - id: viewport-version-chrome
     content: Add viewport presets from _settings.breakpoints.scss in preview.ts; rename preset toolbar to Preset with default/legacy labels; hero eyebrow reads @solidaris/* v{version}; hide stock onboarding widget if configurable
-    status: pending
+    status: completed
   - id: troubleshooting-whatsnew
     content: Add Docs/Troubleshooting page; add tools/scripts/changelog-to-ts.mjs emitting changelog.generated.ts from CHANGELOG.md and pending changesets, wire into storybook scripts and CI diff gate, add Docs/What's new page
-    status: pending
+    status: completed
   - id: status-index
     content: Add Docs/Component status page rendering .ai/contracts/index.json in a DocsTable; replace the Contribute Audit outcome table with a link and short decisions list
-    status: pending
+    status: completed
 isProject: false
 ---
 

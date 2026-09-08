@@ -6,6 +6,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, expect } from '../../storybook/story-tests';
 import { IconComponent } from './icon.component';
 import { IconMetadata } from './icon.metadata';
@@ -15,6 +16,9 @@ import { IconRegistry } from './icon.registry';
 const SAMPLE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 12.5A5.5 5.5 0 1 1 8 2.5a5.5 5.5 0 0 1 0 11Zm.75-7.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.25 7h1.5v4h-1.5V7Z"/></svg>`;
 
 const meta: Meta<IconComponent> = {
+  parameters: {
+    ...storyDesign(IconMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Icon',
   component: IconComponent,
   decorators: [

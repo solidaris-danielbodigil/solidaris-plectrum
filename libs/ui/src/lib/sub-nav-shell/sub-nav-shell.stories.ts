@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { SubNavShellComponent } from './sub-nav-shell.component';
 import { SubNavShellMetadata } from './sub-nav-shell.metadata';
@@ -170,6 +171,7 @@ const meta: Meta<SubNavShellComponent> = {
   ],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(SubNavShellMetadata.component.figmaUrl),
   },
   argTypes: {
     title: { control: 'text', description: 'Module/app title in the header' },

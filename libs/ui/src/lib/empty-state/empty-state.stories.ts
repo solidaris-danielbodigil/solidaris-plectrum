@@ -2,7 +2,13 @@ import { Component, input, signal } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
 import { statusStory } from '../../docs/docs-figure-stories';
-import { assertTextVisible } from '../../storybook/story-tests';
+import { storyDesign } from '../../storybook/story-design';
+import {
+  assertTextVisible,
+  expect,
+  userEvent,
+  within,
+} from '../../storybook/story-tests';
 import { EmptyStateComponent } from './empty-state.component';
 import { EmptyStateMetadata } from './empty-state.metadata';
 import {
@@ -50,6 +56,9 @@ class EmptyStateRandomDemoComponent {
 }
 
 const meta: Meta<EmptyStateComponent> = {
+  parameters: {
+    ...storyDesign(EmptyStateMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Empty State',
   component: EmptyStateComponent,
   decorators: [
@@ -97,7 +106,28 @@ export const Default: Story = {
     illustration: 'random',
   },
   play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     await assertTextVisible(canvasElement, 'Aucune recherche pour le moment');
+
+    const illustration = () =>
+      canvasElement.querySelector(
+        '.c-empty-state__illustration',
+      ) as HTMLImageElement | null;
+
+    const reroll = canvas.getByRole('button', { name: 'Autre illustration' });
+    const initialId = illustration()?.getAttribute('data-illustration');
+
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      await userEvent.click(reroll);
+      const nextId = illustration()?.getAttribute('data-illustration');
+      if (nextId && nextId !== initialId) {
+        return;
+      }
+    }
+
+    await expect(illustration()?.getAttribute('data-illustration')).not.toBe(
+      initialId,
+    );
   },
 };
 

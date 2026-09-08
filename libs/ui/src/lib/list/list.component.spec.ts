@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { PDS_LOCALE } from '../i18n';
+
 import { ListComponent } from './list.component';
 
-import type { ListDocumentItem, ListGroup } from './list.types';
+import type { ListEntryItem, ListGroup } from './list.types';
 
 const JOURNEY_GROUPS: ListGroup[] = [
   {
@@ -62,11 +64,11 @@ const JOURNEY_GROUPS: ListGroup[] = [
   },
 ];
 
-const FLAT_DOCUMENTS: ListDocumentItem[] = JOURNEY_GROUPS.flatMap(
+const FLAT_DOCUMENTS: ListEntryItem[] = JOURNEY_GROUPS.flatMap(
   (group) => group.documents,
 );
 
-const DOCS_WITH_TAG_TARGETS: ListDocumentItem[] = [
+const DOCS_WITH_TAG_TARGETS: ListEntryItem[] = [
   {
     id: 'doc-single-target',
     title: 'Document à une cible',
@@ -152,7 +154,9 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const title = fixture.nativeElement.querySelector('h2.c-list__title');
+    const title = fixture.nativeElement.querySelector(
+      '.c-list__header-row .c-list__title',
+    );
 
     const badge = fixture.nativeElement.querySelector('.c-list__count-badge');
 
@@ -185,7 +189,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
+      fixture.nativeElement.querySelectorAll('.c-list__item--entry').length,
     ).toBe(FLAT_DOCUMENTS.length);
 
     expect(
@@ -195,37 +199,26 @@ describe('ListComponent', () => {
     ).toBe(0);
   });
 
-  it('should render category-specific bootstrap icons on document rows', () => {
+  it('should render the explicit icon or the generic file fallback', () => {
     fixture.componentRef.setInput('groups', null);
     fixture.componentRef.setInput('items', [
-      { id: 'doc-demande-primaire', title: 'Demande primaire -' },
-      { id: 'doc-incapacite', title: 'Incapacité' },
-      { id: 'doc-rechute', title: 'Rechute' },
-      { id: 'doc-c4', title: 'Attestation C4' },
       {
-        id: 'doc-attestation-pedicure',
-        title: 'Attestation de soin pédicure',
+        id: 'doc-demande-primaire',
+        title: 'Demande primaire -',
+        icon: 'bi bi-clipboard2-check',
       },
+      { id: 'doc-generic', title: 'Sans icône' },
     ]);
     fixture.detectChanges();
 
     const icons = [
       ...fixture.nativeElement.querySelectorAll(
-        '.c-list__item--document .c-list__icon',
+        '.c-list__item--entry .c-list__icon',
       ),
     ] as HTMLElement[];
 
-    expect(icons.map((icon) => icon.classList.contains('bi-clipboard2-check'))).toEqual([
-      true,
-      false,
-      false,
-      false,
-      false,
-    ]);
-    expect(icons[1].classList.contains('bi-bandaid')).toBe(true);
-    expect(icons[2].classList.contains('bi-arrow-repeat')).toBe(true);
-    expect(icons[3].classList.contains('bi-file-earmark-text')).toBe(true);
-    expect(icons[4].classList.contains('bi-file-earmark-check')).toBe(true);
+    expect(icons[0].classList.contains('bi-clipboard2-check')).toBe(true);
+    expect(icons[1].classList.contains('bi-file-earmark-text')).toBe(true);
   });
 
   it('should render timeline gutters on journey document rows', () => {
@@ -324,7 +317,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const documentItems = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     );
     const treeLabels = fixture.nativeElement.querySelectorAll(
       '.p-tree-node-leaf > .p-tree-node-content > .p-tree-node-label',
@@ -365,12 +358,12 @@ describe('ListComponent', () => {
     ).toBe(2);
 
     expect(
-      fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
+      fixture.nativeElement.querySelectorAll('.c-list__item--entry').length,
     ).toBe(2);
   });
 
   it('should ignore flat items when rendering journey groups', () => {
-    const standaloneDocuments: ListDocumentItem[] = [
+    const standaloneDocuments: ListEntryItem[] = [
       {
         id: 'doc-c4',
         title: 'Attestation C4',
@@ -390,7 +383,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
+      fixture.nativeElement.querySelectorAll('.c-list__item--entry').length,
     ).toBe(2);
     expect(fixture.nativeElement.textContent).not.toContain('Attestation C4');
     expect(fixture.nativeElement.textContent).not.toContain(
@@ -406,7 +399,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelectorAll('.c-list__item--document').length,
+      fixture.nativeElement.querySelectorAll('.c-list__item--entry').length,
     ).toBe(1);
   });
 
@@ -449,7 +442,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const selectedNode = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected',
+      '.c-list__item--entry.c-list__item--selected',
     ) as HTMLElement | null;
 
     expect(selectedNode).toBeTruthy();
@@ -582,12 +575,12 @@ describe('ListComponent', () => {
     ]);
     fixture.detectChanges();
 
-    const groupHeaders = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--group',
+    const groupTreeItems = fixture.nativeElement.querySelectorAll(
+      '.p-tree-node:not(.p-tree-node-leaf)[role="treeitem"]',
     );
 
-    expect(groupHeaders[0].getAttribute('aria-expanded')).toBe('true');
-    expect(groupHeaders[1].getAttribute('aria-expanded')).toBe('false');
+    expect(groupTreeItems[0].getAttribute('aria-expanded')).toBe('true');
+    expect(groupTreeItems[1].getAttribute('aria-expanded')).toBe('false');
   });
 
   it('should emit itemClick when a document node is clicked', () => {
@@ -602,7 +595,7 @@ describe('ListComponent', () => {
     component.itemClick.subscribe(emitSpy);
 
     const documentNode = fixture.nativeElement.querySelector(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     ) as HTMLElement;
 
     documentNode.click();
@@ -620,12 +613,13 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const selectedNode = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected',
+      '.c-list__item--entry.c-list__item--selected',
     );
 
     expect(selectedNode).toBeTruthy();
 
-    expect(selectedNode.getAttribute('aria-selected')).toBe('true');
+    const selectedTreeItem = selectedNode.closest('[role="treeitem"]');
+    expect(selectedTreeItem?.getAttribute('aria-selected')).toBe('true');
   });
 
   it('should set aria-selected only on the selected document node', () => {
@@ -638,18 +632,18 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const documentNodes = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--document',
+      '.p-tree-node-leaf[role="treeitem"]',
     );
 
     expect(documentNodes.length).toBe(2);
 
     expect(documentNodes[0].getAttribute('aria-selected')).toBe('true');
 
-    expect(documentNodes[1].getAttribute('aria-selected')).toBeNull();
+    expect(documentNodes[1].getAttribute('aria-selected')).toBe('false');
   });
 
   it('should prefer selectedItemId over doc.selected', () => {
-    const documentsWithStaleSelection: ListDocumentItem[] = [
+    const documentsWithStaleSelection: ListEntryItem[] = [
       { ...FLAT_DOCUMENTS[0], selected: true },
 
       { ...FLAT_DOCUMENTS[1], selected: false },
@@ -664,24 +658,27 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const documentNodes = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     );
 
     expect(documentNodes[0].classList.contains('c-list__item--selected')).toBe(
       false,
     );
 
-    expect(documentNodes[0].getAttribute('aria-selected')).toBeNull();
-
     expect(documentNodes[1].classList.contains('c-list__item--selected')).toBe(
       true,
     );
 
-    expect(documentNodes[1].getAttribute('aria-selected')).toBe('true');
+    const treeItems = fixture.nativeElement.querySelectorAll(
+      '.p-tree-node-leaf[role="treeitem"]',
+    );
+
+    expect(treeItems[0].getAttribute('aria-selected')).toBe('false');
+    expect(treeItems[1].getAttribute('aria-selected')).toBe('true');
   });
 
   it('should fall back to doc.selected when selectedItemId is null', () => {
-    const documentsWithSelection: ListDocumentItem[] = [
+    const documentsWithSelection: ListEntryItem[] = [
       { ...FLAT_DOCUMENTS[0], selected: true },
 
       { ...FLAT_DOCUMENTS[1], selected: false },
@@ -696,20 +693,23 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const documentNodes = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     );
 
     expect(documentNodes[0].classList.contains('c-list__item--selected')).toBe(
       true,
     );
 
-    expect(documentNodes[0].getAttribute('aria-selected')).toBe('true');
-
     expect(documentNodes[1].classList.contains('c-list__item--selected')).toBe(
       false,
     );
 
-    expect(documentNodes[1].getAttribute('aria-selected')).toBeNull();
+    const treeItems = fixture.nativeElement.querySelectorAll(
+      '.p-tree-node-leaf[role="treeitem"]',
+    );
+
+    expect(treeItems[0].getAttribute('aria-selected')).toBe('true');
+    expect(treeItems[1].getAttribute('aria-selected')).toBe('false');
   });
 
   it('should set aria-selected on journey mode document nodes', () => {
@@ -725,12 +725,15 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const documentNodes = fixture.nativeElement.querySelectorAll(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     );
 
-    expect(documentNodes[0].getAttribute('aria-selected')).toBe('true');
+    const treeItems = fixture.nativeElement.querySelectorAll(
+      '.p-tree-node-leaf[role="treeitem"]',
+    );
 
-    expect(documentNodes[1].getAttribute('aria-selected')).toBeNull();
+    expect(treeItems[0].getAttribute('aria-selected')).toBe('true');
+    expect(treeItems[1].getAttribute('aria-selected')).toBe('false');
   });
 
   it('should render loading skeleton rows', () => {
@@ -832,7 +835,7 @@ describe('ListComponent', () => {
     component.itemClick.subscribe(emitSpy);
 
     const documentNode = fixture.nativeElement.querySelector(
-      '.c-list__item--document',
+      '.c-list__item--entry',
     ) as HTMLElement;
 
     documentNode.dispatchEvent(
@@ -1027,7 +1030,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const container = fixture.nativeElement.querySelector(
-      '.c-list__item--document .c-list__container',
+      '.c-list__item--entry .c-list__container',
     ) as HTMLElement;
 
     expect(container.querySelector('hr')).toBeNull();
@@ -1046,7 +1049,7 @@ describe('ListComponent', () => {
     fixture.detectChanges();
 
     const container = fixture.nativeElement.querySelector(
-      '.c-list__item--document .c-list__container',
+      '.c-list__item--entry .c-list__container',
     ) as HTMLElement;
 
     expect(container.querySelector('hr')).toBeTruthy();
@@ -1083,5 +1086,36 @@ describe('ListComponent', () => {
 
     expect(groupContainer.querySelector('hr')).toBeNull();
     expect(groupContainer.querySelector('.c-list__dates')).toBeNull();
+  });
+});
+
+describe('ListComponent (nl)', () => {
+  let fixture: ComponentFixture<ListComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ListComponent],
+      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ListComponent);
+    fixture.componentRef.setInput('items', [
+      {
+        id: 'doc-1',
+        title: 'Demande primaire',
+      },
+    ]);
+    fixture.detectChanges();
+  });
+
+  it('should render the Dutch region label', () => {
+    expect(fixture.nativeElement.getAttribute('aria-label')).toBe(
+      'Opvolging van documenten',
+    );
+    expect(
+      fixture.nativeElement
+        .querySelector('.c-list__header-row .c-list__title')
+        ?.textContent?.trim(),
+    ).toBe('Opvolging van documenten');
   });
 });

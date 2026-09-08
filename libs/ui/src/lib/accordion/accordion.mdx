@@ -1,4 +1,5 @@
 import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './accordion.stories';
 
 <Meta of={Stories} />
@@ -11,7 +12,39 @@ import * as Stories from './accordion.stories';
 
 PrimeNG `p-accordion` with the Plectrum theme. Certificate and audit panels add **`c-accordion--bordered`** — a BEMIT modifier already in `libs/styles`. There is no Angular wrapper and no `[border]` input. Put the class on `p-accordion`.
 
-Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
+## When to use
+
+- Expandable certificate or audit panels on a dossier
+- Stacked sections where one or more panels may be open
+- Stock Plectrum accordion when the bordered card stack is not required
+
+## When not to use
+
+- Reimplementing expand / collapse outside PrimeNG
+- Overriding `.p-accordionpanel` with hardcoded colour or `!important`
+- A `[border]` input on a wrapper that does not exist — write `c-accordion--bordered` on `p-accordion`
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['p-accordion', 'PrimeNG host — owns expand, collapse, and .p-accordion* DOM'],
+    ['c-accordion--bordered', 'BEMIT modifier — card-like stacked radii and token bridges'],
+    ['p-accordion-panel', 'One collapsible section; may be disabled'],
+    ['p-accordion-header / content', 'PrimeNG header and body slots'],
+  ]}
+/>
+
+## Accessibility
+
+- PrimeNG owns keyboard expand / collapse and panel semantics
+- Keep a visible header label on every panel — do not rely on colour or a tag alone
+- Disabled panels use `[disabled]` on `p-accordion-panel` so they stay in the tab order contract PrimeNG defines
+
+## Figma
+
+[iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
 
 Constraints:
 

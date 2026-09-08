@@ -53,6 +53,8 @@ export interface ComponentMetadata {
     itcssLayer: '05-objects' | '06-components';
     /** SCSS file path */
     scssPath?: string;
+    /** Optional Plectrum UI Kit (or reference) URL — Storybook Design panel + MDX Figma link. */
+    figmaUrl?: string;
     created: string; // ISO date
     modified: string; // ISO date
   };

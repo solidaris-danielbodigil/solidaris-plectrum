@@ -12,6 +12,7 @@ export const TransactionsCicsModalMetadata: ComponentMetadata = {
     bemBlock: 'c-transactions-cics-modal',
     itcssLayer: '06-components',
     scssPath: undefined,
+    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
     created: '2026-09-05',
     modified: '2026-09-05',
   },

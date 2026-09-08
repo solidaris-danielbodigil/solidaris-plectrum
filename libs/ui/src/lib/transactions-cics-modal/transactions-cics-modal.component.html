@@ -5,15 +5,15 @@
   [draggable]="false"
   [resizable]="false"
   [appendTo]="dialogAppendTo"
-  header="Transactions CICS"
+  [header]="messages.header"
+  [closeAriaLabel]="messages.close"
   (onHide)="onHide()"
 >
   <div class="c-transactions-cics-modal__content o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0">
     <p-message
       severity="warn"
       icon="bi bi-exclamation-triangle-fill"
-      text="Les transactions CICS s'ouvrent dans une application externe. Vérifiez que vous êtes connecté à CICS avant de lancer une transaction."
-    />
+    >{{ messages.warning }}</p-message>
 
     <p-iconfield class="c-transactions-cics-modal__search">
       <p-inputicon>
@@ -24,11 +24,11 @@
         type="search"
         role="searchbox"
         autocomplete="off"
-        placeholder="Rechercher une transaction..."
+        [placeholder]="messages.searchPlaceholder"
         class="c-transactions-cics-modal__search-input o-layout--full-width"
         [ngModel]="searchQuery()"
         (ngModelChange)="onSearchChange($event)"
-        aria-label="Rechercher une transaction CICS"
+        [attr.aria-label]="messages.searchAriaLabel"
         data-telemetry-id="cics-modal-search"
       />
     </p-iconfield>
@@ -41,9 +41,9 @@
     >
       <ng-template #header>
         <tr>
-          <th scope="col">Transaction</th>
-          <th scope="col">Description</th>
-          <th scope="col">Actions</th>
+          <th scope="col">{{ messages.columnTransaction }}</th>
+          <th scope="col">{{ messages.columnDescription }}</th>
+          <th scope="col">{{ messages.columnActions }}</th>
         </tr>
       </ng-template>
       <ng-template #body let-row>
@@ -58,7 +58,7 @@
               size="small"
               icon="bi bi-box-arrow-up-right"
               label="CICS"
-              [attr.aria-label]="'Lancer ' + row.code + ' dans CICS'"
+              [attr.aria-label]="messages.launch(row.code)"
               [attr.data-telemetry-id]="'cics-launch-' + row.code"
               (click)="onLaunch(row)"
             ></button>
@@ -67,7 +67,7 @@
       </ng-template>
       <ng-template #emptymessage>
         <tr>
-          <td colspan="3">Aucune transaction ne correspond à votre recherche.</td>
+          <td colspan="3">{{ messages.empty }}</td>
         </tr>
       </ng-template>
     </p-table>

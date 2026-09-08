@@ -26,7 +26,7 @@
     ></pds-top-nav>
 
     @if (affiliateHeader(); as header) {
-      <pds-affiliate-overview-card
+      <pds-profile-card
         class="o-layout--full-width"
         [loading]="affiliateHeaderLoading()"
         [title]="header.title"
@@ -43,9 +43,9 @@
         (statusActionClick)="onStatusActionClick(header)"
         (statusMenuSelect)="onStatusMenuSelect(header, $event)"
         (infoTagClick)="onInfoTagClick(header, $event)"
-      ></pds-affiliate-overview-card>
+      ></pds-profile-card>
     } @else if (affiliateHeaderLoading()) {
-      <pds-affiliate-overview-card
+      <pds-profile-card
         class="o-layout--full-width"
         variant="warning"
         [loading]="true"

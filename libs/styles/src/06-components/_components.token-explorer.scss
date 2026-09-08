@@ -258,7 +258,7 @@
   background: var(--#{$pds-prefix}-color-brand-subtle);
 
   &.is-warning {
-    color: var(--#{$pds-prefix}-color-warning);
+    color: var(--#{$pds-prefix}-color-orange-800);
     background: var(--#{$pds-prefix}-color-warning-subtle);
   }
 }

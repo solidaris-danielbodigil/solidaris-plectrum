@@ -1,5 +1,5 @@
 import type {
-  AffiliateDetailDrawerFamilyMember,
+  ProfileDrawerRelatedMember,
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
 } from '@solidaris/ui';
@@ -46,7 +46,7 @@ const SHARED_ADDRESS = 'Solidariteitsstraat 5, 2500 Lier';
 
 
 
-const FAMILY_MEMBERS: readonly AffiliateDetailDrawerFamilyMember[] = [
+const FAMILY_MEMBERS: readonly ProfileDrawerRelatedMember[] = [
 
   {
 
@@ -352,7 +352,7 @@ export function familyMembersForDossier(
 
   viewerNiss: string,
 
-): AffiliateDetailDrawerFamilyMember[] {
+): ProfileDrawerRelatedMember[] {
 
   const relationships = RELATIONSHIP_BY_DOSSIER[viewerNiss] ?? {};
 
@@ -376,7 +376,7 @@ export function familyMembersForDossier(
 
 export function resolveFamilyMemberNiss(
 
-  member: AffiliateDetailDrawerFamilyMember,
+  member: ProfileDrawerRelatedMember,
 
 ): string | null {
 

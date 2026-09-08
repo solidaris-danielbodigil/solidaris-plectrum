@@ -1,0 +1,267 @@
+<p-card [styleClass]="cardStyleClass()" [style]="cardPanelBorderStyle">
+  <article
+    class="c-profile-card__content o-flex o-flex--align-items-flex-start o-layout--gap-1-5"
+    [attr.aria-labelledby]="loading() ? null : titleId"
+    [attr.aria-label]="loading() ? title() : null"
+    [attr.aria-busy]="loading() || null"
+  >
+    @if (loading()) {
+      <p-skeleton
+        shape="circle"
+        size="var(--pds-size-avatar-large-h)"
+        styleClass="c-profile-card__skeleton-avatar o-flex__item--shrink-0"
+        aria-hidden="true"
+      />
+    } @else {
+      <pds-plectrum-avatar
+        class="c-profile-card__avatar o-flex__item--shrink-0"
+        size="large"
+        [initials]="avatarInitials()"
+        [gender]="avatarGender()"
+        [variant]="avatarVariant()"
+        [ariaLabel]="title()"
+      />
+    }
+
+    <div
+      class="c-profile-card__body o-flex o-flex--y o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+    >
+      <div
+        class="c-profile-card__header o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0 o-layout--full-width"
+      >
+        @if (loading()) {
+          <div
+            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+            aria-hidden="true"
+          >
+            <span
+              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--title"
+            >
+              <p-skeleton />
+            </span>
+            <span
+              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--status-action"
+            >
+              <p-skeleton />
+            </span>
+            <span
+              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--info-tags o-flex__item--grow-1 o-layout--min-w-0"
+            >
+              <p-skeleton />
+            </span>
+          </div>
+        } @else {
+          <div
+            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+          >
+            @if (primaryAction(); as action) {
+              <button
+                pButton
+                type="button"
+                text
+                severity="secondary"
+                class="c-profile-card__title-action o-flex__item--shrink-0"
+                [id]="titleId"
+                data-telemetry-id="affiliate-overview-primary-action"
+                [pdsTelemetryLabel]="action.label"
+                [attr.aria-label]="primaryActionAriaLabel()"
+                [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
+                [disabled]="loading()"
+                (click)="onPrimaryActionClick()"
+              >
+                @if (action.icon) {
+                  <i
+                    class="c-profile-card__title-action-icon"
+                    [class]="action.icon"
+                    aria-hidden="true"
+                  ></i>
+                }
+                <span class="c-profile-card__title-action-text">{{
+                  title()
+                }}</span>
+                @if (action.shortcut) {
+                  <span
+                    class="c-profile-card__shortcut-badge"
+                    aria-hidden="true"
+                    >{{ action.shortcut }}</span
+                  >
+                }
+              </button>
+            } @else {
+              <h2 [id]="titleId" class="c-profile-card__title o-layout--margin-0">
+                {{ title() }}
+              </h2>
+            }
+
+            @if (showStatusAction() && statusAction(); as action) {
+              <button
+                pButton
+                type="button"
+                class="c-profile-card__status-action"
+                data-telemetry-id="affiliate-overview-status-action"
+                [pdsTelemetryLabel]="
+                  hasMultipleStatusActions()
+                    ? statusActionsMultipleLabel
+                    : action.label
+                "
+                [icon]="hasMultipleStatusActions() ? null : action.icon"
+                [severity]="statusActionSeverity()!"
+                size="small"
+                [disabled]="action.disabled ?? false"
+                [attr.aria-disabled]="action.disabled ? 'true' : null"
+                [attr.aria-label]="statusActionAriaLabel()"
+                [attr.aria-haspopup]="hasMultipleStatusActions() ? 'listbox' : null"
+                [attr.aria-expanded]="
+                  hasMultipleStatusActions() ? statusActionsPopoverExpanded() : null
+                "
+                (click)="onStatusActionClick($event)"
+                (keydown)="onStatusActionKeydown($event)"
+              >
+                @if (hasMultipleStatusActions()) {
+                  <i
+                    [class]="action.icon ?? 'bi bi-exclamation-triangle-fill'"
+                    class="c-profile-card__status-action-icon"
+                    aria-hidden="true"
+                  ></i>
+                  <span class="c-profile-card__status-action-label">{{
+                    statusActionsMultipleLabel
+                  }}</span>
+                  <p-badge
+                    class="c-profile-card__status-action-badge"
+                    [value]="statusActionCount()"
+                    [severity]="statusActionSeverity()!"
+                  />
+                } @else if (action.tagValue) {
+                  <span class="c-profile-card__status-action-prefix">{{
+                    statusActionTagPrefix
+                  }}</span>
+                  <p-badge
+                    class="c-profile-card__status-action-badge"
+                    [value]="action.tagValue"
+                    [severity]="statusActionSeverity()!"
+                  />
+                } @else {
+                  <span class="c-profile-card__status-action-label">{{
+                    action.label
+                  }}</span>
+                }
+              </button>
+            }
+
+            @if (infoTags().length > 0) {
+              <div
+                class="c-profile-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
+              >
+                @for (tag of infoTags(); track tag.label; let index = $index) {
+                  @if (!tag.filterKey) {
+                    <button
+                      pButton
+                      type="button"
+                      severity="secondary"
+                      size="small"
+                      class="c-profile-card__info-tag"
+                      [attr.aria-label]="infoTagAriaLabel(tag)"
+                      tabindex="-1"
+                      [disabled]="loading()"
+                    >
+                      <span class="c-profile-card__info-tag-label">{{ tag.label }}</span>
+                      <strong class="c-profile-card__info-tag-value">{{
+                        tag.value
+                      }}</strong>
+                    </button>
+                  } @else if (index === firstFilterableInfoTagIndex()) {
+                    <p-selectbutton
+                      class="c-profile-card__info-tags-filter"
+                      data-telemetry-id="affiliate-overview-info-tags"
+                      [options]="filterableInfoTagOptions()"
+                      optionLabel="ariaLabel"
+                      optionValue="filterKey"
+                      [(ngModel)]="selectedInfoTagFilterKey"
+                      [allowEmpty]="true"
+                      size="small"
+                      [disabled]="loading()"
+                      (onChange)="onInfoTagFilterChange($event)"
+                    >
+                      <ng-template #item let-tag>
+                        <span class="c-profile-card__info-tag-label">{{ tag.label }}</span>
+                        <strong class="c-profile-card__info-tag-value">{{
+                          tag.value
+                        }}</strong>
+                      </ng-template>
+                    </p-selectbutton>
+                  }
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (loading()) {
+        <div
+          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+          aria-hidden="true"
+        >
+          @for (slot of skeletonIdentifierSlots; track slot) {
+            <span
+              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--identifier c-profile-card__skeleton-slot--identifier-{{ slot }}"
+            >
+              <p-skeleton />
+            </span>
+          }
+        </div>
+      } @else if (identifiers().length > 0) {
+        <div
+          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+        >
+          @for (identifier of identifiers(); track identifier.label; let last = $last) {
+            <pds-copyable-text
+              [label]="identifier.label"
+              [value]="identifier.value"
+              iconSize="sm"
+              [disabled]="loading()"
+              (copied)="onIdentifierCopy(identifier)"
+            />
+
+            @if (!last) {
+              <span class="c-copyable-text__separator" aria-hidden="true">•</span>
+            }
+          }
+        </div>
+      }
+    </div>
+  </article>
+</p-card>
+
+<p-popover
+  #statusActionsPopover
+  [focusOnShow]="false"
+  [style]="statusActionsPopoverStyle()"
+  appendTo="body"
+  (onShow)="onStatusActionsPopoverShow()"
+  (onHide)="onStatusActionsPopoverHide()"
+>
+  @if (hasMultipleStatusActions()) {
+    <ul
+      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
+      role="listbox"
+      [attr.aria-label]="statusActionAriaLabel()"
+    >
+      @for (item of statusActionMenuItems(); track item.label) {
+        <li
+          role="option"
+          class="p-autocomplete-option"
+          [class.p-disabled]="!!item.disabled"
+          [attr.tabindex]="item.disabled ? -1 : 0"
+          pRipple
+          [pdsTelemetryLabel]="item.label"
+          [attr.aria-disabled]="item.disabled ? 'true' : null"
+          (click)="onStatusMenuItemClick(item)"
+          (keydown)="onStatusMenuItemKeydown($event, item)"
+        >
+          {{ item.label }}
+        </li>
+      }
+    </ul>
+  }
+</p-popover>

@@ -12,6 +12,7 @@ export const EmptyStateMetadata: ComponentMetadata = {
     bemBlock: 'c-empty-state',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.empty-state.scss',
+    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },

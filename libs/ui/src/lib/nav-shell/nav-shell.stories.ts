@@ -3,6 +3,7 @@ import { applicationConfig, componentWrapperDecorator } from '@storybook/angular
 import { provideRouter } from '@angular/router';
 import { inject, provideAppInitializer } from '@angular/core';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { NavShellComponent } from './nav-shell.component';
 import { NavShellMetadata } from './nav-shell.metadata';
@@ -83,6 +84,7 @@ const meta: Meta<NavShellComponent> = {
   ],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(NavShellMetadata.component.figmaUrl),
   },
   argTypes: {
     activeItemId: {

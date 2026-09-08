@@ -8,7 +8,9 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { IconComponent } from '../icon';
 import type { IconSize } from '../icon/icon.types';
+import { injectPdsMessages } from '../i18n';
 import { copyTextToClipboard } from './copy-to-clipboard';
+import { CopyableTextMessages } from './copyable-text.i18n';
 
 /**
  * Copyable metadata chip — icon, label, and value rendered as a PrimeNG text button.
@@ -28,7 +30,7 @@ export class CopyableTextComponent {
   /** Text copied to the clipboard (e.g. "319"). */
   readonly value = input.required<string>();
 
-  /** Accessible name; defaults to `Copier {label}`. */
+  /** Accessible name; defaults to the locale copy of `Copier {label}`. */
   readonly ariaLabel = input<string | undefined>(undefined);
 
   /** Copy icon size — `sm` in overview card, `xs` in drawer. */
@@ -40,8 +42,10 @@ export class CopyableTextComponent {
   /** Emitted with the copied value after a successful clipboard write. */
   readonly copied = output<string>();
 
+  private readonly messages = injectPdsMessages(CopyableTextMessages);
+
   protected readonly resolvedAriaLabel = computed(
-    () => this.ariaLabel() ?? `Copier ${this.label()}`,
+    () => this.ariaLabel() ?? this.messages.copyLabel(this.label()),
   );
 
   async onCopy(event: Event): Promise<void> {

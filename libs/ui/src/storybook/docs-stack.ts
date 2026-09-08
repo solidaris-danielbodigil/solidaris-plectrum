@@ -20,5 +20,5 @@ export const ANGULAR_MAJOR = major(angularPackage.version);
 
 /** Uppercased by `.c-docs-hero__eyebrow`. */
 export function docsHeroEyebrow(): string {
-  return `v${PLECTRUM_VERSION} · PrimeNG v${PRIMENG_MAJOR} · Angular ${ANGULAR_MAJOR}`;
+  return `@solidaris/* v${PLECTRUM_VERSION} · PrimeNG v${PRIMENG_MAJOR} · Angular ${ANGULAR_MAJOR}`;
 }

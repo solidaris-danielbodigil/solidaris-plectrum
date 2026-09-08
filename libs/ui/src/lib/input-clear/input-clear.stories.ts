@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { InputClearMetadata } from './input-clear.metadata';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,6 +12,9 @@ import { expect, userEvent, within } from 'storybook/test';
 import { InputClearComponent } from './input-clear.component';
 
 const meta: Meta<InputClearComponent> = {
+  parameters: {
+    ...storyDesign(InputClearMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Input Clear',
   component: InputClearComponent,
   argTypes: {

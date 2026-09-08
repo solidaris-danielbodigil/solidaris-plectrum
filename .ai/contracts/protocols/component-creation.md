@@ -36,6 +36,8 @@ libs/ui/src/lib/{component-name}/
 ├── {component-name}.component.html
 ├── {component-name}.component.spec.ts
 ├── {component-name}.stories.ts        ← REQUIRED — colocated, all states + play tests
+├── {component-name}.mdx               ← ATTACHED DOCS (When to use / When not / Anatomy / A11y / Figma)
+├── index.ts
 └── {component-name}.metadata.ts       ← CONTRACT FILE
 
 libs/styles/src/06-components/
@@ -81,8 +83,12 @@ Required story exports (each required canvas needs a `play` — see Tests below)
 Attached `{name}.mdx` (not CSF `parameters.docs.description`) must explain:
 
 - What the component does
+- When to use / when not to use
+- Anatomy (`DocsTable`)
+- Accessibility
 - Which Figma node it maps to (with URL)
 - Any design constraints or usage rules
+- Catalogue stories stay visible in the sidebar; `!dev` is only for docs figures
 
 ## Storybook Tests (mandatory)
 
@@ -147,7 +153,9 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] Every required canvas story has a `play` function (`story-tests.ts`); interactive stories use `userEvent`
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
 - [ ] Accessibility not disabled; Chromatic snapshots left on (except `Status` / docs figures)
-- [ ] Component exported from `libs/ui/src/index.ts`
+- [ ] Attached `{name}.mdx` uses the Copyable Text template (Status, When to use / When not, Anatomy, Accessibility, Figma, Default + Controls, API last)
+- [ ] Component + metadata exported from `libs/ui/src/lib/index.ts` (not `src/index.ts`)
+- [ ] User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (inputs may override)
 - [ ] `.metadata.ts` conforms to schema, `governance` matches the core-team decision, and the docs page opens with `<Story of={Stories.Status} />`
 - [ ] Storybook title matches the owner — `Patterns/{App}/…` for application-owned work
 - [ ] All SCSS values use `var(--pds-*)` — no local `$variables`, no hardcoded values

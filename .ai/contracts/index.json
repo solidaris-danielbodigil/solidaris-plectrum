@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-05T23:19:51.504Z",
+    "generated": "2026-09-08T07:57:18.624Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -69,36 +69,6 @@
     }
   },
   "components": {
-    "AffiliateDetailDrawer": {
-      "path": "libs/ui/src/lib/affiliate-detail-drawer/affiliate-detail-drawer.component.ts",
-      "category": "organisms",
-      "status": "core",
-      "owner": "design-system",
-      "metadata": true,
-      "bemBlock": "c-drawer",
-      "primeNg": "Accordion",
-      "scssPath": "libs/styles/src/06-components/_components.drawer.scss",
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": []
-    },
-    "AffiliateOverviewCard": {
-      "path": "libs/ui/src/lib/affiliate-overview-card/affiliate-overview-card.component.ts",
-      "category": "molecules",
-      "status": "core",
-      "owner": "design-system",
-      "metadata": true,
-      "bemBlock": "c-affiliate-overview-card",
-      "primeNg": "Api",
-      "scssPath": "libs/styles/src/06-components/_components.affiliate-overview-card.scss",
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": []
-    },
     "CopyableText": {
       "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts",
       "category": "molecules",
@@ -112,8 +82,8 @@
         "Icon"
       ],
       "usedBy": [
-        "AffiliateDetailDrawer",
-        "AffiliateOverviewCard"
+        "ProfileCard",
+        "ProfileDrawer"
       ]
     },
     "DelayPredictionCard": {
@@ -125,18 +95,6 @@
       "bemBlock": "c-delay-prediction-card",
       "primeNg": "Button",
       "scssPath": "libs/styles/src/06-components/_components.delay-prediction-card.scss",
-      "uses": [],
-      "usedBy": []
-    },
-    "DocDemoBox": {
-      "path": "libs/ui/src/lib/doc-demo-box/doc-demo-box.component.ts",
-      "category": "atoms",
-      "status": "core",
-      "owner": "design-system",
-      "metadata": true,
-      "bemBlock": "c-doc-demo-box",
-      "primeNg": null,
-      "scssPath": "libs/styles/src/06-components/_components.doc-demo-box.scss",
       "uses": [],
       "usedBy": []
     },
@@ -230,10 +188,40 @@
       "scssPath": "libs/styles/src/06-components/_components.plectrum-avatar.scss",
       "uses": [],
       "usedBy": [
-        "AffiliateDetailDrawer",
-        "AffiliateOverviewCard",
+        "ProfileCard",
+        "ProfileDrawer",
         "TopNav"
       ]
+    },
+    "ProfileCard": {
+      "path": "libs/ui/src/lib/profile-card/profile-card.component.ts",
+      "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": true,
+      "bemBlock": "c-profile-card",
+      "primeNg": "Api",
+      "scssPath": "libs/styles/src/06-components/_components.profile-card.scss",
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
+    },
+    "ProfileDrawer": {
+      "path": "libs/ui/src/lib/profile-drawer/profile-drawer.component.ts",
+      "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": true,
+      "bemBlock": "c-drawer",
+      "primeNg": "Accordion",
+      "scssPath": "libs/styles/src/06-components/_components.drawer.scss",
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
     },
     "SubNavShell": {
       "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts",
@@ -288,34 +276,16 @@
     }
   },
   "relationships": {
-    "AffiliateDetailDrawer": {
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": []
-    },
-    "AffiliateOverviewCard": {
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": []
-    },
     "CopyableText": {
       "uses": [
         "Icon"
       ],
       "usedBy": [
-        "AffiliateDetailDrawer",
-        "AffiliateOverviewCard"
+        "ProfileCard",
+        "ProfileDrawer"
       ]
     },
     "DelayPredictionCard": {
-      "uses": [],
-      "usedBy": []
-    },
-    "DocDemoBox": {
       "uses": [],
       "usedBy": []
     },
@@ -353,10 +323,24 @@
     "PlectrumAvatar": {
       "uses": [],
       "usedBy": [
-        "AffiliateDetailDrawer",
-        "AffiliateOverviewCard",
+        "ProfileCard",
+        "ProfileDrawer",
         "TopNav"
       ]
+    },
+    "ProfileCard": {
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
+    },
+    "ProfileDrawer": {
+      "uses": [
+        "PlectrumAvatar",
+        "CopyableText"
+      ],
+      "usedBy": []
     },
     "SubNavShell": {
       "uses": [],
@@ -379,15 +363,15 @@
     }
   },
   "summary": {
-    "totalComponents": 16,
-    "componentsWithMetadata": 16,
+    "totalComponents": 15,
+    "componentsWithMetadata": 15,
     "relationshipsMapped": 16,
     "tokenFiles": 11,
     "primeNgMappings": 11,
     "byStatus": {
       "app": 2,
       "candidate": 1,
-      "core": 13
+      "core": 12
     }
   }
 }

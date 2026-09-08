@@ -21,4 +21,10 @@ export class EmptyStateComponent {
   readonly illustrationSrc = computed(() =>
     resolveEmptyStateIllustration(this.illustration(), this.randomIllustrationSrc),
   );
+
+  /** Catalog id derived from the resolved asset — used by play tests and visual pins. */
+  readonly illustrationId = computed(() => {
+    const match = this.illustrationSrc().match(/\/([^/]+)\.svg$/);
+    return match?.[1] ?? '';
+  });
 }

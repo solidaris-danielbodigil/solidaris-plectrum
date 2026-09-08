@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TopNavComponent } from './top-nav.component';
 import { TopNavMetadata } from './top-nav.metadata';
@@ -18,6 +19,7 @@ const meta: Meta<TopNavComponent> = {
   decorators: [moduleMetadata({ imports: [TopNavComponent] })],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(TopNavMetadata.component.figmaUrl),
   },
   argTypes: {
     subNavExpanded: { control: 'boolean' },
@@ -55,6 +57,39 @@ export const SubNavExpanded: Story = {
     subNavExpanded: true,
     searchExpanded: false,
     searchQuery: '',
+  },
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'LV',
+    showAvatarMenu: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('button', { name: 'Gebruikersmenu' }),
+    ).toBeVisible();
+  },
+};
+
+export const AvatarMenu: Story = {
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'LV',
+    showAvatarMenu: true,
+    avatarMenuItems: [{ label: 'Export', icon: 'bi bi-download' }],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button', { name: 'Menu utilisateur' });
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await userEvent.click(trigger);
+    await waitFor(() =>
+      expect(trigger).toHaveAttribute('aria-expanded', 'true'),
+    );
   },
 };
 

@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "module": "esnext",
     "noUnusedLocals": false,
+    "resolveJsonModule": true,
     "rootDir": "../../.."
   },
   "exclude": ["../**/*.spec.ts"],
@@ -15,7 +16,8 @@
     "../src/**/*.stories.jsx",
     "../src/**/*.stories.tsx",
     "../src/**/*.mdx",
-    "../src/storybook/story-tests.ts"
+    "../src/storybook/**/*.ts",
+    "../../../.ai/contracts/index.json"
   ],
   "files": [
     "main.ts",

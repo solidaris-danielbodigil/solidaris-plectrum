@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE } from '../i18n';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { CopyableTextComponent } from './copyable-text.component';
 
@@ -114,5 +115,30 @@ describe('CopyableTextComponent', () => {
 
     expect(writeText).not.toHaveBeenCalled();
     expect(onCopied).not.toHaveBeenCalled();
+  });
+});
+
+describe('CopyableTextComponent (nl)', () => {
+  let fixture: ComponentFixture<CopyableTextComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CopyableTextComponent],
+      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CopyableTextComponent);
+    fixture.componentRef.setInput('label', 'Territoire');
+    fixture.componentRef.setInput('value', '319');
+    registerPlectrumIcons(TestBed.inject(IconRegistry));
+    fixture.detectChanges();
+  });
+
+  it('should set the Dutch copy aria-label', () => {
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-label')).toBe('Territoire kopiëren');
   });
 });

@@ -1,0 +1,175 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.profile-card.scss
+// c-profile-card — iSHARE affiliate audit summary card.
+//
+// Horizontal layout: avatar | body (header row + metadata chips).
+// Layout (flex, gap, wrap, grow/shrink) via o-flex / o-layout BEM mixes in the template.
+//
+// Design ref:   Figma node 507:7910 / 507:7915 / 324:5745 (Dossier Affilié) — iSHARE-Audit
+// Token source: libs/styles/src/01-settings/_settings.profile-card.scss
+// Reference:    _components.empty-state.scss, _components.toolbar.scss
+// =============================================================================
+
+// Modifiers are applied via p-card styleClass so rules match the rendered .p-card root.
+.c-profile-card {
+  box-shadow: none;
+}
+
+// ── Header row ──────────────────────────────────────────────────────────────
+
+.c-profile-card__header {
+  min-block-size: var(--#{$pds-prefix}-size-profile-card-header-row-h);
+}
+
+.c-profile-card__title {
+  @include text-display-lg;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-profile-card__title-action {
+  min-inline-size: 0;
+  text-align: start;
+}
+
+.c-profile-card__title-action-icon {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: var(--#{$pds-prefix}-size-profile-card-title-action-icon);
+  line-height: 1;
+  color: currentColor;
+}
+
+.c-profile-card__title-action-text {
+  @include text-display-lg;
+  align-self: center;
+  color: currentColor;
+  min-inline-size: 0;
+}
+
+// Display-only chips (no filterKey) render as a non-interactive pButton.
+.c-profile-card__info-tag {
+  font-family: var(--#{$pds-prefix}-text-label-sm-family);
+  font-weight: var(--#{$pds-prefix}-text-label-sm-weight);
+  line-height: normal;
+  cursor: default;
+  pointer-events: none;
+}
+
+// Filterable chips are a single p-selectbutton group — inner toggle buttons styled in 01-settings.
+.c-profile-card__info-tags-filter {
+  line-height: normal;
+
+  .p-togglebutton {
+    font-family: var(--#{$pds-prefix}-text-label-sm-family);
+    cursor: pointer;
+  }
+}
+
+.c-profile-card__info-tag-value {
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
+}
+
+// Status action — warn/success/danger button with optional inline p-badge.
+.c-profile-card__status-action {
+  line-height: normal;
+
+  .c-profile-card__status-action-prefix {
+    font-family: var(--#{$pds-prefix}-text-label-sm-family);
+    font-weight: var(--#{$pds-prefix}-font-weight-regular);
+  }
+
+  .c-profile-card__status-action-badge {
+    flex-shrink: 0;
+  }
+
+  .c-profile-card__status-action-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+.c-profile-card__shortcut-badge {
+  font-family: var(--#{$pds-prefix}-font-family-label);
+  font-size: var(--#{$pds-prefix}-text-profile-card-shortcut-badge-size);
+  font-weight: var(--#{$pds-prefix}-text-profile-card-shortcut-badge-weight);
+  line-height: var(--#{$pds-prefix}-text-profile-card-shortcut-badge-line-height);
+  background: var(--#{$pds-prefix}-color-profile-card-shortcut-badge-bg);
+  color: var(--#{$pds-prefix}-color-profile-card-shortcut-badge-text);
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+  padding-block: var(--#{$pds-prefix}-space-profile-card-shortcut-badge-padding-block);
+  padding-inline: var(--#{$pds-prefix}-space-profile-card-shortcut-badge-padding-inline);
+}
+
+// ── Loading state ───────────────────────────────────────────────────────────
+
+.c-profile-card.is-loading {
+  pointer-events: none;
+
+  :where(.p-card-body) {
+    overflow: visible;
+  }
+
+  .c-profile-card__content {
+    align-items: flex-start;
+  }
+
+  .c-profile-card__identifiers {
+    align-items: center;
+  }
+
+  .c-profile-card__skeleton-slot {
+    overflow: visible;
+  }
+}
+
+.c-profile-card__header-main {
+  min-inline-size: 0;
+}
+
+.c-profile-card__skeleton-slot {
+  border-radius: var(--#{$pds-prefix}-radius-sm);
+
+  &--title {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-title-w);
+    block-size: var(--#{$pds-prefix}-size-profile-card-skeleton-title-h);
+  }
+
+  &--status-action {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-status-w);
+    block-size: var(--#{$pds-prefix}-size-profile-card-skeleton-action-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--info-tags {
+    flex: 1 1 auto;
+    min-inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-info-tags-min-w);
+    max-inline-size: 100%;
+    block-size: var(--#{$pds-prefix}-size-profile-card-skeleton-info-tags-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--identifier {
+    block-size: var(--#{$pds-prefix}-size-profile-card-skeleton-identifier-h);
+    border-radius: var(--#{$pds-prefix}-radius-pill);
+  }
+
+  &--identifier-1 {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-identifier-w-1);
+  }
+
+  &--identifier-2 {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-identifier-w-2);
+  }
+
+  &--identifier-3 {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-identifier-w-3);
+  }
+
+  &--identifier-4 {
+    inline-size: var(--#{$pds-prefix}-size-profile-card-skeleton-identifier-w-4);
+  }
+}

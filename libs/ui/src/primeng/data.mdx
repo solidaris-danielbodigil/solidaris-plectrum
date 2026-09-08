@@ -1,0 +1,60 @@
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './data.stories';
+
+<Meta of={Stories} />
+
+# Data
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+Theme proof for PrimeNG data display. Prefer `pds-list` over stock `p-tree` for journey and document lists. Prefer `c-skeleton-slot` when a skeleton needs a sized wrapper.
+
+What Plectrum changes: [Skeleton Slot](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components) and [Timeline content-only](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components). Table and Tree stay stock.
+
+## Endorsed composition
+
+- Sortable tables use `pSortableColumn` + `p-sortIcon` — no custom header chrome
+- Document / journey lists use [List](?path=/docs/custom-components-list--docs), not a restyled `p-tree`
+- Loading placeholders use [Skeleton Slot](?path=/docs/custom-components-skeleton-slot--docs) when the slot has a known size; stock `p-skeleton` is fine for inline lines
+- Timeline with no opposite column uses `c-timeline--content-only` — see [Timeline](?path=/docs/custom-components-timeline--docs)
+
+Figma: [DataTable](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49721) · [Tree](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49728) · [Skeleton](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-55113) · [Timeline](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49727)
+
+API: [primeng.org/table](https://primeng.org/table) · [tree](https://primeng.org/tree) · [skeleton](https://primeng.org/skeleton) · [timeline](https://primeng.org/timeline)
+
+## Table
+
+Sortable headers.
+
+<Canvas of={Stories.SortableTable} />
+<Controls of={Stories.SortableTable} />
+
+## Tree (stock)
+
+Contrast only. Application lists should use `pds-list`.
+
+<Canvas of={Stories.StockTree} />
+
+## List (endorsed)
+
+<Canvas of={Stories.EndorsedList} />
+
+## Skeleton (stock)
+
+Sized wrappers live on [Skeleton Slot](?path=/docs/custom-components-skeleton-slot--docs).
+
+<Canvas of={Stories.StockSkeleton} />
+
+## Timeline (stock)
+
+The content-only restyle is on [Timeline](?path=/docs/custom-components-timeline--docs).
+
+<Canvas of={Stories.StockTimeline} />
+
+## API
+
+Story knobs for the canvases above. They are not a Plectrum wrapper API.
+
+<ArgTypes of={Stories} />

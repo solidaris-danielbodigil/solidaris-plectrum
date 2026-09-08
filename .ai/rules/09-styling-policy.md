@@ -153,10 +153,10 @@ When a shared block has feature-specific children, prefix the **element** name �
 
 | Avoid | Prefer |
 |-------|--------|
-| `c-affiliate-detail-drawer__name` | `c-drawer__affiliate-detail-name` |
+| `c-profile-drawer__name` | `c-drawer__profile-name` |
 | `c-document-more-details-drawer__title` | `c-drawer__document-more-details-title` |
 
-Standalone `libs/ui` components keep their own block (`c-affiliate-overview-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
+Standalone `libs/ui` components keep their own block (`c-profile-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
 
 ---
 
@@ -197,4 +197,4 @@ Allowed without approval:
 
 ## 14. Navigation Shell Exceptions
 
-`c-accordion--nav` and `c-accordion--chromeless` use transparent accordion bridges for nav/list chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.
+`c-accordion--nav` uses a transparent accordion bridge for nav chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.

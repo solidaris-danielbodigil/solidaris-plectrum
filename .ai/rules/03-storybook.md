@@ -49,13 +49,17 @@ CSF owns the Angular stories. Attached MDX owns all prose.
 - Colocate `{name}.mdx` next to `{name}.stories.ts`
 - Attach with `<Meta of={Stories} />` and pull canvases with `<Canvas of={Stories.X} />`
 - Import blocks from `@storybook/addon-docs/blocks`
-- CSF meta uses `tags: ['!dev']` so individual stories stay out of the sidebar
+- Catalogue stories stay **visible in the sidebar** so the Interactions and Accessibility panels can target them. Reserve `tags: ['!dev']` for docs figures (`Status` and the factories in `docs-figure-stories.ts`)
 - Do **not** put usage guidance in `parameters.docs.description.component` / `.story`
 
 Each MDX page must include:
 
 - The ownership badge as the first figure under the `h1`: `<Unstyled><Story of={Stories.Status} /></Unstyled>`, where `Status = statusStory(XMetadata.governance)` in the CSF (CSS-only blocks pass `{ status, owner }` inline)
 - What the component does
+- **When to use**
+- **When not to use**
+- **Anatomy** (`<DocsTable>`)
+- **Accessibility**
 - Which Figma node it maps to (with full URL)
 - Design constraints or usage rules
 - An `h2` / `h3` per canvas so the docs TOC can list sections

@@ -1,0 +1,67 @@
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './content.stories';
+
+<Meta of={Stories} />
+
+# Content and navigation
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+Theme proof for PrimeNG content and navigation primitives.
+
+What Plectrum changes: [Card title spacing](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components) and [Tag icon line-height](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components). Badge, Message, Divider, Breadcrumb, Tabs, Stepper and ScrollTop stay stock.
+
+## Endorsed composition
+
+- Icons are Bootstrap Icons (`bi bi-*`)
+- Status meaning uses Tag / Message `severity`, not custom colours
+- Tabs in iSHARE category toolbars may add `c-affiliate-details__category-tabs` — that bridge is app-owned, see [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs)
+
+Figma: [Card](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49733) · [Tag](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-55116) · [Badge](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-55106) · [Message](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-53164) · [Divider](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49734) · [Breadcrumb](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-52933) · [Tabs](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49740) · [Stepper](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49739) · [ScrollTop](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-55112)
+
+API: [primeng.org/card](https://primeng.org/card) · [tag](https://primeng.org/tag) · [badge](https://primeng.org/badge) · [message](https://primeng.org/message) · [divider](https://primeng.org/divider) · [breadcrumb](https://primeng.org/breadcrumb) · [tabs](https://primeng.org/tabs) · [stepper](https://primeng.org/stepper) · [scrolltop](https://primeng.org/scrolltop)
+
+## Card
+
+<Canvas of={Stories.CardBlock} />
+<Controls of={Stories.CardBlock} />
+
+## Tag
+
+<Canvas of={Stories.Tags} />
+
+## Badge
+
+<Canvas of={Stories.Badges} />
+
+## Message
+
+<Canvas of={Stories.Messages} />
+
+## Divider
+
+<Canvas of={Stories.Dividers} />
+
+## Breadcrumb
+
+<Canvas of={Stories.Breadcrumbs} />
+
+## Tabs
+
+<Canvas of={Stories.TabSet} />
+
+## Stepper
+
+<Canvas of={Stories.Steps} />
+
+## ScrollTop
+
+<Canvas of={Stories.ScrollToTop} />
+
+## API
+
+Story knobs for the canvases above. They are not a Plectrum wrapper API.
+
+<ArgTypes of={Stories} />

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { assertTextVisible } from '../../storybook/story-tests';
 import { PlectrumAvatarComponent } from './plectrum-avatar.component';
 import { PlectrumAvatarMetadata } from './plectrum-avatar.metadata';
@@ -9,6 +10,7 @@ const meta: Meta<PlectrumAvatarComponent> = {
   component: PlectrumAvatarComponent,
   parameters: {
     layout: 'centered',
+    ...storyDesign(PlectrumAvatarMetadata.component.figmaUrl),
   },
   argTypes: {
     size: {

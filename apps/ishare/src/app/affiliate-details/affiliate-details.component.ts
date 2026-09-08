@@ -29,7 +29,7 @@ import { SelectButton } from 'primeng/selectbutton';
 import { ToggleButton } from 'primeng/togglebutton';
 import { Skeleton } from 'primeng/skeleton';
 import {
-  AffiliateDetailDrawerComponent,
+  ProfileDrawerComponent,
   EmptyStateComponent,
   FormFieldComponent,
   InputClearComponent,
@@ -40,19 +40,19 @@ import {
   TESTING_TELEMETRY_ENABLED,
   ToolbarComponent,
   TransactionsCicsModalComponent,
-  type AffiliateDetailDrawerData,
-  type AffiliateDetailDrawerFamilyMember,
-  type AffiliateDetailDrawerView,
+  type ProfileDrawerData,
+  type ProfileDrawerRelatedMember,
+  type ProfileDrawerView,
 } from '@solidaris/ui';
 import type {
-  AffiliateOverviewIdentifier,
-  AffiliateOverviewInfoTag,
-  AffiliateOverviewInfoTagFilterKey,
-  AffiliateOverviewPrimaryAction,
-  AffiliateOverviewStatusAction,
-  ListDocumentItem,
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ProfileCardIdentifier,
+  ProfileCardInfoTag,
+  ProfileCardInfoTagFilterKey,
+  ProfileCardPrimaryAction,
+  ProfileCardStatusAction,
+  ListEntryItem,
+  ListEntryTag,
+  ListEntryTagTarget,
   ListGroup,
 } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
@@ -84,6 +84,7 @@ import {
   type DocumentCrossReference,
   type DocumentStepperView,
 } from './affiliate-document-detail/affiliate-document-detail.types';
+import { resolveListEntryIcon } from './list-entry-icon';
 
 interface SectorOption {
   label: string;
@@ -98,14 +99,15 @@ interface SortOption {
 export { deriveDocumentTags } from './affiliate-document-detail/affiliate-document-detail.tags';
 
 function withDerivedTags(
-  document: ListDocumentItem,
+  document: ListEntryItem,
   details: Record<
     string,
     AffiliateDocumentDetail
   > = EVA_MARTINEZ_DOCUMENT_DETAILS,
-): ListDocumentItem {
+): ListEntryItem {
   const tags = deriveDocumentTags(document.id, details);
-  return tags.length > 0 ? { ...document, tags } : document;
+  const withTags = tags.length > 0 ? { ...document, tags } : document;
+  return { ...withTags, icon: resolveListEntryIcon(withTags) };
 }
 
 // Row count tags are derived from the detail mock (see `withDerivedTags`) so the
@@ -189,7 +191,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
 }));
 
 /** Hors-parcours documents — merged into flat list, excluded from journey groups. */
-export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
+export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-c4',
     title: 'Attestation C4',
@@ -209,11 +211,11 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListDocumentItem[] = [
     },
   },
 ].map((document) =>
-  withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
+  withDerivedTags(document as ListEntryItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
 );
 
 /** Archived documents — flat Archivés category, excluded from parcours groups. */
-export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListDocumentItem[] = [
+export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-archive-changement-adresse',
     title: "Changement d'adresse",
@@ -224,7 +226,7 @@ export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListDocumentItem[] = [
     },
   },
 ].map((document) =>
-  withDerivedTags(document as ListDocumentItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
+  withDerivedTags(document as ListEntryItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
 );
 
 const STANDALONE_DOCUMENT_IDS = new Set(
@@ -245,7 +247,7 @@ interface DocCategory {
   enabled: boolean;
   kind: 'journey' | 'flat';
   groups?: ListGroup[];
-  items?: ListDocumentItem[];
+  items?: ListEntryItem[];
 }
 
 const DOC_CATEGORY_SPECS: ReadonlyArray<
@@ -279,7 +281,7 @@ const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
 
 const STATUS_SORT_PRIORITY = PANEL_STATUS_SORT_PRIORITY;
 
-const JACK_MOTA_DOCUMENTS: ListDocumentItem[] = [
+const JACK_MOTA_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-jack-certificat',
     title: 'Certificat médical',
@@ -289,7 +291,7 @@ const JACK_MOTA_DOCUMENTS: ListDocumentItem[] = [
       icon: 'bi bi-hourglass-split',
     },
   },
-];
+].map((document) => withDerivedTags(document));
 
 const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
@@ -312,7 +314,7 @@ const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ['doc-jack-certificat', '01/03/2026'],
 ]);
 
-function allEvaMartinezDocuments(): ListDocumentItem[] {
+function allEvaMartinezDocuments(): ListEntryItem[] {
   return [
     ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) => group.documents),
     ...EVA_MARTINEZ_STANDALONE_DOCUMENTS,
@@ -345,7 +347,7 @@ function allEvaMartinezDocuments(): ListDocumentItem[] {
     ListComponent,
     PdsTelemetryLabelDirective,
     AffiliateDocumentDetailComponent,
-    AffiliateDetailDrawerComponent,
+    ProfileDrawerComponent,
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
     SelectButton,
@@ -399,7 +401,7 @@ export class AffiliateDetailsComponent {
   private static readonly EVA_STATUS_MENU_PLACEHOLDER =
     'eva-status-action-placeholder';
 
-  private static readonly EVA_C4_MISSING_STATUS_ACTION: AffiliateOverviewStatusAction =
+  private static readonly EVA_C4_MISSING_STATUS_ACTION: ProfileCardStatusAction =
     {
       label: 'Actions à réaliser',
       icon: 'bi bi-exclamation-triangle-fill',
@@ -424,23 +426,23 @@ export class AffiliateDetailsComponent {
     panelId: 'calcul',
   } as const;
 
-  readonly statusAction = computed((): AffiliateOverviewStatusAction | null =>
+  readonly statusAction = computed((): ProfileCardStatusAction | null =>
     this.isEvaDossier()
       ? AffiliateDetailsComponent.EVA_C4_MISSING_STATUS_ACTION
       : null,
   );
 
   readonly documentInfoFilter =
-    signal<AffiliateOverviewInfoTagFilterKey | null>(null);
+    signal<ProfileCardInfoTagFilterKey | null>(null);
 
   readonly transactionsCicsDialogVisible = signal(false);
 
-  readonly infoTags = computed<AffiliateOverviewInfoTag[]>(() => {
+  readonly infoTags = computed<ProfileCardInfoTag[]>(() => {
     const allDocuments = this.allDocumentsForContext();
     const activeCount = allDocuments.filter(isActiveDocument).length;
     const closedCount = allDocuments.filter(isClosedDocument).length;
     const filter = this.documentInfoFilter();
-    const tags: AffiliateOverviewInfoTag[] = [];
+    const tags: ProfileCardInfoTag[] = [];
 
     const lastActionDate = this.lastActionDateValue(allDocuments);
     if (lastActionDate) {
@@ -474,7 +476,7 @@ export class AffiliateDetailsComponent {
   });
 
   // The NISS chip echoes the identifier searched on the home page when present.
-  readonly identifiers = computed<AffiliateOverviewIdentifier[]>(() => {
+  readonly identifiers = computed<ProfileCardIdentifier[]>(() => {
     const profile = this.affiliateProfile();
 
     return [
@@ -485,7 +487,7 @@ export class AffiliateDetailsComponent {
     ];
   });
 
-  readonly primaryAction: AffiliateOverviewPrimaryAction = {
+  readonly primaryAction: ProfileCardPrimaryAction = {
     label: 'Voir carte affilié',
     icon: 'bi bi-eye',
     shortcut: 'ALT + A',
@@ -496,7 +498,7 @@ export class AffiliateDetailsComponent {
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
 
-  readonly affiliateDetailDrawerData = computed<AffiliateDetailDrawerData>(
+  readonly affiliateDetailDrawerData = computed<ProfileDrawerData>(
     () => {
       const profile = this.affiliateProfile();
 
@@ -505,9 +507,9 @@ export class AffiliateDetailsComponent {
         avatarInitials: profile.avatarInitials,
         avatarGender: profile.avatarGender,
         avatarVariant: profile.avatarVariant,
-        generalInfo: profile.generalInfo,
-        contactInfo: profile.contactInfo,
-        family: familyMembersForDossier(profile.niss),
+        generalRows: profile.generalInfo,
+        contactRows: profile.contactInfo,
+        relatedMembers: familyMembersForDossier(profile.niss),
         notes: [],
         identifiers: this.identifiers().map(({ label, value }) => ({
           label,
@@ -735,7 +737,7 @@ export class AffiliateDetailsComponent {
     return this.sortGroups(filteredGroups);
   });
 
-  readonly isolesItems = computed((): ListDocumentItem[] => {
+  readonly isolesItems = computed((): ListEntryItem[] => {
     const filtered = this.filteredDocuments();
 
     if (this.isEvaDossier()) {
@@ -751,7 +753,7 @@ export class AffiliateDetailsComponent {
     );
   });
 
-  readonly archivesItems = computed((): ListDocumentItem[] =>
+  readonly archivesItems = computed((): ListEntryItem[] =>
     this.sortDocumentsForCategory(
       this.filteredDocuments().filter((document) =>
         ARCHIVED_DOCUMENT_IDS.has(document.id),
@@ -828,7 +830,7 @@ export class AffiliateDetailsComponent {
    * then archivés.
    */
   readonly navigableDocuments = computed(() => {
-    const documents: ListDocumentItem[] = [];
+    const documents: ListEntryItem[] = [];
 
     for (const category of this.categories()) {
       if (!category.enabled) {
@@ -1119,7 +1121,7 @@ export class AffiliateDetailsComponent {
     this.selectedDocumentId.set(group.documents[0].id);
   }
 
-  onDocumentClick(document: ListDocumentItem): void {
+  onDocumentClick(document: ListEntryItem): void {
     this.navigateToDocument(document.id, { scroll: false });
     this.recordTelemetry('document_select', document.id);
   }
@@ -1128,9 +1130,9 @@ export class AffiliateDetailsComponent {
     doc,
     target,
   }: {
-    doc: ListDocumentItem;
-    tag: ListDocumentTag;
-    target: ListDocumentTagTarget;
+    doc: ListEntryItem;
+    tag: ListEntryTag;
+    target: ListEntryTagTarget;
   }): void {
     const separator = target.id.indexOf('::');
     if (separator < 0) {
@@ -1216,7 +1218,7 @@ export class AffiliateDetailsComponent {
     this.endDocumentNavigationGuard();
   }
 
-  onInfoTagClick(tag: AffiliateOverviewInfoTag): void {
+  onInfoTagClick(tag: ProfileCardInfoTag): void {
     if (!tag.filterKey) {
       return;
     }
@@ -1288,7 +1290,7 @@ export class AffiliateDetailsComponent {
     this.recordTelemetry('cics_modal_open');
   }
 
-  onFamilyMemberSelect(member: AffiliateDetailDrawerFamilyMember): void {
+  onFamilyMemberSelect(member: ProfileDrawerRelatedMember): void {
     const targetNiss = resolveFamilyMemberNiss(member);
     if (!targetNiss || targetNiss === this.affiliateProfile().niss) {
       return;
@@ -1323,7 +1325,7 @@ export class AffiliateDetailsComponent {
     this.showDrawerFeatureComingSoonToast();
   }
 
-  onDrawerViewChange(view: AffiliateDetailDrawerView): void {
+  onDrawerViewChange(view: ProfileDrawerView): void {
     if (view === 'documents') {
       this.showDrawerFeatureComingSoonToast();
     }
@@ -1345,7 +1347,7 @@ export class AffiliateDetailsComponent {
     });
   }
 
-  private allDocumentsForContext(): ListDocumentItem[] {
+  private allDocumentsForContext(): ListEntryItem[] {
     if (this.isEvaDossier()) {
       return allEvaMartinezDocuments();
     }
@@ -1726,7 +1728,7 @@ export class AffiliateDetailsComponent {
   }
 
   /** Latest réception date among documents in the current dossier (parcours + hors parcours). */
-  private lastActionDateValue(documents: ListDocumentItem[]): string | null {
+  private lastActionDateValue(documents: ListEntryItem[]): string | null {
     let latestReceptionDate = '';
 
     for (const document of documents) {
@@ -1771,8 +1773,8 @@ export class AffiliateDetailsComponent {
   }
 
   private applyDocumentFilters(
-    documents: ListDocumentItem[],
-  ): ListDocumentItem[] {
+    documents: ListEntryItem[],
+  ): ListEntryItem[] {
     const query = this.documentSearch().trim().toLowerCase();
     let filtered = query
       ? documents.filter(
@@ -1828,7 +1830,7 @@ export class AffiliateDetailsComponent {
     return filtered;
   }
 
-  private sortDocuments(documents: ListDocumentItem[]): ListDocumentItem[] {
+  private sortDocuments(documents: ListEntryItem[]): ListEntryItem[] {
     const sortValue = this.selectedSort()?.value;
 
     if (sortValue === 'nom-document') {
@@ -1870,9 +1872,9 @@ export class AffiliateDetailsComponent {
   }
 
   private sortDocumentsForCategory(
-    documents: ListDocumentItem[],
+    documents: ListEntryItem[],
     category: 'parcours' | 'flat',
-  ): ListDocumentItem[] {
+  ): ListEntryItem[] {
     const sortValue = this.selectedSort()?.value;
 
     if (sortValue === 'nom-document') {
@@ -2050,7 +2052,7 @@ export class AffiliateDetailsComponent {
       const availableFilters = new Set(
         this.infoTags()
           .map((tag) => tag.filterKey)
-          .filter((key): key is AffiliateOverviewInfoTagFilterKey => !!key),
+          .filter((key): key is ProfileCardInfoTagFilterKey => !!key),
       );
 
       if (!availableFilters.has(filter)) {
@@ -2230,11 +2232,11 @@ export class AffiliateDetailsComponent {
   }
 }
 
-function isActiveDocument(document: ListDocumentItem): boolean {
+function isActiveDocument(document: ListEntryItem): boolean {
   return document.status?.label !== 'Clôturé';
 }
 
-function isClosedDocument(document: ListDocumentItem): boolean {
+function isClosedDocument(document: ListEntryItem): boolean {
   return document.status?.label === 'Clôturé';
 }
 

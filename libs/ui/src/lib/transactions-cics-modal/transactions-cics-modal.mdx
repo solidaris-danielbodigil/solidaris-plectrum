@@ -1,4 +1,5 @@
-import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './transactions-cics-modal.stories';
 
 <Meta of={Stories} />
@@ -11,9 +12,46 @@ import * as Stories from './transactions-cics-modal.stories';
 
 Legacy iSHARE Transactions CICS modal — searchable list with per-row CICS launch CTA (Scenario 4).
 
+## When to use
+
+- Launching legacy CICS transactions from an affiliate dossier
+
+## When not to use
+
+- A generic data-table dialog — compose `p-dialog` + `p-table` directly
+- Screens outside iSHARE — the row model is CICS code, description, and launch URL
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['p-dialog', 'Modal host — header, Escape, mask dismiss'],
+    ['p-message', 'Warning banner'],
+    ['c-transactions-cics-modal__search', 'IconField searchbox'],
+    ['c-transactions-cics-modal__table', 'PrimeNG table of codes'],
+    ['Row CICS button', 'Opens the launch URL'],
+  ]}
+/>
+
+## Accessibility
+
+- Dialog role and focus trap come from PrimeNG `p-dialog`
+- Escape closes; Tab cycles the search field and table
+- Search has an `aria-label`; column headers use `scope="col"`
+- Each launch control has a visible CICS label plus an external-link icon that is decorative
+
+## Figma
+
+There is no Plectrum UI Kit node. Stock Dialog and Table live in [Plectrum for PrimeNG (Main)](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-). This page documents the iSHARE CICS content pattern.
+
 ## Default
 
 Click the button to open the modal on the Storybook preview frame. Search for UA38 (jours vacances ONVA), then launch CICS.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
+
+## API
+
+<ArgTypes of={Stories} />

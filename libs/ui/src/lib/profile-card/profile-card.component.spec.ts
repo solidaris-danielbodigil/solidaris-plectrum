@@ -1,0 +1,841 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE } from '../i18n';
+import { IconRegistry, registerPlectrumIcons } from '../icon';
+import { getPlectrumAvatarIllustrationSrc } from '../plectrum-avatar/plectrum-avatar.assets';
+import {
+  ProfileCardComponent,
+  type ProfileCardIdentifier,
+} from './profile-card.component';
+
+const SAMPLE_IDENTIFIERS: ProfileCardIdentifier[] = [
+  { label: 'NISS', value: '85.12.30-123.45' },
+  { label: 'Mutuelle', value: 'Solidaris Liège' },
+];
+
+describe('ProfileCardComponent', () => {
+  let component: ProfileCardComponent;
+  let fixture: ComponentFixture<ProfileCardComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProfileCardComponent],
+      providers: [
+        {
+          provide: IconRegistry,
+          useFactory: () => {
+            const registry = new IconRegistry();
+            registerPlectrumIcons(registry);
+            return registry;
+          },
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ProfileCardComponent);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('title', 'Dupont, Marie');
+    fixture.componentRef.setInput('avatarInitials', 'DM');
+    fixture.componentRef.setInput('identifiers', SAMPLE_IDENTIFIERS);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: jasmine
+          .createSpy('writeText')
+          .and.returnValue(Promise.resolve()),
+      },
+    });
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should render semantic article landmark', () => {
+    const article = fixture.nativeElement.querySelector('article');
+    expect(article).toBeTruthy();
+  });
+
+  it('should render h2 title when not loading', () => {
+    const heading = fixture.nativeElement.querySelector(
+      'h2.c-profile-card__title',
+    );
+    expect(heading?.textContent?.trim()).toBe('Dupont, Marie');
+  });
+
+  it('should render large illustrated avatar when not loading', () => {
+    const avatar = fixture.nativeElement.querySelector(
+      'pds-plectrum-avatar.c-profile-card__avatar',
+    );
+    expect(avatar).toBeTruthy();
+    expect(avatar.classList.contains('c-plectrum-avatar--large')).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('.c-plectrum-avatar__illustration'),
+    ).toBeTruthy();
+  });
+
+  it('should pass avatar gender and variant to illustrated avatar', () => {
+    fixture.componentRef.setInput('avatarGender', 'male');
+    fixture.componentRef.setInput('avatarVariant', 2);
+    fixture.detectChanges();
+
+    const illustration = fixture.nativeElement.querySelector(
+      '.c-plectrum-avatar__illustration',
+    ) as HTMLImageElement;
+
+    expect(illustration.getAttribute('src')).toBe(
+      getPlectrumAvatarIllustrationSrc('male', 2),
+    );
+  });
+
+  it('should render copy icon in identifier buttons', () => {
+    const icons = fixture.nativeElement.querySelectorAll(
+      'pds-icon.c-copyable-text__icon',
+    );
+
+    expect(icons.length).toBe(SAMPLE_IDENTIFIERS.length);
+  });
+
+  it('should mark copy icons as decorative aria-hidden', () => {
+    const icons = fixture.nativeElement.querySelectorAll(
+      'pds-icon.c-copyable-text__icon',
+    );
+
+    icons.forEach((icon: Element) => {
+      expect(icon.getAttribute('aria-hidden')).toBe('true');
+    });
+  });
+
+  it('should set avatar aria-label from title', () => {
+    const avatar = fixture.nativeElement.querySelector(
+      'pds-plectrum-avatar.c-profile-card__avatar',
+    );
+
+    expect(avatar?.getAttribute('aria-label')).toBe('Dupont, Marie');
+  });
+
+  it('should apply host layout class', () => {
+    expect(
+      fixture.nativeElement.classList.contains('o-layout--full-width'),
+    ).toBe(true);
+  });
+
+  it('should apply variant modifier class on card', () => {
+    fixture.componentRef.setInput('variant', 'warning');
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector(
+      '.c-profile-card--warning',
+    );
+    expect(card).toBeTruthy();
+  });
+
+  it('should apply in-order variant modifier class on card', () => {
+    fixture.componentRef.setInput('variant', 'in-order');
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector(
+      '.c-profile-card--in-order',
+    );
+    expect(card).toBeTruthy();
+  });
+
+  it('should apply is-loading modifier when loading input is set', () => {
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    const card = fixture.nativeElement.querySelector(
+      '.c-profile-card.is-loading',
+    );
+    expect(card).toBeTruthy();
+  });
+
+  it('should render skeleton layout blocks when loading', () => {
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card__skeleton-avatar',
+      ),
+    ).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelectorAll(
+        '.c-profile-card__skeleton-slot',
+      ).length,
+    ).toBe(7);
+    expect(fixture.nativeElement.querySelector('h2')).toBeNull();
+  });
+
+  it('should render identifier copy buttons with values', () => {
+    const buttons = fixture.nativeElement.querySelectorAll('.c-copyable-text');
+
+    expect(buttons.length).toBe(SAMPLE_IDENTIFIERS.length);
+    expect(buttons[0].textContent).toContain('NISS');
+    expect(buttons[0].textContent).toContain('85.12.30-123.45');
+  });
+
+  it('should render bullet separators between identifier chips', () => {
+    const separators = fixture.nativeElement.querySelectorAll(
+      '.c-copyable-text__separator',
+    );
+
+    expect(separators.length).toBe(SAMPLE_IDENTIFIERS.length - 1);
+    expect(separators[0].getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should set copy button aria-label', () => {
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-label')).toBe('Copier NISS');
+  });
+
+  it('should emit identifierCopy when an identifier chip is clicked', async () => {
+    const onCopy = jasmine.createSpy('identifierCopy');
+    component.identifierCopy.subscribe(onCopy);
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+    button.click();
+    await fixture.whenStable();
+
+    expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_IDENTIFIERS[0]);
+  });
+
+  it('should derive warning gradient from statusAction severity with default variant', () => {
+    fixture.componentRef.setInput('variant', 'default');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      icon: 'bi bi-exclamation-triangle-fill',
+      severity: 'warn',
+    });
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card--warning',
+      ),
+    ).toBeTruthy();
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.classList.contains('p-button-warn')).toBe(true);
+  });
+
+  it('should derive in-order gradient from statusAction success severity', () => {
+    fixture.componentRef.setInput('variant', 'default');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'En ordre',
+      icon: 'bi bi-check-circle-fill',
+      severity: 'success',
+    });
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card--in-order',
+      ),
+    ).toBeTruthy();
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.classList.contains('p-button-success')).toBe(true);
+  });
+
+  it('should not show status action button when statusAction is null', () => {
+    fixture.componentRef.setInput('statusAction', null);
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card__status-action',
+      ),
+    ).toBeFalsy();
+  });
+
+  it('should hide status action button when loading', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+    });
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card__status-action',
+      ),
+    ).toBeTruthy();
+
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-profile-card__status-action',
+      ),
+    ).toBeFalsy();
+  });
+
+  it('should emit statusActionClick when status action button fires', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+    });
+    fixture.detectChanges();
+
+    component.onStatusActionClick();
+
+    expect(onStatusAction).toHaveBeenCalledTimes(1);
+  });
+
+  it('should expose aria-label on status action from ariaLabel input', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — paiement non versé',
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    ) as HTMLButtonElement;
+
+    expect(statusButton.getAttribute('aria-label')).toBe(
+      'Voir le détail — paiement non versé',
+    );
+    expect(statusButton.disabled).toBe(false);
+  });
+
+  it('should render status action prefix and p-badge when tagValue is set', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'C4 non reçu',
+      tagValue: 'C4',
+      severity: 'warn',
+      ariaLabel: 'Voir le détail — C4 non reçu',
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    ) as HTMLButtonElement;
+    const prefix = statusButton.querySelector(
+      '.c-profile-card__status-action-prefix',
+    );
+    const badge = statusButton.querySelector(
+      '.c-profile-card__status-action-badge',
+    );
+
+    expect(prefix?.textContent?.trim()).toBe('Actions à réaliser:');
+    expect(badge).toBeTruthy();
+    expect(badge?.textContent?.trim()).toBe('C4');
+    expect(statusButton.classList.contains('p-button-warn')).toBe(true);
+    expect(statusButton.getAttribute('aria-label')).toBe(
+      'Voir le détail — C4 non reçu',
+    );
+  });
+
+  it('should not emit statusActionClick when status action is disabled', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Paiement non versé',
+      severity: 'warn',
+      disabled: true,
+    });
+    fixture.detectChanges();
+
+    component.onStatusActionClick();
+
+    expect(onStatusAction).not.toHaveBeenCalled();
+  });
+
+  it('should emit statusMenuSelect when a menu item is selected', () => {
+    const onMenuSelect = jasmine.createSpy('statusMenuSelect');
+    component.statusMenuSelect.subscribe(onMenuSelect);
+    const menuItem = { label: 'Relancer' };
+
+    component.onStatusMenuItemClick(menuItem);
+
+    expect(onMenuSelect).toHaveBeenCalledOnceWith(menuItem);
+  });
+
+  it('should not emit statusMenuSelect when a disabled menu item is clicked', () => {
+    const onMenuSelect = jasmine.createSpy('statusMenuSelect');
+    component.statusMenuSelect.subscribe(onMenuSelect);
+
+    component.onStatusMenuItemClick({
+      label: "Exemple d'autre action à réaliser",
+      disabled: true,
+    });
+
+    expect(onMenuSelect).not.toHaveBeenCalled();
+  });
+
+  it('should mark disabled status menu options as non-interactive', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      menuItems: [
+        { label: 'C4 non reçu' },
+        {
+          label: "Exemple d'autre action à réaliser",
+          disabled: true,
+        },
+      ],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    ) as HTMLButtonElement;
+    statusButton.click();
+    fixture.detectChanges();
+
+    const options = Array.from(
+      document.body.querySelectorAll(
+        '.c-list__tag-target-list .p-autocomplete-option',
+      ),
+    ) as HTMLElement[];
+
+    expect(options).toHaveSize(2);
+    expect(options[1].classList.contains('p-disabled')).toBe(true);
+    expect(options[1].getAttribute('aria-disabled')).toBe('true');
+    expect(options[1].getAttribute('tabindex')).toBe('-1');
+  });
+
+  it('should render multi-action summary with count badge when menuItems length > 1', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      icon: 'bi bi-exclamation-triangle-fill',
+      menuItems: [
+        { label: 'C4 non reçu' },
+        { label: 'Paiement non versé' },
+      ],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    ) as HTMLButtonElement;
+    const label = statusButton.querySelector(
+      '.c-profile-card__status-action-label',
+    );
+    const badge = statusButton.querySelector(
+      '.c-profile-card__status-action-badge',
+    );
+
+    expect(label?.textContent?.trim()).toBe('Actions à réaliser');
+    expect(badge?.textContent?.trim()).toBe('2');
+    expect(statusButton.getAttribute('aria-label')).toBe('2 actions à réaliser');
+    expect(
+      statusButton.querySelector('.c-profile-card__status-action-prefix'),
+    ).toBeFalsy();
+  });
+
+  it('should not emit statusActionClick when multi-action button is clicked', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Actions groupées',
+      severity: 'warn',
+      menuItems: [{ label: 'A' }, { label: 'B' }],
+    });
+    fixture.detectChanges();
+
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    ) as HTMLButtonElement;
+    statusButton.click();
+    fixture.detectChanges();
+
+    expect(onStatusAction).not.toHaveBeenCalled();
+  });
+
+  it('should emit primaryActionClick when title action button is clicked', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-profile-card__title-action',
+    ) as HTMLButtonElement;
+    button.click();
+
+    expect(onPrimary).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit primaryActionClick when the primary action shortcut is pressed', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
+    );
+
+    expect(onPrimary).toHaveBeenCalledTimes(1);
+  });
+
+  it('should expose aria-keyshortcuts on the title action button', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-profile-card__title-action',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-keyshortcuts')).toBe('Alt+A');
+  });
+
+  it('should render affiliate name and eye icon on the title action button', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-profile-card__title-action',
+    ) as HTMLButtonElement;
+    const titleText = button.querySelector(
+      '.c-profile-card__title-action-text',
+    );
+
+    expect(button.querySelector('.bi-eye')).toBeTruthy();
+    expect(titleText?.textContent?.trim()).toBe('Dupont, Marie');
+    expect(button.textContent).toContain('ALT + A');
+    expect(button.classList.contains('p-button-text')).toBe(true);
+    expect(
+      fixture.nativeElement.querySelector('.c-profile-card__primary-action'),
+    ).toBeNull();
+  });
+
+  it('should not emit primaryActionClick for shortcut when loading', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
+    );
+
+    expect(onPrimary).not.toHaveBeenCalled();
+  });
+
+  it('should not emit primaryActionClick for shortcut while typing in an input', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        altKey: true,
+        code: 'KeyA',
+        bubbles: true,
+      }),
+    );
+    document.body.removeChild(input);
+
+    expect(onPrimary).not.toHaveBeenCalled();
+  });
+
+  it('should not render a separate primary action button while loading', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+    });
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('.c-profile-card__primary-action'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-profile-card__title-action'),
+    ).toBeNull();
+  });
+
+  it('should set aria-labelledby when not loading', () => {
+    const article = fixture.nativeElement.querySelector('article');
+    expect(article.getAttribute('aria-labelledby')).toBeTruthy();
+    expect(article.getAttribute('aria-busy')).toBeFalsy();
+  });
+
+  it('should set aria-label and aria-busy when loading', () => {
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    const article = fixture.nativeElement.querySelector('article');
+    expect(article.getAttribute('aria-labelledby')).toBeNull();
+    expect(article.getAttribute('aria-label')).toBe('Dupont, Marie');
+    expect(article.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('should render filterable info tags as a select button group', () => {
+    fixture.componentRef.setInput('infoTags', [
+      { label: 'Documents actifs:', value: '3', filterKey: 'active-documents' },
+    ]);
+    fixture.detectChanges();
+
+    const selectButton = fixture.nativeElement.querySelector(
+      'p-selectbutton.c-profile-card__info-tags-filter',
+    ) as HTMLElement;
+    const toggle = fixture.nativeElement.querySelector(
+      '.c-profile-card__info-tags-filter .p-togglebutton',
+    ) as HTMLElement;
+    const value = fixture.nativeElement.querySelector(
+      '.c-profile-card__info-tag-value',
+    );
+
+    expect(selectButton).toBeTruthy();
+    expect(selectButton.classList.contains('p-selectbutton')).toBe(true);
+    expect(toggle).toBeTruthy();
+    expect(toggle.classList.contains('p-togglebutton-sm')).toBe(true);
+    expect(toggle.getAttribute('role')).toBe('button');
+    expect(toggle.getAttribute('aria-pressed')).toBe('false');
+    expect(toggle.textContent).toContain('Documents actifs:');
+    expect(toggle.textContent).toContain('3');
+    expect(value?.textContent?.trim()).toBe('3');
+  });
+
+  it('should render display-only info tags without filter interaction', () => {
+    fixture.componentRef.setInput('infoTags', [
+      { label: 'Documents actifs:', value: '3' },
+    ]);
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      'button.c-profile-card__info-tag',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('tabindex')).toBe('-1');
+    expect(
+      button.classList.contains(
+        'c-profile-card__info-tag--filterable',
+      ),
+    ).toBe(false);
+    expect(fixture.nativeElement.querySelector('p-selectbutton')).toBeFalsy();
+  });
+
+  it('should emit infoTagClick when a filterable info tag is clicked', () => {
+    const onInfoTagClick = jasmine.createSpy('infoTagClick');
+    component.infoTagClick.subscribe(onInfoTagClick);
+    const tag = {
+      label: 'Documents actifs:',
+      value: '3',
+      filterKey: 'active-documents' as const,
+    };
+
+    fixture.componentRef.setInput('infoTags', [tag]);
+    fixture.detectChanges();
+
+    const toggle = fixture.nativeElement.querySelector(
+      '.c-profile-card__info-tags-filter .p-togglebutton',
+    ) as HTMLElement;
+    toggle.click();
+
+    expect(onInfoTagClick).toHaveBeenCalledOnceWith(tag);
+  });
+
+  it('should bind active info tags to the select button model', async () => {
+    fixture.componentRef.setInput('infoTags', [
+      {
+        label: 'Documents clôturés:',
+        value: '3',
+        filterKey: 'closed-documents',
+        active: true,
+      },
+    ]);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(component['selectedInfoTagFilterKey']).toBe('closed-documents');
+  });
+
+  it('should not emit infoTagClick when loading', () => {
+    const onInfoTagClick = jasmine.createSpy('infoTagClick');
+    component.infoTagClick.subscribe(onInfoTagClick);
+    fixture.componentRef.setInput('infoTags', [
+      {
+        label: 'Documents actifs:',
+        value: '3',
+        filterKey: 'active-documents',
+      },
+    ]);
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    component.onInfoTagClick({
+      label: 'Documents actifs:',
+      value: '3',
+      filterKey: 'active-documents',
+    });
+
+    expect(onInfoTagClick).not.toHaveBeenCalled();
+  });
+
+  it('should mark shortcut badge as aria-hidden', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      shortcut: 'ALT + A',
+    });
+    fixture.detectChanges();
+
+    const badge = fixture.nativeElement.querySelector(
+      '.c-profile-card__shortcut-badge',
+    );
+    expect(badge.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should link article aria-labelledby to the title id', () => {
+    fixture.componentRef.setInput('primaryAction', {
+      label: 'Voir carte affilié',
+      icon: 'bi bi-eye',
+    });
+    fixture.detectChanges();
+
+    const article = fixture.nativeElement.querySelector('article');
+    const labelledBy = article.getAttribute('aria-labelledby');
+    const titleControl = fixture.nativeElement.querySelector(
+      `#${labelledBy}`,
+    ) as HTMLElement;
+
+    expect(labelledBy).toBeTruthy();
+    expect(titleControl.classList.contains('c-profile-card__title-action')).toBe(
+      true,
+    );
+  });
+
+  it('should show danger status action button for danger severity', () => {
+    fixture.componentRef.setInput('variant', 'default');
+    fixture.componentRef.setInput('statusAction', {
+      label: 'Critique',
+      icon: 'bi bi-exclamation-octagon-fill',
+      severity: 'danger',
+    });
+    fixture.detectChanges();
+
+    expect(
+      fixture.nativeElement.querySelector('.c-profile-card--danger'),
+    ).toBeTruthy();
+    const statusButton = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action',
+    );
+    expect(statusButton).toBeTruthy();
+    expect(statusButton.classList.contains('p-button-danger')).toBe(true);
+  });
+
+  it('should not emit identifierCopy when loading', () => {
+    const onCopy = jasmine.createSpy('identifierCopy');
+    component.identifierCopy.subscribe(onCopy);
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    component.onIdentifierCopy(SAMPLE_IDENTIFIERS[0]);
+
+    expect(onCopy).not.toHaveBeenCalled();
+  });
+
+  it('should not emit statusActionClick when loading', () => {
+    const onStatusAction = jasmine.createSpy('statusActionClick');
+    component.statusActionClick.subscribe(onStatusAction);
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    component.onStatusActionClick();
+
+    expect(onStatusAction).not.toHaveBeenCalled();
+  });
+
+  it('should not emit primaryActionClick when loading', () => {
+    const onPrimary = jasmine.createSpy('primaryActionClick');
+    component.primaryActionClick.subscribe(onPrimary);
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    component.onPrimaryActionClick();
+
+    expect(onPrimary).not.toHaveBeenCalled();
+  });
+});
+
+describe('ProfileCardComponent (nl)', () => {
+  let fixture: ComponentFixture<ProfileCardComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProfileCardComponent],
+      providers: [
+        { provide: PDS_LOCALE, useValue: 'nl' },
+        {
+          provide: IconRegistry,
+          useFactory: () => {
+            const registry = new IconRegistry();
+            registerPlectrumIcons(registry);
+            return registry;
+          },
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ProfileCardComponent);
+    fixture.componentRef.setInput('title', 'Dupont, Marie');
+    fixture.componentRef.setInput('avatarInitials', 'DM');
+    fixture.detectChanges();
+  });
+
+  it('should render the Dutch status-action prefix', () => {
+    fixture.componentRef.setInput('statusAction', {
+      label: 'C4 non reçu',
+      tagValue: 'C4',
+      severity: 'warn',
+    });
+    fixture.detectChanges();
+
+    const prefix = fixture.nativeElement.querySelector(
+      '.c-profile-card__status-action-prefix',
+    );
+
+    expect(prefix?.textContent?.trim()).toBe('Uit te voeren acties:');
+  });
+});

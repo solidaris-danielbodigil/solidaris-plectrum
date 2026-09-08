@@ -5,6 +5,7 @@ import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 import { CopyableTextComponent } from './copyable-text.component';
 import { CopyableTextMetadata } from './copyable-text.metadata';
 
@@ -87,6 +88,9 @@ class CopyableTextRowDemoComponent {
 }
 
 const meta: Meta<CopyableTextComponent> = {
+  parameters: {
+    ...storyDesign(CopyableTextMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Copyable Text',
   component: CopyableTextComponent,
   decorators: [
@@ -153,6 +157,20 @@ export const CustomAriaLabel: Story = {
     label: 'Territoire',
     value: '319',
     ariaLabel: 'Copier le numéro de territoire 319',
+  },
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    label: 'Territoire',
+    value: '319',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('button', { name: 'Territoire kopiëren' }),
+    ).toBeVisible();
   },
 };
 

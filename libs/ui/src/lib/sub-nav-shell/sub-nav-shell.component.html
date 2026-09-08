@@ -4,7 +4,10 @@
 </header>
 
 <!-- Scrollable body -->
-<div class="c-sub-nav-shell__body o-flex__item--grow-1 o-flex__item--shrink-1 o-layout--min-h-0 o-layout--overflow-x-hidden o-layout--overflow-y-auto">
+<div
+  class="c-sub-nav-shell__body o-flex__item--grow-1 o-flex__item--shrink-1 o-layout--min-h-0 o-layout--overflow-x-hidden o-layout--overflow-y-auto"
+  tabindex="0"
+>
   @for (block of renderBlocks(); track $index) {
     @if (block.type === 'standalone') {
       <!-- Standalone items (sections without a label) -->

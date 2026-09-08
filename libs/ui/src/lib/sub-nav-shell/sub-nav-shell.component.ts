@@ -52,6 +52,8 @@ export type RenderBlock = StandaloneBlock | AccordionBlock;
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'c-sub-nav-shell o-flex o-flex--col o-layout--overflow-hidden',
+    role: 'navigation',
+    '[attr.aria-label]': 'title()',
   },
 })
 export class SubNavShellComponent {

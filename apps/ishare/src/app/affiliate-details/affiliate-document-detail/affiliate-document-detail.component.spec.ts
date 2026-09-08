@@ -8,13 +8,13 @@ import {
 import { By } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import type { DocumentCrossReference } from './affiliate-document-detail.types';
-import type { ListDocumentItem } from '@solidaris/ui';
+import type { ListEntryItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
 import { DocumentMoreDetailsDrawerComponent } from './document-more-details-drawer/document-more-details-drawer.component';
 import { TransactionsCicsModalComponent } from '@solidaris/ui';
 
-const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
+const VISIBLE_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-demande-primaire',
     title: 'Demande primaire -',
@@ -81,7 +81,7 @@ function findButtonByLabel(
 })
 class DocumentDetailDrawerTestHostComponent {
   readonly selectedDocumentId = signal('doc-demande-primaire');
-  navigableDocuments: ListDocumentItem[] = VISIBLE_DOCUMENTS;
+  navigableDocuments: ListEntryItem[] = VISIBLE_DOCUMENTS;
   readonly focusTarget = signal<{ stepValue: number; panelId: string } | null>(
     null,
   );

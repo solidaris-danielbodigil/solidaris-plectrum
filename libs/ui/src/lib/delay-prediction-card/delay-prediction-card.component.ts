@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Divider } from 'primeng/divider';
+import { injectPdsMessages } from '../i18n';
+import { DelayPredictionCardMessages } from './delay-prediction-card.i18n';
 
 /**
  * Prédiction du délai — days remaining and predicted closure (Figma 704:11968).
@@ -23,6 +25,7 @@ import { Divider } from 'primeng/divider';
   },
 })
 export class DelayPredictionCardComponent {
+  protected readonly messages = injectPdsMessages(DelayPredictionCardMessages);
   /** Empty state when no delay prediction is available for the document. */
   readonly unavailable = input(false);
   readonly daysRemaining = input<number | null>(null);

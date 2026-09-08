@@ -1,6 +1,6 @@
 import type {
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ListEntryTag,
+  ListEntryTagTarget,
 } from '@solidaris/ui';
 import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail.mock';
 import {
@@ -13,7 +13,7 @@ import {
   type DocumentStep,
 } from './affiliate-document-detail.types';
 
-type ListTagSeverity = ListDocumentTag['severity'];
+type ListTagSeverity = ListEntryTag['severity'];
 
 /** Lower value = higher workflow priority (matches document list sort). */
 export const PANEL_STATUS_SORT_PRIORITY: Record<string, number> = {
@@ -52,7 +52,7 @@ const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
 
 export interface DocumentStepSummary {
   status: DocumentCertificatPanel['status'] | null;
-  tags: ListDocumentTag[];
+  tags: ListEntryTag[];
 }
 
 function toListTagSeverity(
@@ -116,11 +116,11 @@ function buildCommentTagsForPanels(
   panels: DocumentCertificatPanel[],
   resolveTargetLabel: (panel: DocumentCertificatPanel) => string,
   resolveTargetId: (panel: DocumentCertificatPanel) => string,
-): ListDocumentTag[] {
+): ListEntryTag[] {
   const targetsBySeverity = new Map<
     ListTagSeverity,
     {
-      targets: ListDocumentTagTarget[];
+      targets: ListEntryTagTarget[];
       panelSeverities: DocumentCertificatPanelStatusSeverity[];
     }
   >();
@@ -128,7 +128,7 @@ function buildCommentTagsForPanels(
   const addTarget = (
     displaySeverity: ListTagSeverity,
     panelSeverity: DocumentCertificatPanelStatusSeverity,
-    target: ListDocumentTagTarget,
+    target: ListEntryTagTarget,
   ): void => {
     const bucket = targetsBySeverity.get(displaySeverity) ?? {
       targets: [],
@@ -174,7 +174,7 @@ export function deriveStepCommentTags(
     layout?: AffiliateDocumentDetailLayout;
     stepLabel?: string;
   } = {},
-): ListDocumentTag[] {
+): ListEntryTag[] {
   const stepLabel = options.stepLabel ?? step.label;
   const layout = options.layout;
 
@@ -205,7 +205,7 @@ export function summarizeDocumentStep(
 export function deriveDocumentTags(
   documentId: string,
   details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
-): ListDocumentTag[] {
+): ListEntryTag[] {
   const detail = details[documentId];
   if (!detail) {
     return [];
@@ -214,7 +214,7 @@ export function deriveDocumentTags(
   const targetsBySeverity = new Map<
     ListTagSeverity,
     {
-      targets: ListDocumentTagTarget[];
+      targets: ListEntryTagTarget[];
       panelSeverities: DocumentCertificatPanelStatusSeverity[];
     }
   >();
@@ -222,7 +222,7 @@ export function deriveDocumentTags(
   const addTarget = (
     displaySeverity: ListTagSeverity,
     panelSeverity: DocumentCertificatPanelStatusSeverity,
-    target: ListDocumentTagTarget,
+    target: ListEntryTagTarget,
   ): void => {
     const bucket = targetsBySeverity.get(displaySeverity) ?? {
       targets: [],

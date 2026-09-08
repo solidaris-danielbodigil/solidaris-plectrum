@@ -1,4 +1,5 @@
 import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './empty-state.stories';
 
 <Meta of={Stories} />
@@ -11,9 +12,37 @@ import * as Stories from './empty-state.stories';
 
 Reusable placeholder for empty results, document details, or onboarding states.
 
-The hero art is **decorative** — the title and description carry the message. Screen readers ignore the SVG (`aria-hidden` on the art frame, empty `alt` on the image).
+## When to use
 
-Figma: [Empty state illustration](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641)
+- Empty result panes
+- Placeholder document details
+- Onboarding empty states with a short heading and one supporting sentence
+
+## When not to use
+
+- Actionable error recovery — this block is descriptive, not interactive. Use a dedicated error banner or recovery screen
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['c-empty-state', 'Section landmark for the placeholder'],
+    ['c-empty-state__art', 'Decorative illustration frame'],
+    ['c-empty-state__illustration', 'Catalog SVG (img)'],
+    ['c-empty-state__title', 'Visible heading that carries the message'],
+    ['c-empty-state__description', 'Optional supporting sentence'],
+  ]}
+/>
+
+## Accessibility
+
+- The hero art is decorative — the title and description carry the message
+- Screen readers ignore the SVG (`aria-hidden` on the art frame, empty `alt` on the image)
+
+## Figma
+
+[Empty state illustration](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641)
 
 ## Illustrations
 

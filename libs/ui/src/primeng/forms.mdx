@@ -1,0 +1,74 @@
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './forms.stories';
+
+<Meta of={Stories} />
+
+# Forms
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+Theme proof for PrimeNG form controls. Labels, hints and errors belong on `pds-form-field` — do not reimplement FloatLabel unless the design calls for a floating label.
+
+What Plectrum changes: [AutoComplete chip sizing](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components) in `_components.autocomplete.scss`. Inputs, Select and DatePicker stay stock.
+
+## Endorsed composition
+
+- Wrap every labelled control in `pds-form-field` with a matching `inputId`
+- Overlays (`p-select`, `p-autocomplete`, `p-datepicker`) use `appendTo="body"`
+- Icons are Bootstrap Icons inside `p-iconfield` / `p-inputicon`
+- Prefer `size="small"` in toolbars; `fluid` when the field should fill its column
+
+Figma: [InputText](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-22646) · [InputGroup](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-22644) · [Select](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-22642) · [AutoComplete](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6728-52564) · [DatePicker](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-20507)
+
+API: [primeng.org/inputtext](https://primeng.org/inputtext) · [iconfield](https://primeng.org/iconfield) · [inputgroup](https://primeng.org/inputgroup) · [select](https://primeng.org/select) · [autocomplete](https://primeng.org/autocomplete) · [datepicker](https://primeng.org/datepicker) · endorsed wrapper [Form Field](?path=/docs/custom-components-form-field--docs)
+
+## Default
+
+Endorsed `pds-form-field` around `pInputText`.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Filled
+
+<Canvas of={Stories.Filled} />
+
+## Invalid
+
+`[invalid]` on the control plus `pds-form-field` error message (`aria-describedby`).
+
+<Canvas of={Stories.Invalid} />
+
+## Disabled
+
+<Canvas of={Stories.Disabled} />
+
+## IconField
+
+<Canvas of={Stories.WithIcon} />
+
+## InputGroup
+
+<Canvas of={Stories.Group} />
+
+## Select
+
+<Canvas of={Stories.SelectField} />
+
+## AutoComplete
+
+Same composition as the iSHARE documents toolbar.
+
+<Canvas of={Stories.AutoCompleteField} />
+
+## DatePicker
+
+<Canvas of={Stories.DatePickerField} />
+
+## API
+
+Story knobs for the canvases above. They are not a Plectrum wrapper API.
+
+<ArgTypes of={Stories} />

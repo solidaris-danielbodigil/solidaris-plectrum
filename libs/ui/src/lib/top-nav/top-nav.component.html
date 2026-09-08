@@ -36,7 +36,7 @@
       <p-breadcrumb
         [model]="breadcrumbs()"
         [home]="home() ?? undefined"
-        aria-label="Breadcrumb"
+        [attr.aria-label]="resolvedBreadcrumbAriaLabel()"
       />
     </div>
   </div>
@@ -108,7 +108,7 @@
         pRipple
         class="c-top-nav__avatar-trigger o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0"
         role="button"
-        [attr.aria-label]="avatarMenuAriaLabel()"
+        [attr.aria-label]="resolvedAvatarMenuAriaLabel()"
         aria-haspopup="menu"
         [attr.aria-expanded]="avatarMenuExpanded()"
         (click)="toggleAvatarMenu($event, avatarMenu)"

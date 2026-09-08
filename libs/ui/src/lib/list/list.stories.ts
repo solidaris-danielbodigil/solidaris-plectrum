@@ -1,12 +1,13 @@
 import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { ListComponent } from './list.component';
 import { ListMetadata } from './list.metadata';
-import type { ListDocumentItem, ListGroup } from './list.types';
+import type { ListEntryItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { storyDesign } from '../../storybook/story-design';
 
 // =============================================================================
 // List (pds-list)
@@ -65,17 +66,17 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
   },
 ];
 
-const FLAT_DOCUMENTS: ListDocumentItem[] = EVA_MARTINEZ_GROUPS.flatMap(
+const FLAT_DOCUMENTS: ListEntryItem[] = EVA_MARTINEZ_GROUPS.flatMap(
   (group) => group.documents,
 );
 
-const SAMPLE_DOCUMENT: ListDocumentItem = EVA_MARTINEZ_GROUPS[0].documents[0];
+const SAMPLE_DOCUMENT: ListEntryItem = EVA_MARTINEZ_GROUPS[0].documents[0];
 
 const ALL_GROUP_IDS = EVA_MARTINEZ_GROUPS.map((group) => group.id);
 
 interface ListStoryArgs {
   groups: ListGroup[] | null;
-  items: ListDocumentItem[];
+  items: ListEntryItem[];
   expandedGroupIds: string[];
   selectedItemId: string | null;
   loading: boolean;
@@ -92,6 +93,7 @@ const meta: Meta<ListStoryArgs> = {
   ],
   parameters: {
     layout: 'padded',
+    ...storyDesign(ListMetadata.component.figmaUrl),
   },
   argTypes: {
     groups: {
@@ -148,22 +150,65 @@ export const Default: Story = {
     await expect(
       canvas.getByRole('region', { name: 'Suivi des documents' }),
     ).toBeVisible();
-    await expect(canvas.getByRole('heading', { name: 'Suivi des documents' })).toBeVisible();
   },
 };
 
+@Component({
+  selector: 'pds-list-expand-demo',
+  standalone: true,
+  imports: [ListComponent],
+  template: `
+    <pds-list
+      [groups]="groups()"
+      [items]="items()"
+      [expandedGroupIds]="expandedGroupIds()"
+      [selectedItemId]="selectedItemId()"
+      [loading]="loading()"
+      (expandedGroupIdsChange)="onExpanded($event)"
+    />
+    <p class="u-sr-only" data-testid="list-expanded-ids">{{ lastEmitted() }}</p>
+  `,
+})
+class ListExpandDemoComponent {
+  readonly groups = input<ListGroup[] | null>(null);
+  readonly items = input<ListEntryItem[]>([]);
+  readonly expandedGroupIds = input<string[]>([]);
+  readonly selectedItemId = input<string | null>(null);
+  readonly loading = input(false);
+  readonly lastEmitted = signal('');
+
+  onExpanded(ids: string[]): void {
+    this.lastEmitted.set(ids.join(','));
+  }
+}
+
 export const Grouped: Story = {
   args: journeyDefaults,
-  // Interaction test: a journey group header collapses and re-expands its rows.
+  decorators: [
+    moduleMetadata({ imports: [ListExpandDemoComponent] }),
+  ],
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-list-expand-demo
+        [groups]="groups"
+        [items]="items"
+        [expandedGroupIds]="expandedGroupIds"
+        [selectedItemId]="selectedItemId"
+        [loading]="loading"
+      />
+    `,
+  }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const [firstGroup] = canvas.getAllByRole('treeitem');
     await expect(firstGroup).toHaveAttribute('aria-expanded', 'true');
     const [toggler] = within(firstGroup).getAllByRole('button');
     await userEvent.click(toggler);
-    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'false'));
-    await userEvent.click(toggler);
-    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'true'));
+    await waitFor(() => {
+      const emitted = canvas.getByTestId('list-expanded-ids').textContent;
+      expect(emitted).not.toContain('parcours-demande-primaire');
+    });
   },
 };
 
@@ -230,7 +275,7 @@ export const RowHover: Story = {
     componentWrapperDecorator(
       (story) => `
         <style>
-          .sb-list-row-hover-demo .c-list__item--document.sb-list-row--hover:not(.c-list__item--selected) {
+          .sb-list-row-hover-demo .c-list__item--entry.sb-list-row--hover:not(.c-list__item--selected) {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
@@ -239,7 +284,7 @@ export const RowHover: Story = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    canvasElement.querySelector('.c-list__item--document')?.classList.add('sb-list-row--hover');
+    canvasElement.querySelector('.c-list__item--entry')?.classList.add('sb-list-row--hover');
   },
 };
 
@@ -274,7 +319,7 @@ export const Loading: Story = {
 class ListSimulatedLoadingDemoComponent {
   readonly loading = signal(true);
   readonly groups = EVA_MARTINEZ_GROUPS;
-  readonly items: ListDocumentItem[] = [];
+  readonly items: ListEntryItem[] = [];
   readonly expandedGroupIds = ALL_GROUP_IDS;
   readonly selectedItemId = 'doc-demande-primaire';
 
@@ -294,7 +339,7 @@ export const SimulatedLoading: Story = {
   }),
 };
 
-const ROW_STATE_DOCUMENT: ListDocumentItem = {
+const ROW_STATE_DOCUMENT: ListEntryItem = {
   id: 'doc-row-state-demo',
   title: 'Demande primaire -',
   titleLine2: 'Régime général',
@@ -305,12 +350,9 @@ const ROW_STATE_DOCUMENT: ListDocumentItem = {
   ],
 };
 
-const documentRowMarkup = (modifiers: string, selected = false) => `
+const documentRowMarkup = (modifiers: string) => `
   <article
-    class="c-list__item c-list__item--document ${modifiers}"
-    role="button"
-    tabindex="0"
-    ${selected ? 'aria-selected="true"' : ''}
+    class="c-list__item c-list__item--entry ${modifiers}"
   >
     <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
       <div
@@ -341,13 +383,24 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
   </article>
 `;
 
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: journeyDefaults,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('region', { name: 'Opvolging van documenten' }),
+    ).toBeVisible();
+  },
+};
+
 export const RowStates: Story = {
   decorators: [
     moduleMetadata({ imports: [Tag] }),
     componentWrapperDecorator(
       (story) => `
         <style>
-          .sb-list-row-states .c-list__item--document.sb-force-hover:not(.c-list__item--selected) {
+          .sb-list-row-states .c-list__item--entry.sb-force-hover:not(.c-list__item--selected) {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
@@ -369,7 +422,7 @@ export const RowStates: Story = {
           </div>
           <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
             <p class="u-text-label-xs">Selected</p>
-            ${documentRowMarkup('c-list__item--selected', true)}
+            ${documentRowMarkup('c-list__item--selected')}
           </div>
         </div>
       </div>

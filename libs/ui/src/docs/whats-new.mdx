@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import {
+  CHANGELOG_RELEASES,
+  CHANGELOG_UNRELEASED,
+} from '../storybook/changelog.generated';
+
+<Meta title="Docs/What's new" />
+
+# What's new
+
+Generated from `libs/*/CHANGELOG.md` and pending `.changeset/*.md` by `npm run changelog:build`. The file `libs/ui/src/storybook/changelog.generated.ts` is CI-gated — do not edit it by hand.
+
+## Unreleased
+
+{CHANGELOG_UNRELEASED.length === 0 ? (
+  <p>No pending changesets.</p>
+) : (
+  <DocsTable
+    headers={['Changeset']}
+    rows={CHANGELOG_UNRELEASED.map((body) => [body])}
+  />
+)}
+
+## Released
+
+{CHANGELOG_RELEASES.length === 0 ? (
+  <p>No published `CHANGELOG.md` yet — the first version PR will fill this table.</p>
+) : (
+  <DocsTable
+    headers={['Package', 'Version', 'Notes']}
+    rows={CHANGELOG_RELEASES.map((entry) => [
+      entry.packageName,
+      entry.version,
+      entry.body,
+    ])}
+  />
+)}

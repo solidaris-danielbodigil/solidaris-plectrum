@@ -21,8 +21,8 @@ import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { showStorybookToast } from '../storybook/storybook-toast';
-import { AffiliateDetailDrawerMetadata } from '../lib/affiliate-detail-drawer/affiliate-detail-drawer.metadata';
-import { AffiliateOverviewCardMetadata } from '../lib/affiliate-overview-card/affiliate-overview-card.metadata';
+import { ProfileDrawerMetadata } from '../lib/profile-drawer/profile-drawer.metadata';
+import { ProfileCardMetadata } from '../lib/profile-card/profile-card.metadata';
 import { CopyableTextMetadata } from '../lib/copyable-text/copyable-text.metadata';
 import { EmptyStateMetadata } from '../lib/empty-state/empty-state.metadata';
 import { FormFieldMetadata } from '../lib/form-field/form-field.metadata';
@@ -39,8 +39,8 @@ import { readTokenDeclarations } from '../storybook/cssom';
 import { TOKEN_ANNOTATIONS } from '../storybook/tokens.generated';
 
 const METADATA = [
-  AffiliateDetailDrawerMetadata,
-  AffiliateOverviewCardMetadata,
+  ProfileDrawerMetadata,
+  ProfileCardMetadata,
   CopyableTextMetadata,
   EmptyStateMetadata,
   FormFieldMetadata,

@@ -1,4 +1,5 @@
-import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './sub-nav-shell.stories';
 
 <Meta of={Stories} />
@@ -11,6 +12,41 @@ import * as Stories from './sub-nav-shell.stories';
 
 Second-level navigation sidebar. Child of `NavShellComponent` — opens when a nav-shell item is clicked.
 
+## When to use
+
+- Second-level navigation alongside Nav Shell
+- Module-level grouped menu with collapsible accordion sections
+
+## When not to use
+
+- Standalone full-page navigation — this is a sidebar companion, not a page nav
+- First-level app switching — that belongs on Nav Shell
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['c-sub-nav-shell__header', 'Module / app title'],
+    ['c-sub-nav-shell__featured', 'Standalone items above accordion groups'],
+    ['c-accordion--nav', 'PrimeNG accordion for labeled sections'],
+    ['c-sub-nav-shell__items', 'Section item list'],
+    ['p-badge', 'Optional count on an item'],
+    ['c-sub-nav-shell__footer', 'Version / changelog — hidden when version is empty'],
+  ]}
+/>
+
+## Accessibility
+
+- Accordion headers expose expand / collapse; items are links or buttons with visible labels
+- Disabled items stay visible at reduced opacity and are not interactive
+- Badge counts must not be the only indication of status — keep the item label
+- Footer changelog is a text link; hide the whole footer when there is no version
+
+## Figma
+
+[Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
+
 Renders a fixed-width panel with:
 
 - A heading header with the module/app title
@@ -19,13 +55,12 @@ Renders a fixed-width panel with:
 - Menu items with optional leading icon and PrimeNG Badge (`p-badge`) counter
 - A version/changelog footer
 
-Figma: [Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
-
 ## Maatschappelijk Werk
 
 Default state matching the Figma variant. “Lopend” is the active item. Danger badge on “Onvolledig” (red).
 
 <Canvas of={Stories.MaatschappelijkWerk} />
+<Controls of={Stories.MaatschappelijkWerk} />
 
 ## Processen
 
