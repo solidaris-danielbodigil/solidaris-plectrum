@@ -281,17 +281,19 @@ const DOCUMENT_SECTOR_BY_ID = new Map<string, DocumentSector>([
 
 const STATUS_SORT_PRIORITY = PANEL_STATUS_SORT_PRIORITY;
 
-const JACK_MOTA_DOCUMENTS: ListEntryItem[] = [
-  {
-    id: 'doc-jack-certificat',
-    title: 'Certificat médical',
-    status: {
-      label: 'En traitement',
-      severity: 'warn',
-      icon: 'bi bi-hourglass-split',
+const JACK_MOTA_DOCUMENTS: ListEntryItem[] = (
+  [
+    {
+      id: 'doc-jack-certificat',
+      title: 'Certificat médical',
+      status: {
+        label: 'En traitement',
+        severity: 'warn',
+        icon: 'bi bi-hourglass-split',
+      },
     },
-  },
-].map((document) => withDerivedTags(document));
+  ] satisfies ListEntryItem[]
+).map((document) => withDerivedTags(document));
 
 const DOCUMENT_RECEPTION_DATE_BY_ID = new Map<string, string>([
   ...EVA_MARTINEZ_DOCUMENT_GROUPS.flatMap((group) =>
