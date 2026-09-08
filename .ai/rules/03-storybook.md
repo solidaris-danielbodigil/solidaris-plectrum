@@ -64,7 +64,7 @@ Each MDX page must include:
 - Design constraints or usage rules
 - An `h2` / `h3` per canvas so the docs TOC can list sections
 - `<Controls of={Stories.X} />` immediately under the primary canvas (usually `Default`)
-- An `## API` + `<ArgTypes of={Stories} />` block **at the end of the page**, after every canvas — never before the first canvas
+- An `## API` + `<ArgTypes of={Stories} />` block **at the end of the page**, after every canvas — never before the first canvas. Every row must have a description, `table.type`, and `table.defaultValue` (use `argTypesFromProps` from `libs/ui/src/storybook/arg-types-from-props.ts` with `{name}.metadata.ts` `props`). CSS-only blocks document BEM classes with `classArgTypes`. An empty “couldn't be auto-generated” table is not done.
 
 Docs tables use `<DocsTable>` from `libs/ui/.storybook/docs-table.ts` (Storybook ArgTypes chrome, no JSX — Angular's Babel loader cannot parse `.jsx`). Do **not** use Markdown pipe tables — Storybook 10 MDX leaves them as a single unreadable line. Do **not** put a PrimeNG `p-table` in a Canvas iframe; it is clipped. Custom components and UI pages put `<Controls of={Stories.X} />` under the primary canvas so designers can edit args there. Component APIs still use `<ArgTypes of={Stories} />` at the end of the page.
 

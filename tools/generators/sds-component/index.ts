@@ -168,6 +168,7 @@ describe('${className}Component', () => {
     path.join(componentDir, `${fileName}.stories.ts`),
     `import type { Meta, StoryObj } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect } from '../../storybook/story-tests';
 import { ${className}Component } from './${fileName}.component';
@@ -179,6 +180,7 @@ const meta: Meta<${className}Component> = {
   parameters: {
     ...storyDesign(${className}Metadata.component.figmaUrl),
   },
+  argTypes: argTypesFromProps(${className}Metadata.props ?? []),
 };
 
 export default meta;
@@ -296,6 +298,15 @@ export const ${className}Metadata: ComponentMetadata = {
   accessibility: {
     wcagLevel: 'AA',
   },
+  props: [
+    {
+      name: 'TODO',
+      type: 'string',
+      required: false,
+      default: "''",
+      description: 'TODO: document every input and output — this fills the Storybook API table.',
+    },
+  ],
   tokens: {
     consumed: [],
   },

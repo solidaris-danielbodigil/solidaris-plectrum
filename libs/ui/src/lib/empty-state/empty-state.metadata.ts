@@ -45,6 +45,11 @@ export const EmptyStateMetadata: ComponentMetadata = {
       },
     ],
   },
+  props: [
+    { name: 'title', type: 'string', required: true, description: 'Heading shown under the illustration.' },
+    { name: 'description', type: 'string | null', required: false, default: 'null', description: 'Optional supporting sentence under the title.' },
+    { name: 'illustration', type: 'EmptyStateIllustrationChoice', required: false, default: 'random', description: 'Decorative hero. random picks one catalog SVG per instance; pass an id to pin one.' },
+  ],
   accessibility: {
     wcagLevel: 'AA',
   },

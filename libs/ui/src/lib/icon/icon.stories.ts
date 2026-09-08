@@ -6,6 +6,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, expect } from '../../storybook/story-tests';
 import { IconComponent } from './icon.component';
@@ -24,12 +25,10 @@ const meta: Meta<IconComponent> = {
   decorators: [
     moduleMetadata({ imports: [IconComponent] }),
   ],
-  argTypes: {
-    icon: { control: 'text' },
+  argTypes: argTypesFromProps(IconMetadata.props ?? [], {
     source: { control: 'select', options: ['class', 'svg'] },
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    label: { control: 'text' },
-  },
+  }),
 };
 
 export default meta;

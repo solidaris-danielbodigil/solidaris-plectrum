@@ -92,6 +92,16 @@ export const FormFieldMetadata: ComponentMetadata = {
       '--pds-text-label-sm-spacing',
     ],
   },
+  props: [
+    { name: 'label', type: 'string', required: true, description: 'Visible field label.' },
+    { name: 'layout', type: "'vertical' | 'horizontal'", required: false, default: 'vertical', description: 'Label above the control (vertical) or beside it (horizontal).' },
+    { name: 'required', type: 'boolean', required: false, default: 'false', description: 'Shows the required marker and sets aria-required on the control.' },
+    { name: 'invalid', type: 'boolean', required: false, default: 'false', description: 'Invalid state — label colour, aria-invalid, and the error message.' },
+    { name: 'errorMessage', type: 'string | null', required: false, default: 'null', description: 'Validation message shown when invalid is true.' },
+    { name: 'inputId', type: 'string | undefined', required: false, default: 'undefined', description: 'Associates the horizontal label with the control id.' },
+    { name: 'hint', type: 'string | undefined', required: false, default: 'undefined', description: 'Optional helper text under the control (aria-describedby).' },
+    { name: 'requiredLabel', type: 'string', required: false, default: 'required', description: 'Screen-reader text appended after the required asterisk.' },
+  ],
   aiHints: {
     priority: 'high',
     context:

@@ -127,7 +127,7 @@ By default the **agents do this work** — ask the Solidaris coordinator for a c
 
 User-facing copy in `libs/ui` lives in a colocated `{name}.i18n.ts` (`fr` + `nl`). Components resolve it with `injectPdsMessages()` from the `PDS_LOCALE` token. The token factory reads Angular `LOCALE_ID` (`nl*` → `nl`, otherwise `fr`); apps can also call `providePdsLocale('nl')`. String inputs still win when the host passes them.
 
-This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story per migrated component pins `globals: { locale: 'nl' }` and asserts a Dutch string. Terminology decisions live in `.ai/questions/nl-copy-review.md`. Telemetry `pdsTelemetryLabel` values stay static — they are analytics identity, not UI copy.
+This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story per migrated component pins `globals: { locale: 'nl' }` and asserts a Dutch string. Terminology decisions live in `.ai/questions/nl-copy-review.md`.
 
 ## Testing
 

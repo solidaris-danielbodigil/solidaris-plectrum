@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TopNavComponent } from './top-nav.component';
@@ -21,12 +22,7 @@ const meta: Meta<TopNavComponent> = {
     layout: 'fullscreen',
     ...storyDesign(TopNavMetadata.component.figmaUrl),
   },
-  argTypes: {
-    subNavExpanded: { control: 'boolean' },
-    searchExpanded: { control: 'boolean' },
-    searchQuery: { control: 'text' },
-    avatarInitials: { control: 'text' },
-  },
+  argTypes: argTypesFromProps(TopNavMetadata.props ?? []),
 };
 
 export default meta;

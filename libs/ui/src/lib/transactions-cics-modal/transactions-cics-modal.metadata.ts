@@ -38,6 +38,11 @@ export const TransactionsCicsModalMetadata: ComponentMetadata = {
       },
     ],
   },
+  props: [
+    { name: 'visible', type: 'model<boolean>', required: false, default: 'false', description: 'Two-way visibility ([(visible)]) controlling open/close.' },
+    { name: 'rows', type: 'TransactionsCicsRow[]', required: false, default: 'DEFAULT_TRANSACTIONS_CICS_ROWS', description: 'Transaction rows. Defaults to the built-in CICS list.' },
+    { name: 'transactionLaunch', type: 'output<TransactionsCicsRow>', required: false, description: 'Emitted when a row launch action is activated.' },
+  ],
   behavior: {
     states: ['closed', 'open', 'filtered'],
     interactions: ['Search filters code and description', 'Row action opens the launch URL'],

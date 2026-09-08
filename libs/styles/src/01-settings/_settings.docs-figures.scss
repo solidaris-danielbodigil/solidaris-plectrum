@@ -47,6 +47,15 @@
   --#{$pds-prefix}-size-docs-edge-stroke:   2px;     // arrows
   --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow
   --#{$pds-prefix}-size-docs-swatch:        0.875rem; // 12px colour chip beside a before/after value (sync status)
+  --#{$pds-prefix}-size-docs-releases-head: 1.75rem;  // rounded p-tag height the release dot marker centres on (What's new)
   // Instance slot: each sync-status row binds this to the before/after colour.
   --#{$pds-prefix}-docs-sync-swatch:        transparent;
+}
+
+// ── PrimeNG Button token bridge — link button inside a table cell ─────────────
+// The component name of a Component status row is a pds-docs-link; without the
+// button padding the row keeps the table's own cell height.
+.c-docs-component-index__name {
+  --p-button-padding-x: 0;
+  --p-button-padding-y: 0;
 }

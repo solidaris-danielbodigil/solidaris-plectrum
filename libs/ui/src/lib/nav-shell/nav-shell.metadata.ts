@@ -57,8 +57,9 @@ export const NavShellMetadata: ComponentMetadata = {
   },
 
   props: [
-    { name: 'items',        type: 'NavItem[]', required: true,  description: 'Navigation items to render' },
-    { name: 'activeItemId', type: 'string',    required: false, default: 'null',  description: 'ID of the currently active nav item' },
+    { name: 'items', type: 'NavItem[]', required: false, default: '[]', description: 'Primary navigation items to render.' },
+    { name: 'activeItemId', type: 'string | null', required: false, default: 'null', description: 'ID of the currently active nav item. When null, no item is marked current.' },
+    { name: 'itemClicked', type: 'output<NavItem>', required: false, description: 'Emitted when a nav item is activated.' },
   ],
 
   accessibility: {

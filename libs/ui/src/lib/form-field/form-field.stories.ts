@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { expect, waitFor, within } from 'storybook/test';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { FormFieldComponent } from './form-field.component';
 import { FormFieldMetadata } from './form-field.metadata';
@@ -13,15 +14,9 @@ const meta: Meta<FormFieldComponent> = {
   },
   title: 'Custom components/Form Field',
   component: FormFieldComponent,
-  argTypes: {
-    label: { control: 'text' },
-    hint: { control: 'text' },
+  argTypes: argTypesFromProps(FormFieldMetadata.props ?? [], {
     layout: { control: 'radio', options: ['vertical', 'horizontal'] },
-    required: { control: 'boolean' },
-    invalid: { control: 'boolean' },
-    errorMessage: { control: 'text' },
-    inputId: { control: 'text' },
-  },
+  }),
 };
 
 export default meta;
@@ -44,6 +39,8 @@ export const Vertical: Story = {
         [required]="required"
         [invalid]="invalid"
         [errorMessage]="errorMessage"
+        [hint]="hint"
+        [requiredLabel]="requiredLabel"
         [inputId]="inputId"
       >
         <input pInputText [id]="inputId" [(ngModel)]="value" [required]="required" />
@@ -101,6 +98,8 @@ export const Horizontal: Story = {
         [required]="required"
         [invalid]="invalid"
         [errorMessage]="errorMessage"
+        [hint]="hint"
+        [requiredLabel]="requiredLabel"
         [inputId]="inputId"
       >
         <input pInputText [id]="inputId" [(ngModel)]="value" [required]="required" />

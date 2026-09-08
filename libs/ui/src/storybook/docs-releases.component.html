@@ -1,0 +1,38 @@
+@if (versions().length === 0) {
+  <pds-empty-state
+    title="No release yet"
+    description="The first version PR — chore(release): version packages — writes libs/*/CHANGELOG.md and fills this timeline."
+    illustration="person-box"
+  />
+} @else {
+  <p-timeline [value]="versions()" align="left">
+    <ng-template #marker>
+      <div class="c-docs-releases__marker o-flex o-flex--align-items-center">
+        <p-badge />
+      </div>
+    </ng-template>
+    <ng-template #content let-version>
+      <div
+        class="c-docs-releases__head o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1"
+      >
+        <p-tag [value]="'v' + version.version" severity="info" [rounded]="true" />
+        @for (packageName of version.packageNames; track packageName) {
+          <p-tag [value]="packageName" severity="secondary" [rounded]="true" />
+        }
+      </div>
+      @if (version.changes.length) {
+        <ul class="c-docs-releases__changes o-flex o-flex--y o-layout--gap-1">
+          @for (change of version.changes; track $index) {
+            <li class="o-flex o-flex--align-items-flex-start o-layout--gap-1">
+              <p-tag [value]="label(change.bump)" [severity]="severity(change.bump)" />
+              <span class="c-docs-releases__text">{{ change.text }}</span>
+            </li>
+          }
+        </ul>
+      }
+      @for (note of version.notes; track $index) {
+        <p class="c-docs-releases__note">{{ note }}</p>
+      }
+    </ng-template>
+  </p-timeline>
+}

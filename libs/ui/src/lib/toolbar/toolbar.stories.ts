@@ -4,6 +4,7 @@ import { Badge } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { ToolbarComponent } from './toolbar.component';
@@ -19,12 +20,7 @@ const meta: Meta<ToolbarComponent> = {
     layout: 'padded',
     ...storyDesign(ToolbarMetadata.component.figmaUrl),
   },
-  argTypes: {
-    sticky: {
-      control: 'boolean',
-      description: 'When true (default) the toolbar sticks to the top of its scroll container.',
-    },
-  },
+  argTypes: argTypesFromProps(ToolbarMetadata.props ?? []),
   args: { sticky: true },
 };
 

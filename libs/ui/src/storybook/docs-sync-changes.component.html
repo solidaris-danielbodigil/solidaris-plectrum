@@ -21,39 +21,41 @@
     text="The last promoted sync did not change any resolved token value."
   />
 } @else {
-  <div
-    class="c-docs-sync-changes__toolbar o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-2"
-  >
-    <p-iconfield class="c-docs-control">
-      <p-inputicon styleClass="bi bi-search" />
-      <input
-        pInputText
-        type="search"
-        role="searchbox"
-        autocomplete="off"
-        placeholder="Search token, value or alias"
-        aria-label="Search changes"
-        [value]="search()"
-        (input)="onSearch($any($event.target).value)"
+  <pds-toolbar class="o-layout--margin-block-end-2" [sticky]="true">
+    <ng-container slot="start">
+      <p-iconfield class="c-docs-control">
+        <p-inputicon styleClass="bi bi-search" />
+        <input
+          pInputText
+          type="search"
+          role="searchbox"
+          autocomplete="off"
+          placeholder="Search token, value or alias"
+          aria-label="Search changes"
+          [value]="search()"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </p-iconfield>
+
+      <p-selectButton
+        [options]="kindOptions()"
+        [ngModel]="kind()"
+        (ngModelChange)="onKind($event)"
+        optionLabel="label"
+        optionValue="value"
+        [allowEmpty]="false"
+        aria-label="Filter by change kind"
       />
-    </p-iconfield>
+    </ng-container>
 
-    <p-selectButton
-      [options]="kindOptions()"
-      [ngModel]="kind()"
-      (ngModelChange)="onKind($event)"
-      optionLabel="label"
-      optionValue="value"
-      [allowEmpty]="false"
-      aria-label="Filter by change kind"
-    />
-
-    <p-badge
-      severity="secondary"
-      aria-live="polite"
-      [value]="visible().length + ' / ' + rows().length + ' changes'"
-    />
-  </div>
+    <ng-container slot="end">
+      <p-badge
+        severity="secondary"
+        aria-live="polite"
+        [value]="visible().length + ' / ' + rows().length + ' changes'"
+      />
+    </ng-container>
+  </pds-toolbar>
 
   <p-table
     [value]="visible()"

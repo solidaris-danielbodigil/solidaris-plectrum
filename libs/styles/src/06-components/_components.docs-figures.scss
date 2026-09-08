@@ -11,7 +11,10 @@
 //   c-docs-callout   pds-docs-callout → p-message
 //   c-docs-status    pds-docs-status  → p-tag (status + owner badge)
 //   c-docs-sync-checks   pds-docs-sync-checks  → pds-docs-callout + p-tag
-//   c-docs-sync-changes  pds-docs-sync-changes → p-table + p-selectButton + p-tag
+//   c-docs-sync-changes  pds-docs-sync-changes → pds-toolbar + p-table + p-selectButton + p-tag
+//   c-docs-changesets    pds-docs-changesets   → p-card + p-tag + p-badge (+ pds-empty-state)
+//   c-docs-releases      pds-docs-releases     → p-timeline + p-tag + p-badge (+ pds-empty-state)
+//   c-docs-component-index pds-docs-component-index → pds-toolbar + p-table + p-selectButton + p-tag
 //
 // PrimeNG owns the chrome of steps, cards and callouts. Rules here are
 // structural only: grid columns, list bullets the reset removed, text rhythm
@@ -300,10 +303,6 @@ $docs-tones: design, system, app, neutral;
   margin: var(--#{$pds-prefix}-spacing-3) 0;
 }
 
-.c-docs-sync-changes__toolbar {
-  margin-block-end: var(--#{$pds-prefix}-spacing-2);
-}
-
 // Values (shadows) may wrap; a token path stays on one line and the table scrolls.
 .c-docs-sync-changes__code {
   @include text-body-xs;
@@ -331,4 +330,125 @@ $docs-tones: design, system, app, neutral;
 .c-docs-sync-changes__empty {
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+// ── What's new: pending changesets (p-card) ──────────────────────────────────
+.c-docs-changesets {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+.c-docs-changesets__next {
+  margin-block-end: var(--#{$pds-prefix}-spacing-2);
+}
+
+.c-docs-changesets__label {
+  @include text-label-md;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-docs-changesets__packages {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-changesets__list {
+  list-style: none;
+  padding: 0;
+}
+
+.c-docs-changesets__summary {
+  @include text-body-sm;
+  margin: 0;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+// The changeset file the card comes from — one muted monospace line under the summary.
+.c-docs-changesets__file {
+  @include text-body-xs;
+  font-family: monospace;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+// ── What's new: releases (p-timeline) ────────────────────────────────────────
+.c-docs-releases {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+
+  // Same Timeline constraint as c-docs-steps: no token for the unused opposite column.
+  .p-timeline-event-opposite {
+    flex: 0 0 0;
+    padding: 0;
+  }
+
+  .p-timeline-event-content {
+    padding-block-end: var(--#{$pds-prefix}-spacing-3);
+  }
+
+  .p-timeline-event:last-child .p-timeline-event-content {
+    padding-block-end: 0;
+  }
+}
+
+// min-height matches the version tag so the dot marker sits centred on it.
+.c-docs-releases__marker,
+.c-docs-releases__head {
+  min-height: var(--#{$pds-prefix}-size-docs-releases-head);
+}
+
+.c-docs-releases__changes {
+  list-style: none;
+  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
+  padding: 0;
+}
+
+.c-docs-releases__text {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-docs-releases__note {
+  @include text-body-sm;
+  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
+  color: var(--#{$pds-prefix}-color-text-muted);
+  white-space: pre-line;
+}
+
+// ── Component status: index (p-table) ────────────────────────────────────────
+.c-docs-component-index {
+  display: block;
+  margin: var(--#{$pds-prefix}-spacing-3) 0;
+}
+
+.c-docs-component-index__label {
+  @include text-label-md;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+// A badge reads as one word — the cell does not wrap it at a hyphen or space.
+.c-docs-component-index__tag {
+  white-space: nowrap;
+}
+
+// BEM block and PrimeNG base stay on one line; the table scrolls.
+.c-docs-component-index__code {
+  @include text-body-xs;
+  font-family: monospace;
+  white-space: nowrap;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-component-index__cell {
+  @include text-body-sm;
+}
+
+.c-docs-component-index__none,
+.c-docs-component-index__empty,
+.c-docs-component-index__meta {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
+
+.c-docs-component-index__meta {
+  margin-block-start: var(--#{$pds-prefix}-spacing-2);
 }

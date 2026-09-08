@@ -154,6 +154,7 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
 - [ ] Accessibility not disabled; Chromatic snapshots left on (except `Status` / docs figures)
 - [ ] Attached `{name}.mdx` uses the Copyable Text template (Status, When to use / When not, Anatomy, Accessibility, Figma, Default + Controls, API last)
+- [ ] `{name}.metadata.ts` `props` lists every input and output; stories use `argTypesFromProps` so the API table has description, type, and default (never the empty auto-generated placeholder)
 - [ ] Component + metadata exported from `libs/ui/src/lib/index.ts` (not `src/index.ts`)
 - [ ] User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (inputs may override)
 - [ ] `.metadata.ts` conforms to schema, `governance` matches the core-team decision, and the docs page opens with `<Story of={Stories.Status} />`

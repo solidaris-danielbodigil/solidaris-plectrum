@@ -3,6 +3,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 
 interface AccordionStoryArgs {
   title: string;
@@ -18,19 +19,21 @@ const meta: Meta<AccordionStoryArgs> = {
   title: 'Custom components/Accordion',
   parameters: { layout: 'padded' },
   argTypes: {
-    title: { control: 'text', description: 'Panel header label.' },
-    statusLabel: {
-      control: 'text',
-      description: 'Status tag next to the header.',
-    },
-    expanded: {
-      control: 'boolean',
-      description: 'When true, the panel value is set so the section is open.',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disables p-accordion-panel.',
-    },
+    ...argTypesFromProps(
+      [
+        { name: 'title', type: 'string', required: false, default: 'Certificat ITT', description: 'Panel header label.', category: 'Story knobs' },
+        { name: 'statusLabel', type: 'string', required: false, default: 'Accepté', description: 'Status tag next to the header.', category: 'Story knobs' },
+        { name: 'expanded', type: 'boolean', required: false, default: 'true', description: 'When true, the panel value is set so the section is open.', category: 'Story knobs' },
+        { name: 'disabled', type: 'boolean', required: false, default: 'false', description: 'Disables p-accordion-panel.', category: 'Story knobs' },
+      ],
+    ),
+    ...classArgTypes([
+      {
+        name: '.c-accordion--bordered',
+        description:
+          'BEMIT modifier on p-accordion — card-like stacked radii and token bridges. Not an Angular input; write the class in the template.',
+      },
+    ]),
   },
   args: {
     title: 'Certificat ITT',

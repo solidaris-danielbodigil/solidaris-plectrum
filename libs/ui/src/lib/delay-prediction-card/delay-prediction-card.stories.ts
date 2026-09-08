@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
@@ -30,11 +31,7 @@ const meta: Meta<DelayPredictionCardComponent> = {
     layout: 'padded',
     ...storyDesign(DelayPredictionCardMetadata.component.figmaUrl),
   },
-  argTypes: {
-    unavailable: { control: 'boolean' },
-    daysRemaining: { control: 'number' },
-    predictedCloseDate: { control: 'text' },
-  },
+  argTypes: argTypesFromProps(DelayPredictionCardMetadata.props ?? []),
 };
 
 export default meta;

@@ -96,6 +96,11 @@ export const InputClearMetadata: ComponentMetadata = {
       '--p-icon-size',
     ],
   },
+  props: [
+    { name: 'visible', type: 'boolean', required: false, default: 'true', description: 'When false the clear button is hidden (typically bound to a non-empty value).' },
+    { name: 'ariaLabel', type: 'string', required: false, default: 'Clear', description: 'Accessible name of the clear button.' },
+    { name: 'clear', type: 'output<void>', required: false, description: 'Emitted when the user activates the clear control.' },
+  ],
   aiHints: {
     priority: 'high',
     context:

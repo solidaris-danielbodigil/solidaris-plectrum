@@ -4,6 +4,7 @@
 // re-ordered (Docs/Token pipeline/Sync status). Data: sync-report.generated.ts.
 //
 // PrimeNG components used:
+//   - pds-toolbar — search + kind filter in start, visible / total in end
 //   - p-table — the change list, paginated and sortable
 //   - p-iconfield + pInputText — search token, value or alias
 //   - p-selectButton — filter by change kind (≤ 5 options)
@@ -11,7 +12,7 @@
 //   - pds-docs-callout (p-message) — empty states
 //
 // Styles: c-docs-sync-changes* in libs/styles/src/06-components/_components.docs-figures.scss
-// (toolbar rhythm, monospace cells and the colour swatch — PrimeNG owns the rest).
+// (monospace cells and the colour swatch — PrimeNG and pds-toolbar own the rest).
 // The swatch paints the row's own before/after value; it is data, not a token.
 // =============================================================================
 
@@ -31,6 +32,7 @@ import { InputText } from 'primeng/inputtext';
 import { SelectButton } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
+import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { DocsCalloutComponent } from './docs-callout.component';
 import {
   changeKindSeverity,
@@ -61,6 +63,7 @@ const KIND_LABEL: Readonly<Record<SyncChangeKind, string>> = {
     InputIcon,
     InputText,
     SelectButton,
+    ToolbarComponent,
     DocsCalloutComponent,
   ],
   templateUrl: './docs-sync-changes.component.html',

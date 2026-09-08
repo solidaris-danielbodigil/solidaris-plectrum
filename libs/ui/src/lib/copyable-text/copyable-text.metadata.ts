@@ -84,6 +84,14 @@ export const CopyableTextMetadata: ComponentMetadata = {
       '--p-button-border-radius',
     ],
   },
+  props: [
+    { name: 'label', type: 'string', required: true, description: 'Visible label prefix (e.g. Territoire).' },
+    { name: 'value', type: 'string', required: true, description: 'Text copied to the clipboard.' },
+    { name: 'ariaLabel', type: 'string | undefined', required: false, default: 'undefined', description: 'Accessible name; defaults to the locale copy of Copier {label}.' },
+    { name: 'iconSize', type: 'IconSize', required: false, default: 'xs', description: 'Copy icon size — sm on the overview card, xs in the drawer.' },
+    { name: 'disabled', type: 'boolean', required: false, default: 'false', description: 'When true, the button is inert (e.g. parent loading state).' },
+    { name: 'copied', type: 'output<string>', required: false, description: 'Emitted with the copied value after a successful clipboard write.' },
+  ],
   aiHints: {
     priority: 'high',
     context:

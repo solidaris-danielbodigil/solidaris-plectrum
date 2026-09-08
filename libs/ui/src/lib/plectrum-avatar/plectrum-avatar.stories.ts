@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertTextVisible } from '../../storybook/story-tests';
 import { PlectrumAvatarComponent } from './plectrum-avatar.component';
@@ -12,33 +13,12 @@ const meta: Meta<PlectrumAvatarComponent> = {
     layout: 'centered',
     ...storyDesign(PlectrumAvatarMetadata.component.figmaUrl),
   },
-  argTypes: {
-    size: {
-      control: 'select',
-      options: ['small', 'large'],
-    },
-    gender: {
-      control: 'select',
-      options: ['female', 'male', 'other'],
-    },
-    variant: {
-      control: 'select',
-      options: [1, 2, 3],
-    },
-    state: {
-      control: 'select',
-      options: ['default', 'active'],
-    },
-    initials: {
-      control: 'text',
-      description: 'Initials rendered in the small variant center.',
-    },
-    ariaLabel: {
-      control: 'text',
-      description:
-        'Accessible label for screen readers; falls back to uppercase initials when omitted.',
-    },
-  },
+  argTypes: argTypesFromProps(PlectrumAvatarMetadata.props ?? [], {
+    size: { control: 'select', options: ['small', 'large'] },
+    gender: { control: 'select', options: ['female', 'male', 'other'] },
+    variant: { control: 'select', options: [1, 2, 3] },
+    state: { control: 'select', options: ['default', 'active'] },
+  }),
 };
 
 export default meta;

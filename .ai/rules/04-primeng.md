@@ -179,23 +179,23 @@ PrimeNG-first applies to the Storybook documentation itself, not only to `libs/u
 Anything shown on a Docs page that PrimeNG can render **is** a PrimeNG component wearing the
 Plectrum theme — the docs demonstrate the design system with the design system.
 
-| Docs need                            | Use                                                                                                  | Not                                |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| Numbered process, every step visible | `p-timeline` + `p-badge` marker + `p-tag` actor                                                      | Hand-rolled `<ol>` with CSS badges |
-| Guided, one-panel-at-a-time flow     | `p-stepper`                                                                                          | Custom accordion                   |
-| Role / rule / scope cards            | `p-card` (+ `p-tag` eyebrow)                                                                         | `<li>` boxes with border tricks    |
-| Guardrail, warning, scope note       | `p-message` with `severity`                                                                          | Coloured `<aside>`                 |
-| Status, actor, category label        | `p-tag` / `p-badge` with `severity`                                                                  | Span with tone classes             |
-| Component ownership badge            | `pds-docs-status` via `statusStory(XMetadata.governance)` — first figure on every component page      | Prose "iSHARE only" disclaimers    |
-| Exclusive choice, ≤ 5 options        | `p-selectButton`                                                                                     | A wrapping button row              |
-| Exclusive choice, > 5 options        | `p-autocomplete` (type-to-search) or `p-select` (filterable closed list)                             | `p-selectButton` with 6+ items     |
-| In-docs page links                   | `pds-docs-link` in Angular figures; MDX `a` via `PlectrumDocsContainer` (PrimeNG Button link chrome) | Custom `.c-*-__link`, `.sbdocs-a`  |
-| Tabular reference                    | `<DocsTable>` (Storybook ArgTypes chrome)                                                            | Markdown pipe tables               |
+| Docs need                            | Use                                                                                                                                       | Not                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| Numbered process, every step visible | `p-timeline` + `p-badge` marker + `p-tag` actor                                                                                           | Hand-rolled `<ol>` with CSS badges   |
+| Guided, one-panel-at-a-time flow     | `p-stepper`                                                                                                                               | Custom accordion                     |
+| Role / rule / scope cards            | `p-card` (+ `p-tag` eyebrow)                                                                                                              | `<li>` boxes with border tricks      |
+| Guardrail, warning, scope note       | `p-message` with `severity`                                                                                                               | Coloured `<aside>`                   |
+| Status, actor, category label        | `p-tag` / `p-badge` with `severity`                                                                                                       | Span with tone classes               |
+| Component ownership badge            | `pds-docs-status` via `statusStory(XMetadata.governance)` — first figure on every component page                                          | Prose "iSHARE only" disclaimers      |
+| Exclusive choice, ≤ 5 options        | `p-selectButton`                                                                                                                          | A wrapping button row                |
+| Exclusive choice, > 5 options        | `p-autocomplete` (type-to-search) or `p-select` (filterable closed list)                                                                  | `p-selectButton` with 6+ items       |
+| In-docs page links                   | `pds-docs-link` in Angular figures; MDX `a` via `PlectrumDocsContainer` (PrimeNG Button link chrome)                                      | Custom `.c-*-__link`, `.sbdocs-a`    |
+| Tabular reference                    | `<DocsTable>` (Storybook ArgTypes chrome)                                                                                                 | Markdown pipe tables                 |
 | Docs / foundation fields             | Intrinsic width: `c-docs-control` or `field-sizing: content`; no `[fluid]` / `o-layout--full-width` unless the demo is a full-bleed shell | Stretching every input to the column |
 
 ### How it is wired
 
-- The figure is an Angular component in `libs/ui/src/storybook/` (`pds-docs-steps`, `pds-docs-cards`, `pds-docs-callout`, `pds-docs-status`, `pds-docs-link`, `pds-docs-sync-checks`, `pds-docs-sync-changes` — the last two render the generated sync record `sync-report.generated.ts` with `p-tag`, `p-message` and `p-table`).
+- The figure is an Angular component in `libs/ui/src/storybook/` (`pds-docs-steps`, `pds-docs-cards`, `pds-docs-callout`, `pds-docs-status`, `pds-docs-link`, `pds-docs-sync-checks`, `pds-docs-sync-changes` — the last two render the generated sync record `sync-report.generated.ts` with `p-tag`, `p-message` and `p-table`). Generated records get the same treatment: `pds-docs-changesets` / `pds-docs-releases` render `changelog.generated.ts` (What's new) with `p-card`, `p-timeline` and `p-tag`, and `pds-docs-component-index` renders `.ai/contracts/index.json` (Component status) with `p-table`, `p-selectButton` and `p-tag`. Empty records show `pds-empty-state`, never a bare sentence.
 - MDX prose links cannot host `[pButton]`. `PlectrumDocsContainer` remaps MDX `a` to the same `p-button-link` chrome; `?path=` is rewritten to `./?path=` + `target="_top"`.
 - MDX cannot pass props to Angular, so page content lives in a sibling `*.stories.ts` tagged `['!dev']`
   (hidden from the sidebar) built with the factories in `libs/ui/src/docs/docs-figure-stories.ts`,

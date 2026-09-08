@@ -5,6 +5,7 @@ import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { CopyableTextComponent } from './copyable-text.component';
 import { CopyableTextMetadata } from './copyable-text.metadata';
@@ -98,13 +99,9 @@ const meta: Meta<CopyableTextComponent> = {
       imports: [CopyableTextToastDemoComponent, CopyableTextRowDemoComponent],
     }),
   ],
-  argTypes: {
-    label: { control: 'text' },
-    value: { control: 'text' },
-    ariaLabel: { control: 'text' },
+  argTypes: argTypesFromProps(CopyableTextMetadata.props ?? [], {
     iconSize: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    disabled: { control: 'boolean' },
-  },
+  }),
   render: (args) => ({
     props: args,
     template: `

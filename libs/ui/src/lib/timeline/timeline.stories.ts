@@ -5,6 +5,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { Tag } from 'primeng/tag';
 import { Timeline } from 'primeng/timeline';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 import { assertTextVisible } from '../../storybook/story-tests';
 
 interface TimelineEvent {
@@ -20,14 +21,30 @@ const EVENTS: TimelineEvent[] = [
   { date: '01/12/2025', title: 'Décision envoyée', status: 'Accepté', severity: 'success' },
 ];
 
-const meta: Meta = {
+interface TimelineStoryArgs {
+  align: 'left' | 'right';
+}
+
+const meta: Meta<TimelineStoryArgs> = {
   title: 'Custom components/Timeline',
   decorators: [moduleMetadata({ imports: [Tag, Timeline] })],
   parameters: { layout: 'padded' },
+  argTypes: {
+    ...argTypesFromProps([
+      { name: 'align', type: "'left' | 'right'", required: false, default: 'left', description: 'PrimeNG p-timeline align — content-only restyle assumes left.', category: 'Story knobs' },
+    ], { align: { control: 'radio', options: ['left', 'right'] } }),
+    ...classArgTypes([
+      {
+        name: '.c-timeline--content-only',
+        description: 'Modifier on p-timeline — drops the empty opposite column so content starts at the marker.',
+      },
+    ]),
+  },
+  args: { align: 'left' },
 };
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<TimelineStoryArgs>;
 
 /** Ownership badge for the docs page — CSS-only block, so declared inline. */
 export const Status = statusStory({ status: 'core', owner: 'design-system' });
@@ -38,10 +55,10 @@ export const ContentOnly: Story = {
     await assertTextVisible(canvasElement, 'Document reçu');
     await assertTextVisible(canvasElement, '24/11/2025');
   },
-  render: () => ({
-    props: { events: EVENTS },
+  render: (args) => ({
+    props: { ...args, events: EVENTS },
     template: `
-      <p-timeline class="c-timeline--content-only" [value]="events" align="left" style="max-width: 32rem; display: block;">
+      <p-timeline class="c-timeline--content-only" [value]="events" [align]="align" style="max-width: 32rem; display: block;">
         <ng-template #content let-event>
           <div class="o-flex o-flex--col o-layout--gap-0-5 o-layout--padding-block-end-3">
             <small>{{ event.date }}</small>

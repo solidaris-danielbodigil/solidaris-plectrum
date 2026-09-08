@@ -7,6 +7,7 @@ import { ListMetadata } from './list.metadata';
 import type { ListEntryItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 
 // =============================================================================
@@ -95,25 +96,7 @@ const meta: Meta<ListStoryArgs> = {
     layout: 'padded',
     ...storyDesign(ListMetadata.component.figmaUrl),
   },
-  argTypes: {
-    groups: {
-      control: 'object',
-      description: 'Journey groups — pass a non-null array to enable grouped timeline mode.',
-    },
-    items: {
-      control: 'object',
-      description: 'Flat document rows — used when groups is null.',
-    },
-    expandedGroupIds: {
-      control: 'object',
-      description: 'IDs of journey groups that are expanded.',
-    },
-    loading: { control: 'boolean', description: 'Shows skeleton placeholder rows.' },
-    selectedItemId: {
-      control: 'text',
-      description: 'ID of the selected document row — takes precedence over doc.selected.',
-    },
-  },
+  argTypes: argTypesFromProps(ListMetadata.props ?? []),
   render: (args) => ({
     props: args,
     template: `

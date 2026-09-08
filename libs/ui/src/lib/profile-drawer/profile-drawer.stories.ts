@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { showStorybookToast } from '../../storybook/storybook-toast';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { userEvent, waitForText, within } from '../../storybook/story-tests';
 import {
@@ -164,6 +165,10 @@ const meta: Meta<ProfileDrawerStoryArgs> = {
     layout: 'fullscreen',
     ...storyDesign(ProfileDrawerMetadata.component.figmaUrl),
   },
+  argTypes: argTypesFromProps(ProfileDrawerMetadata.props ?? [], {
+    view: { control: 'select', options: ['details', 'documents'] },
+    position: { control: 'select', options: ['left', 'right', 'top', 'bottom'] },
+  }),
   render: (args) => ({
     props: args,
     template: `

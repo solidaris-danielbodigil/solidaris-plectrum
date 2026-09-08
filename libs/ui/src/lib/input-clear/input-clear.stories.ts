@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { InputClearMetadata } from './input-clear.metadata';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -17,10 +18,7 @@ const meta: Meta<InputClearComponent> = {
   },
   title: 'Custom components/Input Clear',
   component: InputClearComponent,
-  argTypes: {
-    visible: { control: 'boolean' },
-    ariaLabel: { control: 'text' },
-  },
+  argTypes: argTypesFromProps(InputClearMetadata.props ?? []),
 };
 
 export default meta;

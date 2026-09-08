@@ -12,6 +12,7 @@ import { TableModule } from 'primeng/table';
 import { Timeline } from 'primeng/timeline';
 import { Tree } from 'primeng/tree';
 import { statusStory } from '../docs/docs-figure-stories';
+import { DATA_API } from './gallery-arg-types';
 import { ListComponent } from '../lib/list/list.component';
 import type { ListEntryItem } from '../lib/list/list.types';
 import { assertTextVisible, expect } from '../storybook/story-tests';
@@ -88,6 +89,7 @@ const EVENTS = [
 const meta: Meta = {
   title: 'PrimeNG/Data',
   parameters: { layout: 'padded' },
+  argTypes: DATA_API as Meta['argTypes'],
 };
 
 export default meta;

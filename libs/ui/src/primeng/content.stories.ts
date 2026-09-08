@@ -16,6 +16,7 @@ import { StepperModule } from 'primeng/stepper';
 import { TabsModule } from 'primeng/tabs';
 import { Tag } from 'primeng/tag';
 import { statusStory } from '../docs/docs-figure-stories';
+import { CONTENT_API } from './gallery-arg-types';
 import { assertTextVisible, waitForText } from '../storybook/story-tests';
 
 @Component({
@@ -32,17 +33,23 @@ import { assertTextVisible, waitForText } from '../storybook/story-tests';
       <p-step-panels>
         <p-step-panel [value]="1">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">Document reçu.</p>
+            <p class="o-layout--margin-0 o-layout--padding-block-2">
+              Document reçu.
+            </p>
           </ng-template>
         </p-step-panel>
         <p-step-panel [value]="2">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">Analyse en cours.</p>
+            <p class="o-layout--margin-0 o-layout--padding-block-2">
+              Analyse en cours.
+            </p>
           </ng-template>
         </p-step-panel>
         <p-step-panel [value]="3">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">Décision envoyée.</p>
+            <p class="o-layout--margin-0 o-layout--padding-block-2">
+              Décision envoyée.
+            </p>
           </ng-template>
         </p-step-panel>
       </p-step-panels>
@@ -90,6 +97,7 @@ const CRUMBS: MenuItem[] = [
 const meta: Meta = {
   title: 'PrimeNG/Content and navigation',
   parameters: { layout: 'padded' },
+  argTypes: CONTENT_API as Meta['argTypes'],
 };
 
 export default meta;
@@ -102,7 +110,10 @@ export const Status = statusStory({ status: 'core', owner: 'design-system' });
 export const CardBlock: Story = {
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Dossier');
-    await assertTextVisible(canvasElement, 'Certificat ITT accepté le 24/11/2025.');
+    await assertTextVisible(
+      canvasElement,
+      'Certificat ITT accepté le 24/11/2025.',
+    );
   },
   render: () => ({
     moduleMetadata: { imports: [Card] },

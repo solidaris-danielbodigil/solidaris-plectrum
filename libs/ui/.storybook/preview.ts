@@ -110,8 +110,6 @@ const preview: Preview = {
             'PrimeNG customizations',
             'Releases and versioning',
             'AI strategy',
-            'Testing telemetry',
-            'Troubleshooting',
             "What's new",
             'Component status',
           ],

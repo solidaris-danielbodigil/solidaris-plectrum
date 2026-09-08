@@ -75,6 +75,14 @@ export const SubNavShellMetadata: ComponentMetadata = {
       '--pds-focus-ring-offset',
     ],
   },
+  props: [
+    { name: 'title', type: 'string', required: false, default: "''", description: 'Module or app title in the header.' },
+    { name: 'sections', type: 'SubNavShellSection[]', required: false, default: '[]', description: 'Accordion sections and their items.' },
+    { name: 'activeItemId', type: 'string | null', required: false, default: 'null', description: 'ID of the currently active nav item.' },
+    { name: 'version', type: 'string', required: false, default: "''", description: 'Version string in the footer.' },
+    { name: 'changelogUrl', type: 'string', required: false, default: "'#'", description: 'URL for the changelog link.' },
+    { name: 'itemClicked', type: 'output<SubNavShellItem>', required: false, description: 'Emitted when a nav item is activated.' },
+  ],
   aiHints: {
     priority: 'high',
     context: 'Always used alongside NavShellComponent as the second navigation level. Uses PrimeNG Accordion for collapsible sections and PrimeNG Badge for counters.',

@@ -10,6 +10,7 @@ import { Popover } from 'primeng/popover';
 import { Toast } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
 import { statusStory } from '../docs/docs-figure-stories';
+import { OVERLAYS_API } from './gallery-arg-types';
 import {
   assertRoleVisible,
   assertTextVisible,
@@ -53,6 +54,7 @@ const MENU_ITEMS: MenuItem[] = [
 const meta: Meta = {
   title: 'PrimeNG/Overlays',
   parameters: { layout: 'padded' },
+  argTypes: OVERLAYS_API as Meta['argTypes'],
 };
 
 export default meta;

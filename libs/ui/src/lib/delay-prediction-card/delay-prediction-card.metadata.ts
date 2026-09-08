@@ -51,6 +51,7 @@ export const DelayPredictionCardMetadata: ComponentMetadata = {
     { name: 'unavailable', type: 'boolean', default: 'false', description: 'Empty state when no prediction is available.', required: false },
     { name: 'daysRemaining', type: 'number | null', default: 'null', description: 'Days remaining before predicted closure.', required: false },
     { name: 'predictedCloseDate', type: 'string | null', default: 'null', description: 'Formatted predicted closure date.', required: false },
+    { name: 'menuClick', type: 'output<void>', required: false, description: 'Emitted when the card overflow menu is activated.' },
   ],
   behavior: {
     states: ['default', 'unavailable'],

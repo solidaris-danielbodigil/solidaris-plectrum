@@ -53,7 +53,7 @@ export const ToolbarMetadata: ComponentMetadata = {
       name: 'sticky',
       type: 'boolean',
       default: 'true',
-      description: 'Sticks the toolbar to the top of its scroll container.',
+      description: 'When true (default) the toolbar sticks to the top of its scroll container.',
       required: false,
     },
   ],

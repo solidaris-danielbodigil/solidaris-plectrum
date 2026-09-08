@@ -3,6 +3,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import type { DetailListRow } from '../drawer';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 import { assertTextVisible } from '../../storybook/story-tests';
 
 const ROWS: DetailListRow[] = [
@@ -24,22 +25,48 @@ function rows(list: DetailListRow[]): string {
     .join('');
 }
 
-const meta: Meta = {
+interface DetailListStoryArgs {
+  label: string;
+  value: string;
+}
+
+const meta: Meta<DetailListStoryArgs> = {
   title: 'Custom components/Detail List',
   parameters: { layout: 'padded' },
+  argTypes: {
+    ...argTypesFromProps([
+      { name: 'label', type: 'string', required: false, default: 'Numéro national', description: 'First-row dt text in the demo. Production rows are DetailListRow markup.', category: 'Story knobs' },
+      { name: 'value', type: 'string', required: false, default: '85.07.30-033.61', description: 'First-row dd text in the demo.', category: 'Story knobs' },
+    ]),
+    ...classArgTypes([
+      { name: '.c-detail-list', description: 'Block on a semantic dl — rows are flex children.' },
+      { name: '.c-detail-list__label', description: 'Fixed-width label column (dt).' },
+      { name: '.c-detail-list__value', description: 'Value (dd) — reset margin with o-layout--margin-0.' },
+      { name: 'DetailListRow', description: 'Exported type { label: string; value: string } from @solidaris/ui (libs/ui/src/lib/drawer).' },
+    ]),
+  },
+  args: {
+    label: 'Numéro national',
+    value: '85.07.30-033.61',
+  },
 };
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<DetailListStoryArgs>;
 
 /** Ownership badge for the docs page — CSS-only block, so declared inline. */
 export const Status = statusStory({ status: 'core', owner: 'design-system' });
 
 export const Default: Story = {
-  render: () => ({
+  render: (args) => ({
+    props: args,
     template: `
       <dl class="c-detail-list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0" style="max-width: 28rem;">
-        ${rows(ROWS)}
+        <div class="o-flex o-flex--align-items-baseline o-layout--gap-2">
+          <dt class="c-detail-list__label">{{ label }}</dt>
+          <dd class="c-detail-list__value o-layout--margin-0">{{ value }}</dd>
+        </div>
+        ${rows(ROWS.slice(1))}
       </dl>`,
   }),
   play: async ({ canvasElement }) => {

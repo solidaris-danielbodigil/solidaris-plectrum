@@ -7,6 +7,7 @@ import {
 } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TransactionsCicsModalComponent } from './transactions-cics-modal.component';
@@ -37,6 +38,7 @@ const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
   },
   title: 'Patterns/iSHARE/Transactions CICS Modal',
   component: TransactionsCicsModalStoryHostComponent,
+  argTypes: argTypesFromProps(TransactionsCicsModalMetadata.props ?? []),
   decorators: [
     moduleMetadata({
       imports: [TransactionsCicsModalStoryHostComponent],

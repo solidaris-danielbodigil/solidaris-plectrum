@@ -9,6 +9,7 @@ import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { statusStory } from '../docs/docs-figure-stories';
+import { FORMS_API } from './gallery-arg-types';
 import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import {
   assertRoleVisible,
@@ -26,6 +27,7 @@ const SECTORS = [
 const meta: Meta = {
   title: 'PrimeNG/Forms',
   parameters: { layout: 'padded' },
+  argTypes: FORMS_API as Meta['argTypes'],
 };
 
 export default meta;

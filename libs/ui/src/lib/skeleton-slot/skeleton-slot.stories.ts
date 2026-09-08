@@ -4,12 +4,23 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { Skeleton } from 'primeng/skeleton';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { classArgTypes } from '../../storybook/arg-types-from-props';
 import { expect } from '../../storybook/story-tests';
 
 const meta: Meta = {
   title: 'Custom components/Skeleton Slot',
   decorators: [moduleMetadata({ imports: [Skeleton] })],
   parameters: { layout: 'padded' },
+  argTypes: classArgTypes([
+    {
+      name: '.c-skeleton-slot',
+      description: 'Line-height box around PrimeNG p-skeleton so the placeholder matches the eventual content size.',
+    },
+    {
+      name: '.c-skeleton-count-badge',
+      description: 'Circular badge-sized wrapper for a count or avatar placeholder.',
+    },
+  ]),
 };
 
 export default meta;

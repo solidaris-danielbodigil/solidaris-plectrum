@@ -8,8 +8,17 @@
 
 import type { StoryObj } from '@storybook/angular';
 import type { ComponentGovernance } from '@solidaris/contracts';
+import type {
+  ChangelogChangeset,
+  ChangelogRelease,
+} from '../storybook/changelog.types';
 import { DocsCalloutComponent } from '../storybook/docs-callout.component';
 import { DocsCardsComponent } from '../storybook/docs-cards.component';
+import { DocsChangesetsComponent } from '../storybook/docs-changesets.component';
+import {
+  type ContractsIndex,
+  DocsComponentIndexComponent,
+} from '../storybook/docs-component-index.component';
 import type {
   DocsCalloutTone,
   DocsCard,
@@ -19,6 +28,7 @@ import {
   type DocsHeroAction,
   DocsHeroComponent,
 } from '../storybook/docs-hero.component';
+import { DocsReleasesComponent } from '../storybook/docs-releases.component';
 import { DocsStatusComponent } from '../storybook/docs-status.component';
 import { DocsStepsComponent } from '../storybook/docs-steps.component';
 import { DocsSyncChangesComponent } from '../storybook/docs-sync-changes.component';
@@ -139,6 +149,44 @@ export function syncChangesStory(report: SyncReport): StoryObj {
       moduleMetadata: { imports: [DocsSyncChangesComponent] },
       props: { report },
       template: `<pds-docs-sync-changes [report]="report" />`,
+    }),
+  };
+}
+
+/** Pending changesets as cards, with what the next version PR bumps (Docs/What's new). */
+export function changesetsStory(
+  changesets: readonly ChangelogChangeset[],
+): StoryObj {
+  return {
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsChangesetsComponent] },
+      props: { changesets },
+      template: `<pds-docs-changesets [changesets]="changesets" />`,
+    }),
+  };
+}
+
+/** Published versions as a timeline, newest first (Docs/What's new). */
+export function releasesStory(releases: readonly ChangelogRelease[]): StoryObj {
+  return {
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsReleasesComponent] },
+      props: { releases },
+      template: `<pds-docs-releases [releases]="releases" />`,
+    }),
+  };
+}
+
+/** Searchable, filterable component table from .ai/contracts/index.json (Docs/Component status). */
+export function componentIndexStory(index: ContractsIndex): StoryObj {
+  return {
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsComponentIndexComponent] },
+      props: { index },
+      template: `<pds-docs-component-index [index]="index" />`,
     }),
   };
 }

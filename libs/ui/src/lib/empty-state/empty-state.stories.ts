@@ -2,6 +2,7 @@ import { Component, input, signal } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import {
   assertTextVisible,
@@ -66,16 +67,12 @@ const meta: Meta<EmptyStateComponent> = {
       imports: [EmptyStateRandomDemoComponent],
     }),
   ],
-  argTypes: {
-    title: { control: 'text' },
-    description: { control: 'text' },
+  argTypes: argTypesFromProps(EmptyStateMetadata.props ?? [], {
     illustration: {
       control: 'select',
       options: [...EMPTY_STATE_ILLUSTRATION_CHOICES],
-      description:
-        'Decorative hero. `random` (default) picks one catalog SVG per instance. Pass an id to pin a specific illustration.',
     },
-  },
+  }),
   args: {
     illustration: 'random',
   },

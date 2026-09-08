@@ -32,14 +32,17 @@ import { DocsLinkComponent } from './docs-link.component';
 
 export type StatusSeverity = 'info' | 'warn' | 'success' | 'danger';
 
-interface StatusPresentation {
+export interface StatusPresentation {
   label: string;
   severity: StatusSeverity;
   /** One sentence for the reader; `{owner}` is replaced by the owning team, in-sentence form. */
   hint: string;
 }
 
-const STATUS: Readonly<Record<ComponentStatus, StatusPresentation>> = {
+/** Shared with the Component status index so both paint a status the same way. */
+export const STATUS_PRESENTATION: Readonly<
+  Record<ComponentStatus, StatusPresentation>
+> = {
   core: {
     label: 'Core',
     severity: 'info',
@@ -63,7 +66,7 @@ const STATUS: Readonly<Record<ComponentStatus, StatusPresentation>> = {
 };
 
 /** Badge text. */
-const OWNER_LABEL: Readonly<Record<ComponentOwner, string>> = {
+export const OWNER_LABEL: Readonly<Record<ComponentOwner, string>> = {
   'design-system': 'Design-system team',
   ishare: 'iSHARE team',
   icrm: 'iCRM team',
@@ -98,11 +101,15 @@ export class DocsStatusComponent {
 
   protected readonly definitionsPath = DOCS_STATUS_DEFINITIONS_PATH;
 
-  protected readonly statusLabel = computed(() => STATUS[this.status()].label);
-  protected readonly severity = computed(() => STATUS[this.status()].severity);
+  protected readonly statusLabel = computed(
+    () => STATUS_PRESENTATION[this.status()].label,
+  );
+  protected readonly severity = computed(
+    () => STATUS_PRESENTATION[this.status()].severity,
+  );
   protected readonly ownerLabel = computed(() => OWNER_LABEL[this.owner()]);
   protected readonly hint = computed(() =>
-    STATUS[this.status()].hint.replace(
+    STATUS_PRESENTATION[this.status()].hint.replace(
       '{owner}',
       OWNER_IN_SENTENCE[this.owner()],
     ),

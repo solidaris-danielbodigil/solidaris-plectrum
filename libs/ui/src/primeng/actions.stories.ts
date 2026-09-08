@@ -4,6 +4,7 @@ import { Button } from 'primeng/button';
 import { SelectButton } from 'primeng/selectbutton';
 import { ToggleButton } from 'primeng/togglebutton';
 import { statusStory } from '../docs/docs-figure-stories';
+import { ACTIONS_API } from './gallery-arg-types';
 import {
   assertRoleVisible,
   assertTextVisible,
@@ -16,6 +17,7 @@ const ROW =
 const meta: Meta = {
   title: 'PrimeNG/Actions',
   parameters: { layout: 'padded' },
+  argTypes: ACTIONS_API as Meta['argTypes'],
 };
 
 export default meta;

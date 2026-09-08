@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
 import { provideRouter } from '@angular/router';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { SubNavShellComponent } from './sub-nav-shell.component';
@@ -173,13 +174,7 @@ const meta: Meta<SubNavShellComponent> = {
     layout: 'fullscreen',
     ...storyDesign(SubNavShellMetadata.component.figmaUrl),
   },
-  argTypes: {
-    title: { control: 'text', description: 'Module/app title in the header' },
-    version: { control: 'text', description: 'Version string in the footer' },
-    changelogUrl: { control: 'text', description: 'URL for the changelog link' },
-    activeItemId: { control: 'text', description: 'ID of the currently active nav item' },
-    sections: { control: 'object', description: 'Array of SubNavShellSection[]' },
-  },
+  argTypes: argTypesFromProps(SubNavShellMetadata.props ?? []),
 };
 
 export default meta;

@@ -1,0 +1,145 @@
+<pds-toolbar class="o-layout--margin-block-end-2" [sticky]="true">
+  <ng-container slot="start">
+    <p-iconfield class="c-docs-control">
+      <p-inputicon styleClass="bi bi-search" />
+      <input
+        pInputText
+        type="search"
+        role="searchbox"
+        autocomplete="off"
+        placeholder="Search name, block, PrimeNG base or owner"
+        aria-label="Search components"
+        [value]="search()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </p-iconfield>
+
+    <p-selectButton
+      [options]="statusOptions()"
+      [ngModel]="status()"
+      (ngModelChange)="onStatus($event)"
+      optionLabel="label"
+      optionValue="value"
+      [allowEmpty]="false"
+      aria-label="Filter by status"
+    >
+      <ng-template #item let-option>
+        <span class="o-flex o-flex--align-items-center o-layout--gap-1">
+          <span>{{ option.label }}</span>
+          <p-badge
+            [value]="option.count"
+            severity="secondary"
+            aria-hidden="true"
+          />
+        </span>
+      </ng-template>
+    </p-selectButton>
+  </ng-container>
+
+  <ng-container slot="end">
+    <p-badge
+      severity="secondary"
+      aria-live="polite"
+      [value]="visible().length + ' / ' + rows().length + ' components'"
+    />
+  </ng-container>
+</pds-toolbar>
+
+<p-table
+  [value]="visible()"
+  dataKey="name"
+  size="small"
+  sortField="name"
+  [sortOrder]="1"
+  [paginator]="visible().length > pageSize()"
+  [rows]="pageSize()"
+  [rowsPerPageOptions]="[25, 50, 100]"
+  [first]="first()"
+  (firstChange)="first.set($event)"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first}–{last} of {totalRecords}"
+>
+  <ng-template #header>
+    <tr>
+      <th scope="col" pSortableColumn="name">
+        Component <p-sortIcon field="name" />
+      </th>
+      <th scope="col" pSortableColumn="statusLabel">
+        Status <p-sortIcon field="statusLabel" />
+      </th>
+      <th scope="col" pSortableColumn="ownerLabel">
+        Owner <p-sortIcon field="ownerLabel" />
+      </th>
+      <th scope="col" pSortableColumn="category">
+        Category <p-sortIcon field="category" />
+      </th>
+      <th scope="col" pSortableColumn="primeNg">
+        PrimeNG base <p-sortIcon field="primeNg" />
+      </th>
+      <th scope="col">Used by</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td class="c-docs-component-index__name">
+        <div class="o-flex o-flex--y o-flex--align-items-flex-start">
+          @if (row.docsPath) {
+            <pds-docs-link [path]="row.docsPath" [label]="row.name" />
+          } @else {
+            <strong class="c-docs-component-index__label">{{ row.name }}</strong>
+          }
+          @if (row.bemBlock) {
+            <code class="c-docs-component-index__code">{{ row.bemBlock }}</code>
+          }
+        </div>
+      </td>
+      <td class="c-docs-component-index__tag">
+        <p-tag
+          [value]="row.statusLabel"
+          [severity]="row.statusSeverity"
+          [rounded]="true"
+        />
+      </td>
+      <td class="c-docs-component-index__tag">
+        @if (row.ownerLabel) {
+          <p-tag [value]="row.ownerLabel" severity="secondary" [rounded]="true" />
+        } @else {
+          <span class="c-docs-component-index__none">—</span>
+        }
+      </td>
+      <td class="c-docs-component-index__cell">{{ row.category }}</td>
+      <td>
+        @if (row.primeNg) {
+          <code class="c-docs-component-index__code">{{ row.primeNg }}</code>
+        } @else {
+          <span class="c-docs-component-index__none">—</span>
+        }
+      </td>
+      <td class="c-docs-component-index__cell">
+        @if (row.usedBy.length) {
+          {{ row.usedBy.join(', ') }}
+        } @else {
+          <span class="c-docs-component-index__none">—</span>
+        }
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="6" class="c-docs-component-index__empty">
+        No component matches “{{ search() }}”.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<div
+  class="c-docs-component-index__meta o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1"
+>
+  <span>Index generated {{ generated() }}.</span>
+  <span>
+    {{ index().summary.componentsWithMetadata }} of
+    {{ index().summary.totalComponents }} components carry a .metadata.ts.
+  </span>
+  <pds-docs-link [path]="definitionsPath" label="What the badges mean" />
+</div>

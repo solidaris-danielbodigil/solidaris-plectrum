@@ -19,6 +19,7 @@ import {
 import { ProfileCardMetadata } from './profile-card.metadata';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
 import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertTextVisible } from '../../storybook/story-tests';
 
@@ -150,58 +151,11 @@ const meta: Meta<ProfileCardCardStoryArgs> = {
     layout: 'padded',
     ...storyDesign(ProfileCardMetadata.component.figmaUrl),
   },
-  argTypes: {
-    variant: {
-      control: 'select',
-      options: ['default', 'in-order', 'warning', 'danger'],
-      description:
-        'Fallback card treatment when statusAction is absent. Overridden by statusAction.severity when set.',
-    },
-    title: {
-      control: 'text',
-      description: 'Affiliate display name (card heading).',
-    },
-    avatarInitials: {
-      control: 'text',
-      description:
-        'Initials rendered in the Plectrum avatar (small variant fallback).',
-    },
-    avatarGender: {
-      control: 'select',
-      options: ['female', 'male', 'other'],
-      description: 'Illustrated avatar gender passed to pds-plectrum-avatar.',
-    },
-    avatarVariant: {
-      control: 'select',
-      options: [1, 2, 3],
-      description: 'Illustrated avatar variant passed to pds-plectrum-avatar.',
-    },
-    statusAction: {
-      control: 'object',
-      description:
-        'Outlined status button with severity (success | warn | danger). Drives card gradient when set.',
-    },
-    infoTags: {
-      control: 'object',
-      description:
-        'Header info tags. Filterable tags (filterKey set) render as a single p-selectbutton group bound to the active filter; display-only tags render as non-interactive pButton chips.',
-    },
-    identifiers: {
-      control: 'object',
-      description:
-        'Copyable identifier chips with 10.5px copy icon in the metadata row.',
-    },
-    primaryAction: {
-      control: 'object',
-      description:
-        'Secondary header button with optional keyboard shortcut badge.',
-    },
-    loading: {
-      control: 'boolean',
-      description:
-        'Skeleton placeholder with large avatar (56px) and disabled actions.',
-    },
-  },
+  argTypes: argTypesFromProps(ProfileCardMetadata.props ?? [], {
+    variant: { control: 'select', options: ['default', 'in-order', 'warning', 'danger'] },
+    avatarGender: { control: 'select', options: ['female', 'male', 'other'] },
+    avatarVariant: { control: 'select', options: [1, 2, 3] },
+  }),
   render: (args) => ({
     props: args,
     template: `

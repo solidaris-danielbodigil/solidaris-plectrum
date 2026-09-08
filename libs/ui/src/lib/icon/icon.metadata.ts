@@ -75,6 +75,12 @@ export const IconMetadata: ComponentMetadata = {
       '--pds-icon-size-xl',
     ],
   },
+  props: [
+    { name: 'icon', type: 'string', required: true, description: 'Bootstrap Icons class (source=class) or IconRegistry key (source=svg).' },
+    { name: 'source', type: 'IconSource', required: false, default: 'class', description: 'How icon is interpreted — class (Bootstrap Icons) or svg (registry).' },
+    { name: 'size', type: 'IconSize', required: false, default: 'md', description: 'Visual size — maps to --pds-icon-size-* tokens.' },
+    { name: 'label', type: 'string | undefined', required: false, default: 'undefined', description: 'Accessible name for a standalone icon. Omit for decorative (aria-hidden).' },
+  ],
   aiHints: {
     priority: 'high',
     context: 'Used everywhere icons appear — nav, buttons, status chips, empty states.',
