@@ -12,7 +12,8 @@ export const InputClearMetadata: ComponentMetadata = {
     bemBlock: 'c-input-clear',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.input-clear.scss',
-    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
+    figmaUrl:
+      'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
@@ -69,17 +70,22 @@ export const InputClearMetadata: ComponentMetadata = {
     antiPatterns: [
       {
         scenario: 'Bootstrap bi-x-lg inside p-inputicon',
-        reason: 'Font icons render at different metrics than PrimeNG showClear SVGs.',
-        alternative: 'Use pds-input-clear for consistent 14×14 PrimeNG times asset.',
+        reason:
+          'Font icons render at different metrics than PrimeNG showClear SVGs.',
+        alternative:
+          'Use pds-input-clear for consistent 14×14 PrimeNG times asset.',
       },
       {
         scenario: 'Input type="search" with pds-input-clear',
-        reason: 'Browsers render a native clear control alongside the PrimeNG times icon.',
-        alternative: 'Use type="text" with role="searchbox" and pds-input-clear only.',
+        reason:
+          'Browsers render a native clear control alongside the PrimeNG times icon.',
+        alternative:
+          'Use type="text" with role="searchbox" and pds-input-clear only.',
       },
       {
         scenario: 'Clearable pInputText without pds-input-clear',
-        reason: 'Leaves browser-native search clears or no clear affordance; inconsistent with home and top-nav.',
+        reason:
+          'Leaves browser-native search clears or no clear affordance; inconsistent with home and top-nav.',
         alternative:
           'Add pds-input-clear in p-inputicon after the input. Use showClear only on PrimeNG components that support it natively (autocomplete, select, multiselect).',
       },
@@ -89,24 +95,43 @@ export const InputClearMetadata: ComponentMetadata = {
     wcagLevel: 'AA',
   },
   tokens: {
-    consumed: [
-      '--p-form-field-icon-color',
-      '--p-form-field-focus-border-color',
-      '--p-form-field-border-radius',
-      '--p-icon-size',
-    ],
+    consumed: [],
   },
   props: [
-    { name: 'visible', type: 'boolean', required: false, default: 'true', description: 'When false the clear button is hidden (typically bound to a non-empty value).' },
-    { name: 'ariaLabel', type: 'string', required: false, default: 'Clear', description: 'Accessible name of the clear button.' },
-    { name: 'clear', type: 'output<void>', required: false, description: 'Emitted when the user activates the clear control.' },
+    {
+      name: 'visible',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description:
+        'When false the clear button is hidden (typically bound to a non-empty value).',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'Clear',
+      description: 'Accessible name of the clear button.',
+    },
+    {
+      name: 'clear',
+      type: 'output<void>',
+      required: false,
+      description: 'Emitted when the user activates the clear control.',
+    },
   ],
   aiHints: {
     priority: 'high',
     context:
       'Required for every clearable pInputText field in apps and Storybook demos. Use type="text" (not search) with role="searchbox" when the field filters content. Prefer native showClear on PrimeNG components that support it (autocomplete, select, multiselect). Reference implementations: home affiliate search, top-nav search, affiliate-details document toolbar.',
     selectionCriteria: {},
-    keywords: ['input clear', 'showClear', 'times icon', 'iconfield', 'searchbox'],
+    keywords: [
+      'input clear',
+      'showClear',
+      'times icon',
+      'iconfield',
+      'searchbox',
+    ],
   },
   examples: [],
 };

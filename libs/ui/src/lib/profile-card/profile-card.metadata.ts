@@ -11,8 +11,7 @@ export const ProfileCardMetadata: ComponentMetadata = {
     primeNgComponent: 'Card, Button, SelectButton',
     bemBlock: 'c-profile-card',
     itcssLayer: '06-components',
-    scssPath:
-      'libs/styles/src/06-components/_components.profile-card.scss',
+    scssPath: 'libs/styles/src/06-components/_components.profile-card.scss',
     figmaUrl:
       'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
     created: new Date().toISOString(),
@@ -108,7 +107,6 @@ export const ProfileCardMetadata: ComponentMetadata = {
       '--pds-space-profile-card-shortcut-badge-padding-inline',
       '--pds-space-profile-card-shortcut-badge-padding-block',
       '--pds-size-profile-card-metadata-icon',
-      '--pds-size-profile-card-skeleton-avatar',
       '--pds-color-panel-border',
       '--pds-color-orange-50',
       '--pds-color-danger-subtle',
@@ -141,11 +139,6 @@ export const ProfileCardMetadata: ComponentMetadata = {
       '--pds-text-body-sm-weight',
       '--pds-text-body-sm-line-height',
       '--pds-text-body-sm-spacing',
-      '--p-card-body-padding',
-      '--p-card-border-color',
-      '--p-card-background',
-      '--p-card-border-radius',
-      '--p-card-shadow',
     ],
   },
   aiHints: {
@@ -223,14 +216,16 @@ export const ProfileCardMetadata: ComponentMetadata = {
       type: 'boolean',
       required: false,
       default: 'false',
-      description: 'Skeleton placeholder with large avatar and disabled actions.',
+      description:
+        'Skeleton placeholder with large avatar and disabled actions.',
     },
     {
       name: 'infoTags',
       type: 'ProfileCardInfoTag[]',
       required: false,
       default: '[]',
-      description: 'Header info tags. Filterable tags render as a select-button group; others as chips.',
+      description:
+        'Header info tags. Filterable tags render as a select-button group; others as chips.',
     },
     {
       name: 'identifiers',
@@ -244,13 +239,39 @@ export const ProfileCardMetadata: ComponentMetadata = {
       type: 'ProfileCardPrimaryAction | null',
       required: false,
       default: 'null',
-      description: 'Secondary header button with optional keyboard shortcut badge.',
+      description:
+        'Secondary header button with optional keyboard shortcut badge.',
     },
-    { name: 'primaryActionClick', type: 'output<void>', required: false, description: 'Emitted when the primary action is activated.' },
-    { name: 'statusActionClick', type: 'output<void>', required: false, description: 'Emitted when the status action is activated.' },
-    { name: 'infoTagClick', type: 'output<ProfileCardInfoTag>', required: false, description: 'Emitted when a display-only info tag is activated.' },
-    { name: 'identifierCopy', type: 'output<ProfileCardIdentifier>', required: false, description: 'Emitted after an identifier is copied.' },
-    { name: 'statusMenuSelect', type: 'output<MenuItem>', required: false, description: 'Emitted when a status overflow menu item is chosen.' },
+    {
+      name: 'primaryActionClick',
+      type: 'output<void>',
+      required: false,
+      description: 'Emitted when the primary action is activated.',
+    },
+    {
+      name: 'statusActionClick',
+      type: 'output<void>',
+      required: false,
+      description: 'Emitted when the status action is activated.',
+    },
+    {
+      name: 'infoTagClick',
+      type: 'output<ProfileCardInfoTag>',
+      required: false,
+      description: 'Emitted when a display-only info tag is activated.',
+    },
+    {
+      name: 'identifierCopy',
+      type: 'output<ProfileCardIdentifier>',
+      required: false,
+      description: 'Emitted after an identifier is copied.',
+    },
+    {
+      name: 'statusMenuSelect',
+      type: 'output<MenuItem>',
+      required: false,
+      description: 'Emitted when a status overflow menu item is chosen.',
+    },
   ],
   examples: [],
 };

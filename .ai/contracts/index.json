@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-08T07:57:18.624Z",
+    "generated": "2026-09-09T08:15:56.225Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -238,8 +238,8 @@
     "Toolbar": {
       "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
       "category": "molecules",
-      "status": "candidate",
-      "owner": "ishare",
+      "status": "core",
+      "owner": "design-system",
       "metadata": true,
       "bemBlock": "c-toolbar",
       "primeNg": "Card",
@@ -370,8 +370,7 @@
     "primeNgMappings": 11,
     "byStatus": {
       "app": 2,
-      "candidate": 1,
-      "core": 12
+      "core": 13
     }
   }
 }

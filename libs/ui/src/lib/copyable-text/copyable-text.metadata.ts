@@ -12,7 +12,8 @@ export const CopyableTextMetadata: ComponentMetadata = {
     bemBlock: 'c-copyable-text',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.copyable-text.scss',
-    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
+    figmaUrl:
+      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
     created: new Date().toISOString(),
     modified: new Date().toISOString(),
   },
@@ -56,12 +57,15 @@ export const CopyableTextMetadata: ComponentMetadata = {
     antiPatterns: [
       {
         scenario: 'Duplicating clipboard logic in parent handlers',
-        reason: 'Copy behaviour belongs in pds-copyable-text for consistency and fallback.',
-        alternative: 'Use (copied) only for toast/analytics after successful copy.',
+        reason:
+          'Copy behaviour belongs in pds-copyable-text for consistency and fallback.',
+        alternative:
+          'Use (copied) only for toast/analytics after successful copy.',
       },
       {
         scenario: 'Plain text span for copyable identifiers',
-        reason: 'No copy affordance, no keyboard-accessible action, inconsistent with audit UI.',
+        reason:
+          'No copy affordance, no keyboard-accessible action, inconsistent with audit UI.',
         alternative: 'Use pds-copyable-text with label and value inputs.',
       },
     ],
@@ -79,25 +83,66 @@ export const CopyableTextMetadata: ComponentMetadata = {
       '--pds-color-primary-interactive-hover',
       '--pds-color-primary-interactive-active',
       '--pds-color-text-muted',
-      '--p-button-text-secondary-color',
-      '--p-button-padding-x',
-      '--p-button-border-radius',
     ],
   },
   props: [
-    { name: 'label', type: 'string', required: true, description: 'Visible label prefix (e.g. Territoire).' },
-    { name: 'value', type: 'string', required: true, description: 'Text copied to the clipboard.' },
-    { name: 'ariaLabel', type: 'string | undefined', required: false, default: 'undefined', description: 'Accessible name; defaults to the locale copy of Copier {label}.' },
-    { name: 'iconSize', type: 'IconSize', required: false, default: 'xs', description: 'Copy icon size — sm on the overview card, xs in the drawer.' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false', description: 'When true, the button is inert (e.g. parent loading state).' },
-    { name: 'copied', type: 'output<string>', required: false, description: 'Emitted with the copied value after a successful clipboard write.' },
+    {
+      name: 'label',
+      type: 'string',
+      required: true,
+      description: 'Visible label prefix (e.g. Territoire).',
+    },
+    {
+      name: 'value',
+      type: 'string',
+      required: true,
+      description: 'Text copied to the clipboard.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string | undefined',
+      required: false,
+      default: 'undefined',
+      description:
+        'Accessible name; defaults to the locale copy of Copier {label}.',
+    },
+    {
+      name: 'iconSize',
+      type: 'IconSize',
+      required: false,
+      default: 'xs',
+      description:
+        'Copy icon size — sm on the overview card, xs in the drawer.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'When true, the button is inert (e.g. parent loading state).',
+    },
+    {
+      name: 'copied',
+      type: 'output<string>',
+      required: false,
+      description:
+        'Emitted with the copied value after a successful clipboard write.',
+    },
   ],
   aiHints: {
     priority: 'high',
     context:
       'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-profile-card and pds-profile-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
     selectionCriteria: {},
-    keywords: ['copy', 'clipboard', 'identifier', 'metadata chip', 'Territoire', 'NISS'],
+    keywords: [
+      'copy',
+      'clipboard',
+      'identifier',
+      'metadata chip',
+      'Territoire',
+      'NISS',
+    ],
   },
   examples: [],
 };

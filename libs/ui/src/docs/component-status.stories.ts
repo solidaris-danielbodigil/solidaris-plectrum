@@ -38,10 +38,20 @@ const SAMPLE: ContractsIndex = {
     Toolbar: {
       path: 'libs/ui/src/lib/toolbar/toolbar.component.ts',
       category: 'molecules',
+      status: 'core',
+      owner: 'design-system',
+      metadata: true,
+      bemBlock: 'c-toolbar',
+      primeNg: 'Card',
+      usedBy: [],
+    },
+    SearchFilters: {
+      path: 'libs/ui/src/lib/search-filters/search-filters.component.ts',
+      category: 'molecules',
       status: 'candidate',
       owner: 'ishare',
       metadata: true,
-      bemBlock: 'c-toolbar',
+      bemBlock: 'c-search-filters',
       primeNg: 'Card',
       usedBy: [],
     },
@@ -74,7 +84,7 @@ const SAMPLE: ContractsIndex = {
       usedBy: [],
     },
   },
-  summary: { totalComponents: 5, componentsWithMetadata: 4 },
+  summary: { totalComponents: 6, componentsWithMetadata: 5 },
 };
 
 export const Index: StoryObj = {
@@ -109,12 +119,12 @@ export const Sample: StoryObj = {
     await expect(table.getByText('Undeclared')).toBeVisible();
     await expect(table.getByText('Deprecated')).toBeVisible();
     await expect(
-      canvas.getByText('4 of 5 components carry a .metadata.ts.'),
+      canvas.getByText('5 of 6 components carry a .metadata.ts.'),
     ).toBeVisible();
 
     await userEvent.click(canvas.getByRole('button', { name: 'Candidate' }));
-    await waitForText(canvasElement, '1 / 5 components');
-    await expect(canvas.getAllByRole('row')).toHaveLength(2); // header + Toolbar
-    await expect(canvas.getByText('c-toolbar')).toBeVisible();
+    await waitForText(canvasElement, '1 / 6 components');
+    await expect(canvas.getAllByRole('row')).toHaveLength(2); // header + SearchFilters
+    await expect(canvas.getByText('c-search-filters')).toBeVisible();
   },
 };

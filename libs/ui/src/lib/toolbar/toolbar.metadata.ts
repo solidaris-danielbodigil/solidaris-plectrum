@@ -12,14 +12,14 @@ export const ToolbarMetadata: ComponentMetadata = {
     bemBlock: 'c-toolbar',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.toolbar.scss',
-    figmaUrl: 'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772',
+    figmaUrl:
+      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772',
     created: '2026-09-05',
-    modified: '2026-09-05',
+    modified: '2026-09-09',
   },
   governance: {
-    status: 'candidate',
-    owner: 'ishare',
-    note: 'Built for the iSHARE documents toolbar. The Foundations pages already embed it, so promotion is the expected outcome once a second application needs it.',
+    status: 'core',
+    owner: 'design-system',
   },
   usage: {
     useCases: [
@@ -29,7 +29,8 @@ export const ToolbarMetadata: ComponentMetadata = {
     commonPatterns: [
       {
         name: 'Search + filters with count badge',
-        description: 'Search input and filter buttons in the start slot; badge and primary action in the end slot.',
+        description:
+          'Search input and filter buttons in the start slot; badge and primary action in the end slot.',
         composition:
           '<pds-toolbar [sticky]="true"><ng-container slot="start">…</ng-container><ng-container slot="end">…</ng-container></pds-toolbar>',
       },
@@ -37,7 +38,8 @@ export const ToolbarMetadata: ComponentMetadata = {
         name: 'Domain variant',
         description:
           'Page-specific chrome via a domain BEM class on the host (e.g. c-affiliate-documents-toolbar) — the shared block stays generic.',
-        composition: '<pds-toolbar class="c-affiliate-documents-toolbar">…</pds-toolbar>',
+        composition:
+          '<pds-toolbar class="c-affiliate-documents-toolbar">…</pds-toolbar>',
       },
     ],
     antiPatterns: [
@@ -53,20 +55,23 @@ export const ToolbarMetadata: ComponentMetadata = {
       name: 'sticky',
       type: 'boolean',
       default: 'true',
-      description: 'When true (default) the toolbar sticks to the top of its scroll container.',
+      description:
+        'When true (default) the toolbar sticks to the top of its scroll container.',
       required: false,
     },
   ],
   behavior: {
     states: ['default', 'sticky'],
-    responsive: ['Start-slot content wraps below the search field on narrow viewports'],
+    responsive: [
+      'Start-slot content wraps below the search field on narrow viewports',
+    ],
   },
   accessibility: {
     wcagLevel: 'AA',
     keyboardSupport: ['Slot content keeps its native tab order'],
   },
   tokens: {
-    consumed: [],
+    consumed: ['--pds-z-sticky'],
   },
   aiHints: {
     priority: 'medium',
@@ -82,7 +87,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     {
       name: 'default',
       description: 'Search + actions toolbar',
-      code: '<pds-toolbar [sticky]="true">\n  <ng-container slot="start"><input pInputText placeholder="Rechercher" /></ng-container>\n  <ng-container slot="end"><p-badge value="12" /></ng-container>\n</pds-toolbar>',
+      code: '<pds-toolbar [sticky]="true">\n  <ng-container slot="start"><input pInputText placeholder="Search" /></ng-container>\n  <ng-container slot="end"><p-badge value="12" /></ng-container>\n</pds-toolbar>',
     },
   ],
 };

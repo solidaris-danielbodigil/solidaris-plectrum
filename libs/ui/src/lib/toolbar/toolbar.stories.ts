@@ -10,10 +10,8 @@ import { expect, within } from '../../storybook/story-tests';
 import { ToolbarComponent } from './toolbar.component';
 import { ToolbarMetadata } from './toolbar.metadata';
 
-// Promotion candidate owned by iSHARE (governance) — filed under Patterns/iSHARE
-// until the core team moves it to Custom components.
 const meta: Meta<ToolbarComponent> = {
-  title: 'Patterns/iSHARE/Toolbar',
+  title: 'Custom components/Toolbar',
   component: ToolbarComponent,
   decorators: [moduleMetadata({ imports: [Badge, ButtonModule, InputText] })],
   parameters: {
@@ -32,12 +30,12 @@ export const Status = statusStory(ToolbarMetadata.governance);
 
 const SLOTS = `
   <ng-container slot="start">
-    <input pInputText type="text" placeholder="Rechercher un document" aria-label="Rechercher" />
-    <button pButton type="button" severity="secondary" size="small" [outlined]="true" label="Filtres" icon="bi bi-funnel"></button>
+    <input pInputText type="text" placeholder="Search" aria-label="Search" />
+    <button pButton type="button" severity="secondary" size="small" [outlined]="true" label="Filters" icon="bi bi-funnel"></button>
   </ng-container>
   <ng-container slot="end">
     <p-badge value="12" />
-    <button pButton type="button" size="small" label="Nouveau"></button>
+    <button pButton type="button" size="small" label="New"></button>
   </ng-container>`;
 
 export const Default: Story = {
@@ -47,8 +45,8 @@ export const Default: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('textbox', { name: 'Rechercher' })).toBeVisible();
-    await expect(canvas.getByRole('button', { name: 'Nouveau' })).toBeVisible();
+    await expect(canvas.getByRole('textbox', { name: 'Search' })).toBeVisible();
+    await expect(canvas.getByRole('button', { name: 'New' })).toBeVisible();
   },
 };
 
@@ -67,7 +65,9 @@ export const Sticky: Story = {
     const scroller = canvasElement.querySelector(
       '.o-layout--overflow-y-auto',
     ) as HTMLElement | null;
-    const toolbar = canvasElement.querySelector('pds-toolbar') as HTMLElement | null;
+    const toolbar = canvasElement.querySelector(
+      'pds-toolbar',
+    ) as HTMLElement | null;
 
     await expect(toolbar).toHaveClass('c-toolbar--sticky');
     await expect(getComputedStyle(toolbar!).position).toBe('sticky');
@@ -83,12 +83,12 @@ export const StartSlotOnly: Story = {
     template: `
       <pds-toolbar [sticky]="false">
         <ng-container slot="start">
-          <input pInputText type="text" placeholder="Rechercher" aria-label="Rechercher" />
+          <input pInputText type="text" placeholder="Search" aria-label="Search" />
         </ng-container>
       </pds-toolbar>`,
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole('textbox', { name: 'Rechercher' })).toBeVisible();
+    await expect(canvas.getByRole('textbox', { name: 'Search' })).toBeVisible();
   },
 };
