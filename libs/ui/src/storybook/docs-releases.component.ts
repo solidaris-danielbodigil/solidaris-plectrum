@@ -41,7 +41,7 @@ import {
   templateUrl: './docs-releases.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-releases' },
+  host: { class: 'c-docs-releases o-layout--block o-layout--margin-block-3' },
 })
 export class DocsReleasesComponent {
   readonly releases = input.required<readonly ChangelogRelease[]>();

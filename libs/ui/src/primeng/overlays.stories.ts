@@ -62,9 +62,13 @@ export default meta;
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory({ status: 'core', owner: 'design-system' }),
+};
 
 export const DialogOpen: Story = {
+  name: 'Dialog',
   play: async ({ canvasElement }) => {
     await waitForText(canvasElement, 'Modifier le dossier', {
       inDocument: true,
@@ -97,6 +101,7 @@ export const DialogOpen: Story = {
 };
 
 export const DrawerOpen: Story = {
+  name: 'Drawer',
   play: async ({ canvasElement }) => {
     await waitForText(canvasElement, 'Filtres', { inDocument: true });
   },
@@ -118,6 +123,7 @@ export const DrawerOpen: Story = {
 };
 
 export const PopoverOpen: Story = {
+  name: 'Popover',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
@@ -143,6 +149,7 @@ export const PopoverOpen: Story = {
 };
 
 export const ToastMessage: Story = {
+  name: 'Toast',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
@@ -157,6 +164,7 @@ export const ToastMessage: Story = {
 };
 
 export const TooltipTrigger: Story = {
+  name: 'Tooltip',
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole('button', { name: 'NISS' });
@@ -181,6 +189,7 @@ export const TooltipTrigger: Story = {
 };
 
 export const MenuInline: Story = {
+  name: 'Menu',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Exporter');
     await assertTextVisible(canvasElement, 'Supprimer');

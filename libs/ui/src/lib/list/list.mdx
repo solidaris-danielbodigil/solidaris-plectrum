@@ -1,7 +1,5 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './list.stories';
-import { ListMetadata } from './list.metadata';
 
 <Meta of={Stories} />
 
@@ -11,55 +9,17 @@ import { ListMetadata } from './list.metadata';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Grouped or flat entry list. Journey mode adds a timeline gutter under expandable groups.
+## Usage
 
-## When to use
-
-- Journey-grouped parcours with expandable tree groups
-- Flat document or entry listing without grouping
-- A suivi panel of card rows with status tags
-
-## When not to use
-
-- Mixing groups and flat items in one binding — mode is `groups` null or not
-- A full-page data table of dense columns — use a table instead
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-list', 'Region host — journey or flat modifier, aria-busy when loading'],
-    ['c-list__header-row', 'Optional title + count badge'],
-    ['c-list__item--group', 'Expandable journey group header'],
-    ['c-list__item--entry', 'Document / entry card row'],
-    ['c-list__timeline-*', 'Journey gutter sprites (decorative)'],
-    ['p-tree', 'PrimeNG tree — group and document node templates'],
-    ['p-tag', 'Status and footer tags'],
-  ]}
-/>
-
-## Accessibility
-
-- Host is `role="region"` with an `aria-label`; `aria-busy` is set while loading
-- PrimeNG Tree supplies treeitem semantics for groups and documents
-- Document selection is `aria-selected` on the PrimeNG treeitem — row cards are not nested buttons
-- Sort icon and timeline sprites are `aria-hidden`
-- Status and footer tags must include visible label text — not colour alone
-
-## Figma
-
-<a href={ListMetadata.component.figmaUrl}>pds-list / c-list</a> (design source). iSHARE-Audit [324:5827](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5827) and [518:48833](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=518-48833) are reference usage.
-
-- **Journey ON**: chevron on group headers, 64px timeline gutter on child document rows
-- **Journey OFF**: full-width document cards — no chevron, no timeline
-- **Selected document**: 1px primary border + `shadow-md` (Figma node 2:125)
-- **Hover document**: 1px primary border, no shadow (Figma node 2:125)
-- **Row chrome**: `c-list__item--entry` card with default/hover/selected states
-- **Layout**: flex/gap via `o-flex` / `o-layout` — chrome in `06-components/_components.list.scss`
-- **PrimeNG**: `p-tag` for status/footer tags
-
-BEM block: `c-list`
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
@@ -134,6 +94,21 @@ Flat document row chrome — default (neutral border), hover (primary border, no
 
 <Canvas of={Stories.RowStates} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

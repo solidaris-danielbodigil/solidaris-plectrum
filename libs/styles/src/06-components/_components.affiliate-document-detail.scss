@@ -28,15 +28,12 @@
   min-block-size: 0;
 }
 
-.c-affiliate-document-detail__stepper-layout-switch {
-  flex-shrink: 0;
-}
-
 .c-affiliate-document-detail__stepper {
   flex: 1 1 auto;
   min-block-size: 0;
 
   &:not(.c-affiliate-document-detail__stepper--vertical) {
+
     // Match PrimeNG Stepper: steps share free space; last step stays content-sized.
     // https://primeng.dev/stepper — @primeuix/styles `.p-step` / `.p-step:last-of-type`
     .p-step {
@@ -52,7 +49,7 @@
     }
 
     // Custom separator lives in __step-head-row; hide PrimeNG's trailing instance.
-    .p-step > .p-stepper-separator {
+    .p-step>.p-stepper-separator {
       display: none;
     }
 
@@ -86,7 +83,7 @@
       min-inline-size: 0;
     }
 
-    .p-step > .p-stepper-separator {
+    .p-step>.p-stepper-separator {
       display: none;
     }
 
@@ -130,15 +127,6 @@
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-step-title-text);
 }
 
-.c-affiliate-document-detail__step-meta {
-  flex-wrap: nowrap;
-  align-self: flex-start;
-}
-
-.c-affiliate-document-detail__step-chrome {
-  flex-shrink: 0;
-}
-
 .c-affiliate-document-detail__step-list-scroll {
   min-inline-size: 0;
 
@@ -151,34 +139,16 @@
   }
 }
 
-.c-affiliate-document-detail__step-list {
-  flex-wrap: nowrap;
-}
-
 .c-affiliate-document-detail__skeleton-step-list-scroll {
   .c-affiliate-document-detail__skeleton-step-list {
     flex: 1 0 auto;
-    flex-wrap: nowrap;
     min-inline-size: max-content;
   }
-}
-
-.c-affiliate-document-detail__step-nav {
-  flex-shrink: 0;
-}
-
-.c-affiliate-document-detail__vertical-step-nav {
-  flex-shrink: 0;
-  padding-block-start: var(--#{$pds-prefix}-spacing-3);
 }
 
 .c-affiliate-document-detail__step-content {
   flex: 1 1 auto;
   min-block-size: 0;
-
-  &.o-layout--overflow-hidden {
-    overflow: hidden;
-  }
 }
 
 // ── Certificate accordion content ────────────────────────────────────────────
@@ -199,12 +169,7 @@
   color: var(--#{$pds-prefix}-color-text);
 }
 
-.c-affiliate-document-detail__details-section--with-prediction {
-  gap: var(--#{$pds-prefix}-spacing-3);
-}
-
 .c-affiliate-document-detail__delay-prediction {
-  align-self: flex-start;
   inline-size: fit-content;
   max-inline-size: 100%;
 }
@@ -214,18 +179,15 @@
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-detail-label-text);
   // Fixed label column — Figma: 124px
   inline-size: var(--#{$pds-prefix}-size-affiliate-document-detail-detail-label-width);
-  flex-shrink: 0;
 
   &--inline {
     inline-size: auto;
-    flex-shrink: 1;
   }
 }
 
 // Figma 530:6471 — all metadata values rendered as primary-75 chips
 .c-affiliate-document-detail__detail-value {
   @include text-label-sm;
-  display: inline-block;
   background: var(--#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-bg);
   color: var(--#{$pds-prefix}-color-affiliate-document-detail-metadata-chip-text);
   border-radius: var(--#{$pds-prefix}-radius-pill);
@@ -318,8 +280,6 @@
 .c-affiliate-document-detail__skeleton-step-list {
   inline-size: max-content;
   min-inline-size: 100%;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
 }
 
 .c-affiliate-document-detail__skeleton-step {

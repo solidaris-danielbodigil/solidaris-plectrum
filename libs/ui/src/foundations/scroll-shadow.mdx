@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './scroll-shadow.stories';
 
@@ -8,7 +8,15 @@ import * as Stories from './scroll-shadow.stories';
 
 Scroll-driven edge fades for scroll containers — a visual cue that more content exists beyond the visible area. **Pure CSS** via [`scroll-timeline`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline); no JavaScript.
 
-## Block axis — `.o-scroll-shadow` (vertical)
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
+
+### Block axis — `.o-scroll-shadow` (vertical)
 
 Top/bottom fades on a **block-axis** scroller:
 
@@ -22,7 +30,7 @@ Top/bottom fades on a **block-axis** scroller:
 </div>
 ```
 
-## Inline axis — `.o-scroll-shadow--inline` (horizontal)
+### Inline axis — `.o-scroll-shadow--inline` (horizontal)
 
 Start/end fades on an **inline-axis** scroller (left/right in LTR):
 
@@ -41,7 +49,7 @@ Start/end fades on an **inline-axis** scroller (left/right in LTR):
 </div>
 ```
 
-## Mixins (containers you don't own)
+### Mixins (containers you don't own)
 
 ```scss
 @use '../02-tools/tools.scroll-shadow' as *;

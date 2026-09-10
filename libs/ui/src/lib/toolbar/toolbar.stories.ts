@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { Badge } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -25,8 +25,14 @@ const meta: Meta<ToolbarComponent> = {
 export default meta;
 type Story = StoryObj<ToolbarComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(ToolbarMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from toolbar.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(ToolbarMetadata.governance, ToolbarMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'accessibility') };
 
 const SLOTS = `
   <ng-container slot="start">

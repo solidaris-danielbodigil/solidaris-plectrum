@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './detail-list.stories';
 
 <Meta of={Stories} />
@@ -10,41 +9,17 @@ import * as Stories from './detail-list.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`c-detail-list` renders label / value description rows on a semantic `<dl>`. The block owns the label column width and typography; layout is `o-flex` mixes in the template. The `DetailListRow` type is exported from `@solidaris/ui` (`libs/ui/src/lib/drawer`).
+## Usage
 
-## When to use
-
-- Read-only label / value rows in a drawer or card section
-- Shared description lists that need a fixed label column
-
-## When not to use
-
-- Editable fields — use Form Field
-- Tabular data with many columns — use a data table
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Class', 'Element', 'Role']}
-  rows={[
-    ['c-detail-list', 'dl', 'Block — rows are flex children'],
-    ['c-detail-list__label', 'dt', 'Fixed-width label column'],
-    ['c-detail-list__value', 'dd', 'Value — margin reset via o-layout--margin-0'],
-  ]}
-/>
-
-## Accessibility
-
-- Keep the semantic `<dl>` / `<dt>` / `<dd>` pairing — do not flatten rows into generic divs without those roles
-- When the list sits in a drawer section, point `aria-labelledby` at the section title
-- Values that are links or copy actions must expose their own accessible names
-
-## Figma
-
-There is no Plectrum UI Kit node. [Profile Drawer](?path=/docs/shell-profile-drawer--docs) / [iSHARE-Audit node 7:1012](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=7-1012) is reference usage.
-
-- **Styles**: `libs/styles/src/06-components/_components.detail-list.scss`
-- **Used by**: [Affiliate Detail Drawer](?path=/docs/shell-profile-drawer--docs) sections
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
@@ -55,8 +30,21 @@ There is no Plectrum UI Kit node. [Profile Drawer](?path=/docs/shell-profile-dra
 
 <Canvas of={Stories.InASection} />
 
-## API
+## Composition
 
-Story knobs for the first demo row, plus the `c-detail-list` classes and the exported `DetailListRow` type. There is no Angular wrapper.
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
 
-<ArgTypes of={Stories} />
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

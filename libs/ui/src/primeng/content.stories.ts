@@ -105,9 +105,10 @@ export default meta;
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+export const Status = { tags: ['!dev'], ...statusStory({ status: 'core', owner: 'design-system' }) };
 
 export const CardBlock: Story = {
+  name: 'Card',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Dossier');
     await assertTextVisible(
@@ -126,6 +127,7 @@ export const CardBlock: Story = {
 };
 
 export const Tags: Story = {
+  name: 'Tag',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Accepté');
     await assertTextVisible(canvasElement, 'En traitement');
@@ -144,6 +146,7 @@ export const Tags: Story = {
 };
 
 export const Badges: Story = {
+  name: 'Badge',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, '3');
   },
@@ -160,6 +163,7 @@ export const Badges: Story = {
 };
 
 export const Messages: Story = {
+  name: 'Message',
   play: async ({ canvasElement }) => {
     await waitForText(canvasElement, 'Le dossier a été enregistré.');
   },
@@ -170,6 +174,7 @@ export const Messages: Story = {
 };
 
 export const Dividers: Story = {
+  name: 'Divider',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Avant');
     await assertTextVisible(canvasElement, 'Après');
@@ -185,6 +190,7 @@ export const Dividers: Story = {
 };
 
 export const Breadcrumbs: Story = {
+  name: 'Breadcrumb',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Eva Martinez');
   },
@@ -196,6 +202,7 @@ export const Breadcrumbs: Story = {
 };
 
 export const TabSet: Story = {
+  name: 'Tabs',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Détails');
     await assertTextVisible(canvasElement, 'Identité et coordonnées.');
@@ -226,6 +233,7 @@ export const TabSet: Story = {
 };
 
 export const Steps: Story = {
+  name: 'Stepper',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Réception');
     await waitForText(canvasElement, 'Document reçu.');
@@ -237,6 +245,7 @@ export const Steps: Story = {
 };
 
 export const ScrollToTop: Story = {
+  name: 'ScrollTop',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Début de la page');
     await assertTextVisible(canvasElement, 'Fin de la page');

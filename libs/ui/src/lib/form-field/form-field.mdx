@@ -1,7 +1,5 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './form-field.stories';
-import { FormFieldMetadata } from './form-field.metadata';
 
 <Meta of={Stories} />
 
@@ -11,50 +9,21 @@ import { FormFieldMetadata } from './form-field.metadata';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Optional field shell with a custom static label (not PrimeNG FloatLabel), optional helper text, required asterisk, invalid label colour, and a built-in `p-message` error slot.
+## Usage
 
-Parent forms should pass `[invalid]="isFieldInvalid(form, 'controlName')"` where `isFieldInvalid` checks `control.invalid && (control.touched || control.dirty || form.submitted)` — SelectButton and similar controls set `dirty` but not `touched` on click.
-
-## When to use
-
-- Static labels above or beside PrimeNG inputs
-- Horizontal label + control rows that share one invalid colour
-- A required marker and a `p-message` error under the control
-
-## When not to use
-
-- PrimeNG FloatLabel when the design calls for a static muted label
-- Horizontal layout without a matching `inputId` / control `id` — the label cannot associate
-- Clearable `pInputText` with `type="search"` — native clear conflicts with `pds-input-clear`
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-form-field', 'Block — vertical or horizontal via modifiers and o-flex'],
-    ['c-form-field__label', 'Static label — for matches inputId'],
-    ['c-form-field__required', 'Decorative asterisk (aria-hidden)'],
-    ['c-form-field__control', 'Projected PrimeNG or native control'],
-    ['c-form-field__hint', 'Helper text when the field is valid'],
-    ['p-message / [pdsFormFieldError]', 'Error slot when invalid'],
-  ]}
-/>
-
-## Accessibility
-
-- Associate the label with the control by passing the same `inputId` as the control `id` (`<label for>`)
-- When `inputId` is omitted, the label still has a generated `id` that a control can reference with `aria-labelledby`
-- Give the hint and error stable ids and set `aria-describedby` on the projected control so assistive tech announces helper and error text
-- Required: the visible asterisk is `aria-hidden`; a visually hidden `requiredLabel` is announced. Also mark the control `required` / `aria-required`
-
-## Figma
-
-<a href={FormFieldMetadata.component.figmaUrl}>Plectrum for PrimeNG (Main)</a> — form controls live in the kit; this shell is the Plectrum static-label wrapper around those inputs.
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Vertical
 
-Default stacked label + control.
+Default stacked label + control. The stories derive `inputId` from the story id so the embedded examples never share an `id`.
 
 <Canvas of={Stories.Vertical} />
 <Controls of={Stories.Vertical} />
@@ -77,6 +46,21 @@ Horizontal layout with invalid state.
 
 <Canvas of={Stories.HorizontalInvalid} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

@@ -5,23 +5,28 @@
 // =============================================================================
 
 import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import { doDontStory } from '../docs/docs-figure-stories';
 
 export default {
   title: 'Foundations/Layout',
   tags: ['!dev'],
   decorators: [
-    componentWrapperDecorator((story) => `<div class="sb-demo-wrapper">${story}</div>`),
+    componentWrapperDecorator(
+      (story) => `<div class="sb-demo-wrapper">${story}</div>`,
+    ),
   ],
   parameters: { layout: 'padded' },
   argTypes: {
     'o-layout': {
       name: '.o-layout',
-      description: 'Layout object initializer — required on any element that uses an o-layout modifier',
+      description:
+        'Layout object initializer — required on any element that uses an o-layout modifier',
       table: { category: 'Block' },
     },
     'o-layout--full-height': {
       name: '.o-layout--full-height',
-      description: 'Sets height: 100% — must be added to all ancestors up to a container with a height',
+      description:
+        'Sets height: 100% — must be added to all ancestors up to a container with a height',
       table: { category: 'Dimensions' },
     },
     'o-layout--full-width': {
@@ -31,66 +36,105 @@ export default {
     },
     'o-layout--full-dvh': {
       name: '.o-layout--full-dvh',
-      description: 'Sets height: 100dvh — full dynamic viewport height (mobile-aware)',
+      description:
+        'Sets height: 100dvh — full dynamic viewport height (mobile-aware)',
       table: { category: 'Dimensions' },
     },
     'o-layout--min-h-0': {
       name: '.o-layout--min-h-0',
-      description: 'Sets min-height: 0 — enables flex children to scroll/shrink below content size',
+      description:
+        'Sets min-height: 0 — enables flex children to scroll/shrink below content size',
       table: { category: 'Dimensions' },
     },
     'o-layout--min-w-0': {
       name: '.o-layout--min-w-0',
-      description: 'Sets min-width: 0 — enables text truncation in flex children',
+      description:
+        'Sets min-width: 0 — enables text truncation in flex children',
       table: { category: 'Dimensions' },
     },
     'o-layout--overflow-{value}': {
       name: '.o-layout--overflow-{value}',
-      description: 'Shorthand overflow. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
+      description:
+        'Shorthand overflow. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
       table: { category: 'Overflow' },
     },
     'o-layout--overflow-x-{value}': {
       name: '.o-layout--overflow-x-{value}',
-      description: 'overflow-x. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
+      description:
+        'overflow-x. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
       table: { category: 'Overflow' },
     },
     'o-layout--overflow-y-{value}': {
       name: '.o-layout--overflow-y-{value}',
-      description: 'overflow-y. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
+      description:
+        'overflow-y. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
       table: { category: 'Overflow' },
     },
     'o-layout--{display}': {
       name: '.o-layout--{display}',
-      description: 'Display. Values: block inline-block inline hidden grid inline-flex contents. Supports @{bp}',
+      description:
+        'Display. Values: block inline-block inline hidden grid inline-flex contents. Supports @{bp}',
       table: { category: 'Display' },
     },
     'o-layout--{position}': {
       name: '.o-layout--{position}',
-      description: 'Position. Values: relative absolute fixed sticky static. Supports @{bp}',
+      description:
+        'Position. Values: relative absolute fixed sticky static. Supports @{bp}',
       table: { category: 'Position' },
     },
     'o-layout--sticky-top': {
       name: '.o-layout--sticky-top',
-      description: 'Shorthand: position: sticky + top: 0. For sticky headers/toolbars.',
+      description:
+        'Shorthand: position: sticky + top: 0. For sticky headers/toolbars.',
       table: { category: 'Position' },
     },
     'o-layout--gap-{scale}': {
       name: '.o-layout--gap-{scale}',
-      description: 'gap — requires Flex or Grid display. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
+      description:
+        'gap — requires Flex or Grid display. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
       table: { category: 'Spacing' },
     },
     'o-layout--padding-{scale}': {
       name: '.o-layout--padding-{scale}',
-      description: 'padding shorthand. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
+      description:
+        'padding shorthand. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
       table: { category: 'Spacing' },
     },
     'o-layout--margin-{scale}': {
       name: '.o-layout--margin-{scale}',
-      description: 'margin shorthand. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
+      description:
+        'margin shorthand. Scale: 0 0-25 0-5 0-75 1 1-5 2 3 4 5 6 7 auto. Supports @{bp}',
       table: { category: 'Spacing' },
     },
   },
 } as Meta;
+
+export const Usage = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Spacing, overflow, min-size and display in the template',
+        detail:
+          'o-layout--gap-*, padding, overflow, min-h-0 / min-w-0, hidden@md. Mix onto the same node as o-flex.',
+      },
+      {
+        title: 'A flex child that must scroll',
+        detail:
+          'o-layout--min-h-0 (or min-w-0) plus overflow-y-auto so the item can shrink below its content.',
+      },
+    ],
+    donts: [
+      {
+        title: 'gap / padding / overflow written in 06-components',
+        detail:
+          'Those properties have object classes. A sheet copy will drift from the scale.',
+        alternative:
+          'The o-layout mix in the HTML. var(--pds-*) in SCSS only for a component token off the global scale.',
+      },
+    ],
+  }),
+};
 
 // ── Dimensions ────────────────────────────────────────────────────────────────
 export const Dimensions = {
@@ -203,4 +247,3 @@ export const Responsive = {
     </div>`,
   }),
 };
-

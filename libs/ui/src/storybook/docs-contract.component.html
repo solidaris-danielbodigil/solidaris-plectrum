@@ -1,0 +1,246 @@
+@if (empty()) {
+  <p class="c-docs-contract__empty o-layout--margin-0">
+    No {{ section() }} recorded in {{ name() }}.metadata.ts yet.
+  </p>
+} @else {
+  @switch (section()) {
+    @case ('usage') {
+      <pds-docs-do-dont [dos]="doDont().dos" [donts]="doDont().donts" />
+    }
+
+    @case ('anatomy') {
+      <p-table [value]="anatomy()" size="small" dataKey="part">
+        <ng-template #header>
+          <tr>
+            <th scope="col">Part</th>
+            <th scope="col">Role</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-row>
+          <tr>
+            <td><code class="c-docs-contract__code-inline">{{ row.part }}</code></td>
+            <td class="c-docs-contract__cell">{{ row.role }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+
+    @case ('patterns') {
+      <ul class="c-docs-contract__cards o-layout--gap-2 o-layout--margin-0 o-layout--padding-0">
+        @for (pattern of patterns(); track pattern.name) {
+          <li>
+            <p-card class="o-layout--full-height">
+              <ng-template #title>{{ pattern.name }}</ng-template>
+              <p class="c-docs-contract__text o-layout--margin-0">{{ pattern.description }}</p>
+              <pre
+                class="c-docs-contract__code o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
+              ><code>{{ pattern.composition }}</code></pre>
+            </p-card>
+          </li>
+        }
+      </ul>
+    }
+
+    @case ('composition') {
+      <div class="o-flex o-flex--col o-layout--gap-2">
+        @if (composition().slots.length) {
+          <div>
+            <p class="c-docs-contract__label o-layout--margin-0">Slots</p>
+            <p-table [value]="composition().slots" size="small" dataKey="name">
+              <ng-template #header>
+                <tr>
+                  <th scope="col">Slot</th>
+                  <th scope="col">Purpose</th>
+                  <th scope="col">Allowed content</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-slot>
+                <tr>
+                  <td><code class="c-docs-contract__code-inline">{{ slot.name }}</code></td>
+                  <td class="c-docs-contract__cell">{{ slot.description }}</td>
+                  <td class="c-docs-contract__cell">
+                    {{ slot.allowedComponents?.length ? slot.allowedComponents.join(', ') : 'Any' }}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        }
+        @if (composition().parents.length) {
+          <div>
+            <p class="c-docs-contract__label o-layout--margin-0">Parents</p>
+            <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+              @for (parent of composition().parents; track parent) {
+                <li>{{ parent }}</li>
+              }
+            </ul>
+          </div>
+        }
+        @if (composition().companions.length) {
+          <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1">
+            <span class="c-docs-contract__label">Used alongside</span>
+            @for (companion of composition().companions; track companion) {
+              <p-tag [value]="companion" severity="secondary" />
+            }
+          </div>
+        }
+        @if (composition().nested.length) {
+          <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1">
+            <span class="c-docs-contract__label">Built from</span>
+            @for (nested of composition().nested; track nested) {
+              <p-tag [value]="nested" severity="secondary" />
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @case ('behavior') {
+      <div class="o-flex o-flex--col o-layout--gap-2">
+        @if (behavior().states.length) {
+          <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1">
+            <span class="c-docs-contract__label">States</span>
+            @for (state of behavior().states; track state) {
+              <p-tag [value]="state" severity="info" [rounded]="true" />
+            }
+          </div>
+        }
+        @if (behavior().interactions.length) {
+          <div>
+            <p class="c-docs-contract__label o-layout--margin-0">Interactions</p>
+            <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+              @for (interaction of behavior().interactions; track interaction) {
+                <li>{{ interaction }}</li>
+              }
+            </ul>
+          </div>
+        }
+        @if (behavior().responsive.length) {
+          <div>
+            <p class="c-docs-contract__label o-layout--margin-0">Responsive</p>
+            <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+              @for (note of behavior().responsive; track note) {
+                <li>{{ note }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
+
+    @case ('variants') {
+      <div class="o-flex o-flex--col o-layout--gap-2">
+        @for (group of variants(); track group.prop) {
+          <div>
+            <p class="c-docs-contract__label o-layout--margin-0">
+              <code class="c-docs-contract__code-inline">{{ group.prop }}</code>
+            </p>
+            <p-table [value]="group.rows" size="small" dataKey="option">
+              <ng-template #header>
+                <tr>
+                  <th scope="col">Option</th>
+                  <th scope="col">Purpose</th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-row>
+                <tr>
+                  <td>
+                    <span class="o-flex o-flex--align-items-center o-layout--gap-1">
+                      <code class="c-docs-contract__code-inline">{{ row.option }}</code>
+                      @if (row.isDefault) {
+                        <p-tag value="default" severity="secondary" />
+                      }
+                    </span>
+                  </td>
+                  <td class="c-docs-contract__cell">{{ row.purpose }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        }
+      </div>
+    }
+
+    @case ('accessibility') {
+      <p-card>
+        <ng-template #title>
+          <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1">
+            <p-tag [value]="'WCAG 2.1 ' + accessibility().wcagLevel" severity="info" [rounded]="true" />
+            @if (accessibility().role) {
+              <p-tag [value]="'role=' + accessibility().role" severity="secondary" [rounded]="true" />
+            }
+          </div>
+        </ng-template>
+        <div class="o-flex o-flex--col o-layout--gap-2">
+          @if (accessibility().aria.length) {
+            <div>
+              <p class="c-docs-contract__label o-layout--margin-0">Names and ARIA</p>
+              <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+                @for (item of accessibility().aria; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </div>
+          }
+          @if (accessibility().keyboard.length) {
+            <div>
+              <p class="c-docs-contract__label o-layout--margin-0">Keyboard and focus</p>
+              <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+                @for (item of accessibility().keyboard; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </div>
+          }
+          @if (accessibility().contrast.length) {
+            <div>
+              <p class="c-docs-contract__label o-layout--margin-0">Contrast</p>
+              <ul
+              class="c-docs-contract__list o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+            >
+                @for (item of accessibility().contrast; track item) {
+                  <li>{{ item }}</li>
+                }
+              </ul>
+            </div>
+          }
+          @if (
+            !accessibility().aria.length &&
+            !accessibility().keyboard.length &&
+            !accessibility().contrast.length
+          ) {
+            <p class="c-docs-contract__empty o-layout--margin-0">
+              Only the WCAG level is recorded in {{ name() }}.metadata.ts — add ariaAttributes and keyboardSupport.
+            </p>
+          }
+        </div>
+      </p-card>
+    }
+
+    @case ('examples') {
+      <ul class="c-docs-contract__cards o-layout--gap-2 o-layout--margin-0 o-layout--padding-0">
+        @for (example of examples(); track example.name) {
+          <li>
+            <p-card class="o-layout--full-height">
+              <ng-template #title>{{ example.name }}</ng-template>
+              <p class="c-docs-contract__text o-layout--margin-0">{{ example.description }}</p>
+              <pre
+                class="c-docs-contract__code o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
+              ><code>{{ example.code }}</code></pre>
+            </p-card>
+          </li>
+        }
+      </ul>
+    }
+  }
+}

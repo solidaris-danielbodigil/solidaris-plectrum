@@ -20,14 +20,21 @@ const meta: Meta = {
   argTypes: ACTIONS_API as Meta['argTypes'],
 };
 
+// Sidebar shows one entry per PrimeNG component (`name`). Variant stories
+// stay on the docs page and use a literal `tags: ['!dev']` so the indexer hides them.
+
 export default meta;
 
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory({ status: 'core', owner: 'design-system' }),
+};
 
 export const Severities: Story = {
+  name: 'Button',
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Primaire');
     await assertRoleVisible(canvasElement, 'button', 'Danger');
@@ -49,6 +56,7 @@ export const Severities: Story = {
 };
 
 export const Outlined: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Primaire');
   },
@@ -66,6 +74,7 @@ export const Outlined: Story = {
 };
 
 export const Text: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Primaire');
   },
@@ -82,6 +91,7 @@ export const Text: Story = {
 };
 
 export const Link: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Lien');
   },
@@ -92,6 +102,7 @@ export const Link: Story = {
 };
 
 export const Sizes: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Petit');
     await assertRoleVisible(canvasElement, 'button', 'Grand');
@@ -109,6 +120,7 @@ export const Sizes: Story = {
 };
 
 export const Icon: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Enregistrer');
     await assertRoleVisible(canvasElement, 'button', 'Rechercher');
@@ -126,6 +138,7 @@ export const Icon: Story = {
 };
 
 export const Loading: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'button', 'Recherche');
   },
@@ -136,6 +149,7 @@ export const Loading: Story = {
 };
 
 export const Disabled: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     const button = canvasElement.querySelector('button');
     await expectDisabled(button);
@@ -147,6 +161,7 @@ export const Disabled: Story = {
 };
 
 export const Toggle: Story = {
+  name: 'ToggleButton',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Activé');
   },
@@ -166,6 +181,7 @@ export const Toggle: Story = {
 };
 
 export const Select: Story = {
+  name: 'SelectButton',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Liste');
     await assertTextVisible(canvasElement, 'Grille');

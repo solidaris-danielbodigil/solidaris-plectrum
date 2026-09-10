@@ -2,8 +2,10 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
+import { AccordionMetadata } from './accordion.metadata';
 
 interface AccordionStoryArgs {
   title: string;
@@ -17,7 +19,10 @@ const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min
 
 const meta: Meta<AccordionStoryArgs> = {
   title: 'Custom components/Accordion',
-  parameters: { layout: 'padded' },
+  parameters: {
+    layout: 'padded',
+    ...storyDesign(AccordionMetadata.component.figmaUrl),
+  },
   argTypes: {
     ...argTypesFromProps(
       [
@@ -47,8 +52,15 @@ export default meta;
 
 type Story = StoryObj<AccordionStoryArgs>;
 
-/** Ownership badge for the docs page — CSS-only block, so declared inline. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from accordion.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(AccordionMetadata.governance, AccordionMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'anatomy') };
+export const Variants = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'variants') };
+export const Composition = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'accessibility') };
 
 function accordionTemplate(hostClass: string): string {
   return `

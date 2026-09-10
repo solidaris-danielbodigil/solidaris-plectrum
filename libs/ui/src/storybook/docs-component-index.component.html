@@ -7,7 +7,7 @@
         type="search"
         role="searchbox"
         autocomplete="off"
-        placeholder="Search name, block, PrimeNG base or owner"
+        placeholder="Search name, block, owner or dependant"
         aria-label="Search components"
         [value]="search()"
         (input)="onSearch($any($event.target).value)"
@@ -70,12 +70,6 @@
       <th scope="col" pSortableColumn="ownerLabel">
         Owner <p-sortIcon field="ownerLabel" />
       </th>
-      <th scope="col" pSortableColumn="category">
-        Category <p-sortIcon field="category" />
-      </th>
-      <th scope="col" pSortableColumn="primeNg">
-        PrimeNG base <p-sortIcon field="primeNg" />
-      </th>
       <th scope="col">Used by</th>
     </tr>
   </ng-template>
@@ -107,14 +101,6 @@
           <span class="c-docs-component-index__none">—</span>
         }
       </td>
-      <td class="c-docs-component-index__cell">{{ row.category }}</td>
-      <td>
-        @if (row.primeNg) {
-          <code class="c-docs-component-index__code">{{ row.primeNg }}</code>
-        } @else {
-          <span class="c-docs-component-index__none">—</span>
-        }
-      </td>
       <td class="c-docs-component-index__cell">
         @if (row.usedBy.length) {
           {{ row.usedBy.join(', ') }}
@@ -126,7 +112,7 @@
   </ng-template>
   <ng-template #emptymessage>
     <tr>
-      <td colspan="6" class="c-docs-component-index__empty">
+      <td colspan="4" class="c-docs-component-index__empty">
         No component matches “{{ search() }}”.
       </td>
     </tr>
@@ -134,7 +120,7 @@
 </p-table>
 
 <div
-  class="c-docs-component-index__meta o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1"
+  class="c-docs-component-index__meta o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1 o-layout--margin-block-start-2"
 >
   <span>Index generated {{ generated() }}.</span>
   <span>

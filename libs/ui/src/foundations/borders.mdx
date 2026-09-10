@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './borders.stories';
 
@@ -8,21 +8,47 @@ import * as Stories from './borders.stories';
 
 Token-driven **border** and **radius** utilities in `07-utilities/`. Geometry is defined once in `02-tools/_tools.radius.scss` and `_tools.borders.scss` — components `@include` the same mixins.
 
-Every list on this page is enumerated from the stylesheet, so it always matches what `libs/styles` generates.
+Every list on this page is enumerated from the stylesheet, so it always matches what `libs/styles` generates. Click a card to copy the class.
 
 - **Radius:** `.u-radius-{stop}` (all corners) · `.u-radius-{side|corner}-{stop}` (per edge/corner)
 - **Border sides:** `.u-border-{side}` — default `1px solid` using `--pds-color-content-border`
 - **Orthogonal modifiers** (compose freely): `.u-border-thick` · `.u-border-dashed` · `.u-border-{status}`
 - Override color per instance: `style="--pds-border-color: var(--pds-color-panel-border);"`
 
+Colour roles (panel-border, card-border, content-border) live in [Token finder](?path=/docs/foundations-token-finder--docs) and [Colors](?path=/docs/foundations-colors-semantic-common--docs). This page composes the utility classes.
+
 Styles: `libs/styles/src/07-utilities/_utilities.radius.scss` · `_utilities.borders.scss`. Token values: [Foundations / Radius](?path=/docs/foundations-radius--docs).
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
+
+```html
+<div class="u-border-top u-border-thick u-border-dashed u-border-danger"></div>
+```
+
+```html
+<div class="u-border-all u-radius-md" style="--pds-border-color: var(--pds-color-panel-border)"></div>
+```
+
+## Compose a border
+
+Pick a side, optional status, weight, style, radius and corners. Each select shows a small direction glyph — copy the snippet into a template. Corners stays disabled until a radius stop is set.
+
+<Unstyled>
+  <Story of={Stories.Generate} />
+</Unstyled>
 
 ## Radius
 
 All-corner stops. Each box uses `.u-radius-{stop}`, which reads `--pds-radius-{stop}`.
 
 <Unstyled>
-  <Canvas of={Stories.Radius} sourceState="none" />
+  <Story of={Stories.Radius} />
 </Unstyled>
 
 ## Radius targets
@@ -30,7 +56,7 @@ All-corner stops. Each box uses `.u-radius-{stop}`, which reads `--pds-radius-{s
 Per-edge and per-corner targets, for when only part of a box is rounded. Compose with an all-corner stop to override a single edge.
 
 <Unstyled>
-  <Canvas of={Stories.RadiusTargets} sourceState="none" />
+  <Story of={Stories.RadiusTargets} />
 </Unstyled>
 
 ## Border sides
@@ -38,7 +64,7 @@ Per-edge and per-corner targets, for when only part of a box is rounded. Compose
 Side classes delegate to the shared `border()` mixin. Width, style and color come from overridable custom properties.
 
 <Unstyled>
-  <Canvas of={Stories.BorderSides} sourceState="none" />
+  <Story of={Stories.BorderSides} />
 </Unstyled>
 
 ## Border modifiers
@@ -56,7 +82,7 @@ Modifiers set custom properties only — combine them with any side class.
 Status modifiers set `--pds-border-color` to the canonical `--pds-color-{status}` token — no per-color matrix.
 
 <Unstyled>
-  <Canvas of={Stories.BorderStatus} sourceState="none" />
+  <Story of={Stories.BorderStatus} />
 </Unstyled>
 
 ## Border color override

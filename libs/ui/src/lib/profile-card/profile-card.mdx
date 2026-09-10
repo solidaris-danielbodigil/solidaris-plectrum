@@ -1,7 +1,5 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './profile-card.stories';
-import { ProfileCardMetadata } from './profile-card.metadata';
 
 <Meta of={Stories} />
 
@@ -11,64 +9,27 @@ import { ProfileCardMetadata } from './profile-card.metadata';
   <Story of={Stories.Status} />
 </Unstyled>
 
-iSHARE affiliate audit summary card — card gradient is driven by `statusAction.severity`; the `variant` input is a fallback when no status action is set.
+## Usage
 
-## When to use
-
-- A single-person profile summary after lookup
-- Status-driven overview with identifiers, info tags, and a primary action
-
-## When not to use
-
-- A full-page form — this card is a read-only summary
-- A table of many people — identifier chips are a single snapshot
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-profile-card', 'p-card host — gradient from statusAction.severity or variant'],
-    ['c-profile-card__avatar', 'Large pds-plectrum-avatar'],
-    ['c-profile-card__title-action', 'Name as the primary action when a shortcut is set'],
-    ['status action / p-badge', 'Outlined status button and optional code badge'],
-    ['p-selectbutton', 'Filterable info tags'],
-    ['pds-copyable-text', 'Identifier chips'],
-  ]}
-/>
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
-## Accessibility
+## Variants
 
-- Loaded: `aria-labelledby` on the article points at the title or title-action
-- Loading: `aria-label` + `aria-busy` on the article; skeleton lines are `aria-hidden`
-- Info-tag options expose `aria-pressed`; copy chips use `Copier {label}`
-- Status and tags must include visible label text — not colour alone
-- Optional Alt+A primary-action shortcut (`aria-keyshortcuts`) is skipped in editable fields
-
-## Figma
-
-There is no Plectrum UI Kit node for the profile summary card. <a href={ProfileCardMetadata.component.figmaUrl}>iSHARE-Audit reference usage</a> until a kit node exists (see `.ai/questions/profile-card-drawer-figma.md`).
-
-- **Avatar**: large illustrated avatar (51.333 × 56px) via `c-plectrum-avatar--large`; small initials variant remains 32px
-- **Copy icon**: `copy-content-LEGACY` at 10.5px (`--pds-icon-size-xs`) on identifier chips
-- **Layout**: horizontal avatar + stacked header / identifier rows via `o-flex` / `o-layout` with flex-wrap
-- **PrimeNG**: `p-card`, `p-button` (status + primary actions), `p-badge` (status action code), `p-selectbutton` (filterable info tags), `pds-plectrum-avatar`
-
-BEM block: `c-profile-card`
-
-<DocsTable
-  headers={['statusAction.severity', 'Card modifier', 'Status button']}
-  rows={[
-    ['success', 'in-order', 'Outlined success — e.g. « En ordre »'],
-    ['warn', 'warning', 'Outlined warn — e.g. « Actions à réaliser: » + badge « C4 »'],
-    ['danger', 'danger', 'Outlined danger'],
-    ['(no statusAction)', 'from variant input', 'hidden'],
-  ]}
-/>
+<Unstyled>
+  <Story of={Stories.Variants} />
+</Unstyled>
 
 ## Default
 
-Neutral affiliate summary with info tags, copyable identifiers, and primary action.
+Neutral profile summary with info tags, copyable identifiers, and primary action.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
@@ -121,6 +82,21 @@ Click an identifier chip to copy its value — a confirmation toast appears on t
 
 <Canvas of={Stories.CopyWithToast} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

@@ -17,6 +17,7 @@
     "../src/**/*.stories.tsx",
     "../src/**/*.mdx",
     "../src/storybook/**/*.ts",
+    "../src/foundations/*-playground.ts",
     "../../../.ai/contracts/index.json"
   ],
   "files": [

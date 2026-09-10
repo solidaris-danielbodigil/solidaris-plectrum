@@ -50,7 +50,9 @@ interface ChangesetRow extends ChangelogChangeset {
 function summarize(entries: readonly ChangelogPackageBump[]): BumpSummary {
   const [first, ...rest] = entries;
   const uniform =
-    first && rest.every((entry) => entry.bump === first.bump) ? first.bump : null;
+    first && rest.every((entry) => entry.bump === first.bump)
+      ? first.bump
+      : null;
   return {
     uniform,
     packageNames: entries.map((entry) => entry.packageName).join(' · '),
@@ -64,7 +66,7 @@ function summarize(entries: readonly ChangelogPackageBump[]): BumpSummary {
   templateUrl: './docs-changesets.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-changesets' },
+  host: { class: 'c-docs-changesets o-layout--block o-layout--margin-block-3' },
 })
 export class DocsChangesetsComponent {
   readonly changesets = input.required<readonly ChangelogChangeset[]>();
@@ -80,7 +82,8 @@ export class DocsChangesetsComponent {
       .sort((a, b) => {
         const bumpA = highestBump(a.bumps.map((entry) => entry.bump));
         const bumpB = highestBump(b.bumps.map((entry) => entry.bump));
-        if (bumpA && bumpB && bumpA !== bumpB) return compareBumps(bumpB, bumpA);
+        if (bumpA && bumpB && bumpA !== bumpB)
+          return compareBumps(bumpB, bumpA);
         return a.id.localeCompare(b.id);
       })
       .map((changeset) => ({

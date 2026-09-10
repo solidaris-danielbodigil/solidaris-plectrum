@@ -5,7 +5,7 @@
 
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig, moduleMetadata } from '@storybook/angular';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, expect } from '../../storybook/story-tests';
@@ -34,8 +34,14 @@ const meta: Meta<IconComponent> = {
 export default meta;
 type Story = StoryObj<IconComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(IconMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from icon.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(IconMetadata.governance, IconMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(IconMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(IconMetadata, 'anatomy') };
+export const Variants = { tags: ['!dev'], ...contractStory(IconMetadata, 'variants') };
+export const Behavior = { tags: ['!dev'], ...contractStory(IconMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(IconMetadata, 'accessibility') };
 
 // ── Stories ──────────────────────────────────────────────────────────────────
 

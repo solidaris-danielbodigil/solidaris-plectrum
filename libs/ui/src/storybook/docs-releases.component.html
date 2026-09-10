@@ -21,7 +21,7 @@
         }
       </div>
       @if (version.changes.length) {
-        <ul class="c-docs-releases__changes o-flex o-flex--y o-layout--gap-1">
+        <ul class="c-docs-releases__changes o-flex o-flex--y o-layout--gap-1 o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-0">
           @for (change of version.changes; track $index) {
             <li class="o-flex o-flex--align-items-flex-start o-layout--gap-1">
               <p-tag [value]="label(change.bump)" [severity]="severity(change.bump)" />
@@ -31,7 +31,9 @@
         </ul>
       }
       @for (note of version.notes; track $index) {
-        <p class="c-docs-releases__note">{{ note }}</p>
+        <p class="c-docs-releases__note o-layout--margin-0 o-layout--margin-block-start-1">
+          {{ note }}
+        </p>
       }
     </ng-template>
   </p-timeline>

@@ -6,7 +6,7 @@ import * as Figures from './get-started-contribute.stories';
 
 # Contribute
 
-Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install published versions.
+Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install versioned packages (packed tarballs today, the registry after the first release) — never source paths.
 
 Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: a **proposal to the core design-system team**, not a scaffold. The core team answers within the triage below; nobody waits for the core team to build.
 
@@ -66,7 +66,7 @@ Promotion is a move, done by the core team when a proposal comes back with the s
 1. Generic name and API — application vocabulary leaves the inputs and the BEM block.
 2. Tokens move from the `proposals/{app}` Figma collection into Component or Semantic, and from `_settings.{feature}.scss` into the shared settings files.
 3. The Storybook title moves from `Patterns/{App}` to `Custom components` or `Shell`; `governance` becomes `status: 'core'`, `owner: 'design-system'`.
-4. A changeset publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
+4. A changeset records the bump and the release workflow publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
 
 Until step 3 the component stays the application's, whatever `libs/` folder it sits in.
 
@@ -76,7 +76,7 @@ The live table is [Component status](?path=/docs/docs-component-status--docs) �
 
 - Core stays generic: List, Profile Card, Profile Drawer, Copyable Text, Form Field, Empty State, Icon, Avatar, Input Clear, Detail List, Drawer, Accordion, Timeline, Skeleton Slot, Toolbar, and the navigation shells.
 - Delay Prediction Card and Transactions CICS Modal stay App-specific (iSHARE).
-- CSS-only blocks (Accordion bordered, Timeline content-only, iSHARE page-shell bridges) stay documented on their own pages, not in the Angular index.
+- CSS-only blocks (Accordion bordered, Timeline content-only) stay documented on their own pages, not in the Angular index.
 
 ---
 
@@ -88,7 +88,7 @@ npm install
 npm run storybook     # http://localhost:6006
 ```
 
-Node 18.19+, 20.11+ or 22. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
+Node **20.19+, 22.12+ or 24** — the range Angular 21 supports. CI (`ci.yml`) runs every gate on Node 20; the GitHub Pages deploy (`deploy-ishare-pages.yml`) builds on Node 24, so both ends of the range are exercised. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
 
 ## Where things live
 
@@ -147,19 +147,27 @@ Stories are the test suite: every story is executed headless in CI, so covering 
 
 ## CI gates
 
+What `.github/workflows/ci.yml` runs on every push and pull request to `main`, in order. Each row is a required step unless marked otherwise.
+
 <DocsTable
-  headers={['Gate', 'Fails when']}
+  headers={['Job', 'Gate', 'Fails when']}
   rows={[
-    ['tokens:audit', 'Figma, preset and SCSS disagree on a token value'],
-    ['tokens:check-prefix', 'A new bare --spacing-/--text-/--font- declaration appears'],
-    ['tokens:build + diff', 'Generated SCSS or the token manifest is stale'],
-    ['generate-index + diff', '.ai/contracts/index.json is stale — including a component whose governance changed'],
-    ['tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
-    ['test-storybook:ci', 'A story fails to render, an interaction (play) test fails, or story coverage collection errors'],
-    ['chromatic (optional)', 'A visual baseline changes and is not accepted — only when CHROMATIC_ENABLED=true'],
-    ['build · test · pack:smoke', 'Apps break, unit tests fail, or packed tarballs cannot build a consumer app'],
+    ['build', 'tokens:audit', 'Figma, preset and SCSS disagree on a token value'],
+    ['build', 'tokens:validate-preset (advisory)', 'A preset token reference does not resolve — reported, continue-on-error'],
+    ['build', 'tokens:check-prefix', 'A new bare --spacing-/--text-/--font- declaration appears'],
+    ['build', 'tokens:build + diff', 'Generated SCSS (*.generated.scss) or tokens.generated.ts is stale'],
+    ['build', 'changelog:build + diff', 'changelog.generated.ts no longer matches .changeset/*.md and libs/*/CHANGELOG.md'],
+    ['build', 'tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
+    ['build', 'generate-index + diff', '.ai/contracts/index.json is stale — including a component whose governance changed'],
+    ['build', 'build · test:coverage', 'The iSHARE build breaks, or a ui / ishare unit test fails'],
+    ['pack-smoke', 'pack:smoke', 'The packed tarballs cannot install into and build the throwaway consumer app'],
+    ['storybook-tests', 'build-storybook · test-storybook:ci', 'A story fails to render, an interaction (play) test fails, an a11y assertion fails, or story coverage collection errors'],
+    ['storybook-packed', 'pack:libs · build-storybook:packed', 'Storybook does not build against the packed dist/ libraries'],
+    ['visual-tests (optional)', 'chromatic', 'A visual baseline changes and is not accepted — only when CHROMATIC_ENABLED=true'],
   ]}
 />
+
+**Not a gate yet:** `npm run lint` (`ng lint`) has no architect target and no ESLint configuration, so no lint step runs in CI. Style and token hygiene are enforced by `tokens:lint` and `tokens:check-prefix` above.
 
 Review rules the gates do not encode — one developer review, the design-system review under `libs/`, the token risk levels — live in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`.
 

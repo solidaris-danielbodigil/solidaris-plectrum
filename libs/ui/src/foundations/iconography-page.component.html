@@ -1,9 +1,9 @@
 <div
-  class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-end-6"
+  class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
 >
   <pds-toolbar [sticky]="true">
     <ng-container slot="start">
-      <p-iconField class="c-token-explorer__search">
+      <p-iconField class="c-token-explorer__search o-flex__item--grow-0 o-flex__item--shrink-0">
         <p-inputIcon styleClass="bi bi-search" />
         <input
           pInputText
@@ -55,10 +55,15 @@
     </ng-container>
   </pds-toolbar>
 
-  <section class="c-token-explorer__section">
-    <h3 class="c-token-explorer__section-title">
+  <section class="c-token-explorer__section o-layout--margin-block-start-4">
+    <h3
+      class="c-token-explorer__section-title o-flex o-flex--align-items-center o-layout--gap-1 o-layout--margin-0 o-layout--margin-block-end-0-5"
+    >
       Catalog
-      <span class="c-token-explorer__section-count">{{ filteredIcons().length }}</span>
+      <span
+        class="c-token-explorer__section-count o-layout--padding-inline-1 u-radius-pill"
+        >{{ filteredIcons().length }}</span
+      >
     </h3>
 
     <ul
@@ -67,24 +72,26 @@
     >
       @for (name of visibleIcons(); track name) {
         <li
-          class="c-token-explorer__item o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
+          class="c-token-explorer__item o-layout--relative o-flex o-flex--align-items-flex-start o-layout--gap-2 o-layout--min-w-0 o-layout--padding-2 u-border-all u-radius-md o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
+          [style.--pds-border-color]="'var(--pds-color-panel-border)'"
           (click)="copyToClipboard(name)"
         >
           <span
-            class="c-token-explorer__preview c-token-explorer__preview--icon"
+            class="c-token-explorer__preview c-token-explorer__preview--icon o-flex__item--shrink-0 o-flex o-flex--align-items-center o-flex--justify-content-center u-border-all u-radius-sm"
+            [style.--pds-border-color]="'var(--pds-color-panel-border)'"
             [style.--pds-token-explorer-icon-size]="previewSize()"
           >
             <i class="bi bi-{{ name }}" aria-hidden="true"></i>
           </span>
 
-          <div class="c-token-explorer__body">
-            <p class="c-token-explorer__name">{{ name }}</p>
-            <p class="c-token-explorer__value">bi bi-{{ name }}</p>
+          <div class="c-token-explorer__body o-layout--min-w-0 o-flex__item--grow-1">
+            <p class="c-token-explorer__name o-layout--margin-0">{{ name }}</p>
+            <p class="c-token-explorer__value o-layout--margin-0">bi bi-{{ name }}</p>
           </div>
 
           <button
             type="button"
-            class="c-token-explorer__copy"
+            class="c-token-explorer__copy o-layout--absolute o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
             [attr.aria-label]="'Copy bi bi-' + name"
             (click)="copyToClipboard(name); $event.stopPropagation()"
           >
@@ -96,7 +103,7 @@
   </section>
 
   @if (catalogCapped()) {
-    <div class="c-token-explorer__more">
+    <div class="c-token-explorer__more o-flex o-flex--justify-content-center o-layout--padding-block-4">
       <p-button
         [label]="'Show all ' + filteredIcons().length + ' icons'"
         severity="secondary"
@@ -107,6 +114,8 @@
   }
 
   @if (filteredIcons().length === 0) {
-    <p class="c-token-explorer__empty">No icon matches “{{ searchQuery() }}”.</p>
+    <p class="c-token-explorer__empty o-layout--padding-6">
+      No icon matches “{{ searchQuery() }}”.
+    </p>
   }
 </div>

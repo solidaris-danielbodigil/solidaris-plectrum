@@ -8,7 +8,9 @@ function textOf(fixture: ComponentFixture<TokenExplorerComponent>): string {
   return fixture.nativeElement.textContent as string;
 }
 
-function cards(fixture: ComponentFixture<TokenExplorerComponent>): HTMLElement[] {
+function cards(
+  fixture: ComponentFixture<TokenExplorerComponent>,
+): HTMLElement[] {
   return Array.from(
     fixture.nativeElement.querySelectorAll('.c-token-explorer__item'),
   );
@@ -25,7 +27,8 @@ function cardNamed(
 ): HTMLElement {
   return cards(fixture).find(
     (card) =>
-      card.querySelector('.c-token-explorer__name')!.textContent!.trim() === name,
+      card.querySelector('.c-token-explorer__name')!.textContent!.trim() ===
+      name,
   )!;
 }
 
@@ -136,7 +139,9 @@ describe('TokenExplorerComponent', () => {
     fixture.componentInstance.activeView.set('table');
     fixture.detectChanges();
 
-    const row = fixture.nativeElement.querySelector('.c-token-explorer__table tbody tr');
+    const row = fixture.nativeElement.querySelector(
+      '.c-token-explorer__table tbody tr',
+    );
     const text = row.textContent as string;
     // Hybrid emit: the alias and its literal both come from the stylesheet.
     expect(text).toContain('var(--p-primary-600, #487395)');
@@ -151,7 +156,9 @@ describe('TokenExplorerComponent', () => {
       .map((section) => section.label);
     expect(labels).toContain('Component & feature tokens');
     // Foundation roles stay ahead of the component bucket.
-    expect(labels.indexOf('Component & feature tokens')).toBe(labels.length - 1);
+    expect(labels.indexOf('Component & feature tokens')).toBe(
+      labels.length - 1,
+    );
   });
 
   it('resolves a value for every rendered token', async () => {
@@ -168,7 +175,9 @@ describe('TokenExplorerComponent', () => {
     await render({ category: 'shadow' });
 
     expect(
-      cards(fixture).every((card) => !card.querySelector('.c-token-explorer__value')),
+      cards(fixture).every(
+        (card) => !card.querySelector('.c-token-explorer__value'),
+      ),
     ).toBe(true);
     expect(
       cards(fixture).every((card) => card.textContent!.includes('See value')),
@@ -207,6 +216,24 @@ describe('TokenExplorerComponent', () => {
     ).toBe(true);
   });
 
+  it('labels the toolbar switches and explains what click-to-copy writes', async () => {
+    await render({ category: 'radius' });
+
+    expect(textOf(fixture)).toContain('Copy as');
+    expect(textOf(fixture)).toContain('View');
+    expect(textOf(fixture)).toContain('Click a card to copy as var().');
+
+    fixture.componentInstance.copyFormat.set('name');
+    fixture.detectChanges();
+    expect(textOf(fixture)).toContain('Click a card to copy the token name.');
+  });
+
+  it('labels the role filter when a category has sections', async () => {
+    await render({ category: 'shadow' });
+
+    expect(textOf(fixture)).toContain('Role');
+  });
+
   it('uses a button row for few roles and an autocomplete for many', async () => {
     await render({ category: 'shadow' });
     expect(fixture.componentInstance.compactFilter()).toBe(false);
@@ -224,7 +251,9 @@ describe('TokenExplorerComponent', () => {
       groups: ['family', 'size', 'weight', 'line-height', 'spacing'],
     });
 
-    expect(fixture.componentInstance.sectionOptions().map((option) => option.label)).toEqual([
+    expect(
+      fixture.componentInstance.sectionOptions().map((option) => option.label),
+    ).toEqual([
       'All',
       'Font family',
       'Font size',
@@ -243,7 +272,9 @@ describe('TokenExplorerComponent', () => {
     fixture.detectChanges();
 
     const titles = Array.from(
-      fixture.nativeElement.querySelectorAll('.c-token-explorer__section-title'),
+      fixture.nativeElement.querySelectorAll(
+        '.c-token-explorer__section-title',
+      ),
     ).map((node) => (node as HTMLElement).textContent!.trim());
     expect(titles.length).toBe(1);
     expect(titles[0]).toContain('Overlay');
@@ -286,9 +317,11 @@ describe('TokenExplorerComponent', () => {
 
     const list = fixture.nativeElement.querySelector('.c-token-explorer__grid');
     expect(list.getAttribute('role')).toBe('list');
-    expect(Array.from(list.children).every((child) => (child as Element).tagName === 'LI')).toBe(
-      true,
-    );
+    expect(
+      Array.from(list.children).every(
+        (child) => (child as Element).tagName === 'LI',
+      ),
+    ).toBe(true);
 
     const button = copyButton(cardNamed(fixture, 'radius-md'));
     expect(button.tagName).toBe('BUTTON');
@@ -297,7 +330,9 @@ describe('TokenExplorerComponent', () => {
 
   it('switches to the table view', async () => {
     await render({ category: 'radius' });
-    expect(fixture.nativeElement.querySelector('.c-token-explorer__table')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-token-explorer__table'),
+    ).toBeNull();
 
     fixture.componentInstance.activeView.set('table');
     fixture.detectChanges();

@@ -7,6 +7,8 @@
   [closable]="false"
   [appendTo]="drawerAppendTo"
   [style]="drawerPanelStyle"
+  [pt]="drawerPassThrough()"
+  (onShow)="onDrawerShow()"
 >
   <ng-template #headless>
     @if (data(); as affiliate) {
@@ -30,7 +32,13 @@
             <div
               class="c-drawer__profile-identity-body o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
             >
-              <h2 class="c-drawer__profile-name o-layout--margin-0">{{ affiliate.name }}</h2>
+              <h2
+                class="c-drawer__profile-name o-layout--margin-0"
+                [id]="headingId"
+                tabindex="-1"
+              >
+                {{ affiliate.name }}
+              </h2>
 
               @if (affiliate.identifiers.length > 0) {
                 <div

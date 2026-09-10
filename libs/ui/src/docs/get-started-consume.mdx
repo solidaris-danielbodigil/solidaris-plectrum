@@ -6,7 +6,7 @@ import * as Figures from './get-started-consume.stories';
 
 # Use Plectrum in an app
 
-An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. The reference implementation of everything below is `tools/packaging/consumer-app/` — CI builds it against packed tarballs on every push.
+An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. The reference implementation of everything below is `tools/packaging/consumer-app/` — CI packs the libraries and builds that app against the tarballs on every push (`npm run pack:smoke`).
 
 <Unstyled>
   <Story of={Figures.InstallFlow} />
@@ -14,23 +14,38 @@ An application installs versioned packages and consumes CSS custom properties. N
 
 ---
 
-## Packages
+## Packages and how to get them
 
 <DocsTable
-  headers={['Package', 'Contents']}
+  headers={['Package', 'Contents', 'Required']}
   rows={[
-    ['@solidaris/ui', 'Angular components (pds-*), Angular Package Format'],
-    ['@solidaris/plectrum', 'providePlectrum(), PrimeNG presets, tokens.json'],
-    ['@solidaris/styles', 'ITCSS SCSS source — objects, components, utilities'],
-    ['primeng · @primeuix/themes', 'Peer dependencies — the component engine and theme runtime'],
+    ['@solidaris/ui', 'Angular components (pds-*), Angular Package Format', 'Yes'],
+    ['@solidaris/plectrum', 'providePlectrum(), PrimeNG presets, tokens.json', 'Yes'],
+    ['@solidaris/styles', 'ITCSS SCSS source — objects, components, utilities', 'Yes'],
+    ['primeng · @primeuix/themes', 'Peer dependencies — the component engine and theme runtime', 'Yes (peers)'],
+    ['@solidaris/tokens-cli', 'pds-tokens-lint for application CI (fails hardcoded hex/px and unknown --pds-* names); the Figma commands are core-team only', 'Optional'],
   ]}
 />
 
+**Current state (pre-release).** All packages are at `0.1.0` in their `package.json`, and no version has been published to a registry yet — [What's new](?path=/docs/docs-what-s-new--docs) lists the pending changesets and an empty *Released* section. The `Release` workflow (Changesets + `npm run release`) is configured and publishes once a version PR merges on `main`; until then applications install **packed tarballs**:
+
 ```bash
-npm install @solidaris/ui @solidaris/styles @solidaris/plectrum primeng @primeuix/themes
+# in the design-system repository
+npm run pack:libs       # builds plectrum + ui, npm-packs all packages into tools/packaging/.tarballs/
 ```
 
-The three `@solidaris/*` packages version together — always upgrade them as a set.
+```bash
+# in the application — install the tarballs plus the PrimeNG peers
+npm install ./path/to/solidaris-ui-0.1.0.tgz ./path/to/solidaris-plectrum-0.1.0.tgz ./path/to/solidaris-styles-0.1.0.tgz primeng @primeuix/themes
+```
+
+After the first release the same three packages install from the registry, and nothing below changes:
+
+```bash
+npm install @solidaris/ui @solidaris/plectrum @solidaris/styles primeng @primeuix/themes
+```
+
+The three `@solidaris/*` packages version together (a fixed Changesets group) — always upgrade them as a set. Versions and peer ranges in this Storybook are read from `package.json`, never typed by hand.
 
 ## Wire the stylesheet
 
@@ -52,7 +67,7 @@ The three `@solidaris/*` packages version together — always upgrade them as a 
 ## Boot the theme
 
 ```ts
-// app.config.ts
+// src/app/app.config.ts
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePlectrum } from '@solidaris/plectrum';
@@ -68,10 +83,34 @@ export const appConfig: ApplicationConfig = {
 
 `providePlectrum()` registers the PrimeNG theme and emits every `--p-*` custom property. The generated `--pds-*` tokens fall back to literals, so styles render even before the theme boots — but PrimeNG components need the provider.
 
+## First component
+
+The packed-consumer fixture renders one Core component around one PrimeNG input. This is `tools/packaging/consumer-app/src/app/app.ts` with the `pInputText` directive added so the PrimeNG theme visibly applies:
+
+```ts
+// src/app/app.ts
+import { Component } from '@angular/core';
+import { InputText } from 'primeng/inputtext';
+import { FormFieldComponent } from '@solidaris/ui';
+
+@Component({
+  selector: 'app-root',
+  imports: [FormFieldComponent, InputText],
+  template: `
+    <pds-form-field label="Member number" inputId="member" hint="Ten digits, no spaces">
+      <input pInputText id="member" type="text" autocomplete="off" />
+    </pds-form-field>
+  `,
+})
+export class App {}
+```
+
+`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every `pds-*` component is exported from the `@solidaris/ui` root — the component's docs page names the class to import.
+
 ## Build screens
 
 - PrimeNG components as-is — the Plectrum preset already styles them. Start with the [PrimeNG theme gallery](?path=/docs/primeng-actions--docs), then check [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs) for the few intentional deviations.
-- `pds-*` components from [Custom components](?path=/docs/custom-components-empty-state--docs) — import from `@solidaris/ui`.
+- `pds-*` components — the [Component status](?path=/docs/docs-component-status--docs) index lists every one with its status and owner; import Core components from `@solidaris/ui`.
 - Layout with `o-flex` / `o-layout` classes, visual chrome with `u-*` utilities, values via `var(--pds-*)` — never hardcode a hex or px. The catalogues live under **Foundations**.
 
 ## Rules for application code
@@ -81,8 +120,8 @@ export const appConfig: ApplicationConfig = {
   rows={[
     ['CSS is the API', 'Consume var(--pds-*) and the o-/c-/u- classes. Never import PrimeNG theme helpers ($dt, usePreset) at runtime'],
     ['No token copies', 'If a value is missing, request it in the design-system repo — do not inline it'],
-    ['Version bumps as PRs', 'Copy tools/consumers/renovate.json (or dependabot.yml) so upgrades arrive as reviewed pull requests'],
-    ['Lint your usage', 'pds-tokens-lint (from @solidaris/tokens-cli) fails hardcoded hex/px and unknown --pds-* names in app CI'],
+    ['Version bumps as PRs', 'Once the packages publish, copy tools/consumers/renovate.json (or dependabot.yml) so upgrades arrive as reviewed pull requests'],
+    ['Lint your usage (optional)', 'Install @solidaris/tokens-cli and run pds-tokens-lint in app CI — it fails hardcoded hex/px and unknown --pds-* names'],
   ]}
 />
 

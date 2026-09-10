@@ -5,7 +5,7 @@ export const NavShellMetadata: ComponentMetadata = {
     name: 'NavShell',
     category: 'organisms',
     description:
-      'First-level navigation shell — vertical sidebar that renders a list of icon-based nav items. Supports collapsed (icon-only) and expanded (icon + label) modes. No PrimeNG equivalent; built with semantic HTML and ARIA.',
+      'First-level navigation shell — a vertical sidebar of icon-based items that stays collapsed (icon-only) and expands to icon + label on hover or keyboard focus, overlaying the content instead of pushing it. No PrimeNG equivalent; a semantic list with ARIA.',
     type: 'navigation',
     path: 'libs/ui/src/lib/nav-shell/nav-shell.component.ts',
     bemBlock: 'c-nav-shell',
@@ -13,7 +13,7 @@ export const NavShellMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.nav-shell.scss',
     figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=1-1433',
     created: '2025-01-01',
-    modified: '2026-05-20',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -22,9 +22,9 @@ export const NavShellMetadata: ComponentMetadata = {
 
   usage: {
     useCases: [
-      'app-wide first-level navigation',
-      'collapsed sidebar — icon-only',
-      'expanded sidebar — icon + label',
+      'App-wide first-level navigation',
+      'Collapsed icon-only sidebar that expands on hover or keyboard focus',
+      'Ecosystem app switcher — the apps are passed as generic [items]',
     ],
     commonPatterns: [
       {
@@ -40,20 +40,35 @@ export const NavShellMetadata: ComponentMetadata = {
     ],
     antiPatterns: [
       {
-        scenario: 'Hardcoding routes inside NavShell',
-        reason: 'NavShell must be app-agnostic — it lives in libs/ui',
-        alternative: 'Pass items via the [items] Input()',
+        scenario: 'Hardcoding routes inside Nav Shell',
+        reason: 'Nav Shell is app-agnostic — it lives in libs/ui and renders whatever items it is given.',
+        alternative: 'Pass the items from the app through [items] and react to itemClicked.',
       },
       {
-        scenario: 'Adding second-level navigation inside NavShell',
-        reason: 'NavShell is first-level only; nesting nav levels breaks the design pattern',
-        alternative: 'Create a separate SecondaryNav component',
+        scenario: 'Second-level navigation inside this shell',
+        reason: 'Nav Shell is first-level only; nesting levels breaks the two-level shell pattern.',
+        alternative: 'Pair it with Sub Nav Shell for the second level.',
       },
     ],
   },
 
+  anatomy: [
+    { part: 'c-nav-shell__panel', role: 'Overlay panel — absolutely positioned so expansion overlays the content, no flow push' },
+    { part: 'c-nav-shell__logo', role: 'Decorative logomark + wordmark (aria-hidden); the wordmark is revealed with the labels' },
+    { part: 'c-nav-shell__list', role: 'Semantic list of nav items' },
+    { part: 'c-nav-shell__link', role: 'Item link — is-active + aria-current="page", named by the item label' },
+    { part: 'c-nav-shell__icon / __label', role: 'Decorative pds-icon + visible label (label hidden when collapsed)' },
+    { part: 'c-nav-shell__trailing-icon', role: 'External-link pds-icon for items with trailingIcon — expanded mode only' },
+  ],
+
   behavior: {
-    states: ['default', 'collapsed', 'expanded', 'item-active', 'item-hover'],
+    states: ['collapsed', 'expanded', 'item-hover', 'item-active', 'item-focus-visible', 'empty'],
+    interactions: [
+      'Collapsed by default: icon-only, the width follows the icon column + padding',
+      'Expands on :hover / :focus-within (CSS only): labels and wordmark fade in through a discrete display transition and the panel grows to its widest item, overlaying the content',
+      'activeItemId marks the current item (is-active + aria-current="page"); when it is null the highlight falls back to the first item and follows clicks locally',
+      'itemClicked emits the NavItem; routing is left to the routerLink on the item',
+    ],
   },
 
   props: [
@@ -64,8 +79,17 @@ export const NavShellMetadata: ComponentMetadata = {
 
   accessibility: {
     role: 'navigation',
-    ariaAttributes: ['aria-label', 'aria-current="page"', 'aria-hidden (decorative logo)'],
-    keyboardSupport: ['Tab / Shift+Tab — move between items', 'Enter / Space — activate item'],
+    ariaAttributes: [
+      'The host is a navigation landmark (role="navigation", aria-label="Primary navigation")',
+      'Each link takes its accessible name from the item label (aria-label); the pds-icon is decorative',
+      'The active item carries aria-current="page"',
+      'The logo (logomark + wordmark) is aria-hidden — it is not a link',
+    ],
+    keyboardSupport: [
+      'Tab / Shift+Tab move between links — an item needs a routerLink to be focusable',
+      'Focus inside the shell expands it (:focus-within), so keyboard users see the labels',
+      'Enter activates the focused link',
+    ],
     wcagLevel: 'AA',
   },
 
@@ -103,7 +127,7 @@ export const NavShellMetadata: ComponentMetadata = {
 
   composition: {
     nestedComponents: ['Icon'],
-    companions: [],
+    companions: ['SubNavShellComponent', 'TopNavComponent'],
     slots: [],
   },
 

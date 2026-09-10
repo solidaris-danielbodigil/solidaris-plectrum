@@ -10,23 +10,26 @@
 >
   <label
     class="c-form-field__label"
+    [class.o-flex__item--shrink-0]="layout() === 'horizontal'"
     [attr.for]="inputId() ?? null"
     [id]="labelId"
   >
     <span class="c-form-field__label-text">{{ label() }}</span>
     @if (required()) {
       <span class="c-form-field__required o-layout--margin-inline-start-0-25" aria-hidden="true">*</span>
-      <span class="u-sr-only">({{ requiredLabel() }})</span>
+      @if (requiredLabel(); as srLabel) {
+        <span class="u-sr-only">({{ srLabel }})</span>
+      }
     }
   </label>
 
   <div class="c-form-field__content o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
-    <div class="c-form-field__control">
+    <div class="c-form-field__control o-layout--min-w-0">
       <ng-content />
     </div>
 
     @if (hint() && !invalid()) {
-      <p class="c-form-field__hint" [id]="hintId">{{ hint() }}</p>
+      <p class="c-form-field__hint o-layout--margin-0" [id]="hintId">{{ hint() }}</p>
     }
 
     @if (invalid()) {

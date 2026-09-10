@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './toolbar.stories';
 
 <Meta of={Stories} />
@@ -10,45 +9,17 @@ import * as Stories from './toolbar.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`pds-toolbar` is a sticky-capable action row on a `p-card` surface with two named slots. Layout inside the card is entirely `o-flex` / `o-layout` mixes — the SCSS owns only the sticky position and the wrap constraint.
+## Usage
 
-## When to use
-
-- Filter and search row above a list or table
-- Sticky page-level action bar inside a scroll container
-
-## When not to use
-
-- Application navigation — use Top Nav / Nav Shell
-- Putting page-specific chrome into the shared block — add a domain BEM class on the host instead
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-toolbar', 'Host — sticky modifier binds to the sticky input'],
-    ['p-card', 'PrimeNG surface'],
-    ['c-toolbar__inner', 'o-flex wrap row'],
-    ['c-toolbar__start', 'Start slot wrapper'],
-    ['c-toolbar__end', 'End slot wrapper — forced onto its own line'],
-  ]}
-/>
-
-## Accessibility
-
-- Slot content keeps its native tab order
-- Search, filters, and actions must carry their own accessible names
-- Sticky position does not create a landmark — wrap the page region in the app if one is needed
-
-## Figma
-
-There is no Plectrum UI Kit node for the generic toolbar. [iSHARE-Audit node 324:5772](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772) is reference usage for the documents filter row (`c-affiliate-documents-toolbar`).
-
-- **PrimeNG**: wraps `p-card`
-- **BEM block**: `c-toolbar` (host) — `c-toolbar--sticky` bound to the `sticky` input
-- **Styles**: `libs/styles/src/06-components/_components.toolbar.scss`
-- **Domain variants**: apply a domain BEM class on the host for page-specific chrome — e.g. `c-affiliate-documents-toolbar` on the iSHARE documents toolbar
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
@@ -61,18 +32,27 @@ There is no Plectrum UI Kit node for the generic toolbar. [iSHARE-Audit node 324
 
 <Canvas of={Stories.Sticky} />
 
-## Slots
+## Composition
 
-<DocsTable
-  headers={['Slot', 'Purpose']}
-  rows={[
-    ['[slot=start]', 'Left-aligned content — search field, filter buttons. Wraps below on narrow viewports'],
-    ['[slot=end]', 'Right-aligned content — count badge, primary actions. Forced onto its own line by the SCSS wrap constraint'],
-  ]}
-/>
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+### Start slot only
+
+The end wrapper stays empty when nothing is projected into `[slot=end]`.
 
 <Canvas of={Stories.StartSlotOnly} />
 
-## API
+## Behavior
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

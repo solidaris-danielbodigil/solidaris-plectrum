@@ -153,7 +153,11 @@ function describe(
 const FALLBACK_TEXT = { fill: 'currentColor' } as const;
 const FALLBACK_SHAPE = { fill: 'none', stroke: 'currentColor' } as const;
 
-function renderLane(lane: DiagramLane, height: number, index: number): ReactNode {
+function renderLane(
+  lane: DiagramLane,
+  height: number,
+  index: number,
+): ReactNode {
   const cx = lane.x + lane.w / 2;
   return h(
     'g',
@@ -161,16 +165,35 @@ function renderLane(lane: DiagramLane, height: number, index: number): ReactNode
       key: index,
       className: `c-docs-diagram__lane c-docs-diagram__lane--${lane.tone ?? 'neutral'}`,
     },
-    h('rect', { x: lane.x, y: 0, width: lane.w, height, rx: LANE_RADIUS, fill: 'none' }),
+    h('rect', {
+      x: lane.x,
+      y: 0,
+      width: lane.w,
+      height,
+      rx: LANE_RADIUS,
+      fill: 'none',
+    }),
     h(
       'text',
-      { ...FALLBACK_TEXT, x: cx, y: 28, textAnchor: 'middle', className: 'c-docs-diagram__lane-title' },
+      {
+        ...FALLBACK_TEXT,
+        x: cx,
+        y: 28,
+        textAnchor: 'middle',
+        className: 'c-docs-diagram__lane-title',
+      },
       lane.title,
     ),
     lane.subtitle
       ? h(
           'text',
-          { ...FALLBACK_TEXT, x: cx, y: 46, textAnchor: 'middle', className: 'c-docs-diagram__lane-subtitle' },
+          {
+            ...FALLBACK_TEXT,
+            x: cx,
+            y: 46,
+            textAnchor: 'middle',
+            className: 'c-docs-diagram__lane-subtitle',
+          },
           lane.subtitle,
         )
       : null,
@@ -191,7 +214,12 @@ function renderEdge(
   const labelProps =
     orientation === 'horizontal'
       ? { x: label[0], y: label[1] - LABEL_LIFT, textAnchor: 'middle' }
-      : { x: label[0] + LABEL_INDENT, y: label[1], textAnchor: 'start', dominantBaseline: 'middle' };
+      : {
+          x: label[0] + LABEL_INDENT,
+          y: label[1],
+          textAnchor: 'start',
+          dominantBaseline: 'middle',
+        };
 
   return h(
     'g',
@@ -201,7 +229,15 @@ function renderEdge(
     },
     h('path', { ...FALLBACK_SHAPE, d, markerEnd: `url(#${marker})` }),
     edge.label
-      ? h('text', { ...FALLBACK_TEXT, ...labelProps, className: 'c-docs-diagram__edge-label' }, edge.label)
+      ? h(
+          'text',
+          {
+            ...FALLBACK_TEXT,
+            ...labelProps,
+            className: 'c-docs-diagram__edge-label',
+          },
+          edge.label,
+        )
       : null,
   );
 }
@@ -230,7 +266,13 @@ function renderNode(node: DiagramNode): ReactNode {
     }),
     h(
       'text',
-      { ...FALLBACK_TEXT, x: cx, y: titleBaseline, textAnchor: 'middle', className: 'c-docs-diagram__node-title' },
+      {
+        ...FALLBACK_TEXT,
+        x: cx,
+        y: titleBaseline,
+        textAnchor: 'middle',
+        className: 'c-docs-diagram__node-title',
+      },
       node.title,
     ),
     lines.map((line, index) =>
@@ -261,15 +303,20 @@ export function Diagram({
 }: DiagramProps): ReactNode {
   const id = `pds-docs-${slug(title)}`;
   const marker = `${id}-arrow`;
-  const boxes = new Map<string, Box>(nodes.map((node) => [node.id, boxOf(node)]));
+  const boxes = new Map<string, Box>(
+    nodes.map((node) => [node.id, boxOf(node)]),
+  );
 
   return h(
     'figure',
-    { className: 'c-docs-diagram sb-unstyled' },
+    {
+      className:
+        'c-docs-diagram sb-unstyled o-layout--margin-block-3 o-layout--overflow-x-auto',
+    },
     h(
       'svg',
       {
-        className: 'c-docs-diagram__svg',
+        className: 'c-docs-diagram__svg o-layout--block o-layout--full-width',
         viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-labelledby': `${id}-title ${id}-desc`,
@@ -290,7 +337,11 @@ export function Diagram({
             markerHeight: 7,
             orient: 'auto-start-reverse',
           },
-          h('path', { ...FALLBACK_TEXT, d: 'M0 0L10 5L0 10Z', className: 'c-docs-diagram__arrowhead' }),
+          h('path', {
+            ...FALLBACK_TEXT,
+            d: 'M0 0L10 5L0 10Z',
+            className: 'c-docs-diagram__arrowhead',
+          }),
         ),
       ),
       lanes.map((lane, index) => renderLane(lane, height, index)),

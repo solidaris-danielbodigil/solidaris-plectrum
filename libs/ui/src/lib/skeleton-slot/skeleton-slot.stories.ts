@@ -3,9 +3,10 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { Skeleton } from 'primeng/skeleton';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { classArgTypes } from '../../storybook/arg-types-from-props';
 import { expect } from '../../storybook/story-tests';
+import { SkeletonSlotMetadata } from './skeleton-slot.metadata';
 
 const meta: Meta = {
   title: 'Custom components/Skeleton Slot',
@@ -26,8 +27,14 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/** Ownership badge for the docs page — CSS-only block, so declared inline. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from skeleton-slot.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(SkeletonSlotMetadata.governance, SkeletonSlotMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'accessibility') };
 
 export const Slots: Story = {
   play: async ({ canvasElement }) => {

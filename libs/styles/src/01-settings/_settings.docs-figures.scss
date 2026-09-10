@@ -32,6 +32,11 @@
   --#{$pds-prefix}-color-docs-neutral-border: var(--#{$pds-prefix}-color-content-border);
   --#{$pds-prefix}-color-docs-neutral-text:   var(--#{$pds-prefix}-color-text);
 
+  // ── Do / Don't and contract blocks (pds-docs-do-dont, pds-docs-contract) ──
+  --#{$pds-prefix}-color-docs-do:      var(--#{$pds-prefix}-color-success);
+  --#{$pds-prefix}-color-docs-dont:    var(--#{$pds-prefix}-color-danger);
+  --#{$pds-prefix}-color-docs-code-bg: var(--#{$pds-prefix}-color-surface-50);
+
   // ── Diagram chrome ─────────────────────────────────────────────────────────
   --#{$pds-prefix}-color-docs-lane-bg:        var(--#{$pds-prefix}-color-surface-50);
   --#{$pds-prefix}-color-docs-lane-text:      var(--#{$pds-prefix}-color-text-muted);

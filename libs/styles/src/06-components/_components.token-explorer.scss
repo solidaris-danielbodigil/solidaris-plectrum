@@ -1,4 +1,6 @@
+@use 'sass:map';
 @use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.borders' as border;
 @use '../02-tools/tools.typography' as *;
 
 // =============================================================================
@@ -6,9 +8,15 @@
 // Token explorer foundation page — <pds-token-explorer>.
 //
 // Token source: libs/styles/src/01-settings/_settings.token-explorer.scss
-// Layout/gaps come from o-flex + o-layout mixes in the template; only the
-// explorer's own chrome, previews and hover states live here.
+// Layout, spacing, static borders and radii are o-flex / o-layout / u-* mixes
+// in the template. Only chrome, previews, PrimeNG internals and hover states
+// live here.
 // =============================================================================
+
+pds-token-explorer,
+pds-docs-direction {
+  display: block;
+}
 
 .c-token-explorer {
   @include text-body-sm;
@@ -18,29 +26,22 @@
 // ── Playground ───────────────────────────────────────────────────────────────
 
 .c-token-explorer__playground {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--#{$pds-prefix}-spacing-2);
-  margin-block: var(--#{$pds-prefix}-spacing-3);
-  padding: var(--#{$pds-prefix}-spacing-2);
   background: var(--#{$pds-prefix}-color-surface-50);
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-md);
 }
 
 .c-token-explorer__playground-label {
   @include text-label-sm;
   color: var(--#{$pds-prefix}-color-text-muted);
-  margin: 0;
 
   >code {
     font-family: monospace;
   }
 }
 
+// Shrink-wrap the input to its placeholder or value so long labels are not
+// clipped and short ones do not stretch the column. No o-layout class for
+// field-sizing / width: auto / max-width: 100%.
 .c-token-explorer__playground-input {
-  flex: 0 0 auto;
   width: auto;
   max-width: 100%;
   field-sizing: content;
@@ -48,14 +49,8 @@
 
 .c-token-explorer__playground-action {
   @include text-label-sm;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--#{$pds-prefix}-spacing-1);
-  padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
   color: var(--#{$pds-prefix}-color-primary-interactive-contrast);
   background: var(--#{$pds-prefix}-color-primary-interactive);
-  border: 0;
-  border-radius: var(--#{$pds-prefix}-radius-md);
   cursor: pointer;
 
   &:hover {
@@ -70,13 +65,8 @@
 
 .c-token-explorer__focus-demo {
   @include text-label-sm;
-  display: inline-flex;
-  align-items: center;
-  padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
   color: var(--#{$pds-prefix}-color-text);
   background: var(--#{$pds-prefix}-color-surface-0);
-  border: 1px solid var(--#{$pds-prefix}-color-content-border);
-  border-radius: var(--#{$pds-prefix}-radius-md);
   cursor: pointer;
   text-decoration: none;
 
@@ -92,7 +82,6 @@
 // field-sizing: content sizes the input to its placeholder or value so long
 // labels are not clipped and short ones do not stretch the column.
 .c-token-explorer__search {
-  flex: 0 0 auto;
   width: max-content;
   max-width: 100%;
 }
@@ -107,7 +96,6 @@
 // PrimeNG's dropdown input uses width: 1% + flex: 1; a definite min-width
 // keeps the field readable, and max-content lets longer role names grow.
 .c-token-explorer__filter {
-  flex: 0 0 auto;
   width: max-content;
   min-width: var(--#{$pds-prefix}-size-token-explorer-filter-min);
 
@@ -116,6 +104,12 @@
     width: auto;
     flex: 0 1 auto;
   }
+}
+
+// Compose playgrounds — keep each labeled filter to its control, not the row.
+.c-token-explorer__compose-field {
+  width: max-content;
+  max-width: 100%;
 }
 
 // Token finder intent select — same shrink-wrap as the explorer fields.
@@ -133,24 +127,14 @@
 
 // ── Sections ─────────────────────────────────────────────────────────────────
 
-.c-token-explorer__section {
-  margin-block-start: var(--#{$pds-prefix}-spacing-4);
-}
-
 .c-token-explorer__section-title {
   @include text-heading-xs;
-  display: flex;
-  align-items: center;
-  gap: var(--#{$pds-prefix}-spacing-1);
-  margin: 0 0 var(--#{$pds-prefix}-spacing-0-5);
 }
 
 .c-token-explorer__section-count {
   @include text-label-xs;
-  padding: 0 var(--#{$pds-prefix}-spacing-1);
   color: var(--#{$pds-prefix}-color-text-muted);
   background: var(--#{$pds-prefix}-color-surface-100);
-  border-radius: var(--#{$pds-prefix}-radius-pill);
 }
 
 // ── Grid ─────────────────────────────────────────────────────────────────────
@@ -160,74 +144,54 @@
 }
 
 .c-token-explorer__item {
-  position: relative;
-  display: flex;
-  gap: var(--#{$pds-prefix}-spacing-2);
-  align-items: flex-start;
-  min-width: 0;
-  padding: var(--#{$pds-prefix}-spacing-2);
   cursor: pointer;
   background: var(--#{$pds-prefix}-color-surface-0);
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-md);
   transition: border-color var(--#{$pds-prefix}-transition-duration-mask) ease,
   box-shadow var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   &:hover,
   &:focus-within {
-    border-color: var(--#{$pds-prefix}-color-brand);
+    --#{$pds-prefix}-border-color: var(--#{$pds-prefix}-color-brand);
     box-shadow: var(--#{$pds-prefix}-shadow-overlay-select);
   }
 
   &.is-warning {
-    border-color: var(--#{$pds-prefix}-color-warning);
+    --#{$pds-prefix}-border-color: var(--#{$pds-prefix}-color-warning);
   }
-}
-
-.c-token-explorer__body {
-  min-width: 0;
-  flex: 1 1 auto;
 }
 
 .c-token-explorer__name {
   @include text-label-sm;
   font-family: monospace;
-  margin: 0;
   word-break: break-all;
 }
 
 .c-token-explorer__value {
   @include text-body-xs;
   color: var(--#{$pds-prefix}-color-text-muted);
-  margin: 0;
   word-break: break-all;
 }
 
 .c-token-explorer__value-detail {
-  display: block;
   max-width: var(--#{$pds-prefix}-size-token-explorer-search-max);
-  margin: 0;
   font-family: monospace;
   @include text-body-xs;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+// Bespoke two-track grid — dt/dd land on parent tracks via display: contents.
 .c-token-explorer__members {
-  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0 var(--#{$pds-prefix}-spacing-1);
 }
 
-// display:contents lets dt/dd land directly on the parent grid tracks.
 .c-token-explorer__member {
   display: contents;
 
   >dt,
   >dd {
     @include text-body-xs;
-    margin: 0;
     color: var(--#{$pds-prefix}-color-text-muted);
   }
 
@@ -237,20 +201,11 @@
   }
 }
 
-.c-token-explorer__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--#{$pds-prefix}-spacing-0-5);
-  margin: var(--#{$pds-prefix}-spacing-1) 0 0;
-}
-
 .c-token-explorer__tag {
   @include text-body-xs;
   font-family: monospace;
-  padding: 0 var(--#{$pds-prefix}-spacing-0-5);
   color: var(--#{$pds-prefix}-color-text-muted);
   background: var(--#{$pds-prefix}-color-surface-50);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
 }
 
 .c-token-explorer__tag--prime {
@@ -267,18 +222,11 @@
 // Small corner control — never covers the preview. The card click also copies.
 .c-token-explorer__copy {
   appearance: none;
-  position: absolute;
   inset-block-end: var(--#{$pds-prefix}-spacing-1);
   inset-inline-end: var(--#{$pds-prefix}-spacing-1);
   z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--#{$pds-prefix}-spacing-0-5);
   color: var(--#{$pds-prefix}-color-text-muted);
   background: var(--#{$pds-prefix}-color-surface-0);
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
   cursor: pointer;
   opacity: 0;
   transition: opacity var(--#{$pds-prefix}-transition-duration-mask) ease,
@@ -290,7 +238,6 @@
   &:focus-visible {
     opacity: 1;
     color: var(--#{$pds-prefix}-color-brand);
-    border-color: var(--#{$pds-prefix}-color-brand);
   }
 
   &:focus-visible {
@@ -302,8 +249,6 @@
 // ── Previews ─────────────────────────────────────────────────────────────────
 
 .c-token-explorer__preview {
-  flex-shrink: 0;
-  display: block;
   // Fixed size required — an empty span has no intrinsic dimensions
   width: var(--#{$pds-prefix}-size-token-explorer-preview);
   height: var(--#{$pds-prefix}-size-token-explorer-preview);
@@ -316,13 +261,10 @@
   background-size:
     auto,
     12px 12px;
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
 }
 
 .c-token-explorer__preview--radius {
   background: var(--#{$pds-prefix}-color-brand-subtle);
-  border: 1px solid var(--#{$pds-prefix}-color-brand);
   border-radius: var(--#{$pds-prefix}-token-explorer-radius);
 }
 
@@ -339,9 +281,125 @@
   background: var(--#{$pds-prefix}-color-surface-50);
 }
 
+// Direction glyphs — border edges use the same mixin as u-border-*.
+// Radius corners are marked with dots (a 6px radius on a 21px tile reads as
+// a circle). The mark map mirrors $radius-targets in 02-tools.
+.c-token-explorer__direction {
+  // Relative so corner marks pin to this tile (docs chrome, not layout).
+  position: relative;
+  box-sizing: border-box;
+  width: var(--#{$pds-prefix}-size-token-explorer-direction);
+  height: var(--#{$pds-prefix}-size-token-explorer-direction);
+  background: var(--#{$pds-prefix}-color-surface-50);
+  border: var(--#{$pds-prefix}-border-width-default) solid var(--#{$pds-prefix}-color-panel-border);
+}
+
+.c-token-explorer__preview.c-token-explorer__direction {
+  width: var(--#{$pds-prefix}-size-token-explorer-preview);
+  height: var(--#{$pds-prefix}-size-token-explorer-preview);
+}
+
+.c-token-explorer__swatch {
+  box-sizing: border-box;
+  width: var(--#{$pds-prefix}-size-token-explorer-direction);
+  height: var(--#{$pds-prefix}-size-token-explorer-direction);
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+  border: var(--#{$pds-prefix}-border-width-default) solid var(--#{$pds-prefix}-color-brand);
+}
+
+.c-token-explorer__direction[data-kind='border'][data-target='all'] {
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+  @include border.border(all,
+    var(--#{$pds-prefix}-color-brand),
+    var(--#{$pds-prefix}-border-width-thick));
+}
+
+@each $side in map.keys(border.$border-sides) {
+  @if $side !=all {
+    .c-token-explorer__direction[data-kind='border'][data-target='#{$side}'] {
+      @include border.border($side,
+        var(--#{$pds-prefix}-color-brand),
+        var(--#{$pds-prefix}-border-width-thick));
+    }
+  }
+}
+
+.c-token-explorer__direction[data-kind='radius'] {
+  background: var(--#{$pds-prefix}-color-brand-subtle);
+  border-color: var(--#{$pds-prefix}-color-brand);
+}
+
+.c-token-explorer__direction-mark {
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--#{$pds-prefix}-size-token-explorer-direction-mark);
+  height: var(--#{$pds-prefix}-size-token-explorer-direction-mark);
+  background: var(--#{$pds-prefix}-color-panel-border);
+  border-radius: var(--#{$pds-prefix}-radius-pill);
+  opacity: 0.35;
+}
+
+.c-token-explorer__preview .c-token-explorer__direction-mark {
+  width: var(--#{$pds-prefix}-spacing-1);
+  height: var(--#{$pds-prefix}-spacing-1);
+}
+
+.c-token-explorer__direction-mark--top-start {
+  inset-block-start: var(--#{$pds-prefix}-spacing-0-25);
+  inset-inline-start: var(--#{$pds-prefix}-spacing-0-25);
+}
+
+.c-token-explorer__direction-mark--top-end {
+  inset-block-start: var(--#{$pds-prefix}-spacing-0-25);
+  inset-inline-end: var(--#{$pds-prefix}-spacing-0-25);
+}
+
+.c-token-explorer__direction-mark--bottom-start {
+  inset-block-end: var(--#{$pds-prefix}-spacing-0-25);
+  inset-inline-start: var(--#{$pds-prefix}-spacing-0-25);
+}
+
+.c-token-explorer__direction-mark--bottom-end {
+  inset-block-end: var(--#{$pds-prefix}-spacing-0-25);
+  inset-inline-end: var(--#{$pds-prefix}-spacing-0-25);
+}
+
+// Mirrors radius.$radius-targets — which corners a target lights up.
+$direction-radius-marks: (
+  all: (top-start,
+    top-end,
+    bottom-start,
+    bottom-end,
+  ),
+  top: (top-start,
+    top-end,
+  ),
+  bottom: (bottom-start,
+    bottom-end,
+  ),
+  start: (top-start,
+    bottom-start,
+  ),
+  end: (top-end,
+    bottom-end,
+  ),
+  top-start: (top-start),
+  top-end: (top-end),
+  bottom-start: (bottom-start),
+  bottom-end: (bottom-end),
+);
+
+@each $target, $marks in $direction-radius-marks {
+  @each $mark in $marks {
+    .c-token-explorer__direction[data-kind='radius'][data-target='#{$target}'] .c-token-explorer__direction-mark--#{$mark} {
+      background: var(--#{$pds-prefix}-color-brand);
+      opacity: 1;
+    }
+  }
+}
+
 .c-token-explorer__preview--shadow {
   background: var(--#{$pds-prefix}-color-surface-0);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
   box-shadow: var(--#{$pds-prefix}-token-explorer-shadow);
 }
 
@@ -350,8 +408,6 @@
   width: auto;
   min-width: var(--#{$pds-prefix}-size-token-explorer-preview);
   height: var(--#{$pds-prefix}-size-token-explorer-preview);
-  display: flex;
-  align-items: center;
 
   &::before {
     content: '';
@@ -367,28 +423,20 @@
 
 .c-token-explorer__preview--focus {
   background: var(--#{$pds-prefix}-color-surface-0);
-  border-radius: var(--#{$pds-prefix}-radius-md);
   outline: var(--#{$pds-prefix}-focus-ring-width) var(--#{$pds-prefix}-focus-ring-style) var(--#{$pds-prefix}-focus-ring-color);
   outline-offset: var(--#{$pds-prefix}-focus-ring-offset);
 }
 
 // Motion: the dot travels using the row's own duration token.
 .c-token-explorer__preview--motion {
-  display: flex;
-  align-items: center;
   width: calc(var(--#{$pds-prefix}-size-token-explorer-preview) + var(--#{$pds-prefix}-size-token-explorer-focus-travel));
   background: var(--#{$pds-prefix}-color-surface-50);
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-pill);
 }
 
 .c-token-explorer__motion-dot {
-  display: block;
   width: var(--#{$pds-prefix}-size-token-explorer-preview-bar);
   height: var(--#{$pds-prefix}-size-token-explorer-preview-bar);
-  margin-inline-start: var(--#{$pds-prefix}-spacing-0-5);
   background: var(--#{$pds-prefix}-color-brand);
-  border-radius: var(--#{$pds-prefix}-radius-pill);
   transition: transform var(--#{$pds-prefix}-token-explorer-duration) ease;
 
   .c-token-explorer__preview--motion:hover &,
@@ -405,13 +453,8 @@
 }
 
 .c-token-explorer__preview--icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: var(--#{$pds-prefix}-color-text);
   background: var(--#{$pds-prefix}-color-surface-50);
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
   font-size: var(--#{$pds-prefix}-token-explorer-icon-size);
   line-height: 1;
 
@@ -430,27 +473,18 @@
   line-height: var(--#{$pds-prefix}-token-explorer-line-height);
   letter-spacing: var(--#{$pds-prefix}-token-explorer-letter-spacing);
   color: var(--#{$pds-prefix}-color-text);
-  min-width: 0;
   overflow-wrap: anywhere;
-}
-
-// Type samples read better full-width above their metadata.
-.c-token-explorer__item:has(.c-token-explorer__preview--type) {
-  flex-direction: column;
-  align-items: stretch;
 }
 
 // ── Table view ───────────────────────────────────────────────────────────────
 
 .c-token-explorer__table {
-  width: 100%;
   border-collapse: collapse;
   @include text-body-xs;
 
   th,
   td {
     text-align: start;
-    padding: var(--#{$pds-prefix}-spacing-1) var(--#{$pds-prefix}-spacing-2);
     border-bottom: 1px solid var(--#{$pds-prefix}-color-panel-border);
     vertical-align: middle;
   }
@@ -477,24 +511,17 @@
 }
 
 .c-token-explorer__warn {
-  display: block;
   color: var(--#{$pds-prefix}-color-warning);
 }
 
 .c-token-explorer__copy-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--#{$pds-prefix}-spacing-0-5);
   color: var(--#{$pds-prefix}-color-text-muted);
   background: transparent;
-  border: 1px solid var(--#{$pds-prefix}-color-panel-border);
-  border-radius: var(--#{$pds-prefix}-radius-sm);
   cursor: pointer;
 
   &:hover {
     color: var(--#{$pds-prefix}-color-brand);
-    border-color: var(--#{$pds-prefix}-color-brand);
+    --#{$pds-prefix}-border-color: var(--#{$pds-prefix}-color-brand);
   }
 
   &:focus-visible {
@@ -509,11 +536,4 @@
   @include text-body-sm;
   text-align: center;
   color: var(--#{$pds-prefix}-color-text-muted);
-  padding: var(--#{$pds-prefix}-spacing-6);
-}
-
-.c-token-explorer__more {
-  display: flex;
-  justify-content: center;
-  padding-block: var(--#{$pds-prefix}-spacing-4);
 }

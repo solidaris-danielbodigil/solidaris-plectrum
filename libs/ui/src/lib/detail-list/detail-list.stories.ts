@@ -2,9 +2,10 @@
 // stories carry the markup directly (same pattern as Accordion).
 import type { Meta, StoryObj } from '@storybook/angular';
 import type { DetailListRow } from '../drawer';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 import { assertTextVisible } from '../../storybook/story-tests';
+import { DetailListMetadata } from './detail-list.metadata';
 
 const ROWS: DetailListRow[] = [
   { label: 'Numéro national', value: '85.07.30-033.61' },
@@ -54,8 +55,14 @@ const meta: Meta<DetailListStoryArgs> = {
 export default meta;
 type Story = StoryObj<DetailListStoryArgs>;
 
-/** Ownership badge for the docs page — CSS-only block, so declared inline. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from detail-list.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(DetailListMetadata.governance, DetailListMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'accessibility') };
 
 export const Default: Story = {
   render: (args) => ({

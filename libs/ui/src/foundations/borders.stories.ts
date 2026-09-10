@@ -3,139 +3,101 @@
 // Foundations / Borders — u-radius-* and u-border-* utility docs.
 //
 // Class lists are read from the compiled stylesheet at render time, never
-// retyped here (.ai/rules/10-css-ssot.md). Border classes are grouped by the
-// properties their rule declares, so a new side, modifier or status appears in
-// the right section with no edit to this file.
-// Token catalogues reuse the token-explorer grid chrome (c-token-explorer__item).
+// retyped here (.ai/rules/10-css-ssot.md).
 // =============================================================================
 
-import type { Meta } from '@storybook/angular';
-import { readClassRules, readClassSuffixes } from '../storybook/cssom';
-import { tokenExplorerCards } from '../storybook/docs-token-cards';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { doDontStory } from '../docs/docs-figure-stories';
+import { DocsTokenGalleryComponent } from '../storybook/docs-token-gallery.component';
+import { assertTextVisible } from '../storybook/story-tests';
+import {
+  allCornerRadii,
+  borderGroups,
+  BordersPlaygroundComponent,
+  borderSideCards,
+  borderStatusCards,
+  radiusCards,
+  radiusTargets,
+} from './borders-playground';
 
-/** Longest stop first so `top-2xl` resolves to `2xl`, not `xl`. */
-const RADIUS_STOPS = [
-  '2xl',
-  'none',
-  'xs',
-  'sm',
-  'md',
-  'lg',
-  'xl',
-  'pill',
-] as const;
-
-function radiusVar(suffix: string): string {
-  const stop = RADIUS_STOPS.find(
-    (item) => suffix === item || suffix.endsWith(`-${item}`),
-  );
-  return `var(--pds-radius-${stop ?? suffix})`;
-}
-
-/** All-corner stops: a single segment after the prefix (`md`, `2xl`, `pill`). */
-const allCornerRadii = () => readClassSuffixes(/^u-radius-([a-z0-9]+)$/);
-
-/** Per-edge and per-corner targets: everything else. */
-const radiusTargets = () =>
-  readClassSuffixes(/^u-radius-([a-z0-9]+(?:-[a-z0-9]+)+)$/);
-
-interface BorderGroups {
-  sides: string[];
-  modifiers: string[];
-  statuses: string[];
-}
-
-/**
- * Split `u-border-*` by what each rule sets:
- *   side     → a `border*` longhand
- *   status   → only `--pds-border-color`
- *   modifier → only `--pds-border-width` / `--pds-border-style`
- */
-function borderGroups(): BorderGroups {
-  const groups: BorderGroups = { sides: [], modifiers: [], statuses: [] };
-
-  for (const rule of readClassRules(/^u-border-(.+)$/)) {
-    const setsBorder = rule.properties.some((prop) =>
-      /^border($|-)/.test(prop),
-    );
-    const setsColor = rule.properties.includes('--pds-border-color');
-
-    if (setsBorder) groups.sides.push(rule.suffix);
-    else if (setsColor) groups.statuses.push(rule.suffix);
-    else groups.modifiers.push(rule.suffix);
-  }
-
-  return groups;
-}
-
-function utilityCards(
-  items: string[],
-  className: (item: string) => string,
-  previewClass: (item: string) => string,
-  tag?: (item: string) => string,
-): string {
-  return tokenExplorerCards(
-    items.map((item) => ({
-      name: className(item),
-      tag: tag?.(item),
-      previewClass: previewClass(item),
-    })),
-  );
-}
-
-export default {
+const meta: Meta = {
   title: 'Foundations/Borders',
   tags: ['!dev'],
   parameters: { layout: 'padded' },
-} as Meta;
+};
 
-// ── Radius ────────────────────────────────────────────────────────────────────
-export const Radius = {
+export default meta;
+
+export const Usage = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Static chrome in the template',
+        detail:
+          'u-border-{side} plus optional thick / dashed / status. Colour from a shared role (panel-border, card-border, content-border).',
+      },
+      {
+        title: 'Radius utilities when the corner is not state-driven',
+        detail: 'u-radius-{stop} or a per-edge target. Compose a class in the playground, then paste it.',
+      },
+    ],
+    donts: [
+      {
+        title: 'border: 1px solid … in 06-components',
+        detail: 'A hardcoded stroke will not track the role tokens or the shared mixin.',
+        alternative: 'u-border-* in the template; state-driven borders stay in SCSS as var(--pds-*).',
+      },
+      {
+        title: 'A feature-specific border colour alias',
+        detail: 'Every surface then invents its own gray.',
+        alternative: 'panel-border / card-border / content-border, overridden with --pds-border-color when needed.',
+      },
+    ],
+  }),
+};
+
+export const Generate: StoryObj = {
+  name: 'Generate',
+  tags: ['dev'],
+  render: () => ({
+    moduleMetadata: { imports: [BordersPlaygroundComponent] },
+    template: `<pds-borders-playground />`,
+  }),
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Side');
+    await assertTextVisible(canvasElement, 'Result');
+  },
+};
+
+export const Radius: StoryObj = {
   name: 'Radius',
   render: () => ({
-    template: `
-    <div class="c-token-explorer">
-      ${utilityCards(
-        allCornerRadii(),
-        (stop) => `u-radius-${stop}`,
-        (stop) => `c-token-explorer__preview--shape u-radius-${stop}`,
-        (stop) => radiusVar(stop),
-      )}
-    </div>`,
+    moduleMetadata: { imports: [DocsTokenGalleryComponent] },
+    props: { source: () => radiusCards(allCornerRadii()) },
+    template: `<pds-docs-token-gallery [source]="source" />`,
   }),
 };
 
-export const RadiusTargets = {
+export const RadiusTargets: StoryObj = {
   name: 'Radius Targets',
   render: () => ({
-    template: `
-    <div class="c-token-explorer">
-      ${utilityCards(
-        radiusTargets(),
-        (stop) => `u-radius-${stop}`,
-        (stop) => `c-token-explorer__preview--shape u-radius-${stop}`,
-        (stop) => radiusVar(stop),
-      )}
-    </div>`,
+    moduleMetadata: { imports: [DocsTokenGalleryComponent] },
+    props: { source: () => radiusCards(radiusTargets()) },
+    template: `<pds-docs-token-gallery [source]="source" />`,
   }),
 };
 
-// ── Border sides ──────────────────────────────────────────────────────────────
-export const BorderSides = {
+export const BorderSides: StoryObj = {
   name: 'Border Sides',
   render: () => ({
-    template: `
-    <div class="c-token-explorer">
-      ${utilityCards(
-        borderGroups().sides,
-        (side) => `u-border-${side}`,
-        (side) => `c-token-explorer__preview--box u-border-${side}`,
-      )}
-    </div>`,
+    moduleMetadata: { imports: [DocsTokenGalleryComponent] },
+    props: { source: () => borderSideCards() },
+    template: `<pds-docs-token-gallery [source]="source" />`,
   }),
 };
 
-export const BorderModifiers = {
+export const BorderModifiers: StoryObj = {
   name: 'Border Modifiers',
   render: () => ({
     template: `
@@ -153,83 +115,16 @@ export const BorderModifiers = {
   }),
 };
 
-export const BorderStatus = {
+export const BorderStatus: StoryObj = {
   name: 'Border Status Colors',
   render: () => ({
-    template: `
-    <div class="c-token-explorer">
-      ${utilityCards(
-        borderGroups().statuses,
-        (status) => `u-border-${status}`,
-        (status) =>
-          `c-token-explorer__preview--box u-border-all u-border-${status}`,
-        (status) => `var(--pds-color-${status})`,
-      )}
-    </div>`,
+    moduleMetadata: { imports: [DocsTokenGalleryComponent] },
+    props: { source: () => borderStatusCards() },
+    template: `<pds-docs-token-gallery [source]="source" />`,
   }),
 };
 
-// ── Generate — compose a border from Controls ────────────────────────────────
-export const Generate = {
-  name: 'Generate',
-  tags: ['dev'],
-  args: {
-    side: 'all',
-    status: 'default',
-    thick: false,
-    dashed: false,
-    radius: 'none',
-  },
-  argTypes: {
-    side: {
-      control: 'select',
-      options: borderGroups().sides,
-      description: 'u-border-{side}',
-    },
-    status: {
-      control: 'select',
-      options: ['default', ...borderGroups().statuses],
-      description: 'Status colour — sets --pds-border-color.',
-    },
-    thick: { control: 'boolean', description: 'Adds u-border-thick.' },
-    dashed: { control: 'boolean', description: 'Adds u-border-dashed.' },
-    radius: {
-      control: 'select',
-      options: [...new Set(['none', ...allCornerRadii()])],
-      description: 'u-radius-{stop} on the same element.',
-    },
-  },
-  parameters: { layout: 'padded' },
-  render: (args: {
-    side: string;
-    status: string;
-    thick: boolean;
-    dashed: boolean;
-    radius: string;
-  }) => {
-    const classes = [
-      `u-border-${args.side}`,
-      args.status !== 'default' ? `u-border-${args.status}` : '',
-      args.thick ? 'u-border-thick' : '',
-      args.dashed ? 'u-border-dashed' : '',
-      args.radius !== 'none' ? `u-radius-${args.radius}` : '',
-    ]
-      .filter(Boolean)
-      .join(' ');
-    return {
-      template: `
-        <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
-          <div class="c-demo-cell ${classes} o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-4"
-               style="width: 16rem; height: 6rem; background: var(--pds-color-surface-0);">
-            preview
-          </div>
-          <code>class="${classes}"</code>
-        </div>`,
-    };
-  },
-};
-
-export const BorderColorOverride = {
+export const BorderColorOverride: StoryObj = {
   name: 'Border Color Override',
   render: () => ({
     template: `

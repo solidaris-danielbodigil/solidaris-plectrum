@@ -68,7 +68,8 @@ export class IconComponent {
   // ── Computed ──────────────────────────────────────────────────────────────
 
   readonly hostClass = computed(
-    () => `c-icon c-icon--${this.size()}`
+    () =>
+      `c-icon c-icon--${this.size()} o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item--shrink-0`,
   );
 
   readonly isDecorative = computed(() => !this.label());

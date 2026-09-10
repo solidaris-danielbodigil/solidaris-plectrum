@@ -14,7 +14,7 @@ export const TopNavMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.top-nav.scss',
     figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1533',
     created: '2026-06-05',
-    modified: '2026-06-05',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -23,8 +23,8 @@ export const TopNavMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Application shell top bar',
-      'Breadcrumb-driven page context',
-      'Inline search and utility actions in the header',
+      'Breadcrumb-driven page context with utility actions',
+      'Inline search that expands from an icon',
     ],
     commonPatterns: [
       {
@@ -40,19 +40,31 @@ export const TopNavMetadata: ComponentMetadata = {
     ],
     antiPatterns: [
       {
-        scenario: 'Parsing router state inside TopNav',
-        reason: 'TopNav must stay presentation-first and accept breadcrumb data from the container.',
+        scenario: 'Parsing router state inside Top Nav',
+        reason: 'Top Nav is presentation-first: it renders the breadcrumb model it is given and never derives routes itself.',
         alternative: 'Build the breadcrumb model in the app shell and pass it through [breadcrumbs].',
       },
       {
-        scenario: 'Letting TopNav directly control the sub-nav component',
-        reason: 'The component should emit intent, not reach across to sibling state.',
-        alternative: 'Bind subNavExpandedChange in the parent and pass sub-nav state down separately.',
+        scenario: 'Letting Top Nav own Sub Nav Shell state',
+        reason: 'The component emits intent; it does not reach across to sibling state.',
+        alternative: 'Bind subNavExpandedChange in the parent and pass subNavExpanded back down.',
       },
     ],
   },
+  anatomy: [
+    { part: 'c-top-nav__surface', role: 'Header row' },
+    { part: 'c-top-nav__action-button', role: 'Sub-nav toggle, search and help — PrimeNG text buttons' },
+    { part: 'c-top-nav__breadcrumb', role: 'PrimeNG p-breadcrumb' },
+    { part: 'c-top-nav__search', role: 'Expanded IconField + InputText + pds-input-clear' },
+    { part: 'c-top-nav__avatar', role: 'pds-plectrum-avatar — decorative when a menu trigger wraps it' },
+  ],
   behavior: {
     states: ['default', 'subnav-expanded', 'search-open', 'action-hover', 'action-focus-visible'],
+    interactions: [
+      'Sub-navigation state is controlled: subNavExpanded in, subNavExpandedChange out',
+      'The search icon expands into a PrimeNG IconField + InputText control; Enter emits searchSubmit',
+      'Action buttons are the PrimeNG text variant and keep hover / focus-visible / active states in CSS',
+    ],
   },
   props: [
     { name: 'showBackButton', type: 'boolean', required: false, default: 'false', description: 'Shows the back button before the breadcrumb.' },
@@ -89,6 +101,16 @@ export const TopNavMetadata: ComponentMetadata = {
   ],
   accessibility: {
     wcagLevel: 'AA',
+    ariaAttributes: [
+      'Sub-nav toggle uses aria-pressed and optional aria-controls',
+      'Search icon uses aria-expanded / aria-controls; the field is role="searchbox"',
+      'Help and avatar menu triggers have accessible names; an avatar inside a menu button is focusable="false"',
+      'p-breadcrumb carries an aria-label (breadcrumbAriaLabel, locale default)',
+    ],
+    keyboardSupport: [
+      'Every action is a native button: Tab order follows the visual order',
+      'Escape closes the expanded search and returns focus to the search icon',
+    ],
   },
   tokens: {
     consumed: [

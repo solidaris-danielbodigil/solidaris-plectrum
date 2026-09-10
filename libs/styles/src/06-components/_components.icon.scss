@@ -6,8 +6,8 @@
 //
 // Size variants map to --pds-icon-size-* tokens (defined in 01-settings/_settings.globals.scss).
 // Colour is always currentColor — no colour token applied here.
-// NOTE: inline-flex + centering stays in SCSS — this is a leaf-node primitive
-// whose entire structural purpose is centering a glyph in a fixed-size box.
+// Layout (inline-flex + centering + shrink-0) is on the host class in
+// icon.component.ts. Size tokens stay here — they have no o-layout equivalent.
 //
 // Design ref:   Figma YNZ1DlSjDNUXrvkxlSp10D (Plectrum UI Kit — Icons)
 // Token source: libs/styles/src/01-settings/_settings.globals.scss
@@ -22,17 +22,10 @@
 pds-icon,
 .c-icon {
   // Fixed size required — icon fonts / SVGs collapse to 0 without an explicit constraint.
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  // Default size — overridden by modifier below.
-  width:  var(--#{$pds-prefix}-icon-size-md);
+  width: var(--#{$pds-prefix}-icon-size-md);
   height: var(--#{$pds-prefix}-icon-size-md);
   // Always inherit colour so icons follow surrounding text.
   color: currentcolor;
-  // Prevent flex children from shrinking the icon.
-  flex-shrink: 0;
-
   // Font-icon baseline alignment.
   line-height: 1;
   font-size: var(--#{$pds-prefix}-icon-size-md);
@@ -43,13 +36,11 @@ pds-icon,
 // =============================================================================
 
 .c-icon__svg {
-  display: contents; // Let the inner <svg> fill the host dimensions.
-
   svg {
     // Fixed size required — SVG elements must be explicitly constrained.
-    width:  100%;
+    width: 100%;
     height: 100%;
-    fill:   currentcolor;
+    fill: currentcolor;
     // stroke is intentionally omitted — brand-mark SVGs define their own
     // stroke/fill; monochrome icon SVGs should use fill only.
   }
@@ -60,31 +51,31 @@ pds-icon,
 // =============================================================================
 
 .c-icon--xs {
-  width:     var(--#{$pds-prefix}-icon-size-xs);
-  height:    var(--#{$pds-prefix}-icon-size-xs);
+  width: var(--#{$pds-prefix}-icon-size-xs);
+  height: var(--#{$pds-prefix}-icon-size-xs);
   font-size: var(--#{$pds-prefix}-icon-size-xs);
 }
 
 .c-icon--sm {
-  width:     var(--#{$pds-prefix}-icon-size-sm);
-  height:    var(--#{$pds-prefix}-icon-size-sm);
+  width: var(--#{$pds-prefix}-icon-size-sm);
+  height: var(--#{$pds-prefix}-icon-size-sm);
   font-size: var(--#{$pds-prefix}-icon-size-sm);
 }
 
 .c-icon--md {
-  width:     var(--#{$pds-prefix}-icon-size-md);
-  height:    var(--#{$pds-prefix}-icon-size-md);
+  width: var(--#{$pds-prefix}-icon-size-md);
+  height: var(--#{$pds-prefix}-icon-size-md);
   font-size: var(--#{$pds-prefix}-icon-size-md);
 }
 
 .c-icon--lg {
-  width:     var(--#{$pds-prefix}-icon-size-lg);
-  height:    var(--#{$pds-prefix}-icon-size-lg);
+  width: var(--#{$pds-prefix}-icon-size-lg);
+  height: var(--#{$pds-prefix}-icon-size-lg);
   font-size: var(--#{$pds-prefix}-icon-size-lg);
 }
 
 .c-icon--xl {
-  width:     var(--#{$pds-prefix}-icon-size-xl);
-  height:    var(--#{$pds-prefix}-icon-size-xl);
+  width: var(--#{$pds-prefix}-icon-size-xl);
+  height: var(--#{$pds-prefix}-icon-size-xl);
   font-size: var(--#{$pds-prefix}-icon-size-xl);
 }

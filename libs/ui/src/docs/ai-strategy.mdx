@@ -164,21 +164,22 @@ Component work is delegated to specialist subagents. Ask **Solidaris** for a com
 
 ### Metadata file
 
-Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `ComponentMetadata` in `.ai/contracts/schema/component.metadata.ts`.
+Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `ComponentMetadata` in `.ai/contracts/schema/component.metadata.ts`. It is also the single source of truth for the component's docs page — the MDX embeds figures that render these blocks (`pds-docs-status`, `pds-docs-contract`); see [Writing stories → Documentation source](?path=/docs/docs-writing-stories--docs#documentation-source). `npm run docs:check` fails a page that restates a block by hand.
 
 <DocsTable
-  headers={['Block', 'Purpose']}
+  headers={['Block', 'Purpose', 'Rendered on the docs page as']}
   rows={[
-    ['component', 'Name, category, type, path, PrimeNG wrap, BEM block, ITCSS layer, SCSS path'],
-    ['usage', 'useCases, commonPatterns (with a composition snippet), antiPatterns'],
-    ['variants / props', 'Inputs and option lists when the API is more than a host class'],
-    ['composition', 'Slots, parents, companions, nested components'],
-    ['behavior', 'States, interactions, responsive notes'],
-    ['accessibility', 'Role, ARIA, keyboard, WCAG level'],
-    ['tokens.consumed', '--pds-* list. Must match the stylesheet or Token contracts flags it'],
-    ['tokens.primeNgMappings', 'Optional --p-* bridges this component relies on'],
-    ['aiHints', 'priority, context, selectionCriteria, keywords'],
-    ['examples', 'Copy-paste snippets for agents'],
+    ['component', 'Name, category, type, path, PrimeNG wrap, BEM block, ITCSS layer, SCSS path, description, Figma URL', 'Lead paragraph + Open in Figma (Status figure)'],
+    ['usage', 'useCases, commonPatterns (with a composition snippet), antiPatterns (scenario, reason, alternative)', 'Do / Don’t cards'],
+    ['anatomy', 'Named parts (BEM elements, PrimeNG hosts) and their role', 'Anatomy table'],
+    ['variants / props', 'Inputs and option lists when the API is more than a host class', 'ArgTypes (props) · option tables (variants)'],
+    ['composition', 'Slots, parents, companions, nested components', 'Composition figure (optional)'],
+    ['behavior', 'States, interactions, responsive notes', 'Behavior figure (optional)'],
+    ['accessibility', 'Role, ARIA, keyboard, WCAG level', 'Accessibility card'],
+    ['tokens.consumed', '--pds-* list. Must match the stylesheet or Token contracts flags it', 'Foundations / Token contracts'],
+    ['tokens.primeNgMappings', 'Optional --p-* bridges this component relies on', '—'],
+    ['aiHints', 'priority, context, selectionCriteria, keywords', '— (agents only)'],
+    ['examples', 'Copy-paste snippets for agents', 'Examples cards (optional)'],
   ]}
 />
 

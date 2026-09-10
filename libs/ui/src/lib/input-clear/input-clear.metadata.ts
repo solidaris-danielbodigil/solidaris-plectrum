@@ -5,7 +5,7 @@ export const InputClearMetadata: ComponentMetadata = {
     name: 'InputClear',
     category: 'atoms',
     description:
-      'PrimeNG-aligned clear button using the shared times SVG for text inputs inside p-iconfield.',
+      'Clear affordance for pInputText fields inside p-iconfield: a button that reuses the PrimeNG times SVG — the same 14×14 asset as showClear on autocomplete, select and multiselect — and emits clear when activated.',
     type: 'input',
     path: 'libs/ui/src/lib/input-clear/input-clear.component.ts',
     primeNgComponent: 'IconField / InputIcon',
@@ -14,8 +14,8 @@ export const InputClearMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.input-clear.scss',
     figmaUrl:
       'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
-    created: new Date().toISOString(),
-    modified: new Date().toISOString(),
+    created: '2026-06-07',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -24,9 +24,8 @@ export const InputClearMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Clearable pInputText fields',
-      'Search inputs with inline clear',
-      'Input group query fields',
-      'Toolbar filter search fields with a leading icon',
+      'Search inputs with an inline clear, with or without a leading search icon',
+      'Query fields inside p-inputgroup and toolbar filters',
     ],
     commonPatterns: [
       {
@@ -71,28 +70,62 @@ export const InputClearMetadata: ComponentMetadata = {
       {
         scenario: 'Bootstrap bi-x-lg inside p-inputicon',
         reason:
-          'Font icons render at different metrics than PrimeNG showClear SVGs.',
+          'Font glyph metrics differ from the PrimeNG showClear SVG, so the clear looks different from native PrimeNG clears.',
         alternative:
-          'Use pds-input-clear for consistent 14×14 PrimeNG times asset.',
+          'Use pds-input-clear — the same 14×14 PrimeNG times asset.',
       },
       {
-        scenario: 'Input type="search" with pds-input-clear',
+        scenario: 'type="search" on the input',
         reason:
-          'Browsers render a native clear control alongside the PrimeNG times icon.',
+          'Browsers draw their own clear control next to the PrimeNG one.',
         alternative:
           'Use type="text" with role="searchbox" and pds-input-clear only.',
       },
       {
-        scenario: 'Clearable pInputText without pds-input-clear',
+        scenario: 'pds-input-clear on autocomplete, select or multiselect',
         reason:
-          'Leaves browser-native search clears or no clear affordance; inconsistent with home and top-nav.',
+          'Those PrimeNG components ship a native clear with the same icon.',
+        alternative: 'Enable showClear on the PrimeNG component instead.',
+      },
+      {
+        scenario: 'Clearable pInputText without any clear control',
+        reason:
+          'Users get no affordance to reset the field, or a browser-native one that differs per browser.',
         alternative:
-          'Add pds-input-clear in p-inputicon after the input. Use showClear only on PrimeNG components that support it natively (autocomplete, select, multiselect).',
+          'Add pds-input-clear inside p-inputicon after the input.',
       },
     ],
   },
+  anatomy: [
+    { part: 'c-input-clear', role: 'Button host — stays in the DOM when hidden' },
+    { part: 'is-hidden', role: 'State class when visible is false — inert, aria-hidden, tabindex="-1"' },
+    { part: 'svg[data-p-icon="times"]', role: 'PrimeNG times icon, decorative' },
+    { part: 'p-iconfield / p-inputicon', role: 'Required PrimeNG wrappers around the input' },
+  ],
+  behavior: {
+    states: ['visible', 'hidden'],
+    interactions: [
+      'Keep the control in the DOM and toggle [visible] (typically !!value) so the p-iconfield padding stays reserved and the layout never shifts',
+      'Activating the button emits clear; the parent resets the model — the control never touches the input itself',
+      'mousedown is prevented so the input keeps focus while the clear click is handled',
+      'While hidden the click handler ignores activations',
+    ],
+  },
+  composition: {
+    parentConstraints: ['Inside p-inputicon, after the input, within p-iconfield'],
+    companions: ['IconField', 'InputIcon', 'InputText', 'InputGroup', 'FormField', 'TopNav'],
+  },
   accessibility: {
     wcagLevel: 'AA',
+    ariaAttributes: [
+      'The button aria-label defaults to "Clear" — override it for search fields ("Clear search")',
+      'When hidden the control is aria-hidden and tabindex="-1"',
+      'Pair search fields with type="text" and role="searchbox" so only this clear is announced',
+    ],
+    keyboardSupport: [
+      'Native button: Tab reaches it while visible, Enter or Space emits clear',
+      'Hidden controls are skipped in the tab order',
+    ],
   },
   tokens: {
     consumed: [],

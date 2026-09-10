@@ -69,7 +69,9 @@ const KIND_LABEL: Readonly<Record<SyncChangeKind, string>> = {
   templateUrl: './docs-sync-changes.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-sync-changes' },
+  host: {
+    class: 'c-docs-sync-changes o-layout--block o-layout--margin-block-3',
+  },
 })
 export class DocsSyncChangesComponent {
   readonly report = input.required<SyncReport>();

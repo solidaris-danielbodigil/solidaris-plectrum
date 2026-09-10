@@ -14,6 +14,8 @@
 //
 // PrimeNG components used:
 //   - pds-toolbar    — sticky toolbar shell (libs/ui/src/lib/toolbar)
+//   - [toolbarStart] — optional projected control (Token finder intent, …)
+//   - [explorerLead] — optional projected copy below the toolbar (snippets, …)
 //   - p-iconField    — search field with leading icon
 //   - InputText      — directive on the <input>
 //   - p-autocomplete — role filter when a category has more than 5 groups
@@ -52,7 +54,7 @@ import { Popover } from 'primeng/popover';
 import { SelectButton } from 'primeng/selectbutton';
 import { InputClearComponent } from '../lib/input-clear';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
-import { showStorybookToast } from './storybook-toast';
+import { copyStorybookText } from './storybook-toast';
 import {
   readTokenDeclarations,
   resolveToken,
@@ -173,6 +175,12 @@ export class TokenExplorerComponent {
   /** Restrict to these section keys. Empty means every section in the category. */
   readonly groups = input<readonly string[]>([]);
   readonly bundle = input<TokenExplorerBundle>(null);
+  /**
+   * Optional name pattern — keeps only tokens whose name (without the `--pds-`
+   * prefix) matches. Lets an intent page narrow a role across groups, e.g.
+   * `/border/` for border colours, without restating a token list.
+   */
+  readonly nameFilter = input<RegExp | string | null>(null);
   /** Blank mapped `--p-*` on the host so authored fallbacks are visible. */
   readonly stubPrime = input(false);
   readonly view = input<TokenExplorerView>('grid');
@@ -204,6 +212,20 @@ export class TokenExplorerComponent {
     { label: 'Table', value: 'table' as const },
   ];
 
+  private static nextId = 0;
+  readonly explorerId = TokenExplorerComponent.nextId++;
+
+  readonly copyFormatHint = computed(() => {
+    switch (this.copyFormat()) {
+      case 'name':
+        return 'Click a card to copy the token name.';
+      case 'value':
+        return 'Click a card to copy the computed value.';
+      default:
+        return 'Click a card to copy as var().';
+    }
+  });
+
   constructor() {
     afterNextRender(() => {
       if (this.stubPrime()) {
@@ -229,9 +251,17 @@ export class TokenExplorerComponent {
     this.rendered();
     const category = this.category();
     const allowed = this.groups();
+    const filter = this.nameFilter();
+    const namePattern =
+      filter == null || filter === ''
+        ? null
+        : typeof filter === 'string'
+          ? new RegExp(filter)
+          : filter;
 
     const declarations = [...readTokenDeclarations().values()].filter(
       (declaration) => {
+        if (namePattern && !namePattern.test(declaration.name)) return false;
         const taxon = this.taxonOf(declaration);
         if (taxon.category !== category) return false;
         return allowed.length === 0 || allowed.includes(taxon.group);
@@ -339,7 +369,9 @@ export class TokenExplorerComponent {
 
   /** Shadow stacks (and any other long computed string) do not fit a card. */
   hidesComputed(row: ExplorerRow): boolean {
-    return this.category() === 'shadow' || row.computed.length > INLINE_VALUE_MAX;
+    return (
+      this.category() === 'shadow' || row.computed.length > INLINE_VALUE_MAX
+    );
   }
 
   toggleValue(event: Event, row: ExplorerRow): void {
@@ -349,21 +381,7 @@ export class TokenExplorerComponent {
   }
 
   copy(row: ExplorerRow): void {
-    const text = row.copy[this.copyFormat()];
-    void navigator.clipboard.writeText(text).then(
-      () =>
-        showStorybookToast({
-          summary: 'Copied',
-          detail: text,
-        }),
-      () =>
-        showStorybookToast({
-          severity: 'error',
-          summary: 'Copy failed',
-          detail: 'Clipboard access was blocked by the browser.',
-          life: 3000,
-        }),
-    );
+    void copyStorybookText(row.copy[this.copyFormat()]);
   }
 
   // ── Classification ──────────────────────────────────────────────────────────

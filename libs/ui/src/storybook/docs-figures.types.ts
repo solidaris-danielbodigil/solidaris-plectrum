@@ -81,6 +81,28 @@ export interface DocsCard {
   tone?: FigureTone;
 }
 
+/** One Do or Don't entry. `detail` explains why; `alternative` is what to do instead. */
+export interface DocsDoDontItem {
+  title: string;
+  detail?: string;
+  alternative?: string;
+}
+
+/**
+ * Blocks of a `ComponentMetadata` the docs page renders through
+ * `pds-docs-contract`. Each one is a separate embed so MDX can add visuals
+ * or canvases between them.
+ */
+export type DocsContractSection =
+  | 'usage'
+  | 'anatomy'
+  | 'patterns'
+  | 'composition'
+  | 'behavior'
+  | 'variants'
+  | 'accessibility'
+  | 'examples';
+
 export type DocsCalloutTone = 'info' | 'warning' | 'success' | 'error';
 
 export type CalloutSeverity = 'info' | 'warn' | 'success' | 'error';

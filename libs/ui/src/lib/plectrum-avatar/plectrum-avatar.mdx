@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './plectrum-avatar.stories';
 
 <Meta of={Stories} />
@@ -10,48 +9,23 @@ import * as Stories from './plectrum-avatar.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Initials-based and illustrated identity avatar for the Plectrum design system. Not the same as PrimeNG Avatar — this is a custom Plectrum treatment.
+## Usage
 
-## When to use
-
-- User initials avatar or profile chip
-- Small identity marker in navigation or lists
-- Large illustrated identity next to a profile title
-
-## When not to use
-
-- Generic photo avatars — this treatment is initials or catalog illustration only
-- Nesting a second interactive avatar inside a button without `focusable="false"` — the trigger already has the name
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-plectrum-avatar', 'Host — small initials treatment by default'],
-    ['c-plectrum-avatar--large', 'Illustrated catalog SVG variant'],
-    ['c-plectrum-avatar__shape / __initials', 'Decorative shield and initials (aria-hidden)'],
-    ['c-plectrum-avatar__illustration', 'Decorative img for the large variant'],
-    ['data-state="active"', 'Persistent selected halo'],
-  ]}
-/>
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
-## Accessibility
+## Variants
 
-- Focusable (default): `role="img"` and `aria-label` (or the initials)
-- Decorative inside another control: set `focusable="false"` so the host is `aria-hidden`
-- Illustration and initials glyphs are `aria-hidden` — the host label is the accessible name
-- Hover, focus-visible, and pressed are CSS pseudo-classes; `state` is the persistent selected halo
-
-## Figma
-
-Figma initials: [Custom component node 1:1586](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1586)
-
-Figma illustrated large: [node 507:7915](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-7915) — reference usage (51.333 × 56px)
-
-- Default size: 32px initials variant (`--pds-size-avatar`)
-- Large modifier: `c-plectrum-avatar--large` with a single illustrated SVG from `libs/assets/`
-- The `state` input controls the persistent selected/active state
+<Unstyled>
+  <Story of={Stories.Variants} />
+</Unstyled>
 
 ## Default
 
@@ -68,7 +42,7 @@ Small initials avatar with persistent active halo state.
 
 ## Large illustrated
 
-Large illustrated avatar — female variant 1.
+Large illustrated avatar — female variant 1. Reference usage: [iSHARE-Audit node 507:7915](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-7915) (51.333 × 56px next to a profile title).
 
 <Canvas of={Stories.LargeIllustrated} />
 
@@ -80,6 +54,21 @@ Large illustrated avatar — female variant 1.
 
 <Canvas of={Stories.LargeOther} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

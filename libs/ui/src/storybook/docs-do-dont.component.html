@@ -1,0 +1,62 @@
+<div class="c-docs-do-dont__grid o-layout--gap-2">
+  @if (dos().length) {
+    <p-card class="c-docs-do-dont__card c-docs-do-dont__card--do o-layout--full-height">
+      <ng-template #title>
+        <div class="o-flex o-flex--align-items-center o-layout--gap-1">
+          <pds-icon class="c-docs-do-dont__mark" icon="bi bi-check-circle-fill" size="md" />
+          <p-tag [value]="doLabel()" severity="success" [rounded]="true" />
+        </div>
+      </ng-template>
+      <ul class="c-docs-do-dont__list o-layout--margin-0 o-layout--padding-0">
+        @for (item of dos(); track item.title) {
+          <li class="c-docs-do-dont__item o-flex o-flex--align-items-flex-start o-layout--gap-1">
+            <pds-icon
+              class="c-docs-do-dont__icon o-flex__item--shrink-0 o-layout--margin-block-start-0-25"
+              icon="bi bi-check-lg"
+              size="sm"
+            />
+            <div class="o-flex o-flex--col o-layout--gap-0-5">
+              <span class="c-docs-do-dont__title">{{ item.title }}</span>
+              @if (item.detail) {
+                <span class="c-docs-do-dont__detail">{{ item.detail }}</span>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </p-card>
+  }
+
+  @if (donts().length) {
+    <p-card class="c-docs-do-dont__card c-docs-do-dont__card--dont o-layout--full-height">
+      <ng-template #title>
+        <div class="o-flex o-flex--align-items-center o-layout--gap-1">
+          <pds-icon class="c-docs-do-dont__mark" icon="bi bi-x-circle-fill" size="md" />
+          <p-tag [value]="dontLabel()" severity="danger" [rounded]="true" />
+        </div>
+      </ng-template>
+      <ul class="c-docs-do-dont__list o-layout--margin-0 o-layout--padding-0">
+        @for (item of donts(); track item.title) {
+          <li class="c-docs-do-dont__item o-flex o-flex--align-items-flex-start o-layout--gap-1">
+            <pds-icon
+              class="c-docs-do-dont__icon o-flex__item--shrink-0 o-layout--margin-block-start-0-25"
+              icon="bi bi-x-lg"
+              size="sm"
+            />
+            <div class="o-flex o-flex--col o-layout--gap-0-5">
+              <span class="c-docs-do-dont__title">{{ item.title }}</span>
+              @if (item.detail) {
+                <span class="c-docs-do-dont__detail">{{ item.detail }}</span>
+              }
+              @if (item.alternative) {
+                <span class="c-docs-do-dont__alternative">
+                  <strong>{{ insteadLabel() }}:</strong> {{ item.alternative }}
+                </span>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </p-card>
+  }
+</div>

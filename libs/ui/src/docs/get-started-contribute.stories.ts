@@ -61,7 +61,8 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'CI',
     tone: 'neutral',
     title: 'Ship through the gates',
-    detail: 'Token audits, generated-file diffs, contracts-index freshness, build, tests. Changesets version and publish the packages; applications receive bump pull requests.',
+    detail:
+      'Token audits, generated-file diffs (tokens, changelog, contracts index), build, unit tests, story tests, pack smoke. A changeset records the bump; the release workflow versions and publishes the packages, and applications receive bump pull requests.',
   },
 ]);
 
@@ -100,9 +101,9 @@ export const Roles: StoryObj = cardsStory(
     {
       eyebrow: 'Consumer',
       tone: 'system',
-      title: 'Uses what is published',
+      title: 'Uses what is packaged',
       items: [
-        'Installs the versioned @solidaris/* packages',
+        'Installs the versioned @solidaris/* packages — never source paths',
         'Imports Core components; asks before importing a Candidate',
         'Never imports an App-specific component from another team',
       ],

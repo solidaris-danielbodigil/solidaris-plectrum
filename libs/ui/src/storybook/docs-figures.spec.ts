@@ -9,7 +9,10 @@ import {
   docsLinkAttrs,
   toneSeverity,
 } from './docs-figures.types';
-import { DocsHeroComponent } from './docs-hero.component';
+import {
+  DocsHeroComponent,
+  docsHeroVersionLine,
+} from './docs-hero.component';
 import { DocsLinkComponent } from './docs-link.component';
 import { DocsStepsComponent } from './docs-steps.component';
 
@@ -49,7 +52,7 @@ describe('docs figures', () => {
       ).toBe('Plectrum Design System');
       expect(
         host.querySelector('.c-docs-hero__eyebrow')?.textContent?.trim(),
-      ).toBe(docsHeroEyebrow());
+      ).toBe(docsHeroVersionLine());
       expect(
         host.querySelector('.c-docs-hero__lead')?.textContent?.trim(),
       ).toBe('Welcome');
@@ -96,9 +99,23 @@ describe('docs figures', () => {
 
       expect(
         host.querySelector('.c-docs-hero__eyebrow')?.textContent?.trim(),
-      ).toBe(docsHeroEyebrow());
+      ).toBe(docsHeroVersionLine());
       expect(host.querySelector('.c-docs-hero__lead')).toBeNull();
       expect(host.querySelector('.c-docs-hero__actions')).toBeNull();
+    });
+
+    it('flags the stack line as unreleased until a version is in the changelog', () => {
+      expect(docsHeroVersionLine([])).toBe(`${docsHeroEyebrow()} · unreleased`);
+      expect(
+        docsHeroVersionLine([
+          {
+            packageName: '@solidaris/ui',
+            version: '0.1.0',
+            changes: [],
+            notes: '',
+          },
+        ]),
+      ).toBe(docsHeroEyebrow());
     });
   });
 

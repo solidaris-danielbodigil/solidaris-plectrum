@@ -10,6 +10,10 @@
 //   - Queryable selection criteria and composition rules
 //   - Governance enforcement (anti-patterns, accessibility)
 //   - Drift detection between code and design intent
+//   - Single source of truth for the component's Storybook docs page: the MDX
+//     embeds figures that render these blocks (pds-docs-status, pds-docs-contract
+//     via contractStory in libs/ui/src/docs/docs-figure-stories.ts) and never
+//     restates them as prose. `npm run docs:check` fails on hand-written copies.
 // =============================================================================
 
 /**
@@ -65,12 +69,21 @@ export interface ComponentMetadata {
    */
   governance: ComponentGovernance;
 
-  /** When and why to use this component */
+  /**
+   * When and why to use this component. Rendered on the docs page as Do / Don't
+   * cards (`useCases` → Do, `antiPatterns` → Don't) by `contractStory(meta, 'usage')`.
+   */
   usage: {
     useCases: string[];
     commonPatterns: ComponentPattern[];
     antiPatterns: AntiPattern[];
   };
+
+  /**
+   * Named parts of the rendered block — BEM elements, PrimeNG hosts, slots —
+   * and what each one is for. Rendered as the Anatomy table on the docs page.
+   */
+  anatomy?: AnatomyPart[];
 
   /** Available variants and their purposes */
   variants?: {
@@ -142,6 +155,12 @@ export interface AntiPattern {
   scenario: string;
   reason: string;
   alternative: string;
+}
+
+export interface AnatomyPart {
+  /** Selector, BEM class or PrimeNG host, e.g. `c-top-nav__search` or `p-breadcrumb`. */
+  part: string;
+  role: string;
 }
 
 export interface SlotDefinition {

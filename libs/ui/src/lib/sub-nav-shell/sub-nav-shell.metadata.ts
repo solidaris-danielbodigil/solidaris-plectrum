@@ -4,16 +4,17 @@ export const SubNavShellMetadata: ComponentMetadata = {
   component: {
     name: 'SubNavShell',
     category: 'organisms',
-    description: 'Second-level navigation sidebar with PrimeNG Accordion sections, Badge counters, and a version footer.',
+    description:
+      'Second-level navigation sidebar shown next to Nav Shell: a module title, standalone items, PrimeNG Accordion sections with Badge counters, and a version / changelog footer.',
     type: 'navigation',
     path: 'libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts',
-    primeNgComponent: 'Accordion, Badge',
+    primeNgComponent: 'Accordion, Badge, Tooltip',
     bemBlock: 'c-sub-nav-shell',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.sub-nav-shell.scss',
     figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1476',
     created: '2026-05-26',
-    modified: '2026-05-31',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -21,25 +22,69 @@ export const SubNavShellMetadata: ComponentMetadata = {
   },
   usage: {
     useCases: [
-      'Second-level navigation alongside NavShell',
+      'Second-level navigation alongside Nav Shell',
       'Module-level grouped menu with collapsible accordion sections',
+      'Standalone items (sections without a label) interleaved between accordion groups',
     ],
     commonPatterns: [
       {
-        name: 'Paired with NavShell',
-        description: 'SubNavShell renders immediately to the right of NavShellComponent when a nav item is clicked.',
-        composition: '<(pds|app|lib)-nav-shell /> <(pds|app|lib)-sub-nav-shell />',
+        name: 'Paired with Nav Shell',
+        description: 'Sub Nav Shell renders immediately to the right of Nav Shell and shows the sections of the selected first-level item.',
+        composition: '<(pds|app|lib)-nav-shell /> <(pds|app|lib)-sub-nav-shell [title]="module" [sections]="sections" [activeItemId]="activeId" />',
       },
     ],
     antiPatterns: [
       {
         scenario: 'Standalone full-page navigation',
-        reason: 'SubNavShell is a sidebar companion, not a standalone page nav',
-        alternative: 'Pair with NavShellComponent for the correct two-level layout',
+        reason: 'Sub Nav Shell is a sidebar companion, not a page navigation.',
+        alternative: 'Pair it with Nav Shell for the two-level shell layout.',
+      },
+      {
+        scenario: 'First-level app switching',
+        reason: 'Switching between applications belongs to the first level.',
+        alternative: 'Put the apps in Nav Shell [items]; Sub Nav Shell shows the sections of the selected app.',
       },
     ],
   },
+  anatomy: [
+    { part: 'c-sub-nav-shell__header', role: 'Module / app title' },
+    { part: 'c-sub-nav-shell__featured', role: 'Standalone items — sections without a label, rendered outside the accordion' },
+    { part: 'c-accordion--nav', role: 'PrimeNG accordion grouping consecutive labelled sections' },
+    { part: 'c-sub-nav-shell__items', role: 'Section item list' },
+    { part: 'c-sub-nav-shell__item', role: 'Item — a link when it has a routerLink, otherwise a button; is-active + aria-current="page", is-disabled' },
+    { part: 'p-badge', role: 'Optional count on an item (countSeverity)' },
+    { part: 'c-sub-nav-shell__footer', role: 'Version / changelog — hidden when version is empty' },
+  ],
+  behavior: {
+    states: ['default', 'item-hover', 'item-active', 'item-disabled', 'section-collapsed', 'no-footer', 'empty'],
+    interactions: [
+      'Sections without a label render as standalone items; consecutive labelled sections are grouped into one PrimeNG Accordion with several panels open at once',
+      'A section with collapsed: true starts closed; expand / collapse state is then kept locally',
+      'Items with a routerLink render as links (routerLinkActive adds is-active); items without one render as buttons — both emit itemClicked',
+      'Disabled items keep their label at reduced opacity and do not emit itemClicked',
+      'The footer renders only when version is set; the changelog link is a plain text link',
+    ],
+    responsive: [
+      'Fixed-width panel; the body scrolls while header and footer stay pinned',
+    ],
+  },
   accessibility: {
+    role: 'navigation',
+    ariaAttributes: [
+      'The host is a navigation landmark named by the title (aria-label)',
+      'Accordion headers expose expand / collapse state (PrimeNG aria-expanded / aria-controls)',
+      'Items are links or buttons with visible labels; a tooltip repeats the label for truncated items and item icons are aria-hidden',
+      'The active item carries aria-current="page"; disabled link items carry aria-disabled, disabled button items are disabled',
+    ],
+    keyboardSupport: [
+      'Tab / Shift+Tab move through the scrollable body (tabindex 0), the accordion headers and the items',
+      'Enter / Space toggle an accordion header (PrimeNG); Enter activates a link item, Enter / Space a button item',
+      'Disabled items are removed from the tab order',
+    ],
+    contrastRequirements: [
+      'Disabled items stay visible at reduced opacity (--pds-disabled-opacity)',
+      'A badge count complements the item label — it is never the only indication of status',
+    ],
     wcagLevel: 'AA',
   },
   tokens: {
@@ -83,6 +128,11 @@ export const SubNavShellMetadata: ComponentMetadata = {
     { name: 'changelogUrl', type: 'string', required: false, default: "'#'", description: 'URL for the changelog link.' },
     { name: 'itemClicked', type: 'output<SubNavShellItem>', required: false, description: 'Emitted when a nav item is activated.' },
   ],
+  composition: {
+    nestedComponents: ['Accordion', 'Badge', 'Tooltip'],
+    companions: ['NavShellComponent', 'TopNavComponent'],
+    slots: [],
+  },
   aiHints: {
     priority: 'high',
     context: 'Always used alongside NavShellComponent as the second navigation level. Uses PrimeNG Accordion for collapsible sections and PrimeNG Badge for counters.',

@@ -22,7 +22,7 @@ import { type DocsCard, type FigureTone, toneSeverity } from './docs-figures.typ
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'c-docs-cards',
+    class: 'c-docs-cards o-layout--block o-layout--margin-block-3',
     '[class.c-docs-cards--2-up]': 'columns() === 2',
   },
 })

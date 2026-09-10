@@ -106,3 +106,25 @@
   width: auto;
   max-width: 100%;
 }
+
+// Foundation catalogues embed <Story> (not <Canvas>) so they sit in the docs
+// document. Storybook's preview iframe uses overflow: clip and a viewport-sized
+// root — position: sticky does not pin against that root scroller. The explorer
+// itself is the scrollport so pds-toolbar can stick.
+.sbdocs-wrapper,
+.sbdocs-content {
+  overflow: visible;
+}
+
+// Angular CSF wraps each story in a custom element (`foundations-colors--primitive`).
+// Custom elements default to display: inline, which breaks position: sticky.
+.sb-story [id$='-inner']>* {
+  display: block;
+  width: 100%;
+}
+
+.c-token-explorer {
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

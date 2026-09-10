@@ -2,14 +2,16 @@
 // libs/ui/src/storybook/docs-status.component.ts
 // Ownership badge at the top of every component docs page.
 //
-// Reads the `governance` block of the component's .metadata.ts (or the inline
-// declaration of a CSS-only block) and renders it the same way everywhere, so
-// an application developer sees "App-specific · iSHARE team" before reading
-// the API. Status meanings: Get started / Contribute → Status and owner.
+// Reads the `governance` block of the component's .metadata.ts and renders it
+// the same way everywhere, so an application developer sees "App-specific ·
+// iSHARE team" before reading the API. With `description` and `figmaUrl`
+// (component block of the same metadata) it is also the page lead, so the
+// MDX never restates what the component is or where its Figma node lives.
+// Status meanings: Get started / Contribute → Status and owner.
 //
 // PrimeNG components used:
 //   - p-tag — status (coloured by severity) and owner (secondary)
-//   - pds-docs-link — PrimeNG Button link to the status definitions
+//   - pds-docs-link — PrimeNG Button link to the status definitions / Figma
 //
 // Styles: c-docs-status* in libs/styles/src/06-components/_components.docs-figures.scss
 // (text rhythm only — PrimeNG owns the tag chrome).
@@ -98,6 +100,10 @@ export class DocsStatusComponent {
   readonly status = input.required<ComponentStatus>();
   readonly owner = input.required<ComponentOwner>();
   readonly note = input<ComponentGovernance['note']>();
+  /** `component.description` from the metadata — the page's lead paragraph. */
+  readonly description = input<string>();
+  /** `component.figmaUrl` from the metadata — rendered as an external link. */
+  readonly figmaUrl = input<string>();
 
   protected readonly definitionsPath = DOCS_STATUS_DEFINITIONS_PATH;
 

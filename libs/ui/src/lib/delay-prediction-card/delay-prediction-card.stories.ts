@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
@@ -38,8 +38,17 @@ export default meta;
 
 type Story = StoryObj<DelayPredictionCardComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(DelayPredictionCardMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from delay-prediction-card.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(
+  DelayPredictionCardMetadata.governance,
+  DelayPredictionCardMetadata.component,
+) };
+export const Usage = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {

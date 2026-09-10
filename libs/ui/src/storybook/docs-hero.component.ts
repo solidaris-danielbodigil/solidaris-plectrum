@@ -23,6 +23,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { CHANGELOG_RELEASES } from './changelog.generated';
+import type { ChangelogRelease } from './changelog.types';
 import { docsHeroEyebrow } from './docs-stack';
 import { type DocsLink, docsHref } from './docs-figures.types';
 
@@ -31,21 +33,37 @@ export interface DocsHeroAction extends DocsLink {
   variant?: 'primary' | 'secondary';
 }
 
+/**
+ * Stack line for the hero eyebrow. The package version comes from
+ * package.json; until the first release lands in libs/*\/CHANGELOG.md
+ * (CHANGELOG_RELEASES is empty) the line says so, so the banner never
+ * advertises a version nobody can install from a registry.
+ */
+export function docsHeroVersionLine(
+  releases: readonly ChangelogRelease[] = CHANGELOG_RELEASES,
+): string {
+  const stack = docsHeroEyebrow();
+  return releases.length ? stack : `${stack} · unreleased`;
+}
+
 @Component({
   selector: 'pds-docs-hero',
   imports: [ButtonModule],
   templateUrl: './docs-hero.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-hero' },
+  host: {
+    class:
+      'c-docs-hero o-layout--relative o-layout--block o-layout--overflow-hidden o-layout--margin-block-end-3',
+  },
 })
 export class DocsHeroComponent {
   readonly title = input.required<string>();
   readonly lead = input<string>();
   readonly actions = input<readonly DocsHeroAction[]>([]);
 
-  /** Plectrum version + PrimeNG / Angular majors from package.json. */
-  protected readonly versionLine = docsHeroEyebrow();
+  /** Plectrum version + PrimeNG / Angular majors from package.json, flagged until the first release. */
+  protected readonly versionLine = docsHeroVersionLine();
 
   protected href(action: DocsHeroAction): string {
     return docsHref(action);

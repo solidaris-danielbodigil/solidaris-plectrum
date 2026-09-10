@@ -18,7 +18,7 @@ import {
 } from './profile-card.component';
 import { ProfileCardMetadata } from './profile-card.metadata';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertTextVisible } from '../../storybook/story-tests';
@@ -179,8 +179,15 @@ export default meta;
 
 type Story = StoryObj<ProfileCardCardStoryArgs>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(ProfileCardMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from profile-card.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(ProfileCardMetadata.governance, ProfileCardMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'anatomy') };
+export const Variants = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'variants') };
+export const Composition = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {

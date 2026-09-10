@@ -6,7 +6,7 @@
   />
 } @else {
   <div
-    class="c-docs-changesets__next o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1"
+    class="c-docs-changesets__next o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1 o-layout--margin-block-end-2"
   >
     <span class="c-docs-changesets__label">Next release</span>
     @if (next().uniform; as bump) {
@@ -27,7 +27,7 @@
     />
   </div>
 
-  <ul class="c-docs-changesets__list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0">
+  <ul class="c-docs-changesets__list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0 o-layout--padding-0">
     @for (row of rows(); track row.id) {
       <li>
         <p-card>
@@ -48,7 +48,7 @@
               }
             </div>
           </ng-template>
-          <p class="c-docs-changesets__summary">{{ row.summary }}</p>
+          <p class="c-docs-changesets__summary o-layout--margin-0">{{ row.summary }}</p>
           <code class="c-docs-changesets__file">.changeset/{{ row.id }}.md</code>
         </p-card>
       </li>

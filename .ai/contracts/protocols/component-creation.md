@@ -3,7 +3,7 @@
 ## Pre-flight
 
 0. Confirm the **core-team decision and owner**. Every component starts as a proposal to the
-   design-system team; the answer is one of *exists / system-level / app-specific*
+   design-system team; the answer is one of _exists / system-level / app-specific_
    (Storybook → Get started / Contribute). If the decision or the owner is missing, write
    `.ai/questions/{date}-{component}-owner.md` and stop — do not scaffold on a guess.
 1. Query **PrimeNG MCP** — does a component already exist?
@@ -19,12 +19,12 @@
 
 `governance` in `.metadata.ts` is required. `pds:component -- --owner=<team>` fills it:
 
-| Owner | Initial status | Storybook title | Promotion |
-|---|---|---|---|
-| `design-system` | `core` | `Custom components/…` or `Shell/…` | — |
-| `ishare`, `icrm` | `candidate` | `Patterns/{App}/…` | Core team moves it: generic API, tokens to shared settings, title to Custom components / Shell, `status: 'core'`, `owner: 'design-system'` (docs/component-promotion.md) |
+| Owner            | Initial status | Storybook title                    | Promotion                                                                                                                                                                |
+| ---------------- | -------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `design-system`  | `core`         | `Custom components/…` or `Shell/…` | —                                                                                                                                                                        |
+| `ishare`, `icrm` | `candidate`    | `Patterns/{App}/…`                 | Core team moves it: generic API, tokens to shared settings, title to Custom components / Shell, `status: 'core'`, `owner: 'design-system'` (docs/component-promotion.md) |
 
-`status: 'app'` is set by the core team when the proposal outcome is *app-specific for good*; `status: 'deprecated'`
+`status: 'app'` is set by the core team when the proposal outcome is _app-specific for good_; `status: 'deprecated'`
 requires a `note` naming the replacement. Every component docs page renders the block through `statusStory(XMetadata.governance)`
 (`libs/ui/src/docs/docs-figure-stories.ts`) as the first figure under the `h1`; CSS-only blocks pass the object inline.
 
@@ -36,9 +36,9 @@ libs/ui/src/lib/{component-name}/
 ├── {component-name}.component.html
 ├── {component-name}.component.spec.ts
 ├── {component-name}.stories.ts        ← REQUIRED — colocated, all states + play tests
-├── {component-name}.mdx               ← ATTACHED DOCS (When to use / When not / Anatomy / A11y / Figma)
+├── {component-name}.mdx               ← ATTACHED DOCS — embeds the metadata figures + canvases, no restated prose
 ├── index.ts
-└── {component-name}.metadata.ts       ← CONTRACT FILE
+└── {component-name}.metadata.ts       ← CONTRACT FILE = documentation SSOT (usage, anatomy, a11y, description, Figma)
 
 libs/styles/src/06-components/
 ├── _components.{component-name}.scss  ← BEM styles — CSS custom properties only, o-flex/o-layout BEM mixes in template
@@ -55,14 +55,14 @@ libs/styles/src/06-components/
 
 Enforced in detail by `.ai/rules/` — this protocol points at them instead of restating them:
 
-| Rule | File | Essence |
-|---|---|---|
-| Token-first, no local `$variables` | `02-scss-tokens.md` §1–3 | Every value lives in `01-settings` as `--pds-*`; add missing tokens there first |
-| CSS custom properties only | `02-scss-tokens.md` §2 | `var(--pds-*)` throughout — no hex/px/rem in `06-components` |
-| Layout via `o-flex` / `o-layout` template mixes ⛔ | `08-object-classes.md` | No flex/gap/padding/overflow CSS in `06-components` when a class exists; no Tailwind in templates; `@apply` never for layout |
-| PrimeNG `--p-*` bridges in `01-settings` ⛔ | `02-scss-tokens.md` §7 · `04-primeng.md` §5 | `_settings.{primeng-component}.scss`, scoped to the BEM wrapper — never inline in `06-components` |
-| Content-first sizing ⛔ | `02-scss-tokens.md` §6 | No arbitrary fixed width/height; the two justified exceptions carry a comment |
-| Static chrome via utilities | `09-styling-policy.md` §4 | Borders, radius, resting shadows as `u-*` classes in templates |
+| Rule                                               | File                                        | Essence                                                                                                                      |
+| -------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Token-first, no local `$variables`                 | `02-scss-tokens.md` §1–3                    | Every value lives in `01-settings` as `--pds-*`; add missing tokens there first                                              |
+| CSS custom properties only                         | `02-scss-tokens.md` §2                      | `var(--pds-*)` throughout — no hex/px/rem in `06-components`                                                                 |
+| Layout via `o-flex` / `o-layout` template mixes ⛔ | `08-object-classes.md`                      | No flex/gap/padding/overflow CSS in `06-components` when a class exists; no Tailwind in templates; `@apply` never for layout |
+| PrimeNG `--p-*` bridges in `01-settings` ⛔        | `02-scss-tokens.md` §7 · `04-primeng.md` §5 | `_settings.{primeng-component}.scss`, scoped to the BEM wrapper — never inline in `06-components`                            |
+| Content-first sizing ⛔                            | `02-scss-tokens.md` §6                      | No arbitrary fixed width/height; the two justified exceptions carry a comment                                                |
+| Static chrome via utilities                        | `09-styling-policy.md` §4                   | Borders, radius, resting shadows as `u-*` classes in templates                                                               |
 
 New token: add it to the correct `01-settings` file with a comment citing the Figma variable and node, reference it via `var(--pds-*)`, and list it under `tokens.consumed` in the `.metadata.ts`.
 
@@ -80,27 +80,27 @@ Required story exports (each required canvas needs a `play` — see Tests below)
 - `Empty` (where applicable)
 - `Loading` (where applicable)
 
-Attached `{name}.mdx` (not CSF `parameters.docs.description`) must explain:
+The `.metadata.ts` documents the component; the attached `{name}.mdx` renders it (`.ai/rules/03-storybook.md` §3). Fill these metadata blocks — they are what the page shows:
 
-- What the component does
-- When to use / when not to use
-- Anatomy (`DocsTable`)
-- Accessibility
-- Which Figma node it maps to (with URL)
-- Any design constraints or usage rules
-- Catalogue stories stay visible in the sidebar; `!dev` is only for docs figures
+- `component.description` (lead paragraph) and `component.figmaUrl` → Status figure
+- `usage.useCases` / `usage.antiPatterns` (scenario + reason + alternative) → Do / Don't cards
+- `anatomy` (`{ part, role }`) → Anatomy table
+- `accessibility.ariaAttributes` / `keyboardSupport` / `contrastRequirements` → Accessibility card
+- `behavior`, `composition`, `variants` when they add something the canvases do not show
+
+The MDX keeps: headings, `<Story of={Stories.Status|Usage|Anatomy|Accessibility} />` embeds, canvases with their state prose, `<Controls>`, `<ArgTypes>` last, and any visuals. `npm run docs:check` fails on hand-written copies. Catalogue stories stay visible in the sidebar; `!dev` is only for docs figures.
 
 ## Storybook Tests (mandatory)
 
 Import from `libs/ui/src/storybook/story-tests.ts`. Angular webpack uses `@storybook/test-runner`, not the Vitest addon.
 
-| Kind | Required |
-| --- | --- |
-| Render | `npm run test-storybook` passes for every exported story |
-| `play` | Every required canvas story. Interactive: `userEvent` + assert outcome. Display / CSS-only: render contract (`assertTextVisible` / `assertRoleVisible`). Skip only `Status` / `!dev` docs figures |
-| Accessibility | Inherit global WCAG 2.1 AA (`preview.ts`). Do not set `a11y.test: 'off'` without a comment |
-| Visual | Chromatic snapshots on. Docs-figure / Status stories set `chromatic.disableSnapshot` |
-| Coverage | New component code is exercised by stories (`npm run test-storybook:coverage`) and unit specs (`npm run test:coverage`) |
+| Kind          | Required                                                                                                                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Render        | `npm run test-storybook` passes for every exported story                                                                                                                                          |
+| `play`        | Every required canvas story. Interactive: `userEvent` + assert outcome. Display / CSS-only: render contract (`assertTextVisible` / `assertRoleVisible`). Skip only `Status` / `!dev` docs figures |
+| Accessibility | Inherit global WCAG 2.1 AA (`preview.ts`). Do not set `a11y.test: 'off'` without a comment                                                                                                        |
+| Visual        | Chromatic snapshots on. Docs-figure / Status stories set `chromatic.disableSnapshot`                                                                                                              |
+| Coverage      | New component code is exercised by stories (`npm run test-storybook:coverage`) and unit specs (`npm run test:coverage`)                                                                           |
 
 ## Metadata Contract Template
 
@@ -153,7 +153,7 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] Every required canvas story has a `play` function (`story-tests.ts`); interactive stories use `userEvent`
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
 - [ ] Accessibility not disabled; Chromatic snapshots left on (except `Status` / docs figures)
-- [ ] Attached `{name}.mdx` uses the Copyable Text template (Status, When to use / When not, Anatomy, Accessibility, Figma, Default + Controls, API last)
+- [ ] Attached `{name}.mdx` follows the Top Nav template (Status → Usage → Anatomy → canvases + Controls → optional Composition / Behavior → Accessibility), every block embedded from the metadata; no `## API` when Controls are on the page; `npm run docs:check` passes
 - [ ] `{name}.metadata.ts` `props` lists every input and output; stories use `argTypesFromProps` so the API table has description, type, and default (never the empty auto-generated placeholder)
 - [ ] Component + metadata exported from `libs/ui/src/lib/index.ts` (not `src/index.ts`)
 - [ ] User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (inputs may override)

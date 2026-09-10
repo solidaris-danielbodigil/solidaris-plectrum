@@ -3,9 +3,10 @@
 // classes. This story shows the shell statically so the structure is
 // inspectable without an overlay.
 import type { Meta, StoryObj } from '@storybook/angular';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 import { assertTextVisible } from '../../storybook/story-tests';
+import { DrawerMetadata } from './drawer.metadata';
 
 interface DrawerStoryArgs {
   title: string;
@@ -36,8 +37,14 @@ const meta: Meta<DrawerStoryArgs> = {
 export default meta;
 type Story = StoryObj<DrawerStoryArgs>;
 
-/** Ownership badge for the docs page — CSS-only block, so declared inline. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from drawer.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(DrawerMetadata.governance, DrawerMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'accessibility') };
 
 export const Shell: Story = {
   play: async ({ canvasElement }) => {

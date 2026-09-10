@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './token-finder.stories';
 
@@ -9,7 +9,7 @@ import * as Stories from './token-finder.stories';
 Pick what you are styling; the finder answers with the rule to follow, the snippet shape to write, and the live list of matching tokens — read from the compiled stylesheet, so it is always current.
 
 <Unstyled>
-  <Canvas of={Stories.Finder} sourceState="none" />
+  <Story of={Stories.Finder} />
 </Unstyled>
 
 ## Decision order
@@ -25,4 +25,4 @@ Pick what you are styling; the finder answers with the rule to follow, the snipp
   ]}
 />
 
-Playgrounds to compose values visually: [Spacing](?path=/story/foundations-spacing--playground) · [Borders Generate](?path=/story/foundations-borders--generate) · [Elevation](?path=/story/foundations-elevation--playground) · [Typography](?path=/story/foundations-typography--playground) · [Colors](?path=/story/foundations-colors--playground). Full catalogues live on the other Foundations pages; the CSS contract is on [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs).
+Playgrounds to compose values visually: [Spacing](?path=/story/foundations-spacing--playground) · [Borders](?path=/docs/foundations-borders--docs) · [Elevation](?path=/docs/foundations-elevation--docs) · [Typography](?path=/story/foundations-typography--playground) · [Colors](?path=/story/foundations-colors--playground). Full catalogues live on the other Foundations pages; the CSS contract is on [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs).

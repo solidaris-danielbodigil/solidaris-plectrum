@@ -33,7 +33,9 @@ import {
   templateUrl: './docs-sync-checks.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-sync-checks' },
+  host: {
+    class: 'c-docs-sync-checks o-layout--block o-layout--margin-block-3',
+  },
 })
 export class DocsSyncChecksComponent {
   readonly report = input.required<SyncReport>();

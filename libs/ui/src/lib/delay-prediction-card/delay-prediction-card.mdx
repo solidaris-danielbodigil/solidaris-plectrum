@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './delay-prediction-card.stories';
 
 <Meta of={Stories} />
@@ -10,42 +9,17 @@ import * as Stories from './delay-prediction-card.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Prédiction du délai. In iSHARE document detail, the section title **Prédiction du delai** is rendered outside this card (same style as **Détails**).
+## Usage
 
-## When to use
-
-- Document detail sidebar — predicted processing delay
-- Dossier follow-up panels that show days remaining and a close date
-
-## When not to use
-
-- A generic KPI tile — compose a `p-card` with tokens instead
-- Screens outside iSHARE — this card is app-owned delay-prediction semantics
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-delay-prediction-card', 'Article region — aria-label from i18n'],
-    ['c-delay-prediction-card__metric', 'Days remaining or predicted close date'],
-    ['c-delay-prediction-card__divider', 'PrimeNG vertical p-divider'],
-    ['c-delay-prediction-card__menu', 'Overflow menu trigger'],
-    ['c-delay-prediction-card__unavailable', 'Empty state with decorative warning icon'],
-  ]}
-/>
-
-## Accessibility
-
-- The card is an `article` with a region `aria-label`
-- The overflow control has an `aria-label`; the warning icon is `aria-hidden`
-- Days and date labels are visible text next to their values — not colour alone
-
-## Figma
-
-There is no Plectrum UI Kit node. [iSHARE-Audit node 704:11968](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=704-11968) is reference usage.
-
-BEM block: `c-delay-prediction-card`
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
@@ -66,6 +40,21 @@ Tight remaining window (3 days).
 
 <Canvas of={Stories.FewDaysRemaining} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

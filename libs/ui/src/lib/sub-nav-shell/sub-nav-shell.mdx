@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './sub-nav-shell.stories';
 
 <Meta of={Stories} />
@@ -10,50 +9,17 @@ import * as Stories from './sub-nav-shell.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Second-level navigation sidebar. Child of `NavShellComponent` — opens when a nav-shell item is clicked.
+## Usage
 
-## When to use
-
-- Second-level navigation alongside Nav Shell
-- Module-level grouped menu with collapsible accordion sections
-
-## When not to use
-
-- Standalone full-page navigation — this is a sidebar companion, not a page nav
-- First-level app switching — that belongs on Nav Shell
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-sub-nav-shell__header', 'Module / app title'],
-    ['c-sub-nav-shell__featured', 'Standalone items above accordion groups'],
-    ['c-accordion--nav', 'PrimeNG accordion for labeled sections'],
-    ['c-sub-nav-shell__items', 'Section item list'],
-    ['p-badge', 'Optional count on an item'],
-    ['c-sub-nav-shell__footer', 'Version / changelog — hidden when version is empty'],
-  ]}
-/>
-
-## Accessibility
-
-- Accordion headers expose expand / collapse; items are links or buttons with visible labels
-- Disabled items stay visible at reduced opacity and are not interactive
-- Badge counts must not be the only indication of status — keep the item label
-- Footer changelog is a text link; hide the whole footer when there is no version
-
-## Figma
-
-[Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
-
-Renders a fixed-width panel with:
-
-- A heading header with the module/app title
-- Optional featured items (sections without a label) rendered above the accordion
-- Collapsible grouped sections using PrimeNG Accordion (`p-accordion`)
-- Menu items with optional leading icon and PrimeNG Badge (`p-badge`) counter
-- A version/changelog footer
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Maatschappelijk Werk
 
@@ -104,6 +70,21 @@ iCRM Audit variant (Figma [node 20:1447](https://www.figma.com/design/IRkr21rHS0
 
 <Canvas of={Stories.ICRM} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

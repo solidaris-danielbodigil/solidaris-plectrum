@@ -16,7 +16,7 @@
 @if (loading()) {
   <div class="c-list__body o-flex o-flex--col o-layout--gap-1-5">
     @for (row of skeletonRowIndexes; track row) {
-      <article class="c-list__item c-list__item--entry">
+      <article class="c-list__item c-list__item--entry o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width">
         <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
           <div class="o-flex o-layout--gap-3">
             <p-skeleton class="c-list__skeleton-icon o-flex__item--shrink-0" />
@@ -75,7 +75,7 @@
       <ng-template let-node pTemplate="group">
         @let group = groupFromNode(node);
         <article
-          class="c-list__item c-list__item--group"
+          class="c-list__item c-list__item--group o-layout--overflow-visible o-layout--min-w-0"
           [pdsTelemetryLabel]="groupTelemetryLabel(group)"
           (click)="onGroupClick($event, group)"
           (keydown)="onGroupKeydown($event, group)"
@@ -120,17 +120,20 @@
         @let documentData = documentFromNode(node);
         @let doc = documentData.doc;
         @if (documentData.showTimeline) {
-          <div class="c-list__document-row o-layout--min-w-0">
-            <div class="c-list__timeline" aria-hidden="true">
+          <div class="c-list__document-row o-layout--min-w-0 o-layout--full-width">
+            <div
+              class="c-list__timeline o-flex o-flex--col o-flex--align-items-center"
+              aria-hidden="true"
+            >
               <svg
-                class="c-list__timeline-cap c-list__timeline-cap--marker"
+                class="c-list__timeline-cap c-list__timeline-cap--marker o-layout--block o-flex__item--shrink-0"
                 viewBox="0 0 6 4"
                 aria-hidden="true"
               >
                 <use href="#pds-list-timeline-marker" width="6" height="4" />
               </svg>
               <svg
-                class="c-list__timeline-line"
+                class="c-list__timeline-line o-layout--block"
                 viewBox="0 0 6 100"
                 preserveAspectRatio="none"
                 aria-hidden="true"
@@ -143,7 +146,7 @@
                 />
               </svg>
               <svg
-                class="c-list__timeline-cap c-list__timeline-cap--arrow"
+                class="c-list__timeline-cap c-list__timeline-cap--arrow o-layout--block o-flex__item--shrink-0"
                 viewBox="0 0 6 4.5"
                 aria-hidden="true"
               >
@@ -151,7 +154,7 @@
               </svg>
             </div>
             <article
-              class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--min-w-0"
+              class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
               [class.c-list__item--selected]="isDocumentSelected(doc)"
               [attr.data-telemetry-id]="'document-row-' + doc.id"
               [pdsTelemetryLabel]="documentDisplayTitle(doc)"
@@ -215,7 +218,7 @@
           </div>
         } @else {
           <article
-            class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--min-w-0"
+            class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
             [class.c-list__item--selected]="isDocumentSelected(doc)"
             [attr.data-telemetry-id]="'document-row-' + doc.id"
             [pdsTelemetryLabel]="documentDisplayTitle(doc)"

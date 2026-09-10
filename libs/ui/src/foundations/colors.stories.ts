@@ -1,4 +1,5 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { doDontStory } from '../docs/docs-figure-stories';
 import { ContrastCheckerComponent } from '../storybook/contrast-checker.component';
 import { readTokenDeclarations } from '../storybook/cssom';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';
@@ -18,6 +19,55 @@ const meta: Meta<TokenExplorerComponent> = {
 
 export default meta;
 type Story = StoryObj<TokenExplorerComponent>;
+
+export const UsagePrimitive = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Authoring a new semantic role in 01-settings',
+        detail:
+          'Point the role at a ramp step (--pds-color-text: var(--pds-color-gray-900)). Apps never consume the step.',
+      },
+    ],
+    donts: [
+      {
+        title: 'A hue step from a card, button or 06-components sheet',
+        detail: 'That skips the semantic role and breaks theme switching.',
+        alternative: 'var(--pds-color-text) (or another role). Add the role first if it is missing.',
+      },
+    ],
+  }),
+};
+
+export const UsageSemantic = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Any color in 06-components',
+        detail:
+          'A Semantic Common role first — text, surface, content, form, navigation, primary — via var(--pds-color-…).',
+      },
+      {
+        title: 'A primitive step only while defining that role',
+        detail: 'The ramp lives in 01-settings. Components consume the role, not blue-600.',
+      },
+    ],
+    donts: [
+      {
+        title: 'hex, rgb() or hsl() in component SCSS',
+        detail: 'A literal will not follow the preset or a theme toggle.',
+        alternative: 'var(--pds-color-…). If no role fits, add one in 01-settings.',
+      },
+      {
+        title: '--p-* declared outside the settings bridge',
+        detail: 'PrimeNG mappings belong in 01-settings/_settings.{component}.scss.',
+        alternative: 'Bridge --p-* to --pds-* there, scoped to the BEM wrapper.',
+      },
+    ],
+  }),
+};
 
 export const Primitive: Story = {
   args: { groups: COLOR_PRIMITIVE_GROUPS },

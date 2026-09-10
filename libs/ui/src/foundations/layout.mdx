@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './layout.stories';
 
@@ -28,6 +28,24 @@ Breakpoints: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem)
 
 Styles: `libs/styles/src/05-objects/layout/_objects.layout.scss`. Rule: `.ai/rules/08-object-classes.md`.
 
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
+
+```html
+<!-- Scrollable flex child -->
+<div class="o-flex o-flex--col o-layout--full-dvh">
+  <header class="o-flex__item--shrink-0">Header</header>
+  <main class="o-layout--min-h-0 o-layout--overflow-y-auto">
+    Scrollable content...
+  </main>
+</div>
+```
+
 ## Dimensions
 
 Dimensional helper classes for common structural sizing needs.
@@ -42,16 +60,6 @@ Dimensional helper classes for common structural sizing needs.
     ['.o-layout--min-w-0', 'min-width: 0', 'Enable text truncation within flex children'],
   ]}
 />
-
-```html
-<!-- Scrollable flex child -->
-<div class="o-flex o-flex--col o-layout--full-dvh">
-  <header class="o-flex__item--shrink-0">Header</header>
-  <main class="o-layout--min-h-0 o-layout--overflow-y-auto">
-    Scrollable content...
-  </main>
-</div>
-```
 
 <Canvas of={Stories.Dimensions} />
 

@@ -1,25 +1,35 @@
-<div class="c-docs-hero__backdrop" aria-hidden="true">
-  <img class="c-docs-hero__shape c-docs-hero__shape--1" src="assets/plectrum-shape.svg" alt="" />
-  <img class="c-docs-hero__shape c-docs-hero__shape--2" src="assets/plectrum-shape.svg" alt="" />
-  <img class="c-docs-hero__shape c-docs-hero__shape--3" src="assets/plectrum-shape.svg" alt="" />
+<div class="c-docs-hero__backdrop o-layout--absolute" aria-hidden="true">
+  <img class="c-docs-hero__shape c-docs-hero__shape--1 o-layout--absolute o-layout--block" src="assets/plectrum-shape.svg" alt="" />
+  <img class="c-docs-hero__shape c-docs-hero__shape--2 o-layout--absolute o-layout--block" src="assets/plectrum-shape.svg" alt="" />
+  <img class="c-docs-hero__shape c-docs-hero__shape--3 o-layout--absolute o-layout--block" src="assets/plectrum-shape.svg" alt="" />
 </div>
 
-<div class="c-docs-hero__content">
-  <span class="c-docs-hero__logo">
-    <img class="c-docs-hero__logo-img" src="assets/Logo.svg" alt="Solidaris" />
+<div
+  class="c-docs-hero__content o-layout--relative o-flex o-flex--col o-flex--align-items-flex-start"
+>
+  <span
+    class="c-docs-hero__logo o-layout--inline-flex o-flex--align-items-center"
+  >
+    <img
+      class="c-docs-hero__logo-img o-layout--block"
+      src="assets/Logo.svg"
+      alt="Solidaris"
+    />
   </span>
 
-  <div class="c-docs-hero__heading">
-    <h1 class="c-docs-hero__title">{{ title() }}</h1>
-    <p class="c-docs-hero__eyebrow">{{ versionLine }}</p>
+  <div class="c-docs-hero__heading o-flex o-flex--col o-layout--gap-1">
+    <h1 class="c-docs-hero__title o-layout--margin-0">{{ title() }}</h1>
+    <p class="c-docs-hero__eyebrow o-layout--margin-0">{{ versionLine }}</p>
   </div>
 
   @if (lead()) {
-    <p class="c-docs-hero__lead">{{ lead() }}</p>
+    <p class="c-docs-hero__lead o-layout--margin-0">{{ lead() }}</p>
   }
 
   @if (actions().length) {
-    <ul class="c-docs-hero__actions">
+    <ul
+      class="c-docs-hero__actions o-flex o-flex--wrap o-layout--gap-1-5 o-layout--margin-0 o-layout--padding-0"
+    >
       @for (action of actions(); track action.path) {
         <li>
           <a

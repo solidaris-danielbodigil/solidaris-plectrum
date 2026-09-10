@@ -1,17 +1,21 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   ViewEncapsulation,
   computed,
+  effect,
+  inject,
   input,
   model,
   output,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
-import { Drawer } from 'primeng/drawer';
+import { Drawer, type DrawerPassThrough } from 'primeng/drawer';
 import {
   SelectButton,
   type SelectButtonChangeEvent,
@@ -158,10 +162,35 @@ const NOTE_TAG_ICON: Record<ProfileDrawerNoteSeverity, string> = {
   },
 })
 export class ProfileDrawerComponent {
+  private static nextId = 0;
+
   private readonly messages = injectPdsMessages(ProfileDrawerMessages);
+  private readonly document = inject(DOCUMENT);
   protected readonly drawerAppendTo = pdsOverlayAppendTo();
   protected readonly drawerPanelStyle = PDS_DRAWER_CONTENT_STYLE;
   protected readonly drawerPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
+
+  /** Heading id — the drawer surface is labelled by the profile name. */
+  protected readonly headingId = `pds-profile-drawer-title-${ProfileDrawerComponent.nextId++}`;
+
+  /** Element focused before the drawer opened; focus returns there on close. */
+  private focusOrigin: HTMLElement | null = null;
+
+  /**
+   * PrimeNG renders the drawer root as `role="complementary"` with no name and
+   * no `aria-modal`, even in modal mode. The pass-through API is the sanctioned
+   * way to change those root attributes (PrimeNG Drawer → Accessibility).
+   */
+  protected readonly drawerPassThrough = computed<DrawerPassThrough>(() => {
+    const modal = this.modal();
+    return {
+      root: {
+        role: modal ? 'dialog' : 'complementary',
+        'aria-modal': modal ? 'true' : undefined,
+        'aria-labelledby': this.headingId,
+      },
+    };
+  });
 
   /** Affiliate content rendered inside the drawer. */
   readonly data = input.required<ProfileDrawerData>();
@@ -219,6 +248,66 @@ export class ProfileDrawerComponent {
 
   protected readonly familyPanel = FAMILY_PANEL_VALUE;
   protected readonly notesPanel = NOTES_PANEL_VALUE;
+
+  /**
+   * Remembers the trigger while opening and hands focus back to it on close.
+   * Runs on the `visible` model rather than `(onHide)`, which PrimeNG only
+   * emits for its own close paths (Escape, mask) and not for `visible = false`.
+   */
+  private readonly focusReturn = effect(() => {
+    const visible = this.visible();
+    untracked(() => {
+      if (visible) {
+        this.captureFocusOrigin();
+      } else {
+        this.restoreFocusOrigin();
+      }
+    });
+  });
+
+  /** `(onShow)` — the surface is rendered; move focus onto the heading. */
+  protected onDrawerShow(): void {
+    const heading = this.resolveOverlayDocument().getElementById(
+      this.headingId,
+    );
+    heading?.focus({ preventScroll: true });
+  }
+
+  private captureFocusOrigin(): void {
+    const active = this.document.activeElement;
+    this.focusOrigin =
+      active instanceof HTMLElement && active !== this.document.body
+        ? active
+        : null;
+  }
+
+  private restoreFocusOrigin(): void {
+    const origin = this.focusOrigin;
+    this.focusOrigin = null;
+    if (!origin?.isConnected) {
+      return;
+    }
+    // Hand focus back only when it is still inside the drawer or was lost to
+    // the body (Escape, mask click) — never when the user already moved on.
+    const active = this.document.activeElement;
+    const focusIsFree =
+      !active || active === this.document.body || this.isInsideDrawer(active);
+    if (focusIsFree) {
+      origin.focus({ preventScroll: true });
+    }
+  }
+
+  private isInsideDrawer(element: Element): boolean {
+    const heading = this.resolveOverlayDocument().getElementById(this.headingId);
+    return !!heading?.closest('[data-pc-name="drawer"]')?.contains(element);
+  }
+
+  /** Document hosting the drawer surface — the preview frame in Storybook docs, otherwise ours. */
+  private resolveOverlayDocument(): Document {
+    return this.drawerAppendTo === 'body'
+      ? this.document
+      : this.drawerAppendTo.ownerDocument;
+  }
 
   protected noteTagSeverity(
     note: ProfileDrawerNote,

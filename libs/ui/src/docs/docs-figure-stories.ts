@@ -7,7 +7,10 @@
 // =============================================================================
 
 import type { StoryObj } from '@storybook/angular';
-import type { ComponentGovernance } from '@solidaris/contracts';
+import type {
+  ComponentGovernance,
+  ComponentMetadata,
+} from '@solidaris/contracts';
 import type {
   ChangelogChangeset,
   ChangelogRelease,
@@ -19,9 +22,13 @@ import {
   type ContractsIndex,
   DocsComponentIndexComponent,
 } from '../storybook/docs-component-index.component';
+import { DocsContractComponent } from '../storybook/docs-contract.component';
+import { DocsDoDontComponent } from '../storybook/docs-do-dont.component';
 import type {
   DocsCalloutTone,
   DocsCard,
+  DocsContractSection,
+  DocsDoDontItem,
   DocsStep,
 } from '../storybook/docs-figures.types';
 import {
@@ -43,7 +50,18 @@ export interface HeroContent {
 
 const DOCS_FIGURE_PARAMETERS = {
   chromatic: { disableSnapshot: true },
+  // Catalogue metas may set layout: 'fullscreen' (shells, token catalogues).
+  // Figures are prose, not chrome demos — padded keeps them content-sized.
+  layout: 'padded' as const,
 };
+
+/**
+ * `tags: ['!dev']` on a factory return is runtime-only. The CSF indexer is
+ * acorn — it never evaluates the call — so the story stays in the sidebar
+ * unless the export writes the tag as a literal:
+ *
+ *   export const Usage = { tags: ['!dev'], ...contractStory(meta, 'usage') };
+ */
 
 export function heroStory({
   title,
@@ -108,23 +126,82 @@ export function calloutStory({
   };
 }
 
+/** The `component` block fields the page header shows next to the badge. */
+export type StatusHeader = Partial<
+  Pick<ComponentMetadata['component'], 'description' | 'figmaUrl'>
+>;
+
 /**
- * Ownership badge for a component docs page. Pass `XMetadata.governance`;
- * CSS-only blocks without a .metadata.ts declare the object inline.
- * Tagged `!dev` so it never appears in the sidebar — it exists for the MDX page.
+ * Ownership badge + lead for a component docs page. Pass
+ * `XMetadata.governance` and `XMetadata.component` so the description and the
+ * Figma link come from the metadata rather than the MDX.
+ * Hide from the sidebar with a literal `tags: ['!dev']` on the export
+ * (the indexer does not see tags on this factory return):
+ *
+ *   export const Status = { tags: ['!dev'], ...statusStory(meta.governance, meta.component) };
  */
-export function statusStory({
-  status,
-  owner,
-  note,
-}: ComponentGovernance): StoryObj {
+export function statusStory(
+  { status, owner, note }: ComponentGovernance,
+  header?: StatusHeader,
+): StoryObj {
+  const { description, figmaUrl } = header ?? {};
   return {
     tags: ['!dev'],
     parameters: DOCS_FIGURE_PARAMETERS,
     render: () => ({
       moduleMetadata: { imports: [DocsStatusComponent] },
-      props: { status, owner, note },
-      template: `<pds-docs-status [status]="status" [owner]="owner" [note]="note" />`,
+      props: { status, owner, note, description, figmaUrl },
+      template: `<pds-docs-status [status]="status" [owner]="owner" [note]="note" [description]="description" [figmaUrl]="figmaUrl" />`,
+    }),
+  };
+}
+
+/**
+ * One block of a component's .metadata.ts, rendered by pds-docs-contract.
+ * The MDX page embeds one per section:
+ *
+ *   export const Usage = { tags: ['!dev'], ...contractStory(XMetadata, 'usage') };
+ *   <Unstyled><Story of={Stories.Usage} /></Unstyled>
+ */
+export function contractStory(
+  metadata: ComponentMetadata,
+  section: DocsContractSection,
+): StoryObj {
+  return {
+    tags: ['!dev'],
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsContractComponent] },
+      props: { metadata, section },
+      template: `<pds-docs-contract [metadata]="metadata" [section]="section" />`,
+    }),
+  };
+}
+
+export interface DoDontContent {
+  dos?: readonly DocsDoDontItem[];
+  donts?: readonly DocsDoDontItem[];
+  doLabel?: string;
+  dontLabel?: string;
+}
+
+/**
+ * Do / Don't cards with hand-authored entries — for pages that have no
+ * .metadata.ts (foundations, process). Component pages use contractStory().
+ */
+export function doDontStory({
+  dos = [],
+  donts = [],
+  doLabel = 'Do',
+  dontLabel = "Don't",
+}: DoDontContent): StoryObj {
+  return {
+    tags: ['!dev'],
+    parameters: DOCS_FIGURE_PARAMETERS,
+    render: () => ({
+      moduleMetadata: { imports: [DocsDoDontComponent] },
+      props: { dos, donts, doLabel, dontLabel },
+      template: `<pds-docs-do-dont [dos]="dos" [donts]="donts" [doLabel]="doLabel" [dontLabel]="dontLabel" />`,
     }),
   };
 }

@@ -45,11 +45,38 @@ Related pages:
 <DocsTable
   headers={['File', 'Role']}
   rows={[
-    ['name.stories.ts', 'Renders each state. Stories stay visible in the sidebar — that is where the Interactions and Accessibility panels live.'],
-    ['name.mdx', 'What the component does, Figma URL, one heading per canvas, Controls under Default, ArgTypes last.'],
+    ['name.metadata.ts', 'The documentation: description, Figma URL, use cases, anti-patterns, anatomy, accessibility, props. The docs page renders these blocks.'],
+    ['name.stories.ts', 'Renders each state. Stories stay visible in the sidebar — that is where the Interactions and Accessibility panels live. Also exports the docs figures (Status, Usage, Anatomy, Accessibility) built from the metadata.'],
+    ['name.mdx', 'Headings, the embedded figures, one canvas per state with its prose, Controls under Default. No restated facts. No ## API when Controls are already on the page.'],
     ['06-components/_components.name.scss', 'Reusable BEMIT layer only. One-off padding and gap stay on o-layout in the template.'],
   ]}
 />
+
+---
+
+## Documentation source
+
+The `.metadata.ts` is the single source of truth for a component's documentation. It already drove the API table (`props`) and the ownership badge (`governance`); usage, anatomy, accessibility, the lead paragraph and the Figma link now come from it too. The MDX embeds one figure per block and keeps only what is its own: headings, canvases, prose about the examples, visuals. `npm run docs:check` runs in CI and fails a page that restates a block as prose. Preview layout defaults to `padded`. A fullscreen or `100dvh` wrapper belongs on app-chrome catalogue stories, never on `meta.decorators` — otherwise every figure on the docs page becomes a blank viewport. Token catalogues with a sticky toolbar embed `<Story>`, not `<Canvas>`, so the toolbar can pin against the docs scroll.
+
+<Unstyled>
+  <Story of={Figures.DocsSource} />
+</Unstyled>
+
+<DocsTable
+  headers={['Metadata block', 'Figure on the page', 'CSF export']}
+  rows={[
+    ['governance · component.description · component.figmaUrl', 'pds-docs-status — badges, lead paragraph, Open in Figma', "Status = { tags: ['!dev'], ...statusStory(XMetadata.governance, XMetadata.component) }"],
+    ['usage.useCases · usage.antiPatterns', 'pds-docs-do-dont — Do / Don’t cards; each Don’t carries its reason and an Instead line', "Usage = { tags: ['!dev'], ...contractStory(XMetadata, 'usage') }"],
+    ['anatomy', 'p-table — Part / Role', "Anatomy = { tags: ['!dev'], ...contractStory(XMetadata, 'anatomy') }"],
+    ['accessibility', 'p-card — WCAG level, role, names and ARIA, keyboard and focus, contrast', "Accessibility = { tags: ['!dev'], ...contractStory(XMetadata, 'accessibility') }"],
+    ['composition · behavior · variants · usage.commonPatterns · examples', 'Tags, lists, tables, code cards — embed only when the block has content', "{ tags: ['!dev'], ...contractStory(XMetadata, 'composition' | 'behavior' | 'variants' | 'patterns' | 'examples') }"],
+    ['props', 'Controls under the primary canvas', 'argTypesFromProps(XMetadata.props) in meta.argTypes'],
+  ]}
+/>
+
+CSS-only blocks (Accordion, Timeline, Drawer, Detail List, Skeleton Slot) have a `.metadata.ts` for the same reason, even though there is no Angular class to ship it with. Pages without a metadata file — foundations, process — use `doDontStory({ dos, donts })` with hand-authored entries, as this page does above.
+
+This page is the temporary home of the rule; the maintainer copy moves to the customer knowledge base with the rest of the authoring guidance (`docs/handoff/migration-ledger.md`). The rule itself lives in `.ai/rules/03-storybook.md` §3 and in the schema comments of `.ai/contracts/schema/component.metadata.ts`.
 
 ---
 
@@ -245,26 +272,38 @@ export const Disabled: Story = {
 
 Attached MDX in `libs/ui/src/lib/accordion/accordion.mdx`. Individual stories stay visible in the sidebar under the component — open one to use the Interactions and Accessibility panels. Only docs-figure stories carry `tags: ['!dev']`.
 
+The description, the Figma link, the use cases, the constraints (as anti-patterns), the anatomy and the accessibility notes are in `accordion.metadata.ts`; the page embeds them. In the CSF:
+
+~~~ts
+export const Status = { tags: ['!dev'], ...statusStory(AccordionMetadata.governance, AccordionMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'anatomy') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'accessibility') };
+~~~
+
 ~~~tsx
-import { Meta, Canvas, Controls, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './accordion.stories';
 
 <Meta of={Stories} />
 
 # Accordion
 
-PrimeNG `p-accordion` with the Plectrum theme. Certificate and audit panels add **`c-accordion--bordered`** — a BEMIT modifier already in `libs/styles`. There is no Angular wrapper and no `[border]` input. Put the class on `p-accordion`.
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
 
-Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=544-6474)
+## Usage
 
-Constraints:
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-- PrimeNG owns expand / collapse and the `.p-accordion*` DOM.
-- Plectrum owns stock `--p-accordion-*` via `providePlectrum()`.
-- `c-accordion--bordered` owns the card-like stack: token bridges in `01-settings/_settings.accordion.scss`, stacked radii in `06-components/_components.accordion.scss`.
-- Do not override `.p-accordionpanel` with hardcoded hex or `!important`.
+## Anatomy
 
-How to write a story for a layer like this: [Writing stories](?path=/docs/docs-writing-stories--docs).
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
@@ -301,23 +340,25 @@ Two bordered panels. Sibling radii and shared outer edge are why the layer lives
 
 <Canvas of={Stories.Stacked} />
 
-## API
+## Accessibility
 
-Story knobs for the canvases above. They are not an Angular Accordion API — there is no wrapper component.
-
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
 ~~~
 
 <DocsTable
   headers={['Block', 'Purpose']}
   rows={[
-    ['import Meta, Canvas, Controls, ArgTypes from @storybook/addon-docs/blocks', 'Storybook docs blocks'],
+    ['import Meta, Canvas, Controls, Story, Unstyled from @storybook/addon-docs/blocks', 'Storybook docs blocks'],
     ['import * as Stories from ./accordion.stories', 'The colocated CSF file'],
     ['Meta of Stories', 'Attaches this page to the CSF meta (title, tags, argTypes)'],
-    ['Heading + Figma URL + constraints', 'What it is, where it lives in the kit, what not to change'],
-    ['Heading per state + Canvas of that story', 'One heading per canvas so On this page can list them'],
-    ['Controls of the Default story', 'Immediately under the Default canvas'],
-    ['API heading + ArgTypes of Stories', 'Always last, after every canvas'],
+    ['Story of Stories.Status', 'Badges, description and Figma link — from governance and component in the metadata'],
+    ['Usage heading + Story of Stories.Usage', 'Do / Don’t cards from usage.useCases and usage.antiPatterns'],
+    ['Anatomy heading + Story of Stories.Anatomy', 'Part / Role table from metadata.anatomy'],
+    ['Heading per state + Canvas of that story', 'One heading per canvas so On this page can list them; the prose here is the page’s own'],
+    ['Controls of the Default story', 'Immediately under the Default canvas — the only args table on the page'],
+    ['Accessibility heading + Story of Stories.Accessibility', 'WCAG level, ARIA and keyboard notes from metadata.accessibility'],
   ]}
 />
 

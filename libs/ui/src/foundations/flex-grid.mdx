@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './grid.stories';
 
 <Meta of={Stories} />
@@ -17,6 +17,21 @@ The syntax is BEMIT: `.o-` prefix, `__` for elements, `--` for modifiers, `@{bre
 > Gap and spacing are forbidden on `.o-flex` / `.o-flex__item` directly. Use `.o-layout--gap-{scale}` as a BEM mix on the same element.
 
 Styles: `libs/styles/src/05-objects/_objects.flex-grid.scss`.
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
+
+```html
+<div class="o-flex o-flex--wrap o-layout--gap-2">
+  <div class="o-flex__item o-flex__item--12 o-flex__item--6@md">…</div>
+  <div class="o-flex__item o-flex__item--12 o-flex__item--6@md">…</div>
+</div>
+```
 
 ## Responsive layout
 

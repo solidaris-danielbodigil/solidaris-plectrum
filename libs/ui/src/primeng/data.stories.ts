@@ -97,9 +97,10 @@ export default meta;
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+export const Status = { tags: ['!dev'], ...statusStory({ status: 'core', owner: 'design-system' }) };
 
 export const SortableTable: Story = {
+  name: 'Table',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Certificat ITT');
     await assertTextVisible(canvasElement, 'Code');
@@ -129,6 +130,7 @@ export const SortableTable: Story = {
 };
 
 export const StockTree: Story = {
+  name: 'Tree',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Dossier');
     await assertTextVisible(canvasElement, 'Certificat ITT');
@@ -141,6 +143,7 @@ export const StockTree: Story = {
 };
 
 export const EndorsedList: Story = {
+  name: 'List',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Certificat ITT');
     await assertTextVisible(canvasElement, 'Demande primaire');
@@ -159,6 +162,7 @@ export const EndorsedList: Story = {
 };
 
 export const StockSkeleton: Story = {
+  name: 'Skeleton',
   play: async ({ canvasElement }) => {
     const skeleton = canvasElement.querySelector('p-skeleton');
     await expectPresent(skeleton);
@@ -176,6 +180,7 @@ export const StockSkeleton: Story = {
 };
 
 export const StockTimeline: Story = {
+  name: 'Timeline',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Document reçu');
   },

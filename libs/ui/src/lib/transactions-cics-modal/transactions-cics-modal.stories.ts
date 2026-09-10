@@ -6,7 +6,7 @@ import {
   type StoryObj,
 } from '@storybook/angular';
 import { ButtonModule } from 'primeng/button';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
@@ -53,8 +53,17 @@ export default meta;
 
 type Story = StoryObj<TransactionsCicsModalStoryHostComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(TransactionsCicsModalMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from transactions-cics-modal.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(
+  TransactionsCicsModalMetadata.governance,
+  TransactionsCicsModalMetadata.component,
+) };
+export const Usage = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'accessibility') };
 
 export const Dutch: Story = {
   globals: { locale: 'nl' },

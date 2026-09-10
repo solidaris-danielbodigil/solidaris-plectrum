@@ -20,13 +20,13 @@ export const Hero: StoryObj = heroStory({
       variant: 'primary',
     },
     {
-      label: 'Contribute',
-      path: '/docs/get-started-contribute--docs',
+      label: 'Find a component',
+      path: '/docs/docs-component-status--docs',
       variant: 'secondary',
     },
     {
-      label: 'Browse components',
-      path: '/docs/custom-components-accordion--docs',
+      label: 'Pick a token',
+      path: '/docs/foundations-token-finder--docs',
       variant: 'secondary',
     },
   ],
@@ -39,7 +39,7 @@ export const Audiences: StoryObj = cardsStory(
       tone: 'app',
       title: 'Use Plectrum in an application',
       items: [
-        'Install the published @solidaris/* packages',
+        'Install the versioned @solidaris/* packages (packed tarballs until the first release)',
         'Boot the theme with providePlectrum()',
         'Build screens from PrimeNG + the Core components here',
       ],
@@ -78,59 +78,66 @@ export const Audiences: StoryObj = cardsStory(
   2,
 );
 
+/** The consumer path, in the order a developer needs it: install → render → find → style → ask. */
 export const FirstHour: StoryObj = stepsStory([
   {
-    who: 'You',
-    tone: 'neutral',
-    title: 'Skim the Foundations',
-    detail:
-      'Colors, Typography, Spacing, Layout — every value on those pages is read live from the compiled stylesheet.',
-    links: [
-      {
-        label: 'Colors',
-        path: '/docs/foundations-colors-semantic-common--docs',
-      },
-      { label: 'Typography', path: '/docs/foundations-typography-roles--docs' },
-      { label: 'Spacing', path: '/docs/foundations-spacing--docs' },
-      { label: 'Layout', path: '/docs/foundations-layout--docs' },
-    ],
-  },
-  {
-    who: 'You',
-    tone: 'neutral',
-    title: 'Open a component story',
-    detail:
-      'Each state is a story; the attached Docs page explains usage and links the Figma node. Show code reveals the template.',
-    links: [
-      {
-        label: 'Accordion — a typical component page',
-        path: '/docs/custom-components-accordion--docs',
-      },
-    ],
-  },
-  {
-    who: 'You',
+    who: 'Dev',
     tone: 'app',
-    title: 'Follow your path',
+    title: 'Use Plectrum in an app',
     detail:
-      'Use Plectrum in an app (install and consume) or Contribute (propose, decide, build, ship). Both pages are in Get started.',
+      'Install the packages, wire the stylesheet, boot the theme with providePlectrum(). The page is the packed-consumer fixture CI builds on every push.',
     links: [
       {
         label: 'Use Plectrum in an app',
         path: '/docs/get-started-use-plectrum-in-an-app--docs',
       },
-      { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
     ],
   },
   {
-    who: 'You',
-    tone: 'system',
-    title: 'Learn the two contracts',
+    who: 'Dev',
+    tone: 'app',
+    title: 'Render your first component',
     detail:
-      'CSS architecture explains where styles live; Token pipeline explains where values come from.',
+      'pds-form-field from @solidaris/ui around a PrimeNG pInputText — the full example, with import paths, is on the same page. Form Field is a typical component page: one story per state, Show code reveals the template.',
     links: [
-      { label: 'CSS architecture', path: '/docs/docs-css-architecture--docs' },
-      { label: 'Token pipeline', path: '/docs/docs-token-pipeline--docs' },
+      {
+        label: 'Form Field',
+        path: '/docs/custom-components-form-field--docs',
+      },
     ],
+  },
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Find a component',
+    detail:
+      'Component status lists every pds-* component with its status and owner and links its docs page. Anything PrimeNG already provides is in the PrimeNG theme gallery — use it as-is.',
+    links: [
+      { label: 'Component status', path: '/docs/docs-component-status--docs' },
+      { label: 'PrimeNG forms', path: '/docs/primeng-forms--docs' },
+    ],
+  },
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Choose a token',
+    detail:
+      'Token finder searches every --pds-* custom property by name and value; the Foundations catalogues are read live from the compiled stylesheet.',
+    links: [
+      { label: 'Token finder', path: '/docs/foundations-token-finder--docs' },
+      {
+        label: 'Colors',
+        path: '/docs/foundations-colors-semantic-common--docs',
+      },
+      { label: 'Spacing', path: '/docs/foundations-spacing--docs' },
+    ],
+  },
+  {
+    who: 'Dev',
+    tone: 'neutral',
+    title: 'Get help',
+    detail:
+      'Missing a variant or a token? Propose it to the core design-system team before building — Contribute explains the three possible answers and where each lands.',
+    links: [{ label: 'Contribute', path: '/docs/get-started-contribute--docs' }],
   },
 ]);

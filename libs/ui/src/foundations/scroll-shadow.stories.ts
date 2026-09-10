@@ -5,6 +5,7 @@
 // =============================================================================
 
 import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import { doDontStory } from '../docs/docs-figure-stories';
 
 export default {
   title: 'Foundations/Scroll Shadow',
@@ -28,6 +29,47 @@ export default {
     },
   },
 } as Meta;
+
+export const Usage = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Hint that more content is scrollable',
+        detail:
+          'A clipped panel, list or track gives no cue that anything sits past the edge. The fade is that cue.',
+      },
+      {
+        title: 'Vertical clip — drawer body, flex-column main, long list',
+        detail:
+          'Mix o-scroll-shadow onto the scroll container with overflow-y and a height constraint (max-height or o-layout--min-h-0).',
+      },
+      {
+        title: 'Horizontal clip — chips, tabs, toolbar track',
+        detail:
+          'Mix o-scroll-shadow--inline with overflow-x and a width constraint (max-width or o-layout--min-w-0).',
+      },
+    ],
+    donts: [
+      {
+        title: 'An unconstrained box',
+        detail: 'Without a capped height or width the element never scrolls, so the fade never appears.',
+        alternative:
+          'Constrain the scroller, then add the matching overflow class.',
+      },
+      {
+        title: 'Fading a PrimeNG internal (.p-card-body, .p-datatable-wrapper)',
+        detail: 'We do not own that node; doubled selectors break with the next PrimeNG release.',
+        alternative: 'An owned wrapper on our element, then o-scroll-shadow on that wrapper.',
+      },
+      {
+        title: 'A JS scroll listener or a handmade box-shadow fade',
+        detail: 'The object is pure CSS (scroll-timeline). A second implementation will drift.',
+        alternative: 'o-scroll-shadow / o-scroll-shadow--inline, or the mixin on a container you cannot class.',
+      },
+    ],
+  }),
+};
 
 const blockCells = (count: number) =>
   Array.from({ length: count }, () => `<div class="o-flex__item"></div>`).join('');

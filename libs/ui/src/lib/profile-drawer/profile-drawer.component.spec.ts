@@ -335,6 +335,102 @@ describe('ProfileDrawerComponent', () => {
 
     expect(onSelect).toHaveBeenCalledOnceWith(SAMPLE_DATA.relatedMembers[0]);
   });
+
+  describe('dialog semantics and focus management', () => {
+    let trigger: HTMLButtonElement;
+
+    const surface = (): HTMLElement | null =>
+      document.querySelector('[data-pc-name="drawer"]');
+    const heading = (): HTMLHeadingElement | null =>
+      document.querySelector('.p-drawer h2');
+
+    beforeEach(() => {
+      trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.textContent = 'Ouvrir';
+      document.body.appendChild(trigger);
+      trigger.focus();
+    });
+
+    afterEach(() => {
+      trigger.remove();
+    });
+
+    it('should expose a labelled modal dialog when modal is true', async () => {
+      fixture.componentRef.setInput('modal', true);
+      await openDrawer();
+
+      const root = surface();
+      expect(root).withContext('drawer root').not.toBeNull();
+      expect(root?.getAttribute('role')).toBe('dialog');
+      expect(root?.getAttribute('aria-modal')).toBe('true');
+      expect(heading()?.id).toBeTruthy();
+      expect(root?.getAttribute('aria-labelledby')).toBe(heading()?.id);
+    });
+
+    it('should stay a labelled complementary region when modal is false', async () => {
+      await openDrawer();
+
+      const root = surface();
+      expect(root?.getAttribute('role')).toBe('complementary');
+      expect(root?.hasAttribute('aria-modal')).toBe(false);
+      expect(root?.getAttribute('aria-labelledby')).toBe(heading()?.id);
+    });
+
+    it('should move focus onto the drawer heading when opened', async () => {
+      expect(document.activeElement).toBe(trigger);
+
+      await openDrawer();
+
+      const title = heading();
+      expect(title?.getAttribute('tabindex')).toBe('-1');
+      expect(document.activeElement).toBe(title);
+      expect(surface()?.contains(document.activeElement)).toBe(true);
+    });
+
+    it('should return focus to the trigger when closed from inside the drawer', async () => {
+      await openDrawer();
+
+      const closeButton = document.querySelector(
+        '[aria-label="Fermer"]',
+      ) as HTMLButtonElement;
+      closeButton.focus();
+      expect(document.activeElement).toBe(closeButton);
+
+      closeButton.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component.visible()).toBe(false);
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('should return focus to the trigger when the host sets visible to false', async () => {
+      await openDrawer();
+      expect(document.activeElement).toBe(heading());
+
+      fixture.componentRef.setInput('visible', false);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(document.activeElement).toBe(trigger);
+    });
+
+    it('should not steal focus back when the user already left the drawer', async () => {
+      await openDrawer();
+
+      const elsewhere = document.createElement('input');
+      document.body.appendChild(elsewhere);
+      elsewhere.focus();
+
+      fixture.componentRef.setInput('visible', false);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(document.activeElement).toBe(elsewhere);
+      elsewhere.remove();
+    });
+  });
 });
 
 describe('ProfileDrawerComponent (nl)', () => {

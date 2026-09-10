@@ -8,7 +8,8 @@
 // which intent, and the snippet shape to write.
 //
 // PrimeNG: p-select (intent — 10 options, over the SelectButton max of 5).
-// Guidance sits on pds-form-field as helper text.
+// The select lives in the explorer toolbar (`toolbarStart`); snippets sit
+// under it (`explorerLead`). Guidance is the form-field hint.
 // =============================================================================
 
 import {
@@ -31,6 +32,8 @@ interface TokenIntent {
   category: TokenCategory;
   groups: readonly string[];
   bundle: TokenExplorerBundle;
+  /** Narrow to a role across groups — the token list itself still comes from the CSSOM. */
+  nameFilter?: RegExp;
   hint: string;
   snippets: readonly string[];
 }
@@ -74,9 +77,12 @@ const INTENTS: readonly TokenIntent[] = [
     key: 'border',
     label: 'Border',
     category: 'color',
-    groups: ['surface', 'content', 'form'],
+    groups: [],
     bundle: null,
-    hint: 'Static borders are u-border-* classes in the template; the colour comes from a shared role (panel-border, card-border, content-border) — never a feature-specific alias. Compose one on Foundations / Borders → Generate.',
+    // Border roles only — every colour token whose name carries the role,
+    // not the whole surface / content / form groups they sit in.
+    nameFilter: /border/,
+    hint: 'Static borders are u-border-* classes in the template; the colour comes from a shared role (panel-border, card-border, content-border) — never a feature-specific alias. Compose a class on Foundations / Borders. Only border roles are listed here; the full palette is on Foundations / Colors.',
     snippets: [
       'class="u-border-bottom"',
       '--pds-border-color: var(--pds-color-panel-border);',
@@ -151,9 +157,15 @@ const INTENTS: readonly TokenIntent[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="o-flex o-flex--col o-layout--gap-3 o-layout--padding-3">
+    <pds-token-explorer
+      [category]="intent().category"
+      [groups]="intent().groups"
+      [bundle]="intent().bundle"
+      [nameFilter]="intent().nameFilter ?? null"
+    >
       <pds-form-field
-        class="o-flex__item--align-self-flex-start"
+        toolbarStart
+        class="c-token-explorer__compose-field o-flex__item--grow-0"
         label="What are you styling?"
         [hint]="intent().hint"
         inputId="pds-token-finder-intent"
@@ -169,21 +181,19 @@ const INTENTS: readonly TokenIntent[] = [
           [filter]="true"
           filterBy="label"
           placeholder="What are you styling?"
+          appendTo="body"
         />
       </pds-form-field>
 
-      <div class="o-flex o-flex--col o-layout--gap-1">
+      <div
+        explorerLead
+        class="o-flex o-flex--col o-layout--gap-1 o-layout--margin-block-start-3"
+      >
         @for (snippet of intent().snippets; track snippet) {
           <code>{{ snippet }}</code>
         }
       </div>
-    </div>
-
-    <pds-token-explorer
-      [category]="intent().category"
-      [groups]="intent().groups"
-      [bundle]="intent().bundle"
-    />
+    </pds-token-explorer>
   `,
 })
 export class TokenFinderComponent {

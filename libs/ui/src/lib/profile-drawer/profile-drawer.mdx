@@ -1,7 +1,5 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './profile-drawer.stories';
-import { ProfileDrawerMetadata } from './profile-drawer.metadata';
 
 <Meta of={Stories} />
 
@@ -11,54 +9,21 @@ import { ProfileDrawerMetadata } from './profile-drawer.metadata';
   <Story of={Stories.Status} />
 </Unstyled>
 
-iSHARE “Carte affilié” detail drawer — a headless `p-drawer` wrapper.
+## Usage
 
-## When to use
-
-- A slide-in profile detail overlay from an overview card
-- Read-only identity, contact, related people, and notes
-- A Détails / Documents view switch on the same surface
-
-## When not to use
-
-- An always-visible panel — use a static column
-- Editing the record in place — open a dedicated form from the actions
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-drawer__header', 'Identity, copyable identifiers, menu + close'],
-    ['c-drawer__profile-*', 'Feature elements on the shared drawer block'],
-    ['p-selectButton', 'Détails / Documents view switch'],
-    ['c-detail-list', 'General and contact rows'],
-    ['p-accordion', 'Related people and notes'],
-    ['p-card / p-tag', 'Family tiles and note tags'],
-  ]}
-/>
-
-## Accessibility
-
-- Copy, menu, close, and family arrows have `aria-label`s
-- Sections use `aria-labelledby` on their heading ids
-- Bullet separators and dividers are `aria-hidden`
-- `p-drawer` owns the focus trap and Escape
-- Sensitive note tags pair an icon with visible label text — not colour alone
-
-## Figma
-
-There is no Plectrum UI Kit node for the dossier drawer. <a href={ProfileDrawerMetadata.component.figmaUrl}>iSHARE-Audit reference usage</a> until a kit node exists (see `.ai/questions/profile-card-drawer-figma.md`).
-
-- **Reuse**: large illustrated `pds-plectrum-avatar`, the overview-card copyable identifier chips, and small coloured avatars (blue/green/yellow) for the Famille tiles
-- **PrimeNG**: `p-drawer` (headless), `p-selectButton`, `p-accordion`, `p-card`, `p-tag`, `p-button`
-- **Two-way**: `[(visible)]` controls open/close; `viewChange` reports the Détails/Documents tab
-
-BEM block: `c-drawer` (elements: `__affiliate-detail-*`, shared `__header`, `__toolbar`, `__content`)
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Default
 
-Click the button to open the Carte affilié. Copying an identifier shows a confirmation toast on the Storybook preview frame.
+Click the button to open the drawer. Copying an identifier shows a confirmation toast on the Storybook preview frame.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
@@ -69,6 +34,21 @@ Same trigger, with `[showNotes]="false"` — used by iSHARE while Storybook and 
 
 <Canvas of={Stories.WithoutNotes} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

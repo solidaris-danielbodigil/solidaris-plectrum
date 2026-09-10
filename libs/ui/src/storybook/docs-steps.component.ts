@@ -39,7 +39,7 @@ interface StepEvent extends DocsStep {
   templateUrl: './docs-steps.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-steps' },
+  host: { class: 'c-docs-steps o-layout--block o-layout--margin-block-3' },
 })
 export class DocsStepsComponent {
   readonly steps = input.required<readonly DocsStep[]>();

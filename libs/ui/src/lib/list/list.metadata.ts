@@ -5,7 +5,7 @@ export const ListMetadata: ComponentMetadata = {
     name: 'List',
     category: 'molecules',
     description:
-      'Grouped or flat entry list rendered via PrimeNG Tree node templates with card row chrome.',
+      'Grouped or flat entry list built on PrimeNG Tree node templates with card-row chrome. Journey mode (groups non-null) adds expandable group headers and a timeline gutter under them; flat mode lists full-width entry cards.',
     type: 'display',
     path: 'libs/ui/src/lib/list/list.component.ts',
     primeNgComponent: 'Tree',
@@ -13,8 +13,8 @@ export const ListMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.list.scss',
     figmaUrl: 'https://www.figma.com/design/wmG7Dx9R7I6oJBUV3NYlTi/Custom-components?node-id=107-3675',
-    created: new Date().toISOString(),
-    modified: new Date().toISOString(),
+    created: '2026-06-07',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -23,9 +23,9 @@ export const ListMetadata: ComponentMetadata = {
   },
   usage: {
     useCases: [
-      'Affiliate document suivi panel (Suivi des documents)',
-      'Journey-grouped parcours with expandable tree groups',
-      'Flat document listing without grouping',
+      'Journey-grouped entries (parcours) with expandable tree groups and a timeline',
+      'Flat document or entry listing without grouping',
+      'A follow-up (suivi) panel of card rows with status and count tags',
     ],
     commonPatterns: [
       {
@@ -43,29 +43,57 @@ export const ListMetadata: ComponentMetadata = {
     ],
     antiPatterns: [
       {
-        scenario: 'Mixed groups and flat items simultaneously',
-        reason: 'Mode is determined by groups being null or non-null — not both.',
-        alternative: 'Shape data into groups OR flat items before binding.',
+        scenario: 'Mixing groups and flat items in one binding',
+        reason: 'The mode is decided by groups alone — null is flat, non-null is journey — so items is ignored in journey mode.',
+        alternative: 'Shape the data into groups or into flat items before binding, never both.',
       },
       {
-        scenario: 'Full-page data table',
-        reason: 'List rows are document summaries, not tabular data.',
-        alternative: 'Use a data table for dense columnar listings.',
+        scenario: 'A full-page data table of dense columns',
+        reason: 'Rows are entry summaries (icon, title, status, tags), not tabular data.',
+        alternative: 'Use p-table for dense columnar listings.',
       },
     ],
+  },
+  anatomy: [
+    { part: 'c-list', role: 'Region host — c-list--journey or c-list--flat modifier, is-loading + aria-busy while loading' },
+    { part: 'c-list__header-row', role: 'Optional title + count badge above the tree (showHeader)' },
+    { part: 'p-tree', role: 'PrimeNG tree — group and entry node templates, native toggler' },
+    { part: 'c-list__item--group', role: 'Expandable journey group header with folder icon and start / end dates' },
+    { part: 'c-list__item--entry', role: 'Document / entry card row — c-list__item--selected when selected' },
+    { part: 'c-list__timeline-*', role: 'Journey gutter sprites (decorative)' },
+    { part: 'p-tag / pButton', role: 'Status and count tags — a tag with deep-link targets is a button' },
+    { part: 'c-list__footnote', role: 'Optional footnote button below the tree' },
+    { part: 'p-popover', role: 'Target picker (role="listbox") when a count tag has several targets' },
+  ],
+  behavior: {
+    states: ['journey', 'flat', 'group-expanded', 'group-collapsed', 'row-default', 'row-hover', 'row-selected', 'loading'],
+    interactions: [
+      'Journey mode (groups non-null): chevron toggler on group headers and a timeline gutter (--pds-size-list-timeline-gutter) on child entry rows; flat mode renders full-width entry cards without chevron or timeline',
+      'Expansion is controlled: expandedGroupIds in, expandedGroupIdsChange out — the native tree toggler, a click or Enter / Space on the group header all toggle it',
+      'Selecting an entry emits itemClick; selectedItemId takes precedence over item.selected and expands the parent group once when it moves programmatically',
+      'Entry rows: neutral border by default, primary border on hover, primary border plus elevation (--pds-shadow-list-row-selected) and an accented bold title when selected; group headers get no hover / selected chrome',
+      'Count tags with one target emit tagTargetClick directly; with several targets they open a p-popover listbox to pick one',
+      'loading=true replaces the tree with three PrimeNG skeleton rows and sets aria-busy',
+    ],
+  },
+  composition: {
+    nestedComponents: ['Tree', 'Tag', 'Button', 'Skeleton', 'Popover'],
   },
   accessibility: {
     wcagLevel: 'AA',
     ariaAttributes: [
-      'role="region" + aria-label on host',
-      'aria-busy on host when loading',
-      'PrimeNG Tree treeitem semantics for groups and documents',
-      'aria-selected on the selected document treeitem',
-      'aria-hidden on decorative sort icon',
+      'Host is role="region" with an aria-label ("Suivi des documents" / "Opvolging van documenten"); aria-busy is set while loading',
+      'PrimeNG Tree supplies treeitem semantics for groups and entries; the group togglers carry a locale aria-label',
+      'Selection is aria-selected on the PrimeNG treeitem — row cards are not nested buttons',
+      'The sort icon and the timeline sprites are aria-hidden; the target picker is a role="listbox" of role="option" items named by the tag aria-label',
+    ],
+    keyboardSupport: [
+      'PrimeNG Tree keyboard model: Up / Down move between rows, Right / Left expand or collapse a group, Enter or Space selects an entry (itemClick) or toggles a group',
+      'Count tags with targets and the footnote are native buttons in the tab order; Enter or Space activates them and picks an option in the popover',
     ],
     contrastRequirements: [
-      'Status and footer tags must include visible French label text — not colour alone.',
-      'Selected document uses accent colour and bold weight in addition to aria-selected.',
+      'Status and footer tags must include visible label text — not colour alone',
+      'The selected entry uses the accent colour and bold weight in addition to aria-selected',
     ],
   },
   tokens: {

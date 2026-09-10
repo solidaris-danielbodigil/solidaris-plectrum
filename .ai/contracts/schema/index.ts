@@ -5,6 +5,7 @@ export type {
   ComponentStatus,
   ComponentPattern,
   AntiPattern,
+  AnatomyPart,
   SlotDefinition,
   PropDefinition,
   ComponentExample,

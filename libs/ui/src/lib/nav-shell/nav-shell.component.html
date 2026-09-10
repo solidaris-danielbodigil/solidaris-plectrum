@@ -142,7 +142,7 @@
   @for (item of items(); track item.id) {
     <li class="c-nav-shell__item o-flex o-flex__item--shrink-0">
       <a
-        class="c-nav-shell__link o-flex o-flex--align-items-center"
+        class="c-nav-shell__link o-flex o-flex--align-items-center o-layout--full-width o-layout--overflow-hidden"
         [class.is-active]="item.id === activeId()"
         [routerLink]="item.routerLink ?? null"
         [attr.aria-label]="item.label"
@@ -151,7 +151,7 @@
       >
         <!-- Icon — delegated to <pds-icon>; decorative here (label is on the <a>) -->
         <pds-icon
-          class="c-nav-shell__icon"
+          class="c-nav-shell__icon o-flex__item--shrink-0"
           [icon]="item.icon"
           [source]="item.iconSource ?? 'svg'"
           size="md"

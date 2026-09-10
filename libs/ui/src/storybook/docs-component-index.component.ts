@@ -6,11 +6,15 @@
 // PrimeNG components used:
 //   - pds-toolbar — search + status filter in start, visible / total in end
 //   - p-table — one row per component, sortable
-//   - p-iconfield + pInputText — search name, BEM block, PrimeNG base, owner
+//   - p-iconfield + pInputText — search name, BEM block, owner, dependants
 //   - p-selectButton — filter by governance status (≤ 5 options); count is a p-badge
 //   - p-tag — status (same severities as pds-docs-status) and owner (secondary)
 //   - p-badge — per-status count on each filter option, plus visible / total
 //   - pds-docs-link — component name → its docs page; badge definitions
+//
+// Consumer-facing columns only: name (linked), status, owner, used by. The
+// index also carries `category` (atomic level) and `primeNg` (the generator's
+// lineage hint, e.g. "Api") — internal fields that stay out of this table.
 //
 // Docs links are resolved at runtime from Storybook's own index.json (the
 // docs entry whose importPath sits in the component's folder), so the page
@@ -100,8 +104,6 @@ interface ComponentRow {
   statusLabel: string;
   statusSeverity: StatusSeverity | 'secondary';
   ownerLabel: string | null;
-  category: string;
-  primeNg: string | null;
   bemBlock: string | null;
   usedBy: readonly string[];
   /** Manager route of the component's docs page, when Storybook's index names one. */
@@ -153,7 +155,9 @@ function folderOf(path: string): string {
   templateUrl: './docs-component-index.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-component-index' },
+  host: {
+    class: 'c-docs-component-index o-layout--block o-layout--margin-block-3',
+  },
 })
 export class DocsComponentIndexComponent {
   readonly index = input.required<ContractsIndex>();
@@ -183,8 +187,6 @@ export class DocsComponentIndexComponent {
         statusLabel: statusLabel(status),
         statusSeverity: statusSeverity(status),
         ownerLabel: toOwnerLabel(entry.owner),
-        category: entry.category,
-        primeNg: entry.primeNg,
         bemBlock: entry.bemBlock,
         usedBy: entry.usedBy,
         docsPath: docsId ? `/docs/${docsId}` : null,
@@ -215,8 +217,6 @@ export class DocsComponentIndexComponent {
       return [
         row.name,
         row.bemBlock,
-        row.primeNg,
-        row.category,
         row.ownerLabel,
         row.statusLabel,
         ...row.usedBy,

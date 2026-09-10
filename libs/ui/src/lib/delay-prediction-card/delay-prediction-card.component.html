@@ -7,7 +7,7 @@
       class="c-delay-prediction-card__unavailable o-flex o-flex--align-items-center o-layout--gap-2 o-layout--min-w-0"
     >
       <i
-        class="c-delay-prediction-card__unavailable-icon bi bi-exclamation-triangle-fill"
+        class="c-delay-prediction-card__unavailable-icon bi bi-exclamation-triangle-fill o-flex__item--shrink-0"
         aria-hidden="true"
       ></i>
       <p class="c-delay-prediction-card__unavailable-text o-layout--margin-0">
@@ -19,31 +19,31 @@
       class="c-delay-prediction-card__body o-flex o-flex--align-items-center o-flex--row-nowrap o-layout--min-w-0"
     >
       <div class="c-delay-prediction-card__metric o-flex__item--shrink-0">
-        <span class="c-delay-prediction-card__value">{{ daysRemaining() }}</span>
-        <span class="c-delay-prediction-card__label">{{ messages.daysRemaining }}</span>
+        <span class="c-delay-prediction-card__value o-layout--block">{{ daysRemaining() }}</span>
+        <span class="c-delay-prediction-card__label o-layout--block">{{ messages.daysRemaining }}</span>
       </div>
 
       <p-divider
-        class="c-delay-prediction-card__divider o-flex__item--shrink-0"
+        class="c-delay-prediction-card__divider o-flex__item--shrink-0 o-flex__item--align-self-stretch o-layout--margin-inline-1"
         layout="vertical"
       />
 
       <div class="c-delay-prediction-card__metric o-flex__item--shrink-0">
-        <span class="c-delay-prediction-card__value">{{
+        <span class="c-delay-prediction-card__value o-layout--block">{{
           predictedCloseDate()
         }}</span>
-        <span class="c-delay-prediction-card__label">{{ messages.predictedClose }}</span>
+        <span class="c-delay-prediction-card__label o-layout--block">{{ messages.predictedClose }}</span>
       </div>
 
       <p-divider
-        class="c-delay-prediction-card__divider o-flex__item--shrink-0"
+        class="c-delay-prediction-card__divider o-flex__item--shrink-0 o-flex__item--align-self-stretch o-layout--margin-inline-1"
         layout="vertical"
       />
 
       <button
         pButton
         type="button"
-        class="c-delay-prediction-card__menu"
+        class="c-delay-prediction-card__menu o-flex__item--shrink-0"
         severity="secondary"
         outlined
         icon="bi bi-three-dots-vertical"

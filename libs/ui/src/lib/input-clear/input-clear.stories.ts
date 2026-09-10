@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { FormsModule } from '@angular/forms';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { InputClearMetadata } from './input-clear.metadata';
@@ -25,8 +25,14 @@ export default meta;
 
 type Story = StoryObj<InputClearComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(InputClearMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from input-clear.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(InputClearMetadata.governance, InputClearMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'accessibility') };
 
 export const IconField: Story = {
   render: (args) => ({

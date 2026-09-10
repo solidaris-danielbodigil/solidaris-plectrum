@@ -2,6 +2,7 @@ import { readClassNames } from './cssom';
 import { pdsOverlayAppendTo } from './storybook-preview-frame';
 import {
   clearStorybookToasts,
+  copyStorybookText,
   renderStorybookToast,
   resolveStorybookPreviewDocument,
   resolveStorybookToastDocument,
@@ -71,8 +72,28 @@ describe('storybook-toast', () => {
   it('showStorybookToast writes to the current document in unit tests', () => {
     showStorybookToast({ summary: 'Copied', detail: '--pds-radius-md' });
 
-    expect(document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent).toContain(
-      '--pds-radius-md',
-    );
+    expect(
+      document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent,
+    ).toContain('--pds-radius-md');
+  });
+
+  it('copyStorybookText writes the clipboard and confirms with a toast', async () => {
+    const written: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: (text: string) => {
+          written.push(text);
+          return Promise.resolve();
+        },
+      },
+    });
+
+    await copyStorybookText('u-border-all');
+
+    expect(written).toEqual(['u-border-all']);
+    expect(
+      document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent,
+    ).toContain('u-border-all');
   });
 });

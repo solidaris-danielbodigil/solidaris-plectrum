@@ -7,7 +7,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { showStorybookToast } from '../../storybook/storybook-toast';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { userEvent, waitForText, within } from '../../storybook/story-tests';
@@ -162,7 +162,7 @@ const meta: Meta<ProfileDrawerStoryArgs> = {
     }),
   ],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'padded',
     ...storyDesign(ProfileDrawerMetadata.component.figmaUrl),
   },
   argTypes: argTypesFromProps(ProfileDrawerMetadata.props ?? [], {
@@ -184,8 +184,14 @@ export default meta;
 
 type Story = StoryObj<ProfileDrawerStoryArgs>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(ProfileDrawerMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from profile-drawer.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(ProfileDrawerMetadata.governance, ProfileDrawerMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {

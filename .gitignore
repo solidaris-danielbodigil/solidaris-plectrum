@@ -48,3 +48,7 @@ Thumbs.db
 *.log
 debug-storybook.log
 libs/assets/Guide opérateur iShare.pdf
+
+# Windows reserved device name — scripts that redirect to NUL can
+# create a real file here, and `git add` then fails with mmap errors.
+/NUL

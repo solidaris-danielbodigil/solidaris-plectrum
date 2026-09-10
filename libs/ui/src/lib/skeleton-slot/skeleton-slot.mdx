@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './skeleton-slot.stories';
 
 <Meta of={Stories} />
@@ -10,42 +9,17 @@ import * as Stories from './skeleton-slot.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`c-skeleton-slot` and `c-skeleton-count-badge` are sized wrappers that keep PrimeNG `p-skeleton` placeholders on the same rhythm as the content they stand in for — no layout shift when data arrives. Both classes are generic: the slot is a line-height box, the count badge a circle sized by a token.
+## Usage
 
-## When to use
-
-- Loading placeholders that must match the eventual line or badge size
-- List and profile-card loading states that already wrap `p-skeleton`
-
-## When not to use
-
-- Reimplementing a skeleton shape — always use PrimeNG `p-skeleton` inside the slot
-- Page-specific skeleton dimensions in `06-components` — add a token in `01-settings` first
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['c-skeleton-slot', 'Line-height box around p-skeleton'],
-    ['c-skeleton-count-badge', 'Circular badge-sized wrapper'],
-    ['p-skeleton', 'PrimeNG placeholder — never reimplemented'],
-  ]}
-/>
-
-## Accessibility
-
-- Loading regions that contain these slots should set `aria-busy` on the parent
-- Decorative placeholders do not need names; the parent loading label is enough
-- Hide decorative skeleton chrome from the accessibility tree when the parent already announces busy
-
-## Figma
-
-There is no Plectrum UI Kit node. [List](?path=/docs/custom-components-list--docs) and [Affiliate Overview Card](?path=/docs/custom-components-profile-card--docs) loading states are reference usage.
-
-- **PrimeNG**: `p-skeleton` (never reimplemented)
-- **Styles**: `libs/styles/src/06-components/_components.skeleton-slot.scss`
-- **Used by**: [List](?path=/docs/custom-components-list--docs) and [Affiliate Overview Card](?path=/docs/custom-components-profile-card--docs) loading states, iSHARE document detail
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Slots
 
@@ -58,8 +32,21 @@ A composition example only — the card chrome is `u-border-all` / `u-radius-xl`
 
 <Canvas of={Stories.CardLoading} />
 
-## API
+## Composition
 
-CSS-only wrappers (`c-skeleton-slot`, `c-skeleton-count-badge`) — there is no Angular Skeleton Slot component.
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
 
-<ArgTypes of={Stories} />
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

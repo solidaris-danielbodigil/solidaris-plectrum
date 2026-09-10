@@ -8,7 +8,7 @@
     "libs/styles"
   ],
   "engines": {
-    "node": "^18.19.1 || ^20.11.1 || ^22.0.0"
+    "node": "^20.19.0 || ^22.12.0 || ^24.0.0"
   },
   "scripts": {
     "start": "ng serve ishare",
@@ -23,14 +23,18 @@
     "test": "ng test",
     "test:coverage": "ng test ui --no-watch --code-coverage && ng test ishare --no-watch --code-coverage",
     "lint": "ng lint",
+    "lint:styles": "stylelint \"libs/styles/src/**/*.scss\"",
+    "lint:styles:test": "node --test tools/stylelint/*.spec.mjs",
     "changelog:build": "node tools/scripts/changelog-to-ts.mjs",
     "storybook": "npm run changelog:build && ng run ui:storybook",
     "build-storybook": "npm run changelog:build && ng run ui:build-storybook",
     "test-storybook": "test-storybook --config-dir libs/ui/.storybook --url http://localhost:6006",
     "test-storybook:coverage": "test-storybook --config-dir libs/ui/.storybook --url http://localhost:6006 --coverage --coverageDirectory coverage/storybook",
     "test-storybook:ci": "concurrently -k -s first -n SB,TEST \"http-server dist/storybook/ui --port 6006 --silent\" \"wait-on http://127.0.0.1:6006/iframe.html && test-storybook --config-dir libs/ui/.storybook --url http://127.0.0.1:6006 --coverage --coverageDirectory coverage/storybook\"",
+    "test-storybook:nav": "node tools/scripts/storybook-nav-smoke.mjs",
     "chromatic": "chromatic --exit-zero-on-changes",
     "generate-index": "tsx tools/scripts/generate-index.ts",
+    "docs:check": "node tools/scripts/check-docs-ssot.mjs",
     "pds:component": "tsx tools/generators/sds-component/index.ts",
     "tokens:resolve": "node tools/tokens/resolve-dtcg.mjs",
     "tokens:audit": "tsx tools/tokens/audit-drift.mjs",
@@ -92,10 +96,12 @@
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
     "ng-packagr": "^21.2.2",
+    "postcss-scss": "^4.0.9",
     "prettier": "^3.8.3",
     "remark-gfm": "^4.0.1",
     "storybook": "^10.4.0",
     "style-dictionary": "^4.4.0",
+    "stylelint": "^17.15.0",
     "ts-node": "10.9.1",
     "tsx": "^4.22.1",
     "typescript": "~5.9.3",

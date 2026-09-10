@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig, componentWrapperDecorator } from '@storybook/angular';
-import { provideRouter } from '@angular/router';
+import {
+  applicationConfig,
+  componentWrapperDecorator,
+} from '@storybook/angular';
 import { inject, provideAppInitializer } from '@angular/core';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { provideStoryRouter } from '../../storybook/story-router';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -58,22 +61,36 @@ const SVG_ISHARE = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" 
 // routerLink is set so the rendered <a> elements are keyboard-focusable, which
 // lets the Expanded story trigger the CSS :focus-within reveal via .focus().
 const SAMPLE_ITEMS: NavItem[] = [
-  { id: 'icrm',   label: 'iCRM',   icon: 'logo-icrm',   iconSource: 'svg', routerLink: '/icrm' },
-  { id: 'ishare', label: 'iShare', icon: 'logo-ishare', iconSource: 'svg', routerLink: '/ishare' },
+  {
+    id: 'icrm',
+    label: 'iCRM',
+    icon: 'logo-icrm',
+    iconSource: 'svg',
+    routerLink: '/icrm',
+  },
+  {
+    id: 'ishare',
+    label: 'iShare',
+    icon: 'logo-ishare',
+    iconSource: 'svg',
+    routerLink: '/ishare',
+  },
 ];
+
+/** App-shell frame — only the catalogue stories. Docs figures must not inherit this. */
+const shellFrame = componentWrapperDecorator(
+  (story) =>
+    `<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
+);
 
 const meta: Meta<NavShellComponent> = {
   title: 'Shell/Navigation/NavShell',
   component: NavShellComponent,
   decorators: [
-    // Match app shell layout — nav-shell stretches via height: 100% inside a full-viewport flex row.
-    componentWrapperDecorator(
-      (story) =>
-        `<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
-    ),
     applicationConfig({
       providers: [
-        provideRouter([]),
+        // Virtual URL — a real Location would move the iframe to the host root.
+        provideStoryRouter(),
         // Register brand-mark SVGs before the first render.
         provideAppInitializer(() => {
           const registry = inject(IconRegistry);
@@ -98,8 +115,15 @@ const meta: Meta<NavShellComponent> = {
 export default meta;
 type Story = StoryObj<NavShellComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(NavShellMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from nav-shell.metadata.ts, the documentation SSOT.
+// `tags` must be a CSF literal: the indexer does not see factory returns.
+export const Status = { tags: ['!dev'], ...statusStory(NavShellMetadata.governance, NavShellMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'accessibility') };
 
 // ---------------------------------------------------------------------------
 // Stories
@@ -107,6 +131,7 @@ export const Status = statusStory(NavShellMetadata.governance);
 
 /** Default collapsed state — icon-only sidebar at rest. */
 export const Collapsed: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
@@ -120,6 +145,7 @@ export const Collapsed: Story = {
 
 /** Expanded state — focusing an item triggers the CSS :focus-within reveal. */
 export const Expanded: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
@@ -127,13 +153,16 @@ export const Expanded: Story = {
   // Expansion is pure CSS (:hover / :focus-within). Focus the first link so the
   // static story renders the expanded state without needing a real pointer hover.
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const link = canvasElement.querySelector('.c-nav-shell__link') as HTMLElement | null;
+    const link = canvasElement.querySelector(
+      '.c-nav-shell__link',
+    ) as HTMLElement | null;
     link?.focus();
   },
 };
 
 /** Active item highlighted — grey rounded background (icon keeps its brand colour). */
 export const WithActiveItem: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: 'icrm',
@@ -149,6 +178,7 @@ export const WithActiveItem: Story = {
 
 /** Empty state — no items. */
 export const Empty: Story = {
+  decorators: [shellFrame],
   args: {
     items: [],
     activeItemId: null,

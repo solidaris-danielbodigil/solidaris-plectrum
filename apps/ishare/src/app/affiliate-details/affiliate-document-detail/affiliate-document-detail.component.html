@@ -17,7 +17,7 @@
         aria-hidden="true"
       >
         <div
-          class="c-affiliate-document-detail__skeleton-step-list o-flex o-flex--align-items-center o-flex--nowrap o-layout--gap-2"
+          class="c-affiliate-document-detail__skeleton-step-list o-flex o-flex--align-items-center o-flex--nowrap o-flex--justify-content-flex-start o-layout--gap-2"
           aria-hidden="true"
         >
         @for (step of skeletonStepSlots; track step) {
@@ -167,7 +167,7 @@
             <div
               class="c-affiliate-document-detail__step-list-scroll o-scroll-shadow--inline o-layout--overflow-x-auto o-flex__item--grow-1 o-layout--min-w-0"
             >
-              <p-step-list class="c-affiliate-document-detail__step-list">
+              <p-step-list class="c-affiliate-document-detail__step-list o-flex--nowrap">
                 @for (step of steps(); track step.value; let last = $last) {
                   <p-step [value]="step.value" [pdsTelemetryLabel]="step.label">
                     <ng-template
@@ -291,7 +291,7 @@
 
 <ng-template #verticalStepNav let-stepIndex="stepIndex">
   <div
-    class="c-affiliate-document-detail__vertical-step-nav o-flex o-flex--row o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width"
+    class="c-affiliate-document-detail__vertical-step-nav o-flex o-flex--row o-flex--align-items-center o-flex--justify-content-space-between o-flex__item--shrink-0 o-layout--gap-2 o-layout--full-width o-layout--padding-block-start-3"
   >
     <button
       pButton
@@ -300,7 +300,7 @@
       size="small"
       label="Précédent"
       icon="bi bi-arrow-left"
-      class="c-affiliate-document-detail__step-nav"
+      class="c-affiliate-document-detail__step-nav o-flex__item--shrink-0"
       pTooltip="Étape précédente"
       tooltipPosition="top"
       pdsTelemetryLabel="step-nav-previous"
@@ -315,7 +315,7 @@
       label="Suivant"
       icon="bi bi-arrow-right"
       iconPos="right"
-      class="c-affiliate-document-detail__step-nav"
+      class="c-affiliate-document-detail__step-nav o-flex__item--shrink-0"
       pTooltip="Étape suivante"
       tooltipPosition="top"
       pdsTelemetryLabel="step-nav-next"
@@ -353,7 +353,7 @@
   @if (stepSummary(step); as summary) {
     @if (summary.status) {
       <div
-        class="c-affiliate-document-detail__step-meta o-flex o-flex--align-items-center o-flex--nowrap o-flex--justify-content-flex-start o-layout--gap-1"
+        class="c-affiliate-document-detail__step-meta o-flex o-flex--align-items-center o-flex--nowrap o-flex--justify-content-flex-start o-flex__item--align-self-flex-start o-layout--gap-1"
       >
         <p-tag
           [severity]="summary.status.severity"
@@ -582,6 +582,7 @@
             [class.c-affiliate-document-detail__details-section--with-prediction]="
               shouldShowDelayPrediction(panel)
             "
+            [class.o-layout--gap-3]="shouldShowDelayPrediction(panel)"
           >
             <div
               class="c-affiliate-document-detail__details o-flex o-flex--y o-layout--gap-1 o-layout--min-w-0"
@@ -590,7 +591,7 @@
                 <div
                   class="c-affiliate-document-detail__detail-row o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0"
                 >
-                  <span class="c-affiliate-document-detail__detail-label">{{
+                  <span class="c-affiliate-document-detail__detail-label o-flex__item--shrink-0">{{
                     field.label
                   }}</span>
                   @if (isPeriodField(field)) {
@@ -598,25 +599,25 @@
                       class="o-flex o-flex--align-items-center o-layout--gap-1 o-layout--min-w-0"
                     >
                       <span
-                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline o-flex__item--shrink-1"
                         >Du</span
                       >
                       <span
-                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--inline-block o-layout--padding-inline-1 o-layout--padding-block-0-25"
                         >{{ field.value.from }}</span
                       >
                       <span
-                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline"
+                        class="c-affiliate-document-detail__detail-label c-affiliate-document-detail__detail-label--inline o-flex__item--shrink-1"
                         >Au</span
                       >
                       <span
-                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                        class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--inline-block o-layout--padding-inline-1 o-layout--padding-block-0-25"
                         >{{ field.value.to }}</span
                       >
                     </div>
                   } @else {
                     <span
-                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--padding-inline-1 o-layout--padding-block-0-25"
+                      class="c-affiliate-document-detail__detail-value c-affiliate-document-detail__detail-value--chip o-layout--inline-block o-layout--padding-inline-1 o-layout--padding-block-0-25"
                       >{{ field.value }}</span
                     >
                   }
@@ -637,7 +638,7 @@
                   Prédiction du delai
                 </h3>
                 <pds-delay-prediction-card
-                  class="c-affiliate-document-detail__delay-prediction"
+                  class="c-affiliate-document-detail__delay-prediction o-flex__item--align-self-flex-start"
                   [unavailable]="!!prediction.unavailable"
                   [daysRemaining]="prediction.daysRemaining ?? null"
                   [predictedCloseDate]="prediction.predictedCloseDate ?? null"

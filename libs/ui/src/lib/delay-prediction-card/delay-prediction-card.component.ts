@@ -21,7 +21,7 @@ import { DelayPredictionCardMessages } from './delay-prediction-card.i18n';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-delay-prediction-card-host',
+    class: 'c-delay-prediction-card-host o-layout--block',
   },
 })
 export class DelayPredictionCardComponent {

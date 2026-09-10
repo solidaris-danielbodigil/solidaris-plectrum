@@ -54,6 +54,84 @@ export function isOutputProp(prop: ArgTypeProp): boolean {
   return /^output</i.test(prop.type) || OUTPUT_NAME.test(prop.name);
 }
 
+/** Signal wrappers whose inner type decides the control (`model<boolean>` → `boolean`). */
+const SIGNAL_WRAPPER = /^(?:model|input|inputsignal|modelsignal|signal)<(.*)>$/i;
+
+/** Generic / structural shapes that only an object editor can express. */
+const STRUCTURAL_TYPE =
+  /(\[\]|\{|^(?:array|readonlyarray|record|partial|readonly|required|pick|omit|map|set|readonlymap|readonlyset)<)/i;
+
+/**
+ * Named types that are conventionally structured (`ProfileDrawerLabels`,
+ * `MenuItem`, `ProfileCardStatusAction`). Scalar aliases (`IconSize`,
+ * `DrawerPosition`) fall through to `text`, or `select` via story extras.
+ */
+const STRUCTURAL_NAME =
+  /(?:Data|Labels|LabelSet|Options|Config|Props|Model|Metadata|Definition|Action|Actions|Item|Items|Row|Rows|Node|Nodes|Entry|Entries|Tag|Tags|Identifier|Identifiers|Member|Members|Section|Sections|Group|Groups)$/;
+
+const STRING_LITERAL = /^'([^']*)'$|^"([^"]*)"$/;
+
+/**
+ * Strips a signal wrapper and `| undefined` / `| null` members so the
+ * remaining type string can be matched against the control table.
+ */
+export function normalizeType(type: string): string {
+  let normalized = type.trim();
+  const wrapped = SIGNAL_WRAPPER.exec(normalized);
+  if (wrapped) {
+    normalized = wrapped[1].trim();
+  }
+  const members = splitUnion(normalized).filter(
+    (member) => !/^(undefined|null)$/i.test(member),
+  );
+  return members.join(' | ');
+}
+
+/** Splits a union on top-level `|` only — generics such as `Record<'a' | 'b', X>` stay intact. */
+function splitUnion(type: string): string[] {
+  const members: string[] = [];
+  let depth = 0;
+  let current = '';
+  for (const char of type) {
+    if (char === '<' || char === '(' || char === '[' || char === '{') {
+      depth++;
+    } else if (char === '>' || char === ')' || char === ']' || char === '}') {
+      depth--;
+    }
+    if (char === '|' && depth === 0) {
+      members.push(current.trim());
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+  if (current.trim()) {
+    members.push(current.trim());
+  }
+  return members;
+}
+
+/** `'a' | 'b'` → `['a', 'b']`; anything that is not a pure literal union → `undefined`. */
+export function literalUnionOptions(type: string): string[] | undefined {
+  const members = splitUnion(normalizeType(type));
+  if (members.length < 2) {
+    return undefined;
+  }
+  const values: string[] = [];
+  for (const member of members) {
+    const match = STRING_LITERAL.exec(member);
+    if (!match) {
+      return undefined;
+    }
+    values.push(match[1] ?? match[2] ?? '');
+  }
+  return values;
+}
+
+function looksLikeStructuralDefault(value: string | undefined): boolean {
+  return value !== undefined && /^\s*[[{]/.test(value);
+}
+
 function inferControl(prop: ArgTypeProp): StoryArgType['control'] {
   if (prop.control === false || isOutputProp(prop)) {
     return false;
@@ -61,22 +139,39 @@ function inferControl(prop: ArgTypeProp): StoryArgType['control'] {
   if (prop.control) {
     return { type: prop.control };
   }
-  if (prop.options?.length) {
+  if (prop.options?.length || literalUnionOptions(prop.type)) {
     return { type: 'select' };
   }
-  const type = prop.type.toLowerCase();
-  if (type === 'boolean' || type.startsWith('boolean ')) {
+
+  const type = normalizeType(prop.type);
+  const lower = type.toLowerCase();
+
+  if (lower === 'boolean') {
     return { type: 'boolean' };
   }
-  if (type === 'number' || type.startsWith('number ')) {
+  if (lower === 'number') {
     return { type: 'number' };
   }
+  if (lower === 'string') {
+    return { type: 'text' };
+  }
   if (
-    type.includes('[') ||
-    type.includes('{') ||
-    (type.includes('|') && !type.startsWith('string'))
+    STRUCTURAL_TYPE.test(type) ||
+    looksLikeStructuralDefault(prop.default) ||
+    (splitUnion(type).length > 1 && !lower.startsWith('string'))
   ) {
     return { type: 'object' };
+  }
+  // A bare PascalCase identifier is an interface / type alias. Without a scalar
+  // default (`'right'`, `0`) or a structural name we still favour the object
+  // editor for required inputs, since scalar aliases nearly always ship a default.
+  if (/^[A-Z][A-Za-z0-9]*$/.test(type)) {
+    if (STRUCTURAL_NAME.test(type)) {
+      return { type: 'object' };
+    }
+    return prop.default === undefined && prop.required
+      ? { type: 'object' }
+      : { type: 'text' };
   }
   return { type: 'text' };
 }
@@ -102,10 +197,17 @@ export function toArgType(prop: ArgTypeProp): StoryArgType {
         ? 'required'
         : undefined;
 
+  const control = inferControl(prop);
+  const options = prop.options
+    ? [...prop.options]
+    : control && control.type === 'select'
+      ? literalUnionOptions(prop.type)
+      : undefined;
+
   return {
     description: prop.description,
-    control: inferControl(prop),
-    options: prop.options ? [...prop.options] : undefined,
+    control,
+    options,
     table: {
       category: inferCategory(prop),
       type: { summary: prop.type },

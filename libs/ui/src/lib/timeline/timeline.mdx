@@ -1,5 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './timeline.stories';
 
 <Meta of={Stories} />
@@ -10,57 +9,44 @@ import * as Stories from './timeline.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`c-timeline--content-only` is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the class to `p-timeline` directly.
+## Usage
 
-## When to use
-
-- Single-column journey timelines where dates sit with the content, not in `#opposite`
-- iSHARE document more-details drawers and similar follow-up histories
-
-## When not to use
-
-- Two-column timelines that need the `#opposite` slot — use stock `p-timeline`
-- Reimplementing markers or connectors outside PrimeNG
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['p-timeline', 'PrimeNG host — never reimplemented'],
-    ['c-timeline--content-only', 'Modifier — drops the empty opposite column'],
-    ['Marker / connector', 'PrimeNG timeline chrome'],
-    ['Content template', 'Event title, date, and status tag'],
-  ]}
-/>
-
-## Accessibility
-
-- Keep event titles and dates as visible text in the content template
-- Status tags need a text label — not colour alone
-- PrimeNG owns list semantics for the events
-
-## Figma
-
-There is no Plectrum UI Kit node for this modifier. Stock Timeline lives in [Plectrum for PrimeNG (Main)](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-). iSHARE document more-details is reference usage.
-
-- **PrimeNG**: `p-timeline` (never reimplemented)
-- **Styles**: `libs/styles/src/06-components/_components.timeline.scss`
-- **Used by**: iSHARE document more-details drawer
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Content only
 
 <Canvas of={Stories.ContentOnly} />
 <Controls of={Stories.ContentOnly} />
 
-Stock PrimeNG reserves a full column for the `#opposite` template even when only dates live there:
-
 ## Stock
+
+Stock PrimeNG reserves a full column for the `#opposite` template even when only dates live there:
 
 <Canvas of={Stories.Stock} />
 
-## API
+## Composition
 
-Story knobs and the `c-timeline--content-only` class. There is no Angular Timeline wrapper.
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
 
-<ArgTypes of={Stories} />
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

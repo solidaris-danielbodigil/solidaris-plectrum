@@ -17,7 +17,11 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Message } from 'primeng/message';
-import { calloutIcon, calloutSeverity, type DocsCalloutTone } from './docs-figures.types';
+import {
+  calloutIcon,
+  calloutSeverity,
+  type DocsCalloutTone,
+} from './docs-figures.types';
 
 @Component({
   selector: 'pds-docs-callout',
@@ -25,7 +29,7 @@ import { calloutIcon, calloutSeverity, type DocsCalloutTone } from './docs-figur
   templateUrl: './docs-callout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-callout' },
+  host: { class: 'c-docs-callout o-layout--block o-layout--margin-block-3' },
 })
 export class DocsCalloutComponent {
   readonly tone = input<DocsCalloutTone>('info');

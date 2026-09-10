@@ -35,9 +35,10 @@ export default meta;
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = statusStory({ status: 'core', owner: 'design-system' });
+export const Status = { tags: ['!dev'], ...statusStory({ status: 'core', owner: 'design-system' }) };
 
 export const Default: Story = {
+  name: 'InputText',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Secteur');
     await assertRoleVisible(canvasElement, 'textbox');
@@ -56,6 +57,7 @@ export const Default: Story = {
 };
 
 export const Filled: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'textbox');
   },
@@ -67,6 +69,7 @@ export const Filled: Story = {
 };
 
 export const Invalid: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     await waitFor(() =>
       expect(canvasElement.textContent).toContain('Sélectionnez une O.A.'),
@@ -92,6 +95,7 @@ export const Invalid: Story = {
 };
 
 export const Disabled: Story = {
+  tags: ['!dev'],
   play: async ({ canvasElement }) => {
     const input = canvasElement.querySelector('input');
     await expectDisabled(input);
@@ -110,6 +114,7 @@ export const Disabled: Story = {
 };
 
 export const WithIcon: Story = {
+  name: 'IconField',
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'textbox');
   },
@@ -130,6 +135,7 @@ export const WithIcon: Story = {
 };
 
 export const Group: Story = {
+  name: 'InputGroup',
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'textbox');
     await assertTextVisible(canvasElement, 'NISS');
@@ -149,6 +155,7 @@ export const Group: Story = {
 };
 
 export const SelectField: Story = {
+  name: 'Select',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Territoire');
   },
@@ -177,6 +184,7 @@ export const SelectField: Story = {
 };
 
 export const AutoCompleteField: Story = {
+  name: 'AutoComplete',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Secteur');
   },
@@ -216,6 +224,7 @@ export const AutoCompleteField: Story = {
 };
 
 export const DatePickerField: Story = {
+  name: 'DatePicker',
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, 'Filtrer par date');
   },

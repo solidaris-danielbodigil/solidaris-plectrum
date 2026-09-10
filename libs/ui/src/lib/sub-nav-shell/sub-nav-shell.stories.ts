@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { applicationConfig } from '@storybook/angular';
-import { provideRouter } from '@angular/router';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { provideStoryRouter } from '../../storybook/story-router';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -168,7 +168,8 @@ const meta: Meta<SubNavShellComponent> = {
   title: 'Shell/Navigation/SubNavShell',
   component: SubNavShellComponent,
   decorators: [
-    applicationConfig({ providers: [provideRouter([])] }),
+    // Virtual URL — a real Location would move the iframe to the host root.
+    applicationConfig({ providers: [provideStoryRouter()] }),
   ],
   parameters: {
     layout: 'fullscreen',
@@ -180,8 +181,14 @@ const meta: Meta<SubNavShellComponent> = {
 export default meta;
 type Story = StoryObj<SubNavShellComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(SubNavShellMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from sub-nav-shell.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(SubNavShellMetadata.governance, SubNavShellMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'accessibility') };
 
 // ---------------------------------------------------------------------------
 // Stories

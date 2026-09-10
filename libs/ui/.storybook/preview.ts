@@ -116,6 +116,7 @@ const preview: Preview = {
           'Foundations',
           ['Token finder'],
           'PrimeNG',
+          ['Actions', 'Forms', 'Data', 'Content and navigation', 'Overlays'],
           // Core catalogue first; app-owned (status app / candidate) work sits
           // under Patterns/{App}.
           'Custom components',
@@ -134,7 +135,9 @@ const preview: Preview = {
         { name: 'white', value: '#ffffff' },
       ],
     },
-    layout: 'fullscreen',
+    // Catalogue canvases need an inset. Opt into `fullscreen` only for app
+    // chrome (nav shells) and full-page token catalogues that pad themselves.
+    layout: 'padded',
     // Pixel widths from $breakpoints in libs/styles/src/01-settings/_settings.breakpoints.scss
     // (xs 36rem/576 · sm 48rem/768 · md 62rem/992 · lg 75rem/1200 · xl 87.5rem/1400).
     viewport: {

@@ -5,7 +5,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
     name: 'CopyableText',
     category: 'molecules',
     description:
-      'Copyable metadata chip: copy icon, label, and value. Copies value to clipboard on click.',
+      'Copy-to-clipboard chip for identifiers and similar metadata: a copy icon, a label and a value rendered as one PrimeNG text button. Activating it writes the value to the clipboard and emits copied.',
     type: 'interactive',
     path: 'libs/ui/src/lib/copyable-text/copyable-text.component.ts',
     primeNgComponent: 'Button',
@@ -14,8 +14,8 @@ export const CopyableTextMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.copyable-text.scss',
     figmaUrl:
       'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
-    created: new Date().toISOString(),
-    modified: new Date().toISOString(),
+    created: '2026-06-08',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -23,9 +23,9 @@ export const CopyableTextMetadata: ComponentMetadata = {
   },
   usage: {
     useCases: [
-      'Affiliate identifier chips (Territoire, NISS, NSI)',
-      'Any label + value pair that users need to copy',
-      'Metadata rows with bullet separators',
+      'Stable identifiers users copy often — NISS, territory codes, dossier numbers',
+      'Any label + value pair where the value must land on the clipboard in one click',
+      'Metadata rows of several chips separated by bullets',
     ],
     commonPatterns: [
       {
@@ -56,23 +56,50 @@ export const CopyableTextMetadata: ComponentMetadata = {
     ],
     antiPatterns: [
       {
-        scenario: 'Duplicating clipboard logic in parent handlers',
+        scenario: 'Duplicating clipboard logic in a parent handler',
         reason:
-          'Copy behaviour belongs in pds-copyable-text for consistency and fallback.',
+          'The chip already writes to the clipboard, with an execCommand fallback — a second write is redundant and the two can diverge.',
         alternative:
-          'Use (copied) only for toast/analytics after successful copy.',
+          'Listen to (copied) for toasts or analytics only; it fires after a successful write.',
       },
       {
-        scenario: 'Plain text span for copyable identifiers',
+        scenario: 'A plain text span for a copyable identifier',
         reason:
-          'No copy affordance, no keyboard-accessible action, inconsistent with audit UI.',
-        alternative: 'Use pds-copyable-text with label and value inputs.',
+          'There is no copy affordance and no keyboard-accessible action, so users have to select the text by hand.',
+        alternative: 'Render pds-copyable-text with label and value inputs.',
       },
     ],
   },
+  anatomy: [
+    { part: 'c-copyable-text', role: 'PrimeNG text button host — copies value on activate' },
+    { part: 'c-copyable-text__icon', role: 'Copy glyph (pds-icon, decorative)' },
+    { part: 'c-copyable-text__label', role: 'Visible field name' },
+    { part: 'c-copyable-text__value', role: 'Value written to the clipboard' },
+    { part: 'c-copyable-text__separator', role: 'Parent-owned bullet between chips — aria-hidden' },
+  ],
+  behavior: {
+    states: ['default', 'hover', 'focus-visible', 'active', 'disabled'],
+    interactions: [
+      'Writes value through the async Clipboard API when available',
+      'Falls back to a temporary textarea + document.execCommand("copy") in older or non-secure contexts',
+      'Emits (copied) with the copied string after a successful write — the chip never shows its own confirmation; the parent decides (toast, analytics)',
+      'disabled makes the button inert: no clipboard write, no copied event',
+    ],
+  },
+  composition: {
+    nestedComponents: ['Button', 'Icon'],
+    companions: ['ProfileCard', 'ProfileDrawer'],
+  },
   accessibility: {
-    ariaAttributes: ['aria-label (default: Copier {label})'],
-    keyboardSupport: ['Enter/Space activates copy on focused button'],
+    ariaAttributes: [
+      'The chip is a PrimeNG text button whose aria-label defaults to the locale copy of "Copier {label}" ("{label} kopiëren" in Dutch)',
+      'Override the accessible name with ariaLabel when the visible label is not enough on its own',
+      'The copy icon is decorative (pds-icon without label → aria-hidden); bullet separators between chips must be aria-hidden="true"',
+    ],
+    keyboardSupport: [
+      'Native button: Tab focuses the chip, Enter or Space copies the value',
+      'A disabled chip is skipped in the tab order',
+    ],
     wcagLevel: 'AA',
   },
   tokens: {

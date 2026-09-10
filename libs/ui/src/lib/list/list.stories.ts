@@ -1,4 +1,9 @@
-import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import {
+  componentWrapperDecorator,
+  moduleMetadata,
+  type Meta,
+  type StoryObj,
+} from '@storybook/angular';
 import { Component, input, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -6,7 +11,7 @@ import { ListComponent } from './list.component';
 import { ListMetadata } from './list.metadata';
 import type { ListEntryItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 
@@ -29,19 +34,35 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
         id: 'doc-demande-primaire',
         title: 'Demande primaire -',
         titleLine2: 'Régime général',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
       {
         id: 'doc-incapacite',
         title: 'Incapacité',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
     ],
@@ -57,10 +78,18 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
       {
         id: 'doc-rechute',
         title: 'Rechute',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
     ],
@@ -115,8 +144,32 @@ export default meta;
 
 type Story = StoryObj<ListStoryArgs>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(ListMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from list.metadata.ts, the documentation SSOT.
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory(ListMetadata.governance, ListMetadata.component),
+};
+export const Usage = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'usage'),
+};
+export const Anatomy = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'anatomy'),
+};
+export const Composition = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'composition'),
+};
+export const Behavior = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'behavior'),
+};
+export const Accessibility = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'accessibility'),
+};
 
 const journeyDefaults: ListStoryArgs = {
   groups: EVA_MARTINEZ_GROUPS,
@@ -167,9 +220,7 @@ class ListExpandDemoComponent {
 
 export const Grouped: Story = {
   args: journeyDefaults,
-  decorators: [
-    moduleMetadata({ imports: [ListExpandDemoComponent] }),
-  ],
+  decorators: [moduleMetadata({ imports: [ListExpandDemoComponent] })],
   render: (args) => ({
     props: args,
     template: `
@@ -267,7 +318,9 @@ export const RowHover: Story = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    canvasElement.querySelector('.c-list__item--entry')?.classList.add('sb-list-row--hover');
+    canvasElement
+      .querySelector('.c-list__item--entry')
+      ?.classList.add('sb-list-row--hover');
   },
 };
 
@@ -326,7 +379,11 @@ const ROW_STATE_DOCUMENT: ListEntryItem = {
   id: 'doc-row-state-demo',
   title: 'Demande primaire -',
   titleLine2: 'Régime général',
-  status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+  status: {
+    label: 'En traitement',
+    severity: 'warn',
+    icon: 'bi bi-hourglass-split',
+  },
   tags: [
     { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
     { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
@@ -335,7 +392,7 @@ const ROW_STATE_DOCUMENT: ListEntryItem = {
 
 const documentRowMarkup = (modifiers: string) => `
   <article
-    class="c-list__item c-list__item--entry ${modifiers}"
+    class="c-list__item c-list__item--entry o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width ${modifiers}"
   >
     <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
       <div

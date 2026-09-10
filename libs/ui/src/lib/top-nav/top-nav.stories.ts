@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { moduleMetadata } from '@storybook/angular';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
@@ -28,8 +28,14 @@ const meta: Meta<TopNavComponent> = {
 export default meta;
 type Story = StoryObj<TopNavComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(TopNavMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from top-nav.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(TopNavMetadata.governance, TopNavMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {

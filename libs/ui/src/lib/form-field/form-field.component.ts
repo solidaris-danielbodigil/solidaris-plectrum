@@ -81,6 +81,9 @@ export class FormFieldComponent {
   readonly inputId = input<string | undefined>(undefined);
   /** Optional helper text under the control. */
   readonly hint = input<string | undefined>(undefined);
-  /** Screen-reader text appended after the required asterisk. */
-  readonly requiredLabel = input('required');
+  /**
+   * Screen-reader text appended after the required asterisk, rendered as `(label)`.
+   * An empty value omits the parentheses entirely (the control still carries `aria-required`).
+   */
+  readonly requiredLabel = input<string>('required');
 }

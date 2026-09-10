@@ -5,7 +5,7 @@ export const IconMetadata: ComponentMetadata = {
     name: 'Icon',
     category: 'atoms',
     description:
-      'Universal icon primitive. Renders Bootstrap Icons via CSS class or custom SVG via IconRegistry.',
+      'Universal icon primitive: renders a Bootstrap Icons class (source="class") or a custom SVG registered in IconRegistry (source="svg") at one of five token-driven sizes — decorative by default, named with label.',
     type: 'display',
     path: 'libs/ui/src/lib/icon/icon.component.ts',
     primeNgComponent: undefined,
@@ -14,7 +14,7 @@ export const IconMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.icon.scss',
     figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
     created: '2026-05-20',
-    modified: '2026-05-20',
+    modified: '2026-09-09',
   },
   governance: {
     status: 'core',
@@ -23,8 +23,8 @@ export const IconMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Navigation item icons',
-      'Button leading/trailing icons',
-      'Status/feedback indicators',
+      'Button leading or trailing icons',
+      'Status and feedback indicators',
       'Standalone labelled icons in empty states',
     ],
     commonPatterns: [
@@ -46,25 +46,67 @@ export const IconMetadata: ComponentMetadata = {
     ],
     antiPatterns: [
       {
-        scenario: 'Setting an explicit color on pds-icon',
-        reason: 'Icons inherit currentColor — overriding breaks theme coherence.',
-        alternative: 'Set the color on the parent element and let it inherit.',
+        scenario: 'Setting an explicit colour on pds-icon',
+        reason: 'Icons inherit currentColor — a hard-coded colour breaks theme coherence.',
+        alternative: 'Set the colour on the parent element and let the icon inherit it.',
       },
       {
         scenario: 'Omitting label when the icon is the only indicator of meaning',
-        reason: 'Decorative-only rendering (aria-hidden) leaves the content inaccessible.',
-        alternative: 'Add [label]="description" to make the icon role="img" with aria-label.',
+        reason: 'Decorative rendering (aria-hidden) leaves the meaning inaccessible.',
+        alternative: 'Pass label so the host becomes role="img" with an aria-label.',
       },
       {
-        scenario: 'Using source="svg" without registering the icon first',
-        reason: 'IconRegistry.get() returns undefined — the icon renders nothing.',
-        alternative: 'Call IconRegistry.register(name, svgMarkup) in the app config or feature provider.',
+        scenario: 'source="svg" without registering the key first',
+        reason: 'IconRegistry.get() returns undefined, so the icon renders nothing and warns in the browser console.',
+        alternative: 'Call IconRegistry.register(name, svgMarkup) in the app config or a feature provider before use.',
       },
+    ],
+  },
+  anatomy: [
+    { part: 'c-icon', role: 'Host — inline-flex box sized by the c-icon--{size} modifier' },
+    { part: 'c-icon--xs … c-icon--xl', role: 'Size modifier — maps width, height and font-size to --pds-icon-size-*' },
+    { part: 'i.bi', role: 'Bootstrap Icons font glyph, always aria-hidden (source="class", default)' },
+    { part: 'c-icon__svg', role: 'Inline SVG from IconRegistry, filled with currentColor (source="svg")' },
+  ],
+  variants: {
+    source: {
+      options: ['class', 'svg'],
+      default: 'class',
+      purpose: {
+        class: 'Bootstrap Icons class string, e.g. bi bi-house, rendered as a font glyph',
+        svg: 'Registry key registered via IconRegistry.register(name, svg), rendered inline',
+      },
+    },
+    size: {
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      default: 'md',
+      purpose: {
+        xs: 'Maps to --pds-icon-size-xs',
+        sm: 'Maps to --pds-icon-size-sm',
+        md: 'Maps to --pds-icon-size-md — the host default',
+        lg: 'Maps to --pds-icon-size-lg',
+        xl: 'Maps to --pds-icon-size-xl',
+      },
+    },
+  },
+  behavior: {
+    states: ['decorative', 'labelled'],
+    interactions: [
+      'Colour is never set by the icon — it inherits currentColor from the surrounding text',
+      'source="svg" resolves the key through IconRegistry at render time; an unregistered key renders nothing and logs a console warning in the browser',
+      'Registered SVG markup must not carry width/height attributes so it scales with the size modifier',
     ],
   },
   accessibility: {
     wcagLevel: 'AA',
-    ariaAttributes: ['aria-hidden="true" (decorative)', 'role="img" + aria-label (standalone)'],
+    ariaAttributes: [
+      'Decorative (no label): the host is aria-hidden="true" — the surrounding control carries the name',
+      'Standalone: pass label so the host gets role="img" and aria-label',
+      'The inner Bootstrap <i> is always aria-hidden',
+    ],
+    keyboardSupport: [
+      'Never focusable — the host carries focusable="false" and no tabindex; interaction belongs to the surrounding control',
+    ],
   },
   tokens: {
     consumed: [

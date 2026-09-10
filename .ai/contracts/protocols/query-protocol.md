@@ -60,12 +60,35 @@ Load this once per conversation. Follow these rules deterministically.
 
 ```
 1. Check if PrimeNG --p-* variable override is sufficient (bridge in 01-settings)
-2. Layout (flex, gap, padding, overflow) → o-flex / o-layout mixes in the template
-3. If not covered → create/extend BEM class in libs/styles/src/06-components/
-4. Reference --pds-* semantic tokens via var(); @apply only for non-layout helpers, never in HTML
-5. Never use !important
-6. Never write inline styles
+2. Layout (flex, columns, align) → o-flex in the template (Foundations / Flex Grid)
+3. Gap, padding, margin, overflow, min-size → o-layout in the template (Foundations / Layout)
+4. Overflowing content users might miss → o-scroll-shadow / o-scroll-shadow--inline
+   on the owned scroll container (Foundations / Scroll Shadow) — not a JS fade
+5. Static border / radius / resting shadow → u-* utilities in the template
+6. If not covered → create/extend BEM class in libs/styles/src/06-components/
+7. Reference --pds-* semantic tokens via var(); @apply only for non-layout helpers, never in HTML
+8. Never use !important
+9. Never write inline styles
 ```
+
+### "Which foundation should I use?"
+
+Not a component. Do not invent a wrapper. Match intent to the Storybook page;
+Do / Don't and examples live on that page (`doDontStory`, not `.metadata.ts`).
+
+| Keywords                                                         | Reach for                                                        |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| scroll, overflow, fade, more content, edge shadow, clipped, hint | Foundations / Scroll Shadow — `o-scroll-shadow` / `--inline`     |
+| flex, columns, span, align, wrap, grid                           | Foundations / Flex Grid — `o-flex`                               |
+| gap, padding, margin, overflow, min-h-0, min-w-0, hidden@md      | Foundations / Layout — `o-layout`                                |
+| spacing scale, rem, 14px                                         | Foundations / Spacing                                            |
+| text colour, surface, border colour, semantic role, hue step     | Foundations / Colors / Semantic Common (ramps only on Primitive) |
+| font-size, heading, body, Agenda, Open Sans                      | Foundations / Typography / Roles                                 |
+| focus, outline, ring                                             | Foundations / Focus                                              |
+| elevation, box-shadow, overlay, modal shadow                     | Foundations / Elevation + Shadows                                |
+| border, radius, u-border, u-radius                               | Foundations / Borders + Radius                                   |
+| transition, duration, 200ms, easing                              | Foundations / Transitions                                        |
+| icon, bi-\*, glyph, icon size                                    | Foundations / Iconography + Custom components / Icon             |
 
 ---
 

@@ -44,8 +44,14 @@ jobs:
       - name: Lint token usage
         run: npm run tokens:lint
 
+      - name: Lint layout properties in component SCSS
+        run: npm run lint:styles:test && npm run lint:styles
+
       - name: Rebuild contracts index (must be committed)
         run: npm run generate-index && git diff --exit-code -- .ai/contracts/index.json
+
+      - name: Component docs read their metadata (no hand-written copies)
+        run: npm run docs:check
 
       - name: Build applications
         run: npm run build
@@ -95,9 +101,15 @@ jobs:
 
       - name: Build Storybook
         run: npm run build-storybook
+        env:
+          # Same artifact shape as deploy-ishare-pages.yml (relative chunk URLs).
+          STORYBOOK_PUBLIC_PATH: ./
 
       - name: Run story smoke, interaction, a11y and coverage tests
         run: npm run test-storybook:ci
+
+      - name: Cross-page navigation under the Pages sub-path
+        run: npm run test-storybook:nav
 
   chromatic:
     name: visual-tests

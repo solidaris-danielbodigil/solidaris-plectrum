@@ -187,7 +187,7 @@ export default meta;
 type Story = StoryObj<${className}Component>;
 
 /** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(${className}Metadata.governance);
+export const Status = { tags: ['!dev'], ...statusStory(${className}Metadata.governance, ${className}Metadata.component) };
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {
@@ -205,7 +205,7 @@ export const Default: Story = {
 
   writeFile(
     path.join(componentDir, `${fileName}.mdx`),
-    `import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+    `import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../../.storybook/docs-table';
 import * as Stories from './${fileName}.stories';
 import { ${className}Metadata } from './${fileName}.metadata';
@@ -248,10 +248,6 @@ Figma: [${className}Metadata.component.figmaUrl ? 'Open in Figma' : 'TODO add Fi
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
-
-## API
-
-<ArgTypes of={Stories} />
 `,
   );
 
@@ -466,7 +462,9 @@ async function main() {
       : 'display'
   ) as Schema['type'];
   const owner = (
-    (OWNERS as readonly string[]).includes(ownerRaw) ? ownerRaw : 'design-system'
+    (OWNERS as readonly string[]).includes(ownerRaw)
+      ? ownerRaw
+      : 'design-system'
   ) as Schema['owner'];
 
   generate({ name, category, type, primeNg: primeNg || undefined, owner });
