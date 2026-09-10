@@ -86,7 +86,10 @@
 - [x] Generator to scaffold `.metadata.ts` with component (`npm run PDS:component`) — also regenerates `index.json`
 - [x] Script to regenerate `index.json` (`npm run generate-index`) — content-stable output
 - [x] CI hook: regenerate index on component changes + fail if stale (`ci.yml` diff gate + `.cursor/hooks/regenerate-contracts-index.mjs` locally)
-- [ ] Drift detection: compare `.metadata.ts` against actual component API
-- [ ] Token audit runner in CI (prefix compliance, semantic coverage, contrast)
+- [x] Token scripts in CI: audit, prefix, build, lint (`ci.yml`)
 - [x] Storybook test-runner: play + a11y + coverage (`npm run test-storybook` / `test-storybook:ci`) — required per component (`.ai/rules/03-storybook.md` §5)
-- [ ] Storybook plugin to render metadata alongside stories
+- [x] Storybook metadata figures (`pds-docs-status`, `pds-docs-contract`) + `npm run docs:check` (fails hand-written copies)
+- [ ] Drift detection: compare `.metadata.ts` `props` against Angular inputs
+- [ ] `tokens.consumed` vs CSSOM as a CI gate (currently Foundations / Token contracts only)
+- [ ] Token CI: semantic coverage and contrast
+- [ ] Storybook MCP components manifest (needs `@storybook/angular-vite`; this workspace is webpack)

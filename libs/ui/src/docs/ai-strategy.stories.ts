@@ -11,16 +11,48 @@ const meta: Meta = {
 export default meta;
 
 export const QueryOrder: StoryObj = stepsStory([
-  { who: 'Agent', tone: 'system', title: 'Load the index', detail: '.ai/contracts/index.json is the workspace map: components, paths, BEM blocks, PrimeNG wraps, uses / usedBy.' },
-  { who: 'Agent', tone: 'system', title: 'Read one metadata file', detail: 'Only the colocated .metadata.ts for the component about to be used or created. Do not load every contract.' },
-  { who: 'Agent', tone: 'design', title: 'Check PrimeNG and Figma first', detail: 'PrimeNG MCP for an existing control. Figma MCP for the Plectrum UI Kit node. Reuse before inventing.' },
-  { who: 'Agent', tone: 'system', title: 'Follow a protocol', detail: 'component-creation.md, query-protocol.md or token-audit.md. Rules in .ai/rules stay hard stops.' },
-  { who: 'CI', tone: 'neutral', title: 'Regenerate and verify', detail: 'pds:component and the afterFileEdit hook regenerate index.json automatically; CI fails when the committed file is stale. Token scripts and Storybook stay the human-visible contract.' },
+  {
+    who: 'Agent',
+    tone: 'system',
+    title: 'Load the index',
+    detail:
+      '.ai/contracts/index.json is the workspace map: components, paths, BEM blocks, PrimeNG wraps, uses / usedBy.',
+  },
+  {
+    who: 'Agent',
+    tone: 'system',
+    title: 'Read one metadata file',
+    detail:
+      'Only the colocated .metadata.ts for the component about to be used or created. Do not load every contract.',
+  },
+  {
+    who: 'Agent',
+    tone: 'design',
+    title: 'Check PrimeNG and Figma first',
+    detail:
+      'PrimeNG MCP for an existing control. Figma MCP for the Plectrum UI Kit node. Reuse before inventing.',
+  },
+  {
+    who: 'Agent',
+    tone: 'system',
+    title: 'Follow a protocol',
+    detail:
+      'component-creation.md, query-protocol.md or token-audit.md. Rules in .ai/rules stay hard stops.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Regenerate and verify',
+    detail:
+      'pds:component and the afterFileEdit hook regenerate index.json; CI fails a stale index or a hand-written docs copy (docs:check). Token scripts and Storybook stay the human-visible contract.',
+  },
 ]);
 
 export const Roles: StoryObj = cardsStory([
   {
-    eyebrow: 'Agent', tone: 'system', title: 'Reads contracts first',
+    eyebrow: 'Agent',
+    tone: 'system',
+    title: 'Reads contracts first',
     items: [
       'Loads index.json, then one .metadata.ts, then a protocol',
       'Queries PrimeNG MCP and Figma MCP before creating a component',
@@ -28,19 +60,23 @@ export const Roles: StoryObj = cardsStory([
     ],
   },
   {
-    eyebrow: 'Author', tone: 'app', title: 'Owns the component contract',
+    eyebrow: 'Author',
+    tone: 'app',
+    title: 'Owns the component contract',
     items: [
       'Runs pds:component, fills usage / tokens.consumed / aiHints',
-      'Keeps CSF + attached MDX as the human-facing docs',
+      'MDX embeds Status / contract figures — no second prose copy',
       'Regenerates index.json after add or remove',
     ],
   },
   {
-    eyebrow: 'Architect', tone: 'neutral', title: 'Owns schema and protocols',
+    eyebrow: 'Architect',
+    tone: 'neutral',
+    title: 'Owns schema and protocols',
     items: [
       'Changes ComponentMetadata only in .ai/contracts/schema/',
       'Updates protocols when the workflow changes',
-      'Keeps token scripts and CI as the token contract',
+      'Keeps token scripts, docs:check and CI as the contract gates',
     ],
   },
 ]);
@@ -52,7 +88,7 @@ export const Layers: StoryObj = cardsStory([
   },
   {
     title: 'Metadata — how and why',
-    lead: 'Colocated {name}.metadata.ts typed as ComponentMetadata. Use cases, anti-patterns, tokens.consumed, a11y, aiHints. Scaffolded by npm run pds:component.',
+    lead: 'Colocated {name}.metadata.ts typed as ComponentMetadata. Use cases, anti-patterns, tokens.consumed, a11y, aiHints. Docs pages embed it through pds-docs-status / pds-docs-contract. Scaffolded by npm run pds:component.',
   },
   {
     title: 'Protocols — rules',
@@ -61,12 +97,30 @@ export const Layers: StoryObj = cardsStory([
 ]);
 
 export const Rules: StoryObj = cardsStory([
-  { title: 'Contracts are code', lead: 'Metadata is TypeScript imported as @solidaris/contracts. A missing or stale .metadata.ts is a defect, not optional docs.' },
-  { title: 'Index is generated', lead: 'Do not edit index.json by hand. pds:component and a Cursor hook regenerate it; CI fails when the committed file is stale. A manual run is only needed after deleting files by hand.' },
-  { title: 'tokens.consumed is checked', lead: 'Foundations / Token contracts compares each metadata list to the compiled CSS. A not-declared row is a broken contract.' },
-  { title: 'PrimeNG first', lead: 'No new Angular wrapper when PrimeNG already owns the behaviour. BEMIT classes and 01-settings bridges restyle; they do not fork the control.' },
-  { title: 'Storybook is the catalogue', lead: 'CSF + attached MDX remain the designer-facing docs. Metadata is for agents and audits, not a second prose surface.' },
-  { title: 'Scaffold, then fill', lead: 'pds:component writes the stub files including .metadata.ts. Fill usage, tokens and aiHints before marking the component done.' },
+  {
+    title: 'Contracts are code',
+    lead: 'Metadata is TypeScript imported as @solidaris/contracts. A missing or stale .metadata.ts is a defect, not optional docs.',
+  },
+  {
+    title: 'Index is generated',
+    lead: 'Do not edit index.json by hand. pds:component and a Cursor hook regenerate it; CI fails when the committed file is stale. A manual run is only needed after deleting files by hand.',
+  },
+  {
+    title: 'tokens.consumed is checked',
+    lead: 'Foundations / Token contracts compares each metadata list to the compiled CSS. A not-declared row is a broken contract.',
+  },
+  {
+    title: 'PrimeNG first',
+    lead: 'No new Angular wrapper when PrimeNG already owns the behaviour. BEMIT classes and 01-settings bridges restyle; they do not fork the control.',
+  },
+  {
+    title: 'Metadata is the docs SSOT',
+    lead: 'pds-docs-status and pds-docs-contract render the metadata on the component page. MDX embeds those figures and adds canvases; it does not restate the blocks. npm run docs:check fails a hand-written copy.',
+  },
+  {
+    title: 'Scaffold, then fill',
+    lead: 'pds:component writes the stub files including .metadata.ts. Fill usage, tokens and aiHints before marking the component done.',
+  },
 ]);
 
 export const Gaps: StoryObj = calloutStory({
@@ -74,7 +128,7 @@ export const Gaps: StoryObj = calloutStory({
   title: 'Not automated yet',
   items: [
     'No check that .metadata.ts props match the Angular inputs. Compodoc or the Angular compiler is the likely base.',
-    'Storybook does not render the full metadata object on the docs page. Token contracts covers tokens.consumed only.',
+    'tokens.consumed vs the CSSOM is a Storybook diagnostic (Foundations / Token contracts), not a CI gate.',
     'Storybook MCP (components manifest for agents) needs the angular-vite builder; this workspace runs the webpack builder, so index.json stays the agent-facing map.',
   ],
 });

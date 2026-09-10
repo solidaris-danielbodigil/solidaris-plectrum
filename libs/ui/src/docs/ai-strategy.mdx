@@ -72,14 +72,15 @@ A **contract** is a machine-readable file next to the thing it describes. Agents
     { id: 'comp', x: 369, y: 80, w: 220, h: 70, tone: 'system', title: 'Component + story', lines: ['pds:component scaffold'] },
     { id: 'md', x: 369, y: 170, w: 220, h: 70, tone: 'system', title: '.metadata.ts', lines: ['colocated, committed'] },
     { id: 'scss', x: 369, y: 260, w: 220, h: 70, tone: 'system', title: '06-components SCSS', lines: ['var(--pds-*) only'] },
-    { id: 'sb', x: 697, y: 80, w: 220, h: 70, tone: 'app', title: 'Storybook docs', lines: ['CSF + attached MDX'] },
+    { id: 'sb', x: 697, y: 80, w: 220, h: 70, tone: 'app', title: 'Storybook docs', lines: ['status + contract figures', 'CSF canvases + MDX'] },
     { id: 'tc', x: 697, y: 170, w: 220, h: 70, tone: 'app', title: 'Token contracts', lines: ['tokens.consumed vs CSSOM'] },
-    { id: 'ci', x: 697, y: 260, w: 220, h: 70, tone: 'neutral', title: 'Token CI', lines: ['audit, build, lint'] },
+    { id: 'ci', x: 697, y: 260, w: 220, h: 70, tone: 'neutral', title: 'CI gates', lines: ['index · docs:check', 'tokens · story tests'] },
   ]}
   edges={[
     { from: 'schema', to: 'md', label: 'types' },
     { from: 'comp', to: 'md', label: 'scaffold' },
     { from: 'md', to: 'index', label: 'scanned' },
+    { from: 'md', to: 'sb', label: 'embeds', offset: -18 },
     { from: 'md', to: 'tc', label: 'consumed' },
     { from: 'scss', to: 'tc', label: 'CSSOM' },
     { from: 'comp', to: 'sb', label: 'stories' },
@@ -100,7 +101,7 @@ How an agent is expected to work. Same order as `.ai/contracts/protocols/query-p
   <Story of={Figures.QueryOrder} />
 </Unstyled>
 
-The agent is the **default operator** for this flow: it scaffolds, fills the metadata, and runs the token scripts itself. Nothing here is a manual chore — `pds:component` regenerates the index when it finishes, a Cursor hook (`.cursor/hooks/regenerate-contracts-index.mjs`) re-runs `generate-index` after edits under `libs/ui`, and CI fails when the committed index is stale. Doing a step by hand stays possible; it is a choice, not a requirement.
+The agent is the **default operator** for this flow: it scaffolds, fills the metadata, and runs the token scripts itself. Nothing here is a manual chore — `pds:component` regenerates the index when it finishes, a Cursor hook (`.cursor/hooks/regenerate-contracts-index.mjs`) re-runs `generate-index` after edits under `libs/ui`, and CI fails when the committed index is stale or when a docs page restates a metadata block (`npm run docs:check`). Doing a step by hand stays possible; it is a choice, not a requirement.
 
 ---
 
@@ -149,11 +150,13 @@ Component work is delegated to specialist subagents. Ask **Solidaris** for a com
     ['CDD', 'Contract-Driven Development. Agents read typed contracts before they write code.'],
     ['ComponentMetadata', 'TypeScript interface every .metadata.ts must satisfy.'],
     ['index.json', 'Generated map of libs/ui components, paths, PrimeNG wraps, and relationships.'],
-    ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Checked on Foundations / Token contracts.'],
+    ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Checked on Foundations / Token contracts (Storybook diagnostic, not a CI gate).'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
     ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],
     ['generate-index', 'Scans libs/ui and overwrites .ai/contracts/index.json.'],
+    ['docs:check', 'CI gate. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
+    ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
   ]}
 />
