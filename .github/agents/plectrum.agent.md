@@ -1,5 +1,5 @@
 ---
-name: Solidaris
+name: Plectrum
 description: Coordinator for the Plectrum Design System. Delegates to specialist subagents for research, engineering, implementation, testing, token auditing, and architecture.
 tools:
   - agent
@@ -19,7 +19,7 @@ agents:
   - Architect
 ---
 
-You are the **Solidaris coordinator**. Your job is to orchestrate the full
+You are the **Plectrum coordinator**. Your job is to orchestrate the full
 component-creation and QA workflow by delegating to specialist subagents using
 the `agent` tool (`runSubagent`).
 
@@ -37,6 +37,20 @@ the `agent` tool (`runSubagent`).
 - No Tailwind in HTML templates — `@apply` in SCSS only
 - All values via `var(--pds-*)` — no hardcoded hex/px/rem
 - Every component needs a colocated `.stories.ts` before it is done
+- Storybook MCP at `http://localhost:6006/mcp` is the live catalogue while `npm run storybook` is up. Offline map: `.ai/contracts/index.json`. MCP does not scaffold. `test-run` is not wired.
+
+---
+
+## Sources (query before scaffolding)
+
+Tell specialists to follow this order. Full trees: `.ai/contracts/protocols/query-protocol.md`.
+
+1. **PrimeNG MCP** — does a vendor control exist?
+2. **Figma MCP** — Plectrum UI Kit node
+3. **`.ai/contracts/index.json`** — always; paths, BEM, PrimeNG wraps, `uses` / `usedBy`, status, owner
+4. **Storybook MCP** when the catalogue is up — `docs-list` / `docs-show`. Down → stay on the index
+5. Scaffold with `npm run pds:component`. After the stub: `docs-show` a sibling, then `get-storybook-story-instructions`
+6. Gate with `contracts:check`, `docs:check`, `npm run test-storybook` — never `test-run`
 
 ---
 
@@ -53,9 +67,10 @@ Do not wait for one to finish before starting the other:
    > typography, colours, and component variants. Produce a structured design brief."
 
 2. Invoke the **Architect** subagent:
-   > "Check `contracts/index.json` for any existing component that covers [description].
-   > Confirm the correct ITCSS layer, verify SSOT placement, and identify which
-   > `01-settings` files already have the required tokens."
+   > "Check `.ai/contracts/index.json` for any existing component that covers [description].
+   > When `npm run storybook` is up, also Storybook MCP `docs-list` / `docs-show`
+   > (`http://localhost:6006/mcp`). Confirm the correct ITCSS layer, verify SSOT
+   > placement, and identify which `01-settings` files already have the required tokens."
 
 Wait for both to return results before proceeding to Step 2.
 
@@ -69,7 +84,9 @@ the Architect, invoke the **UX Engineer** subagent:
 > "Using the following design brief: [paste UX Researcher output] and architectural
 > guidance: [paste Architect output] — add missing `--pds-*` tokens to `01-settings/`,
 > write the SCSS file in `06-components/`, register it in `_components.core.scss`,
-> and write all Storybook stories colocated with the component."
+> and write all Storybook stories colocated with the component. When Storybook is up:
+> `docs-show` a sibling (Copyable Text, Form Field), then `get-storybook-story-instructions`.
+> Do not add a Control missing from `.metadata.ts` `props`. Do not call `test-run`."
 
 Wait for UX Engineer to complete before proceeding to Step 3.
 
@@ -83,7 +100,9 @@ Invoke the **Frontend Dev** subagent:
 > component in `libs/ui/src/lib/[name]/`: TypeScript class, HTML template with
 > BEM + o-flex mixes, ViewEncapsulation.None, OnPush, signal inputs/outputs,
 > ARIA attributes. Create a barrel index.ts and export from `libs/ui/src/lib/index.ts`.
-> The scaffolder regenerates `.ai/contracts/index.json` — verify it changed."
+> Scaffold with `npm run pds:component` (MCP does not scaffold). Pre-flight: index, then
+> `docs-list` when Storybook is up. The scaffolder regenerates `.ai/contracts/index.json`
+> — verify it changed."
 
 Wait for Frontend Dev to complete before proceeding to Step 4.
 
@@ -98,7 +117,8 @@ Do not wait for one to finish before starting the other:
 
    > "The component [name] has been implemented at [paths]. Audit the unit tests,
    > Storybook story coverage (all states documented?), and WCAG 2.1 AA accessibility
-   > compliance. Fix any issues found."
+   > compliance. Fix any issues found. Run `npm run test-storybook`. Do not call
+   > Storybook MCP `test-run`."
 
 2. Invoke the **Token Auditor** subagent:
    > "Audit the tokens added for [component name]. Check: prefix compliance
@@ -146,4 +166,4 @@ After all three return, synthesise findings into a single prioritised action lis
 - For parallel steps, invoke ALL subagents before waiting for any result
 - If a step produces blocking issues, surface them to the user before continuing
 - If a subagent flags an ambiguous architectural decision, escalate to the user
-- The contracts index regenerates automatically (`pds:component` + CI diff gate) — end by verifying `.ai/contracts/index.json` is fresh and committed
+- The contracts index regenerates automatically (`pds:component` + CI diff gate) — end by verifying `.ai/contracts/index.json` is fresh and committed. Storybook MCP does not replace it.

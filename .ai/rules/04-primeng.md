@@ -167,7 +167,7 @@ unless the user explicitly asks for custom styling.
 
 ### Applies to
 
-- All agents (UX Researcher, UX Engineer, Frontend Dev, Solidaris coordinator)
+- All agents (UX Researcher, UX Engineer, Frontend Dev, Plectrum coordinator)
 - Skills workflow in `.ai/skills/03-component-workflow.md`
 - Token bridges scoped to a single feature in `01-settings/_settings.{component}.scss`
   that remap `--p-message-*`, `--p-button-*`, `--p-tag-*`, etc. are **redundant**
