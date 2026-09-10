@@ -50,6 +50,9 @@ const config: StorybookConfig = {
   features: {
     componentsManifest: true,
   },
+  // Manager chrome (brand + favicon) cannot read Angular preview assets.
+  // Serve libs/assets at /assets for both the manager and the static build.
+  staticDirs: [{ from: '../../assets', to: 'assets' }],
   viteFinal: async (viteConfig) =>
     mergeConfig(viteConfig, {
       plugins: [tsconfigPaths()],

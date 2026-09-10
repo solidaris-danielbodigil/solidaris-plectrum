@@ -18,9 +18,14 @@ import { create } from 'storybook/theming';
 const plectrumTheme = create({
   base: 'light',
 
-  brandTitle: 'Plectrum Design System',
+  // Omit brandImage so Storybook renders brandTitle as HTML (logo + title).
+  // A brandImage URL hides the title and, after the Vite move, 404s in the manager.
+  brandTitle:
+    '<span style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;line-height:1.25">' +
+    '<img src="./assets/Logo.svg" alt="Solidaris" height="28" />' +
+    '<span>Plectrum Design System</span>' +
+    '</span>',
   brandUrl: 'https://zeroheight.com/5cba76f64/p/8028d1-plectrum-design-system',
-  brandImage: './assets/Logo.svg',
   brandTarget: '_blank',
 
   colorPrimary: '#487395',
