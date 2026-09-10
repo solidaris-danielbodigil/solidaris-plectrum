@@ -11,7 +11,7 @@ Agents work against **contracts**, not against a full-repo read. Contract-Driven
 
 Related pages:
 
-- [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX
+- [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX + Storybook MCP
 - [Token pipeline](?path=/docs/docs-token-pipeline--docs) — Figma → `var(--pds-*)`
 - [Token contracts](?path=/docs/foundations-token-contracts--docs) — `tokens.consumed` vs the compiled CSS
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — what component SCSS may write
@@ -21,7 +21,7 @@ Related pages:
 
 ## Definition
 
-A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then one metadata file, then a protocol. They do not invent a second design system.
+A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then Storybook MCP when the catalogue is running, then one metadata file, then a protocol. They do not invent a second design system.
 
 <Diagram
   title="Contract layers"
@@ -72,9 +72,9 @@ A **contract** is a machine-readable file next to the thing it describes. Agents
     { id: 'comp', x: 369, y: 80, w: 220, h: 70, tone: 'system', title: 'Component + story', lines: ['pds:component scaffold'] },
     { id: 'md', x: 369, y: 170, w: 220, h: 70, tone: 'system', title: '.metadata.ts', lines: ['colocated, committed'] },
     { id: 'scss', x: 369, y: 260, w: 220, h: 70, tone: 'system', title: '06-components SCSS', lines: ['var(--pds-*) only'] },
-    { id: 'sb', x: 697, y: 80, w: 220, h: 70, tone: 'app', title: 'Storybook docs', lines: ['status + contract figures', 'CSF canvases + MDX'] },
+    { id: 'sb', x: 697, y: 80, w: 220, h: 70, tone: 'app', title: 'Storybook docs', lines: ['status + contract figures', 'MCP at :6006/mcp'] },
     { id: 'tc', x: 697, y: 170, w: 220, h: 70, tone: 'app', title: 'Token contracts', lines: ['tokens.consumed vs CSSOM'] },
-    { id: 'ci', x: 697, y: 260, w: 220, h: 70, tone: 'neutral', title: 'CI gates', lines: ['index · docs:check', 'tokens · story tests'] },
+    { id: 'ci', x: 697, y: 260, w: 220, h: 70, tone: 'neutral', title: 'CI gates', lines: ['index · docs:check', 'contracts:check', 'tokens · story tests'] },
   ]}
   edges={[
     { from: 'schema', to: 'md', label: 'types' },
@@ -102,6 +102,34 @@ How an agent is expected to work. Same order as `.ai/contracts/protocols/query-p
 </Unstyled>
 
 The agent is the **default operator** for this flow: it scaffolds, fills the metadata, and runs the token scripts itself. Nothing here is a manual chore — `pds:component` regenerates the index when it finishes, a Cursor hook (`.cursor/hooks/regenerate-contracts-index.mjs`) re-runs `generate-index` after edits under `libs/ui`, and CI fails when the committed index is stale or when a docs page restates a metadata block (`npm run docs:check`). Doing a step by hand stays possible; it is a choice, not a requirement.
+
+---
+
+## Storybook MCP
+
+`@storybook/addon-mcp` serves `http://localhost:6006/mcp` while `npm run storybook` is running. Cursor and VS Code register that URL. No running Storybook → no MCP; use `index.json`.
+
+The index stays. MCP is the live catalogue (stories, Controls, docs pages). The index is the offline map (paths, BEM, `uses` / `usedBy`, status, owner). `tokens.consumed` and `aiHints` stay in `.metadata.ts`.
+
+<DocsTable
+  headers={['Toolset', 'Tools', 'When']}
+  rows={[
+    ['Docs', 'docs-list, docs-show, docs-show-story', 'Find a Plectrum component and read its props before writing UI or stories'],
+    ['Development', 'get-storybook-story-instructions, stories-find-by-component, stories-preview', 'Author CSF; preview Default / Disabled / Empty. Then follow rule 03'],
+    ['Testing', 'test-run', 'Not wired. Needs @storybook/addon-vitest. Run npm run test-storybook'],
+  ]}
+/>
+
+### Create a component
+
+MCP does not scaffold. Pre-flight is still PrimeNG MCP → Figma MCP → `index.json` → `docs-list` (when Storybook is up) → `pds:component`. After the stub exists, `docs-show` a sibling (Copyable Text, Form Field) and copy that CSF + MDX shape. Gate with `contracts:check`, `docs:check`, `test-storybook`.
+
+### Create stories
+
+1. `docs-show` the component — do not add a Control that is missing from `.metadata.ts` `props`.
+2. `get-storybook-story-instructions`, then apply [Writing stories](?path=/docs/docs-writing-stories--docs): colocated CSF, required states, `play` from `story-tests.ts`.
+3. `stories-preview` the new canvases.
+4. `npm run test-storybook` — MCP cannot run play or a11y tests.
 
 ---
 
@@ -149,8 +177,10 @@ Component work is delegated to specialist subagents. Ask **Solidaris** for a com
   rows={[
     ['CDD', 'Contract-Driven Development. Agents read typed contracts before they write code.'],
     ['ComponentMetadata', 'TypeScript interface every .metadata.ts must satisfy.'],
-    ['index.json', 'Generated map of libs/ui components, paths, PrimeNG wraps, and relationships.'],
-    ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Checked on Foundations / Token contracts (Storybook diagnostic, not a CI gate).'],
+    ['index.json', 'Offline map of libs/ui: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner. Kept; MCP does not replace it.'],
+    ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Foundations / Token contracts play test fails undeclared names in CI.'],
+    ['contracts:check', 'CI gate. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
+    ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp (docs-list, docs-show, stories-preview). Needs npm run storybook. Tests stay on the test-runner.'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
     ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],
@@ -190,7 +220,7 @@ Import the type from `@solidaris/contracts`. Export a const (`EmptyStateMetadata
 
 ### Index
 
-`npm run generate-index` runs `tools/scripts/generate-index.ts`. It walks `libs/ui/src/lib`, reads imports and the colocated `.metadata.ts`, and writes `.ai/contracts/index.json`. The output is content-stable — `meta.generated` only advances when the content changed — so CI regenerates the index on every push and fails when the committed file is stale, the same pattern as the generated token files.
+`npm run generate-index` runs `tools/scripts/generate-index.ts`. It walks `libs/ui/src/lib`, reads imports and the colocated `.metadata.ts`, and writes `.ai/contracts/index.json`. The output is content-stable — `meta.generated` only advances when the content changed — so CI regenerates the index on every push and fails when the committed file is stale, the same pattern as the generated token files. `index.json` is the offline map. Storybook MCP at `http://localhost:6006/mcp` is the live catalogue when `npm run storybook` is running.
 
 <DocsTable
   headers={['Field', 'Meaning']}
@@ -220,12 +250,12 @@ npm run generate-index    # manual run — only needed after hand-editing or del
   headers={['Path', 'Role']}
   rows={[
     ['.ai/contracts/protocols/component-creation.md', 'Pre-flight (PrimeNG, Figma, index, tokens) and file checklist'],
-    ['.ai/contracts/protocols/query-protocol.md', 'Load order and decide-trees'],
+    ['.ai/contracts/protocols/query-protocol.md', 'Load order, Storybook MCP tools, decide-trees'],
     ['.ai/contracts/protocols/token-audit.md', 'Token health questions'],
     ['.ai/contracts/protocols/ai-prompts.md', 'Prompt templates'],
     ['.ai/README.md', 'Coordinator + specialist agents (Cursor and Copilot)'],
     ['.ai/rules/01-architecture.md … 10-css-ssot.md', 'Hard stops'],
-    ['.ai/skills/', 'How to run Figma MCP, ITCSS, component workflow, token checklist'],
+    ['.ai/skills/', 'How to run Figma, PrimeNG and Storybook MCP; ITCSS; component workflow; token checklist'],
   ]}
 />
 

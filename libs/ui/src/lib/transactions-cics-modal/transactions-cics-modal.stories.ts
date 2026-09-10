@@ -4,7 +4,7 @@ import {
   moduleMetadata,
   type Meta,
   type StoryObj,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';

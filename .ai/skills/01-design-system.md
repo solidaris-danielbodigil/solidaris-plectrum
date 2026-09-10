@@ -15,17 +15,21 @@
 
 ## 1. MCP Servers
 
-**Always query both MCP servers before implementing any component.**
+**Always query PrimeNG and Figma before implementing any component.** Query Storybook MCP when the catalogue is running.
 
 | Server | URL | Use for |
 |---|---|---|
 | Figma | `http://127.0.0.1:3845/mcp` | Inspect Plectrum UI Kit nodes — extract tokens, spacing, typography, states |
 | PrimeNG | `https://primeng.org/mcp` | Query component API, props, slots, variants, examples |
+| Storybook | `http://localhost:6006/mcp` | Live catalogue — `docs-list`, `docs-show`, `stories-preview`. Needs `npm run storybook`. |
 
 Order of operations:
 1. **PrimeNG MCP** — does an existing component cover the need?
 2. **Figma MCP** — extract exact design specs from the Plectrum UI Kit
-3. Only write custom code when both MCPs confirm no existing solution covers the requirement
+3. **Storybook MCP** (when `npm run storybook` is up) — `docs-list` / `docs-show` before inventing a sibling
+4. Only write custom code when none of the three cover the requirement. Offline fallback: `.ai/contracts/index.json`.
+
+Storybook MCP does not scaffold (`pds:component` does) and does not run play / a11y tests (`test-run` needs `@storybook/addon-vitest`, which is not installed — use `npm run test-storybook`). Tools and decide-trees: `.ai/contracts/protocols/query-protocol.md`.
 
 ---
 
@@ -97,3 +101,13 @@ When inspecting a Figma node:
 - What are the available props and slots?
 - What CSS variables does it expose (`--p-*`)?
 - Are there variants that cover the Figma states?
+
+### Storybook MCP — what to confirm
+
+Needs `npm run storybook`. When it is down, use `.ai/contracts/index.json`.
+
+- `docs-list` — is this already a published page in the catalogue?
+- `docs-show` / `docs-show-story` — props, Controls, and canvases for a sibling before writing CSF
+- `get-storybook-story-instructions` — Storybook's own authoring rules, then apply `.ai/rules/03-storybook.md`
+- `stories-find-by-component` / `stories-preview` — existing and new states
+- Do **not** call `test-run`. Do **not** add a Control missing from `.metadata.ts` `props`.

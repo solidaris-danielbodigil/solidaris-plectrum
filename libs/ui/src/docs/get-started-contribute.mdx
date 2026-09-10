@@ -8,6 +8,12 @@ import * as Figures from './get-started-contribute.stories';
 
 Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install versioned packages (packed tarballs today, the registry after the first release) — never source paths.
 
+Related pages:
+
+- [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF, attached MDX, Storybook MCP
+- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP tools
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
+
 Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: a **proposal to the core design-system team**, not a scaffold. The core team answers within the triage below; nobody waits for the core team to build.
 
 <Unstyled>
@@ -115,10 +121,10 @@ npm run pds:component -- --owner=ishare          # application team: status cand
 
 The scaffolder asks for name, category, type and optional PrimeNG wrap, then creates the Angular files, the `.metadata.ts` contract with its `governance` block, a stories stub, the `_components.{name}.scss` partial (forwarded from the core barrel), and regenerates `.ai/contracts/index.json`. Then:
 
-1. Check **PrimeNG MCP** and **Figma MCP** — reuse before inventing ([CSS architecture](?path=/docs/docs-css-architecture--docs) has the authoring order).
+1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** (`docs-list`) when `npm run storybook` is up — reuse before inventing ([CSS architecture](?path=/docs/docs-css-architecture--docs) has the authoring order; [AI strategy](?path=/docs/docs-ai-strategy--docs#storybook-mcp) has the MCP tools).
 2. Missing tokens go to `01-settings` first, cited with their Figma variable. Application teams alias semantic roles only.
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
-4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Application-owned pages are titled `Patterns/{App}/…`.
+4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Agents use `docs-show` and `get-storybook-story-instructions` before writing CSF. Application-owned pages are titled `Patterns/{App}/…`.
 
 By default the **agents do this work** — ask the Solidaris coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). Every command stays runnable by hand. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
 

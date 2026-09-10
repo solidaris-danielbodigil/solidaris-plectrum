@@ -4,7 +4,7 @@
 // Each export is a self-contained live demo wrapped in .sb-demo-wrapper.
 // =============================================================================
 
-import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import { componentWrapperDecorator, type Meta } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 
 export default {

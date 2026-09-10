@@ -25,6 +25,7 @@ Every component in `libs/ui` **must** have a `.stories.ts` file **colocated with
 
 - Develop and validate in Storybook **before** integrating into any app
 - Stories are the living documentation **and** the executable test suite — keep them up to date with the component
+- When `npm run storybook` is up, author against **Storybook MCP** (`http://localhost:6006/mcp`): `docs-show` a sibling, then `get-storybook-story-instructions`, then write CSF per this rule. `stories-preview` the canvases. Do not add a Control missing from `.metadata.ts` `props`. MCP does not replace `index.json` or `pds:component`.
 
 ---
 
@@ -109,7 +110,7 @@ Import the component using its local relative path — **not** `@solidaris/ui` �
 
 **A component is not complete without Storybook tests.** A canvas that only mounts is a smoke check; that is not enough for the required story exports in §2.
 
-Stories are the executable test suite. Angular webpack Storybook uses `@storybook/test-runner`, not the Vite Vitest addon. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
+Stories are the executable test suite. `@storybook/angular-vite` uses `@storybook/test-runner`, not the Vite Vitest addon. `@storybook/addon-mcp` exposes `test-run`, but that tool needs `@storybook/addon-vitest`, which is not installed — do not call it. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
 
 | Kind               | Required on every `libs/ui` component                                                                                                                                                                                                                                 |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

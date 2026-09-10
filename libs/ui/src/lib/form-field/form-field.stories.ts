@@ -2,7 +2,7 @@ import type {
   Meta,
   StoryObj,
   TransformComponentType,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { expect, waitFor, within } from 'storybook/test';

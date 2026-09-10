@@ -261,12 +261,11 @@
           "defaultConfiguration": "production"
         },
         "storybook": {
-          "builder": "@storybook/angular:start-storybook",
+          "builder": "@storybook/angular-vite:start-storybook",
           "options": {
             "configDir": "libs/ui/.storybook",
-            "browserTarget": "ishare:build:development",
             "port": 6006,
-            "compodoc": false,
+            "zoneless": false,
             "assets": [
               {
                 "glob": "**/*",
@@ -286,12 +285,11 @@
           }
         },
         "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
+          "builder": "@storybook/angular-vite:build-storybook",
           "options": {
             "configDir": "libs/ui/.storybook",
-            "browserTarget": "ishare:build:development",
             "outputDir": "dist/storybook/ui",
-            "compodoc": false,
+            "zoneless": false,
             "assets": [
               {
                 "glob": "**/*",

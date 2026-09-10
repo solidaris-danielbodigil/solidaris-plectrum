@@ -1,7 +1,7 @@
 // c-skeleton-slot — sized wrappers for p-skeleton loading placeholders.
 // CSS-only block: stories import p-skeleton directly (same pattern as Accordion).
-import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
 import { Skeleton } from 'primeng/skeleton';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { classArgTypes } from '../../storybook/arg-types-from-props';

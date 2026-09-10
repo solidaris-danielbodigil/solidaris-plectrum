@@ -1,5 +1,5 @@
 // Figures for the Introduction landing page (introduction.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { cardsStory, heroStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {

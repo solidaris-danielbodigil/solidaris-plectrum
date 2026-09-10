@@ -1,5 +1,5 @@
 // Figures for Docs/CSS architecture (css-architecture.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {

@@ -6,7 +6,7 @@
 // (.ai/rules/10-css-ssot.md).
 // =============================================================================
 
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { DocsTokenGalleryComponent } from '../storybook/docs-token-gallery.component';
 import { assertTextVisible } from '../storybook/story-tests';

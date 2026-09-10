@@ -128,7 +128,7 @@ export const FormFieldMetadata: ComponentMetadata = {
   },
   props: [
     { name: 'label', type: 'string', required: true, description: 'Visible field label.' },
-    { name: 'layout', type: "'vertical' | 'horizontal'", required: false, default: 'vertical', description: 'Label above the control (vertical) or beside it (horizontal).' },
+    { name: 'layout', type: 'FormFieldLayout', required: false, default: 'vertical', description: 'Label above the control (vertical) or beside it (horizontal).' },
     { name: 'required', type: 'boolean', required: false, default: 'false', description: 'Shows the required marker and sets aria-required on the control.' },
     { name: 'invalid', type: 'boolean', required: false, default: 'false', description: 'Invalid state — label colour, aria-invalid, and the error message.' },
     { name: 'errorMessage', type: 'string | null', required: false, default: 'null', description: 'Validation message shown when invalid is true.' },

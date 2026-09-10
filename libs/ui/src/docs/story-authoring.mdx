@@ -16,14 +16,14 @@ Related pages:
 - [Empty State](?path=/docs/custom-components-empty-state--docs) — a finished CSF + attached MDX pair
 - [Form Field](?path=/docs/custom-components-form-field--docs) — PrimeNG control inside a Plectrum shell
 - [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how Figma values become `var(--pds-*)`
-- [AI strategy](?path=/docs/docs-ai-strategy--docs) — Contract-Driven Development: index, metadata, protocols
+- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 
 ---
 
 ## Definition
 
-**CSF** (Component Story Format) is the TypeScript file that renders states. **Attached MDX** is the prose page that embeds those states as canvases. Storybook discovers both through `libs/ui/.storybook/main.ts`.
+**CSF** (Component Story Format) is the TypeScript file that renders states. **Attached MDX** is the prose page that embeds those states as canvases. Storybook discovers both through `libs/ui/.storybook/main.ts`. Agents author against Storybook MCP when `npm run storybook` is running — see [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
 
 <Diagram
   title="Story files"
@@ -174,7 +174,7 @@ The canvases above are `Default`, `Bordered`, `Collapsed`, and `Disabled`. `Stac
 
 ~~~ts
 // libs/ui/src/lib/accordion/accordion.stories.ts
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 
@@ -386,6 +386,7 @@ Two bordered panels. Sibling radii and shared outer edge are why the layer lives
     ['Attached docs', 'An MDX page bound to a CSF file with Meta of Stories.'],
     ['Unattached docs', 'An MDX page with its own Meta title, such as this one or Token pipeline.'],
     ['Plectrum', 'The Solidaris design system: Figma UI Kit, tokens, PrimeNG preset, Storybook.'],
+    ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp while npm run storybook is up. docs-show and get-storybook-story-instructions before writing CSF. Tests stay on the test-runner.'],
     ['PrimeNG', 'The component library. p-accordion, p-button, p-select and the rest.'],
     ['BEMIT', 'Class prefixes: o- layout objects, c- components, u- utilities, is- / has- state.'],
     ['--pds-*', 'Plectrum CSS custom property. The only token name written in component SCSS.'],
@@ -426,9 +427,27 @@ Do not name an unattached docs file `*-stories.mdx`. Webpack treats that as a CS
   ]}
 />
 
+### Storybook MCP
+
+`@storybook/addon-mcp` serves the running catalogue at `http://localhost:6006/mcp` when `npm run storybook` is up. Cursor and VS Code register it as `storybook`.
+
+<DocsTable
+  headers={['Need', 'Tool']}
+  rows={[
+    ['List published pages', 'docs-list'],
+    ['Read a docs page', 'docs-show'],
+    ['Read one story from a page', 'docs-show-story'],
+    ['Story authoring rules from Storybook', 'get-storybook-story-instructions'],
+    ['Stories for a component', 'stories-find-by-component'],
+    ['Preview a story', 'stories-preview'],
+  ]}
+/>
+
+`test-run` is not wired. Interaction and a11y stay on `npm run test-storybook`. The MCP catalogue is live only; `.ai/contracts/index.json` stays the offline map. Full tool table: [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
+
 ### Testing
 
-Stories are the component test suite. See [Storybook — How to test UIs](https://storybook.js.org/docs/writing-tests). This workspace is Angular + webpack, so tests run through the [test-runner](https://storybook.js.org/docs/writing-tests/integrations/test-runner) (not the Vite Vitest addon).
+Stories are the component test suite. See [Storybook — How to test UIs](https://storybook.js.org/docs/writing-tests). This workspace is Angular + `@storybook/angular-vite`, so tests run through the [test-runner](https://storybook.js.org/docs/writing-tests/integrations/test-runner). `@storybook/addon-mcp` exposes `test-run`, but that tool needs `@storybook/addon-vitest`, which is not installed. Do not call `test-run`. Use `npm run test-storybook`.
 
 <DocsTable
   headers={['Kind', 'How']}
@@ -444,7 +463,7 @@ Stories are the component test suite. See [Storybook — How to test UIs](https:
 ### Commands
 
 ```bash
-npm run storybook                 # this catalogue, port 6006
+npm run storybook                 # this catalogue, port 6006; MCP at http://localhost:6006/mcp
 npm run test-storybook            # smoke + play + a11y report (Storybook on localhost:6006)
 npm run test-storybook:coverage   # same + Istanbul report in coverage/storybook
 npm run chromatic                 # visual tests (needs a Chromatic project token)
@@ -459,6 +478,7 @@ npm run pds:component             # scaffold component + story stubs
     ['PrimeNG Accordion API', 'https://primeng.org/accordion'],
     ['Plectrum UI Kit', 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-'],
     ['Story documentation standard', '.ai/rules/03-storybook.md'],
+    ['Storybook MCP tools and decide-trees', '.ai/contracts/protocols/query-protocol.md'],
     ['PrimeNG-first and docs figures', '.ai/rules/04-primeng.md'],
     ['When padding is o-layout vs 06-components', '.ai/rules/09-styling-policy.md'],
   ]}

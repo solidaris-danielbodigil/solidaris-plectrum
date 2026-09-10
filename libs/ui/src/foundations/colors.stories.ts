@@ -1,4 +1,4 @@
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { ContrastCheckerComponent } from '../storybook/contrast-checker.component';
 import { readTokenDeclarations } from '../storybook/cssom';

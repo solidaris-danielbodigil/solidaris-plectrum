@@ -78,7 +78,7 @@ Architectural constraints that must never be violated.
 |---|---|
 | `.ai/rules/01-architecture.md` | SSOT, monorepo boundaries, quality principles |
 | `.ai/rules/02-scss-tokens.md` | Token layers, ITCSS, CSS variable strategy |
-| `.ai/rules/03-storybook.md` | Storybook-first development and required story tests (play, a11y, visual, coverage) |
+| `.ai/rules/03-storybook.md` | Storybook-first development, Storybook MCP authoring, required story tests (play, a11y, visual, coverage) |
 | `.ai/rules/04-primeng.md` | PrimeNG-first component policy |
 | `.ai/rules/05-bemit-naming.md` | BEMIT class naming conventions |
 | `.ai/rules/06-accessibility.md` | WCAG AA, focus rings, ARIA |
@@ -95,7 +95,7 @@ How to accomplish tasks correctly.
 
 | File | Topic |
 |---|---|
-| `.ai/skills/01-design-system.md` | Working with Plectrum, Figma MCP, PrimeNG MCP |
+| `.ai/skills/01-design-system.md` | Working with Plectrum, Figma MCP, PrimeNG MCP, Storybook MCP |
 | `.ai/skills/02-scss-architecture.md` | ITCSS layers, token authoring patterns |
 | `.ai/skills/03-component-workflow.md` | End-to-end component creation workflow |
 | `.ai/skills/04-token-checklist.md` | Token review and validation checklist |
@@ -110,11 +110,11 @@ Machine-readable schemas and AI protocols.
 |---|---|
 | `.ai/contracts/protocols/component-creation.md` | How to create components correctly |
 | `.ai/contracts/protocols/token-audit.md` | How to validate token health |
-| `.ai/contracts/protocols/query-protocol.md` | How agents navigate the codebase |
+| `.ai/contracts/protocols/query-protocol.md` | How agents navigate the codebase (index + Storybook MCP) |
 | `.ai/contracts/protocols/ai-prompts.md` | Ready-to-use AI prompt templates |
 | `.ai/contracts/schema/component.metadata.ts` | TypeScript interface for component metadata |
 | `.ai/contracts/schema/token.contract.ts` | TypeScript interface for token governance |
-| `.ai/contracts/index.json` | Codebase map for agent navigation |
+| `.ai/contracts/index.json` | Offline codebase map — live catalogue is Storybook MCP at `:6006/mcp` |
 
 ---
 

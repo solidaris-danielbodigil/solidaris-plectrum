@@ -4,7 +4,7 @@ import {
   ElementRef,
   inject,
 } from '@angular/core';
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import type { MenuItem } from 'primeng/api';
 import { Badge } from 'primeng/badge';
 import { Breadcrumb } from 'primeng/breadcrumb';

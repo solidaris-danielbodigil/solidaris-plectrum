@@ -2,7 +2,7 @@
 // `Unreleased` / `Released` render the committed record (changelog.generated.ts);
 // the `Sample*` stories render fixtures so the populated and the empty state of
 // each figure stay covered whatever the record holds.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import {
   CHANGELOG_RELEASES,
   CHANGELOG_UNRELEASED,

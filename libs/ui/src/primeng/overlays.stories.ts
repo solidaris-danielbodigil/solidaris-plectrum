@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { MessageService } from 'primeng/api';
 import type { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';

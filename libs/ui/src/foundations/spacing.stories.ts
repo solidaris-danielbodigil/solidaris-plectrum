@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { readTokenDeclarations } from '../storybook/cssom';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';

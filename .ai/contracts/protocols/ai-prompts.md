@@ -9,6 +9,7 @@ Reusable prompts for AI agents working on the Plectrum/Plectrum Design System.
 1. [Prompt A — Reviewing Token Changes](#prompt-a--reviewing-token-changes)
 2. [Prompt B — Translating Figma Decisions into Tokens](#prompt-b--translating-figma-decisions-into-tokens)
 3. [Prompt C — General Copilot / Agent Rules](#prompt-c--general-copilot--agent-rules)
+4. [Prompt D — Writing Stories or a Component with Storybook MCP](#prompt-d--writing-stories-or-a-component-with-storybook-mcp)
 
 ---
 
@@ -111,7 +112,7 @@ Use these rules when working on the Plectrum/Plectrum Design System.
 Architecture:
 - Figma = shared design reference
 - Repository = controlled implementation layer
-- Storybook = documentation, validation, and tests  (every component MUST have a story + play tests — `.ai/rules/03-storybook.md` §5)
+- Storybook = documentation, validation, and tests  (every component MUST have a story + play tests — `.ai/rules/03-storybook.md` §5). Live catalogue via Storybook MCP at http://localhost:6006/mcp when npm run storybook is up.
 - PrimeNG = vendor component system  (check before building anything custom)
 - Plectrum/Solidaris = design layer owner
 - ITCSS = cascade organization (01-settings → 08-trumps; file naming: _{layer-folder}.{description}.scss)
@@ -125,7 +126,7 @@ SCSS rules (hard stops):
 - Dimensions content-driven — no arbitrary fixed width/height
 
 Preferred flow:
-Figma MCP → PrimeNG MCP → add missing tokens → implement component → Storybook story + play tests → test-storybook → generate-index
+PrimeNG MCP → Figma MCP → index.json → Storybook MCP docs-list (when npm run storybook is up) → add missing tokens → pds:component → docs-show sibling → implement → get-storybook-story-instructions → CSF + play tests → stories-preview → test-storybook (not test-run) → generate-index
 
 CSS variable naming:
 - All Solidaris/Plectrum tokens: --pds-* (controlled by $pds-prefix in 01-settings/_settings.prefix.scss)
@@ -160,4 +161,39 @@ Bridge pattern (preferred):
 
 Never:
 .p-button { background: #527191 !important; }
+```
+
+---
+
+## Prompt D — Writing Stories or a Component with Storybook MCP
+
+Use this when asking an agent to add a `libs/ui` component or fill its colocated stories.
+
+```
+You are working in the Plectrum Design System (Angular + PrimeNG + Storybook 10).
+
+Sources, in this order:
+1. PrimeNG MCP — does a vendor control already cover the need?
+2. Figma MCP — extract the Plectrum UI Kit node (tokens, states, spacing).
+3. .ai/contracts/index.json — offline map: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner.
+4. Storybook MCP at http://localhost:6006/mcp — only while npm run storybook is up.
+   Tools: docs-list, docs-show, docs-show-story, get-storybook-story-instructions,
+   stories-find-by-component, stories-preview.
+   Do not call test-run (needs @storybook/addon-vitest; not installed).
+   When Storybook is down, stay on the index + .metadata.ts.
+
+Rules:
+- MCP does not scaffold. Create files with npm run pds:component -- --owner=<team>.
+- After the stub, docs-show a finished sibling (Copyable Text, Form Field, Accordion)
+  and copy that CSF + attached MDX shape.
+- Do not add a Control that is missing from .metadata.ts props.
+- Follow .ai/rules/03-storybook.md: colocated CSF, required states, play from
+  libs/ui/src/storybook/story-tests.ts, MDX embeds metadata figures (no restated prose).
+- stories-preview the new canvases, then gate with:
+  npm run contracts:check
+  npm run docs:check
+  npm run test-storybook
+
+Task:
+[PASTE HERE]
 ```

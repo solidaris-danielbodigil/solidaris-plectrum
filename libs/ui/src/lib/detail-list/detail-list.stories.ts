@@ -1,6 +1,6 @@
 // c-detail-list — label / value description rows. CSS-only block on <dl>:
 // stories carry the markup directly (same pattern as Accordion).
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import type { DetailListRow } from '../drawer';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';

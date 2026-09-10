@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { applicationConfig } from '@storybook/angular-vite';
 import { provideStoryRouter } from '../../storybook/story-router';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';

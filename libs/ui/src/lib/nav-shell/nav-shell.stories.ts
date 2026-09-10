@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import {
   applicationConfig,
   componentWrapperDecorator,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { inject, provideAppInitializer } from '@angular/core';
 import { provideStoryRouter } from '../../storybook/story-router';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';

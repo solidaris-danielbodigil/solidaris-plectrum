@@ -2,7 +2,7 @@
 // `Index` renders the committed .ai/contracts/index.json; `Sample` renders a
 // fixture that covers every status badge, including the ones the live index
 // does not currently contain.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import contracts from '../../../../.ai/contracts/index.json';
 import type { ContractsIndex } from '../storybook/docs-component-index.component';
 import {

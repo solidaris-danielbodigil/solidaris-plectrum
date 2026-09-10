@@ -2,7 +2,7 @@
 // wrapper: features build inside p-drawer's #headless template with these
 // classes. This story shows the shell statically so the structure is
 // inspectable without an overlay.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
 import { assertTextVisible } from '../../storybook/story-tests';

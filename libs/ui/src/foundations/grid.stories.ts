@@ -3,7 +3,7 @@
 // Foundations / Flex Grid — o-flex / o-flex__item flex grid docs.
 // =============================================================================
 
-import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import { componentWrapperDecorator, type Meta } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { BREAKPOINT_SUFFIXES, FLEX, summary } from './object-class-lists';
 

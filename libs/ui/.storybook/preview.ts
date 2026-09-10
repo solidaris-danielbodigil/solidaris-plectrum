@@ -4,8 +4,8 @@ import {
   inject,
   provideAppInitializer,
 } from '@angular/core';
-import type { Preview } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
+import type { Preview } from '@storybook/angular-vite';
+import { applicationConfig } from '@storybook/angular-vite';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { Button } from 'primeng/button';
 import {

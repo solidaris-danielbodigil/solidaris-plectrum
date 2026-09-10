@@ -24,8 +24,9 @@ tools/                     ← pds:component generator, token pipeline scripts, 
 |---|---|
 | Figma (`http://127.0.0.1:3845/mcp`) | Plectrum UI Kit — SSOT for all visual decisions |
 | PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
+| Storybook (`http://localhost:6006/mcp`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `npm run storybook` |
 
-Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Custom code only when neither covers the need. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.
+Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Storybook MCP when the catalogue is up — `docs-list` before inventing. 4. Custom code only when none cover the need. Offline fallback: `.ai/contracts/index.json`. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.
 
 ## Hard rules
 
@@ -44,7 +45,7 @@ Short form — full detail and examples in `.ai/rules/`:
 ## Workflow
 
 - **Scaffold**: `npm run pds:component` — creates the component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + its `@forward`, and regenerates `.ai/contracts/index.json`. Never edit `index.json` by hand; a Cursor hook and a CI diff gate keep it fresh.
-- **Contracts**: load `.ai/contracts/index.json` → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate with the full checklist).
+- **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when `npm run storybook` is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `npm run contracts:check` fails props drift. `test-run` is not wired — use `npm run test-storybook`.
 - **Token pipeline**: run `tokens:audit | build | lint | check-prefix | propose | apply` as tools — never edit `*.generated.scss` or `tokens.generated.ts` by hand. Reference: Storybook → Docs → Token pipeline → Commands.
 - **Orchestration**: for full component builds, delegate to the **Solidaris** subagent (spawns UX Researcher, Architect, UX Engineer, Frontend Dev, Tester, Token Auditor).
 - **Before starting**: read `.ai/README.md`, check `.ai/questions/`, make sure tests pass.

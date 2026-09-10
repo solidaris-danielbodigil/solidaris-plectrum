@@ -166,7 +166,7 @@ describe('${className}Component', () => {
   // Storybook Story (colocated) — CSF owns canvases; attached MDX owns prose.
   writeFile(
     path.join(componentDir, `${fileName}.stories.ts`),
-    `import type { Meta, StoryObj } from '@storybook/angular';
+    `import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
@@ -294,15 +294,7 @@ export const ${className}Metadata: ComponentMetadata = {
   accessibility: {
     wcagLevel: 'AA',
   },
-  props: [
-    {
-      name: 'TODO',
-      type: 'string',
-      required: false,
-      default: "''",
-      description: 'TODO: document every input and output — this fills the Storybook API table.',
-    },
-  ],
+  props: [],
   tokens: {
     consumed: [],
   },

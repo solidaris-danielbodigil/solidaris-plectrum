@@ -4,7 +4,7 @@ import {
   moduleMetadata,
   type Meta,
   type StoryObj,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { IconRegistry, registerPlectrumIcons } from '../icon';

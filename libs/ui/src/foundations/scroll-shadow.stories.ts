@@ -4,7 +4,7 @@
 // Pure CSS (scroll-timeline + keyframes), no JS. Chromium-only today.
 // =============================================================================
 
-import { componentWrapperDecorator, type Meta } from '@storybook/angular';
+import { componentWrapperDecorator, type Meta } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 
 export default {

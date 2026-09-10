@@ -10,10 +10,11 @@
 2. Query **Figma MCP** — extract design specs from Plectrum UI Kit (tokens, spacing, typography, states)
 3. Check **index.json** — does a similar component already exist in `libs/ui`? Read its `status` / `owner`:
    a `candidate` or `app` entry owned by another team is a reason to reopen the proposal, not to import it.
-4. Check **`libs/styles/src/01-settings/`** — do the required tokens already exist?
+4. When `npm run storybook` is up, **Storybook MCP** `docs-list` / `docs-show` — confirm the catalogue has no sibling that already covers the need. No running Storybook → stay on the index. MCP does not scaffold.
+5. Check **`libs/styles/src/01-settings/`** — do the required tokens already exist?
    - If missing → add them to the correct `01-settings` file **first**, before writing any SCSS
    - Application-owned work aliases semantic roles only — never a new primitive or semantic role
-5. If all clear → proceed with creation
+6. If all clear → proceed with creation (`npm run pds:component`)
 
 ## Governance
 
@@ -88,11 +89,19 @@ The `.metadata.ts` documents the component; the attached `{name}.mdx` renders it
 - `accessibility.ariaAttributes` / `keyboardSupport` / `contrastRequirements` → Accessibility card
 - `behavior`, `composition`, `variants` when they add something the canvases do not show
 
+Author against Storybook MCP when the catalogue is running:
+
+1. `docs-show` a finished sibling (Copyable Text, Form Field, Accordion) — copy that CSF + MDX shape.
+2. `get-storybook-story-instructions`, then apply `.ai/rules/03-storybook.md`.
+3. Do not add a Control that is missing from `.metadata.ts` `props`.
+4. `stories-preview` the new canvases.
+5. Gate with `npm run contracts:check`, `npm run docs:check`, and `npm run test-storybook`. Do not call `test-run` (needs `@storybook/addon-vitest`, not installed).
+
 The MDX keeps: headings, `<Story of={Stories.Status|Usage|Anatomy|Accessibility} />` embeds, canvases with their state prose, `<Controls>`, `<ArgTypes>` last, and any visuals. `npm run docs:check` fails on hand-written copies. Catalogue stories stay visible in the sidebar; `!dev` is only for docs figures.
 
 ## Storybook Tests (mandatory)
 
-Import from `libs/ui/src/storybook/story-tests.ts`. Angular webpack uses `@storybook/test-runner`, not the Vitest addon.
+Import from `libs/ui/src/storybook/story-tests.ts`. `@storybook/angular-vite` uses `@storybook/test-runner`, not the Vitest addon.
 
 | Kind          | Required                                                                                                                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -149,12 +158,13 @@ export const {Name}Metadata: ComponentMetadata = {
 
 ## Post-creation Checklist
 
+- [ ] Storybook MCP used when the catalogue is up (`docs-show` sibling + `get-storybook-story-instructions`); `test-run` not called
 - [ ] Storybook story created **colocated** in `libs/ui/src/lib/{component-name}/` covering all states
 - [ ] Every required canvas story has a `play` function (`story-tests.ts`); interactive stories use `userEvent`
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
 - [ ] Accessibility not disabled; Chromatic snapshots left on (except `Status` / docs figures)
 - [ ] Attached `{name}.mdx` follows the Top Nav template (Status → Usage → Anatomy → canvases + Controls → optional Composition / Behavior → Accessibility), every block embedded from the metadata; no `## API` when Controls are on the page; `npm run docs:check` passes
-- [ ] `{name}.metadata.ts` `props` lists every input and output; stories use `argTypesFromProps` so the API table has description, type, and default (never the empty auto-generated placeholder)
+- [ ] `{name}.metadata.ts` `props` lists every input and output; stories use `argTypesFromProps` so the API table has description, type, and default (never the empty auto-generated placeholder); `npm run contracts:check` passes
 - [ ] Component + metadata exported from `libs/ui/src/lib/index.ts` (not `src/index.ts`)
 - [ ] User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (inputs may override)
 - [ ] `.metadata.ts` conforms to schema, `governance` matches the core-team decision, and the docs page opens with `<Story of={Stories.Status} />`

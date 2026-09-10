@@ -25,6 +25,8 @@ MCP server: https://primeng.org/mcp
 - If PrimeNG covers 80% of the need → extend it, do not rebuild from scratch
 - Only build custom when PrimeNG genuinely has no equivalent
 
+After PrimeNG and Figma, check the live catalogue with Storybook MCP (`docs-list`) when `npm run storybook` is up. Offline fallback: `.ai/contracts/index.json`. See `.ai/contracts/protocols/query-protocol.md`.
+
 ---
 
 ## 2. Wrapping and Restyling

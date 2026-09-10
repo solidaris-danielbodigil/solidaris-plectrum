@@ -3,35 +3,35 @@ name: Close AI strategy gaps
 overview: 'Turn the three "Not automated yet" items on Docs → AI strategy into CI gates and live tooling: a metadata↔Angular-inputs check, a CI gate for tokens.consumed vs the CSSOM, and a Storybook migration to `@storybook/angular-vite` so `@storybook/addon-mcp` can serve the components manifest to agents.'
 todos:
   - id: props-check-script
-    content: "Write tools/scripts/check-metadata-props.ts (TS compiler API): discover metadata, extract inputs/models/outputs, compare names/required/type/default; CSS-only blocks require props: []"
-    status: pending
+    content: 'Write tools/scripts/check-metadata-props.ts (TS compiler API): discover metadata, extract inputs/models/outputs, compare names/required/type/default; CSS-only blocks require props: []'
+    status: completed
   - id: props-check-wire
-    content: "Add contracts:check npm script, CI step after docs:check, change pds:component scaffold to props: [], fix any drift the first run reports"
-    status: pending
+    content: 'Add contracts:check npm script, CI step after docs:check, change pds:component scaffold to props: [], fix any drift the first run reports'
+    status: completed
   - id: metadata-barrel
     content: Add libs/ui/src/storybook/component-metadata.ts (ALL_COMPONENT_METADATA, all 20 files) and assert barrel completeness in check-metadata-props.ts
-    status: pending
+    status: completed
   - id: token-contracts-gate
     content: Extract checkTokenContracts() to libs/ui/src/storybook/token-contracts.ts, use the barrel in token-contracts.stories.ts, add play asserting zero undeclared tokens; reconcile the 8 uncovered metadata files
-    status: pending
+    status: completed
   - id: sb-deps
     content: Upgrade storybook/@storybook/* to 10.6; remove @storybook/angular; add @storybook/angular-vite, @storybook/addon-mcp, vite@8, @analogjs/vite-plugin-angular, @angular/build, vite-tsconfig-paths, sass
-    status: pending
+    status: completed
   - id: sb-config
     content: angular.json builders (drop browserTarget/compodoc, zoneless:false); main.ts framework/features/addon-mcp/viteFinal with tsconfig paths and base; replace require.context in iconography.stories.ts with bootstrap-icons.json
-    status: pending
+    status: completed
   - id: sb-import-rename
     content: Rename @storybook/angular -> @storybook/angular-vite in ~60 stories, preview.ts, docs-figure-stories.ts, generator template; type-check
-    status: pending
+    status: completed
   - id: sb-verify
-    content: "Spike gate: storybook dev, build-storybook (PUBLIC_PATH), test-storybook:ci, test-storybook:nav, build-storybook:packed, docs:check, /mcp docs-show lists components, Controls tables unchanged; decide on env var removal"
-    status: pending
+    content: 'Spike gate: storybook dev, build-storybook (PUBLIC_PATH), test-storybook:ci, test-storybook:nav, build-storybook:packed, docs:check, /mcp docs-show lists components, Controls tables unchanged; decide on env var removal'
+    status: completed
   - id: mcp-register
     content: Register Storybook MCP in .cursor/mcp.json and .vscode/mcp.json
-    status: pending
+    status: completed
   - id: docs-update
     content: Update ai-strategy figures/mdx (Gaps, diagram, glossary), contracts README section 6, component-creation and query protocols, rules 03-storybook, story-authoring.mdx, .cursorrules MCP table
-    status: pending
+    status: completed
 isProject: false
 ---
 

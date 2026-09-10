@@ -19,9 +19,10 @@ Follow this sequence **every time** before writing any code:
 2. **Query Figma MCP** → inspect the Plectrum UI Kit node, extract tokens and states
 3. **If Figma maps to a PrimeNG primitive** → use `p-*` with default theme styles; layout via `o-layout`/`o-flex` only (see `.ai/rules/04-primeng.md` §5)
 4. **Check `contracts/index.json`** → does a similar component already exist in `libs/ui`?
-5. **Check `01-settings/`** → which required tokens already exist? Which are missing?
-6. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
-7. Only then → scaffold and implement
+5. **When `npm run storybook` is up, Storybook MCP `docs-list` / `docs-show`** → confirm the live catalogue. MCP does not scaffold.
+6. **Check `01-settings/`** → which required tokens already exist? Which are missing?
+7. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
+8. Only then → scaffold and implement
 
 ---
 
@@ -73,6 +74,7 @@ A component is **not done** until all of these pass:
 
 - [ ] Figma MCP queried — tokens and states extracted
 - [ ] PrimeNG MCP queried — no existing component reimplemented
+- [ ] Storybook MCP `docs-list` queried when the catalogue is up — no sibling already covers the need (fallback: `index.json`)
 
 ### SCSS / Tokens
 
@@ -99,9 +101,10 @@ A component is **not done** until all of these pass:
 ### Storybook
 
 - [ ] `.stories.ts` created **colocated** in `libs/ui/src/lib/{component-name}/`
+- [ ] When the catalogue is up: `docs-show` a sibling and `get-storybook-story-instructions` before writing CSF; `stories-preview` the new canvases
 - [ ] Stories cover: default state + all variant states, plus `Status = statusStory(XMetadata.governance)`
 - [ ] Every required canvas story has a `play` function — import from `libs/ui/src/storybook/story-tests.ts`. Interactive: `userEvent` + assert. Display / CSS-only: render contract. Exception: `Status` / `!dev` docs figures (`.ai/rules/03-storybook.md` §5)
-- [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
+- [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report). Do not call Storybook MCP `test-run`.
 - [ ] Accessibility panel is clean or documented; do not set `a11y.test: 'off'` without a comment
 - [ ] Chromatic snapshots left on; do not set `chromatic.disableSnapshot` on a catalogue story without a comment
 - [ ] Attached `{name}.mdx` opens with the Status badge and includes Figma node URL and a canvas per story

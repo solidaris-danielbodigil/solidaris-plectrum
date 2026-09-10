@@ -1,5 +1,5 @@
 // Figures for Get started/Contribute (get-started-contribute.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {
@@ -42,7 +42,7 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'Dev',
     tone: 'design',
     title: 'Check the sources first',
-    detail: 'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Custom code only when neither covers the need.',
+    detail: 'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Storybook MCP (docs-list) when npm run storybook is up: is it already in this catalogue? Custom code only when none cover the need.',
   },
   {
     who: 'Dev',

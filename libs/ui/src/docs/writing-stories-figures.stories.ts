@@ -1,7 +1,7 @@
 // Figures for Docs/Writing stories (story-authoring.mdx).
 // Hidden from the sidebar. Accordion canvases live in
 // libs/ui/src/lib/accordion/accordion.stories.ts.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, doDontStory } from './docs-figure-stories';
 
 const meta: Meta = {
@@ -76,6 +76,10 @@ export const Rules: StoryObj = cardsStory([
   {
     title: 'Tokens and BEMIT',
     lead: 'Templates use o-flex / o-layout. Component SCSS uses var(--pds-*). No Tailwind utility classes in HTML, no hardcoded hex or px.',
+  },
+  {
+    title: 'Storybook MCP before inventing a prop',
+    lead: 'When npm run storybook is up, docs-show the component and get-storybook-story-instructions. Do not add a Control that is missing from .metadata.ts props. play tests still run with npm run test-storybook.',
   },
   {
     title: 'One export per state',

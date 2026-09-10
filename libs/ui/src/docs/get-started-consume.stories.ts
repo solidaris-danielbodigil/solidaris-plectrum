@@ -1,5 +1,5 @@
 // Figures for Get started/Use Plectrum in an app (get-started-consume.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {

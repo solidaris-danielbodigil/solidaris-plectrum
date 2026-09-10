@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { SelectButton } from 'primeng/selectbutton';

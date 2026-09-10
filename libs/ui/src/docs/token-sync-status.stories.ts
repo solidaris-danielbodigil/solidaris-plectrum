@@ -2,7 +2,7 @@
 // `Checks` / `Changes` render the committed record (sync-report.generated.ts);
 // the `Sample*` stories render a fixture so the populated states stay covered
 // while the record is empty.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { SYNC_REPORT } from '../storybook/sync-report.generated';
 import type { SyncReport } from '../storybook/sync-report.types';
 import { syncChangesStory, syncChecksStory } from './docs-figure-stories';

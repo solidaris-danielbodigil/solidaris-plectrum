@@ -3,7 +3,7 @@ import {
   moduleMetadata,
   type Meta,
   type StoryObj,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { Component, input, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';

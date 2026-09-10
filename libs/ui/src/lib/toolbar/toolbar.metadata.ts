@@ -109,7 +109,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     ],
   },
   tokens: {
-    consumed: ['--pds-z-sticky'],
+    consumed: ['--pds-z-sticky', '--pds-color-surface-0'],
   },
   aiHints: {
     priority: 'medium',

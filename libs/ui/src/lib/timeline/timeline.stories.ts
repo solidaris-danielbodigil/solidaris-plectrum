@@ -1,7 +1,7 @@
 // c-timeline--content-only — PrimeNG Timeline restyle. No Angular wrapper:
 // stories import p-timeline directly (same pattern as Accordion).
-import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
 import { Tag } from 'primeng/tag';
 import { Timeline } from 'primeng/timeline';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';

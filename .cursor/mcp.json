@@ -17,6 +17,9 @@
     "chrome-devtools": {
       "command": "npx",
       "args": ["chrome-devtools-mcp@latest"]
+    },
+    "storybook": {
+      "url": "http://localhost:6006/mcp"
     }
   }
 }

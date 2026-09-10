@@ -3,7 +3,7 @@ import {
   moduleMetadata,
   type Meta,
   type StoryObj,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { showStorybookToast } from '../../storybook/storybook-toast';

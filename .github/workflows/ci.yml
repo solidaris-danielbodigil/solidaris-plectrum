@@ -53,6 +53,9 @@ jobs:
       - name: Component docs read their metadata (no hand-written copies)
         run: npm run docs:check
 
+      - name: Metadata props match Angular inputs
+        run: npm run contracts:check
+
       - name: Build applications
         run: npm run build
 
@@ -101,9 +104,6 @@ jobs:
 
       - name: Build Storybook
         run: npm run build-storybook
-        env:
-          # Same artifact shape as deploy-ishare-pages.yml (relative chunk URLs).
-          STORYBOOK_PUBLIC_PATH: ./
 
       - name: Run story smoke, interaction, a11y and coverage tests
         run: npm run test-storybook:ci
