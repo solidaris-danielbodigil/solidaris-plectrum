@@ -5,9 +5,9 @@ import * as Stories from './spacing.stories';
 
 # Spacing
 
-Code-owned scale derived from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` = half the base unit (`0.5rem` = 7px), and every whole-number stop is that many units: `spacing-1` is one unit, `spacing-2` two units (`1rem`), `spacing-7` seven. It is not an 8-point grid — the arithmetic follows the 14px root. Each bar below is drawn at the real token width, so the steps are comparable at a glance.
+Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit (`0.5rem` = 7px). Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two (`1rem`). Each bar below is the live token width.
 
-In templates you almost never write `var(--pds-spacing-2)` — you write `o-layout--gap-2` or `o-layout--padding-3`. The variable is for component tokens in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
+In templates write `o-layout--gap-2` or `o-layout--padding-3`. Use `var(--pds-spacing-*)` only when defining a component token in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
 
 ## Usage
 
@@ -24,13 +24,9 @@ In templates you almost never write `var(--pds-spacing-2)` — you write `o-layo
 </div>
 ```
 
-## How to use
+Below one unit the scale has three fractional stops — `0-25`, `0-5` and `0-75` (0.25, 0.5 and 0.75 of a unit) — and `1-5` between one and two. A class suffix writes the decimal as a dash: `1-5` is 1.5 units. `0-75` exists for icon + label gaps; the others for hairline offsets and control padding. `auto` is for margin centring only — `gap` and `padding` do not accept it, so the [Playground](?path=/story/foundations-spacing--playground) never offers it there.
 
-1. Express layout and spacing as object-class BEM mixes in the template: `o-layout--gap-2`, `o-layout--padding-3`.
-2. Reach for `var(--pds-spacing-…)` in SCSS only when the value belongs to a component token in `01-settings`.
-3. Never invent an intermediate step. Below one unit the scale has three fractional stops — `0-25`, `0-5` and `0-75` (¼, ½ and ¾ of a unit) — and one between one and two, `1-5`. `0-75` exists for icon + label gaps; the others for hairline offsets and control padding. A stop name is the multiplier with the decimal point written as a dash: `1-5` = 1.5 units.
-
-Declared in `_settings.spacing.scss`. Classes: `.o-layout--{gap|padding|margin}-{step}`. Click a step to copy it. `auto` is for margin centring only — `gap` and `padding` do not accept it, so the [Playground](?path=/story/foundations-spacing--playground) never offers it there.
+Declared in `_settings.spacing.scss`. Classes: `.o-layout--{gap|padding|margin}-{step}`. Click a step to copy it.
 
 <Unstyled>
   <Story of={Stories.Scale} />

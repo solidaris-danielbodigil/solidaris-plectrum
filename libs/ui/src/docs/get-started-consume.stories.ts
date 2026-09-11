@@ -37,7 +37,7 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Render the first component',
     detail:
-      'pds-form-field from @solidaris/ui around a pInputText — the same component the packed-consumer fixture builds in CI.',
+      'pds-form-field from @solidaris/ui around a pInputText — the same component the sample application builds in CI.',
     links: [
       {
         label: 'Form Field',
@@ -50,17 +50,10 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Build with the catalogue',
     detail:
-      'PrimeNG components and pds-* components from this Storybook. Layout via o-flex / o-layout classes.',
+      'PrimeNG and pds-* components from this Storybook. Layout via o-flex / o-layout classes.',
     links: [
       { label: 'Component status', path: '/docs/docs-component-status--docs' },
       { label: 'Token finder', path: '/docs/foundations-token-finder--docs' },
     ],
-  },
-  {
-    who: 'CI',
-    tone: 'neutral',
-    title: 'Receive upgrades',
-    detail:
-      'Once versions publish, Renovate or Dependabot opens a bump pull request. Optionally, pds-tokens-lint from @solidaris/tokens-cli guards hardcoded values in your CI.',
   },
 ]);

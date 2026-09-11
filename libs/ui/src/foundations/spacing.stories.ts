@@ -1,12 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
+import { CopyableTextComponent } from '../lib/copyable-text/copyable-text.component';
 import { readTokenDeclarations } from '../storybook/cssom';
+import {
+  hideExplorerArgTypes,
+  hideExplorerControls,
+} from '../storybook/hide-explorer-controls';
+import { assertTextVisible } from '../storybook/story-tests';
+import { showStorybookToast } from '../storybook/storybook-toast';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';
 import {
+  resolveSpacingStop,
   SPACING_PROPERTIES,
+  SPACING_PROPERTY_HINTS,
+  spacingClass,
+  spacingSnippet,
   spacingStops,
   spacingTokenVar,
   stopArgName,
+  stopDisplayLabel,
   type SpacingProperty,
 } from './spacing-playground';
 
@@ -64,11 +76,16 @@ const stopArgTypes = Object.fromEntries(
   SPACING_PROPERTIES.map((property) => [
     stopArgName(property),
     {
-      name: 'stop',
-      control: 'select',
+      name: 'Spacing size',
+      control: {
+        type: 'select',
+        labels: Object.fromEntries(
+          spacingStops(property).map((stop) => [stop, stopDisplayLabel(stop)]),
+        ),
+      },
       options: spacingStops(property),
       if: { arg: 'property', eq: property },
-      description: `Scale stop — every stop the stylesheet generates for o-layout--${property}-*.`,
+      description: `Scale value — every stop the stylesheet generates for o-layout--${property}-*.`,
     },
   ]),
 );
@@ -83,14 +100,17 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   tags: ['dev'],
   args: { property: 'gap', gapStop: '2', paddingStop: '2', marginStop: '2' },
   argTypes: {
+    ...hideExplorerArgTypes,
     property: {
+      name: 'Property',
       control: 'inline-radio',
       options: [...SPACING_PROPERTIES],
       description: 'Which box property the o-layout class sets.',
     },
     ...stopArgTypes,
   },
-  parameters: { layout: 'padded' },
+  decorators: [moduleMetadata({ imports: [CopyableTextComponent] })],
+  parameters: { layout: 'padded', ...hideExplorerControls },
   render: (args) => {
     const property = SPACING_PROPERTIES.includes(args.property)
       ? args.property
@@ -98,9 +118,12 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     const stops = spacingStops(property);
     const requested = args[stopArgName(property) as keyof PlaygroundArgs];
     const stop = stops.includes(requested) ? requested : stops[0];
-    const cls = `o-layout--${property}-${stop}`;
+    const cls = spacingClass(property, stop);
+    const snippet = spacingSnippet(property, stop);
     const tokenVar = spacingTokenVar(stop);
     const hasToken = readTokenDeclarations().has(tokenVar);
+    const resolved = resolveSpacingStop(stop);
+    const hint = SPACING_PROPERTY_HINTS[property];
     const cell =
       '<div class="c-demo-cell o-layout--padding-2" style="background: var(--pds-color-primary-100);">cell</div>';
     const demo =
@@ -110,14 +133,35 @@ export const Playground: StoryObj<PlaygroundArgs> = {
           ? `<div class="${cls}" style="background: var(--pds-color-primary-100); width: max-content;">${cell}</div>`
           : `<div style="background: var(--pds-color-primary-100); width: max-content;"><div class="c-demo-cell ${cls} o-layout--padding-2">cell</div></div>`;
     return {
+      props: {
+        cls,
+        snippet,
+        onCopied: (text: string) =>
+          showStorybookToast({ summary: 'Copied', detail: text }),
+      },
       template: `
         <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
+          <p class="o-layout--margin-0">${hint}</p>
           ${demo}
-          <div class="o-flex o-flex--col o-layout--gap-1">
-            <code>class="${cls}"</code>
-            ${hasToken ? `<code>var(${tokenVar})</code>` : ''}
+          <p class="o-layout--margin-0">${resolved}${hasToken ? ` · var(${tokenVar})` : ''}</p>
+          <div class="o-flex o-flex--col o-layout--gap-2">
+            <pds-copyable-text
+              label="Class"
+              [value]="cls"
+              ariaLabel="Copy class"
+              (copied)="onCopied($event)"
+            />
+            <pds-copyable-text
+              label="Snippet"
+              [value]="snippet"
+              ariaLabel="Copy snippet"
+              (copied)="onCopied($event)"
+            />
           </div>
         </div>`,
     };
+  },
+  play: async ({ canvasElement }) => {
+    await assertTextVisible(canvasElement, 'Class');
   },
 };

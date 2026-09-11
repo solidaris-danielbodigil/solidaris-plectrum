@@ -1,6 +1,7 @@
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { IconRegistry, registerPlectrumIcons } from '../lib/icon';
 import { clearStorybookToasts } from '../storybook/storybook-toast';
 import {
   borderGroups,
@@ -97,6 +98,7 @@ describe('BordersPlaygroundComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(BordersPlaygroundComponent);
+    registerPlectrumIcons(TestBed.inject(IconRegistry));
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -152,7 +154,7 @@ describe('BordersPlaygroundComponent', () => {
     expect(fixture.nativeElement.textContent).toContain(expected);
 
     const button = fixture.nativeElement.querySelector(
-      '[aria-label^="Copy "]',
+      '[aria-label="Copy class"]',
     ) as HTMLButtonElement;
     button.click();
     await fixture.whenStable();

@@ -6,18 +6,9 @@ import * as Stories from './borders.stories';
 
 # Borders
 
-Token-driven **border** and **radius** utilities in `07-utilities/`. Geometry is defined once in `02-tools/_tools.radius.scss` and `_tools.borders.scss` — components `@include` the same mixins.
+Compose a side, optional weight, style, status and radius, then copy the classes into a template. Write `u-border-*` and `u-radius-*` in the template. Use `var(--pds-*)` in component SCSS when the stroke is state-driven.
 
-Every list on this page is enumerated from the stylesheet, so it always matches what `libs/styles` generates. Click a card to copy the class.
-
-- **Radius:** `.u-radius-{stop}` (all corners) · `.u-radius-{side|corner}-{stop}` (per edge/corner)
-- **Border sides:** `.u-border-{side}` — default `1px solid` using `--pds-color-content-border`
-- **Orthogonal modifiers** (compose freely): `.u-border-thick` · `.u-border-dashed` · `.u-border-{status}`
-- Override color per instance: `style="--pds-border-color: var(--pds-color-panel-border);"`
-
-Colour roles (panel-border, card-border, content-border) live in [Token finder](?path=/docs/foundations-token-finder--docs) and [Colors](?path=/docs/foundations-colors-semantic-common--docs). This page composes the utility classes.
-
-Styles: `libs/styles/src/07-utilities/_utilities.radius.scss` · `_utilities.borders.scss`. Token values: [Foundations / Radius](?path=/docs/foundations-radius--docs).
+Every list on this page is enumerated from the stylesheet. Click a card to copy the class.
 
 ## Usage
 
@@ -69,7 +60,7 @@ Side classes delegate to the shared `border()` mixin. Width, style and color com
 
 ## Border modifiers
 
-Modifiers set custom properties only — combine them with any side class.
+Combine these options independently with any side class: `.u-border-thick` · `.u-border-dashed` · `.u-border-{status}`.
 
 ```html
 <div class="u-border-top u-border-thick u-border-dashed u-border-danger"></div>
@@ -99,3 +90,15 @@ Default border color is `--pds-color-content-border`. Override per instance via 
 />
 
 <Canvas of={Stories.BorderColorOverride} />
+
+## Where the utilities live
+
+Token-driven **border** and **radius** utilities in `07-utilities/`. Geometry is defined once in `02-tools/_tools.radius.scss` and `_tools.borders.scss` — components `@include` the same mixins.
+
+- **Radius:** `.u-radius-{stop}` (all corners) · `.u-radius-{side|corner}-{stop}` (per edge/corner)
+- **Border sides:** `.u-border-{side}` — default `1px solid` using `--pds-color-content-border`
+- Override color per instance: `style="--pds-border-color: var(--pds-color-panel-border);"`
+
+Colour roles (panel-border, card-border, content-border) live in [Token finder](?path=/docs/foundations-token-finder--docs) and [Colors](?path=/docs/foundations-colors-semantic-common--docs).
+
+Styles: `libs/styles/src/07-utilities/_utilities.radius.scss` · `_utilities.borders.scss`. Token values: [Foundations / Radius](?path=/docs/foundations-radius--docs).

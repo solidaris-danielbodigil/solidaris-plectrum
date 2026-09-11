@@ -5,7 +5,11 @@
 // =============================================================================
 
 import { resolveToken } from '../storybook/cssom';
-import { textStyles, textStyleTokens } from './typography-playground';
+import {
+  textRoleHint,
+  textStyles,
+  textStyleTokens,
+} from './typography-playground';
 
 const DEFAULT_STYLE = 'body-md';
 
@@ -22,7 +26,9 @@ describe('typography playground tokens', () => {
     expect(tokens).toContain('--pds-text-body-md-weight');
     // The former hand-written `-line` suffix was never a declared token.
     expect(tokens).not.toContain('--pds-text-body-md-line');
-    expect(tokens.every((cssVar) => cssVar.startsWith('--pds-text-body-md-'))).toBe(true);
+    expect(
+      tokens.every((cssVar) => cssVar.startsWith('--pds-text-body-md-')),
+    ).toBe(true);
   });
 
   it('resolves every displayed reference for the default style to a non-empty value', () => {
@@ -33,6 +39,14 @@ describe('typography playground tokens', () => {
         .withContext(cssVar)
         .not.toBe('');
     }
+  });
+
+  it('uses existing role hints and does not invent others', () => {
+    expect(textRoleHint('display-lg')).toBe('Hero figures.');
+    expect(textRoleHint('heading-sm')).toBe('Titles.');
+    expect(textRoleHint('label-xs')).toBe('UI chrome.');
+    expect(textRoleHint('body-md')).toBe('Prose.');
+    expect(textRoleHint('unknown-md')).toBe('');
   });
 
   it('resolves every reference for every generated style', () => {

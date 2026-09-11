@@ -93,16 +93,18 @@ pds-docs-direction {
 }
 
 // Role autocomplete — used instead of a button row when a category has many roles.
-// PrimeNG's dropdown input uses width: 1% + flex: 1; a definite min-width
-// keeps the field readable, and max-content lets longer role names grow.
+// The host is the PrimeNG flex field. A definite width (not field-sizing)
+// keeps short values like "green" from collapsing the control while typing.
 .c-token-explorer__filter {
-  width: max-content;
+  display: inline-flex;
+  box-sizing: border-box;
+  width: var(--#{$pds-prefix}-size-token-explorer-filter-min);
   min-width: var(--#{$pds-prefix}-size-token-explorer-filter-min);
 
   .p-autocomplete-input {
-    field-sizing: content;
+    flex: 1 1 auto;
     width: auto;
-    flex: 0 1 auto;
+    min-width: 0;
   }
 }
 

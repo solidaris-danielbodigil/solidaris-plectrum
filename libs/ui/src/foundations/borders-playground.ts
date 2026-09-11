@@ -14,14 +14,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
 import { SelectButton } from 'primeng/selectbutton';
+import { CopyableTextComponent } from '../lib/copyable-text/copyable-text.component';
 import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { readClassRules, readClassSuffixes } from '../storybook/cssom';
 import { DocsDirectionComponent } from '../storybook/docs-direction.component';
 import type { DocsTokenCard } from '../storybook/docs-token-cards';
-import { copyStorybookText } from '../storybook/storybook-toast';
+import { showStorybookToast } from '../storybook/storybook-toast';
 
 /** Longest stop first so `top-2xl` resolves to `2xl`, not `xl`. */
 const RADIUS_STOPS = [
@@ -176,6 +178,8 @@ function selectOptions(values: readonly string[]): SelectOption[] {
   standalone: true,
   imports: [
     FormsModule,
+    Button,
+    CopyableTextComponent,
     FormFieldComponent,
     ToolbarComponent,
     DocsDirectionComponent,
@@ -396,19 +400,26 @@ function selectOptions(values: readonly string[]): SelectOption[] {
         >
           preview
         </div>
-        <div class="o-flex o-flex--align-items-center o-layout--gap-2">
-          <code class="o-flex__item--grow-1 o-layout--min-w-0"
-            >class="{{ classes() }}"</code
-          >
-          <button
+        <div class="o-flex o-flex--col o-layout--gap-2">
+          <pds-copyable-text
+            label="Class"
+            [value]="classes()"
+            ariaLabel="Copy class"
+            (copied)="onCopied($event)"
+          />
+          <pds-copyable-text
+            label="Snippet"
+            [value]="snippet()"
+            ariaLabel="Copy snippet"
+            (copied)="onCopied($event)"
+          />
+          <p-button
             type="button"
-            class="c-token-explorer__copy-btn o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
-            [style.--pds-border-color]="'var(--pds-color-panel-border)'"
-            [attr.aria-label]="'Copy ' + classes()"
-            (click)="copy()"
-          >
-            <i class="bi bi-clipboard" aria-hidden="true"></i>
-          </button>
+            label="Reset"
+            [text]="true"
+            size="small"
+            (onClick)="reset()"
+          />
         </div>
       </section>
     </div>
@@ -470,13 +481,26 @@ export class BordersPlaygroundComponent {
     }),
   );
 
+  readonly snippet = computed(
+    () => `<div class="${this.classes()}">…</div>`,
+  );
+
   asOption(item: string | SelectOption | null | undefined): SelectOption {
     if (item && typeof item === 'object') return item;
     const value = String(item ?? '');
     return { label: pretty(value), value };
   }
 
-  copy(): void {
-    void copyStorybookText(this.classes());
+  reset(): void {
+    this.side.set(this.sideOptions()[0]?.value ?? 'all');
+    this.status.set('default');
+    this.weight.set('default');
+    this.stroke.set('solid');
+    this.radius.set('none');
+    this.radiusTarget.set(this.cornerOptions()[0]?.value ?? 'all');
+  }
+
+  onCopied(text: string): void {
+    showStorybookToast({ summary: 'Copied', detail: text });
   }
 }

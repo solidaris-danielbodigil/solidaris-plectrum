@@ -24,7 +24,6 @@ export const CopyableTextMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Stable identifiers users copy often — NISS, territory codes, dossier numbers',
-      'Any label + value pair where the value must land on the clipboard in one click',
       'Metadata rows of several chips separated by bullets',
     ],
     commonPatterns: [
@@ -71,18 +70,26 @@ export const CopyableTextMetadata: ComponentMetadata = {
     ],
   },
   anatomy: [
-    { part: 'c-copyable-text', role: 'PrimeNG text button host — copies value on activate' },
-    { part: 'c-copyable-text__icon', role: 'Copy glyph (pds-icon, decorative)' },
+    {
+      part: 'c-copyable-text',
+      role: 'PrimeNG text button host — copies value on activate',
+    },
+    {
+      part: 'c-copyable-text__icon',
+      role: 'Copy glyph (pds-icon, decorative)',
+    },
     { part: 'c-copyable-text__label', role: 'Visible field name' },
     { part: 'c-copyable-text__value', role: 'Value written to the clipboard' },
-    { part: 'c-copyable-text__separator', role: 'Parent-owned bullet between chips — aria-hidden' },
+    {
+      part: 'c-copyable-text__separator',
+      role: 'Parent-owned bullet between chips — aria-hidden',
+    },
   ],
   behavior: {
     states: ['default', 'hover', 'focus-visible', 'active', 'disabled'],
     interactions: [
-      'Writes value through the async Clipboard API when available',
-      'Falls back to a temporary textarea + document.execCommand("copy") in older or non-secure contexts',
-      'Emits (copied) with the copied string after a successful write — the chip never shows its own confirmation; the parent decides (toast, analytics)',
+      'Writes value through the async Clipboard API, with an execCommand fallback in older or non-secure contexts',
+      'Emits (copied) after a successful write — see Usage for the parent toast contract',
       'disabled makes the button inert: no clipboard write, no copied event',
     ],
   },

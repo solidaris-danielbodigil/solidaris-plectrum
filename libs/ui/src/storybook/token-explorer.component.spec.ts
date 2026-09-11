@@ -245,6 +245,31 @@ describe('TokenExplorerComponent', () => {
     expect(fixture.nativeElement.querySelector('p-autocomplete')).toBeTruthy();
   });
 
+  it('publishes a new suggestions array so the autocomplete loader can clear', async () => {
+    await render({ category: 'color', groups: [] });
+
+    const query = { query: '', originalEvent: new Event('input') };
+    fixture.componentInstance.suggestSections(query);
+    const first = fixture.componentInstance.sectionSuggestions();
+    fixture.componentInstance.suggestSections(query);
+    const second = fixture.componentInstance.sectionSuggestions();
+
+    expect(second).not.toBe(first);
+    expect(second.map((option) => option.value)).toEqual(
+      first.map((option) => option.value),
+    );
+
+    fixture.componentInstance.suggestSections({
+      query: 'blu',
+      originalEvent: new Event('input'),
+    });
+    expect(
+      fixture.componentInstance
+        .sectionSuggestions()
+        .every((option) => option.label.toLowerCase().includes('blu')),
+    ).toBe(true);
+  });
+
   it('uses an autocomplete for typography primitives (All plus five axes)', async () => {
     await render({
       category: 'typography',

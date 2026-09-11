@@ -346,10 +346,13 @@ export class TokenExplorerComponent {
   suggestSections(event: AutoCompleteCompleteEvent): void {
     const query = event.query.trim().toLowerCase();
     const options = this.sectionOptions();
+    // Always a new array. PrimeNG sets loading=true on search and only
+    // clears the spinner when the suggestions setter sees a new reference
+    // — reusing sectionOptions() leaves the loader spinning.
     this.sectionSuggestions.set(
       query
         ? options.filter((option) => option.label.toLowerCase().includes(query))
-        : options,
+        : [...options],
     );
   }
 

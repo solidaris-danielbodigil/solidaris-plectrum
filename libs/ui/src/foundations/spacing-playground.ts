@@ -69,3 +69,54 @@ export function spacingStops(property: string): string[] {
 
 /** `{property}Stop` — the per-property Controls arg (each property has its own valid set). */
 export const stopArgName = (property: string): string => `${property}Stop`;
+
+/** Class suffix `0-25` → display `0.25`. Public class names stay dashed. */
+export function stopDisplayLabel(stop: string): string {
+  return stop.replace(/^(\d+)-(\d+)$/, '$1.$2');
+}
+
+export const SPACING_PROPERTY_HINTS: Record<SpacingProperty, string> = {
+  gap: 'Space between children. Pair with o-flex on the same element.',
+  padding: 'Inset inside the box.',
+  margin: 'Offset outside the box. auto centres the box on the inline axis.',
+};
+
+export function spacingClass(property: SpacingProperty, stop: string): string {
+  return `o-layout--${property}-${stop}`;
+}
+
+/** Complete template snippet — gap always includes the required o-flex companion. */
+export function spacingSnippet(property: SpacingProperty, stop: string): string {
+  const cls = spacingClass(property, stop);
+  return property === 'gap'
+    ? `<div class="o-flex ${cls}">…</div>`
+    : `<div class="${cls}">…</div>`;
+}
+
+/**
+ * Live stop label from the CSSOM (`2 — 14px` in the 14px-root context).
+ * No hardcoded px table — `resolveToken` plus a probe for the used length.
+ */
+export function resolveSpacingStop(stop: string): string {
+  const label = stopDisplayLabel(stop);
+  if (stop === 'auto') return label;
+
+  const cssVar = spacingTokenVar(stop);
+  if (typeof document === 'undefined') return label;
+
+  const authored = resolveToken(document.documentElement, cssVar);
+  const used = measureTokenLength(cssVar);
+  if (used) return `${label} — ${used}`;
+  return authored ? `${label} — ${authored}` : label;
+}
+
+function measureTokenLength(cssVar: string): string {
+  const probe = document.createElement('div');
+  probe.style.width = `var(${cssVar})`;
+  probe.style.position = 'absolute';
+  probe.style.visibility = 'hidden';
+  document.documentElement.appendChild(probe);
+  const width = getComputedStyle(probe).width;
+  probe.remove();
+  return width;
+}

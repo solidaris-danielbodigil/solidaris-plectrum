@@ -22,14 +22,25 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { Tag } from 'primeng/tag';
+import { CopyableTextComponent } from '../lib/copyable-text/copyable-text.component';
 import { readTokenDeclarations } from './cssom';
+import { showStorybookToast } from './storybook-toast';
 import { COLOR_PRIMITIVE_GROUPS } from './token-sections';
 import { classifyToken } from './token-taxonomy';
 
-const SURFACE_GROUPS = ['surface', 'primary', 'content', 'highlight', 'form', 'navigation', 'overlay', 'list'];
+const SURFACE_GROUPS = [
+  'surface',
+  'primary',
+  'content',
+  'highlight',
+  'form',
+  'navigation',
+  'overlay',
+  'list',
+];
 const TEXT_GROUPS = ['text', 'primary', 'content'];
 
-function semanticColorVars(groups: readonly string[]): string[] {
+export function semanticColorVars(groups: readonly string[]): string[] {
   return [...readTokenDeclarations().values()]
     .filter((decl) => {
       const taxon = classifyToken(decl.name);
@@ -73,14 +84,56 @@ function luminance({ r, g, b }: Rgb): number {
   return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
 }
 
+/** Paint the token on a probe and read the normalised rgb() back. */
+export function measureTokenColor(cssVar: string, host: ParentNode): string {
+  if (typeof document === 'undefined') return '';
+  const probe = document.createElement('span');
+  probe.style.color = `var(${cssVar})`;
+  host.appendChild(probe);
+  const resolved = getComputedStyle(probe).color;
+  probe.remove();
+  return resolved;
+}
+
+export interface ContrastResult {
+  ratio: number | null;
+  aa: boolean;
+  aaLarge: boolean;
+  aaa: boolean;
+}
+
+/** WCAG 2.1 contrast for two resolved rgb()/hex colours. */
+export function contrastFromResolved(background: string, text: string): ContrastResult {
+  const bg = parseRgb(background);
+  const fg = parseRgb(text);
+  if (!bg || !fg) {
+    return { ratio: null, aa: false, aaLarge: false, aaa: false };
+  }
+  const [lighter, darker] = [luminance(bg), luminance(fg)].sort((a, b) => b - a);
+  const ratio = (lighter + 0.05) / (darker + 0.05);
+  return {
+    ratio,
+    aa: ratio >= 4.5,
+    aaLarge: ratio >= 3,
+    aaa: ratio >= 7,
+  };
+}
+
+export function contrastRatioLabel(ratio: number | null): string {
+  return ratio === null ? 'Contrast: —' : `Contrast ${ratio.toFixed(2)} : 1`;
+}
+
 @Component({
   selector: 'pds-contrast-checker',
   standalone: true,
-  imports: [FormsModule, Select, Tag],
+  imports: [FormsModule, Select, Tag, CopyableTextComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="o-flex o-flex--col o-layout--gap-3 o-layout--padding-3">
+      <p class="o-layout--margin-0">
+        Results are for text size, not a whole-component certification.
+      </p>
       <div class="o-flex o-flex--wrap o-layout--gap-2">
         <p-select
           [options]="surfaceOptions"
@@ -112,14 +165,39 @@ function luminance({ r, g, b }: Rgb): number {
 
       <div class="o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-2">
         <strong>{{ ratioLabel() }}</strong>
-        <p-tag [value]="'AA normal ≥ 4.5 — ' + (passes().aa ? 'pass' : 'fail')" [severity]="passes().aa ? 'success' : 'danger'" />
-        <p-tag [value]="'AA large ≥ 3 — ' + (passes().aaLarge ? 'pass' : 'fail')" [severity]="passes().aaLarge ? 'success' : 'danger'" />
-        <p-tag [value]="'AAA ≥ 7 — ' + (passes().aaa ? 'pass' : 'fail')" [severity]="passes().aaa ? 'success' : 'secondary'" />
+        <p-tag
+          [value]="'AA normal text ≥ 4.5 — ' + (passes().aa ? 'pass' : 'fail')"
+          [severity]="passes().aa ? 'success' : 'danger'"
+        />
+        <p-tag
+          [value]="'AA large text ≥ 3 — ' + (passes().aaLarge ? 'pass' : 'fail')"
+          [severity]="passes().aaLarge ? 'success' : 'danger'"
+        />
+        <p-tag
+          [value]="'AAA normal text ≥ 7 — ' + (passes().aaa ? 'pass' : 'fail')"
+          [severity]="passes().aaa ? 'success' : 'secondary'"
+        />
       </div>
 
-      <div class="o-flex o-flex--col o-layout--gap-1">
-        <code>background: var({{ background() }}); /* {{ resolvedBackground() }} */</code>
-        <code>color: var({{ text() }}); /* {{ resolvedText() }} */</code>
+      <div class="o-flex o-flex--col o-layout--gap-2">
+        <pds-copyable-text
+          label="Background"
+          [value]="'var(' + background() + ')'"
+          ariaLabel="Copy background variable"
+          (copied)="onCopied($event)"
+        />
+        <pds-copyable-text
+          label="Text"
+          [value]="'var(' + text() + ')'"
+          ariaLabel="Copy text variable"
+          (copied)="onCopied($event)"
+        />
+        <p class="o-layout--margin-0 u-text-body-sm">
+          {{ background() }} — {{ resolvedBackground() }}
+        </p>
+        <p class="o-layout--margin-0 u-text-body-sm">
+          {{ text() }} — {{ resolvedText() }}
+        </p>
       </div>
     </div>
   `,
@@ -133,35 +211,22 @@ export class ContrastCheckerComponent {
   readonly background = signal('--pds-color-surface-0');
   readonly text = signal('--pds-color-text');
 
-  readonly resolvedBackground = computed(() => this.measure(this.background()));
-  readonly resolvedText = computed(() => this.measure(this.text()));
+  readonly resolvedBackground = computed(() =>
+    measureTokenColor(this.background(), this.host.nativeElement),
+  );
+  readonly resolvedText = computed(() =>
+    measureTokenColor(this.text(), this.host.nativeElement),
+  );
 
-  readonly ratio = computed<number | null>(() => {
-    const bg = parseRgb(this.resolvedBackground());
-    const fg = parseRgb(this.resolvedText());
-    if (!bg || !fg) return null;
-    const [lighter, darker] = [luminance(bg), luminance(fg)].sort((a, b) => b - a);
-    return (lighter + 0.05) / (darker + 0.05);
-  });
+  readonly contrast = computed(() =>
+    contrastFromResolved(this.resolvedBackground(), this.resolvedText()),
+  );
 
-  readonly ratioLabel = computed(() => {
-    const ratio = this.ratio();
-    return ratio === null ? 'Contrast: —' : `Contrast ${ratio.toFixed(2)} : 1`;
-  });
+  readonly ratioLabel = computed(() => contrastRatioLabel(this.contrast().ratio));
 
-  readonly passes = computed(() => {
-    const ratio = this.ratio() ?? 0;
-    return { aa: ratio >= 4.5, aaLarge: ratio >= 3, aaa: ratio >= 7 };
-  });
+  readonly passes = computed(() => this.contrast());
 
-  /** Paint the token on a probe and read the normalised rgb() back. */
-  private measure(cssVar: string): string {
-    if (typeof document === 'undefined') return '';
-    const probe = document.createElement('span');
-    probe.style.color = `var(${cssVar})`;
-    this.host.nativeElement.appendChild(probe);
-    const resolved = getComputedStyle(probe).color;
-    probe.remove();
-    return resolved;
+  onCopied(text: string): void {
+    showStorybookToast({ summary: 'Copied', detail: text });
   }
 }

@@ -9,8 +9,10 @@ import {
   acceptsStop,
   compareStops,
   SPACING_PROPERTIES,
+  spacingSnippet,
   spacingStops,
   spacingTokenVar,
+  stopDisplayLabel,
 } from './spacing-playground';
 
 describe('spacing playground stops', () => {
@@ -67,5 +69,15 @@ describe('spacing playground stops', () => {
     const numeric = gap.map((stop) => Number(stop.replace(/^(\d+)-(\d+)$/, '$1.$2')));
     expect(numeric.every((value) => !Number.isNaN(value))).toBe(true);
     expect(numeric).toEqual([...numeric].sort((a, b) => a - b));
+  });
+
+  it('shows 0.25 in the control label while the class suffix stays 0-25', () => {
+    expect(stopDisplayLabel('0-25')).toBe('0.25');
+    expect(stopDisplayLabel('0-5')).toBe('0.5');
+    expect(stopDisplayLabel('2')).toBe('2');
+    expect(stopDisplayLabel('auto')).toBe('auto');
+    expect(spacingSnippet('gap', '0-25')).toBe(
+      '<div class="o-flex o-layout--gap-0-25">…</div>',
+    );
   });
 });

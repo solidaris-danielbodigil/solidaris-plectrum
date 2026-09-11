@@ -28,7 +28,7 @@ export const AuthoringOrder: StoryObj = stepsStory([
   {
     who: 'Template',
     tone: 'system',
-    title: 'Static chrome with utilities',
+    title: 'Unchanging outlines with utilities',
     detail:
       'Borders, radii and resting shadows are u-border-* / u-radius-* / u-shadow-* on the same element.',
   },

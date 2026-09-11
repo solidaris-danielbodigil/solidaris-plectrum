@@ -33,25 +33,29 @@ export const Usage = {
   ...doDontStory({
     dos: [
       {
-        title: 'Static chrome in the template',
+        title: 'Borders and corners that stay the same across states',
         detail:
           'u-border-{side} plus optional thick / dashed / status. Colour from a shared role (panel-border, card-border, content-border).',
       },
       {
         title: 'Radius utilities when the corner is not state-driven',
-        detail: 'u-radius-{stop} or a per-edge target. Compose a class in the playground, then paste it.',
+        detail:
+          'u-radius-{stop} or a per-edge target. Compose a class in the playground, then paste it.',
       },
     ],
     donts: [
       {
         title: 'border: 1px solid … in 06-components',
-        detail: 'A hardcoded stroke will not track the role tokens or the shared mixin.',
-        alternative: 'u-border-* in the template; state-driven borders stay in SCSS as var(--pds-*).',
+        detail:
+          'A hardcoded stroke will not track the role tokens or the shared mixin.',
+        alternative:
+          'u-border-* in the template; state-driven borders stay in SCSS as var(--pds-*).',
       },
       {
         title: 'A feature-specific border colour alias',
         detail: 'Every surface then invents its own gray.',
-        alternative: 'panel-border / card-border / content-border, overridden with --pds-border-color when needed.',
+        alternative:
+          'panel-border / card-border / content-border, overridden with --pds-border-color when needed.',
       },
     ],
   }),

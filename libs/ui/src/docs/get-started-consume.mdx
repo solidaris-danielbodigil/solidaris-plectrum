@@ -6,7 +6,7 @@ import * as Figures from './get-started-consume.stories';
 
 # Use Plectrum in an app
 
-An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. The reference implementation of everything below is `tools/packaging/consumer-app/` — CI packs the libraries and builds that app against the tarballs on every push (`npm run pack:smoke`).
+An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. A sample application in `tools/packaging/consumer-app/` is used to verify package installation — CI packs the libraries and builds that app against the tarballs on every push (`npm run pack:smoke`).
 
 <Unstyled>
   <Story of={Figures.InstallFlow} />
@@ -45,7 +45,7 @@ After the first release the same three packages install from the registry, and n
 npm install @solidaris/ui @solidaris/plectrum @solidaris/styles primeng @primeuix/themes
 ```
 
-The three `@solidaris/*` packages version together (a fixed Changesets group) — always upgrade them as a set. Versions and peer ranges in this Storybook are read from `package.json`, never typed by hand.
+The three `@solidaris/*` packages version together (a fixed Changesets group) — always upgrade them as a set.
 
 ## Wire the stylesheet
 
@@ -85,7 +85,7 @@ export const appConfig: ApplicationConfig = {
 
 ## First component
 
-The packed-consumer fixture renders one Core component around one PrimeNG input. This is `tools/packaging/consumer-app/src/app/app.ts` with the `pInputText` directive added so the PrimeNG theme visibly applies:
+The sample application renders one Core component around one PrimeNG input. This is `tools/packaging/consumer-app/src/app/app.ts` with the `pInputText` directive added so the PrimeNG theme visibly applies:
 
 ```ts
 // src/app/app.ts
@@ -109,9 +109,7 @@ export class App {}
 
 ## Build screens
 
-- PrimeNG components as-is — the Plectrum preset already styles them. Start with the [PrimeNG theme gallery](?path=/docs/primeng-actions--docs), then check [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs) for the few intentional deviations.
-- `pds-*` components — the [Component status](?path=/docs/docs-component-status--docs) index lists every one with its status and owner; import Core components from `@solidaris/ui`.
-- Layout with `o-flex` / `o-layout` classes, visual chrome with `u-*` utilities, values via `var(--pds-*)` — never hardcode a hex or px. The catalogues live under **Foundations**.
+PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris/ui` — [Component status](?path=/docs/docs-component-status--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
 
 ## Rules for application code
 
