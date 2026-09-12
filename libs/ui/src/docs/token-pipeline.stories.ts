@@ -81,7 +81,7 @@ export const Roles: StoryObj = cardsStory([
     items: [
       'References tokens as var(--pds-*) with BEMIT classes only',
       'Adds missing values in 01-settings before using them',
-      'Runs tokens:propose to list code-owned tokens for Figma; the write into the branch is by hand while tokens:apply is parked',
+      'Runs tokens:propose, then a designer applies selected tokens with the Plectrum tokens plugin on proposals/{app}',
       'Keeps PrimeNG --p-* bridges in 01-settings',
     ],
   },

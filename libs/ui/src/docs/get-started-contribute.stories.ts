@@ -29,7 +29,8 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'Dev',
     tone: 'system',
     title: 'Set up',
-    detail: 'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
+    detail:
+      'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
   },
   {
     who: 'Dev',
@@ -42,13 +43,15 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'Dev',
     tone: 'design',
     title: 'Check the sources first',
-    detail: 'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Storybook MCP (docs-list) when npm run storybook is up: is it already in this catalogue? Custom code only when none cover the need.',
+    detail:
+      'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Storybook MCP (docs-list) when npm run storybook is up: is it already in this catalogue? Custom code only when none cover the need.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Implement in Storybook',
-    detail: 'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
+    detail:
+      'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
   },
   {
     who: 'Core team',
@@ -114,10 +117,11 @@ export const Roles: StoryObj = cardsStory(
 
 export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'While a component is app-owned, drift stays contained by tooling — not by trust',
+  title:
+    'While a component is app-owned, drift stays contained by tooling — not by trust',
   items: [
     'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them for the proposals/{app} Figma collection; the write into Figma is by hand while the Enterprise-only apply is parked (see Token pipeline → Figma sync).',
+    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them; a designer applies them with the Plectrum tokens plugin on proposals/{app} (see Token pipeline → Figma sync).',
     'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
     'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
   ],

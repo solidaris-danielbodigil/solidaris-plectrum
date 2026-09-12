@@ -5,8 +5,8 @@ name: Figma library publish
 # are documented in `node tools/tokens/pull-figma.mjs --help`.
 #
 # Parked: pull-figma reads the Variables REST API (file_variables:read), which
-# Figma offers on the Enterprise plan only. On the Organization plan the GET
-# returns "403 Invalid scope". See .ai/questions/2026-09-07-repo-to-figma-transport.md.
+# Figma offers on the Enterprise plan only. Live repo → Figma path is the
+# Plectrum tokens plugin. See .ai/decisions/2026-09-10-repo-to-figma-plugin.md.
 
 on:
   repository_dispatch:

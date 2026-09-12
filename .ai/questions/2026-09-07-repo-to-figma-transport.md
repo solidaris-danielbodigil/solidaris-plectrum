@@ -1,7 +1,7 @@
 # Repository → Figma transport: custom plugin or Enterprise plan?
 
 **Raised by:** first repo → Figma dry run (`Apply tokens to Figma`, 2026-09-07)
-**Status:** open — repository → Figma and the `tokens:pull-figma` safety net are parked; Figma → repository is live
+**Status:** decided — Option A (private Figma plugin) on the Organization plan. See `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`.
 
 ## Context
 
@@ -18,45 +18,15 @@ the **Enterprise** plan only. Solidaris is on the **Organization** plan:
 Figma → repository is unaffected: the PrimeUI plugin's GitHub sync and the comment thread
 (`file_comments:*`) need no Variables scope.
 
-Built and waiting: `tools/tokens/apply-to-figma.mjs` (real Variables payload, `--only` required,
-branch-only, dry-run default, refuses the main file key), `.github/workflows/apply-to-figma.yml`
-(`figma-write` environment), `library-publish.yml` → `tokens:pull-figma`.
+## Decision
 
-## Options
+**Option A.** The Plectrum tokens plugin (`tools/figma-plugin`) writes `proposed.dtcg.json` into
+the collection `proposals/{app}` through `figma.variables`. A designer runs it with that Figma
+branch open. The REST scripts and workflows stay parked as the Enterprise path (Option B).
 
-### A. Custom Figma plugin (works on the Organization plan)
+## What remains parked
 
-A small private plugin, published to the Solidaris organization, run by a designer with the branch
-`proposals/{app}` open. It reads `proposed.dtcg.json` (pasted, or fetched from GitHub) and
-creates/updates variables through `figma.variables`. The Plugin API is not plan-gated.
-
-- Keeps branch-only writes and the designer review in Figma. No licence change.
-- Not unattended: a person runs it. `apply-to-figma.yml` stays parked.
-- New code to own: manifest and UI, DTCG → variable mapping (colours first), private publishing,
-  keeping pace with the propose output.
-- Does not restore `tokens:pull-figma`; the same plugin would have to export the branch's
-  variables instead.
-
-### B. Enterprise plan
-
-Unlocks `file_variables:read/write` on personal access tokens. Everything already built runs as
-designed after a new `FIGMA_TOKEN` with those scopes (scopes cannot be added to an existing token)
-and the Figma branch `proposals/scratch` created in the UI.
-
-- Unattended CI with two review gates: the GitHub `figma-write` environment and the Figma branch
-  review.
-- Licensing decision outside the design-system team.
-
-## Until decided
-
-- Repo → Figma is one-way in practice. `tokens:propose` remains the list of code-owned tokens
-  missing from Figma; a designer who needs one in the UI Kit creates it on the branch by hand with
-  the proposed name.
-- `Apply tokens to Figma` and `Figma library publish` stop at the first Variables call. Do not
-  expect them to write.
-- Documented in Storybook (Docs / Token pipeline and Figma sync), `tools/tokens/README.md`,
-  `tools/tokens/PLUGIN_SETUP.md`.
-
-## Decision needed from
-
-Design-system owner (option A) or whoever owns Figma licensing (option B).
+- `Apply tokens to Figma` and `Figma library publish` still stop at the first Variables REST call.
+  Do not expect them to write until the org is on Enterprise and a new `FIGMA_TOKEN` carries
+  `file_variables:*`.
+- Export (branch variables → JSON, the `tokens:pull-figma` replacement) is not in the plugin yet.

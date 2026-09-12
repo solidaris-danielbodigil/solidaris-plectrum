@@ -3,32 +3,32 @@ name: Plectrum Figma tokens plugin
 overview: Build the private Figma plugin (Option A of the open transport decision) that pulls the committed proposed.dtcg.json from GitHub and upserts code-owned tokens as variables into the collection proposals/{app} on a Figma branch, and harden tokens:propose so the proposal is typed and Figma-ready. The REST path stays parked as the Enterprise alternative.
 todos:
   - id: propose-typing
-    content: "propose-to-figma.mjs: DTCG typing (color/dimension/number/fontWeight/fontFamily), calc + var(--pds-*) resolution to px, skip reasons, deterministic output; extract cssToFigmaColor to tools/tokens/figma-values.mjs; node --test spec"
-    status: pending
+    content: 'propose-to-figma.mjs: DTCG typing (color/dimension/number/fontWeight/fontFamily), calc + var(--pds-*) resolution to px, skip reasons, deterministic output; extract cssToFigmaColor to tools/tokens/figma-values.mjs; node --test spec'
+    status: completed
   - id: commit-proposal
     content: Un-ignore and commit proposed.dtcg.json; add tools/figma-plugin/dist to .gitignore; CI step 'Rebuild token proposal (must be committed)'
-    status: pending
+    status: completed
   - id: plugin-scaffold
-    content: "tools/figma-plugin: manifest.json, tsconfigs, build.mjs (esbuild), root scripts + devDeps (@figma/plugin-typings, esbuild)"
-    status: pending
+    content: 'tools/figma-plugin: manifest.json, tsconfigs, build.mjs (esbuild), root scripts + devDeps (@figma/plugin-typings, esbuild)'
+    status: completed
   - id: plugin-core
     content: src/values.ts, plan.ts, apply.ts, github.ts, settings.ts with tsx node --test specs for the pure modules
-    status: pending
+    status: completed
   - id: plugin-main-ui
     content: src/main.ts guards + message flow; ui.html/ui.ts with settings, app select, fetch, selection table, dry-run, apply, result log (Figma themeColors)
-    status: pending
+    status: completed
   - id: plugin-ci
-    content: "CI job figma-plugin: typecheck, test, build, upload artifact"
-    status: pending
+    content: 'CI job figma-plugin: typecheck, test, build, upload artifact'
+    status: completed
   - id: docs-adr
     content: ADR + question status, PLUGIN_SETUP.md, tools/tokens/README.md, plugin README, workflow header comments
-    status: pending
+    status: completed
   - id: docs-storybook
     content: Update token-pipeline-figma.mdx/.stories.ts and token-pipeline.mdx rows describing the parked outbound path
-    status: pending
+    status: completed
   - id: verify
     content: Import plugin from manifest in Figma desktop, dry-run + apply one token on the proposals/scratch branch, confirm main-file refusal
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -114,15 +114,15 @@ const collection =
   existing ?? figma.variables.createVariableCollection(`proposals/${app}`);
 if (!existing) {
   collection.hiddenFromPublishing = true;
-  collection.renameMode(collection.defaultModeId, "Value");
+  collection.renameMode(collection.defaultModeId, 'Value');
 }
 const variable =
   found ??
   figma.variables.createVariable(row.name, collection, row.resolvedType);
 variable.setValueForMode(collection.defaultModeId, row.value); // {r,g,b,a} | number | string
 variable.description = `Code-owned token ${row.cssVar}`;
-variable.scopes = ["ALL_SCOPES"];
-variable.setVariableCodeSyntax("WEB", `var(${row.cssVar})`);
+variable.scopes = ['ALL_SCOPES'];
+variable.setVariableCodeSyntax('WEB', `var(${row.cssVar})`);
 variable.hiddenFromPublishing = true;
 ```
 

@@ -7,10 +7,10 @@ import * as Figures from './token-pipeline-figma.stories';
 
 # Figma sync
 
-Two one-way transports connect the Plectrum UI Kit and the repository. One is live; the other is built and parked.
+Two one-way transports connect the Plectrum UI Kit and the repository.
 
 - **Figma → repository** — live. The PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
-- **Repository → Figma** — parked. Code-owned tokens are proposed for a Figma branch; the automated write needs Figma's Enterprise-only Variables API. See [Status](#status).
+- **Repository → Figma** — live on the Organization plan via the Plectrum tokens plugin. The Variables REST API (`tokens:apply`) stays parked as the Enterprise alternative. See [Status](#status).
 
 Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
 
@@ -34,12 +34,12 @@ Neither transport writes the main Figma file automatically. See the [pipeline ov
     { from: 'main', to: 'staging', label: 'plugin sync' },
     { from: 'staging', to: 'json', label: 'pull request' },
     { from: 'code', to: 'proposal', label: 'tokens:propose' },
-    { from: 'proposal', to: 'branch', label: 'by hand', dashed: true },
+    { from: 'proposal', to: 'branch', label: 'plugin', dashed: true },
     { from: 'branch', to: 'main', label: 'merge + publish', dashed: true },
   ]}
 />
 
-Top row: Figma → repository, automated up to the pull request. Bottom row: repository → Figma. `tokens:propose` runs; the write into the Figma branch is by hand while `tokens:apply` is parked. Both transports end in a manual merge.
+Top row: Figma → repository, automated up to the pull request. Bottom row: repository → Figma. `tokens:propose` writes a committed proposal; a designer runs the Plectrum tokens plugin on the branch `proposals/{app}`. Both transports end in a manual merge.
 
 ---
 
@@ -49,7 +49,7 @@ Top row: Figma → repository, automated up to the pull request. Bottom row: rep
   <Story of={Figures.OutboundStatus} />
 </Unstyled>
 
-Two ways to restore the automated write. The decision is open; the record lives in `.ai/questions/2026-09-07-repo-to-figma-transport.md`.
+The Organization-plan write is the Plectrum tokens plugin. The REST path stays parked for Enterprise. Decision: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`.
 
 <Unstyled>
   <Story of={Figures.OutboundOptions} />
@@ -138,7 +138,7 @@ Figma remains the source of truth for primitives and semantics. Component tokens
 
 ## Repository → Figma
 
-Tokens that originate in code — a surface step the UI Kit lacks, a feature-specific colour — are proposed to Figma. By design they are not entered in the UI Kit by hand; while the transport is parked (see [Status](#status)), the proposal is entered on the branch `proposals/{app}` by a designer.
+Tokens that originate in code — a surface step the UI Kit lacks, a feature-specific colour — are proposed to Figma. `tokens:propose` writes `proposed.dtcg.json`; a designer applies selected tokens with the Plectrum tokens plugin on the branch `proposals/{app}`.
 
 ### Process
 
@@ -210,6 +210,7 @@ Flags, inputs and CI wiring for every token script: [Token pipeline → Commands
 
 ```bash
 npm run tokens:propose
+npm run figma-plugin:build                                                 # Organization plan (live)
 npm run tokens:apply -- --app scratch --only color/surface/75 --dry-run   # Enterprise only
 npm run tokens:pull-figma                                                  # Enterprise only
 ```

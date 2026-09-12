@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 11px/1.4 Inter, system-ui, sans-serif;
+        color: var(--figma-color-text);
+        background: var(--figma-color-bg);
+      }
+      header,
+      section,
+      footer {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--figma-color-border);
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 12px;
+      }
+      p,
+      label,
+      .meta,
+      .log {
+        margin: 0;
+      }
+      .meta,
+      .hint {
+        color: var(--figma-color-text-secondary);
+      }
+      .blocked {
+        color: var(--figma-color-text-danger);
+      }
+      .row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-top: 6px;
+      }
+      .row label {
+        width: 56px;
+        flex: none;
+      }
+      input,
+      select,
+      button {
+        font: inherit;
+        color: var(--figma-color-text);
+        background: var(--figma-color-bg-secondary);
+        border: 1px solid var(--figma-color-border);
+        border-radius: 4px;
+        padding: 4px 6px;
+      }
+      input,
+      select {
+        flex: 1;
+        min-width: 0;
+      }
+      button {
+        cursor: pointer;
+        background: var(--figma-color-bg);
+      }
+      button.primary {
+        background: var(--figma-color-bg-brand);
+        color: var(--figma-color-text-onbrand);
+        border-color: transparent;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 6px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 3px 4px;
+        border-bottom: 1px solid var(--figma-color-border);
+        vertical-align: top;
+      }
+      th:first-child,
+      td:first-child {
+        width: 22px;
+      }
+      .scroll {
+        max-height: 220px;
+        overflow: auto;
+      }
+      .log {
+        white-space: pre-wrap;
+        max-height: 90px;
+        overflow: auto;
+        color: var(--figma-color-text-secondary);
+      }
+      details summary {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Plectrum tokens</h1>
+      <p id="file" class="meta"></p>
+      <p id="guard" class="hint"></p>
+    </header>
+    <section>
+      <details>
+        <summary>GitHub settings</summary>
+        <p class="hint" style="margin-top: 6px">
+          Fine-grained PAT, this repository only, Contents: Read. Stored in this plugin on this machine.
+        </p>
+        <div class="row"><label for="owner">Owner</label><input id="owner" /></div>
+        <div class="row"><label for="repo">Repo</label><input id="repo" /></div>
+        <div class="row"><label for="path">Path</label><input id="path" /></div>
+        <div class="row"><label for="ref">Ref</label><input id="ref" /></div>
+        <div class="row"><label for="token">PAT</label><input id="token" type="password" placeholder="github_pat_…" /></div>
+        <div class="row">
+          <span id="token-status" class="meta"></span>
+          <button id="save" type="button">Save</button>
+          <button id="clear-token" type="button">Clear token</button>
+        </div>
+      </details>
+    </section>
+    <section>
+      <div class="row">
+        <label for="app">App</label>
+        <select id="app">
+          <option value="scratch">scratch</option>
+          <option value="ishare">ishare</option>
+          <option value="icrm">icrm</option>
+          <option value="custom">custom…</option>
+        </select>
+        <input id="app-custom" placeholder="custom suffix" hidden />
+      </div>
+      <div class="row">
+        <button id="fetch" class="primary" type="button">Fetch proposal</button>
+      </div>
+    </section>
+    <section>
+      <div class="row">
+        <input id="filter" placeholder="Filter names" />
+        <button id="select-visible" type="button">Select all visible</button>
+        <button id="clear-selection" type="button">Clear</button>
+      </div>
+      <p id="counts" class="meta"></p>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <div class="row">
+        <button id="plan" type="button">Plan</button>
+        <button id="apply" class="primary" type="button" disabled>Apply</button>
+      </div>
+      <p id="summary" class="meta"></p>
+      <pre id="log" class="log"></pre>
+    </footer>
+    <!-- UI_JS -->
+  </body>
+</html>

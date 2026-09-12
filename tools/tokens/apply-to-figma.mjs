@@ -11,7 +11,7 @@
  *
  * Enterprise only: steps 3–4 need file_variables:read / file_variables:write,
  * scopes Figma does not offer on the Organization plan (403 Invalid scope).
- * Parked — see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+ * Parked Enterprise alternative. Live path: tools/figma-plugin.
  *
  * Usage:
  *   node tools/tokens/apply-to-figma.mjs --app scratch
@@ -22,8 +22,10 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { cssToFigmaColor, MAIN_FILE_KEY } from './figma-values.mjs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DEFAULT_FILE_KEY = 'YNZ1DlSjDNUXrvkxlSp10D';
+const DEFAULT_FILE_KEY = MAIN_FILE_KEY;
 const DEFAULT_PROPOSAL = join(__dirname, 'proposed.dtcg.json');
 
 function parseArgs(argv) {
@@ -67,34 +69,6 @@ Aborts if that branch is missing — never writes to main.
 --branch-key Figma branch file key (from /design/{main}/branch/{key}/…). Skips branch listing.
 --dry-run    (default) prints the POST payload + resolved branch key
 --write      POST /v1/files/:branchKey/variables (file_variables:write)`);
-}
-
-function cssToFigmaColor(value) {
-  const raw = String(value).trim();
-  const hex = raw.match(/^#?([0-9a-f]{6})([0-9a-f]{2})?$/i);
-  if (hex) {
-    const n = hex[1];
-    return {
-      r: parseInt(n.slice(0, 2), 16) / 255,
-      g: parseInt(n.slice(2, 4), 16) / 255,
-      b: parseInt(n.slice(4, 6), 16) / 255,
-      a: hex[2] ? parseInt(hex[2], 16) / 255 : 1,
-    };
-  }
-  const rgba = raw.match(
-    /^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)$/i,
-  );
-  if (rgba) {
-    const first = Number(rgba[1]);
-    const scale = first > 1 || Number(rgba[2]) > 1 || Number(rgba[3]) > 1 ? 255 : 1;
-    return {
-      r: Number(rgba[1]) / scale,
-      g: Number(rgba[2]) / scale,
-      b: Number(rgba[3]) / scale,
-      a: rgba[4] != null ? Number(rgba[4]) : 1,
-    };
-  }
-  return null;
 }
 
 async function figma(path, token, init = {}) {

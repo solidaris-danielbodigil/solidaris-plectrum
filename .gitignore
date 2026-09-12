@@ -12,7 +12,7 @@ yarn-error.log
 # Packed library tarballs (npm pack smoke test)
 /tools/packaging/.tarballs/
 *.tgz
-/tools/tokens/proposed.dtcg.json
+/tools/figma-plugin/dist/
 
 # Angular / tooling caches
 /.angular/cache

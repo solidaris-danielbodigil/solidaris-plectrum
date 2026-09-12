@@ -4,8 +4,8 @@
  * changed in Figma but were never plugin-pushed into tokens.json.
  *
  * Needs FIGMA_TOKEN with file_variables:read — a scope Figma offers on the
- * Enterprise plan only. Parked on the Organization plan (403 Invalid scope);
- * see tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+ * Enterprise plan only. Parked on the Organization plan (403 Invalid scope).
+ * Live repo → Figma path: tools/figma-plugin. See PLUGIN_SETUP.md.
  * Optional FIGMA_FILE_KEY (default: Plectrum UI Kit).
  *
  * Usage:

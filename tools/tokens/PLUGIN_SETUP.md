@@ -45,28 +45,50 @@ The promotion PR body and the Actions job summary carry the `tokens:report` outp
 
 After every push the workflow posts the same summary as a comment in the UI Kit — "Promoted for review" or "Blocked", what changed, which check failed. Replies go into one thread that starts with `[Plectrum token sync]`; resolve the thread to start a fresh one.
 
-| Setting                      | Where                   | Value                                                                                                                                                                          |
-| ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Setting                      | Where                   | Value                                                                                                                                                                                                                                                  |
+| ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `FIGMA_TOKEN`                | repo secret             | Figma personal access token. Comments: `file_comments:read` + `file_comments:write`. Repo→Figma variables: also `file_variables:read` + `file_variables:write` (Enterprise, Full seat). Figma cannot add scopes to an existing token — mint a new one. |
-| `FIGMA_FILE_KEY`             | repo variable           | Plectrum UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`)                                                                                                                    |
-| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Id of a frame (e.g. a "Token sync log" frame on the cover page) the thread is pinned to; without it the pin sits at the canvas origin of the first page                        |
+| `FIGMA_FILE_KEY`             | repo variable           | Plectrum UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`)                                                                                                                                                                                            |
+| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Id of a frame (e.g. a "Token sync log" frame on the cover page) the thread is pinned to; without it the pin sits at the canvas origin of the first page                                                                                                |
 
 Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull request.
 
 Figma writes **from this repo** never target the main file. `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`), not `FIGMA_FILE_KEY` (that var is the comment target and may be a Figma branch).
 
-## Repo → Figma (`tokens:apply`) — parked
+## Repo → Figma (Plectrum tokens plugin)
 
-**Status 2026-09-07: not available on the Organization plan.** `tokens:apply` and the `tokens:pull-figma` safety net use Figma's Variables REST API (`GET …/variables/local`, `POST …/variables`), which Figma offers on the **Enterprise** plan only. The token dialog shows no `file_variables:*` scope, and the first dry run stopped at the first Variables call with `403 Invalid scope … requires the file_variables:read scope` before anything was written ([run 34127712582](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34127712582)). Figma → repo is unaffected: the plugin sync and the comment thread need no Variables scope.
+**Live on the Organization plan.** A private plugin (`tools/figma-plugin`) fetches the committed `tools/tokens/proposed.dtcg.json` from GitHub and upserts selected tokens through `figma.variables`. Decision: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`. Full install and publish steps: `tools/figma-plugin/README.md`.
 
-Open decision — `.ai/questions/2026-09-07-repo-to-figma-transport.md`:
+### Designer-owned GitHub PAT
 
-| Option                                                    | What it unlocks                                                                                            | What stays manual                                                              |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| A. Custom Figma plugin (Plugin API, `figma.variables`)    | Writing `proposed.dtcg.json` into the collection `proposals/{app}` on the Organization plan                | A designer runs it with the branch open; we build and maintain the plugin      |
-| B. Enterprise plan                                        | `file_variables:read/write` on a PAT → `apply-to-figma.yml` and `library-publish.yml` run as built         | Creating the Figma branch (no API); a new PAT with the Variables scopes        |
+- Fine-grained PAT, **this repo only**
+- Permissions: **Contents: Read**
+- Stored in the plugin (`figma.clientStorage`) on that machine. The UI shows `…last4` only.
+- Do not reuse the PrimeUI plugin's Contents **write** token.
 
-Until then code-owned tokens stay code-only. `tokens:propose` lists what the UI Kit lacks; a designer who needs one of them in Figma creates it on the branch `proposals/{app}` by hand, with the proposed name (e.g. `color/surface/75`).
+### Plugin settings
+
+| Field | Value                                             |
+| ----- | ------------------------------------------------- |
+| Owner | `solidaris-danielbodigil`                         |
+| Repo  | `solidaris-plectrum`                              |
+| Path  | `tools/tokens/proposed.dtcg.json`                 |
+| Ref   | `main` (or a PR branch)                           |
+| App   | suffix of the open Figma branch `proposals/{app}` |
+
+### Guards
+
+- Open the Figma branch `proposals/{app}`. The plugin refuses `figma.fileKey` equal to the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`) or undefined.
+- Writes only the collection `proposals/{app}`: hidden from publishing, one mode `Value`, `scopes: ALL_SCOPES`, `codeSyntax.WEB = var(--pds-…)`.
+- Explicit selection — nothing is selected after fetch. "Select all visible" is an action, not the default.
+- Never deletes a variable; never changes `resolvedType`.
+- `$type: other` (shadows, gradients, durations, `%`, keywords, unresolved `var()`) appears as skip.
+
+`npm run tokens:propose` regenerates the proposal (typed, deterministic). CI fails if that file is stale.
+
+## Repo → Figma (`tokens:apply`) — Enterprise alternative
+
+**Parked on the Organization plan.** `tokens:apply` and `tokens:pull-figma` use Figma's Variables REST API (`GET …/variables/local`, `POST …/variables`), which Figma offers on the **Enterprise** plan only. The first dry run stopped at the first Variables call with `403 Invalid scope` ([run 34127712582](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34127712582)). Nothing was written. Use the Plectrum tokens plugin until the org is on Enterprise.
 
 When the Variables API becomes available:
 
@@ -74,4 +96,4 @@ When the Variables API becomes available:
 2. Create Figma branch **`proposals/scratch`** on the main UI Kit (Full seat). There is no API for branch creation.
 3. Run **Apply tokens to Figma** (`workflow_dispatch`) with `only=<one Figma name>`: dry-run first, then `write=true` once the payload looks right. The job writes into the collection `proposals/scratch` on that branch and aborts if the branch is missing. `branch_key` (from the URL `/design/{main}/branch/{key}/`) skips the branch listing when `GET ?branch_data=true` returns none.
 
-The `figma-write` GitHub Environment is the approval gate for real writes.
+The `figma-write` GitHub Environment is the approval gate for real REST writes.

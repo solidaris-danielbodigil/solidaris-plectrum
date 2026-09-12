@@ -62,29 +62,30 @@ export const BranchWarning: StoryObj = calloutStory({
 });
 
 export const OutboundStatus: StoryObj = calloutStory({
-  tone: 'warning',
-  title: 'Repository → Figma is parked — Figma → repository is live',
-  text: 'tokens:apply and the tokens:pull-figma safety net use the Figma Variables REST API, which Figma offers on the Enterprise plan only. Solidaris is on the Organization plan: a personal access token cannot carry file_variables:read or file_variables:write, and the first dry run (2026-09-07) stopped at the first Variables call with 403 Invalid scope. Nothing was written. The plugin sync and the comment thread need no Variables scope, so the inbound transport is unaffected.',
+  tone: 'info',
+  title:
+    'Repository → Figma is the Plectrum tokens plugin — REST apply stays parked',
+  text: 'On the Organization plan a designer runs the private Plectrum tokens plugin with the branch proposals/{app} open. It fetches proposed.dtcg.json from GitHub and writes the collection of the same name through figma.variables. tokens:apply and tokens:pull-figma still need the Enterprise-only Variables REST API (file_variables:read/write); they remain the unattended alternative. The inbound PrimeUI plugin sync is unchanged.',
 });
 
 export const OutboundOptions: StoryObj = cardsStory(
   [
     {
-      eyebrow: 'Option A',
+      eyebrow: 'Chosen',
       tone: 'design',
-      title: 'Custom Figma plugin',
-      lead: 'A small private plugin, published inside the Solidaris organization, that a designer runs with the branch proposals/{app} open. It reads proposed.dtcg.json and creates the variables through figma.variables. The Plugin API is not plan-gated.',
+      title: 'Plectrum tokens plugin',
+      lead: 'Private plugin in tools/figma-plugin. A designer opens proposals/{app}, fetches the committed proposal from GitHub, selects tokens, plans, then applies. The Plugin API is not plan-gated.',
       items: [
-        'Keeps the branch-only rule and the designer review. No licence change.',
-        'Not unattended: a person opens the file and runs it. apply-to-figma.yml stays parked.',
-        'Code to own: manifest and UI, DTCG → variable mapping (colours first), private publishing, keeping pace with the propose output.',
-        'Does not restore tokens:pull-figma; the same plugin would have to export the branch instead.',
+        'Branch-only: refuses the main UI Kit file key. Collection proposals/{app} is hidden from publishing.',
+        'Attended: a person runs it. apply-to-figma.yml stays parked.',
+        'Typed proposal: color, dimension (px), number, fontWeight, fontFamily. Everything else is listed as skip.',
+        'Does not restore tokens:pull-figma; export is a follow-up.',
       ],
     },
     {
-      eyebrow: 'Option B',
+      eyebrow: 'Parked',
       tone: 'system',
-      title: 'Enterprise plan',
+      title: 'Enterprise REST path',
       lead: 'Unlocks file_variables:read and file_variables:write on personal access tokens. Apply tokens to Figma and Figma library publish run as built.',
       items: [
         'Unattended CI with two review gates: the figma-write GitHub environment and the Figma branch review.',
@@ -98,12 +99,12 @@ export const OutboundOptions: StoryObj = cardsStory(
 
 export const OutboundInterim: StoryObj = calloutStory({
   tone: 'info',
-  title: 'Until the decision',
+  title: 'How to apply a code-owned token',
   items: [
-    'Code-owned tokens keep compiling into the stylesheet. Nothing changes for applications.',
-    'tokens:propose remains the list of what the UI Kit lacks. A designer who needs one of those tokens in Figma creates it on the branch proposals/{app} by hand, with the name from proposed.dtcg.json (for example color/surface/75).',
-    'Do not expect Apply tokens to Figma or Figma library publish to write anything: both stop at the first Variables call.',
-    'Decision record: .ai/questions/2026-09-07-repo-to-figma-transport.md.',
+    'npm run tokens:propose writes tools/tokens/proposed.dtcg.json (committed; CI fails if it is stale).',
+    'Open the Figma branch proposals/{app}. Run Plectrum tokens, fetch, select, plan, apply. Setup: tools/figma-plugin/README.md and tools/tokens/PLUGIN_SETUP.md.',
+    'Do not expect Apply tokens to Figma or Figma library publish to write anything: both stop at the first Variables REST call.',
+    'Decision: .ai/decisions/2026-09-10-repo-to-figma-plugin.md.',
   ],
 });
 
@@ -123,11 +124,11 @@ export const OutboundProcess: StoryObj = stepsStory([
       'Compares code-declared --pds-* with tokens.json and writes proposed.dtcg.json. Dotted paths map to Figma groups.',
   },
   {
-    who: 'CI',
-    tone: 'neutral',
-    title: 'tokens:apply — parked',
+    who: 'Designer',
+    tone: 'design',
+    title: 'Plectrum tokens plugin',
     detail:
-      'Writes the proposal into the collection proposals/{app} on the Figma branch of the same name through the Variables REST API. Dry run is the default; a real write is a manual workflow run behind the figma-write environment. Enterprise only — on the Organization plan the job stops with 403 Invalid scope. Until the plan decision a designer enters the proposed names on the branch by hand.',
+      'With the Figma branch proposals/{app} open, fetch proposed.dtcg.json from GitHub, select tokens (nothing is selected by default), plan, then apply. Writes go to the collection proposals/{app} only. The plugin refuses the main UI Kit file key. tokens:apply remains the Enterprise REST alternative.',
   },
   {
     who: 'Designer',
@@ -161,7 +162,7 @@ export const Guardrails: StoryObj = calloutStory({
     '--only is required; --all is an explicit opt-in. The first real write never dumps every code-owned token.',
     'A real write requires workflow_dispatch plus the figma-write GitHub Environment. First apply only on a throwaway branch.',
     'POST /variables is atomic: one invalid variable rejects the whole batch. Nothing is partially written.',
-    'Variables REST API calls are Enterprise only. On the Organization plan both apply and pull stop with 403 Invalid scope before any write.',
+    'The Plectrum tokens plugin refuses a missing file key and the main UI Kit key. Variables REST API calls stay Enterprise only; on the Organization plan apply and pull still stop with 403 Invalid scope.',
   ],
 });
 
@@ -196,7 +197,7 @@ export const Reference: StoryObj = cardsStory(
       items: [
         'npm run tokens:pull-figma calls GET /v1/files/{key}/variables/local and flags variables changed in Figma but never plugin-pushed. Requires FIGMA_TOKEN with file_variables:read — Enterprise only.',
         'LIBRARY_PUBLISH (repository_dispatch) re-runs the pull after a designer merge and library publish. Same gate.',
-        'The REST Variables API is a safety net only, not the ingestion path. The plugin sync and the comment thread need no Variables scope.',
+        'The REST Variables API is a safety net only, not the ingestion path. The PrimeUI plugin sync, the comment thread, and the Plectrum tokens plugin need no Variables REST scope.',
       ],
     },
     {

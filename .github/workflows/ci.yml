@@ -38,6 +38,9 @@ jobs:
       - name: Rebuild generated tokens (must be committed)
         run: npm run tokens:build && git diff --exit-code -- libs/styles/src/01-settings/*.generated.scss libs/ui/src/storybook/tokens.generated.ts
 
+      - name: Rebuild token proposal (must be committed)
+        run: npm run tokens:propose:test && npm run tokens:propose && git diff --exit-code -- tools/tokens/proposed.dtcg.json
+
       - name: Rebuild changelog feed (must be committed)
         run: npm run changelog:build && git diff --exit-code -- libs/ui/src/storybook/changelog.generated.ts
 
@@ -159,3 +162,25 @@ jobs:
 
       - name: Build Storybook against packed tarballs
         run: npm run build-storybook:packed
+
+  figma-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Typecheck, test and build
+        run: |
+          npm run figma-plugin:typecheck
+          npm run figma-plugin:test
+          npm run figma-plugin:build
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plectrum-figma-plugin
+          path: |
+            tools/figma-plugin/manifest.json
+            tools/figma-plugin/dist/

@@ -1,0 +1,2597 @@
+{
+  "$description": "Code-owned tokens proposed for a Figma branch. Apply with the Plectrum tokens plugin (or apply-to-figma --dry-run on Enterprise).",
+  "codeOwned": {
+    "base/unit": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-base-unit",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "border/width/default": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-border-width-default",
+          "source": "_settings.borders.scss"
+        }
+      }
+    },
+    "border/width/list": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-border-width-list",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "border/width/list/row": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-border-width-list-row",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "border/width/none": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-border-width-none",
+          "source": "_settings.borders.scss"
+        }
+      }
+    },
+    "border/width/thick": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-border-width-thick",
+          "source": "_settings.borders.scss"
+        }
+      }
+    },
+    "color/black/alpha/100": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.10)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-100",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/200": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.20)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-200",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/300": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.30)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-300",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/400": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.40)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-400",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/50": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.05)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-50",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/500": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.50)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-500",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/600": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.60)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-600",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/700": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.70)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-700",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/800": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.80)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-800",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/black/alpha/900": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.90)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-black-alpha-900",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/green/75": {
+      "$type": "color",
+      "$value": "#dcfce7",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-green-75",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/nav/shell/text": {
+      "$type": "other",
+      "$value": "currentcolor",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-nav-shell-text",
+          "source": "_settings.nav-shell.scss",
+          "reason": "unsupported:keyword"
+        }
+      }
+    },
+    "color/orange/75": {
+      "$type": "color",
+      "$value": "#ffedd5",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-orange-75",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/primary/75": {
+      "$type": "color",
+      "$value": "#edf1f4",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-primary-75",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/profile/card/bg/danger": {
+      "$type": "other",
+      "$value": "linear-gradient(var(--pds-profile-card-bg-gradient-angle), var(--pds-color-profile-card-bg-danger-gradient-start) 0%, var(--pds-color-surface-0) var(--pds-profile-card-bg-gradient-stop))",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-card-bg-danger",
+          "source": "_settings.profile-card.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "color/profile/card/bg/in/order": {
+      "$type": "other",
+      "$value": "linear-gradient(var(--pds-profile-card-bg-gradient-angle), var(--pds-color-profile-card-bg-in-order-gradient-start) 0%, var(--pds-color-surface-0) var(--pds-profile-card-bg-gradient-stop))",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-card-bg-in-order",
+          "source": "_settings.profile-card.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "color/profile/card/bg/warning": {
+      "$type": "other",
+      "$value": "linear-gradient(var(--pds-profile-card-bg-gradient-angle), var(--pds-color-profile-card-bg-warning-gradient-start) 0%, var(--pds-color-surface-0) var(--pds-profile-card-bg-gradient-stop))",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-card-bg-warning",
+          "source": "_settings.profile-card.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "color/profile/card/shortcut/badge/bg": {
+      "$type": "other",
+      "$value": "color-mix(in srgb, #edf1f4 80%, transparent)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-card-shortcut-badge-bg",
+          "source": "_settings.profile-card.scss",
+          "reason": "unsupported:color-mix"
+        }
+      }
+    },
+    "color/red/75": {
+      "$type": "color",
+      "$value": "#fee2e2",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-red-75",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/surface/75": {
+      "$type": "color",
+      "$value": "#ededed",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-surface-75",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/surface/border/drawer": {
+      "$type": "color",
+      "$value": "#e7e7e7",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-surface-border-drawer",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/black/10": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.10)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-black-10",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/black/20": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.20)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-black-20",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/black/5": {
+      "$type": "color",
+      "$value": "rgba(0, 0, 0, 0.05)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-black-5",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/white/10": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.10)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-white-10",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/white/20": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.20)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-white-20",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "color/transparent/white/80": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.80)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-transparent-white-80",
+          "source": "_settings.colors-primitive.scss"
+        }
+      }
+    },
+    "docs/sync/swatch": {
+      "$type": "color",
+      "$value": "transparent",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-docs-sync-swatch",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "duration/affiliate/document/detail/message/pulse": {
+      "$type": "other",
+      "$value": "700ms",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-duration-affiliate-document-detail-message-pulse",
+          "source": "_settings.affiliate-document-detail.scss",
+          "reason": "unsupported:duration"
+        }
+      }
+    },
+    "duration/toolbar/elevation": {
+      "$type": "other",
+      "$value": "140ms",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-duration-toolbar-elevation",
+          "source": "_settings.transitions.scss",
+          "reason": "unsupported:duration"
+        }
+      }
+    },
+    "duration/toolbar/height": {
+      "$type": "other",
+      "$value": "220ms",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-duration-toolbar-height",
+          "source": "_settings.transitions.scss",
+          "reason": "unsupported:duration"
+        }
+      }
+    },
+    "duration/toolbar/slide": {
+      "$type": "other",
+      "$value": "200ms",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-duration-toolbar-slide",
+          "source": "_settings.transitions.scss",
+          "reason": "unsupported:duration"
+        }
+      }
+    },
+    "ease/snappy": {
+      "$type": "other",
+      "$value": "cubic-bezier(0.2, 0.9, 0.4, 1)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-ease-snappy",
+          "source": "_settings.transitions.scss",
+          "reason": "unsupported:easing"
+        }
+      }
+    },
+    "ease/standard": {
+      "$type": "other",
+      "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-ease-standard",
+          "source": "_settings.transitions.scss",
+          "reason": "unsupported:easing"
+        }
+      }
+    },
+    "font/family/body": {
+      "$type": "fontFamily",
+      "$value": [
+        "Open Sans",
+        "sans-serif"
+      ],
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-family-body",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/family/display": {
+      "$type": "fontFamily",
+      "$value": [
+        "Agenda",
+        "sans-serif"
+      ],
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-family-display",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/family/heading": {
+      "$type": "fontFamily",
+      "$value": [
+        "Open Sans",
+        "sans-serif"
+      ],
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-family-heading",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/family/label": {
+      "$type": "fontFamily",
+      "$value": [
+        "Open Sans",
+        "sans-serif"
+      ],
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-family-label",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/2xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 23.996,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-2xl",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/3xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-3xl",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/4xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32.004,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-4xl",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/5xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 39.998,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-5xl",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/base": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-base",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 18.004,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-lg",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16.002,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-md",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/s": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-s",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20.006,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-xl",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/size/xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 11.998,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-size-xs",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/weight/bold": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-weight-bold",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/weight/regular": {
+      "$type": "fontWeight",
+      "$value": 400,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-weight-regular",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "font/weight/semibold": {
+      "$type": "fontWeight",
+      "$value": 600,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-font-weight-semibold",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "grid/cols": {
+      "$type": "other",
+      "$value": "#{$grid-cols}",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-grid-cols",
+          "source": "_settings.grid.scss",
+          "reason": "sass:interpolation"
+        }
+      }
+    },
+    "icon/size/lg": {
+      "$type": "dimension",
+      "$value": {
+        "value": 17.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-icon-size-lg",
+          "source": "_settings.globals.scss"
+        }
+      }
+    },
+    "icon/size/md": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-icon-size-md",
+          "source": "_settings.globals.scss"
+        }
+      }
+    },
+    "icon/size/sm": {
+      "$type": "dimension",
+      "$value": {
+        "value": 12.25,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-icon-size-sm",
+          "source": "_settings.globals.scss"
+        }
+      }
+    },
+    "icon/size/xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 21,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-icon-size-xl",
+          "source": "_settings.globals.scss"
+        }
+      }
+    },
+    "icon/size/xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-icon-size-xs",
+          "source": "_settings.globals.scss"
+        }
+      }
+    },
+    "letter/spacing/0": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-letter-spacing-0",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/16": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16.002,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-16",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/18": {
+      "$type": "dimension",
+      "$value": {
+        "value": 18.004,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-18",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/20": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20.006,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-20",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/22": {
+      "$type": "dimension",
+      "$value": {
+        "value": 21.994,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-22",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/24": {
+      "$type": "dimension",
+      "$value": {
+        "value": 23.996,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-24",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/28": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-28",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/36": {
+      "$type": "dimension",
+      "$value": {
+        "value": 35.994,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-36",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/40": {
+      "$type": "dimension",
+      "$value": {
+        "value": 39.998,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-40",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "line/height/48": {
+      "$type": "dimension",
+      "$value": {
+        "value": 48.006,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-line-height-48",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "opacity/divider": {
+      "$type": "number",
+      "$value": 0.5,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-opacity-divider",
+          "source": "_settings.colors-semantic.scss"
+        }
+      }
+    },
+    "paragraph/spacing/0": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-paragraph-spacing-0",
+          "source": "_settings.typography-primitive.scss"
+        }
+      }
+    },
+    "position/docs/hero/shape/y": {
+      "$type": "other",
+      "$value": "73%",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-position-docs-hero-shape-y",
+          "source": "_settings.docs-hero.scss",
+          "reason": "unit:%"
+        }
+      }
+    },
+    "profile/card/bg/gradient/angle": {
+      "$type": "other",
+      "$value": "88deg",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-profile-card-bg-gradient-angle",
+          "source": "_settings.profile-card.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "profile/card/bg/gradient/stop": {
+      "$type": "other",
+      "$value": "23.21%",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-profile-card-bg-gradient-stop",
+          "source": "_settings.profile-card.scss",
+          "reason": "unit:%"
+        }
+      }
+    },
+    "radius/2xl": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-radius-2xl",
+          "source": "_settings.radius.scss"
+        }
+      }
+    },
+    "radius/nav/shell/item": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-radius-nav-shell-item",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "radius/pill": {
+      "$type": "dimension",
+      "$value": {
+        "value": 9999,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-radius-pill",
+          "source": "_settings.radius.scss"
+        }
+      }
+    },
+    "shadow/affiliate/details/panel": {
+      "$type": "other",
+      "$value": "0 0 0 1px var(--pds-color-card-border), var(--pds-shadow-sm)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-affiliate-details-panel",
+          "source": "_settings.affiliate-details.scss",
+          "reason": "unresolved:var(--pds-color-card-border)"
+        }
+      }
+    },
+    "shadow/affiliate/documents/toolbar": {
+      "$type": "other",
+      "$value": "0 0 0 1px var(--pds-color-card-border), var(--pds-shadow-sm)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-affiliate-documents-toolbar",
+          "source": "_settings.affiliate-documents.scss",
+          "reason": "unresolved:var(--pds-color-card-border)"
+        }
+      }
+    },
+    "shadow/affiliate/documents/toolbar/none": {
+      "$type": "other",
+      "$value": "0 0 0 1px var(--pds-color-card-border), 0 0 0 0 transparent",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-affiliate-documents-toolbar-none",
+          "source": "_settings.affiliate-documents.scss",
+          "reason": "unresolved:var(--pds-color-card-border)"
+        }
+      }
+    },
+    "shadow/avatar/active": {
+      "$type": "other",
+      "$value": "0 0 0 2px #ffffff, 0 0 0 4px #8ae0ff",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-avatar-active",
+          "source": "_settings.avatar.scss",
+          "reason": "unsupported:shadow"
+        }
+      }
+    },
+    "shadow/form/field/dark": {
+      "$type": "other",
+      "$value": "0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(18, 18, 23, 0.05)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-form-field-dark",
+          "source": "_settings.shadows.scss",
+          "reason": "unsupported:shadow"
+        }
+      }
+    },
+    "shadow/md": {
+      "$type": "other",
+      "$value": "0 9px 29px 0 rgba(0, 0, 0, 0.06), 0 5.833px 16.984px 0 rgba(0, 0, 0, 0.05), 0 3.467px 9.237px 0 rgba(0, 0, 0, 0.04), 0 1.8px 4.713px 0 rgba(0, 0, 0, 0.03), 0 0.733px 2.363px 0 rgba(0, 0, 0, 0.02), 0 0.167px 1.141px 0 rgba(0, 0, 0, 0.01)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-md",
+          "source": "_settings.shadows.scss",
+          "reason": "unsupported:shadow"
+        }
+      }
+    },
+    "shadow/sm": {
+      "$type": "other",
+      "$value": "0 7px 3.5px rgba(0, 0, 0, 0.04), 0 4.537px 2.05px rgba(0, 0, 0, 0.03), 0 2.696px 1.115px rgba(0, 0, 0, 0.02), 0 1.4px 0.569px rgba(0, 0, 0, 0.02), 0 0.57px 0.285px rgba(0, 0, 0, 0.02), 0 0.13px 0.138px rgba(0, 0, 0, 0.01)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-sm",
+          "source": "_settings.shadows.scss",
+          "reason": "unsupported:shadow"
+        }
+      }
+    },
+    "shadow/xl": {
+      "$type": "other",
+      "$value": "0 60px 40px 0 rgba(0, 0, 0, 0.07), 0 38.889px 23.426px 0 rgba(0, 0, 0, 0.05), 0 23.111px 12.741px 0 rgba(0, 0, 0, 0.04), 0 12px 6.5px 0 rgba(0, 0, 0, 0.04), 0 4.889px 3.259px 0 rgba(0, 0, 0, 0.03), 0 1.111px 1.574px 0 rgba(0, 0, 0, 0.02)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-shadow-xl",
+          "source": "_settings.shadows.scss",
+          "reason": "unsupported:shadow"
+        }
+      }
+    },
+    "size/affiliate/details/category/label/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 60,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-details-category-label-min",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "size/affiliate/details/detail/column/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 360,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-details-detail-column-min",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "size/affiliate/details/documents/column/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 320,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-details-documents-column-min",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "size/affiliate/details/documents/header/actions/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 280,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-details-documents-header-actions-min",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "size/affiliate/details/documents/search/max": {
+      "$type": "dimension",
+      "$value": {
+        "value": 220,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-details-documents-search-max",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/detail/label/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 124,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-detail-label-width",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/message/pulse/spread": {
+      "$type": "dimension",
+      "$value": {
+        "value": 8,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-message-pulse-spread",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/action/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 27,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-action-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/action/lg/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 147,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-action-lg-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/action/sm/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 57,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-action-sm-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/btn/md/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-btn-md-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/btn/md/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 171,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-btn-md-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/btn/sm/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 143,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-btn-sm-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/cert/title/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-cert-title-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/cert/title/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 86,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-cert-title-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/detail/row/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 26,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-detail-row-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/detail/row/w": {
+      "$type": "other",
+      "$value": "100%",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-detail-row-w",
+          "source": "_settings.affiliate-document-detail.scss",
+          "reason": "unit:%"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/heading/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-heading-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/heading/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 72,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-heading-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/step/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-step-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/step/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 148,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-step-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/tag/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 23,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-tag-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/tag/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 89,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-tag-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/title/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-title-h",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/document/detail/skeleton/title/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 604,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-document-detail-skeleton-title-w",
+          "source": "_settings.affiliate-document-detail.scss"
+        }
+      }
+    },
+    "size/affiliate/documents/filter/control": {
+      "$type": "dimension",
+      "$value": {
+        "value": 31,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-documents-filter-control",
+          "source": "_settings.affiliate-documents.scss"
+        }
+      }
+    },
+    "size/affiliate/documents/filter/date/field": {
+      "$type": "dimension",
+      "$value": {
+        "value": 280,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-documents-filter-date-field",
+          "source": "_settings.affiliate-documents.scss"
+        }
+      }
+    },
+    "size/affiliate/documents/filter/field": {
+      "$type": "dimension",
+      "$value": {
+        "value": 250,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-documents-filter-field",
+          "source": "_settings.affiliate-documents.scss"
+        }
+      }
+    },
+    "size/affiliate/search/panel/max": {
+      "$type": "dimension",
+      "$value": {
+        "value": 385,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-search-panel-max",
+          "source": "_settings.affiliate-search.scss"
+        }
+      }
+    },
+    "size/avatar": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-avatar",
+          "source": "_settings.avatar.scss"
+        }
+      }
+    },
+    "size/avatar/large/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 56,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-avatar-large-h",
+          "source": "_settings.avatar.scss"
+        }
+      }
+    },
+    "size/avatar/large/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 51.333,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-avatar-large-w",
+          "source": "_settings.avatar.scss"
+        }
+      }
+    },
+    "size/delay/prediction/menu/button": {
+      "$type": "dimension",
+      "$value": {
+        "value": 39.998,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-delay-prediction-menu-button",
+          "source": "_settings.delay-prediction-card.scss"
+        }
+      }
+    },
+    "size/detail/list/label/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 160,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-detail-list-label-width",
+          "source": "_settings.detail-list.scss"
+        }
+      }
+    },
+    "size/docs/card/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 224,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-card-min",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/card/min/wide": {
+      "$type": "dimension",
+      "$value": {
+        "value": 336,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-card-min-wide",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/diagram/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 560,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-diagram-min",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/edge/halo": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-edge-halo",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/edge/stroke": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-edge-stroke",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/hero/lead/max": {
+      "$type": "dimension",
+      "$value": {
+        "value": 560,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-hero-lead-max",
+          "source": "_settings.docs-hero.scss"
+        }
+      }
+    },
+    "size/docs/hero/logo/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 35,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-hero-logo-h",
+          "source": "_settings.docs-hero.scss"
+        }
+      }
+    },
+    "size/docs/hero/shape": {
+      "$type": "other",
+      "$value": "200%",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-hero-shape",
+          "source": "_settings.docs-hero.scss",
+          "reason": "unit:%"
+        }
+      }
+    },
+    "size/docs/releases/head": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-releases-head",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/steps/index": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-steps-index",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/stroke": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-stroke",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/swatch": {
+      "$type": "dimension",
+      "$value": {
+        "value": 12.25,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-swatch",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/drawer/max/width": {
+      "$type": "other",
+      "$value": "calc(100vw - 28px)",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-drawer-max-width",
+          "source": "_settings.drawer.scss",
+          "reason": "unit:viewport"
+        }
+      }
+    },
+    "size/drawer/min/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 280,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-drawer-min-width",
+          "source": "_settings.drawer.scss"
+        }
+      }
+    },
+    "size/empty/state/art/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 224,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-empty-state-art-h",
+          "source": "_settings.empty-state.scss"
+        }
+      }
+    },
+    "size/empty/state/art/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 238,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-empty-state-art-w",
+          "source": "_settings.empty-state.scss"
+        }
+      }
+    },
+    "size/form/field/label/min/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 112,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-form-field-label-min-width",
+          "source": "_settings.form-field.scss"
+        }
+      }
+    },
+    "size/list/count/badge/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-count-badge-min",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/list/icon": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-icon",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/list/timeline/cap/arrow": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-timeline-cap-arrow",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/list/timeline/cap/marker": {
+      "$type": "dimension",
+      "$value": {
+        "value": 4,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-timeline-cap-marker",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/list/timeline/gutter": {
+      "$type": "dimension",
+      "$value": {
+        "value": 64,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-timeline-gutter",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/list/timeline/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-list-timeline-width",
+          "source": "_settings.list.scss"
+        }
+      }
+    },
+    "size/nav/shell/footprint": {
+      "$type": "other",
+      "$value": "calc( (6px * 2) + (10px * 2) + 20px )",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-nav-shell-footprint",
+          "source": "_settings.nav-shell.scss",
+          "reason": "unresolved:calc"
+        }
+      }
+    },
+    "size/nav/shell/icon": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-nav-shell-icon",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "size/nav/shell/label/max": {
+      "$type": "dimension",
+      "$value": {
+        "value": 168,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-nav-shell-label-max",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "size/nav/shell/logomark": {
+      "$type": "dimension",
+      "$value": {
+        "value": 24,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-nav-shell-logomark",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "size/nav/shell/trailing/icon": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-nav-shell-trailing-icon",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "size/profile/card/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 17.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-padding",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/action/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 27,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-action-h",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/identifier/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 35,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-identifier-h",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/identifier/w/1": {
+      "$type": "dimension",
+      "$value": {
+        "value": 126,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-identifier-w-1",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/identifier/w/2": {
+      "$type": "dimension",
+      "$value": {
+        "value": 127,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-identifier-w-2",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/identifier/w/3": {
+      "$type": "dimension",
+      "$value": {
+        "value": 263,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-identifier-w-3",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/identifier/w/4": {
+      "$type": "dimension",
+      "$value": {
+        "value": 161,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-identifier-w-4",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/info/tags/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 30,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-info-tags-h",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/info/tags/min/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 185,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-info-tags-min-w",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/status/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 171,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-status-w",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/profile/card/skeleton/title/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 180,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-card-skeleton-title-w",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "size/sub/nav/shell/item/icon": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-sub-nav-shell-item-icon",
+          "source": "_settings.sub-nav-shell.scss"
+        }
+      }
+    },
+    "size/sub/nav/shell/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 248,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-sub-nav-shell-width",
+          "source": "_settings.sub-nav-shell.scss"
+        }
+      }
+    },
+    "size/token/explorer/filter/min": {
+      "$type": "dimension",
+      "$value": {
+        "value": 196,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-token-explorer-filter-min",
+          "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "size/token/explorer/focus/travel": {
+      "$type": "dimension",
+      "$value": {
+        "value": 35,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-token-explorer-focus-travel",
+          "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "size/token/explorer/preview": {
+      "$type": "dimension",
+      "$value": {
+        "value": 42,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-token-explorer-preview",
+          "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "size/token/explorer/preview/bar": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-token-explorer-preview-bar",
+          "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "size/token/explorer/search/max": {
+      "$type": "dimension",
+      "$value": {
+        "value": 364,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-token-explorer-search-max",
+          "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "size/top/nav/action/button": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-top-nav-action-button",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "size/top/nav/action/icon": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-top-nav-action-icon",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "size/top/nav/height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 52,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-top-nav-height",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "size/top/nav/search/width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 240,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-top-nav-search-width",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "space/accordion/bordered/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 17,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-accordion-bordered-padding",
+          "source": "_settings.accordion.scss"
+        }
+      }
+    },
+    "space/affiliate/details/card/header/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-affiliate-details-card-header-padding",
+          "source": "_settings.affiliate-details.scss"
+        }
+      }
+    },
+    "space/affiliate/documents/toolbar/inner/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-affiliate-documents-toolbar-inner-padding",
+          "source": "_settings.affiliate-documents.scss"
+        }
+      }
+    },
+    "space/form/field/gap/xs": {
+      "$type": "dimension",
+      "$value": {
+        "value": 7,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-form-field-gap-xs",
+          "source": "_settings.form-field.scss"
+        }
+      }
+    },
+    "space/nav/shell/item/gap/inner": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-item-gap-inner",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/nav/shell/item/px": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-item-px",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/nav/shell/item/py": {
+      "$type": "dimension",
+      "$value": {
+        "value": 9,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-item-py",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/nav/shell/list/gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 16,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-list-gap",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/nav/shell/list/px": {
+      "$type": "dimension",
+      "$value": {
+        "value": 6,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-list-px",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/nav/shell/section/gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-nav-shell-section-gap",
+          "source": "_settings.nav-shell.scss"
+        }
+      }
+    },
+    "space/profile/card/header/inner/gap": {
+      "$type": "dimension",
+      "$value": {
+        "value": 8.75,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-profile-card-header-inner-gap",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "space/sub/nav/shell/header/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 52,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-sub-nav-shell-header-h",
+          "source": "_settings.sub-nav-shell.scss"
+        }
+      }
+    },
+    "space/sub/nav/shell/section/px": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-sub-nav-shell-section-px",
+          "source": "_settings.sub-nav-shell.scss"
+        }
+      }
+    },
+    "space/tab/padding/inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-tab-padding-inline",
+          "source": "_settings.tabs.scss"
+        }
+      }
+    },
+    "space/top/nav/action/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-top-nav-action-padding",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "space/top/nav/inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 20,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-top-nav-inline",
+          "source": "_settings.top-nav.scss"
+        }
+      }
+    },
+    "spacing/0": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-0",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/0/25": {
+      "$type": "dimension",
+      "$value": {
+        "value": 1.75,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-0-25",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/0/5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 3.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-0-5",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/0/75": {
+      "$type": "dimension",
+      "$value": {
+        "value": 5.25,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-0-75",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/1/5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-1-5",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/2": {
+      "$type": "dimension",
+      "$value": {
+        "value": 14,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-2",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/3": {
+      "$type": "dimension",
+      "$value": {
+        "value": 21,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-3",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/4": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-4",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/5": {
+      "$type": "dimension",
+      "$value": {
+        "value": 35,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-5",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/6": {
+      "$type": "dimension",
+      "$value": {
+        "value": 42,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-6",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/7": {
+      "$type": "dimension",
+      "$value": {
+        "value": 49,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-7",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "spacing/auto": {
+      "$type": "other",
+      "$value": "auto",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-auto",
+          "source": "_settings.spacing.scss",
+          "reason": "unsupported:keyword"
+        }
+      }
+    },
+    "spacing/unit": {
+      "$type": "dimension",
+      "$value": {
+        "value": 7,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-spacing-unit",
+          "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "text/delay/prediction/metric/line/height": {
+      "$type": "dimension",
+      "$value": {
+        "value": 32.004,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-text-delay-prediction-metric-line-height",
+          "source": "_settings.delay-prediction-card.scss"
+        }
+      }
+    },
+    "text/delay/prediction/metric/size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 25.998,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-text-delay-prediction-metric-size",
+          "source": "_settings.delay-prediction-card.scss"
+        }
+      }
+    },
+    "text/profile/card/shortcut/badge/line/height": {
+      "$type": "number",
+      "$value": 1,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-text-profile-card-shortcut-badge-line-height",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "text/profile/card/shortcut/badge/size": {
+      "$type": "dimension",
+      "$value": {
+        "value": 10,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-text-profile-card-shortcut-badge-size",
+          "source": "_settings.profile-card.scss"
+        }
+      }
+    },
+    "token/explorer/shadow": {
+      "$type": "other",
+      "$value": "none",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-token-explorer-shadow",
+          "source": "_settings.token-explorer.scss",
+          "reason": "unsupported:keyword"
+        }
+      }
+    },
+    "transition/list/row": {
+      "$type": "other",
+      "$value": "border-color var(--pds-transition-duration) ease, box-shadow var(--pds-transition-duration) ease",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-transition-list-row",
+          "source": "_settings.list.scss",
+          "reason": "unresolved:var(--pds-transition-duration)"
+        }
+      }
+    },
+    "transition/nav/reveal": {
+      "$type": "other",
+      "$value": "opacity 150ms ease, display 150ms allow-discrete",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-transition-nav-reveal",
+          "source": "_settings.nav-shell.scss",
+          "reason": "unsupported:transition"
+        }
+      }
+    },
+    "transition/nav/shell": {
+      "$type": "other",
+      "$value": "width 200ms ease, box-shadow 200ms ease",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-transition-nav-shell",
+          "source": "_settings.nav-shell.scss",
+          "reason": "unsupported:transition"
+        }
+      }
+    },
+    "z/sticky": {
+      "$type": "number",
+      "$value": 10,
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-z-sticky",
+          "source": "_settings.globals.scss"
+        }
+      }
+    }
+  }
+}

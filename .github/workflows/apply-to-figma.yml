@@ -1,10 +1,9 @@
 name: Apply tokens to Figma
 
 # Repository → Figma through the Variables REST API — Figma Enterprise only.
-# Solidaris is on the Organization plan, so this job stops at the first Variables
-# call with "403 Invalid scope" and writes nothing. Parked until the decision in
-# .ai/questions/2026-09-07-repo-to-figma-transport.md (custom plugin vs Enterprise).
-# Setup once the API is available: tools/tokens/PLUGIN_SETUP.md → "Repo → Figma".
+# Live path on the Organization plan: tools/figma-plugin (Plectrum tokens plugin).
+# This job stays parked; it stops at the first Variables call with 403 Invalid scope.
+# See .ai/decisions/2026-09-10-repo-to-figma-plugin.md.
 
 on:
   workflow_dispatch:
