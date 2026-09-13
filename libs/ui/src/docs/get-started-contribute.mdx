@@ -72,9 +72,10 @@ Promotion is a move, done by the core team when a proposal comes back with the s
 1. Generic name and API — application vocabulary leaves the inputs and the BEM block.
 2. Tokens move from the `proposals/{app}` Figma collection into Component or Semantic, and from `_settings.{feature}.scss` into the shared settings files.
 3. The Storybook title moves from `Patterns/{App}` to `Custom components` or `Shell`; `governance` becomes `status: 'core'`, `owner: 'design-system'`.
-4. A changeset records the bump and the release workflow publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
+4. The Figma component is designed from the repo on the branch — an agent via Figma MCP, or a designer by hand. Bind variables; do not paint hex from a screenshot. Merge and publish stay human.
+5. A changeset records the bump and the release workflow publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
 
-Until step 3 the component stays the application's, whatever `libs/` folder it sits in.
+Until step 3 the component stays the application's, whatever `libs/` folder it sits in. Token writes use the Plugin API: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise ([Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs)).
 
 ## Audit outcome
 
@@ -126,7 +127,7 @@ The scaffolder asks for name, category, type and optional PrimeNG wrap, then cre
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
 4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Agents use `docs-show` and `get-storybook-story-instructions` before writing CSF. Application-owned pages are titled `Patterns/{App}/…`.
 
-By default the **agents do this work** — ask the Plectrum coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). Every command stays runnable by hand. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
+By default the **agents do this work** — ask the Plectrum coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). After promotion they can also write the Figma variables and component from the repo. Every command stays runnable by hand, and a designer may still draw the Figma component instead of the agent. The Plectrum tokens plugin is the fallback when no agent is available. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
 
 ## Language
 

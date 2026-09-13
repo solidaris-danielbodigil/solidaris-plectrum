@@ -93,6 +93,7 @@ If a Figma value has no matching `--pds-*` token:
 3. Add the token with a comment: Figma variable name + node ID
 4. Reference it in component SCSS
 5. Add it to `tokens.consumed` in the `.metadata.ts`
+6. If the token originated in code and should exist in Figma: `tokens:propose`, then apply selected names on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise
 
 ```scss
 // libs/styles/src/01-settings/_settings.colors-semantic.scss

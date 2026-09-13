@@ -179,3 +179,14 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] `_components.core.scss` forwards the new partial (automatic via `pds:component`)
 - [ ] `.ai/contracts/index.json` regenerated (automatic via `pds:component` and the afterFileEdit hook) and committed
 - [ ] No app-specific logic in `libs/ui`
+- [ ] New `--pds-*` names are in `proposed.dtcg.json` (`tokens:propose`). Apply selected names on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. Never the main UI Kit.
+
+## Code → Figma
+
+`tokens:propose` is the catalog. Selection stays explicit.
+
+- **Agent + Figma MCP** (`use_figma`) — default when a session can write. Same Plugin API and guards as the plugin (branch only, no retype, values from the proposal). After promotion to `core`, the same session may build the Figma component from the repo: create or update variables first, then bind frames to those variables. Do not paint hex from a screenshot. A Storybook capture is a visual check only.
+- **Plectrum tokens plugin** — fallback when no agent is available. Tokens only.
+- **A designer** may draw the Figma component by hand instead of the agent. Both are valid.
+
+Merge the Figma branch and publish the library stay human. Decision: `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.

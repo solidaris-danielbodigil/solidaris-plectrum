@@ -3,6 +3,7 @@
 **Date:** 2026-09-10
 **Status:** accepted
 **Supersedes:** the open choice in `.ai/questions/2026-09-07-repo-to-figma-transport.md`
+**Supplemented by:** `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md` (agent + Figma MCP is the default write; the plugin is the no-agent fallback)
 
 ## Decision
 
@@ -15,7 +16,7 @@ Figma's Variables REST API (`file_variables:read` / `file_variables:write`) is E
 ## Consequences
 
 - `tokens:propose` emits a committed, typed `tools/tokens/proposed.dtcg.json`. CI rebuilds it and fails on drift.
-- The plugin fetches that file from GitHub (designer-owned fine-grained PAT, Contents: Read, this repository only) and upserts selected tokens into the collection `proposals/{app}`.
+- The plugin fetches that file from GitHub (designer-owned fine-grained PAT, Contents: Read, this repository only) and upserts selected tokens into the collection `proposals/{app}`. An agent with Figma MCP may do the same write without opening the plugin UI.
 - The write is attended. There is no unattended CI write on the Organization plan.
 - `tokens:pull-figma` stays parked. Export (branch variables → JSON) is a follow-up, not part of this decision.
 - Category-based Figma scopes and an exclude list for documentation-only tokens (`docs/*`, `doc/demo/*`, `token/explorer/*`) are follow-ups.

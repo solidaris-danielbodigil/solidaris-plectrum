@@ -64,27 +64,39 @@ export const BranchWarning: StoryObj = calloutStory({
 export const OutboundStatus: StoryObj = calloutStory({
   tone: 'info',
   title:
-    'Repository → Figma is the Plectrum tokens plugin — REST apply stays parked',
-  text: 'On the Organization plan a designer runs the private Plectrum tokens plugin with the branch proposals/{app} open. It fetches proposed.dtcg.json from GitHub and writes the collection of the same name through figma.variables. tokens:apply and tokens:pull-figma still need the Enterprise-only Variables REST API (file_variables:read/write); they remain the unattended alternative. The inbound PrimeUI plugin sync is unchanged.',
+    'Repository → Figma is the Plugin API — agent first, plugin as fallback, REST parked',
+  text: 'On the Organization plan writes go through figma.variables. Default: an agent with Figma MCP and the branch proposals/{app} open. Fallback: the Plectrum tokens plugin when no agent is running. Both fetch proposed.dtcg.json and write the collection of the same name. A designer may still draw the Figma component by hand. tokens:apply and tokens:pull-figma still need the Enterprise-only Variables REST API; they remain the unattended alternative. The inbound PrimeUI plugin sync is unchanged.',
 });
 
 export const OutboundOptions: StoryObj = cardsStory(
   [
     {
-      eyebrow: 'Chosen',
+      eyebrow: 'Default',
+      tone: 'system',
+      title: 'Agent + Figma MCP',
+      lead: 'Same Plugin API as the plugin. When a session can write, the agent upserts selected tokens from proposed.dtcg.json and, after core promotion, may build the Figma component from the repo.',
+      items: [
+        'Branch-only: refuse the main UI Kit file key. Collection proposals/{app} is hidden from publishing.',
+        'Variables first, then frames bound to those variables — not hex from a screenshot.',
+        'A designer may draw the component by hand instead. Merge and publish stay human.',
+        'Attended: there is no unattended CI write on the Organization plan.',
+      ],
+    },
+    {
+      eyebrow: 'Fallback',
       tone: 'design',
       title: 'Plectrum tokens plugin',
-      lead: 'Private plugin in tools/figma-plugin. A designer opens proposals/{app}, fetches the committed proposal from GitHub, selects tokens, plans, then applies. The Plugin API is not plan-gated.',
+      lead: 'Private plugin in tools/figma-plugin. Use it when no agent is available. A designer opens proposals/{app}, fetches the committed proposal, selects tokens, plans, then applies.',
       items: [
-        'Branch-only: refuses the main UI Kit file key. Collection proposals/{app} is hidden from publishing.',
-        'Attended: a person runs it. apply-to-figma.yml stays parked.',
+        'Tokens only. The plugin does not create Figma components.',
+        'Explicit selection: nothing is selected after fetch.',
         'Typed proposal: color, dimension (px), number, fontWeight, fontFamily. Everything else is listed as skip.',
         'Does not restore tokens:pull-figma; export is a follow-up.',
       ],
     },
     {
       eyebrow: 'Parked',
-      tone: 'system',
+      tone: 'neutral',
       title: 'Enterprise REST path',
       lead: 'Unlocks file_variables:read and file_variables:write on personal access tokens. Apply tokens to Figma and Figma library publish run as built.',
       items: [
@@ -94,7 +106,7 @@ export const OutboundOptions: StoryObj = cardsStory(
       ],
     },
   ],
-  2,
+  3,
 );
 
 export const OutboundInterim: StoryObj = calloutStory({
@@ -102,9 +114,10 @@ export const OutboundInterim: StoryObj = calloutStory({
   title: 'How to apply a code-owned token',
   items: [
     'npm run tokens:propose writes tools/tokens/proposed.dtcg.json (committed; CI fails if it is stale).',
-    'Open the Figma branch proposals/{app}. Run Plectrum tokens, fetch, select, plan, apply. Setup: tools/figma-plugin/README.md and tools/tokens/PLUGIN_SETUP.md.',
+    'Open the Figma branch proposals/{app}. Agent + Figma MCP when a session is running; otherwise Plectrum tokens — fetch, select, plan, apply. Setup: tools/figma-plugin/README.md and tools/tokens/PLUGIN_SETUP.md.',
+    'After promotion to core, design the Figma component from the repo on that branch (agent or a designer). Bind variables; do not paint from a screenshot.',
     'Do not expect Apply tokens to Figma or Figma library publish to write anything: both stop at the first Variables REST call.',
-    'Decision: .ai/decisions/2026-09-10-repo-to-figma-plugin.md.',
+    'Decisions: .ai/decisions/2026-09-10-repo-to-figma-plugin.md, .ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md.',
   ],
 });
 
@@ -124,11 +137,18 @@ export const OutboundProcess: StoryObj = stepsStory([
       'Compares code-declared --pds-* with tokens.json and writes proposed.dtcg.json. Dotted paths map to Figma groups.',
   },
   {
-    who: 'Designer',
+    who: 'Agent or designer',
     tone: 'design',
-    title: 'Plectrum tokens plugin',
+    title: 'Write selected tokens on the branch',
     detail:
-      'With the Figma branch proposals/{app} open, fetch proposed.dtcg.json from GitHub, select tokens (nothing is selected by default), plan, then apply. Writes go to the collection proposals/{app} only. The plugin refuses the main UI Kit file key. tokens:apply remains the Enterprise REST alternative.',
+      'With the Figma branch proposals/{app} open, apply selected names from proposed.dtcg.json through the Plugin API. Default: agent + Figma MCP. Fallback: Plectrum tokens plugin (nothing is selected after fetch). Writes go to the collection proposals/{app} only. Refuse the main UI Kit file key. tokens:apply remains the Enterprise REST alternative.',
+  },
+  {
+    who: 'Agent or designer',
+    tone: 'design',
+    title: 'Figma component from the repo (after core)',
+    detail:
+      'Once the coded component is core, build or update the UI Kit component on the same branch. Variables first, then frames bound to those variables. An agent may do this; a designer may draw it by hand. Both are valid.',
   },
   {
     who: 'Designer',
@@ -155,14 +175,14 @@ export const OutboundProcess: StoryObj = stepsStory([
 
 export const Guardrails: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'Enforced by the CLI and the workflow',
+  title: 'Enforced on every write',
   items: [
     'Missing proposals/{app} branch: the CLI aborts. There is no fallback to the main file key. A resolved key equal to the main file is refused.',
     'Creating the Figma branch is a manual Full-seat action, once per application. Figma has no API for it.',
     '--only is required; --all is an explicit opt-in. The first real write never dumps every code-owned token.',
     'A real write requires workflow_dispatch plus the figma-write GitHub Environment. First apply only on a throwaway branch.',
     'POST /variables is atomic: one invalid variable rejects the whole batch. Nothing is partially written.',
-    'The Plectrum tokens plugin refuses a missing file key and the main UI Kit key. Variables REST API calls stay Enterprise only; on the Organization plan apply and pull still stop with 403 Invalid scope.',
+    'The plugin and any Figma MCP write refuse a missing file key and the main UI Kit key. Variables REST API calls stay Enterprise only; on the Organization plan apply and pull still stop with 403 Invalid scope.',
   ],
 });
 
@@ -184,6 +204,13 @@ export const ComponentPromotion: StoryObj = stepsStory([
     title: 'Publish @solidaris/ui through changesets',
   },
   {
+    who: 'Agent or designer',
+    tone: 'design',
+    title: 'Design the Figma component from the repo',
+    detail:
+      'On proposals/{app}: upsert remaining tokens, then build the UI Kit component bound to those variables. An agent via Figma MCP, or a designer by hand. Merge and publish stay human.',
+  },
+  {
     who: 'Developer',
     tone: 'app',
     title: 'Bump the package, delete the local copy, import from @solidaris/ui',
@@ -197,7 +224,7 @@ export const Reference: StoryObj = cardsStory(
       items: [
         'npm run tokens:pull-figma calls GET /v1/files/{key}/variables/local and flags variables changed in Figma but never plugin-pushed. Requires FIGMA_TOKEN with file_variables:read — Enterprise only.',
         'LIBRARY_PUBLISH (repository_dispatch) re-runs the pull after a designer merge and library publish. Same gate.',
-        'The REST Variables API is a safety net only, not the ingestion path. The PrimeUI plugin sync, the comment thread, and the Plectrum tokens plugin need no Variables REST scope.',
+        'The REST Variables API is a safety net only, not the ingestion path. The PrimeUI plugin sync, the comment thread, Figma MCP writes, and the Plectrum tokens plugin need no Variables REST scope.',
       ],
     },
     {

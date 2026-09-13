@@ -52,7 +52,7 @@ Two directions:
 
 **Figma → code (designer-initiated).** The Figma plugin pushes to branch `design-tokens/sync` (`libs/plectrum/sync/tokens.json`). `.github/workflows/tokens-sync.yml` copies it to `libs/plectrum/src/tokens.json`, runs `tokens:build`, `tokens:audit` (blocking), `tokens:validate-preset` (advisory, gates theme promotion), writes `sync-report.generated.ts`, and opens/updates PR `tokens/promote-staging` → `main`. Review and merge the PR.
 
-**Code → Figma (developer-initiated).** A component needs a value that is not a token: add it to the right `01-settings/_settings.{feature}.scss` aliasing a semantic role, list it in `tokens.consumed` of the component `.metadata.ts`, run `npm run tokens:lint`. Then `npm run tokens:propose` writes `proposed.dtcg.json`; a designer applies selected names with the Plectrum tokens plugin on the Figma branch `proposals/{app}`. `tokens:apply` / `tokens:pull-figma` (Variables REST API) stay parked for Enterprise — `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`.
+**Code → Figma (developer-initiated).** A component needs a value that is not a token: add it to the right `01-settings/_settings.{feature}.scss` aliasing a semantic role, list it in `tokens.consumed` of the component `.metadata.ts`, run `npm run tokens:lint`. Then `npm run tokens:propose` writes `proposed.dtcg.json`. Apply selected names on the Figma branch `proposals/{app}`: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. After promotion to core, the Figma component is designed from the repo on that branch (agent or a designer). `tokens:apply` / `tokens:pull-figma` (Variables REST API) stay parked for Enterprise — `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`, `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
 
 Validation before merge: `npm run tokens:audit && npm run tokens:check-prefix && npm run tokens:build && npm run tokens:lint`, then `git diff --exit-code -- libs/styles/src/01-settings/*.generated.scss libs/ui/src/storybook/tokens.generated.ts` must be clean (CI gate). Storybook → Foundations → Token contracts must show 0 broken.
 
@@ -133,15 +133,15 @@ Owner: unresolved · Verified: unresolved
 
 ## 7. Open work
 
-| Item                                         | State                                                         | Next action                                                  | Owner      |
-| -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------ | ---------- |
-| First npm release of `@solidaris/*`          | pending changesets, no publish yet                            | confirm `NPM_TOKEN` + registry, merge version PR             | unresolved |
-| Code → Figma transport                       | parked (Enterprise API)                                       | designer hand-entry from `tokens:propose`; revisit plan tier | unresolved |
-| Docs migration to the knowledge base         | ledger drafted (`docs/handoff/migration-ledger.md`)           | name destination + owners, then B07 cutover                  | unresolved |
-| NL copy review                               | `.ai/questions/nl-copy-review.md`                             | native review of drafted NL strings                          | unresolved |
-| Core-team intake / CODEOWNERS                | `.ai/questions/2026-09-06-core-team-intake-and-codeowners.md` | decide intake channel; add CODEOWNERS                        | unresolved |
-| Profile drawer / card Figma parity           | `.ai/questions/profile-card-drawer-figma.md`                  | designer answer                                              | unresolved |
-| Storybook R-findings not closed in this pass | see plan §2 table after B00–B05                               | per row                                                      | unresolved |
+| Item                                         | State                                                         | Next action                                                   | Owner      |
+| -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ---------- |
+| First npm release of `@solidaris/*`          | pending changesets, no publish yet                            | confirm `NPM_TOKEN` + registry, merge version PR              | unresolved |
+| Code → Figma transport                       | live (Plugin API: agent or plugin); REST parked               | use MCP or plugin on `proposals/{app}`; Enterprise REST later | unresolved |
+| Docs migration to the knowledge base         | ledger drafted (`docs/handoff/migration-ledger.md`)           | name destination + owners, then B07 cutover                   | unresolved |
+| NL copy review                               | `.ai/questions/nl-copy-review.md`                             | native review of drafted NL strings                           | unresolved |
+| Core-team intake / CODEOWNERS                | `.ai/questions/2026-09-06-core-team-intake-and-codeowners.md` | decide intake channel; add CODEOWNERS                         | unresolved |
+| Profile drawer / card Figma parity           | `.ai/questions/profile-card-drawer-figma.md`                  | designer answer                                               | unresolved |
+| Storybook R-findings not closed in this pass | see plan §2 table after B00–B05                               | per row                                                       | unresolved |
 
 ## 8. Support and ownership
 

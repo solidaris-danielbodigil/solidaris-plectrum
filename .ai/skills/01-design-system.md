@@ -19,7 +19,7 @@
 
 | Server | URL | Use for |
 |---|---|---|
-| Figma | `http://127.0.0.1:3845/mcp` | Inspect Plectrum UI Kit nodes — extract tokens, spacing, typography, states |
+| Figma | `http://127.0.0.1:3845/mcp` | Inspect Plectrum UI Kit nodes. Write variables and components onto a Figma **branch** via `use_figma` (never the main UI Kit) |
 | PrimeNG | `https://primeng.org/mcp` | Query component API, props, slots, variants, examples |
 | Storybook | `http://localhost:6006/mcp` | Live catalogue — `docs-list`, `docs-show`, `stories-preview`. Needs `npm run storybook`. |
 
@@ -53,6 +53,7 @@ Storybook MCP does not scaffold (`pds:component` does) and does not run play / a
 - This is the **SSOT for all visual decisions**
 - Always inspect the Figma node via Figma MCP before implementing — do not guess at spacing or colour values
 - Custom components file: `https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components`
+- **Writes** go to a Figma branch (`proposals/{app}`), never this main file key. Default: agent + Figma MCP. Fallback: Plectrum tokens plugin. A designer may still draw the component by hand. Decision: `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`
 
 ---
 
@@ -111,3 +112,15 @@ Needs `npm run storybook`. When it is down, use `.ai/contracts/index.json`.
 - `get-storybook-story-instructions` — Storybook's own authoring rules, then apply `.ai/rules/03-storybook.md`
 - `stories-find-by-component` / `stories-preview` — existing and new states
 - Do **not** call `test-run`. Do **not** add a Control missing from `.metadata.ts` `props`.
+
+### Writing to Figma (repo → UI Kit)
+
+Figma MCP `use_figma` is the same Plugin API as the Plectrum tokens plugin. Use it when an agent session is running.
+
+1. `npm run tokens:propose` — `proposed.dtcg.json` is the catalog, not the write list.
+2. Open (or ask a Full-seat designer to create) the branch `proposals/{app}`. Figma has no API for branch creation.
+3. Upsert **selected** writable tokens only. Same guards as the plugin: refuse the main file key `YNZ1DlSjDNUXrvkxlSp10D`, never retype or delete, bind `codeSyntax.WEB` to `var(--pds-…)`.
+4. After promotion to `core`, build the Figma component on that branch: variables first, then frames bound to those variables. Do not paint hex from a screenshot. A Storybook capture is a visual check only.
+5. A designer may draw the component by hand instead. Merge and publish stay human.
+
+When no agent is available, a designer runs the Plectrum tokens plugin (`tools/figma-plugin`) for tokens only.

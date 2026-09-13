@@ -128,6 +128,6 @@ Agents write their outputs here.
 | Folder              | Written by    | Contains                               |
 | ------------------- | ------------- | -------------------------------------- |
 | `.ai/briefs/`       | UX Researcher | `{component}.brief.md` — design specs  |
-| `.ai/decisions/`    | Architect     | `{date}-{title}.md` — ADRs             |
+| `.ai/decisions/`    | Architect     | `{date}-{title}.md` — ADRs (repo → Figma: 2026-09-10 plugin, 2026-09-12 agent + fallback) |
 | `.ai/questions/`    | Any agent     | Open questions requiring human input   |
 | `.ai/test-reports/` | Tester        | `{component}.report.md` — test results |

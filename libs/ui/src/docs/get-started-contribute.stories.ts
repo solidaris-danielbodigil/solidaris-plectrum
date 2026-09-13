@@ -96,7 +96,7 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Designs against the source',
       items: [
-        'Core designers edit the UI Kit main file and run the plugin sync',
+        'Core designers edit the UI Kit main file and run the plugin sync; they may also draw a core component from the repo by hand',
         'Application designers work in proposals/{app} and never touch Primitive or Semantic collections',
         'Both review stories against the UI Kit; proposals reach the core designers, not the main file',
       ],
@@ -121,7 +121,7 @@ export const AppLayer: StoryObj = calloutStory({
     'While a component is app-owned, drift stays contained by tooling — not by trust',
   items: [
     'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them; a designer applies them with the Plectrum tokens plugin on proposals/{app} (see Token pipeline → Figma sync).',
+    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them; apply selected names on proposals/{app} via agent + Figma MCP when a session is running, or the Plectrum tokens plugin otherwise (see Token pipeline → Figma sync).',
     'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
     'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
   ],

@@ -81,7 +81,7 @@ export const Roles: StoryObj = cardsStory([
     items: [
       'References tokens as var(--pds-*) with BEMIT classes only',
       'Adds missing values in 01-settings before using them',
-      'Runs tokens:propose, then a designer applies selected tokens with the Plectrum tokens plugin on proposals/{app}',
+      'Runs tokens:propose, then applies selected tokens on proposals/{app}: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise',
       'Keeps PrimeNG --p-* bridges in 01-settings',
     ],
   },
@@ -113,7 +113,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'Branch-only Figma writes',
-    lead: 'Code proposes into proposals/{app}. A designer merges and publishes. Creating the branch is a one-time manual step; Figma has no API for it. The automated write (tokens:apply) needs the Enterprise-only Variables REST API and is parked on the Organization plan.',
+    lead: 'Code proposes into proposals/{app}. An agent or the Plectrum tokens plugin writes the branch; a designer merges and publishes. Creating the branch is a one-time manual step; Figma has no API for it. The REST write (tokens:apply) needs the Enterprise-only Variables API and is parked on the Organization plan.',
   },
   {
     title: 'v1 is the production default',

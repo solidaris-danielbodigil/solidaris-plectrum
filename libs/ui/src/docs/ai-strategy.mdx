@@ -7,12 +7,12 @@ import * as Figures from './ai-strategy.stories';
 
 # AI strategy
 
-Agents work against **contracts**, not against a full-repo read. Contract-Driven Development (CDD) gives a typed metadata schema, a generated component index, and short protocols. Humans still own Figma, Storybook and the CSS.
+Agents work against **contracts**, not against a full-repo read. Contract-Driven Development (CDD) gives a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
 Related pages:
 
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX + Storybook MCP
-- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — Figma → `var(--pds-*)`
+- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — Figma → `var(--pds-*)` and repo → Figma (agent or plugin)
 - [Token contracts](?path=/docs/foundations-token-contracts--docs) — `tokens.consumed` vs the compiled CSS
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — what component SCSS may write
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
@@ -148,7 +148,7 @@ Component work is delegated to specialist subagents. Ask **Plectrum** for a comp
   rows={[
     ['Plectrum', 'Coordinator. Spawns the specialists below; the only user-facing agent'],
     ['UX Researcher', 'Figma inspection, token extraction, design brief — read-only'],
-    ['UX Engineer', 'SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories'],
+    ['UX Engineer', 'SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories; Figma writes via MCP when designing from the repo'],
     ['Frontend Dev', 'Angular implementation: class, template, accessibility, PrimeNG wiring'],
     ['Tester', 'Unit tests, story coverage, WCAG 2.1 AA'],
     ['Token Auditor', 'Prefix compliance, semantic coverage, PrimeNG sync, Figma drift — read-only'],

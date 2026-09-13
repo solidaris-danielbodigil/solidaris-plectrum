@@ -100,3 +100,12 @@ is the Tester's gate). Offline fallback: `.ai/contracts/index.json`.
 ### 5 — Update `_components.core.scss`
 
 Add `@forward` for the new component file.
+
+### 6 — Code → Figma
+
+New `--pds-*` names go through `tokens:propose`. Apply selected names on
+`proposals/{app}` via Figma MCP when this session can write; otherwise tell
+the coordinator a designer must run the Plectrum tokens plugin. After
+promotion to `core`, the Figma component may be built from the repo in the
+same session (variables first, then frames bound to those variables) or
+drawn by a designer. Never write the main UI Kit.

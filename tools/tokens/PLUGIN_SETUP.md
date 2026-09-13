@@ -55,9 +55,14 @@ Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull 
 
 Figma writes **from this repo** never target the main file. `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`), not `FIGMA_FILE_KEY` (that var is the comment target and may be a Figma branch).
 
-## Repo → Figma (Plectrum tokens plugin)
+## Repo → Figma (Plugin API)
 
-**Live on the Organization plan.** A private plugin (`tools/figma-plugin`) fetches the committed `tools/tokens/proposed.dtcg.json` from GitHub and upserts selected tokens through `figma.variables`. Decision: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`. Full install and publish steps: `tools/figma-plugin/README.md`.
+**Live on the Organization plan.** Writes use `figma.variables` (not plan-gated). Two attended front doors share that API:
+
+- **Agent + Figma MCP** — default when a session can write. Selected tokens from `proposed.dtcg.json`, and after core promotion the Figma component from the repo. A designer may still draw the component by hand.
+- **Plectrum tokens plugin** — fallback when no agent is available. Tokens only.
+
+Same guards: branch `proposals/{app}` only, never the main UI Kit, explicit selection. Decisions: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`, `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`. Plugin install: `tools/figma-plugin/README.md`.
 
 ### Designer-owned GitHub PAT
 
@@ -88,7 +93,7 @@ Figma writes **from this repo** never target the main file. `apply-to-figma.yml`
 
 ## Repo → Figma (`tokens:apply`) — Enterprise alternative
 
-**Parked on the Organization plan.** `tokens:apply` and `tokens:pull-figma` use Figma's Variables REST API (`GET …/variables/local`, `POST …/variables`), which Figma offers on the **Enterprise** plan only. The first dry run stopped at the first Variables call with `403 Invalid scope` ([run 34127712582](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34127712582)). Nothing was written. Use the Plectrum tokens plugin until the org is on Enterprise.
+**Parked on the Organization plan.** `tokens:apply` and `tokens:pull-figma` use Figma's Variables REST API (`GET …/variables/local`, `POST …/variables`), which Figma offers on the **Enterprise** plan only. The first dry run stopped at the first Variables call with `403 Invalid scope` ([run 34127712582](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34127712582)). Nothing was written. Use agent + Figma MCP, or the Plectrum tokens plugin, until the org is on Enterprise.
 
 When the Variables API becomes available:
 

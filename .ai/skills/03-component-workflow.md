@@ -110,6 +110,12 @@ A component is **not done** until all of these pass:
 - [ ] Attached `{name}.mdx` opens with the Status badge and includes Figma node URL and a canvas per story
 - [ ] Title section matches the owner: `Custom components` / `Shell` for core, `Patterns/{App}` for application-owned
 
+### Code → Figma
+
+- [ ] `tokens:propose` lists new `--pds-*` names in `proposed.dtcg.json`
+- [ ] Selected names applied on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. Never the main UI Kit
+- [ ] After promotion to `core`: Figma component from the repo (variables first, then frames bound to those variables). A designer may draw it by hand instead. Merge and publish stay human
+
 ### Index
 
 - [ ] `.ai/contracts/index.json` regenerated (automatic via `pds:component` / the afterFileEdit hook) and committed

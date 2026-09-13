@@ -4,8 +4,11 @@ Private Figma plugin that reads `tools/tokens/proposed.dtcg.json` from GitHub an
 code-owned tokens into the collection `proposals/{app}` on a Figma **branch**. It refuses the
 main UI Kit file (`YNZ1DlSjDNUXrvkxlSp10D`).
 
-The Plugin API is not plan-gated. This is the live repository → Figma transport on the
-Organization plan. The REST path (`tokens:apply`) stays parked for Enterprise.
+The Plugin API is not plan-gated. This plugin is the **fallback** repository → Figma
+transport when no agent is running. Default write: an agent via Figma MCP (`use_figma`),
+same API and guards. A designer may still draw the Figma component by hand. The REST
+path (`tokens:apply`) stays parked for Enterprise.
+See `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
 
 ## Build
 

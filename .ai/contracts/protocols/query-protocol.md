@@ -38,6 +38,7 @@ Do not invent a Control that is missing from `.metadata.ts` `props`. After `stor
 3. **Follow-up questions should be cheap.** Reason over cached data, not trigger new reads.
 4. **Prefer semantic tokens.** Never use primitive tokens directly in components.
 5. **Check PrimeNG first.** Before creating a custom component, verify no PrimeNG equivalent exists.
+6. **Repo → Figma is Plugin API.** Agent + Figma MCP when a session can write; Plectrum tokens plugin when it cannot. Never the main UI Kit. A designer may draw the Figma component by hand. See `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
 
 ---
 

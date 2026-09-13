@@ -1,7 +1,7 @@
 # Repository → Figma transport: custom plugin or Enterprise plan?
 
 **Raised by:** first repo → Figma dry run (`Apply tokens to Figma`, 2026-09-07)
-**Status:** decided — Option A (private Figma plugin) on the Organization plan. See `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`.
+**Status:** decided — Option A (Plugin API on the Organization plan). See `.ai/decisions/2026-09-10-repo-to-figma-plugin.md` and `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
 
 ## Context
 
@@ -20,9 +20,11 @@ Figma → repository is unaffected: the PrimeUI plugin's GitHub sync and the com
 
 ## Decision
 
-**Option A.** The Plectrum tokens plugin (`tools/figma-plugin`) writes `proposed.dtcg.json` into
-the collection `proposals/{app}` through `figma.variables`. A designer runs it with that Figma
-branch open. The REST scripts and workflows stay parked as the Enterprise path (Option B).
+**Option A.** The Plugin API (`figma.variables`) writes `proposed.dtcg.json` into
+the collection `proposals/{app}`. Default: an agent via Figma MCP. Fallback: the
+Plectrum tokens plugin when no agent is running. A designer may still draw the
+Figma component by hand. The REST scripts and workflows stay parked as the
+Enterprise path (Option B).
 
 ## What remains parked
 
