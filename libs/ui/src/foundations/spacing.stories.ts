@@ -1,4 +1,8 @@
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
+import {
+  moduleMetadata,
+  type Meta,
+  type StoryObj,
+} from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { CopyableTextComponent } from '../lib/copyable-text/copyable-text.component';
 import { readTokenDeclarations } from '../storybook/cssom';
@@ -51,8 +55,10 @@ export const Usage = {
     donts: [
       {
         title: 'Raw px or rem padding in 06-components',
-        detail: 'A literal will not track the 14px root or the half-unit scale.',
-        alternative: 'o-layout--* in the template, or a component token that aliases a stop.',
+        detail:
+          'A literal will not track the 14px root or the half-unit scale.',
+        alternative:
+          'o-layout--* in the template, or a component token that aliases a stop.',
       },
       {
         title: 'display: flex; gap: … in component SCSS',
@@ -131,7 +137,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
         ? `<div class="o-flex ${cls}">${cell}${cell}${cell}</div>`
         : property === 'padding'
           ? `<div class="${cls}" style="background: var(--pds-color-primary-100); width: max-content;">${cell}</div>`
-          : `<div style="background: var(--pds-color-primary-100); width: max-content;"><div class="c-demo-cell ${cls} o-layout o-layout--padding-2">cell</div></div>`;
+          : `<div style="background: var(--pds-color-primary-100); width: max-content;"><div class="c-demo-cell ${cls} o-layout--padding-2">cell</div></div>`;
     return {
       props: {
         cls,

@@ -16,7 +16,8 @@ export const SPACING_PROPERTIES = ['gap', 'padding', 'margin'] as const;
 export type SpacingProperty = (typeof SPACING_PROPERTIES)[number];
 
 /** `--pds-spacing-{stop}` — the token an `o-layout--*-{stop}` class references. */
-export const spacingTokenVar = (stop: string): string => `--pds-spacing-${stop}`;
+export const spacingTokenVar = (stop: string): string =>
+  `--pds-spacing-${stop}`;
 
 /**
  * Numeric order for scale stops: `0`, `0-25`, `0-5`, `0-75`, `1`, `1-5`, `2`…
@@ -81,12 +82,16 @@ export const SPACING_PROPERTY_HINTS: Record<SpacingProperty, string> = {
   margin: 'Offset outside the box. auto centres the box on the inline axis.',
 };
 
+/** Block + modifier — never copy `o-layout--*` alone. */
 export function spacingClass(property: SpacingProperty, stop: string): string {
-  return `o-layout--${property}-${stop}`;
+  return `o-layout o-layout--${property}-${stop}`;
 }
 
 /** Complete template snippet — gap always includes the required o-flex companion. */
-export function spacingSnippet(property: SpacingProperty, stop: string): string {
+export function spacingSnippet(
+  property: SpacingProperty,
+  stop: string,
+): string {
   const cls = spacingClass(property, stop);
   return property === 'gap'
     ? `<div class="o-flex ${cls}">…</div>`

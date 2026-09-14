@@ -9,6 +9,7 @@ import {
   acceptsStop,
   compareStops,
   SPACING_PROPERTIES,
+  spacingClass,
   spacingSnippet,
   spacingStops,
   spacingTokenVar,
@@ -26,7 +27,9 @@ describe('spacing playground stops', () => {
 
   it('never offers auto for gap or padding, even though the stylesheet generates the class', () => {
     // The scale map is applied to every spacing key, so the class exists…
-    expect(readClassNames(/^o-layout--gap-auto$/)).toEqual(['o-layout--gap-auto']);
+    expect(readClassNames(/^o-layout--gap-auto$/)).toEqual([
+      'o-layout--gap-auto',
+    ]);
     expect(readClassNames(/^o-layout--padding-auto$/)).toEqual([
       'o-layout--padding-auto',
     ]);
@@ -62,11 +65,15 @@ describe('spacing playground stops', () => {
 
   it('sorts stops numerically, not lexically', () => {
     expect(
-      ['2', '0-5', '1', '0-75', '10', '0-25', '1-5', '0', 'auto'].sort(compareStops),
+      ['2', '0-5', '1', '0-75', '10', '0-25', '1-5', '0', 'auto'].sort(
+        compareStops,
+      ),
     ).toEqual(['0', '0-25', '0-5', '0-75', '1', '1-5', '2', '10', 'auto']);
 
     const gap = spacingStops('gap');
-    const numeric = gap.map((stop) => Number(stop.replace(/^(\d+)-(\d+)$/, '$1.$2')));
+    const numeric = gap.map((stop) =>
+      Number(stop.replace(/^(\d+)-(\d+)$/, '$1.$2')),
+    );
     expect(numeric.every((value) => !Number.isNaN(value))).toBe(true);
     expect(numeric).toEqual([...numeric].sort((a, b) => a - b));
   });
@@ -76,8 +83,15 @@ describe('spacing playground stops', () => {
     expect(stopDisplayLabel('0-5')).toBe('0.5');
     expect(stopDisplayLabel('2')).toBe('2');
     expect(stopDisplayLabel('auto')).toBe('auto');
+    expect(spacingClass('gap', '0-25')).toBe('o-layout o-layout--gap-0-25');
     expect(spacingSnippet('gap', '0-25')).toBe(
       '<div class="o-flex o-layout o-layout--gap-0-25">…</div>',
+    );
+    expect(spacingSnippet('padding', '2')).toBe(
+      '<div class="o-layout o-layout--padding-2">…</div>',
+    );
+    expect(spacingSnippet('margin', 'auto')).toBe(
+      '<div class="o-layout o-layout--margin-auto">…</div>',
     );
   });
 });
