@@ -80,7 +80,7 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     { id: 'css', x: 369, y: 200, w: 220, h: 76, tone: 'system', title: 'Generated CSS + Storybook', lines: ['--pds-* custom properties', 'Foundations pages'] },
     { id: 'code', x: 369, y: 320, w: 220, h: 76, tone: 'system', title: 'Code-owned tokens', lines: ['--pds-* declared in 01-settings', 'spacing, typography, features'] },
     { id: 'pkg', x: 697, y: 200, w: 220, h: 76, tone: 'app', title: 'Published packages', lines: ['@solidaris/ui · styles · plectrum', 'versioned together'] },
-    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'iSHARE · iCRM', lines: ['install published versions'] },
+    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'iSHARE · iCRM', lines: ['install published versions', 'candidate tokens via PR'] },
   ]}
   edges={[
     { from: 'kit', to: 'json', label: '1 · plugin sync' },
@@ -88,8 +88,9 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     { from: 'css', to: 'pkg', label: '3 · publish' },
     { from: 'pkg', to: 'apps', label: '4 · install' },
     { from: 'code', to: 'css', label: 'compiled' },
-    { from: 'code', to: 'branch', label: '5 · propose', dashed: true },
-    { from: 'branch', to: 'kit', label: '6 · merge + publish', dashed: true },
+    { from: 'apps', to: 'code', label: '5 · candidate PR', dashed: true },
+    { from: 'code', to: 'branch', label: '6 · propose', dashed: true },
+    { from: 'branch', to: 'kit', label: '7 · merge + publish', dashed: true },
   ]}
 />
 
@@ -100,8 +101,9 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     ['2', 'tokens.json → CSS', 'tokens:build (Style Dictionary) writes *.generated.scss and the Storybook manifest tokens.generated.ts.'],
     ['3', 'Repository → packages', 'Changesets version and publish @solidaris/ui, @solidaris/styles and @solidaris/plectrum together.'],
     ['4', 'Packages → applications', 'Renovate or Dependabot opens a bump pull request in each application repository.'],
-    ['5', 'Code → Figma branch', 'tokens:propose writes a committed, typed proposed.dtcg.json. An agent applies selected tokens via Figma MCP when a session is running; otherwise a designer runs the Plectrum tokens plugin. Both write proposals/{app} through the Plugin API. tokens:apply (Variables REST API) stays parked for Enterprise.'],
-    ['6', 'Figma branch → main file', 'A designer reviews, merges and publishes the library. The LIBRARY_PUBLISH re-pull (tokens:pull-figma) is behind the same Enterprise gate.'],
+    ['5', 'Applications → code-owned tokens', 'An application team opens a pull request in this repository that adds --pds-* aliases in 01-settings/_settings.{feature}.scss. Token values stay out of the application repository. The owning app is later visible as proposals/{app}.'],
+    ['6', 'Code → Figma branch', 'tokens:propose writes a committed, typed proposed.dtcg.json. An agent applies selected tokens via Figma MCP when a session is running; otherwise a designer runs the Plectrum tokens plugin. Both write proposals/{app} through the Plugin API. tokens:apply (Variables REST API) stays parked for Enterprise.'],
+    ['7', 'Figma branch → main file', 'A designer reviews, merges and publishes the library. The LIBRARY_PUBLISH re-pull (tokens:pull-figma) is behind the same Enterprise gate.'],
   ]}
 />
 
@@ -110,6 +112,7 @@ Constraints:
 - Automated writes of design data (variables, styles, nodes) target Figma branches only. The main Figma file is edited and published by designers; CI only posts sync comments on it.
 - Repository → Figma on the Organization plan uses the Plugin API: agent + Figma MCP by default, Plectrum tokens plugin when no agent is available. The Variables REST API (tokens:apply, tokens:pull-figma) is Enterprise only and stays parked; see [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs).
 - Applications install a package version. Token values are never copied into an application repository.
+- Application teams send candidate tokens as a pull request into 01-settings in this repository, not as files under apps/.
 - Code-owned tokens (spacing, typography, feature-specific values) compile into the same stylesheet as imported tokens.
 
 ---
