@@ -1,3 +1,5 @@
+export type DocumentQueueType = 'INDPMTDC' | 'INDPMTAT';
+
 export interface DocumentQueueRow {
   id: number;
   oa: number;
@@ -5,7 +7,7 @@ export interface DocumentQueueRow {
   source: string;
   identification: string;
   nom: string;
-  type: string;
+  type: DocumentQueueType;
   dateReception: string;
   dateEntree: string;
   dateEtat: string;
@@ -22,10 +24,7 @@ export interface DocumentQueueRow {
 
 type QueueStatus = DocumentQueueRow['etat'];
 
-const TYPES = [
-  'DC - demande de paiement IND (INDPMTDC)',
-  'AT - demande de paiement IND (INDPMTAT)',
-] as const;
+const TYPES: DocumentQueueType[] = ['INDPMTDC', 'INDPMTAT'];
 
 const SOURCES = ['ATDCCTX', 'SCAN', 'MAIL'] as const;
 

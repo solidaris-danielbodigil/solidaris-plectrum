@@ -13,9 +13,18 @@ export type QueueCardKpiKey =
   | 'rappels'
   | 'clotures';
 
+type QueueCardKpiSeverity =
+  | 'success'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'secondary'
+  | 'contrast';
+
 interface QueueCardKpiCell {
   key: QueueCardKpiKey;
   label: string;
+  severity: QueueCardKpiSeverity;
 }
 
 @Component({
@@ -32,7 +41,9 @@ interface QueueCardKpiCell {
         <div
           class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-1"
         >
-          <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1">
+          <div
+            class="o-flex o-flex--align-items-center o-layout o-layout--gap-1"
+          >
             <p-tag severity="secondary">
               <span
                 class="o-flex o-flex--align-items-center o-layout o-layout--gap-1"
@@ -81,10 +92,14 @@ interface QueueCardKpiCell {
               @for (cell of topRow(); track cell.key) {
                 <td class="o-layout o-layout--padding-1">
                   <div class="o-flex o-flex--y o-layout o-layout--gap-0-5">
-                    <span class="u-text-label-sm">{{ cell.label }}</span>
+                    <span class="c-queue-card__kpi-label u-text-label-sm">{{
+                      cell.label
+                    }}</span>
                     <p-button
-                      link
+                      text
+                      [severity]="cell.severity"
                       [label]="'' + card()[cell.key]"
+                      [attr.aria-label]="cell.label + ': ' + card()[cell.key]"
                       (onClick)="statusClick.emit(cell.key)"
                     />
                   </div>
@@ -95,10 +110,14 @@ interface QueueCardKpiCell {
               @for (cell of bottomRow(); track cell.key) {
                 <td class="o-layout o-layout--padding-1">
                   <div class="o-flex o-flex--y o-layout o-layout--gap-0-5">
-                    <span class="u-text-label-sm">{{ cell.label }}</span>
+                    <span class="c-queue-card__kpi-label u-text-label-sm">{{
+                      cell.label
+                    }}</span>
                     <p-button
-                      link
+                      text
+                      [severity]="cell.severity"
                       [label]="'' + card()[cell.key]"
+                      [attr.aria-label]="cell.label + ': ' + card()[cell.key]"
                       (onClick)="statusClick.emit(cell.key)"
                     />
                   </div>
@@ -125,18 +144,22 @@ export class QueueCardComponent {
   readonly topRow = computed<QueueCardKpiCell[]>(() => {
     const overview = this.copy().overview;
     return [
-      { key: 'recus', label: overview.kpiRecus },
-      { key: 'attribues', label: overview.kpiAttribues },
-      { key: 'rappels', label: overview.kpiRappels },
+      { key: 'recus', label: overview.kpiRecus, severity: 'info' },
+      { key: 'attribues', label: overview.kpiAttribues, severity: 'secondary' },
+      { key: 'rappels', label: overview.kpiRappels, severity: 'contrast' },
     ];
   });
 
   readonly bottomRow = computed<QueueCardKpiCell[]>(() => {
     const overview = this.copy().overview;
     return [
-      { key: 'enTraitement', label: overview.kpiEnTraitement },
-      { key: 'incomplets', label: overview.kpiIncomplets },
-      { key: 'clotures', label: overview.kpiClotures },
+      {
+        key: 'enTraitement',
+        label: overview.kpiEnTraitement,
+        severity: 'warn',
+      },
+      { key: 'incomplets', label: overview.kpiIncomplets, severity: 'danger' },
+      { key: 'clotures', label: overview.kpiClotures, severity: 'success' },
     ];
   });
 }

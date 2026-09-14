@@ -220,7 +220,7 @@
           <p-button link [label]="row.nom" (onClick)="onOpenDocument(row)" />
         </td>
         <td class="c-datatable__cell-link">
-          <p-button link [label]="row.type" (onClick)="onOpenDocument(row)" />
+          <p-button link [label]="typeLabel(row.type)" (onClick)="onOpenDocument(row)" />
         </td>
         <td>{{ row.dateReception }}</td>
         <td>{{ row.dateEntree }}</td>

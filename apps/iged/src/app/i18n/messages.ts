@@ -145,6 +145,10 @@ export const IgedMessages = {
       colState: 'État',
       colActions: 'Actions',
       all: 'Tous',
+      doctypes: {
+        INDPMTDC: 'DC - demande de paiement IND (INDPMTDC)',
+        INDPMTAT: 'AT - demande de paiement IND (INDPMTAT)',
+      },
     },
   },
   nl: {
@@ -292,6 +296,10 @@ export const IgedMessages = {
       colState: 'Status',
       colActions: 'Acties',
       all: 'Alle',
+      doctypes: {
+        INDPMTDC: 'DC - betalingsaanvraag IND (INDPMTDC)',
+        INDPMTAT: 'AT - betalingsaanvraag IND (INDPMTAT)',
+      },
     },
   },
 } as const satisfies PdsMessages<Record<string, unknown>>;

@@ -28,6 +28,7 @@ import {
 } from './document-queue.mock';
 
 type StatusKey = DocumentQueueRow['etat'];
+type TypeKey = DocumentQueueRow['type'];
 type AutocompleteId = 'doctype' | 'oa' | 'statuts';
 type ToggleId =
   | 'mesDossiers'
@@ -243,17 +244,23 @@ export class DocumentQueueComponent {
         .map((label) => this.statusKeyFromLabel(label))
         .filter((key): key is StatusKey => key !== null),
     );
+    const typeKeys = new Set(
+      doctypes
+        .map((label) => this.typeKeyFromLabel(label))
+        .filter((key): key is TypeKey => key !== null),
+    );
 
     return DOCUMENT_QUEUE_ROWS.filter((row) => {
       if (
         search &&
         !row.nom.toLowerCase().includes(search) &&
         !row.identification.toLowerCase().includes(search) &&
-        !String(row.oa).includes(search)
+        !String(row.oa).includes(search) &&
+        !this.typeLabel(row.type).toLowerCase().includes(search)
       ) {
         return false;
       }
-      if (doctypes.length && !doctypes.includes(row.type)) {
+      if (typeKeys.size && !typeKeys.has(row.type)) {
         return false;
       }
       if (oas.length && !oas.includes(String(row.oa))) {
@@ -488,6 +495,10 @@ export class DocumentQueueComponent {
     return this.statusLabels()[etat];
   }
 
+  typeLabel(type: TypeKey): string {
+    return this.typeLabels()[type];
+  }
+
   statusSeverity(
     etat: StatusKey,
   ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
@@ -567,7 +578,7 @@ export class DocumentQueueComponent {
     const all = this.copy().queue.all;
     switch (id) {
       case 'doctype':
-        return [all, ...new Set(DOCUMENT_QUEUE_ROWS.map((row) => row.type))];
+        return [all, ...Object.values(this.typeLabels())];
       case 'oa':
         return [
           all,
@@ -587,6 +598,17 @@ export class DocumentQueueComponent {
       ([, value]) => value === label,
     );
     return (entry?.[0] as StatusKey | undefined) ?? null;
+  }
+
+  private typeKeyFromLabel(label: string): TypeKey | null {
+    const entry = Object.entries(this.typeLabels()).find(
+      ([, value]) => value === label,
+    );
+    return (entry?.[0] as TypeKey | undefined) ?? null;
+  }
+
+  private typeLabels(): Record<TypeKey, string> {
+    return this.copy().queue.doctypes;
   }
 
   private statusLabels(): Record<StatusKey, string> {

@@ -29,3 +29,7 @@
 .c-queue-card__fav .bi-star-fill {
   color: var(--#{$pds-prefix}-color-brand);
 }
+
+.c-queue-card__kpi-label {
+  color: var(--#{$pds-prefix}-color-text-muted);
+}
