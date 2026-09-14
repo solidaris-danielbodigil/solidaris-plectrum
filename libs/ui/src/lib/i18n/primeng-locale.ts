@@ -10,10 +10,12 @@ const FR_TRANSLATION: Translation = {
   selectionMessage: '{0} éléments sélectionnés',
   emptySelectionMessage: 'Aucun élément sélectionné',
   aria: {
+    close: 'Fermer',
     firstPageLabel: 'Première page',
     lastPageLabel: 'Dernière page',
     nextPageLabel: 'Page suivante',
     prevPageLabel: 'Page précédente',
+    previousPageLabel: 'Page précédente',
     rowsPerPageLabel: 'Lignes par page',
     jumpToPageDropdownLabel: 'Aller à la page',
     jumpToPageInputLabel: 'Aller à la page',
@@ -29,10 +31,12 @@ const NL_TRANSLATION: Translation = {
   selectionMessage: '{0} items geselecteerd',
   emptySelectionMessage: 'Geen items geselecteerd',
   aria: {
+    close: 'Sluiten',
     firstPageLabel: 'Eerste pagina',
     lastPageLabel: 'Laatste pagina',
     nextPageLabel: 'Volgende pagina',
     prevPageLabel: 'Vorige pagina',
+    previousPageLabel: 'Vorige pagina',
     rowsPerPageLabel: 'Rijen per pagina',
     jumpToPageDropdownLabel: 'Ga naar pagina',
     jumpToPageInputLabel: 'Ga naar pagina',
@@ -42,8 +46,21 @@ const NL_TRANSLATION: Translation = {
 
 /** Live PrimeNG copy (paginator, empty table, …) for the active Plectrum locale. */
 export function applyPlectrumPrimeNgLocale(
-  primeNG: Pick<PrimeNG, 'setTranslation'> | null | undefined,
+  primeNG: Pick<PrimeNG, 'setTranslation' | 'translation'> | null | undefined,
   locale: PdsLocale,
 ): void {
-  primeNG?.setTranslation(locale === 'nl' ? NL_TRANSLATION : FR_TRANSLATION);
+  if (!primeNG) {
+    return;
+  }
+
+  const pack = locale === 'nl' ? NL_TRANSLATION : FR_TRANSLATION;
+  // PrimeNG setTranslation is a shallow merge — replacing `aria` wholesale
+  // drops defaults such as aria.close (Toast / Message close buttons).
+  primeNG.setTranslation({
+    ...pack,
+    aria: {
+      ...primeNG.translation?.aria,
+      ...pack.aria,
+    },
+  });
 }

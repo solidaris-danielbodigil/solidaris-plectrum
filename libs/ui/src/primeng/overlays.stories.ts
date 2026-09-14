@@ -156,6 +156,9 @@ export const ToastMessage: Story = {
       canvas.getByRole('button', { name: 'Afficher un toast' }),
     );
     await waitForText(canvasElement, 'Enregistré', { inDocument: true });
+    await assertRoleVisible(canvasElement, 'button', 'Fermer', {
+      inDocument: true,
+    });
   },
   render: () => ({
     moduleMetadata: { imports: [GalleryToastDemo] },
