@@ -2,79 +2,76 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+
+export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
-    "id": "genericise-core-components",
-    "bumps": [
+    "packageName": "@solidaris/ui",
+    "version": "1.0.0",
+    "changes": [
       {
-        "packageName": "@solidaris/ui",
-        "bump": "major"
+        "bump": "major",
+        "text": "5a886d4: Rename the three Core catalogue APIs to domain-neutral names: ListDocument* → ListEntry*, pds-affiliate-overview-card → pds-profile-card, pds-affiliate-detail-drawer → pds-profile-drawer. Keyword-to-icon inference moves to iSHARE; ProfileDrawerData uses generalRows / contactRows / relatedMembers."
       },
       {
-        "packageName": "@solidaris/plectrum",
-        "bump": "major"
+        "bump": "minor",
+        "text": "f152b62: Promote `pds-toolbar` from Candidate (iSHARE) to Core so every application can import it."
       },
       {
-        "packageName": "@solidaris/styles",
-        "bump": "major"
+        "bump": "minor",
+        "text": "eb922bb: Add an optional hint on form-field and require Storybook play tests on every component. Catalogue stories, a11y reports, Chromatic, and story coverage run in CI; toolbar row/column gap classes now apply."
+      },
+      {
+        "bump": "patch",
+        "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
       }
     ],
-    "summary": "Rename the three Core catalogue APIs to domain-neutral names: ListDocument* → ListEntry*, pds-affiliate-overview-card → pds-profile-card, pds-affiliate-detail-drawer → pds-profile-drawer. Keyword-to-icon inference moves to iSHARE; ProfileDrawerData uses generalRows / contactRows / relatedMembers."
+    "notes": ""
   },
   {
-    "id": "promote-toolbar",
-    "bumps": [
+    "packageName": "@solidaris/plectrum",
+    "version": "1.0.0",
+    "changes": [
       {
-        "packageName": "@solidaris/ui",
-        "bump": "minor"
+        "bump": "major",
+        "text": "5a886d4: Rename the three Core catalogue APIs to domain-neutral names: ListDocument* → ListEntry*, pds-affiliate-overview-card → pds-profile-card, pds-affiliate-detail-drawer → pds-profile-drawer. Keyword-to-icon inference moves to iSHARE; ProfileDrawerData uses generalRows / contactRows / relatedMembers."
       },
       {
-        "packageName": "@solidaris/plectrum",
-        "bump": "minor"
+        "bump": "minor",
+        "text": "f152b62: Promote `pds-toolbar` from Candidate (iSHARE) to Core so every application can import it."
       },
       {
-        "packageName": "@solidaris/styles",
-        "bump": "minor"
+        "bump": "minor",
+        "text": "eb922bb: Add an optional hint on form-field and require Storybook play tests on every component. Catalogue stories, a11y reports, Chromatic, and story coverage run in CI; toolbar row/column gap classes now apply."
+      },
+      {
+        "bump": "patch",
+        "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
       }
     ],
-    "summary": "Promote `pds-toolbar` from Candidate (iSHARE) to Core so every application can import it."
+    "notes": ""
   },
   {
-    "id": "storybook-tests-and-form-field-hint",
-    "bumps": [
+    "packageName": "@solidaris/styles",
+    "version": "1.0.0",
+    "changes": [
       {
-        "packageName": "@solidaris/ui",
-        "bump": "minor"
+        "bump": "major",
+        "text": "5a886d4: Rename the three Core catalogue APIs to domain-neutral names: ListDocument* → ListEntry*, pds-affiliate-overview-card → pds-profile-card, pds-affiliate-detail-drawer → pds-profile-drawer. Keyword-to-icon inference moves to iSHARE; ProfileDrawerData uses generalRows / contactRows / relatedMembers."
       },
       {
-        "packageName": "@solidaris/plectrum",
-        "bump": "minor"
+        "bump": "minor",
+        "text": "f152b62: Promote `pds-toolbar` from Candidate (iSHARE) to Core so every application can import it."
       },
       {
-        "packageName": "@solidaris/styles",
-        "bump": "minor"
+        "bump": "minor",
+        "text": "eb922bb: Add an optional hint on form-field and require Storybook play tests on every component. Catalogue stories, a11y reports, Chromatic, and story coverage run in CI; toolbar row/column gap classes now apply."
+      },
+      {
+        "bump": "patch",
+        "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
       }
     ],
-    "summary": "Add an optional hint on form-field and require Storybook play tests on every component. Catalogue stories, a11y reports, Chromatic, and story coverage run in CI; toolbar row/column gap classes now apply."
-  },
-  {
-    "id": "wave-6-publishable-libraries",
-    "bumps": [
-      {
-        "packageName": "@solidaris/ui",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris/plectrum",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris/styles",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
+    "notes": ""
   }
 ];
-
-export const CHANGELOG_RELEASES: ChangelogRelease[] = [];
