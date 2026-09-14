@@ -52,7 +52,7 @@ import { TopNavMessages } from './top-nav.i18n';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'c-top-nav o-layout--full-width',
+    class: 'c-top-nav o-layout o-layout--full-width',
     role: 'banner',
   },
 })

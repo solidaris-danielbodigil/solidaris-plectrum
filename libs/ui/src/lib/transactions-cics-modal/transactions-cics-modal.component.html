@@ -9,7 +9,7 @@
   [closeAriaLabel]="messages.close"
   (onHide)="onHide()"
 >
-  <div class="c-transactions-cics-modal__content o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0">
+  <div class="c-transactions-cics-modal__content o-flex o-flex--y o-layout o-layout--gap-3 o-layout--min-w-0">
     <p-message
       severity="warn"
       icon="bi bi-exclamation-triangle-fill"
@@ -25,7 +25,7 @@
         role="searchbox"
         autocomplete="off"
         [placeholder]="messages.searchPlaceholder"
-        class="c-transactions-cics-modal__search-input o-layout--full-width"
+        class="c-transactions-cics-modal__search-input o-layout o-layout--full-width"
         [ngModel]="searchQuery()"
         (ngModelChange)="onSearchChange($event)"
         [attr.aria-label]="messages.searchAriaLabel"
@@ -34,7 +34,7 @@
     </p-iconfield>
 
     <p-table
-      class="c-transactions-cics-modal__table o-layout--full-width"
+      class="c-transactions-cics-modal__table o-layout o-layout--full-width"
       [value]="filteredRows()"
       [paginator]="false"
       dataKey="code"

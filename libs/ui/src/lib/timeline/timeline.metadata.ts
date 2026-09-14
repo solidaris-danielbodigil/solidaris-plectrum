@@ -10,7 +10,7 @@ export const TimelineMetadata: ComponentMetadata = {
     name: 'Timeline',
     category: 'molecules',
     description:
-      'c-timeline--content-only is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the class to p-timeline directly.',
+      'c-timeline c-timeline--content-only is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the block and the modifier to p-timeline directly.',
     type: 'display',
     path: 'libs/styles/src/06-components/_components.timeline.scss',
     primeNgComponent: 'Timeline',
@@ -35,7 +35,7 @@ export const TimelineMetadata: ComponentMetadata = {
         description:
           'Dates, titles and status tags all live in the #content template; the modifier hides the opposite column.',
         composition:
-          '<p-timeline class="c-timeline--content-only" [value]="events" align="left">\n  <ng-template #content let-event>\n    <div class="o-flex o-flex--col o-layout--gap-0-5 o-layout--padding-block-end-3">\n      <small>{{ event.date }}</small>\n      <strong>{{ event.title }}</strong>\n      <p-tag [value]="event.status" [severity]="event.severity" />\n    </div>\n  </ng-template>\n</p-timeline>',
+          '<p-timeline class="c-timeline c-timeline--content-only" [value]="events" align="left">\n  <ng-template #content let-event>\n    <div class="o-flex o-flex--col o-layout o-layout--gap-0-5 o-layout--padding-block-end-3">\n      <small>{{ event.date }}</small>\n      <strong>{{ event.title }}</strong>\n      <p-tag [value]="event.status" [severity]="event.severity" />\n    </div>\n  </ng-template>\n</p-timeline>',
       },
     ],
     antiPatterns: [
@@ -49,14 +49,21 @@ export const TimelineMetadata: ComponentMetadata = {
         scenario: 'Reimplementing markers or connectors outside PrimeNG',
         reason:
           'p-timeline already renders the marker, the connector and the event layout; a custom list duplicates it.',
-        alternative: 'Customise through the #marker template and c-timeline--* modifiers.',
+        alternative:
+          'Customise through the #marker template and c-timeline--* modifiers.',
       },
     ],
   },
   anatomy: [
     { part: 'p-timeline', role: 'PrimeNG host — never reimplemented' },
-    { part: 'c-timeline--content-only', role: 'Modifier — drops the empty opposite column' },
-    { part: '.p-timeline-event-marker / .p-timeline-event-connector', role: 'PrimeNG timeline chrome' },
+    {
+      part: 'c-timeline--content-only',
+      role: 'Modifier — drops the empty opposite column',
+    },
+    {
+      part: '.p-timeline-event-marker / .p-timeline-event-connector',
+      role: 'PrimeNG timeline chrome',
+    },
     { part: '#content template', role: 'Event title, date, and status tag' },
   ],
   behavior: {
@@ -95,13 +102,21 @@ export const TimelineMetadata: ComponentMetadata = {
       'single-column event history': 'p-timeline with c-timeline--content-only',
       'two-column timeline with dates opposite': 'stock p-timeline',
     },
-    keywords: ['timeline', 'journey', 'history', 'events', 'p-timeline', 'content-only'],
+    keywords: [
+      'timeline',
+      'journey',
+      'history',
+      'events',
+      'p-timeline',
+      'content-only',
+    ],
   },
   examples: [
     {
       name: 'Content-only timeline',
-      description: 'The class is written on the PrimeNG host; dates live in the content template.',
-      code: '<p-timeline class="c-timeline--content-only" [value]="events" align="left">\n  <ng-template #content let-event>\n    <div class="o-flex o-flex--col o-layout--gap-0-5 o-layout--padding-block-end-3">\n      <small>{{ event.date }}</small>\n      <strong>{{ event.title }}</strong>\n      <p-tag [value]="event.status" [severity]="event.severity" />\n    </div>\n  </ng-template>\n</p-timeline>',
+      description:
+        'The class is written on the PrimeNG host; dates live in the content template.',
+      code: '<p-timeline class="c-timeline c-timeline--content-only" [value]="events" align="left">\n  <ng-template #content let-event>\n    <div class="o-flex o-flex--col o-layout o-layout--gap-0-5 o-layout--padding-block-end-3">\n      <small>{{ event.date }}</small>\n      <strong>{{ event.title }}</strong>\n      <p-tag [value]="event.status" [severity]="event.severity" />\n    </div>\n  </ng-template>\n</p-timeline>',
     },
   ],
 };

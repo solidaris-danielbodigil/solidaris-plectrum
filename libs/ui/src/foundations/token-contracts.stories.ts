@@ -55,7 +55,7 @@ interface TokenContractGroup {
   ],
   template: `
     <div
-      class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
+      class="c-token-explorer o-layout o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
     >
       <pds-toolbar [sticky]="true">
         <ng-container slot="start">
@@ -113,7 +113,9 @@ interface TokenContractGroup {
               [class.is-warning]="group.broken"
             >
               <td>
-                <div class="o-flex o-flex--align-items-center o-layout--gap-1">
+                <div
+                  class="o-flex o-flex--align-items-center o-layout o-layout--gap-1"
+                >
                   <p-button
                     type="button"
                     [pRowToggler]="group"
@@ -167,7 +169,7 @@ interface TokenContractGroup {
                       <td>
                         <button
                           type="button"
-                          class="c-token-explorer__copy-btn o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+                          class="c-token-explorer__copy-btn o-flex o-flex--inline o-layout o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
                           [style.--pds-border-color]="'var(--pds-color-panel-border)'"
                           [attr.aria-label]="'Copy var(' + token.cssVar + ')'"
                           (click)="copy(token.cssVar)"
@@ -209,10 +211,7 @@ class TokenContractsPageComponent {
 
   private readonly checked = computed<ConsumedTokenCheck[]>(() => {
     this.rendered();
-    return checkTokenContracts(
-      ALL_COMPONENT_METADATA,
-      readTokenDeclarations(),
-    );
+    return checkTokenContracts(ALL_COMPONENT_METADATA, readTokenDeclarations());
   });
 
   readonly brokenCount = computed(

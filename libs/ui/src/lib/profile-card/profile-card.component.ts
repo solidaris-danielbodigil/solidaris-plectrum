@@ -208,7 +208,7 @@ function toAriaKeyShortcuts(shortcut: string): string {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'o-layout--full-width',
+    class: 'o-layout o-layout--full-width',
   },
 })
 export class ProfileCardComponent {

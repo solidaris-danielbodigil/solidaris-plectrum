@@ -43,12 +43,12 @@ Figma is reference only — not SSOT for PrimeNG chrome.
 | Property                          | Use                                                                                                          |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `display: flex`                   | `o-flex`                                                                                                     |
-| `flex-direction: column`          | `o-flex--y`                                                                                                  |
-| `align-items` / `justify-content` | `o-flex--align-items-*` / `o-flex--justify-content-*`                                                        |
-| `flex-grow` / `flex-shrink`       | `o-flex__item--grow-*` / `o-flex__item--shrink-*`                                                            |
-| `gap`, `padding`, `margin`        | `o-layout--gap-*`, `o-layout--padding-*`, `o-layout--margin-*` (use `o-layout--margin-0` for heading resets) |
-| `overflow`                        | `o-layout--overflow-*`                                                                                       |
-| `min-width: 0` / `min-height: 0`  | `o-layout--min-w-0` / `o-layout--min-h-0`                                                                    |
+| `flex-direction: column`          | `o-flex o-flex--y`                                                                                           |
+| `align-items` / `justify-content` | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*`                                           |
+| `flex-grow` / `flex-shrink`       | `o-flex__item o-flex__item--grow-*` / `o-flex__item o-flex__item--shrink-*`                                   |
+| `gap`, `padding`, `margin`        | `o-layout o-layout--gap-*` / `--padding-*` / `--margin-*` (use `o-layout--margin-0` for heading resets)      |
+| `overflow`                        | `o-layout o-layout--overflow-*`                                                                              |
+| `min-width: 0` / `min-height: 0`  | `o-layout o-layout--min-w-0` / `o-layout o-layout--min-h-0`                                                   |
 | Equal columns / spans             | `o-flex` + `o-flex__item--{n}` (see below)                                                                   |
 
 Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_objects.layout.scss`
@@ -62,8 +62,8 @@ Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_object
 | Need                     | Use                                                              |
 | ------------------------ | ---------------------------------------------------------------- |
 | Equal / spanning columns | `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}` suffixes) |
-| Alignment                | `o-flex--align-items-*` / `o-flex--justify-content-*`            |
-| Gap                      | `o-layout--gap-*` on the same element (BEM mix)                  |
+| Alignment                | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*` |
+| Gap                      | `o-layout o-layout--gap-*` on the same element (block + modifier)   |
 
 Bespoke `display: grid` / `grid-template-*` (named areas, asymmetric tracks) stay in component SCSS — document with a comment.
 

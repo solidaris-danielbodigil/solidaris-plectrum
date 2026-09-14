@@ -88,9 +88,9 @@ export const DialogOpen: Story = {
         appendTo="body"
         closeAriaLabel="Fermer"
       >
-        <p class="o-layout--margin-0">Mettez à jour les informations du dossier.</p>
+        <p class="o-layout o-layout--margin-0">Mettez à jour les informations du dossier.</p>
         <ng-template #footer>
-          <div class="o-flex o-flex--justify-content-flex-end o-layout--gap-2">
+          <div class="o-flex o-flex--justify-content-flex-end o-layout o-layout--gap-2">
             <p-button label="Annuler" severity="secondary" (onClick)="visible = false" />
             <p-button label="Enregistrer" (onClick)="visible = false" />
           </div>
@@ -116,7 +116,7 @@ export const DrawerOpen: Story = {
         appendTo="body"
         ariaCloseLabel="Fermer"
       >
-        <p class="o-layout--margin-0">Filtres du dossier. Le chrome est stock PrimeNG.</p>
+        <p class="o-layout o-layout--margin-0">Filtres du dossier. Le chrome est stock PrimeNG.</p>
       </p-drawer>
     `,
   }),
@@ -142,7 +142,7 @@ export const PopoverOpen: Story = {
         (onClick)="op.toggle($event)"
       />
       <p-popover #op appendTo="body">
-        <p class="o-layout--margin-0">Exporter le dossier</p>
+        <p class="o-layout o-layout--margin-0">Exporter le dossier</p>
       </p-popover>
     `,
   }),

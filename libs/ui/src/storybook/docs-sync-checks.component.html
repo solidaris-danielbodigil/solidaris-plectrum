@@ -5,9 +5,9 @@
 />
 
 @if (report().result !== 'preview') {
-  <ul class="c-docs-sync-checks__list o-layout--margin-0 o-layout--padding-0">
+  <ul class="c-docs-sync-checks__list o-layout o-layout--margin-0 o-layout--padding-0">
     @for (check of report().checks; track check.id) {
-      <li class="c-docs-sync-checks__item o-flex--align-items-flex-start o-layout--gap-1 o-layout--padding-block-1">
+      <li class="c-docs-sync-checks__item o-flex o-flex--align-items-flex-start o-layout o-layout--gap-1 o-layout--padding-block-1">
         <p-tag
           [value]="check.status"
           [severity]="severity(check.status)"
@@ -16,13 +16,13 @@
         <div class="c-docs-sync-checks__body">
           <strong class="c-docs-sync-checks__name">{{ check.name }}</strong>
           <p
-            class="c-docs-sync-checks__detail o-layout--margin-0 o-layout--margin-block-start-0-5"
+            class="c-docs-sync-checks__detail o-layout o-layout--margin-0 o-layout--margin-block-start-0-5"
           >
             {{ check.detail }}
           </p>
           @if (check.items.length) {
             <ul
-              class="c-docs-sync-checks__items o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
+              class="c-docs-sync-checks__items o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-inline-start-2"
             >
               @for (item of check.items; track $index) {
                 <li>{{ item }}</li>

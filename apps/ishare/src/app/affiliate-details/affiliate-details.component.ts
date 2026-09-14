@@ -259,7 +259,12 @@ const DOC_CATEGORY_SPECS: ReadonlyArray<
     icon: 'bi bi-diagram-3',
     kind: 'journey',
   },
-  { id: 'isoles', label: 'Documents', icon: 'bi bi-file-earmark', kind: 'flat' },
+  {
+    id: 'isoles',
+    label: 'Documents',
+    icon: 'bi bi-file-earmark',
+    kind: 'flat',
+  },
   { id: 'archives', label: 'Archivés', icon: 'bi bi-archive', kind: 'flat' },
 ];
 
@@ -361,7 +366,7 @@ function allEvaMartinezDocuments(): ListEntryItem[] {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0',
+      'o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0',
   },
 })
 export class AffiliateDetailsComponent {
@@ -399,7 +404,8 @@ export class AffiliateDetailsComponent {
 
   readonly affiliateName = computed(() => this.affiliateProfile().name);
 
-  private static readonly EVA_STATUS_MENU_C4_PARCOURS = 'eva-status-c4-parcours';
+  private static readonly EVA_STATUS_MENU_C4_PARCOURS =
+    'eva-status-c4-parcours';
   private static readonly EVA_STATUS_MENU_PLACEHOLDER =
     'eva-status-action-placeholder';
 
@@ -434,8 +440,9 @@ export class AffiliateDetailsComponent {
       : null,
   );
 
-  readonly documentInfoFilter =
-    signal<ProfileCardInfoTagFilterKey | null>(null);
+  readonly documentInfoFilter = signal<ProfileCardInfoTagFilterKey | null>(
+    null,
+  );
 
   readonly transactionsCicsDialogVisible = signal(false);
 
@@ -500,26 +507,24 @@ export class AffiliateDetailsComponent {
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
 
-  readonly affiliateDetailDrawerData = computed<ProfileDrawerData>(
-    () => {
-      const profile = this.affiliateProfile();
+  readonly affiliateDetailDrawerData = computed<ProfileDrawerData>(() => {
+    const profile = this.affiliateProfile();
 
-      return {
-        name: profile.name,
-        avatarInitials: profile.avatarInitials,
-        avatarGender: profile.avatarGender,
-        avatarVariant: profile.avatarVariant,
-        generalRows: profile.generalInfo,
-        contactRows: profile.contactInfo,
-        relatedMembers: familyMembersForDossier(profile.niss),
-        notes: [],
-        identifiers: this.identifiers().map(({ label, value }) => ({
-          label,
-          value,
-        })),
-      };
-    },
-  );
+    return {
+      name: profile.name,
+      avatarInitials: profile.avatarInitials,
+      avatarGender: profile.avatarGender,
+      avatarVariant: profile.avatarVariant,
+      generalRows: profile.generalInfo,
+      contactRows: profile.contactInfo,
+      relatedMembers: familyMembersForDossier(profile.niss),
+      notes: [],
+      identifiers: this.identifiers().map(({ label, value }) => ({
+        label,
+        value,
+      })),
+    };
+  });
 
   // Document filter toolbar — static mock data for Eva Martinez demo (Figma 324:5772).
   readonly sectorOptions: SectorOption[] = [
@@ -1774,9 +1779,7 @@ export class AffiliateDetailsComponent {
     ).id;
   }
 
-  private applyDocumentFilters(
-    documents: ListEntryItem[],
-  ): ListEntryItem[] {
+  private applyDocumentFilters(documents: ListEntryItem[]): ListEntryItem[] {
     const query = this.documentSearch().trim().toLowerCase();
     let filtered = query
       ? documents.filter(
@@ -2098,8 +2101,12 @@ export class AffiliateDetailsComponent {
       const filterChanged =
         this.categoryFilterSnapshotReady && filterSnapshot !== previousSnapshot;
 
-      const [prevSearch = '', prevSector = '', prevInfo = '', prevDateFrom = ''] =
-        previousSnapshot.split('\u0000');
+      const [
+        prevSearch = '',
+        prevSector = '',
+        prevInfo = '',
+        prevDateFrom = '',
+      ] = previousSnapshot.split('\u0000');
       const filterCleared =
         filterChanged &&
         ((prevInfo !== '' && info === '') ||
@@ -2285,9 +2292,7 @@ function hasActiveDocumentDateFilter(range: Date[] | null): boolean {
   return normalizeDocumentFilterDateRangeValue(range) !== null;
 }
 
-function isToolbarSectorFilterActive(
-  sector: SectorOption | null,
-): boolean {
+function isToolbarSectorFilterActive(sector: SectorOption | null): boolean {
   const value = sector?.value;
   return !!value && value !== 'tous';
 }

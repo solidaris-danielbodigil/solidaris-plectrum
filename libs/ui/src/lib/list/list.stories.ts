@@ -392,13 +392,13 @@ const ROW_STATE_DOCUMENT: ListEntryItem = {
 
 const documentRowMarkup = (modifiers: string) => `
   <article
-    class="c-list__item c-list__item--entry o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width ${modifiers}"
+    class="c-list__item c-list__item--entry o-layout o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width ${modifiers}"
   >
-    <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
+    <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1">
       <div
-        class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
+        class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout o-layout--gap-4"
       >
-        <div class="o-flex o-layout--gap-3 o-layout--min-w-0">
+        <div class="o-flex o-layout o-layout--gap-3 o-layout--min-w-0">
           <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
           <p class="c-list__title">
             ${ROW_STATE_DOCUMENT.title} ${ROW_STATE_DOCUMENT.titleLine2}
@@ -411,7 +411,7 @@ const documentRowMarkup = (modifiers: string) => `
         </div>
       </div>
       <hr />
-      <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+      <div class="c-list__tags o-flex o-flex--wrap o-layout o-layout--gap-1">
         <p-tag severity="info" value="1">
           <i class="bi bi-chat-right-text-fill" aria-hidden="true"></i>
         </p-tag>
@@ -451,16 +451,16 @@ export const RowStates: Story = {
   render: () => ({
     template: `
       <div class="c-list c-list--flat">
-        <div class="c-list__body o-flex o-layout--gap-2">
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+        <div class="c-list__body o-flex o-layout o-layout--gap-2">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Default</p>
             ${documentRowMarkup('')}
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Hover</p>
             ${documentRowMarkup('sb-force-hover')}
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Selected</p>
             ${documentRowMarkup('c-list__item--selected')}
           </div>

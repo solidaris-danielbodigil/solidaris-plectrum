@@ -143,7 +143,7 @@ export const Dimensions = {
     template: `
     <div class="o-flex o-flex--col" style="height: 200px;">
       <div class="o-flex__item o-flex__item--shrink-0">Header (shrink-0)</div>
-      <div class="o-flex__item o-layout--min-h-0 o-layout--overflow-y-auto">
+      <div class="o-flex__item o-layout o-layout--min-h-0 o-layout--overflow-y-auto">
         <div style="height: 400px;">Scrollable content (min-h-0 + overflow-y-auto)</div>
       </div>
       <div class="o-flex__item o-flex__item--shrink-0">Footer (shrink-0)</div>
@@ -183,11 +183,11 @@ export const Display = {
   render: () => ({
     template: `
     <div class="o-flex o-flex--col">
-      <div class="o-flex__item o-layout--block">block (always visible)</div>
-      <div class="o-flex__item o-layout--hidden o-layout--block@md">hidden → block@md (resize viewport)</div>
+      <div class="o-flex__item o-layout o-layout--block">block (always visible)</div>
+      <div class="o-flex__item o-layout o-layout--hidden o-layout--block@md">hidden → block@md (resize viewport)</div>
       <div class="o-flex">
-        <div class="o-flex__item o-layout--inline-block">inline-block</div>
-        <div class="o-flex__item o-layout--inline-block">inline-block</div>
+        <div class="o-flex__item o-layout o-layout--inline-block">inline-block</div>
+        <div class="o-flex__item o-layout o-layout--inline-block">inline-block</div>
       </div>
     </div>`,
   }),
@@ -198,8 +198,8 @@ export const Position = {
   name: 'Position',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--col o-layout--overflow-y-auto" style="height: 200px;">
-      <div class="o-flex__item o-flex__item--shrink-0 o-layout--sticky-top">Sticky header (scroll me)</div>
+    <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 200px;">
+      <div class="o-flex__item o-flex__item--shrink-0 o-layout o-layout--sticky-top">Sticky header (scroll me)</div>
       <div class="o-flex__item o-flex__item--big"></div>
       <div class="o-flex__item o-flex__item--big"></div>
       <div class="o-flex__item o-flex__item--big"></div>
@@ -235,13 +235,13 @@ export const Responsive = {
   name: 'Responsive',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--wrap o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">
+    <div class="o-flex o-flex--wrap o-layout o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">
       <div class="o-flex__item">gap-1 → gap-2@sm → gap-4@lg</div>
       <div class="o-flex__item">Resize me</div>
       <div class="o-flex__item">to see gap change</div>
     </div>
     <div class="o-flex">
-      <div class="o-flex__item o-layout--hidden o-layout--block@md">
+      <div class="o-flex__item o-layout o-layout--hidden o-layout--block@md">
         I'm hidden below md, visible from md up
       </div>
     </div>`,

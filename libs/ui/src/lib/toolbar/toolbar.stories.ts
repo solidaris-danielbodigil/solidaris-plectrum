@@ -60,9 +60,9 @@ export const Sticky: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div class="o-layout--overflow-y-auto" style="height: 16rem; background: var(--pds-color-surface-page);">
+      <div class="o-layout o-layout--overflow-y-auto" style="height: 16rem; background: var(--pds-color-surface-page);">
         <pds-toolbar [sticky]="true">${SLOTS}</pds-toolbar>
-        <div class="o-layout--padding-3" style="height: 60rem;">
+        <div class="o-layout o-layout--padding-3" style="height: 60rem;">
           <p>Scroll — the toolbar stays pinned to the top of this container.</p>
         </div>
       </div>`,

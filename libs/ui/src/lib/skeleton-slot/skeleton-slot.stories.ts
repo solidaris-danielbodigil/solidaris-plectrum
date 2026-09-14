@@ -43,13 +43,13 @@ export const Slots: Story = {
   },
   render: () => ({
     template: `
-      <div class="o-flex o-flex--col o-layout--gap-3" style="max-width: 28rem;">
+      <div class="o-flex o-flex--col o-layout o-layout--gap-3" style="max-width: 28rem;">
         <div class="c-skeleton-slot"><p-skeleton width="60%" height="1.25rem" /></div>
         <div class="c-skeleton-slot"><p-skeleton width="100%" height="1rem" /></div>
         <div class="c-skeleton-slot"><p-skeleton width="80%" height="1rem" /></div>
-        <div class="o-flex o-flex--align-items-center o-layout--gap-2">
+        <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
           <span class="c-skeleton-count-badge"><p-skeleton shape="circle" size="1.5rem" /></span>
-          <div class="c-skeleton-slot o-flex__item--grow-1"><p-skeleton width="40%" height="1rem" /></div>
+          <div class="c-skeleton-slot o-flex__item o-flex__item--grow-1"><p-skeleton width="40%" height="1rem" /></div>
         </div>
       </div>`,
   }),
@@ -63,7 +63,7 @@ export const CardLoading: Story = {
   },
   render: () => ({
     template: `
-      <div class="u-border-all u-radius-xl o-flex o-flex--col o-layout--gap-2 o-layout--padding-3" style="max-width: 28rem; background: var(--pds-color-surface-0); --pds-border-color: var(--pds-color-card-border);">
+      <div class="u-border-all u-radius-xl o-flex o-flex--col o-layout o-layout--gap-2 o-layout--padding-3" style="max-width: 28rem; background: var(--pds-color-surface-0); --pds-border-color: var(--pds-color-card-border);">
         <div class="c-skeleton-slot"><p-skeleton width="50%" height="1.25rem" /></div>
         <div class="c-skeleton-slot"><p-skeleton width="100%" height="1rem" /></div>
         <div class="c-skeleton-slot"><p-skeleton width="90%" height="1rem" /></div>

@@ -190,12 +190,12 @@ function selectOptions(values: readonly string[]): SelectOption[] {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
+      class="c-token-explorer o-layout o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
     >
       <pds-toolbar [sticky]="true">
         <ng-container slot="start">
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Side"
             hint="Which edges get the stroke — u-border-{side}."
             inputId="pds-borders-side"
@@ -213,10 +213,10 @@ function selectOptions(values: readonly string[]): SelectOption[] {
               >
                 <ng-template #selectedItem let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-layout o-layout--gap-2"
                   >
                     <pds-docs-direction
-                      class="o-flex__item--shrink-0"
+                      class="o-flex__item o-flex__item--shrink-0"
                       kind="border"
                       [target]="asOption(option).value"
                     />
@@ -225,11 +225,11 @@ function selectOptions(values: readonly string[]): SelectOption[] {
                 </ng-template>
                 <ng-template #item let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2"
                   >
                     <span>{{ asOption(option).label }}</span>
                     <pds-docs-direction
-                      class="o-flex__item--shrink-0"
+                      class="o-flex__item o-flex__item--shrink-0"
                       kind="border"
                       [target]="asOption(option).value"
                     />
@@ -240,7 +240,7 @@ function selectOptions(values: readonly string[]): SelectOption[] {
           </pds-form-field>
 
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Status"
             hint="Optional colour. Default keeps content-border."
           >
@@ -256,7 +256,7 @@ function selectOptions(values: readonly string[]): SelectOption[] {
           </pds-form-field>
 
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Weight"
             hint="Thick sets --pds-border-width."
           >
@@ -272,7 +272,7 @@ function selectOptions(values: readonly string[]): SelectOption[] {
           </pds-form-field>
 
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Style"
             hint="Dashed sets --pds-border-style."
           >
@@ -288,7 +288,7 @@ function selectOptions(values: readonly string[]): SelectOption[] {
           </pds-form-field>
 
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Radius"
             hint="Optional u-radius-{stop} on the same element."
             inputId="pds-borders-radius"
@@ -306,11 +306,11 @@ function selectOptions(values: readonly string[]): SelectOption[] {
               >
                 <ng-template #selectedItem let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-layout o-layout--gap-2"
                   >
                     <span
                       [attr.class]="
-                        'c-token-explorer__swatch o-flex__item--shrink-0 u-radius-' +
+                        'c-token-explorer__swatch o-flex__item o-flex__item--shrink-0 u-radius-' +
                         asOption(option).value
                       "
                       aria-hidden="true"
@@ -320,12 +320,12 @@ function selectOptions(values: readonly string[]): SelectOption[] {
                 </ng-template>
                 <ng-template #item let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2"
                   >
                     <span>{{ asOption(option).label }}</span>
                     <span
                       [attr.class]="
-                        'c-token-explorer__swatch o-flex__item--shrink-0 u-radius-' +
+                        'c-token-explorer__swatch o-flex__item o-flex__item--shrink-0 u-radius-' +
                         asOption(option).value
                       "
                       aria-hidden="true"
@@ -337,7 +337,7 @@ function selectOptions(values: readonly string[]): SelectOption[] {
           </pds-form-field>
 
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Corners"
             hint="Which corners get the radius — pick a radius stop first."
             inputId="pds-borders-corners"
@@ -356,10 +356,10 @@ function selectOptions(values: readonly string[]): SelectOption[] {
               >
                 <ng-template #selectedItem let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-layout o-layout--gap-2"
                   >
                     <pds-docs-direction
-                      class="o-flex__item--shrink-0"
+                      class="o-flex__item o-flex__item--shrink-0"
                       kind="radius"
                       [target]="asOption(option).value"
                     />
@@ -368,11 +368,11 @@ function selectOptions(values: readonly string[]): SelectOption[] {
                 </ng-template>
                 <ng-template #item let-option>
                   <span
-                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+                    class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2"
                   >
                     <span>{{ asOption(option).label }}</span>
                     <pds-docs-direction
-                      class="o-flex__item--shrink-0"
+                      class="o-flex__item o-flex__item--shrink-0"
                       kind="radius"
                       [target]="asOption(option).value"
                     />
@@ -385,22 +385,24 @@ function selectOptions(values: readonly string[]): SelectOption[] {
       </pds-toolbar>
 
       <section
-        class="c-token-explorer__playground o-flex o-flex--col o-layout--gap-3 o-layout--margin-block-start-4 o-layout--padding-3 u-border-all u-radius-md"
+        class="c-token-explorer__playground o-flex o-flex--col o-layout o-layout--gap-3 o-layout--margin-block-start-4 o-layout--padding-3 u-border-all u-radius-md"
         [style.--pds-border-color]="'var(--pds-color-panel-border)'"
       >
-        <p class="c-token-explorer__playground-label o-layout--margin-0">
+        <p
+          class="c-token-explorer__playground-label o-layout o-layout--margin-0"
+        >
           Result
         </p>
         <div
           [attr.class]="
-            'o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-6 ' +
+            'o-flex o-flex--align-items-center o-flex--justify-content-center o-layout o-layout--padding-6 ' +
             classes()
           "
           [style.background]="'var(--pds-color-surface-0)'"
         >
           preview
         </div>
-        <div class="o-flex o-flex--col o-layout--gap-2">
+        <div class="o-flex o-flex--col o-layout o-layout--gap-2">
           <pds-copyable-text
             label="Class"
             [value]="classes()"
@@ -481,9 +483,7 @@ export class BordersPlaygroundComponent {
     }),
   );
 
-  readonly snippet = computed(
-    () => `<div class="${this.classes()}">…</div>`,
-  );
+  readonly snippet = computed(() => `<div class="${this.classes()}">…</div>`);
 
   asOption(item: string | SelectOption | null | undefined): SelectOption {
     if (item && typeof item === 'object') return item;

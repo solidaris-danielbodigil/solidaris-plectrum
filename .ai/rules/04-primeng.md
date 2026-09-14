@@ -101,7 +101,7 @@ unless the user explicitly asks for custom styling.
 
 | Layer           | Allowed                                            | Example                                                              |
 | --------------- | -------------------------------------------------- | -------------------------------------------------------------------- |
-| Template        | PrimeNG component + layout object classes          | `<p-message severity="warn" class="o-layout--margin-block-end-2">`   |
+| Template        | PrimeNG component + layout object classes          | `<p-message severity="warn" class="o-layout o-layout--margin-block-end-2">`   |
 | Template        | PrimeNG component + severity props only            | `<p-tag severity="success" icon="bi bi-check-lg" value="Accepté" />` |
 | `01-settings`   | Global PrimeNG `--p-*` token bridges (theme-level) | `_settings.message.scss`                                             |
 | `06-components` | Structural constraints PrimeNG cannot express      | `min-width: 0` on a wrapper                                          |
@@ -146,7 +146,7 @@ unless the user explicitly asks for custom styling.
 
 ```html
 <!-- ✅ Correct — PrimeNG owns warn chrome; template owns layout -->
-<p-message severity="warn" class="o-layout--margin-block-end-2">
+<p-message severity="warn" class="o-layout o-layout--margin-block-end-2">
   {{ message }}
 </p-message>
 
@@ -154,7 +154,7 @@ unless the user explicitly asks for custom styling.
 <p-tag severity="success" icon="bi bi-check-lg" value="Accepté" />
 
 <!-- ✅ Correct — PrimeNG owns outlined secondary chrome via props; layout on parent -->
-<div class="o-flex o-layout--gap-1">
+<div class="o-flex o-layout o-layout--gap-1">
   <button
     pButton
     severity="secondary"

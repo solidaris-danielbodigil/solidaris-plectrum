@@ -12,7 +12,7 @@ import {
 } from '../storybook/story-tests';
 
 const ROW =
-  'o-flex o-flex--row-wrap o-flex--align-items-center o-layout--gap-2';
+  'o-flex o-flex--row-wrap o-flex--align-items-center o-layout o-layout--gap-2';
 
 const meta: Meta = {
   title: 'PrimeNG/Actions',

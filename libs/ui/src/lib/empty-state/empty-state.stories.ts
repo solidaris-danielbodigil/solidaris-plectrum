@@ -23,7 +23,7 @@ import {
   standalone: true,
   imports: [EmptyStateComponent, ButtonModule],
   template: `
-    <div class="o-flex o-flex--y o-flex--align-items-center o-layout--gap-4">
+    <div class="o-flex o-flex--y o-flex--align-items-center o-layout o-layout--gap-4">
       @for (generation of [generation()]; track generation) {
         <pds-empty-state
           [title]="title()"
@@ -138,7 +138,7 @@ export const AllIllustrations: Story = {
     props: { ids: EMPTY_STATE_ILLUSTRATION_IDS },
     moduleMetadata: { imports: [EmptyStateComponent] },
     template: `
-      <div class="o-flex o-flex--wrap o-layout--gap-6">
+      <div class="o-flex o-flex--wrap o-layout o-layout--gap-6">
         @for (id of ids; track id) {
           <div class="o-flex__item o-flex__item--4">
             <pds-empty-state

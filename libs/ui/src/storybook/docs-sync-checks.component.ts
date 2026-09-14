@@ -34,7 +34,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'c-docs-sync-checks o-layout--block o-layout--margin-block-3',
+    class: 'c-docs-sync-checks o-layout o-layout--block o-layout--margin-block-3',
   },
 })
 export class DocsSyncChecksComponent {

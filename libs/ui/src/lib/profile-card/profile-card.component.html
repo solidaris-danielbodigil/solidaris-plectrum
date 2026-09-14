@@ -1,6 +1,6 @@
 <p-card [styleClass]="cardStyleClass()" [style]="cardPanelBorderStyle">
   <article
-    class="c-profile-card__content o-flex o-flex--align-items-flex-start o-layout--gap-1-5"
+    class="c-profile-card__content o-flex o-flex--align-items-flex-start o-layout o-layout--gap-1-5"
     [attr.aria-labelledby]="loading() ? null : titleId"
     [attr.aria-label]="loading() ? title() : null"
     [attr.aria-busy]="loading() || null"
@@ -9,12 +9,12 @@
       <p-skeleton
         shape="circle"
         size="var(--pds-size-avatar-large-h)"
-        styleClass="c-profile-card__skeleton-avatar o-flex__item--shrink-0"
+        styleClass="c-profile-card__skeleton-avatar o-flex__item o-flex__item--shrink-0"
         aria-hidden="true"
       />
     } @else {
       <pds-plectrum-avatar
-        class="c-profile-card__avatar o-flex__item--shrink-0"
+        class="c-profile-card__avatar o-flex__item o-flex__item--shrink-0"
         size="large"
         [initials]="avatarInitials()"
         [gender]="avatarGender()"
@@ -24,14 +24,14 @@
     }
 
     <div
-      class="c-profile-card__body o-flex o-flex--y o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+      class="c-profile-card__body o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--gap-1-5 o-layout--min-w-0"
     >
       <div
-        class="c-profile-card__header o-flex o-flex--align-items-center o-layout--gap-1-5 o-layout--min-w-0 o-layout--full-width"
+        class="c-profile-card__header o-flex o-flex--align-items-center o-layout o-layout--gap-1-5 o-layout--min-w-0 o-layout--full-width"
       >
         @if (loading()) {
           <div
-            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item o-flex__item--grow-1 o-layout o-layout--gap-1-5 o-layout--min-w-0"
             aria-hidden="true"
           >
             <span
@@ -45,14 +45,14 @@
               <p-skeleton />
             </span>
             <span
-              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--info-tags o-flex__item--grow-1 o-layout--min-w-0"
+              class="c-skeleton-slot c-profile-card__skeleton-slot c-profile-card__skeleton-slot--info-tags o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
             >
               <p-skeleton />
             </span>
           </div>
         } @else {
           <div
-            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item--grow-1 o-layout--gap-1-5 o-layout--min-w-0"
+            class="c-profile-card__header-main o-flex o-flex--align-items-center o-flex--row-nowrap o-flex__item o-flex__item--grow-1 o-layout o-layout--gap-1-5 o-layout--min-w-0"
           >
             @if (primaryAction(); as action) {
               <button
@@ -60,7 +60,7 @@
                 type="button"
                 text
                 severity="secondary"
-                class="c-profile-card__title-action o-flex__item--shrink-0"
+                class="c-profile-card__title-action o-flex__item o-flex__item--shrink-0"
                 [id]="titleId"
                 data-telemetry-id="affiliate-overview-primary-action"
                 [pdsTelemetryLabel]="action.label"
@@ -88,7 +88,7 @@
                 }
               </button>
             } @else {
-              <h2 [id]="titleId" class="c-profile-card__title o-layout--margin-0">
+              <h2 [id]="titleId" class="c-profile-card__title o-layout o-layout--margin-0">
                 {{ title() }}
               </h2>
             }
@@ -150,7 +150,7 @@
 
             @if (infoTags().length > 0) {
               <div
-                class="c-profile-card__info-tags o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
+                class="c-profile-card__info-tags o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0"
               >
                 @for (tag of infoTags(); track tag.label; let index = $index) {
                   @if (!tag.filterKey) {
@@ -199,7 +199,7 @@
 
       @if (loading()) {
         <div
-          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex--wrap"
           aria-hidden="true"
         >
           @for (slot of skeletonIdentifierSlots; track slot) {
@@ -212,7 +212,7 @@
         </div>
       } @else if (identifiers().length > 0) {
         <div
-          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap"
+          class="c-profile-card__identifiers o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex--wrap"
         >
           @for (identifier of identifiers(); track identifier.label; let last = $last) {
             <pds-copyable-text
@@ -243,7 +243,7 @@
 >
   @if (hasMultipleStatusActions()) {
     <ul
-      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
+      class="p-autocomplete-list c-list__tag-target-list o-layout o-layout--full-width o-layout--margin-0 o-layout--padding-0"
       role="listbox"
       [attr.aria-label]="statusActionAriaLabel()"
     >

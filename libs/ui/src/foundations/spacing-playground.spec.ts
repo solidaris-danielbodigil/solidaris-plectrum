@@ -77,7 +77,7 @@ describe('spacing playground stops', () => {
     expect(stopDisplayLabel('2')).toBe('2');
     expect(stopDisplayLabel('auto')).toBe('auto');
     expect(spacingSnippet('gap', '0-25')).toBe(
-      '<div class="o-flex o-layout--gap-0-25">…</div>',
+      '<div class="o-flex o-layout o-layout--gap-0-25">…</div>',
     );
   });
 });

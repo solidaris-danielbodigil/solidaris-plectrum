@@ -61,12 +61,12 @@ function pretty(suffix: string): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
-      class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
+      class="c-token-explorer o-layout o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
     >
       <pds-toolbar [sticky]="true">
         <ng-container slot="start">
           <pds-form-field
-            class="c-token-explorer__compose-field o-flex__item--grow-0"
+            class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
             label="Level"
             hint="Pick by the role of the surface, not how strong the shadow looks."
             inputId="pds-elevation-level"
@@ -88,29 +88,34 @@ function pretty(suffix: string): string {
       </pds-toolbar>
 
       <section
-        class="c-token-explorer__playground o-flex o-flex--col o-layout--gap-3 o-layout--margin-block-start-4 o-layout--padding-3 u-border-all u-radius-md"
+        class="c-token-explorer__playground o-flex o-flex--col o-layout o-layout--gap-3 o-layout--margin-block-start-4 o-layout--padding-3 u-border-all u-radius-md"
         [style.--pds-border-color]="'var(--pds-color-panel-border)'"
       >
-        <p class="c-token-explorer__playground-label o-layout--margin-0">
+        <p
+          class="c-token-explorer__playground-label o-layout o-layout--margin-0"
+        >
           Result
         </p>
         <div
           [attr.class]="
-            'o-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-6 u-radius-md u-shadow-' +
+            'o-flex o-flex--align-items-center o-flex--justify-content-center o-layout o-layout--padding-6 u-radius-md u-shadow-' +
             level()
           "
           [style.background]="'var(--pds-color-surface-0)'"
         >
           {{ useCase() }}
         </div>
-        <div class="o-flex o-flex--col o-layout--gap-1">
-          <div class="o-flex o-flex--align-items-center o-layout--gap-2">
-            <code class="o-flex__item--grow-1 o-layout--min-w-0">{{
-              className()
-            }}</code>
+        <div class="o-flex o-flex--col o-layout o-layout--gap-1">
+          <div
+            class="o-flex o-flex--align-items-center o-layout o-layout--gap-2"
+          >
+            <code
+              class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
+              >{{ className() }}</code
+            >
             <button
               type="button"
-              class="c-token-explorer__copy-btn o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+              class="c-token-explorer__copy-btn o-flex o-flex--inline o-layout o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
               [style.--pds-border-color]="'var(--pds-color-panel-border)'"
               [attr.aria-label]="'Copy ' + className()"
               (click)="copy(className())"
@@ -118,13 +123,16 @@ function pretty(suffix: string): string {
               <i class="bi bi-clipboard" aria-hidden="true"></i>
             </button>
           </div>
-          <div class="o-flex o-flex--align-items-center o-layout--gap-2">
-            <code class="o-flex__item--grow-1 o-layout--min-w-0">{{
-              tokenVar()
-            }}</code>
+          <div
+            class="o-flex o-flex--align-items-center o-layout o-layout--gap-2"
+          >
+            <code
+              class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
+              >{{ tokenVar() }}</code
+            >
             <button
               type="button"
-              class="c-token-explorer__copy-btn o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+              class="c-token-explorer__copy-btn o-flex o-flex--inline o-layout o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
               [style.--pds-border-color]="'var(--pds-color-panel-border)'"
               [attr.aria-label]="'Copy ' + tokenVar()"
               (click)="copy(tokenVar())"

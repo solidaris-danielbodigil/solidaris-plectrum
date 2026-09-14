@@ -52,7 +52,7 @@ import { Card } from 'primeng/card';
   // scroll-ancestor boundary — applying it to an inner div breaks sticky in any
   // parent that has overflow constraints (Storybook canvas, app shell, etc.)
   host: {
-    class: 'c-toolbar o-layout--block',
+    class: 'c-toolbar o-layout o-layout--block',
     '[class.c-toolbar--sticky]': 'sticky()',
   },
 })

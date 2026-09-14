@@ -1,9 +1,9 @@
 @if (showHeader()) {
   <div
-    class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2"
+    class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2"
   >
-    <div class="o-flex o-flex--align-items-center o-layout--gap-1-5">
-      <p class="c-list__title o-layout--margin-0">{{ messages.regionLabel }}</p>
+    <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1-5">
+      <p class="c-list__title o-layout o-layout--margin-0">{{ messages.regionLabel }}</p>
       <span
         class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
         >{{ documentCount() }}</span
@@ -14,12 +14,12 @@
 }
 
 @if (loading()) {
-  <div class="c-list__body o-flex o-flex--col o-layout--gap-1-5">
+  <div class="c-list__body o-flex o-flex--col o-layout o-layout--gap-1-5">
     @for (row of skeletonRowIndexes; track row) {
-      <article class="c-list__item c-list__item--entry o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width">
-        <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
-          <div class="o-flex o-layout--gap-3">
-            <p-skeleton class="c-list__skeleton-icon o-flex__item--shrink-0" />
+      <article class="c-list__item c-list__item--entry o-layout o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width">
+        <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1 o-layout--padding-2">
+          <div class="o-flex o-layout o-layout--gap-3">
+            <p-skeleton class="c-list__skeleton-icon o-flex__item o-flex__item--shrink-0" />
             <p-skeleton class="c-list__skeleton-line c-list__skeleton-line--title" />
           </div>
           <p-skeleton class="c-list__skeleton-line c-list__skeleton-line--subtitle" />
@@ -59,7 +59,7 @@
     </defs>
   </svg>
 
-  <div class="c-list__body o-layout--full-width o-layout--min-w-0 o-flex__item--grow-1">
+  <div class="c-list__body o-layout o-layout--full-width o-layout--min-w-0 o-flex__item o-flex__item--grow-1">
     <p-tree
       [value]="treeNodes()"
       [indentation]="0"
@@ -75,21 +75,21 @@
       <ng-template let-node pTemplate="group">
         @let group = groupFromNode(node);
         <article
-          class="c-list__item c-list__item--group o-layout--overflow-visible o-layout--min-w-0"
+          class="c-list__item c-list__item--group o-layout o-layout--overflow-visible o-layout--min-w-0"
           [pdsTelemetryLabel]="groupTelemetryLabel(group)"
           (click)="onGroupClick($event, group)"
           (keydown)="onGroupKeydown($event, group)"
         >
-          <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
-            <div class="c-list__header-row o-flex o-layout--gap-3">
+          <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1">
+            <div class="c-list__header-row o-flex o-layout o-layout--gap-3">
               <i
-                class="c-list__icon bi o-flex__item--shrink-0"
+                class="c-list__icon bi o-flex__item o-flex__item--shrink-0"
                 [class.bi-folder2-open]="isGroupExpanded(group.id)"
                 [class.bi-folder]="!isGroupExpanded(group.id)"
                 aria-hidden="true"
               ></i>
-              <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
-                <p class="c-list__title o-layout--margin-0">
+              <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
+                <p class="c-list__title o-layout o-layout--margin-0">
                   {{ group.title }}
                   @if (group.titleAccent) {
                     <span class="c-list__title-accent">{{ group.titleAccent }}</span>
@@ -101,12 +101,12 @@
               </div>
             </div>
             @if (groupHasFooterContent(group)) {
-              <div class="c-list__dates o-flex o-layout--gap-0-25">
-                <p class="c-list__date o-flex__item--grow-1 o-layout--margin-0">
+              <div class="c-list__dates o-flex o-layout o-layout--gap-0-25">
+                <p class="c-list__date o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
                   {{ messages.startDate }} :
                   <span class="c-list__date-value">{{ group.startDate }}</span>
                 </p>
-                <p class="c-list__date c-list__date--end o-flex__item--grow-1 o-layout--margin-0">
+                <p class="c-list__date c-list__date--end o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
                   {{ messages.endDate }} :
                   <span class="c-list__date-value">{{ group.endDate }}</span>
                 </p>
@@ -120,20 +120,20 @@
         @let documentData = documentFromNode(node);
         @let doc = documentData.doc;
         @if (documentData.showTimeline) {
-          <div class="c-list__document-row o-layout--min-w-0 o-layout--full-width">
+          <div class="c-list__document-row o-layout o-layout--min-w-0 o-layout--full-width">
             <div
               class="c-list__timeline o-flex o-flex--col o-flex--align-items-center"
               aria-hidden="true"
             >
               <svg
-                class="c-list__timeline-cap c-list__timeline-cap--marker o-layout--block o-flex__item--shrink-0"
+                class="c-list__timeline-cap c-list__timeline-cap--marker o-layout o-layout--block o-flex__item o-flex__item--shrink-0"
                 viewBox="0 0 6 4"
                 aria-hidden="true"
               >
                 <use href="#pds-list-timeline-marker" width="6" height="4" />
               </svg>
               <svg
-                class="c-list__timeline-line o-layout--block"
+                class="c-list__timeline-line o-layout o-layout--block"
                 viewBox="0 0 6 100"
                 preserveAspectRatio="none"
                 aria-hidden="true"
@@ -146,7 +146,7 @@
                 />
               </svg>
               <svg
-                class="c-list__timeline-cap c-list__timeline-cap--arrow o-layout--block o-flex__item--shrink-0"
+                class="c-list__timeline-cap c-list__timeline-cap--arrow o-layout o-layout--block o-flex__item o-flex__item--shrink-0"
                 viewBox="0 0 6 4.5"
                 aria-hidden="true"
               >
@@ -154,20 +154,20 @@
               </svg>
             </div>
             <article
-              class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
+              class="c-list__item c-list__item--entry o-flex__item o-flex__item--grow-1 o-layout o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
               [class.c-list__item--selected]="isDocumentSelected(doc)"
               [attr.data-telemetry-id]="'document-row-' + doc.id"
               [pdsTelemetryLabel]="documentDisplayTitle(doc)"
               (click)="onDocumentRowClick($event, doc)"
               (keydown)="onDocumentKeydown($event, doc)"
             >
-              <div class="c-list__container o-flex o-flex--col o-layout--gap-1 o-layout--padding-2">
+              <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1 o-layout--padding-2">
                 <div
-                  class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
+                  class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout o-layout--gap-4"
                 >
-                  <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                    <i [class]="'c-list__icon o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
-                    <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0 o-layout--margin-0">
+                  <div class="o-flex o-layout o-layout--gap-3 o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
+                    <i [class]="'c-list__icon o-flex__item o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
+                    <p class="c-list__title o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--margin-0">
                       {{ documentDisplayTitle(doc) }}
                     </p>
                   </div>
@@ -185,7 +185,7 @@
                   <hr />
                 }
                 @if (doc.tags?.length) {
-                  <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+                  <div class="c-list__tags o-flex o-flex--wrap o-layout o-layout--gap-1">
                     @for (tag of doc.tags; track tag.label + tag.severity) {
                       @if (tag.targets?.length) {
                         <button
@@ -218,20 +218,20 @@
           </div>
         } @else {
           <article
-            class="c-list__item c-list__item--entry o-flex__item--grow-1 o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
+            class="c-list__item c-list__item--entry o-flex__item o-flex__item--grow-1 o-layout o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width"
             [class.c-list__item--selected]="isDocumentSelected(doc)"
             [attr.data-telemetry-id]="'document-row-' + doc.id"
             [pdsTelemetryLabel]="documentDisplayTitle(doc)"
             (click)="onDocumentRowClick($event, doc)"
             (keydown)="onDocumentKeydown($event, doc)"
           >
-            <div class="c-list__container o-flex o-flex--col o-layout--gap-1  o-layout--padding-2">
+            <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1 o-layout--padding-2">
               <div
-                class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
+                class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout o-layout--gap-4"
               >
-                <div class="o-flex o-layout--gap-3 o-flex__item--grow-1 o-layout--min-w-0">
-                  <i [class]="'c-list__icon o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
-                  <p class="c-list__title o-flex__item--grow-1 o-layout--min-w-0">
+                <div class="o-flex o-layout o-layout--gap-3 o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
+                  <i [class]="'c-list__icon o-flex__item o-flex__item--shrink-0 ' + documentIcon(doc)" aria-hidden="true"></i>
+                  <p class="c-list__title o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
                     {{ documentDisplayTitle(doc) }}
                   </p>
                 </div>
@@ -249,7 +249,7 @@
                 <hr />
               }
               @if (doc.tags?.length) {
-                <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+                <div class="c-list__tags o-flex o-flex--wrap o-layout o-layout--gap-1">
                   @for (tag of doc.tags; track tag.label + tag.severity) {
                     @if (tag.targets?.length) {
                       <button
@@ -286,7 +286,7 @@
     @if (footnote()) {
       <button
         type="button"
-        class="c-list__footnote u-border-top o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
+        class="c-list__footnote u-border-top o-layout o-layout--full-width o-layout--padding-2 o-layout--padding-inline-3 o-layout--margin-0"
         style="--pds-border-color: var(--pds-color-panel-border); --pds-border-width: var(--pds-border-width-list)"
         (click)="footnoteClick.emit()"
       >
@@ -307,7 +307,7 @@
   @let active = activeTagContext();
   @if (active) {
     <ul
-      class="p-autocomplete-list c-list__tag-target-list o-layout--full-width o-layout--margin-0 o-layout--padding-0"
+      class="p-autocomplete-list c-list__tag-target-list o-layout o-layout--full-width o-layout--margin-0 o-layout--padding-0"
       role="listbox"
       [attr.aria-label]="active.tag.ariaLabel"
     >

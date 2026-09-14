@@ -93,7 +93,7 @@ export const DOCS_STATUS_DEFINITIONS_PATH =
   encapsulation: ViewEncapsulation.None,
   host: {
     class:
-      'c-docs-status o-flex o-flex--col o-layout--gap-0-5 o-layout--margin-block-end-3',
+      'c-docs-status o-flex o-flex--col o-layout o-layout--gap-0-5 o-layout--margin-block-end-3',
   },
 })
 export class DocsStatusComponent {

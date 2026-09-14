@@ -87,7 +87,7 @@ export const Vertical = {
   name: 'Vertical (Block Axis)',
   render: () => ({
     template: `
-    <div class="o-scroll-shadow o-layout--overflow-y-auto" style="max-height: 14rem;">
+    <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto" style="max-height: 14rem;">
       <div class="o-flex o-flex--col">
         ${blockCells(14)}
       </div>
@@ -104,7 +104,7 @@ export const Horizontal = {
   render: () => ({
     template: `
     <div
-      class="o-scroll-shadow--inline o-layout--overflow-x-auto o-layout--min-w-0"
+      class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-layout--min-w-0"
       style="max-width: 22rem;"
     >
       <div class="o-flex o-flex--nowrap">
@@ -121,7 +121,7 @@ export const InFlexColumn = {
     template: `
     <div class="o-flex o-flex--col" style="height: 18rem;">
       <div class="o-flex__item o-flex__item--shrink-0">Fixed header</div>
-      <div class="o-scroll-shadow o-layout--overflow-y-auto o-flex__item--grow-1 o-layout--min-h-0">
+      <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-flex__item o-flex__item--grow-1 o-layout--min-h-0">
         <div class="o-flex o-flex--col">
           ${blockCells(12)}
         </div>
@@ -138,7 +138,7 @@ export const InFlexRow = {
     template: `
     <div class="o-flex o-flex--row o-flex--align-items-stretch" style="width: 22rem;">
       <div class="o-flex__item o-flex__item--shrink-0">Start</div>
-      <div class="o-scroll-shadow--inline o-layout--overflow-x-auto o-flex__item--grow-1 o-layout--min-w-0">
+      <div class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
         <div class="o-flex o-flex--nowrap">
           ${inlineCells(8)}
         </div>

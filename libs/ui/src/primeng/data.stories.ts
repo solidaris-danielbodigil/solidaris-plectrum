@@ -170,7 +170,7 @@ export const StockSkeleton: Story = {
   render: () => ({
     moduleMetadata: { imports: [Skeleton] },
     template: `
-      <div class="o-flex o-flex--y o-layout--gap-2">
+      <div class="o-flex o-flex--y o-layout o-layout--gap-2">
         <p-skeleton width="12rem" height="1rem" />
         <p-skeleton width="20rem" height="1rem" />
         <p-skeleton width="16rem" height="1rem" />

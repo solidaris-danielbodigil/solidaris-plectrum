@@ -21,7 +21,7 @@
     text="The last promoted sync did not change any resolved token value."
   />
 } @else {
-  <pds-toolbar class="o-layout--margin-block-end-2" [sticky]="true">
+  <pds-toolbar class="o-layout o-layout--margin-block-end-2" [sticky]="true">
     <ng-container slot="start">
       <p-iconfield class="c-docs-control">
         <p-inputicon styleClass="bi bi-search" />
@@ -102,7 +102,7 @@
           @if (row.before != null) {
             @if (isColor(row.before)) {
               <span
-                class="c-docs-sync-changes__swatch o-layout--inline-block o-layout--margin-inline-end-0-5 u-border-all u-radius-xs"
+                class="c-docs-sync-changes__swatch o-layout o-layout--inline-block o-layout--margin-inline-end-0-5 u-border-all u-radius-xs"
                 [style.--pds-docs-sync-swatch]="row.before"
                 aria-hidden="true"
               ></span>
@@ -116,7 +116,7 @@
           @if (row.after != null) {
             @if (isColor(row.after)) {
               <span
-                class="c-docs-sync-changes__swatch o-layout--inline-block o-layout--margin-inline-end-0-5 u-border-all u-radius-xs"
+                class="c-docs-sync-changes__swatch o-layout o-layout--inline-block o-layout--margin-inline-end-0-5 u-border-all u-radius-xs"
                 [style.--pds-docs-sync-swatch]="row.after"
                 aria-hidden="true"
               ></span>

@@ -80,7 +80,7 @@ const SAMPLE_ITEMS: NavItem[] = [
 /** App-shell frame — only the catalogue stories. Docs figures must not inherit this. */
 const shellFrame = componentWrapperDecorator(
   (story) =>
-    `<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
+    `<div class="o-layout o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
 );
 
 const meta: Meta<NavShellComponent> = {

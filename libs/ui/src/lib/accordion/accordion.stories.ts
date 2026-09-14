@@ -3,7 +3,10 @@ import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { contractStory, statusStory } from '../../docs/docs-figure-stories';
-import { argTypesFromProps, classArgTypes } from '../../storybook/arg-types-from-props';
+import {
+  argTypesFromProps,
+  classArgTypes,
+} from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { AccordionMetadata } from './accordion.metadata';
 
@@ -14,8 +17,9 @@ interface AccordionStoryArgs {
   disabled: boolean;
 }
 
-const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
-const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
+const STOCK_CLASS = 'o-layout o-layout--full-width o-layout--min-w-0';
+const BORDERED_CLASS =
+  'c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0';
 
 const meta: Meta<AccordionStoryArgs> = {
   title: 'Custom components/Accordion',
@@ -24,14 +28,41 @@ const meta: Meta<AccordionStoryArgs> = {
     ...storyDesign(AccordionMetadata.component.figmaUrl),
   },
   argTypes: {
-    ...argTypesFromProps(
-      [
-        { name: 'title', type: 'string', required: false, default: 'Certificat ITT', description: 'Panel header label.', category: 'Story knobs' },
-        { name: 'statusLabel', type: 'string', required: false, default: 'Accepté', description: 'Status tag next to the header.', category: 'Story knobs' },
-        { name: 'expanded', type: 'boolean', required: false, default: 'true', description: 'When true, the panel value is set so the section is open.', category: 'Story knobs' },
-        { name: 'disabled', type: 'boolean', required: false, default: 'false', description: 'Disables p-accordion-panel.', category: 'Story knobs' },
-      ],
-    ),
+    ...argTypesFromProps([
+      {
+        name: 'title',
+        type: 'string',
+        required: false,
+        default: 'Certificat ITT',
+        description: 'Panel header label.',
+        category: 'Story knobs',
+      },
+      {
+        name: 'statusLabel',
+        type: 'string',
+        required: false,
+        default: 'Accepté',
+        description: 'Status tag next to the header.',
+        category: 'Story knobs',
+      },
+      {
+        name: 'expanded',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description:
+          'When true, the panel value is set so the section is open.',
+        category: 'Story knobs',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        required: false,
+        default: 'false',
+        description: 'Disables p-accordion-panel.',
+        category: 'Story knobs',
+      },
+    ]),
     ...classArgTypes([
       {
         name: '.c-accordion--bordered',
@@ -54,13 +85,34 @@ type Story = StoryObj<AccordionStoryArgs>;
 
 // Docs figures — hidden from the sidebar. The MDX page embeds these; the
 // content comes from accordion.metadata.ts, the documentation SSOT.
-export const Status = { tags: ['!dev'], ...statusStory(AccordionMetadata.governance, AccordionMetadata.component) };
-export const Usage = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'anatomy') };
-export const Variants = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'variants') };
-export const Composition = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'composition') };
-export const Behavior = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'behavior') };
-export const Accessibility = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'accessibility') };
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory(AccordionMetadata.governance, AccordionMetadata.component),
+};
+export const Usage = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'usage'),
+};
+export const Anatomy = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'anatomy'),
+};
+export const Variants = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'variants'),
+};
+export const Composition = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'composition'),
+};
+export const Behavior = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'behavior'),
+};
+export const Accessibility = {
+  tags: ['!dev'],
+  ...contractStory(AccordionMetadata, 'accessibility'),
+};
 
 function accordionTemplate(hostClass: string): string {
   return `
@@ -72,13 +124,13 @@ function accordionTemplate(hostClass: string): string {
     >
       <p-accordion-panel value="0" [disabled]="disabled">
         <p-accordion-header>
-          <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+          <span class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
             <span>{{ title }}</span>
             <p-tag severity="success" icon="bi bi-check-lg" [value]="statusLabel" />
           </span>
         </p-accordion-header>
         <p-accordion-content>
-          <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+          <p class="o-layout o-layout--margin-0">Date de réception 24/11/2025</p>
         </p-accordion-content>
       </p-accordion-panel>
     </p-accordion>
@@ -101,9 +153,13 @@ export const Default: Story = {
     const header = canvas.getByRole('button', { name: /Certificat ITT/ });
     await expect(header).toHaveAttribute('aria-expanded', 'true');
     await userEvent.click(header);
-    await waitFor(() => expect(header).toHaveAttribute('aria-expanded', 'false'));
+    await waitFor(() =>
+      expect(header).toHaveAttribute('aria-expanded', 'false'),
+    );
     await userEvent.click(header);
-    await waitFor(() => expect(header).toHaveAttribute('aria-expanded', 'true'));
+    await waitFor(() =>
+      expect(header).toHaveAttribute('aria-expanded', 'true'),
+    );
   },
 };
 
@@ -145,17 +201,21 @@ export const Disabled: Story = {
 export const Stacked: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const second = canvas.getByRole('button', { name: /Certificat de reprise/ });
+    const second = canvas.getByRole('button', {
+      name: /Certificat de reprise/,
+    });
     await expect(second).toHaveAttribute('aria-expanded', 'false');
     await userEvent.click(second);
-    await waitFor(() => expect(second).toHaveAttribute('aria-expanded', 'true'));
+    await waitFor(() =>
+      expect(second).toHaveAttribute('aria-expanded', 'true'),
+    );
   },
   render: () => ({
     props: { value: ['0'] },
     moduleMetadata: { imports: [AccordionModule, Tag] },
     template: `
       <p-accordion
-        class="c-accordion--bordered o-layout--full-width o-layout--min-w-0"
+        class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0"
         [multiple]="true"
         [value]="value"
         expandIcon="bi bi-chevron-down"
@@ -163,19 +223,19 @@ export const Stacked: Story = {
       >
         <p-accordion-panel value="0">
           <p-accordion-header>
-            <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+            <span class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
               <span>Certificat ITT</span>
               <p-tag severity="success" icon="bi bi-check-lg" value="Accepté" />
             </span>
           </p-accordion-header>
           <p-accordion-content>
-            <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+            <p class="o-layout o-layout--margin-0">Date de réception 24/11/2025</p>
           </p-accordion-content>
         </p-accordion-panel>
         <p-accordion-panel value="1">
           <p-accordion-header>Certificat de reprise</p-accordion-header>
           <p-accordion-content>
-            <p class="o-layout--margin-0">Date de réception 27/12/2025</p>
+            <p class="o-layout o-layout--margin-0">Date de réception 27/12/2025</p>
           </p-accordion-content>
         </p-accordion-panel>
       </p-accordion>

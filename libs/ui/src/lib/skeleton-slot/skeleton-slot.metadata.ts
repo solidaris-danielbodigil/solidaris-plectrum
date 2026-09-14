@@ -104,7 +104,7 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
     {
       name: 'Loading lines',
       description: 'Slots keep each placeholder on the rhythm of the line it replaces.',
-      code: '<div class="o-flex o-flex--col o-layout--gap-3" aria-busy="true">\n  <div class="c-skeleton-slot"><p-skeleton width="60%" height="1.25rem" /></div>\n  <div class="c-skeleton-slot"><p-skeleton width="100%" height="1rem" /></div>\n  <div class="o-flex o-flex--align-items-center o-layout--gap-2">\n    <span class="c-skeleton-count-badge"><p-skeleton shape="circle" size="var(--pds-size-list-count-badge-min)" /></span>\n    <div class="c-skeleton-slot o-flex__item--grow-1"><p-skeleton width="40%" height="1rem" /></div>\n  </div>\n</div>',
+      code: '<div class="o-flex o-flex--col o-layout o-layout--gap-3" aria-busy="true">\n  <div class="c-skeleton-slot"><p-skeleton width="60%" height="1.25rem" /></div>\n  <div class="c-skeleton-slot"><p-skeleton width="100%" height="1rem" /></div>\n  <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">\n    <span class="c-skeleton-count-badge"><p-skeleton shape="circle" size="var(--pds-size-list-count-badge-min)" /></span>\n    <div class="c-skeleton-slot o-flex__item o-flex__item--grow-1"><p-skeleton width="40%" height="1rem" /></div>\n  </div>\n</div>',
     },
   ],
 };

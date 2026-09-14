@@ -105,14 +105,14 @@ export const BorderModifiers: StoryObj = {
   name: 'Border Modifiers',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--col o-layout--gap-3">
+    <div class="o-flex o-flex--col o-layout o-layout--gap-3">
       ${borderGroups()
         .modifiers.map(
           (m) => `
-      <div class="c-demo-cell u-border-all u-border-${m} o-layout--padding-3">u-border-all + u-border-${m}</div>`,
+      <div class="c-demo-cell u-border-all u-border-${m} o-layout o-layout--padding-3">u-border-all + u-border-${m}</div>`,
         )
         .join('')}
-      <div class="c-demo-cell u-border-top u-border-thick u-border-dashed u-border-danger o-layout--padding-3">
+      <div class="c-demo-cell u-border-top u-border-thick u-border-dashed u-border-danger o-layout o-layout--padding-3">
         composed: top + thick + dashed + danger
       </div>
     </div>`,
@@ -132,14 +132,14 @@ export const BorderColorOverride: StoryObj = {
   name: 'Border Color Override',
   render: () => ({
     template: `
-    <div class="o-flex o-flex--col o-layout--gap-3">
-      <div class="c-demo-cell u-border-bottom o-layout--padding-3">
+    <div class="o-flex o-flex--col o-layout o-layout--gap-3">
+      <div class="c-demo-cell u-border-bottom o-layout o-layout--padding-3">
         default (content-border)
       </div>
-      <div class="c-demo-cell u-border-bottom o-layout--padding-3" style="--pds-border-color: var(--pds-color-panel-border);">
+      <div class="c-demo-cell u-border-bottom o-layout o-layout--padding-3" style="--pds-border-color: var(--pds-color-panel-border);">
         panel-border override
       </div>
-      <div class="c-demo-cell u-border-all o-layout--padding-3" style="--pds-border-color: var(--pds-color-card-border);">
+      <div class="c-demo-cell u-border-all o-layout o-layout--padding-3" style="--pds-border-color: var(--pds-color-card-border);">
         card-border override
       </div>
     </div>`,

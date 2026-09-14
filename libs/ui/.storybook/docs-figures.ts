@@ -311,12 +311,13 @@ export function Diagram({
     'figure',
     {
       className:
-        'c-docs-diagram sb-unstyled o-layout--margin-block-3 o-layout--overflow-x-auto',
+        'c-docs-diagram sb-unstyled o-layout o-layout--margin-block-3 o-layout--overflow-x-auto',
     },
     h(
       'svg',
       {
-        className: 'c-docs-diagram__svg o-layout--block o-layout--full-width',
+        className:
+          'c-docs-diagram__svg o-layout o-layout--block o-layout--full-width',
         viewBox: `0 0 ${width} ${height}`,
         role: 'img',
         'aria-labelledby': `${id}-title ${id}-desc`,

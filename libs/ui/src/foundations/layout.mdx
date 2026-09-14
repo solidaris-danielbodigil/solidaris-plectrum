@@ -38,9 +38,9 @@ Styles: `libs/styles/src/05-objects/layout/_objects.layout.scss`. Rule: `.ai/rul
 
 ```html
 <!-- Scrollable flex child -->
-<div class="o-flex o-flex--col o-layout--full-dvh">
-  <header class="o-flex__item--shrink-0">Header</header>
-  <main class="o-layout--min-h-0 o-layout--overflow-y-auto">
+<div class="o-flex o-flex--col o-layout o-layout--full-dvh">
+  <header class="o-flex__item o-flex__item--shrink-0">Header</header>
+  <main class="o-layout o-layout--min-h-0 o-layout--overflow-y-auto">
     Scrollable content...
   </main>
 </div>
@@ -94,8 +94,8 @@ Overflow syntax: `.o-layout--overflow-[axis?]-[value]`
 **Responsive:** All overflow classes support `@{breakpoint}` variants.
 
 ```html
-<div class="o-layout--overflow-hidden o-layout--overflow-auto@md">...</div>
-<div class="o-layout--overflow-x-hidden o-layout--overflow-y-auto">...</div>
+<div class="o-layout o-layout--overflow-hidden o-layout--overflow-auto@md">...</div>
+<div class="o-layout o-layout--overflow-x-hidden o-layout--overflow-y-auto">...</div>
 ```
 
 <Canvas of={Stories.Overflow} />
@@ -120,8 +120,8 @@ Display classes control the `display` property with responsive support.
 `.o-layout--grid` only sets `display: grid`. For a column system (equal cols, span, alignment), use **`.o-flex`** — see [Foundations / Flex Grid](?path=/docs/foundations-flex-grid--flex-grid).
 
 ```html
-<aside class="o-layout--hidden o-layout--block@md">Sidebar</aside>
-<div class="o-layout--block o-layout--grid@lg">...</div>
+<aside class="o-layout o-layout--hidden o-layout--block@md">Sidebar</aside>
+<div class="o-layout o-layout--block o-layout--grid@lg">...</div>
 ```
 
 <Canvas of={Stories.Display} />
@@ -143,9 +143,9 @@ Position classes set the `position` property with responsive support.
 />
 
 ```html
-<header class="o-layout--sticky-top">Sticks to top on scroll</header>
-<div class="o-layout--relative">
-  <span class="o-layout--absolute" style="top: 0; right: 0;">Badge</span>
+<header class="o-layout o-layout--sticky-top">Sticks to top on scroll</header>
+<div class="o-layout o-layout--relative">
+  <span class="o-layout o-layout--absolute" style="top: 0; right: 0;">Badge</span>
 </div>
 ```
 
@@ -164,8 +164,8 @@ Spacing classes apply gap, padding, or margin from the [spacing scale](?path=/do
 **Scale:** `0` `0-25` `0-5` `0-75` `1` `1-5` `2` `3` `4` `5` `6` `7` `auto`
 
 ```html
-<div class="o-flex o-layout--gap-2 o-layout--gap-4@md">...</div>
-<div class="o-layout--padding-2 o-layout--padding-4@lg">...</div>
+<div class="o-flex o-layout o-layout--gap-2 o-layout--gap-4@md">...</div>
+<div class="o-layout o-layout--padding-2 o-layout--padding-4@lg">...</div>
 ```
 
 Or reuse the variables in SCSS:
@@ -187,10 +187,10 @@ Pattern: `.o-layout--{modifier}@{breakpoint}`
 The responsive class applies from that breakpoint **upward** (mobile-first, `min-width`). Resize the viewport to see the demo change.
 
 ```html
-<div class="o-flex o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">...</div>
-<aside class="o-layout--hidden o-layout--block@md">Sidebar</aside>
-<div class="o-layout--overflow-y-auto o-layout--overflow-y-visible@lg">...</div>
-<header class="o-layout--static o-layout--sticky@md" style="top: 0;">Nav</header>
+<div class="o-flex o-layout o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">...</div>
+<aside class="o-layout o-layout--hidden o-layout--block@md">Sidebar</aside>
+<div class="o-layout o-layout--overflow-y-auto o-layout--overflow-y-visible@lg">...</div>
+<header class="o-layout o-layout--static o-layout--sticky@md" style="top: 0;">Nav</header>
 ```
 
 <Canvas of={Stories.Responsive} />

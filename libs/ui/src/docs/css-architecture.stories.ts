@@ -55,7 +55,7 @@ export const Prefixes: StoryObj = cardsStory([
   },
   {
     title: 'c- component',
-    lead: 'One block per libs/ui component. Elements with __, modifiers with --. Never an app prefix.',
+    lead: 'One block per libs/ui component. A modifier sits on its block or element. An element is a child of that block. Never an app prefix.',
   },
   {
     title: 'u- utility',
@@ -74,7 +74,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'BEM + objects mix',
-    lead: 'The c- class says what the element is. o-flex / o-layout say how it is laid out. Both sit on the same node. Never @extend an object class.',
+    lead: 'The c- class says what the element is. o-flex / o-layout say how it is laid out. A modifier needs its block or element on that node. An element is a child of its block. Never @extend an object class.',
   },
   {
     title: 'States are is- / has-',

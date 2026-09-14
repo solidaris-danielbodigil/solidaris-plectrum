@@ -60,7 +60,7 @@ export interface ListEntryNodeData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout--overflow-hidden',
+      'c-list u-border-all u-radius-xl o-flex o-flex--y o-layout o-layout--overflow-hidden',
     style:
       '--pds-border-color: var(--pds-color-panel-border); --pds-border-width: var(--pds-border-width-list)',
     '[class.c-list--journey]': 'isJourneyMode()',
@@ -249,7 +249,9 @@ export class ListComponent {
       return selectedId;
     }
 
-    const selected = this.collectDocuments().find((doc) => doc.selected === true);
+    const selected = this.collectDocuments().find(
+      (doc) => doc.selected === true,
+    );
     return selected?.id ?? null;
   }
 
@@ -461,10 +463,7 @@ export class ListComponent {
     this.tagPopover()?.hide();
   }
 
-  onTagTargetKeydown(
-    event: KeyboardEvent,
-    target: ListEntryTagTarget,
-  ): void {
+  onTagTargetKeydown(event: KeyboardEvent, target: ListEntryTagTarget): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       this.onTagTargetSelect(event, target);

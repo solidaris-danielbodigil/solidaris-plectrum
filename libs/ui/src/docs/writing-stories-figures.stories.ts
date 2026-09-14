@@ -15,7 +15,7 @@ export default meta;
 export const ExampleOnly: StoryObj = calloutStory({
   tone: 'info',
   title: 'c-accordion--bordered is already in the repository',
-  text: 'Certificate and audit panels need a card-like bordered stack that stock PrimeNG + Plectrum do not provide. There is no [border] input. Write class="c-accordion--bordered" on p-accordion. The canvases below are the catalogue stories at Custom components/Accordion.',
+  text: 'Certificate and audit panels need a card-like bordered stack that stock PrimeNG + Plectrum do not provide. There is no [border] input. Write class="c-accordion c-accordion--bordered" on p-accordion. The canvases below are the catalogue stories at Custom components/Accordion.',
 });
 
 /**

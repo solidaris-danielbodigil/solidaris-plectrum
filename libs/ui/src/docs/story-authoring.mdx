@@ -99,7 +99,7 @@ Figma: [iSHARE-Audit — bordered accordion](https://www.figma.com/design/9HlAud
 
 ### Bordered
 
-Same PrimeNG control. The host class is written in the template — `class="c-accordion--bordered"` — as in the iSHARE certificate panels. There is no `[border]` input.
+Same PrimeNG control. The host class is written in the template — `class="c-accordion c-accordion--bordered"` — as in the iSHARE certificate panels. There is no `[border]` input.
 
 <Canvas of={AccordionStories.Bordered} />
 
@@ -124,7 +124,7 @@ One-off spacing on a wrapper we own stays an **object class** (`o-layout`). The 
 
 ```html
 <p-accordion
-  class="c-accordion--bordered o-layout--full-width o-layout--min-w-0"
+  class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0"
   expandIcon="bi bi-chevron-down"
   collapseIcon="bi bi-chevron-up"
 >
@@ -185,8 +185,8 @@ interface AccordionStoryArgs {
   disabled: boolean;
 }
 
-const STOCK_CLASS = 'o-layout--full-width o-layout--min-w-0';
-const BORDERED_CLASS = 'c-accordion--bordered o-layout--full-width o-layout--min-w-0';
+const STOCK_CLASS = 'o-layout o-layout--full-width o-layout--min-w-0';
+const BORDERED_CLASS = 'c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0';
 
 const meta: Meta<AccordionStoryArgs> = {
   title: 'Custom components/Accordion',
@@ -228,13 +228,13 @@ function accordionTemplate(hostClass: string): string {
     >
       <p-accordion-panel value="0" [disabled]="disabled">
         <p-accordion-header>
-          <span class="o-flex o-flex--align-items-center o-layout--gap-2">
+          <span class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
             <span>{{ title }}</span>
             <p-tag severity="success" icon="bi bi-check-lg" [value]="statusLabel" />
           </span>
         </p-accordion-header>
         <p-accordion-content>
-          <p class="o-layout--margin-0">Date de réception 24/11/2025</p>
+          <p class="o-layout o-layout--margin-0">Date de réception 24/11/2025</p>
         </p-accordion-content>
       </p-accordion-panel>
     </p-accordion>
@@ -317,7 +317,7 @@ Stock Plectrum `p-accordion`. No BEMIT modifier on the host.
 Same PrimeNG control. The host class is written in the template, as in iSHARE:
 
 ```html
-<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0">
+<p-accordion class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0">
 ```
 
 <Canvas of={Stories.Bordered} />
@@ -388,7 +388,7 @@ Two bordered panels. Sibling radii and shared outer edge are why the layer lives
     ['Plectrum', 'The Solidaris design system: Figma UI Kit, tokens, PrimeNG preset, Storybook.'],
     ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp while npm run storybook is up. docs-show and get-storybook-story-instructions before writing CSF. Tests stay on the test-runner.'],
     ['PrimeNG', 'The component library. p-accordion, p-button, p-select and the rest.'],
-    ['BEMIT', 'Class prefixes: o- layout objects, c- components, u- utilities, is- / has- state.'],
+    ['BEMIT', 'Class prefixes: o- layout objects, c- components, u- utilities, is- / has- state. A modifier sits on its block or element. An element is a child of its block. Responsive suffix: @{breakpoint} (@sm, @md, @lg, @xl).'],
     ['--pds-*', 'Plectrum CSS custom property. The only token name written in component SCSS.'],
     ['--p-*', 'PrimeNG theme custom property. Bridged in 01-settings, not in 06-components.'],
   ]}

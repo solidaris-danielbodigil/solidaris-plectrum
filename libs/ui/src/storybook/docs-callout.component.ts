@@ -29,7 +29,7 @@ import {
   templateUrl: './docs-callout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-callout o-layout--block o-layout--margin-block-3' },
+  host: { class: 'c-docs-callout o-layout o-layout--block o-layout--margin-block-3' },
 })
 export class DocsCalloutComponent {
   readonly tone = input<DocsCalloutTone>('info');

@@ -125,13 +125,13 @@ export const Playground: StoryObj<PlaygroundArgs> = {
     const resolved = resolveSpacingStop(stop);
     const hint = SPACING_PROPERTY_HINTS[property];
     const cell =
-      '<div class="c-demo-cell o-layout--padding-2" style="background: var(--pds-color-primary-100);">cell</div>';
+      '<div class="c-demo-cell o-layout o-layout--padding-2" style="background: var(--pds-color-primary-100);">cell</div>';
     const demo =
       property === 'gap'
         ? `<div class="o-flex ${cls}">${cell}${cell}${cell}</div>`
         : property === 'padding'
           ? `<div class="${cls}" style="background: var(--pds-color-primary-100); width: max-content;">${cell}</div>`
-          : `<div style="background: var(--pds-color-primary-100); width: max-content;"><div class="c-demo-cell ${cls} o-layout--padding-2">cell</div></div>`;
+          : `<div style="background: var(--pds-color-primary-100); width: max-content;"><div class="c-demo-cell ${cls} o-layout o-layout--padding-2">cell</div></div>`;
     return {
       props: {
         cls,
@@ -140,11 +140,11 @@ export const Playground: StoryObj<PlaygroundArgs> = {
           showStorybookToast({ summary: 'Copied', detail: text }),
       },
       template: `
-        <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
-          <p class="o-layout--margin-0">${hint}</p>
+        <div class="sb-demo-wrapper o-flex o-flex--col o-layout o-layout--gap-3">
+          <p class="o-layout o-layout--margin-0">${hint}</p>
           ${demo}
-          <p class="o-layout--margin-0">${resolved}${hasToken ? ` · var(${tokenVar})` : ''}</p>
-          <div class="o-flex o-flex--col o-layout--gap-2">
+          <p class="o-layout o-layout--margin-0">${resolved}${hasToken ? ` · var(${tokenVar})` : ''}</p>
+          <div class="o-flex o-flex--col o-layout o-layout--gap-2">
             <pds-copyable-text
               label="Class"
               [value]="cls"

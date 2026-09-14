@@ -173,24 +173,24 @@ export const Playground: StoryObj = {
           showStorybookToast({ summary: 'Copied', detail: value }),
       },
       template: `
-        <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
-          <p class="o-layout--margin-0">
+        <div class="sb-demo-wrapper o-flex o-flex--col o-layout o-layout--gap-3">
+          <p class="o-layout o-layout--margin-0">
             Contrast is for text size, not a whole-component certification.
             Approved text and background pairs are a design-team decision.
           </p>
-          <div class="u-radius-md o-layout--padding-4" style="background: var({{ background }}); color: var({{ text }}); max-width: 32rem;">
+          <div class="u-radius-md o-layout o-layout--padding-4" style="background: var({{ background }}); color: var({{ text }}); max-width: 32rem;">
             <strong>Sample heading</strong>
-            <p class="o-layout--margin-0">Body copy rendered with the selected roles.</p>
+            <p class="o-layout o-layout--margin-0">Body copy rendered with the selected roles.</p>
           </div>
-          <p class="o-layout--margin-0">{{ background }} — {{ resolvedBg }}</p>
-          <p class="o-layout--margin-0">{{ text }} — {{ resolvedText }}</p>
-          <div class="o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-2">
+          <p class="o-layout o-layout--margin-0">{{ background }} — {{ resolvedBg }}</p>
+          <p class="o-layout o-layout--margin-0">{{ text }} — {{ resolvedText }}</p>
+          <div class="o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-2">
             <strong>{{ ratioLabel }}</strong>
             <p-tag [value]="'AA normal text ≥ 4.5 — ' + aa" [severity]="aaSeverity" />
             <p-tag [value]="'AA large text ≥ 3 — ' + aaLarge" [severity]="aaLargeSeverity" />
             <p-tag [value]="'AAA normal text ≥ 7 — ' + aaa" [severity]="aaaSeverity" />
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-2">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-2">
             <pds-copyable-text
               label="Background"
               [value]="bgVar"

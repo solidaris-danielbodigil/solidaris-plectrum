@@ -33,21 +33,21 @@ import { assertTextVisible, waitForText } from '../storybook/story-tests';
       <p-step-panels>
         <p-step-panel [value]="1">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">
+            <p class="o-layout o-layout--margin-0 o-layout--padding-block-2">
               Document reçu.
             </p>
           </ng-template>
         </p-step-panel>
         <p-step-panel [value]="2">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">
+            <p class="o-layout o-layout--margin-0 o-layout--padding-block-2">
               Analyse en cours.
             </p>
           </ng-template>
         </p-step-panel>
         <p-step-panel [value]="3">
           <ng-template #content>
-            <p class="o-layout--margin-0 o-layout--padding-block-2">
+            <p class="o-layout o-layout--margin-0 o-layout--padding-block-2">
               Décision envoyée.
             </p>
           </ng-template>
@@ -78,7 +78,7 @@ class GalleryStepperDemo {
   standalone: true,
   imports: [Message],
   template: `
-    <div class="o-flex o-flex--y o-layout--gap-2">
+    <div class="o-flex o-flex--y o-layout o-layout--gap-2">
       <p-message severity="success">Le dossier a été enregistré.</p-message>
       <p-message severity="warn">Une pièce est manquante.</p-message>
       <p-message severity="error">La date de début est obligatoire.</p-message>
@@ -120,7 +120,7 @@ export const CardBlock: Story = {
     moduleMetadata: { imports: [Card] },
     template: `
       <p-card header="Dossier">
-        <p class="o-layout--margin-0">Certificat ITT accepté le 24/11/2025.</p>
+        <p class="o-layout o-layout--margin-0">Certificat ITT accepté le 24/11/2025.</p>
       </p-card>
     `,
   }),
@@ -135,7 +135,7 @@ export const Tags: Story = {
   render: () => ({
     moduleMetadata: { imports: [Tag] },
     template: `
-      <div class="o-flex o-flex--row-wrap o-flex--align-items-center o-layout--gap-2">
+      <div class="o-flex o-flex--row-wrap o-flex--align-items-center o-layout o-layout--gap-2">
         <p-tag value="Accepté" severity="success" icon="bi bi-check-lg" />
         <p-tag value="En traitement" severity="warn" icon="bi bi-hourglass-split" />
         <p-tag value="Info" severity="info" icon="bi bi-info-circle" />
@@ -153,7 +153,7 @@ export const Badges: Story = {
   render: () => ({
     moduleMetadata: { imports: [Badge] },
     template: `
-      <div class="o-flex o-flex--row-wrap o-flex--align-items-center o-layout--gap-2">
+      <div class="o-flex o-flex--row-wrap o-flex--align-items-center o-layout o-layout--gap-2">
         <p-badge value="3" />
         <p-badge value="12" severity="warn" />
         <p-badge value="OK" severity="success" />
@@ -182,9 +182,9 @@ export const Dividers: Story = {
   render: () => ({
     moduleMetadata: { imports: [Divider] },
     template: `
-      <p class="o-layout--margin-0">Avant</p>
+      <p class="o-layout o-layout--margin-0">Avant</p>
       <p-divider />
-      <p class="o-layout--margin-0">Après</p>
+      <p class="o-layout o-layout--margin-0">Après</p>
     `,
   }),
 };
@@ -218,13 +218,13 @@ export const TabSet: Story = {
         </p-tablist>
         <p-tabpanels>
           <p-tabpanel value="0">
-            <p class="o-layout--margin-0">Identité et coordonnées.</p>
+            <p class="o-layout o-layout--margin-0">Identité et coordonnées.</p>
           </p-tabpanel>
           <p-tabpanel value="1">
-            <p class="o-layout--margin-0">Pièces du dossier.</p>
+            <p class="o-layout o-layout--margin-0">Pièces du dossier.</p>
           </p-tabpanel>
           <p-tabpanel value="2">
-            <p class="o-layout--margin-0">Notes internes.</p>
+            <p class="o-layout o-layout--margin-0">Notes internes.</p>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
@@ -254,13 +254,13 @@ export const ScrollToTop: Story = {
     moduleMetadata: { imports: [ScrollTop] },
     template: `
       <div
-        class="o-layout--overflow-y-auto"
+        class="o-layout o-layout--overflow-y-auto"
         style="height: 12rem; position: relative;"
       >
-        <p class="o-layout--margin-0">Début de la page</p>
-        <p class="o-layout--padding-block-8">Contenu long pour faire apparaître le bouton.</p>
-        <p class="o-layout--padding-block-8">Encore du contenu.</p>
-        <p class="o-layout--margin-0">Fin de la page</p>
+        <p class="o-layout o-layout--margin-0">Début de la page</p>
+        <p class="o-layout o-layout--padding-block-8">Contenu long pour faire apparaître le bouton.</p>
+        <p class="o-layout o-layout--padding-block-8">Encore du contenu.</p>
+        <p class="o-layout o-layout--margin-0">Fin de la page</p>
         <p-scrolltop [target]="'parent'" icon="bi bi-chevron-up" />
       </div>
     `,

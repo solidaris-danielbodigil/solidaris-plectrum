@@ -29,17 +29,23 @@
 .o-flex {
   display: flex;
 
+  // After the block so it wins over `display: flex` on the same node.
+  &--inline {
+    display: inline-flex;
+  }
+
   // ── Container modifiers (with responsive variants) ───────────────────────
-  @include rm.responsive-modifiers('align-items',     grid.$align-items,     align-items);
-  @include rm.responsive-modifiers('align-content',   grid.$align-content,   align-content);
+  @include rm.responsive-modifiers('align-items', grid.$align-items, align-items);
+  @include rm.responsive-modifiers('align-content', grid.$align-content, align-content);
   @include rm.responsive-modifiers('justify-content', grid.$justify-content, justify-content);
 
   // Y-axis modifier (column layout flex-flow helper)
   &--y {
     flex-direction: column;
   }
+
   @each $breakpoint in map.keys(bp-settings.$breakpoints) {
-    @if $breakpoint != 'xs' {
+    @if $breakpoint !='xs' {
       &--y\@#{$breakpoint} {
         @include bp.breakpoint($breakpoint) {
           flex-direction: column;
@@ -60,8 +66,9 @@
       max-width: calc(100% / #{grid.$grid-cols} * #{$i});
     }
   }
+
   @each $breakpoint in map.keys(bp-settings.$breakpoints) {
-    @if $breakpoint != 'xs' {
+    @if $breakpoint !='xs' {
       @for $i from 1 through grid.$grid-cols {
         &--#{$i}\@#{$breakpoint} {
           @include bp.breakpoint($breakpoint) {
@@ -75,10 +82,13 @@
 
   // Order modifiers (with responsive variants)
   @for $i from 0 through grid.$grid-cols {
-    &--order-#{$i} { order: #{$i}; }
+    &--order-#{$i} {
+      order: #{$i};
+    }
   }
+
   @each $breakpoint in map.keys(bp-settings.$breakpoints) {
-    @if $breakpoint != 'xs' {
+    @if $breakpoint !='xs' {
       @for $i from 0 through grid.$grid-cols {
         &--order-#{$i}\@#{$breakpoint} {
           @include bp.breakpoint($breakpoint) {
@@ -91,17 +101,24 @@
 
   // flex-shrink / flex-grow (with responsive variants)
   @for $i from 0 through grid.$grid-cols {
-    &--shrink-#{$i} { flex-shrink: #{$i}; }
-    &--grow-#{$i}   { flex-grow:   #{$i}; }
+    &--shrink-#{$i} {
+      flex-shrink: #{$i};
+    }
+
+    &--grow-#{$i} {
+      flex-grow: #{$i};
+    }
   }
+
   @each $breakpoint in map.keys(bp-settings.$breakpoints) {
-    @if $breakpoint != 'xs' {
+    @if $breakpoint !='xs' {
       @for $i from 0 through grid.$grid-cols {
         &--shrink-#{$i}\@#{$breakpoint} {
           @include bp.breakpoint($breakpoint) {
             flex-shrink: #{$i};
           }
         }
+
         &--grow-#{$i}\@#{$breakpoint} {
           @include bp.breakpoint($breakpoint) {
             flex-grow: #{$i};

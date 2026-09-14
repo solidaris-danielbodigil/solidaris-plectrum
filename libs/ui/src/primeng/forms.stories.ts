@@ -35,7 +35,10 @@ export default meta;
 type Story = StoryObj;
 
 /** Ownership badge for the docs page — CSS-only theme proof. */
-export const Status = { tags: ['!dev'], ...statusStory({ status: 'core', owner: 'design-system' }) };
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory({ status: 'core', owner: 'design-system' }),
+};
 
 export const Default: Story = {
   name: 'InputText',
@@ -242,7 +245,7 @@ export const DatePickerField: Story = {
           dateFormat="dd/mm/yy"
           showIcon="true"
           iconDisplay="input"
-          inputStyleClass="o-layout--full-width"
+          inputStyleClass="o-layout o-layout--full-width"
           fluid
         />
       </pds-form-field>

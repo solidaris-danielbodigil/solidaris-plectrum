@@ -10,7 +10,7 @@ export const AccordionMetadata: ComponentMetadata = {
     name: 'Accordion',
     category: 'molecules',
     description:
-      'PrimeNG p-accordion with the Plectrum theme. Certificate and audit panels add c-accordion--bordered — a BEMIT modifier already in libs/styles. There is no Angular wrapper and no [border] input: put the class on p-accordion.',
+      'PrimeNG p-accordion with the Plectrum theme. Certificate and audit panels add c-accordion c-accordion--bordered — the block plus a BEMIT modifier already in libs/styles. There is no Angular wrapper and no [border] input: put both classes on p-accordion.',
     type: 'container',
     path: 'libs/styles/src/06-components/_components.accordion.scss',
     primeNgComponent: 'Accordion',
@@ -38,14 +38,14 @@ export const AccordionMetadata: ComponentMetadata = {
         description:
           'Same PrimeNG control as the stock accordion; the host class is written in the template, as in iSHARE.',
         composition:
-          '<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0" [value]="\'0\'">\n  <p-accordion-panel value="0">\n    <p-accordion-header>Certificat ITT</p-accordion-header>\n    <p-accordion-content>…</p-accordion-content>\n  </p-accordion-panel>\n</p-accordion>',
+          '<p-accordion class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0" [value]="\'0\'">\n  <p-accordion-panel value="0">\n    <p-accordion-header>Certificat ITT</p-accordion-header>\n    <p-accordion-content>…</p-accordion-content>\n  </p-accordion-panel>\n</p-accordion>',
       },
       {
         name: 'Stacked bordered panels',
         description:
           'Several panels share one outer edge; the sibling radii come from the 06-components layer.',
         composition:
-          '<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0" [multiple]="true" [value]="[\'0\']">\n  <p-accordion-panel value="0">…</p-accordion-panel>\n  <p-accordion-panel value="1">…</p-accordion-panel>\n</p-accordion>',
+          '<p-accordion class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0" [multiple]="true" [value]="[\'0\']">\n  <p-accordion-panel value="0">…</p-accordion-panel>\n  <p-accordion-panel value="1">…</p-accordion-panel>\n</p-accordion>',
       },
     ],
     antiPatterns: [
@@ -57,7 +57,8 @@ export const AccordionMetadata: ComponentMetadata = {
           'Use p-accordion and change only its appearance through the c-accordion--* modifiers.',
       },
       {
-        scenario: 'Overriding .p-accordionpanel with hardcoded colour or !important',
+        scenario:
+          'Overriding .p-accordionpanel with hardcoded colour or !important',
         reason:
           'Stock --p-accordion-* tokens come from providePlectrum(); ad-hoc overrides break theme switching and the PrimeNG-first rule.',
         alternative:
@@ -67,15 +68,28 @@ export const AccordionMetadata: ComponentMetadata = {
         scenario: 'A [border] input on a wrapper that does not exist',
         reason:
           'There is no Angular Accordion wrapper; the bordered look is a CSS modifier, not a property.',
-        alternative: 'Write c-accordion--bordered on p-accordion in the template.',
+        alternative:
+          'Write c-accordion c-accordion--bordered on p-accordion in the template.',
       },
     ],
   },
   anatomy: [
-    { part: 'p-accordion', role: 'PrimeNG host — owns expand, collapse, and the .p-accordion* DOM' },
-    { part: 'c-accordion--bordered', role: 'BEMIT modifier — card-like stacked radii and --p-accordion-* token bridges' },
-    { part: 'p-accordion-panel', role: 'One collapsible section; may be disabled' },
-    { part: 'p-accordion-header / p-accordion-content', role: 'PrimeNG header and body slots' },
+    {
+      part: 'p-accordion',
+      role: 'PrimeNG host — owns expand, collapse, and the .p-accordion* DOM',
+    },
+    {
+      part: 'c-accordion--bordered',
+      role: 'BEMIT modifier — card-like stacked radii and --p-accordion-* token bridges',
+    },
+    {
+      part: 'p-accordion-panel',
+      role: 'One collapsible section; may be disabled',
+    },
+    {
+      part: 'p-accordion-header / p-accordion-content',
+      role: 'PrimeNG header and body slots',
+    },
   ],
   variants: {
     modifier: {
@@ -140,14 +154,21 @@ export const AccordionMetadata: ComponentMetadata = {
     // c-accordion--nav bridges are documented on Sub Nav Shell.
     primeNgMappings: {
       '--p-accordion-panel-border-color': '--pds-color-panel-border',
-      '--p-accordion-header-background': '--pds-color-accordion-bordered-section-bg',
-      '--p-accordion-header-hover-background': '--pds-color-accordion-bordered-section-bg',
-      '--p-accordion-header-active-background': '--pds-color-accordion-bordered-section-bg',
-      '--p-accordion-header-color': '--pds-color-accordion-bordered-header-text',
-      '--p-accordion-header-hover-color': '--pds-color-accordion-bordered-header-text',
-      '--p-accordion-header-active-color': '--pds-color-accordion-bordered-header-text',
+      '--p-accordion-header-background':
+        '--pds-color-accordion-bordered-section-bg',
+      '--p-accordion-header-hover-background':
+        '--pds-color-accordion-bordered-section-bg',
+      '--p-accordion-header-active-background':
+        '--pds-color-accordion-bordered-section-bg',
+      '--p-accordion-header-color':
+        '--pds-color-accordion-bordered-header-text',
+      '--p-accordion-header-hover-color':
+        '--pds-color-accordion-bordered-header-text',
+      '--p-accordion-header-active-color':
+        '--pds-color-accordion-bordered-header-text',
       '--p-accordion-header-padding': '--pds-space-accordion-bordered-padding',
-      '--p-accordion-content-background': '--pds-color-accordion-bordered-section-bg',
+      '--p-accordion-content-background':
+        '--pds-color-accordion-bordered-section-bg',
       '--p-accordion-content-padding': '--pds-space-accordion-bordered-padding',
       '--p-accordion-toggle-icon-color': '--pds-color-text-muted',
       '--p-accordion-toggle-icon-hover-color': '--pds-color-text',
@@ -162,19 +183,29 @@ export const AccordionMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'medium',
     context:
-      'PrimeNG accordion with Plectrum theming. Write c-accordion--bordered on p-accordion for card-like stacked certificate / audit panels (iSHARE document detail, document more-details drawer); leave the host bare for the stock accordion. c-accordion--nav belongs to Sub Nav Shell. Never override .p-accordion* directly.',
+      'PrimeNG accordion with Plectrum theming. Write c-accordion c-accordion--bordered on p-accordion for card-like stacked certificate / audit panels (iSHARE document detail, document more-details drawer); leave the host bare for the stock accordion. c-accordion c-accordion--nav belongs to Sub Nav Shell. Never override .p-accordion* directly.',
     selectionCriteria: {
-      'stacked certificate / audit panels': 'p-accordion with c-accordion--bordered',
+      'stacked certificate / audit panels':
+        'p-accordion with c-accordion--bordered',
       'plain expandable sections': 'stock p-accordion, no modifier',
       'sub-navigation sections': 'use SubNavShell (c-accordion--nav)',
     },
-    keywords: ['accordion', 'p-accordion', 'bordered', 'collapsible', 'panel', 'certificate', 'stack'],
+    keywords: [
+      'accordion',
+      'p-accordion',
+      'bordered',
+      'collapsible',
+      'panel',
+      'certificate',
+      'stack',
+    ],
   },
   examples: [
     {
       name: 'Bordered accordion',
-      description: 'The class is written on the PrimeNG host; there is no Angular input for it.',
-      code: '<p-accordion class="c-accordion--bordered o-layout--full-width o-layout--min-w-0" [value]="\'0\'" expandIcon="bi bi-chevron-down" collapseIcon="bi bi-chevron-up">\n  <p-accordion-panel value="0">\n    <p-accordion-header>Certificat ITT</p-accordion-header>\n    <p-accordion-content><p class="o-layout--margin-0">Date de réception 24/11/2025</p></p-accordion-content>\n  </p-accordion-panel>\n</p-accordion>',
+      description:
+        'The class is written on the PrimeNG host; there is no Angular input for it.',
+      code: '<p-accordion class="c-accordion c-accordion--bordered o-layout o-layout--full-width o-layout--min-w-0" [value]="\'0\'" expandIcon="bi bi-chevron-down" collapseIcon="bi bi-chevron-up">\n  <p-accordion-panel value="0">\n    <p-accordion-header>Certificat ITT</p-accordion-header>\n    <p-accordion-content><p class="o-layout o-layout--margin-0">Date de réception 24/11/2025</p></p-accordion-content>\n  </p-accordion-panel>\n</p-accordion>',
     },
   ],
 };

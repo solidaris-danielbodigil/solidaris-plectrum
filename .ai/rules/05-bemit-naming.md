@@ -13,13 +13,13 @@
 
 ## 1. CSS Class Prefixes
 
-| Type | Prefix | Example |
-|---|---|---|
-| Object (layout pattern) | `o-` | `o-container`, `o-flex`, `o-layout` |
-| Component | `c-` | `c-card`, `c-nav-shell`, `c-button` |
-| Utility | `u-` | `u-hidden`, `u-sr-only`, `u-visually-hidden` |
-| JS hook | `js-` | `js-modal-trigger`, `js-toggle` |
-| State | `is-` / `has-` | `is-active`, `is-disabled`, `has-error` |
+| Type                    | Prefix         | Example                                      |
+| ----------------------- | -------------- | -------------------------------------------- |
+| Object (layout pattern) | `o-`           | `o-container`, `o-flex`, `o-layout`          |
+| Component               | `c-`           | `c-card`, `c-nav-shell`, `c-button`          |
+| Utility                 | `u-`           | `u-hidden`, `u-sr-only`, `u-visually-hidden` |
+| JS hook                 | `js-`          | `js-modal-trigger`, `js-toggle`              |
+| State                   | `is-` / `has-` | `is-active`, `is-disabled`, `has-error`      |
 
 ---
 
@@ -37,11 +37,27 @@ State           .c-card.is-loading
 ```
 
 Rules:
+
 - Elements use `__` (double underscore)
 - Modifiers use `--` (double hyphen)
+- A modifier sits on the same node as its block or element: `c-card c-card--featured`, `c-card__header c-card__header--compact`. Never `c-card--featured` alone
+- An element is a child of its block: `c-card__header` lives inside `c-card`. `o-flex__item` lives inside `o-flex`. Do not put the element on the block node
 - States use standalone `is-` / `has-` classes, not BEM modifiers
 - Never nest BEM blocks inside each other in SCSS — compose them in HTML
 - Keep specificity flat — one class level, no deep nesting
+
+```html
+<!-- ✅ modifier on its block; element is a child -->
+<div class="c-card c-card--featured">
+  <header class="c-card__header"></header>
+</div>
+
+<!-- ❌ modifier without its block -->
+<div class="c-card--featured"></div>
+
+<!-- ❌ orphan element — no parent block -->
+<header class="c-card__header"></header>
+```
 
 ```scss
 // ✅ Correct
@@ -61,12 +77,12 @@ Rules:
 
 ## 3. Component File and Class Naming
 
-| Concern | Convention | Example |
-|---|---|---|
-| File name | `kebab-case` | `nav-shell.component.ts` |
-| Class name | `PascalCase` | `NavShellComponent` |
-| BEM block | `c-` + `kebab-case` | `c-nav-shell` |
-| Selector | `pds-` + `kebab-case` | `pds-nav-shell` |
+| Concern    | Convention            | Example                  |
+| ---------- | --------------------- | ------------------------ |
+| File name  | `kebab-case`          | `nav-shell.component.ts` |
+| Class name | `PascalCase`          | `NavShellComponent`      |
+| BEM block  | `c-` + `kebab-case`   | `c-nav-shell`            |
+| Selector   | `pds-` + `kebab-case` | `pds-nav-shell`          |
 
 **Never use app-specific prefixes inside `libs/ui`.**
 

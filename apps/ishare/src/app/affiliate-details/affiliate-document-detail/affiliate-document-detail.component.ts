@@ -29,7 +29,10 @@ import type {
   ListEntryTag,
   ListEntryTagTarget,
 } from '@solidaris/ui';
-import { PdsTelemetryLabelDirective, DelayPredictionCardComponent } from '@solidaris/ui';
+import {
+  PdsTelemetryLabelDirective,
+  DelayPredictionCardComponent,
+} from '@solidaris/ui';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   summarizeDocumentStep,
@@ -81,7 +84,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'c-affiliate-document-detail o-flex o-flex--y o-layout--min-w-0 o-layout--full-height o-layout--min-h-0 o-flex__item--grow-1',
+      'c-affiliate-document-detail o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--full-height o-layout--min-h-0',
     '[class.is-loading]': 'loading()',
     '[attr.aria-busy]': 'loading()',
   },
@@ -558,8 +561,7 @@ export class AffiliateDocumentDetailComponent {
     target: ListEntryTagTarget,
   ): void {
     const separator = target.id.indexOf('::');
-    const panelId =
-      separator >= 0 ? target.id.slice(separator + 2) : target.id;
+    const panelId = separator >= 0 ? target.id.slice(separator + 2) : target.id;
 
     if (panelId.length === 0) {
       return;
@@ -621,7 +623,9 @@ export class AffiliateDocumentDetailComponent {
     const style = this.popoverStyleFromRect(rect);
     this.tagPopoverStyle.set(style);
 
-    const panel = document.body.querySelector('.p-popover') as HTMLElement | null;
+    const panel = document.body.querySelector(
+      '.p-popover',
+    ) as HTMLElement | null;
     if (!panel) {
       return;
     }

@@ -6,7 +6,7 @@
 //
 // Size variants map to --pds-icon-size-* tokens (defined in 01-settings/_settings.globals.scss).
 // Colour is always currentColor — no colour token applied here.
-// Layout (inline-flex + centering + shrink-0) is on the host class in
+// Layout (o-flex--inline + centering + shrink-0) is on the host class in
 // icon.component.ts. Size tokens stay here — they have no o-layout equivalent.
 //
 // Design ref:   Figma YNZ1DlSjDNUXrvkxlSp10D (Plectrum UI Kit — Icons)

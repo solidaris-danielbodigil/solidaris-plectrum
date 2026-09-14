@@ -95,7 +95,7 @@ const INTENTS: readonly TokenIntent[] = [
     groups: [],
     bundle: null,
     hint: 'Gap, padding and margin on the global scale are o-layout--* classes in the template. var(--pds-spacing-*) in SCSS is only for component tokens off the global scale.',
-    snippets: ['class="o-layout--gap-2"', 'gap: var(--pds-spacing-2);'],
+    snippets: ['class="o-layout o-layout--gap-2"', 'gap: var(--pds-spacing-2);'],
   },
   {
     key: 'radius',
@@ -165,7 +165,7 @@ const INTENTS: readonly TokenIntent[] = [
     >
       <pds-form-field
         toolbarStart
-        class="c-token-explorer__compose-field o-flex__item--grow-0"
+        class="c-token-explorer__compose-field o-flex__item o-flex__item--grow-0"
         label="What are you styling?"
         [hint]="intent().hint"
         inputId="pds-token-finder-intent"
@@ -187,7 +187,7 @@ const INTENTS: readonly TokenIntent[] = [
 
       <div
         explorerLead
-        class="o-flex o-flex--col o-layout--gap-1 o-layout--margin-block-start-3"
+        class="o-flex o-flex--col o-layout o-layout--gap-1 o-layout--margin-block-start-3"
       >
         @for (snippet of intent().snippets; track snippet) {
           <code>{{ snippet }}</code>

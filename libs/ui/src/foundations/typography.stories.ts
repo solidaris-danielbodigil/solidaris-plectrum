@@ -102,7 +102,7 @@ export const Playground: StoryObj = {
     const metricRows = metrics
       .map(
         (metric) =>
-          `<div class="o-flex o-flex--align-items-baseline o-layout--gap-2">
+          `<div class="o-flex o-flex--align-items-baseline o-layout o-layout--gap-2">
             <span>${metric.property}</span>
             <code>${metric.value}</code>
             <code>var(${metric.cssVar})</code>
@@ -118,14 +118,14 @@ export const Playground: StoryObj = {
           showStorybookToast({ summary: 'Copied', detail: text }),
       },
       template: `
-        <div class="sb-demo-wrapper o-flex o-flex--col o-layout--gap-3">
-          ${hint ? `<p class="o-layout--margin-0">${hint}</p>` : ''}
-          <p class="${cls} o-layout--margin-0" style="max-width: 48rem;">{{ sample }}</p>
-          <div class="o-flex o-flex--col o-layout--gap-1">
+        <div class="sb-demo-wrapper o-flex o-flex--col o-layout o-layout--gap-3">
+          ${hint ? `<p class="o-layout o-layout--margin-0">${hint}</p>` : ''}
+          <p class="${cls} o-layout o-layout--margin-0" style="max-width: 48rem;">{{ sample }}</p>
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1">
             ${metricRows}
             ${tokens ? `<code>${tokens}</code>` : ''}
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-2">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-2">
             <pds-copyable-text
               label="Class"
               [value]="cls"

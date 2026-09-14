@@ -68,7 +68,7 @@ export function usageToDoDont(usage: ComponentMetadata['usage']): {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'c-docs-contract o-layout--block o-layout--margin-block-3',
+    class: 'c-docs-contract o-layout o-layout--block o-layout--margin-block-3',
     '[attr.data-section]': 'section()',
   },
 })

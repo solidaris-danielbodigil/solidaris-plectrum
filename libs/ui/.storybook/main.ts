@@ -1,7 +1,6 @@
 import type { StorybookConfig } from '@storybook/angular-vite';
 import remarkGfm from 'remark-gfm';
 import { mergeConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 // SCSS includePaths and global styles are configured in angular.json under
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
@@ -55,7 +54,7 @@ const config: StorybookConfig = {
   staticDirs: [{ from: '../../assets', to: 'assets' }],
   viteFinal: async (viteConfig) =>
     mergeConfig(viteConfig, {
-      plugins: [tsconfigPaths()],
+      resolve: { tsconfigPaths: true },
     }),
 };
 

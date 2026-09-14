@@ -103,13 +103,18 @@ export interface ContrastResult {
 }
 
 /** WCAG 2.1 contrast for two resolved rgb()/hex colours. */
-export function contrastFromResolved(background: string, text: string): ContrastResult {
+export function contrastFromResolved(
+  background: string,
+  text: string,
+): ContrastResult {
   const bg = parseRgb(background);
   const fg = parseRgb(text);
   if (!bg || !fg) {
     return { ratio: null, aa: false, aaLarge: false, aaa: false };
   }
-  const [lighter, darker] = [luminance(bg), luminance(fg)].sort((a, b) => b - a);
+  const [lighter, darker] = [luminance(bg), luminance(fg)].sort(
+    (a, b) => b - a,
+  );
   const ratio = (lighter + 0.05) / (darker + 0.05);
   return {
     ratio,
@@ -130,18 +135,20 @@ export function contrastRatioLabel(ratio: number | null): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="o-flex o-flex--col o-layout--gap-3 o-layout--padding-3">
-      <p class="o-layout--margin-0">
+    <div
+      class="o-flex o-flex--col o-layout o-layout--gap-3 o-layout--padding-3"
+    >
+      <p class="o-layout o-layout--margin-0">
         Results are for text size, not a whole-component certification.
       </p>
-      <div class="o-flex o-flex--wrap o-layout--gap-2">
+      <div class="o-flex o-flex--wrap o-layout o-layout--gap-2">
         <p-select
           [options]="surfaceOptions"
           [filter]="true"
           [ngModel]="background()"
           (ngModelChange)="background.set($event)"
           aria-label="Surface token"
-          styleClass="o-layout--min-w-0"
+          styleClass="o-layout o-layout--min-w-0"
         />
         <p-select
           [options]="textOptions"
@@ -149,28 +156,34 @@ export function contrastRatioLabel(ratio: number | null): string {
           [ngModel]="text()"
           (ngModelChange)="text.set($event)"
           aria-label="Text token"
-          styleClass="o-layout--min-w-0"
+          styleClass="o-layout o-layout--min-w-0"
         />
       </div>
 
       <div
-        class="u-radius-md u-border-all o-layout--padding-4"
+        class="u-radius-md u-border-all o-layout o-layout--padding-4"
         [style.background]="'var(' + background() + ')'"
         [style.color]="'var(' + text() + ')'"
         style="max-width: 32rem;"
       >
         <strong>Sample heading</strong>
-        <p class="o-layout--margin-0">Body copy rendered with the selected pair.</p>
+        <p class="o-layout o-layout--margin-0">
+          Body copy rendered with the selected pair.
+        </p>
       </div>
 
-      <div class="o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-2">
+      <div
+        class="o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-2"
+      >
         <strong>{{ ratioLabel() }}</strong>
         <p-tag
           [value]="'AA normal text ≥ 4.5 — ' + (passes().aa ? 'pass' : 'fail')"
           [severity]="passes().aa ? 'success' : 'danger'"
         />
         <p-tag
-          [value]="'AA large text ≥ 3 — ' + (passes().aaLarge ? 'pass' : 'fail')"
+          [value]="
+            'AA large text ≥ 3 — ' + (passes().aaLarge ? 'pass' : 'fail')
+          "
           [severity]="passes().aaLarge ? 'success' : 'danger'"
         />
         <p-tag
@@ -179,7 +192,7 @@ export function contrastRatioLabel(ratio: number | null): string {
         />
       </div>
 
-      <div class="o-flex o-flex--col o-layout--gap-2">
+      <div class="o-flex o-flex--col o-layout o-layout--gap-2">
         <pds-copyable-text
           label="Background"
           [value]="'var(' + background() + ')'"
@@ -192,10 +205,10 @@ export function contrastRatioLabel(ratio: number | null): string {
           ariaLabel="Copy text variable"
           (copied)="onCopied($event)"
         />
-        <p class="o-layout--margin-0 u-text-body-sm">
+        <p class="o-layout o-layout--margin-0 u-text-body-sm">
           {{ background() }} — {{ resolvedBackground() }}
         </p>
-        <p class="o-layout--margin-0 u-text-body-sm">
+        <p class="o-layout o-layout--margin-0 u-text-body-sm">
           {{ text() }} — {{ resolvedText() }}
         </p>
       </div>
@@ -222,7 +235,9 @@ export class ContrastCheckerComponent {
     contrastFromResolved(this.resolvedBackground(), this.resolvedText()),
   );
 
-  readonly ratioLabel = computed(() => contrastRatioLabel(this.contrast().ratio));
+  readonly ratioLabel = computed(() =>
+    contrastRatioLabel(this.contrast().ratio),
+  );
 
   readonly passes = computed(() => this.contrast());
 

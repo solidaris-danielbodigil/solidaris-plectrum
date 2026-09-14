@@ -34,7 +34,7 @@ import type { DocsDoDontItem } from './docs-figures.types';
   templateUrl: './docs-do-dont.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-do-dont o-layout--block o-layout--margin-block-3' },
+  host: { class: 'c-docs-do-dont o-layout o-layout--block o-layout--margin-block-3' },
 })
 export class DocsDoDontComponent {
   readonly dos = input<readonly DocsDoDontItem[]>([]);

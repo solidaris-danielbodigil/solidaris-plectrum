@@ -36,7 +36,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
         name: 'Identifier row with separators',
         description:
           'Wrap multiple chips in a flex row; add c-copyable-text__separator between items.',
-        composition: `<div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
+        composition: `<div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex--wrap">
   <(pds|app|lib)-copyable-text label="Territoire" value="319" />
   <span class="c-copyable-text__separator" aria-hidden="true">•</span>
   <(pds|app|lib)-copyable-text label="NISS" value="85010112345" />

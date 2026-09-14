@@ -1,13 +1,13 @@
-<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">
+<div class="o-layout o-layout--full-dvh o-flex o-layout--overflow-hidden">
   <pds-nav-shell
-    class="o-layout--relative o-flex__item--shrink-0"
+    class="o-layout o-layout--relative o-flex__item o-flex__item--shrink-0"
     [items]="navItems"
     activeItemId="ishare"
   ></pds-nav-shell>
 
-  <div class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0">
+  <div class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--min-h-0">
     <pds-top-nav
-      class="o-layout--full-width"
+      class="o-layout o-layout--full-width"
       [home]="homeBreadcrumb"
       [breadcrumbs]="breadcrumbs()"
       [showBackButton]="showBackButton()"
@@ -27,7 +27,7 @@
 
     @if (affiliateHeader(); as header) {
       <pds-profile-card
-        class="o-layout--full-width"
+        class="o-layout o-layout--full-width"
         [loading]="affiliateHeaderLoading()"
         [title]="header.title"
         [variant]="header.variant"
@@ -46,7 +46,7 @@
       ></pds-profile-card>
     } @else if (affiliateHeaderLoading()) {
       <pds-profile-card
-        class="o-layout--full-width"
+        class="o-layout o-layout--full-width"
         variant="warning"
         [loading]="true"
         title="Chargement…"
@@ -54,7 +54,7 @@
     }
 
     <main
-      class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2"
+      class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2"
     >
       <router-outlet />
     </main>

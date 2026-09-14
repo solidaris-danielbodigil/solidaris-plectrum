@@ -54,7 +54,7 @@ export function docsHeroVersionLine(
   encapsulation: ViewEncapsulation.None,
   host: {
     class:
-      'c-docs-hero o-layout--relative o-layout--block o-layout--overflow-hidden o-layout--margin-block-end-3',
+      'c-docs-hero o-layout o-layout--relative o-layout--block o-layout--overflow-hidden o-layout--margin-block-end-3',
   },
 })
 export class DocsHeroComponent {

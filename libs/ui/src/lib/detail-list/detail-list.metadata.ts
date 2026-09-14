@@ -34,14 +34,14 @@ export const DetailListMetadata: ComponentMetadata = {
         description:
           'A dl block with o-flex rows; dt / dd carry the element classes and the dd margin is reset with an object class.',
         composition:
-          '<dl class="c-detail-list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0">\n  <div class="o-flex o-flex--align-items-baseline o-layout--gap-2">\n    <dt class="c-detail-list__label">Numéro national</dt>\n    <dd class="c-detail-list__value o-layout--margin-0">85.07.30-033.61</dd>\n  </div>\n</dl>',
+          '<dl class="c-detail-list o-flex o-flex--y o-layout o-layout--gap-2 o-layout--margin-0">\n  <div class="o-flex o-flex--align-items-baseline o-layout o-layout--gap-2">\n    <dt class="c-detail-list__label">Numéro national</dt>\n    <dd class="c-detail-list__value o-layout o-layout--margin-0">85.07.30-033.61</dd>\n  </div>\n</dl>',
       },
       {
         name: 'Inside a drawer section',
         description:
           'The list sits under a c-drawer__section-title; aria-labelledby on the section points at the title.',
         composition:
-          '<section class="c-drawer__section o-flex o-flex--y o-layout--gap-2" aria-labelledby="general-title">\n  <h3 id="general-title" class="c-drawer__section-title o-layout--margin-0">Informations générales</h3>\n  <dl class="c-detail-list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0">…</dl>\n</section>',
+          '<div class="c-drawer">\n  <section class="c-drawer__section o-flex o-flex--y o-layout o-layout--gap-2" aria-labelledby="general-title">\n    <h3 id="general-title" class="c-drawer__section-title o-layout o-layout--margin-0">Informations générales</h3>\n    <dl class="c-detail-list o-flex o-flex--y o-layout o-layout--gap-2 o-layout--margin-0">…</dl>\n  </section>\n</div>',
       },
     ],
     antiPatterns: [
@@ -62,7 +62,10 @@ export const DetailListMetadata: ComponentMetadata = {
   anatomy: [
     { part: 'c-detail-list', role: '<dl> block — rows are flex children' },
     { part: 'c-detail-list__label', role: '<dt> — fixed-width label column' },
-    { part: 'c-detail-list__value', role: '<dd> — value; margin reset via o-layout--margin-0' },
+    {
+      part: 'c-detail-list__value',
+      role: '<dd> — value; margin reset via o-layout--margin-0',
+    },
   ],
   behavior: {
     states: ['default', 'in-drawer-section'],
@@ -100,13 +103,21 @@ export const DetailListMetadata: ComponentMetadata = {
       'editable fields': 'use FormField',
       'many columns': 'use a data table',
     },
-    keywords: ['detail list', 'description list', 'dl', 'label value', 'key value', 'drawer section'],
+    keywords: [
+      'detail list',
+      'description list',
+      'dl',
+      'label value',
+      'key value',
+      'drawer section',
+    ],
   },
   examples: [
     {
       name: 'Description rows',
-      description: 'Rows mapped from DetailListRow[] — dt / dd carry the element classes.',
-      code: '<dl class="c-detail-list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0">\n  @for (row of rows; track row.label) {\n    <div class="o-flex o-flex--align-items-baseline o-layout--gap-2">\n      <dt class="c-detail-list__label">{{ row.label }}</dt>\n      <dd class="c-detail-list__value o-layout--margin-0">{{ row.value }}</dd>\n    </div>\n  }\n</dl>',
+      description:
+        'Rows mapped from DetailListRow[] — dt / dd carry the element classes.',
+      code: '<dl class="c-detail-list o-flex o-flex--y o-layout o-layout--gap-2 o-layout--margin-0">\n  @for (row of rows; track row.label) {\n    <div class="o-flex o-flex--align-items-baseline o-layout o-layout--gap-2">\n      <dt class="c-detail-list__label">{{ row.label }}</dt>\n      <dd class="c-detail-list__value o-layout o-layout--margin-0">{{ row.value }}</dd>\n    </div>\n  }\n</dl>',
     },
   ],
 };

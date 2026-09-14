@@ -70,7 +70,7 @@ const KIND_LABEL: Readonly<Record<SyncChangeKind, string>> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'c-docs-sync-changes o-layout--block o-layout--margin-block-3',
+    class: 'c-docs-sync-changes o-layout o-layout--block o-layout--margin-block-3',
   },
 })
 export class DocsSyncChangesComponent {

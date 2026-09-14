@@ -36,13 +36,14 @@ export const DrawerMetadata: ComponentMetadata = {
         description:
           'p-drawer stays stock Plectrum; the feature renders header and sections inside #headless with the shared element classes, mounts on body and takes its width from PDS_DRAWER_CONTENT_STYLE (libs/ui/src/lib/drawer).',
         composition:
-          '<p-drawer [(visible)]="open" position="right" [appendTo]="PDS_DRAWER_APPEND_TO" [style]="PDS_DRAWER_CONTENT_STYLE">\n  <ng-template #headless>\n    <header class="c-drawer__header u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--padding-2" [style]="PDS_PANEL_BORDER_BOTTOM_STYLE">…</header>\n    <section class="c-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2" aria-labelledby="section-1">\n      <h3 id="section-1" class="c-drawer__section-title o-layout--margin-0">Informations générales</h3>\n      <dl class="c-detail-list o-flex o-flex--y o-layout--gap-2 o-layout--margin-0">…</dl>\n    </section>\n  </ng-template>\n</p-drawer>',
+          '<p-drawer [(visible)]="open" position="right" [appendTo]="PDS_DRAWER_APPEND_TO" [style]="PDS_DRAWER_CONTENT_STYLE">\n  <ng-template #headless>\n    <div class="c-drawer o-flex o-flex--y o-layout o-layout--full-height">\n      <header class="c-drawer__header u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2 o-layout--padding-2" [style]="PDS_PANEL_BORDER_BOTTOM_STYLE">…</header>\n      <section class="c-drawer__section o-flex o-flex--y o-layout o-layout--gap-2 o-flex__item o-flex__item--shrink-0 o-layout--padding-inline-2" aria-labelledby="section-1">\n        <h3 id="section-1" class="c-drawer__section-title o-layout o-layout--margin-0">Informations générales</h3>\n        <dl class="c-detail-list o-flex o-flex--y o-layout o-layout--gap-2 o-layout--margin-0">…</dl>\n      </section>\n    </div>\n  </ng-template>\n</p-drawer>',
       },
       {
         name: 'Feature-scoped elements',
         description:
           'Feature children prefix the element name on the shared block instead of opening a nested block — c-drawer__profile-name, c-drawer__profile-note (Affiliate Detail Drawer).',
-        composition: '<h2 class="c-drawer__profile-name o-layout--margin-0">{{ name }}</h2>',
+        composition:
+          '<h2 class="c-drawer__profile-name o-layout o-layout--margin-0">{{ name }}</h2>',
       },
     ],
     antiPatterns: [
@@ -57,22 +58,36 @@ export const DrawerMetadata: ComponentMetadata = {
         scenario: 'Inventing a nested BEM block for feature chrome',
         reason:
           'A second block inside the drawer splits ownership of the shell and duplicates spacing and typography (rule 09 §9).',
-        alternative: 'Prefix the element on c-drawer: c-drawer__{feature}-{part}.',
+        alternative:
+          'Prefix the element on c-drawer: c-drawer__{feature}-{part}.',
       },
       {
         scenario: 'An always-visible side panel',
         reason:
           'p-drawer is an overlay with a mask, focus trap and Escape handling — none of that belongs on persistent layout.',
-        alternative: 'Use a static column layout (o-layout / o-flex) for always-visible content.',
+        alternative:
+          'Use a static column layout (o-layout / o-flex) for always-visible content.',
       },
     ],
   },
   anatomy: [
-    { part: 'p-drawer', role: 'PrimeNG host — stock Plectrum, no --p-drawer-* override; owns the mask, focus trap and Escape' },
-    { part: 'c-drawer__header', role: 'Header row — identity, actions, bottom border via u-border-bottom + panel-border' },
-    { part: 'c-drawer__section', role: 'One content section — vertical flex, shrink-0, inline padding' },
+    {
+      part: 'p-drawer',
+      role: 'PrimeNG host — stock Plectrum, no --p-drawer-* override; owns the mask, focus trap and Escape',
+    },
+    {
+      part: 'c-drawer__header',
+      role: 'Header row — identity, actions, bottom border via u-border-bottom + panel-border',
+    },
+    {
+      part: 'c-drawer__section',
+      role: 'One content section — vertical flex, shrink-0, inline padding',
+    },
     { part: 'c-drawer__section-title', role: 'Section heading typography' },
-    { part: 'c-drawer__{feature}-{part}', role: 'Feature children prefix the element name on the shared block — never a nested block (rule 09 §9)' },
+    {
+      part: 'c-drawer__{feature}-{part}',
+      role: 'Feature children prefix the element name on the shared block — never a nested block (rule 09 §9)',
+    },
   ],
   behavior: {
     states: ['closed', 'open', 'headless'],
@@ -143,14 +158,23 @@ export const DrawerMetadata: ComponentMetadata = {
       'affiliate detail surface': 'use ProfileDrawerComponent',
       'always-visible side panel': 'use a static column layout',
     },
-    keywords: ['drawer', 'headless', 'p-drawer', 'overlay', 'side panel', 'appendTo', 'section', 'shell'],
+    keywords: [
+      'drawer',
+      'headless',
+      'p-drawer',
+      'overlay',
+      'side panel',
+      'appendTo',
+      'section',
+      'shell',
+    ],
   },
   examples: [
     {
       name: 'Headless drawer',
       description:
         'Stock p-drawer mounted on body with content-driven width; the shell elements live in #headless.',
-      code: '<p-drawer [(visible)]="open" position="right" [appendTo]="PDS_DRAWER_APPEND_TO" [style]="PDS_DRAWER_CONTENT_STYLE">\n  <ng-template #headless>\n    <header class="c-drawer__header u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--padding-2" [style]="PDS_PANEL_BORDER_BOTTOM_STYLE">\n      <h2 class="c-drawer__section-title o-layout--margin-0">Drawer title</h2>\n      <p-button icon="bi bi-x-lg" variant="text" [rounded]="true" ariaLabel="Fermer" (onClick)="open = false" />\n    </header>\n    <section class="c-drawer__section o-flex o-flex--y o-layout--gap-2 o-flex__item--shrink-0 o-layout--padding-inline-2" aria-labelledby="section-1">\n      <h3 id="section-1" class="c-drawer__section-title o-layout--margin-0">Section title</h3>\n      …\n    </section>\n  </ng-template>\n</p-drawer>',
+      code: '<p-drawer [(visible)]="open" position="right" [appendTo]="PDS_DRAWER_APPEND_TO" [style]="PDS_DRAWER_CONTENT_STYLE">\n  <ng-template #headless>\n    <div class="c-drawer o-flex o-flex--y o-layout o-layout--full-height">\n      <header class="c-drawer__header u-border-bottom o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2 o-layout--padding-2" [style]="PDS_PANEL_BORDER_BOTTOM_STYLE">\n        <h2 class="c-drawer__section-title o-layout o-layout--margin-0">Drawer title</h2>\n        <p-button icon="bi bi-x-lg" variant="text" [rounded]="true" ariaLabel="Fermer" (onClick)="open = false" />\n      </header>\n      <section class="c-drawer__section o-flex o-flex--y o-layout o-layout--gap-2 o-flex__item o-flex__item--shrink-0 o-layout--padding-inline-2" aria-labelledby="section-1">\n        <h3 id="section-1" class="c-drawer__section-title o-layout o-layout--margin-0">Section title</h3>\n        …\n      </section>\n    </div>\n  </ng-template>\n</p-drawer>',
     },
   ],
 };

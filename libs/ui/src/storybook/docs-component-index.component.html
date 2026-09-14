@@ -1,4 +1,4 @@
-<pds-toolbar class="o-layout--margin-block-end-2" [sticky]="true">
+<pds-toolbar class="o-layout o-layout--margin-block-end-2" [sticky]="true">
   <ng-container slot="start">
     <p-iconfield class="c-docs-control">
       <p-inputicon styleClass="bi bi-search" />
@@ -24,7 +24,7 @@
       aria-label="Filter by status"
     >
       <ng-template #item let-option>
-        <span class="o-flex o-flex--align-items-center o-layout--gap-1">
+        <span class="o-flex o-flex--align-items-center o-layout o-layout--gap-1">
           <span>{{ option.label }}</span>
           <p-badge
             [value]="option.count"
@@ -120,7 +120,7 @@
 </p-table>
 
 <div
-  class="c-docs-component-index__meta o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-1 o-layout--margin-block-start-2"
+  class="c-docs-component-index__meta o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-1 o-layout--margin-block-start-2"
 >
   <span>Index generated {{ generated() }}.</span>
   <span>

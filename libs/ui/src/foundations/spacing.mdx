@@ -7,7 +7,7 @@ import * as Stories from './spacing.stories';
 
 Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit (`0.5rem` = 7px). Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two (`1rem`). Each bar below is the live token width.
 
-In templates write `o-layout--gap-2` or `o-layout--padding-3`. Use `var(--pds-spacing-*)` only when defining a component token in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
+In templates write `o-layout o-layout--gap-2` or `o-layout o-layout--padding-3`. Use `var(--pds-spacing-*)` only when defining a component token in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
 
 ## Usage
 
@@ -19,7 +19,7 @@ In templates write `o-layout--gap-2` or `o-layout--padding-3`. Use `var(--pds-sp
 
 ```html
 <!-- template — spacing lives on object classes, not in component SCSS -->
-<div class="c-card o-flex o-flex--col o-layout--gap-2 o-layout--padding-3">
+<div class="c-card o-flex o-flex--col o-layout o-layout--gap-2 o-layout--padding-3">
   …
 </div>
 ```

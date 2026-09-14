@@ -126,7 +126,7 @@ Layout and spacing on the global `--pds-spacing-*` scale must be expressed as **
 <!-- 06-components/_components.card.scss: .c-card { display: flex; gap: var(--pds-spacing-2); } -->
 
 <!-- ✅ Correct — BEM mix in template -->
-<div class="c-card o-flex o-flex--col o-layout--gap-2"></div>
+<div class="c-card o-flex o-flex--col o-layout o-layout--gap-2"></div>
 ```
 
 **Exceptions** — the following may remain in `06-components` SCSS with a justification comment:

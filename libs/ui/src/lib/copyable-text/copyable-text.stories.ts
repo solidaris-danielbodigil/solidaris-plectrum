@@ -49,7 +49,7 @@ class CopyableTextToastDemoComponent {
   standalone: true,
   imports: [CopyableTextComponent],
   template: `
-    <div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
+    <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex--wrap">
       <pds-copyable-text
         label="Territoire"
         value="319"

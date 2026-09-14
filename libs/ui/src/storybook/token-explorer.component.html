@@ -1,15 +1,15 @@
 <div
-  class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
+  class="c-token-explorer o-layout o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
 >
   <!-- ── Playground — only where a live sample teaches more than a swatch ──── -->
   @switch (category()) {
     @case ('typography') {
       <section
-        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
+        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
         [style.--pds-border-color]="'var(--pds-color-panel-border)'"
       >
         <label
-          class="c-token-explorer__playground-label o-layout--margin-0"
+          class="c-token-explorer__playground-label o-layout o-layout--margin-0"
           for="pds-token-sample"
         >
           Preview your own copy
@@ -19,7 +19,7 @@
           id="pds-token-sample"
           type="text"
           autocomplete="off"
-          class="c-token-explorer__playground-input o-flex__item--grow-0 o-flex__item--shrink-0"
+          class="c-token-explorer__playground-input o-flex__item o-flex__item--grow-0 o-flex__item--shrink-0"
           [value]="sampleText()"
           (input)="sampleText.set($any($event.target).value)"
         />
@@ -27,13 +27,13 @@
     }
     @case ('motion') {
       <section
-        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
+        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
         [style.--pds-border-color]="'var(--pds-color-panel-border)'"
         [class.is-replaying]="replaying()"
       >
         <button
           type="button"
-          class="c-token-explorer__playground-action o-layout--inline-flex o-flex--align-items-center o-layout--gap-1 o-layout--padding-block-1 o-layout--padding-inline-2 u-border-none u-radius-md"
+          class="c-token-explorer__playground-action o-flex o-flex--inline o-layout o-flex--align-items-center o-layout--gap-1 o-layout--padding-block-1 o-layout--padding-inline-2 u-border-none u-radius-md"
           (click)="replay()"
         >
           <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Replay
@@ -42,23 +42,23 @@
     }
     @case ('focus') {
       <section
-        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
+        class="c-token-explorer__playground o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-2 o-layout--margin-block-3 o-layout--padding-2 u-border-all u-radius-md"
         [style.--pds-border-color]="'var(--pds-color-panel-border)'"
       >
-        <div class="o-flex o-flex--align-items-center o-layout--gap-3">
+        <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-3">
           <button
             type="button"
-            class="c-token-explorer__focus-demo o-layout--inline-flex o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
+            class="c-token-explorer__focus-demo o-flex o-flex--inline o-layout o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
           >
             Custom button
           </button>
           <a
-            class="c-token-explorer__focus-demo o-layout--inline-flex o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
+            class="c-token-explorer__focus-demo o-flex o-flex--inline o-layout o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
             href="#pds-token-sample"
             >Link</a
           >
           <span
-            class="c-token-explorer__focus-demo o-layout--inline-flex o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
+            class="c-token-explorer__focus-demo o-flex o-flex--inline o-layout o-flex--align-items-center o-layout--padding-block-1 o-layout--padding-inline-2 u-border-all u-radius-md"
             role="button"
             tabindex="0"
           >
@@ -76,10 +76,10 @@
 
       @if (searchable()) {
         <div
-          class="c-token-explorer__control o-flex o-flex--col o-layout--gap-0-5 o-flex__item--grow-0 o-flex__item--shrink-0"
+          class="c-token-explorer__control o-flex o-flex--col o-layout o-layout--gap-0-5 o-flex__item o-flex__item--grow-0 o-flex__item--shrink-0"
         >
           <span
-            class="c-token-explorer__playground-label o-layout--margin-0"
+            class="c-token-explorer__playground-label o-layout o-layout--margin-0"
             [id]="'pds-token-explorer-search-label-' + explorerId"
           >
             Search
@@ -110,10 +110,10 @@
 
       @if (filterable()) {
         <div
-          class="c-token-explorer__control o-flex o-flex--col o-layout--gap-0-5 o-flex__item--grow-0 o-flex__item--shrink-0"
+          class="c-token-explorer__control o-flex o-flex--col o-layout o-layout--gap-0-5 o-flex__item o-flex__item--grow-0 o-flex__item--shrink-0"
         >
           <span
-            class="c-token-explorer__playground-label o-layout--margin-0"
+            class="c-token-explorer__playground-label o-layout o-layout--margin-0"
             [id]="'pds-token-explorer-role-label-' + explorerId"
           >
             Role
@@ -154,10 +154,10 @@
       }
 
       <div
-        class="c-token-explorer__control o-flex o-flex--col o-layout--gap-0-5 o-flex__item--grow-0 o-flex__item--shrink-0"
+        class="c-token-explorer__control o-flex o-flex--col o-layout o-layout--gap-0-5 o-flex__item o-flex__item--grow-0 o-flex__item--shrink-0"
       >
         <span
-          class="c-token-explorer__playground-label o-layout--margin-0"
+          class="c-token-explorer__playground-label o-layout o-layout--margin-0"
           [id]="'pds-token-explorer-copy-label-' + explorerId"
         >
           Copy as
@@ -175,10 +175,10 @@
       </div>
 
       <div
-        class="c-token-explorer__control o-flex o-flex--col o-layout--gap-0-5 o-flex__item--grow-0 o-flex__item--shrink-0"
+        class="c-token-explorer__control o-flex o-flex--col o-layout o-layout--gap-0-5 o-flex__item o-flex__item--grow-0 o-flex__item--shrink-0"
       >
         <span
-          class="c-token-explorer__playground-label o-layout--margin-0"
+          class="c-token-explorer__playground-label o-layout o-layout--margin-0"
           [id]="'pds-token-explorer-view-label-' + explorerId"
         >
           View
@@ -197,8 +197,8 @@
     </ng-container>
 
     <ng-container slot="end">
-      <div class="o-flex o-flex--align-items-center o-flex--row-wrap o-layout--gap-2">
-        <p class="c-token-explorer__value o-layout--margin-0">{{ copyFormatHint() }}</p>
+      <div class="o-flex o-flex--align-items-center o-flex--row-wrap o-layout o-layout--gap-2">
+        <p class="c-token-explorer__value o-layout o-layout--margin-0">{{ copyFormatHint() }}</p>
         <p-badge
           severity="secondary"
           aria-live="polite"
@@ -215,7 +215,7 @@
     @switch (category()) {
       @case ('color') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--color o-flex__item--shrink-0 o-layout--block u-border-all u-radius-sm"
+          class="c-token-explorer__preview c-token-explorer__preview--color o-flex__item o-flex__item--shrink-0 o-layout o-layout--block u-border-all u-radius-sm"
           [style.--pds-border-color]="'var(--pds-color-panel-border)'"
           [style.--pds-token-explorer-swatch]="
             row.preview['--pds-token-explorer-swatch']
@@ -224,7 +224,7 @@
       }
       @case ('radius') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--radius o-flex__item--shrink-0 o-layout--block u-border-all"
+          class="c-token-explorer__preview c-token-explorer__preview--radius o-flex__item o-flex__item--shrink-0 o-layout o-layout--block u-border-all"
           [style.--pds-border-color]="'var(--pds-color-brand)'"
           [style.--pds-token-explorer-radius]="
             row.preview['--pds-token-explorer-radius']
@@ -233,7 +233,7 @@
       }
       @case ('shadow') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--shadow o-flex__item--shrink-0 o-layout--block u-radius-sm"
+          class="c-token-explorer__preview c-token-explorer__preview--shadow o-flex__item o-flex__item--shrink-0 o-layout o-layout--block u-radius-sm"
           [style.--pds-token-explorer-shadow]="
             row.preview['--pds-token-explorer-shadow']
           "
@@ -241,7 +241,7 @@
       }
       @case ('spacing') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--spacing o-flex__item--shrink-0 o-flex o-flex--align-items-center"
+          class="c-token-explorer__preview c-token-explorer__preview--spacing o-flex__item o-flex__item--shrink-0 o-flex o-flex--align-items-center"
           [style.--pds-token-explorer-size]="
             row.preview['--pds-token-explorer-size']
           "
@@ -249,7 +249,7 @@
       }
       @case ('motion') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--motion o-flex__item--shrink-0 o-flex o-flex--align-items-center u-border-all u-radius-pill"
+          class="c-token-explorer__preview c-token-explorer__preview--motion o-flex__item o-flex__item--shrink-0 o-flex o-flex--align-items-center u-border-all u-radius-pill"
           [style.--pds-border-color]="'var(--pds-color-panel-border)'"
           [style.--pds-token-explorer-duration]="
             row.preview['--pds-token-explorer-duration']
@@ -257,18 +257,18 @@
           [class.is-replaying]="replaying()"
         >
           <span
-            class="c-token-explorer__motion-dot o-layout--block o-layout--margin-inline-start-0-5 u-radius-pill"
+            class="c-token-explorer__motion-dot o-layout o-layout--block o-layout--margin-inline-start-0-5 u-radius-pill"
           ></span>
         </span>
       }
       @case ('focus') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--focus o-flex__item--shrink-0 o-layout--block u-radius-md"
+          class="c-token-explorer__preview c-token-explorer__preview--focus o-flex__item o-flex__item--shrink-0 o-layout o-layout--block u-radius-md"
         ></span>
       }
       @case ('icon') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--icon o-flex__item--shrink-0 o-flex o-flex--align-items-center o-flex--justify-content-center u-border-all u-radius-sm"
+          class="c-token-explorer__preview c-token-explorer__preview--icon o-flex__item o-flex__item--shrink-0 o-flex o-flex--align-items-center o-flex--justify-content-center u-border-all u-radius-sm"
           [style.--pds-border-color]="'var(--pds-color-panel-border)'"
           [style.--pds-token-explorer-icon-size]="
             row.preview['--pds-token-explorer-icon-size']
@@ -279,7 +279,7 @@
       }
       @case ('typography') {
         <span
-          class="c-token-explorer__preview c-token-explorer__preview--type o-flex__item--shrink-0 o-layout--min-w-0"
+          class="c-token-explorer__preview c-token-explorer__preview--type o-flex__item o-flex__item--shrink-0 o-layout o-layout--min-w-0"
           [style.--pds-token-explorer-font-family]="
             row.preview['--pds-token-explorer-font-family']
           "
@@ -303,25 +303,25 @@
 
   <!-- ── Token sections ───────────────────────────────────────────────────── -->
   @for (section of sections(); track section.key) {
-    <section class="c-token-explorer__section o-layout--margin-block-start-4">
+    <section class="c-token-explorer__section o-layout o-layout--margin-block-start-4">
       <h3
-        class="c-token-explorer__section-title o-flex o-flex--align-items-center o-layout--gap-1 o-layout--margin-0 o-layout--margin-block-end-0-5"
+        class="c-token-explorer__section-title o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-layout--margin-0 o-layout--margin-block-end-0-5"
       >
         {{ section.label }}
         <span
-          class="c-token-explorer__section-count o-layout--padding-inline-1 u-radius-pill"
+          class="c-token-explorer__section-count o-layout o-layout--padding-inline-1 u-radius-pill"
           >{{ section.rows.length }}</span
         >
       </h3>
 
       @if (activeView() === 'grid') {
         <ul
-          class="c-token-explorer__grid o-flex o-flex--wrap o-layout--gap-2 o-layout--margin-0 o-layout--padding-0"
+          class="c-token-explorer__grid o-flex o-flex--wrap o-layout o-layout--gap-2 o-layout--margin-0 o-layout--padding-0"
           role="list"
         >
           @for (row of section.rows; track row.label) {
             <li
-              class="c-token-explorer__item o-layout--relative o-flex o-layout--gap-2 o-layout--min-w-0 o-layout--padding-2 u-border-all u-radius-md o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
+              class="c-token-explorer__item o-layout o-layout--relative o-flex o-layout--gap-2 o-layout--min-w-0 o-layout--padding-2 u-border-all u-radius-md o-flex__item o-flex__item--12 o-flex__item--6@sm o-flex__item--4@md o-flex__item--3@lg"
               [class.o-flex--col]="category() === 'typography'"
               [class.o-flex--align-items-stretch]="category() === 'typography'"
               [class.o-flex--align-items-flex-start]="category() !== 'typography'"
@@ -334,8 +334,8 @@
                 [ngTemplateOutletContext]="{ $implicit: row }"
               />
 
-              <div class="c-token-explorer__body o-layout--min-w-0 o-flex__item--grow-1">
-                <p class="c-token-explorer__name o-layout--margin-0">{{ row.label }}</p>
+              <div class="c-token-explorer__body o-layout o-layout--min-w-0 o-flex__item o-flex__item--grow-1">
+                <p class="c-token-explorer__name o-layout o-layout--margin-0">{{ row.label }}</p>
                 @if (hidesComputed(row)) {
                   <p-button
                     type="button"
@@ -346,41 +346,41 @@
                     (onClick)="toggleValue($event, row)"
                   />
                 } @else if (!row.members.length) {
-                  <p class="c-token-explorer__value o-layout--margin-0">{{ row.computed }}</p>
+                  <p class="c-token-explorer__value o-layout o-layout--margin-0">{{ row.computed }}</p>
                 }
 
                 @if (row.members.length) {
                   <dl
-                    class="c-token-explorer__members o-layout--margin-0 o-layout--margin-block-start-1 o-layout--row-gap-0 o-layout--column-gap-1"
+                    class="c-token-explorer__members o-layout o-layout--margin-0 o-layout--margin-block-start-1 o-layout--row-gap-0 o-layout--column-gap-1"
                   >
                     @for (member of row.members; track member.cssVar) {
                       <div class="c-token-explorer__member">
-                        <dt class="o-layout--margin-0">{{ member.prop }}</dt>
-                        <dd class="o-layout--margin-0">{{ member.computed }}</dd>
+                        <dt class="o-layout o-layout--margin-0">{{ member.prop }}</dt>
+                        <dd class="o-layout o-layout--margin-0">{{ member.computed }}</dd>
                       </div>
                     }
                   </dl>
                 }
 
                 <p
-                  class="c-token-explorer__tags o-flex o-flex--wrap o-layout--gap-0-5 o-layout--margin-0 o-layout--margin-block-start-1"
+                  class="c-token-explorer__tags o-flex o-flex--wrap o-layout o-layout--gap-0-5 o-layout--margin-0 o-layout--margin-block-start-1"
                 >
                   @if (row.primeNgVar) {
                     <span
-                      class="c-token-explorer__tag c-token-explorer__tag--prime o-layout--padding-inline-0-5 u-radius-sm"
+                      class="c-token-explorer__tag c-token-explorer__tag--prime o-layout o-layout--padding-inline-0-5 u-radius-sm"
                       [class.is-warning]="row.primeEmpty"
                       >{{ row.primeNgVar }}</span
                     >
                   }
                   @if (row.figmaRef) {
                     <span
-                      class="c-token-explorer__tag o-layout--padding-inline-0-5 u-radius-sm"
+                      class="c-token-explorer__tag o-layout o-layout--padding-inline-0-5 u-radius-sm"
                       >{{ row.figmaRef }}</span
                     >
                   }
                   @if (isBundled()) {
                     <span
-                      class="c-token-explorer__tag o-layout--padding-inline-0-5 u-radius-sm"
+                      class="c-token-explorer__tag o-layout o-layout--padding-inline-0-5 u-radius-sm"
                       >.u-{{ row.label }}</span
                     >
                   }
@@ -389,7 +389,7 @@
 
               <button
                 type="button"
-                class="c-token-explorer__copy o-layout--absolute o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+                class="c-token-explorer__copy o-layout o-layout--absolute o-flex o-flex--inline o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
                 [attr.aria-label]="'Copy ' + row.copy[copyFormat()]"
                 (click)="copy(row); $event.stopPropagation()"
               >
@@ -399,47 +399,47 @@
           }
         </ul>
       } @else {
-        <table class="c-token-explorer__table o-layout--full-width">
+        <table class="c-token-explorer__table o-layout o-layout--full-width">
           <thead>
             <tr>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 Preview
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 Token
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 {{ isBundled() ? 'Mixin' : 'Authored in CSS' }}
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 Computed
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 PrimeNG
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 Figma
               </th>
               <th
-                class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
               >
                 <span class="u-sr-only">Copy</span>
@@ -449,22 +449,22 @@
           <tbody>
             @for (row of section.rows; track row.label) {
               <tr [class.is-warning]="row.primeEmpty">
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   <ng-container
                     [ngTemplateOutlet]="preview"
                     [ngTemplateOutletContext]="{ $implicit: row }"
                   />
                 </td>
                 <th
-                  class="o-layout--padding-block-1 o-layout--padding-inline-2"
+                  class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                   scope="row"
                 >
                   {{ row.label }}
                 </th>
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   <code>{{ isBundled() ? row.copy.var : row.authored }}</code>
                 </td>
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   @if (hidesComputed(row)) {
                     <p-button
                       type="button"
@@ -478,11 +478,11 @@
                     <code>{{ row.computed }}</code>
                   }
                 </td>
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   @if (row.primeNgVar) {
                     <code>{{ row.primeNgVar }}</code>
                     @if (row.primeEmpty) {
-                      <span class="c-token-explorer__warn o-layout--block">
+                      <span class="c-token-explorer__warn o-layout o-layout--block">
                         empty — resolved from the authored fallback
                       </span>
                     }
@@ -490,13 +490,13 @@
                     —
                   }
                 </td>
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   {{ row.figmaRef ?? '—' }}
                 </td>
-                <td class="o-layout--padding-block-1 o-layout--padding-inline-2">
+                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   <button
                     type="button"
-                    class="c-token-explorer__copy-btn o-layout--inline-flex o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+                    class="c-token-explorer__copy-btn o-flex o-flex--inline o-layout o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
                     [style.--pds-border-color]="'var(--pds-color-panel-border)'"
                     [attr.aria-label]="'Copy ' + row.copy[copyFormat()]"
                     (click)="copy(row)"
@@ -513,13 +513,13 @@
   }
 
   @if (matchCount() === 0) {
-    <p class="c-token-explorer__empty o-layout--padding-6">
+    <p class="c-token-explorer__empty o-layout o-layout--padding-6">
       No token matches “{{ search() }}”.
     </p>
   }
 
   <p-popover #valuePopover>
-    <code class="c-token-explorer__value-detail o-layout--block o-layout--margin-0">{{
+    <code class="c-token-explorer__value-detail o-layout o-layout--block o-layout--margin-0">{{
       valuePreview()
     }}</code>
   </p-popover>
