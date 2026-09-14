@@ -125,6 +125,7 @@ Only these categories belong in `06-components/` SCSS files:
 
 1b. Is it a scroll-edge fade (hint that more content is scrollable)?
    YES → o-scroll-shadow / o-scroll-shadow--inline on the owned scroller
+         plus tabindex="0" and an aria-label when no child is focusable
          (Foundations / Scroll Shadow · .ai/rules/09-styling-policy.md §12)
    NO  → continue
 

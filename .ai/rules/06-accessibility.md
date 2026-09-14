@@ -91,6 +91,7 @@ All interactive components must be fully operable by keyboard:
 - `Enter` / `Space` — activate buttons and links
 - `Arrow keys` — navigate within composite widgets (menus, tabs, lists)
 - `Escape` — close overlays, dropdowns, dialogs
+- Overflow containers (`o-layout--overflow-*-auto`, `o-scroll-shadow`) need `tabindex="0"` and an accessible name unless a child is already focusable
 
 ---
 

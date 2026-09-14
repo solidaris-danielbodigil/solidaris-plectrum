@@ -185,7 +185,7 @@ Owned scroll wrapper + scroll-shadow object on our element — not doubled `.p-c
 | Block (vertical)    | `o-scroll-shadow`         | `scroll-shadow()`        | `o-layout--overflow-y-auto` + height constraint (`o-layout--min-h-0`) |
 | Inline (horizontal) | `o-scroll-shadow--inline` | `scroll-shadow-inline()` | `o-layout--overflow-x-auto` + width constraint (`o-layout--min-w-0`)  |
 
-Storybook: **Foundations / Scroll Shadow**.
+Storybook: **Foundations / Scroll Shadow**. Add `tabindex="0"` and an `aria-label` when the scroller has no focusable child.
 
 ---
 

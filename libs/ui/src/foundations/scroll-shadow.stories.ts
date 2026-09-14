@@ -53,6 +53,11 @@ export const Usage = {
         detail:
           'Mix o-scroll-shadow--inline with overflow-x and a width constraint (max-width or o-layout--min-w-0).',
       },
+      {
+        title: 'Keyboard access on the scroller',
+        detail:
+          'Axe scrollable-region-focusable fails when overflow has no tab stop. Add tabindex="0" and an aria-label unless a child is already focusable.',
+      },
     ],
     donts: [
       {
@@ -90,6 +95,10 @@ const inlineChips = (count: number) =>
       `<p-chip class="o-flex__item o-flex__item--shrink-0" label="Chip ${index + 1}" />`,
   ).join('');
 
+/** Overflow containers with no focusable child need a tab stop (WCAG 2.1.1). */
+const keyboardScroll = (label: string) =>
+  `tabindex="0" aria-label="${label}"`;
+
 /** Visual Do / Don't — real object classes on constrained PrimeNG chip stacks. */
 export const UsageObjects = {
   tags: ['!dev'],
@@ -101,6 +110,7 @@ export const UsageObjects = {
         <p-tag value="Do" severity="success" [rounded]="true" />
         <div
           class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-layout--min-h-0"
+          ${keyboardScroll('Liste défilante')}
           style="max-height: 12rem;"
         >
           <div class="o-flex o-flex--y o-layout o-layout--gap-1 o-layout--padding-2">
@@ -109,6 +119,7 @@ export const UsageObjects = {
         </div>
         <div
           class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-layout--min-w-0"
+          ${keyboardScroll('Piste défilante')}
           style="max-width: 18rem;"
         >
           <div class="o-flex o-flex--nowrap o-layout o-layout--gap-1 o-layout--padding-2">
@@ -134,7 +145,7 @@ export const Vertical = {
   render: () => ({
     moduleMetadata: { imports: CHIP_IMPORTS },
     template: `
-    <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-layout--min-h-0" style="max-height: 14rem;">
+    <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-layout--min-h-0" ${keyboardScroll('Liste défilante')} style="max-height: 14rem;">
       <div class="o-flex o-flex--y o-layout o-layout--gap-1 o-layout--padding-2">
         ${blockChips(14)}
       </div>
@@ -153,6 +164,7 @@ export const Horizontal = {
     template: `
     <div
       class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-layout--min-w-0"
+      ${keyboardScroll('Piste défilante')}
       style="max-width: 22rem;"
     >
       <div class="o-flex o-flex--nowrap o-layout o-layout--gap-1 o-layout--padding-2">
@@ -170,7 +182,7 @@ export const InFlexColumn = {
     template: `
     <div class="o-flex o-flex--y" style="height: 18rem;">
       <p-tag class="o-flex__item o-flex__item--shrink-0" value="Fixed header" />
-      <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-flex__item o-flex__item--grow-1 o-layout--min-h-0">
+      <div class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-flex__item o-flex__item--grow-1 o-layout--min-h-0" ${keyboardScroll('Corps défilant')}>
         <div class="o-flex o-flex--y o-layout o-layout--gap-1 o-layout--padding-2">
           ${blockChips(12)}
         </div>
@@ -188,7 +200,7 @@ export const InFlexRow = {
     template: `
     <div class="o-flex o-flex--align-items-stretch" style="width: 22rem;">
       <p-tag class="o-flex__item o-flex__item--shrink-0" value="Start" />
-      <div class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
+      <div class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-flex__item o-flex__item--grow-1 o-layout--min-w-0" ${keyboardScroll('Piste défilante')}>
         <div class="o-flex o-flex--nowrap o-layout o-layout--gap-1 o-layout--padding-2">
           ${inlineChips(8)}
         </div>
