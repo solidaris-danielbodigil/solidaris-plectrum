@@ -48,12 +48,12 @@ After every push the workflow posts the same summary as a comment in the UI Kit 
 | Setting                      | Where                   | Value                                                                                                                                                                                                                                                  |
 | ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `FIGMA_TOKEN`                | repo secret             | Figma personal access token. Comments: `file_comments:read` + `file_comments:write`. Repo→Figma variables: also `file_variables:read` + `file_variables:write` (Enterprise, Full seat). Figma cannot add scopes to an existing token — mint a new one. |
-| `FIGMA_FILE_KEY`             | repo variable           | Plectrum UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`)                                                                                                                                                                                            |
-| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Id of a frame (e.g. a "Token sync log" frame on the cover page) the thread is pinned to; without it the pin sits at the canvas origin of the first page                                                                                                |
+| `FIGMA_FILE_KEY`             | repo variable           | **Main** UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`). A Figma _branch_ key posts comments on main as **Unattached**.                                                                                                                             |
+| `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Frame id on that same file (`123:456` from `?node-id=123-456`). A URL, a name, or a frame that exists only on a branch becomes Unattached; the script then skips a new thread. Without it the pin sits at the canvas origin of the first page.          |
 
 Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull request.
 
-Figma writes **from this repo** never target the main file. `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`), not `FIGMA_FILE_KEY` (that var is the comment target and may be a Figma branch).
+Figma **writes** from this repo never target the main file — `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`). `FIGMA_FILE_KEY` is the **comment** target and must stay the main file key so threads are not Unattached.
 
 ## Repo → Figma (Plugin API)
 
