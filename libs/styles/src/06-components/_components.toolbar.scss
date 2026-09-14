@@ -23,12 +23,12 @@
 // position:sticky must be on the host (not an inner div) so it works correctly
 // inside any scroll ancestor, including the Storybook canvas and the app shell.
 .c-toolbar {
-  display: block; // Custom element default is inline — force block for sticky to work
-
   &--sticky {
     position: sticky;
     top: 0;
     z-index: var(--#{$pds-prefix}-z-sticky, 10);
+    // Opaque so scrolling catalogue cards do not show through the card margin.
+    background: var(--#{$pds-prefix}-color-surface-0);
   }
 }
 

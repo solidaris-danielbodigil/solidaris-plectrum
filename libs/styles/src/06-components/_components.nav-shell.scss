@@ -63,9 +63,7 @@
   min-height: var(--#{$pds-prefix}-size-nav-shell-footprint);
   box-sizing: border-box;
   // Match the icon's left inset: list padding + item padding.
-  padding-inline-start: calc(
-    var(--#{$pds-prefix}-space-nav-shell-list-px) + var(--#{$pds-prefix}-space-nav-shell-item-px)
-  );
+  padding-inline-start: calc(var(--#{$pds-prefix}-space-nav-shell-list-px) + var(--#{$pds-prefix}-space-nav-shell-item-px));
 }
 
 // Logomark — always visible; constrained so the 24×32 SVG fits the footprint.
@@ -93,7 +91,9 @@
     display: block;
     opacity: 1;
 
-    @starting-style { opacity: 0; }
+    @starting-style {
+      opacity: 0;
+    }
   }
 }
 
@@ -107,23 +107,22 @@
 .c-nav-shell__link {
   text-decoration: none;
   cursor: pointer;
-  width: 100%;
   padding: var(--#{$pds-prefix}-space-nav-shell-item-py) var(--#{$pds-prefix}-space-nav-shell-item-px);
   // Match expanded row height (label line-height) so label reveal does not jump item height
-  min-height: calc(
-    (var(--#{$pds-prefix}-space-nav-shell-item-py) * 2) + var(--#{$pds-prefix}-text-label-sm-line-height)
-  );
+  min-height: calc((var(--#{$pds-prefix}-space-nav-shell-item-py) * 2) + var(--#{$pds-prefix}-text-label-sm-line-height));
   gap: var(--#{$pds-prefix}-space-nav-shell-item-gap-inner);
   border-radius: var(--#{$pds-prefix}-radius-nav-shell-item);
   color: var(--#{$pds-prefix}-color-nav-shell-text);
   white-space: nowrap;
-  overflow: hidden;
   transition: background-color var(--#{$pds-prefix}-transition-duration-mask) ease;
 
   // Hover — Figma: transparent/black/50
-  &:hover   { background-color: var(--#{$pds-prefix}-color-nav-shell-item-hover); }
+  &:hover {
+    background-color: var(--#{$pds-prefix}-color-nav-shell-item-hover);
+  }
+
   // Pressed — instant transition so the feedback is visible during the brief click
-  &:active  {
+  &:active {
     background-color: var(--#{$pds-prefix}-color-nav-shell-item-pressed);
     transition: none;
   }
@@ -131,7 +130,11 @@
   // Active — Figma: transparent/black/50 bg; icon shows full brand colour
   &.is-active {
     background-color: var(--#{$pds-prefix}-color-nav-shell-item-active);
-    .c-nav-shell__icon { filter: none; opacity: 1; }
+
+    .c-nav-shell__icon {
+      filter: none;
+      opacity: 1;
+    }
   }
 
   &:focus-visible {
@@ -142,7 +145,6 @@
 
 // Icon — grayscale by default; full brand colour when parent link is active
 .c-nav-shell__icon {
-  flex-shrink: 0;
   // Fixed size required — icon fonts/SVGs collapse to 0 without an explicit constraint
   width: var(--#{$pds-prefix}-size-nav-shell-icon);
   height: var(--#{$pds-prefix}-size-nav-shell-icon);
@@ -150,8 +152,19 @@
   filter: grayscale(1) opacity(0.5);
   transition: filter var(--#{$pds-prefix}-transition-duration-mask) ease;
 
-  i        { display: block; line-height: 1; font-size: var(--#{$pds-prefix}-size-nav-shell-icon); }
-  img, svg { display: block; width: var(--#{$pds-prefix}-size-nav-shell-icon); height: var(--#{$pds-prefix}-size-nav-shell-icon); object-fit: contain; }
+  i {
+    display: block;
+    line-height: 1;
+    font-size: var(--#{$pds-prefix}-size-nav-shell-icon);
+  }
+
+  img,
+  svg {
+    display: block;
+    width: var(--#{$pds-prefix}-size-nav-shell-icon);
+    height: var(--#{$pds-prefix}-size-nav-shell-icon);
+    object-fit: contain;
+  }
 }
 
 // Label — hidden when collapsed; revealed on hover/focus via discrete display transition
@@ -174,7 +187,9 @@
     opacity: 1;
     pointer-events: auto;
 
-    @starting-style { opacity: 0; }
+    @starting-style {
+      opacity: 0;
+    }
   }
 }
 
@@ -188,13 +203,20 @@
   pointer-events: none;
   transition: var(--#{$pds-prefix}-transition-nav-reveal);
 
-  i { display: block; line-height: 1; font-size: var(--#{$pds-prefix}-size-nav-shell-trailing-icon); color: currentcolor; }
+  i {
+    display: block;
+    line-height: 1;
+    font-size: var(--#{$pds-prefix}-size-nav-shell-trailing-icon);
+    color: currentcolor;
+  }
 
   .c-nav-shell:is(:hover, :focus-within) & {
     display: block;
     opacity: 1;
     pointer-events: auto;
 
-    @starting-style { opacity: 0; }
+    @starting-style {
+      opacity: 0;
+    }
   }
 }

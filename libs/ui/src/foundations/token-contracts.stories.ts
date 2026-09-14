@@ -12,7 +12,7 @@
 // =============================================================================
 
 import { afterNextRender, Component, computed, signal } from '@angular/core';
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { Badge } from 'primeng/badge';
 import { Button } from 'primeng/button';
 import { IconField } from 'primeng/iconfield';
@@ -21,63 +21,20 @@ import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { showStorybookToast } from '../storybook/storybook-toast';
-import { AffiliateDetailDrawerMetadata } from '../lib/affiliate-detail-drawer/affiliate-detail-drawer.metadata';
-import { AffiliateOverviewCardMetadata } from '../lib/affiliate-overview-card/affiliate-overview-card.metadata';
-import { CopyableTextMetadata } from '../lib/copyable-text/copyable-text.metadata';
-import { EmptyStateMetadata } from '../lib/empty-state/empty-state.metadata';
-import { FormFieldMetadata } from '../lib/form-field/form-field.metadata';
-import { IconMetadata } from '../lib/icon/icon.metadata';
 import { InputClearComponent } from '../lib/input-clear';
-import { InputClearMetadata } from '../lib/input-clear/input-clear.metadata';
-import { ListMetadata } from '../lib/list/list.metadata';
-import { NavShellMetadata } from '../lib/nav-shell/nav-shell.metadata';
-import { PlectrumAvatarMetadata } from '../lib/plectrum-avatar/plectrum-avatar.metadata';
-import { SubNavShellMetadata } from '../lib/sub-nav-shell/sub-nav-shell.metadata';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
-import { TopNavMetadata } from '../lib/top-nav/top-nav.metadata';
+import { ALL_COMPONENT_METADATA } from '../storybook/component-metadata';
 import { readTokenDeclarations } from '../storybook/cssom';
-import { TOKEN_ANNOTATIONS } from '../storybook/tokens.generated';
-
-const METADATA = [
-  AffiliateDetailDrawerMetadata,
-  AffiliateOverviewCardMetadata,
-  CopyableTextMetadata,
-  EmptyStateMetadata,
-  FormFieldMetadata,
-  IconMetadata,
-  InputClearMetadata,
-  ListMetadata,
-  NavShellMetadata,
-  PlectrumAvatarMetadata,
-  SubNavShellMetadata,
-  TopNavMetadata,
-];
-
-const FROM_FIGMA = new Set(
-  TOKEN_ANNOTATIONS.map((annotation) => annotation.cssVar),
-);
-
-const CONTRACTS = METADATA.flatMap((meta) =>
-  (meta.tokens?.consumed ?? []).map((cssVar) => ({
-    component: meta.component.name,
-    cssVar,
-    haystack: `${meta.component.name} ${cssVar}`.toLowerCase(),
-  })),
-);
-
-type ContractOrigin = 'not declared' | 'Figma' | 'code-owned';
-
-interface TokenContract {
-  component: string;
-  cssVar: string;
-  haystack: string;
-  declared: boolean;
-  origin: ContractOrigin;
-}
+import { expect, waitFor } from '../storybook/story-tests';
+import {
+  checkTokenContracts,
+  type ConsumedTokenCheck,
+  type ConsumedTokenOrigin,
+} from '../storybook/token-contracts';
 
 interface TokenContractGroup {
   component: string;
-  tokens: TokenContract[];
+  tokens: ConsumedTokenCheck[];
   count: number;
   broken: boolean;
 }
@@ -98,7 +55,7 @@ interface TokenContractGroup {
   ],
   template: `
     <div
-      class="c-token-explorer o-layout--padding-inline-4 o-layout--padding-block-end-6"
+      class="c-token-explorer o-layout o-layout--padding-inline-4 o-layout--padding-block-start-4 o-layout--padding-block-end-6"
     >
       <pds-toolbar [sticky]="true">
         <ng-container slot="start">
@@ -156,7 +113,9 @@ interface TokenContractGroup {
               [class.is-warning]="group.broken"
             >
               <td>
-                <div class="o-flex o-flex--align-items-center o-layout--gap-1">
+                <div
+                  class="o-flex o-flex--align-items-center o-layout o-layout--gap-1"
+                >
                   <p-button
                     type="button"
                     [pRowToggler]="group"
@@ -210,7 +169,8 @@ interface TokenContractGroup {
                       <td>
                         <button
                           type="button"
-                          class="c-token-explorer__copy-btn"
+                          class="c-token-explorer__copy-btn o-flex o-flex--inline o-layout o-flex--align-items-center o-flex--justify-content-center o-layout--padding-0-5 u-border-all u-radius-sm"
+                          [style.--pds-border-color]="'var(--pds-color-panel-border)'"
                           [attr.aria-label]="'Copy var(' + token.cssVar + ')'"
                           (click)="copy(token.cssVar)"
                         >
@@ -237,7 +197,10 @@ interface TokenContractGroup {
 class TokenContractsPageComponent {
   private readonly rendered = signal(false);
 
-  readonly total = CONTRACTS.length;
+  readonly total = ALL_COMPONENT_METADATA.reduce(
+    (count, meta) => count + (meta.tokens?.consumed?.length ?? 0),
+    0,
+  );
   readonly search = signal('');
   /** Empty map — PrimeNG keeps every component row collapsed until toggled. */
   expandedRows: Record<string, boolean> = {};
@@ -246,21 +209,9 @@ class TokenContractsPageComponent {
     afterNextRender(() => this.rendered.set(true));
   }
 
-  private readonly checked = computed<TokenContract[]>(() => {
+  private readonly checked = computed<ConsumedTokenCheck[]>(() => {
     this.rendered();
-    const declared = readTokenDeclarations();
-    return CONTRACTS.map((contract) => {
-      const exists = declared.has(contract.cssVar);
-      return {
-        ...contract,
-        declared: exists,
-        origin: !exists
-          ? 'not declared'
-          : FROM_FIGMA.has(contract.cssVar)
-            ? 'Figma'
-            : 'code-owned',
-      };
-    });
+    return checkTokenContracts(ALL_COMPONENT_METADATA, readTokenDeclarations());
   });
 
   readonly brokenCount = computed(
@@ -269,7 +220,7 @@ class TokenContractsPageComponent {
 
   readonly groups = computed<TokenContractGroup[]>(() => {
     const query = this.search().trim().toLowerCase();
-    const buckets = new Map<string, TokenContract[]>();
+    const buckets = new Map<string, ConsumedTokenCheck[]>();
 
     for (const row of this.checked()) {
       if (query && !row.haystack.includes(query)) continue;
@@ -300,7 +251,7 @@ class TokenContractsPageComponent {
       : {};
   }
 
-  originSeverity(origin: ContractOrigin): 'warn' | 'info' | 'secondary' {
+  originSeverity(origin: ConsumedTokenOrigin): 'warn' | 'info' | 'secondary' {
     if (origin === 'not declared') return 'warn';
     if (origin === 'Figma') return 'info';
     return 'secondary';
@@ -327,4 +278,19 @@ const meta: Meta<TokenContractsPageComponent> = {
 export default meta;
 type Story = StoryObj<TokenContractsPageComponent>;
 
-export const Consumed: Story = {};
+export const Consumed: Story = {
+  play: async () => {
+    await waitFor(() => {
+      expect(readTokenDeclarations().size).toBeGreaterThan(0);
+    });
+    const broken = checkTokenContracts(
+      ALL_COMPONENT_METADATA,
+      readTokenDeclarations(),
+    ).filter((row) => row.origin === 'not declared');
+    if (broken.length > 0) {
+      throw new Error(
+        broken.map((row) => `${row.component} → ${row.cssVar}`).join('\n'),
+      );
+    }
+  },
+};

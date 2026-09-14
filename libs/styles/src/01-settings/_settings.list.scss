@@ -13,7 +13,7 @@
 :root {
   // ── Colours ─────────────────────────────────────────────────────────────────
   --#{$pds-prefix}-color-list-bg: var(--#{$pds-prefix}-color-content-bg);
-  --#{$pds-prefix}-color-list-section-title: var(--#{$pds-prefix}-color-surface-600);
+  --#{$pds-prefix}-color-list-section-title: var(--#{$pds-prefix}-color-text-muted);
   --#{$pds-prefix}-color-list-count-badge-bg: var(--#{$pds-prefix}-color-primary-75);
   --#{$pds-prefix}-color-list-count-badge-text: var(--#{$pds-prefix}-color-neutral-800);
   --#{$pds-prefix}-color-list-row-bg: var(--#{$pds-prefix}-color-content-bg);

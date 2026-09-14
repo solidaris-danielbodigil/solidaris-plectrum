@@ -221,6 +221,20 @@ function findScssPath(componentPath: string): string | null {
   return fs.existsSync(path.join(WORKSPACE_ROOT, itcssFile)) ? itcssFile : null;
 }
 
+const IGED_WORKSPACE_APP = { name: 'iged', path: 'apps/iged' } as const;
+
+function withIgedWorkspaceApp(
+  workspace: IndexFile['workspace'],
+): IndexFile['workspace'] {
+  const hasIged = workspace.apps.some((app) => app.name === IGED_WORKSPACE_APP.name);
+  return hasIged
+    ? workspace
+    : {
+        ...workspace,
+        apps: [...workspace.apps, { ...IGED_WORKSPACE_APP }],
+      };
+}
+
 function generate(): void {
   console.log('🔍 Scanning libs/ui for components...');
 
@@ -300,17 +314,20 @@ function generate(): void {
       prefix: 'pds',
       baseRemPx: 14,
     },
-    workspace: existingIndex?.workspace ?? {
-      apps: [
-        { name: 'ishare', path: 'apps/ishare' },
-        { name: 'icrm', path: 'apps/icrm' },
-      ],
-      libs: [
-        { name: 'ui', path: 'libs/ui', purpose: 'Shared Angular components (SSOT)' },
-        { name: 'styles', path: 'libs/styles', purpose: 'SCSS/ITCSS tokens and utilities (SSOT)' },
-        { name: 'plectrum', path: 'libs/plectrum', purpose: 'PrimeNG theme preset integration' },
-      ],
-    },
+    workspace: withIgedWorkspaceApp(
+      existingIndex?.workspace ?? {
+        apps: [
+          { name: 'ishare', path: 'apps/ishare' },
+          { name: 'icrm', path: 'apps/icrm' },
+          { name: 'iged', path: 'apps/iged' },
+        ],
+        libs: [
+          { name: 'ui', path: 'libs/ui', purpose: 'Shared Angular components (SSOT)' },
+          { name: 'styles', path: 'libs/styles', purpose: 'SCSS/ITCSS tokens and utilities (SSOT)' },
+          { name: 'plectrum', path: 'libs/plectrum', purpose: 'PrimeNG theme preset integration' },
+        ],
+      },
+    ),
     tokenArchitecture: existingIndex?.tokenArchitecture ?? {
       prefix: '--pds-*',
       prefixConfig: 'libs/styles/src/01-settings/_settings.prefix.scss',

@@ -1,0 +1,14 @@
+{
+  "name": "Plectrum tokens",
+  "id": "1680416101910062041",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "enablePrivatePluginApi": true,
+  "networkAccess": {
+    "allowedDomains": ["https://api.github.com"],
+    "reasoning": "Reads proposed.dtcg.json from the solidaris-plectrum repository"
+  }
+}

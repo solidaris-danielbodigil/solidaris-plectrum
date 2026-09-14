@@ -8,12 +8,14 @@ export const TopNavMetadata: ComponentMetadata = {
       'Application top navigation bar that combines breadcrumb context, a sub-navigation toggle, inline search, a help action, and the custom Plectrum avatar.',
     type: 'navigation',
     path: 'libs/ui/src/lib/top-nav/top-nav.component.ts',
-    primeNgComponent: 'Breadcrumb, Button, IconField, InputText',
+    primeNgComponent: 'Breadcrumb, Button, IconField, InputText, SelectButton',
     bemBlock: 'c-top-nav',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.top-nav.scss',
+    figmaUrl:
+      'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1533',
     created: '2026-06-05',
-    modified: '2026-06-05',
+    modified: '2026-09-14',
   },
   governance: {
     status: 'core',
@@ -22,55 +24,312 @@ export const TopNavMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Application shell top bar',
-      'Breadcrumb-driven page context',
-      'Inline search and utility actions in the header',
+      'Breadcrumb-driven page context with utility actions',
+      'Inline search that expands from an icon',
     ],
     commonPatterns: [
       {
         name: 'Default top navigation',
-        description: 'Collapsed search, collapsed sub-navigation, breadcrumb context, help action, and avatar.',
-        composition: '<(pds|app|lib)-top-nav [breadcrumbs]="..." avatarInitials="LV" />',
+        description:
+          'Collapsed search, collapsed sub-navigation, breadcrumb context, help action, and avatar.',
+        composition:
+          '<(pds|app|lib)-top-nav [breadcrumbs]="..." avatarInitials="LV" />',
       },
       {
         name: 'Search expanded',
-        description: 'The search icon expands into a PrimeNG IconField + InputText control.',
+        description:
+          'The search icon expands into a PrimeNG IconField + InputText control.',
         composition: '<(pds|app|lib)-top-nav [searchExpanded]="true" />',
       },
     ],
     antiPatterns: [
       {
-        scenario: 'Parsing router state inside TopNav',
-        reason: 'TopNav must stay presentation-first and accept breadcrumb data from the container.',
-        alternative: 'Build the breadcrumb model in the app shell and pass it through [breadcrumbs].',
+        scenario: 'Parsing router state inside Top Nav',
+        reason:
+          'Top Nav is presentation-first: it renders the breadcrumb model it is given and never derives routes itself.',
+        alternative:
+          'Build the breadcrumb model in the app shell and pass it through [breadcrumbs].',
       },
       {
-        scenario: 'Letting TopNav directly control the sub-nav component',
-        reason: 'The component should emit intent, not reach across to sibling state.',
-        alternative: 'Bind subNavExpandedChange in the parent and pass sub-nav state down separately.',
+        scenario: 'Letting Top Nav own Sub Nav Shell state',
+        reason:
+          'The component emits intent; it does not reach across to sibling state.',
+        alternative:
+          'Bind subNavExpandedChange in the parent and pass subNavExpanded back down.',
       },
     ],
   },
+  anatomy: [
+    { part: 'c-top-nav__surface', role: 'Header row' },
+    {
+      part: 'c-top-nav__action-button',
+      role: 'Sub-nav toggle, search and help — PrimeNG text buttons',
+    },
+    { part: 'c-top-nav__breadcrumb', role: 'PrimeNG p-breadcrumb' },
+    {
+      part: 'c-top-nav__search',
+      role: 'Expanded IconField + InputText + pds-input-clear',
+    },
+    {
+      part: 'c-top-nav__locale',
+      role: 'Optional PrimeNG p-selectbutton FR/NL locale switcher',
+    },
+    {
+      part: 'c-top-nav__avatar',
+      role: 'pds-plectrum-avatar — decorative when a menu trigger wraps it',
+    },
+  ],
   behavior: {
-    states: ['default', 'subnav-expanded', 'search-open', 'action-hover', 'action-focus-visible'],
+    states: [
+      'default',
+      'subnav-expanded',
+      'search-open',
+      'action-hover',
+      'action-focus-visible',
+    ],
+    interactions: [
+      'Sub-navigation state is controlled: subNavExpanded in, subNavExpandedChange out',
+      'The search icon expands into a PrimeNG IconField + InputText control; Enter emits searchSubmit',
+      'Action buttons are the PrimeNG text variant and keep hover / focus-visible / active states in CSS',
+    ],
   },
   props: [
-    { name: 'breadcrumbs', type: 'MenuItem[]', required: true, description: 'Breadcrumb items rendered by PrimeNG Breadcrumb' },
-    { name: 'home', type: 'MenuItem | null', required: false, default: 'null', description: 'Optional breadcrumb home item' },
-    { name: 'subNavExpanded', type: 'boolean | null', required: false, default: 'null', description: 'Controlled sub-navigation open state' },
-    { name: 'subNavControlsId', type: 'string | null', required: false, default: 'null', description: 'ID of the controlled sub-navigation region' },
-    { name: 'searchExpanded', type: 'boolean | null', required: false, default: 'null', description: 'Controlled search open state' },
-    { name: 'searchQuery', type: 'string | null', required: false, default: 'null', description: 'Controlled search query' },
-    { name: 'searchPlaceholder', type: 'string', required: false, default: 'Search', description: 'Placeholder shown in the expanded search input' },
-    { name: 'searchAriaLabel', type: 'string', required: false, default: 'Search', description: 'Accessible label for the search button and input' },
-    { name: 'subNavToggleLabel', type: 'string', required: false, default: 'Toggle sub-navigation', description: 'Accessible label for the sub-nav button' },
-    { name: 'showSubNavToggle', type: 'boolean', required: false, default: 'true', description: 'Controls whether the sub-navigation toggle button renders' },
-    { name: 'helpLabel', type: 'string', required: false, default: 'Help', description: 'Accessible label for the help button' },
-    { name: 'avatarInitials', type: 'string', required: true, description: 'Initials rendered by the Plectrum avatar' },
-    { name: 'avatarState', type: 'PlectrumAvatarState', required: false, default: 'default', description: 'Persistent avatar state' },
-    { name: 'avatarAriaLabel', type: 'string | null', required: false, default: 'null', description: 'Optional accessible label for the avatar' },
+    {
+      name: 'showBackButton',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Shows the back button before the breadcrumb.',
+    },
+    {
+      name: 'backLabel',
+      type: 'string',
+      required: false,
+      default: 'Retour',
+      description: 'Accessible name of the back button.',
+    },
+    {
+      name: 'backClicked',
+      type: 'output<void>',
+      required: false,
+      description: 'Emitted when the back button is activated.',
+    },
+    {
+      name: 'breadcrumbs',
+      type: 'MenuItem[]',
+      required: true,
+      description: 'Breadcrumb items rendered by PrimeNG Breadcrumb.',
+    },
+    {
+      name: 'home',
+      type: 'MenuItem | null',
+      required: false,
+      default: 'null',
+      description: 'Optional breadcrumb home item.',
+    },
+    {
+      name: 'subNavExpanded',
+      type: 'boolean | undefined',
+      required: false,
+      default: 'undefined',
+      description:
+        'Controlled sub-navigation open state. Unset uses the local fallback.',
+    },
+    {
+      name: 'subNavControlsId',
+      type: 'string | null',
+      required: false,
+      default: 'null',
+      description: 'ID of the controlled sub-navigation region.',
+    },
+    {
+      name: 'searchExpanded',
+      type: 'boolean | undefined',
+      required: false,
+      default: 'undefined',
+      description:
+        'Controlled search open state. Unset uses the local fallback.',
+    },
+    {
+      name: 'searchQuery',
+      type: 'string | undefined',
+      required: false,
+      default: 'undefined',
+      description: 'Controlled search query. Unset uses the local fallback.',
+    },
+    {
+      name: 'searchPlaceholder',
+      type: 'string',
+      required: false,
+      default: 'Search',
+      description: 'Placeholder shown in the expanded search input.',
+    },
+    {
+      name: 'searchAriaLabel',
+      type: 'string',
+      required: false,
+      default: 'Search',
+      description: 'Accessible label for the search button and input.',
+    },
+    {
+      name: 'searchClearLabel',
+      type: 'string',
+      required: false,
+      default: 'Clear search',
+      description: 'Accessible name of the search clear control.',
+    },
+    {
+      name: 'subNavToggleLabel',
+      type: 'string',
+      required: false,
+      default: 'Toggle sub-navigation',
+      description: 'Accessible label for the sub-nav button.',
+    },
+    {
+      name: 'showSubNavToggle',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'When false the sub-navigation toggle is omitted.',
+    },
+    {
+      name: 'showLocaleSwitcher',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'When true, renders a FR/NL SelectButton after help and before the avatar.',
+    },
+    {
+      name: 'helpLabel',
+      type: 'string',
+      required: false,
+      default: 'Help',
+      description: 'Accessible label for the help button.',
+    },
+    {
+      name: 'avatarInitials',
+      type: 'string',
+      required: true,
+      description: 'Initials rendered by the Plectrum avatar.',
+    },
+    {
+      name: 'avatarState',
+      type: 'PlectrumAvatarState',
+      required: false,
+      default: 'default',
+      description: 'Persistent avatar state.',
+    },
+    {
+      name: 'avatarAriaLabel',
+      type: 'string | null',
+      required: false,
+      default: 'null',
+      description: 'Optional accessible label for the avatar.',
+    },
+    {
+      name: 'avatarMenuItems',
+      type: 'MenuItem[]',
+      required: false,
+      default: '[]',
+      description: 'Items in the avatar overflow menu.',
+    },
+    {
+      name: 'showAvatarMenu',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'When true the avatar is a menu trigger.',
+    },
+    {
+      name: 'avatarMenuAriaLabel',
+      type: 'string | undefined',
+      required: false,
+      default: 'undefined',
+      description:
+        'Accessible name of the avatar menu. Locale default when unset.',
+    },
+    {
+      name: 'breadcrumbAriaLabel',
+      type: 'string | undefined',
+      required: false,
+      default: 'undefined',
+      description:
+        'Accessible name of the breadcrumb nav. Locale default when unset.',
+    },
+    {
+      name: 'telemetryLabelsEnabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'When true, testing telemetry labels are written on interactive hosts.',
+    },
+    {
+      name: 'avatarMenuTimerLabel',
+      type: 'string | null',
+      required: false,
+      default: 'null',
+      description: 'Optional timer label rendered in the avatar menu.',
+    },
+    {
+      name: 'avatarMenuTimerItemId',
+      type: 'string | null',
+      required: false,
+      default: 'null',
+      description: 'Menu item id that hosts the timer label.',
+    },
+    {
+      name: 'subNavExpandedChange',
+      type: 'output<boolean>',
+      required: false,
+      description: 'Emitted when the sub-nav toggle changes state.',
+    },
+    {
+      name: 'searchExpandedChange',
+      type: 'output<boolean>',
+      required: false,
+      description: 'Emitted when search opens or closes.',
+    },
+    {
+      name: 'searchQueryChange',
+      type: 'output<string>',
+      required: false,
+      description: 'Emitted as the search query changes.',
+    },
+    {
+      name: 'searchSubmit',
+      type: 'output<string>',
+      required: false,
+      description: 'Emitted when the user presses Enter in the search input.',
+    },
+    {
+      name: 'helpClicked',
+      type: 'output<void>',
+      required: false,
+      description: 'Emitted when the help button is activated.',
+    },
+    {
+      name: 'avatarMenuOpenChange',
+      type: 'output<boolean>',
+      required: false,
+      description: 'Emitted when the avatar menu opens or closes.',
+    },
   ],
   accessibility: {
     wcagLevel: 'AA',
+    ariaAttributes: [
+      'Sub-nav toggle uses aria-pressed and optional aria-controls',
+      'Search icon uses aria-expanded / aria-controls; the field is role="searchbox"',
+      'Help and avatar menu triggers have accessible names; an avatar inside a menu button is focusable="false"',
+      'p-breadcrumb carries an aria-label (breadcrumbAriaLabel, locale default)',
+      'Locale SelectButton is a named group (aria-labelledby → Langue / Taal) with FR/NL toggle buttons',
+    ],
+    keyboardSupport: [
+      'Every action is a native button: Tab order follows the visual order',
+      'Escape closes the expanded search and returns focus to the search icon',
+      'Locale FR/NL options are ToggleButtons: Tab to focus, Space or Enter to select',
+    ],
   },
   tokens: {
     consumed: [
@@ -92,9 +351,19 @@ export const TopNavMetadata: ComponentMetadata = {
       '--pds-focus-ring-offset',
       '--pds-focus-ring-shadow',
     ],
+    primeNgMappings: {
+      '--p-selectbutton-border-radius': '--pds-radius-lg',
+    },
   },
   composition: {
-    nestedComponents: ['Breadcrumb', 'Button', 'IconField', 'InputText', 'PlectrumAvatar'],
+    nestedComponents: [
+      'Breadcrumb',
+      'Button',
+      'IconField',
+      'InputText',
+      'SelectButton',
+      'PlectrumAvatar',
+    ],
     companions: ['SubNavShellComponent'],
     slots: [],
   },
@@ -106,12 +375,23 @@ export const TopNavMetadata: ComponentMetadata = {
       'application shell header': 'use TopNav',
       'breadcrumb + actions bar': 'use TopNav',
     },
-    keywords: ['top nav', 'header', 'breadcrumb', 'search', 'subnav', 'avatar', 'navigation'],
+    keywords: [
+      'top nav',
+      'header',
+      'breadcrumb',
+      'search',
+      'subnav',
+      'avatar',
+      'navigation',
+      'locale',
+      'i18n',
+    ],
   },
   examples: [
     {
       name: 'Default top navigation',
-      description: 'Render the top nav with breadcrumb data and avatar initials.',
+      description:
+        'Render the top nav with breadcrumb data and avatar initials.',
       code: '<(pds|app|lib)-top-nav [breadcrumbs]="breadcrumbs" avatarInitials="LV" />',
     },
   ],

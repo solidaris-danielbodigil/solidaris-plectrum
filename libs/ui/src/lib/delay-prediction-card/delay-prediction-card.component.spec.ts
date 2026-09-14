@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 
 describe('DelayPredictionCardComponent', () => {
@@ -6,6 +7,7 @@ describe('DelayPredictionCardComponent', () => {
   let component: DelayPredictionCardComponent;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [DelayPredictionCardComponent],
     }).compileComponents();
@@ -63,5 +65,28 @@ describe('DelayPredictionCardComponent', () => {
     );
     expect(el.querySelector('.c-delay-prediction-card__menu')).toBeNull();
     expect(el.querySelector('.c-delay-prediction-card__value')).toBeNull();
+  });
+});
+
+describe('DelayPredictionCardComponent (nl)', () => {
+  let fixture: ComponentFixture<DelayPredictionCardComponent>;
+
+  beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+    await TestBed.configureTestingModule({
+      imports: [DelayPredictionCardComponent],
+      providers: providePdsLocale('nl'),
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DelayPredictionCardComponent);
+    fixture.componentRef.setInput('daysRemaining', 11);
+    fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
+    fixture.detectChanges();
+  });
+
+  it('should render Dutch metric labels', () => {
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.textContent).toContain('Resterende dagen');
+    expect(el.textContent).toContain('Voorspelde sluiting');
   });
 });

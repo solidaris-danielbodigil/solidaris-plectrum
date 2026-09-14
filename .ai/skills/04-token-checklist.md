@@ -81,6 +81,7 @@ Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
 | Focus ring width | `--pds-focus-ring-width` | `--pds-focus-ring-width` |
 | Focus ring offset | `--pds-focus-ring-offset` | `--pds-focus-ring-offset` |
 | Disabled opacity | `--pds-disabled-opacity` | `--pds-disabled-opacity` |
+| Disabled cursor | `--pds-cursor-disabled` | `--pds-cursor-disabled` |
 
 ---
 
@@ -93,6 +94,7 @@ If a Figma value has no matching `--pds-*` token:
 3. Add the token with a comment: Figma variable name + node ID
 4. Reference it in component SCSS
 5. Add it to `tokens.consumed` in the `.metadata.ts`
+6. If the token originated in code and should exist in Figma: `tokens:propose`, then apply selected names on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise
 
 ```scss
 // libs/styles/src/01-settings/_settings.colors-semantic.scss

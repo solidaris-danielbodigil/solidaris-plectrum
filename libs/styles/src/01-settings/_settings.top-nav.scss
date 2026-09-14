@@ -16,3 +16,8 @@
   --#{$pds-prefix}-space-top-nav-action-padding: 10px;
   --#{$pds-prefix}-size-top-nav-search-width: 240px;
 }
+
+// PrimeNG SelectButton bridge — scoped to the optional locale control.
+.c-top-nav__locale {
+  --p-selectbutton-border-radius: var(--#{$pds-prefix}-radius-lg);
+}

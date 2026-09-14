@@ -23,6 +23,7 @@
 12. [Scroll Affordance](#12-scroll-affordance)
 13. [Global Parity](#13-global-parity)
 14. [Navigation Shell Exceptions](#14-navigation-shell-exceptions)
+15. [Disabled cursor](#15-disabled-cursor)
 
 ---
 
@@ -40,16 +41,16 @@ Figma is reference only — not SSOT for PrimeNG chrome.
 
 **Rule:** flex, gap, padding, margin, overflow, and min-size on elements we own in Angular templates must use `o-flex` and `o-layout` classes — **not** `06-components/` SCSS.
 
-| Property | Use |
-|----------|-----|
-| `display: flex` | `o-flex` |
-| `flex-direction: column` | `o-flex--y` |
-| `align-items` / `justify-content` | `o-flex--align-items-*` / `o-flex--justify-content-*` |
-| `flex-grow` / `flex-shrink` | `o-flex__item--grow-*` / `o-flex__item--shrink-*` |
-| `gap`, `padding`, `margin` | `o-layout--gap-*`, `o-layout--padding-*`, `o-layout--margin-*` (use `o-layout--margin-0` for heading resets) |
-| `overflow` | `o-layout--overflow-*` |
-| `min-width: 0` / `min-height: 0` | `o-layout--min-w-0` / `o-layout--min-h-0` |
-| Equal columns / spans | `o-flex` + `o-flex__item--{n}` (see below) |
+| Property                          | Use                                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `display: flex`                   | `o-flex`                                                                                                |
+| `flex-direction: column`          | `o-flex o-flex--y`                                                                                      |
+| `align-items` / `justify-content` | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*`                                     |
+| `flex-grow` / `flex-shrink`       | `o-flex__item o-flex__item--grow-*` / `o-flex__item o-flex__item--shrink-*`                             |
+| `gap`, `padding`, `margin`        | `o-layout o-layout--gap-*` / `--padding-*` / `--margin-*` (use `o-layout--margin-0` for heading resets) |
+| `overflow`                        | `o-layout o-layout--overflow-*`                                                                         |
+| `min-width: 0` / `min-height: 0`  | `o-layout o-layout--min-w-0` / `o-layout o-layout--min-h-0`                                             |
+| Equal columns / spans             | `o-flex` + `o-flex__item--{n}` (see below)                                                              |
 
 Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_objects.layout.scss`
 
@@ -59,11 +60,11 @@ Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_object
 
 **Rule:** equal columns and responsive spans use `o-flex` / `o-flex__item--{n}` — **not** a parallel CSS Grid object.
 
-| Need | Use |
-|------|-----|
-| Equal / spanning columns | `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}` suffixes) |
-| Alignment | `o-flex--align-items-*` / `o-flex--justify-content-*` |
-| Gap | `o-layout--gap-*` on the same element (BEM mix) |
+| Need                     | Use                                                                 |
+| ------------------------ | ------------------------------------------------------------------- |
+| Equal / spanning columns | `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}` suffixes)    |
+| Alignment                | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*` |
+| Gap                      | `o-layout o-layout--gap-*` on the same element (block + modifier)   |
 
 Bespoke `display: grid` / `grid-template-*` (named areas, asymmetric tracks) stay in component SCSS — document with a comment.
 
@@ -75,14 +76,14 @@ Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`
 
 **Rule:** static borders, radii, and elevations on elements we own in templates should use utilities — not duplicate rules in component SCSS.
 
-| Need | Use |
-|------|-----|
+| Need                    | Use                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------- |
 | Panel / section divider | `u-border-{side}` + `style="--pds-border-color: var(--pds-color-panel-border)"` |
-| Component-token width | add `--pds-border-width: var(--…)` override on the same element |
-| Thick / dashed | `u-border-thick`, `u-border-dashed` (orthogonal modifiers) |
-| Status border color | `u-border-{success\|warning\|danger\|info}` |
-| Global radius stop | `u-radius-{stop}` / `u-radius-{side\|corner}-{stop}` |
-| Static elevation | `u-shadow-{sm\|md\|xl\|overlay-*}` |
+| Component-token width   | add `--pds-border-width: var(--…)` override on the same element                 |
+| Thick / dashed          | `u-border-thick`, `u-border-dashed` (orthogonal modifiers)                      |
+| Status border color     | `u-border-{success\|warning\|danger\|info}`                                     |
+| Global radius stop      | `u-radius-{stop}` / `u-radius-{side\|corner}-{stop}`                            |
+| Static elevation        | `u-shadow-{sm\|md\|xl\|overlay-*}`                                              |
 
 **Keep in component SCSS:** state-driven borders/shadows (hover, selected, expanded), PrimeNG-internal selectors, pulse/keyframe shadows, radii using `calc()` or component tokens.
 
@@ -107,12 +108,12 @@ Reference: `libs/styles/src/07-utilities/_utilities.{borders,radius,shadows}.scs
 
 Use shared roles in component SCSS — not feature-specific border aliases (`_settings.colors-semantic.scss`):
 
-| Token | Role | Typical use |
-|-------|------|-------------|
-| `--pds-color-panel-border` | Flat panel chrome (#e7e7e7) | Section dividers, list shell, bordered accordion, flush card header rule |
-| `--pds-color-card-border` | Elevated card outline (#d1d1d1) | `p-card` rings, selectable list rows |
-| `--pds-color-content-border` | Subtle inset border | Nav shells, tiles, notes |
-| `--pds-color-surface-border` | Light surface edge | Iconography cards, doc demos |
+| Token                        | Role                            | Typical use                                                              |
+| ---------------------------- | ------------------------------- | ------------------------------------------------------------------------ |
+| `--pds-color-panel-border`   | Flat panel chrome (#e7e7e7)     | Section dividers, list shell, bordered accordion, flush card header rule |
+| `--pds-color-card-border`    | Elevated card outline (#d1d1d1) | `p-card` rings, selectable list rows                                     |
+| `--pds-color-content-border` | Subtle inset border             | Nav shells, tiles, notes                                                 |
+| `--pds-color-surface-border` | Light surface edge              | Iconography cards, doc demos                                             |
 
 PrimeNG bridges: `--p-card-border-color: var(--pds-color-card-border)` or `panel-border` per context.
 
@@ -151,12 +152,12 @@ Keep blocks flat; shallow modifiers only. No doubled-class specificity (`.c-foo.
 
 When a shared block has feature-specific children, prefix the **element** name — do not create a nested block:
 
-| Avoid | Prefer |
-|-------|--------|
-| `c-affiliate-detail-drawer__name` | `c-drawer__affiliate-detail-name` |
+| Avoid                                   | Prefer                                  |
+| --------------------------------------- | --------------------------------------- |
+| `c-profile-drawer__name`                | `c-drawer__profile-name`                |
 | `c-document-more-details-drawer__title` | `c-drawer__document-more-details-title` |
 
-Standalone `libs/ui` components keep their own block (`c-affiliate-overview-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
+Standalone `libs/ui` components keep their own block (`c-profile-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
 
 ---
 
@@ -176,14 +177,15 @@ No `styleClass` on `p-drawer` / `p-dialog` roots. Use `appendTo="body"` for draw
 
 ## 12. Scroll Affordance
 
-Owned scroll wrapper + scroll-shadow object on our element — not doubled `.p-card-body` selectors.
+Use the fade to **hint that more content is scrollable** past the visible edge.
+Owned scroll wrapper + scroll-shadow object on our element — not doubled `.p-card-body` selectors, not a JS listener.
 
-| Axis | Class | Mixin | Overflow pair |
-|---|---|---|---|
-| Block (vertical) | `o-scroll-shadow` | `scroll-shadow()` | `o-layout--overflow-y-auto` + height constraint (`o-layout--min-h-0`) |
-| Inline (horizontal) | `o-scroll-shadow--inline` | `scroll-shadow-inline()` | `o-layout--overflow-x-auto` + width constraint (`o-layout--min-w-0`) |
+| Axis                | Class                     | Mixin                    | Overflow pair                                                         |
+| ------------------- | ------------------------- | ------------------------ | --------------------------------------------------------------------- |
+| Block (vertical)    | `o-scroll-shadow`         | `scroll-shadow()`        | `o-layout--overflow-y-auto` + height constraint (`o-layout--min-h-0`) |
+| Inline (horizontal) | `o-scroll-shadow--inline` | `scroll-shadow-inline()` | `o-layout--overflow-x-auto` + width constraint (`o-layout--min-w-0`)  |
 
-Storybook: **Foundations / Scroll Shadow**.
+Storybook: **Foundations / Scroll Shadow**. Add `tabindex="0"` and an `aria-label` when the scroller has no focusable child.
 
 ---
 
@@ -197,4 +199,21 @@ Allowed without approval:
 
 ## 14. Navigation Shell Exceptions
 
-`c-accordion--nav` and `c-accordion--chromeless` use transparent accordion bridges for nav/list chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.
+`c-accordion--nav` uses a transparent accordion bridge for nav chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.
+
+---
+
+## 15. Disabled cursor
+
+Disabled interactive controls must show `cursor: not-allowed`:
+
+- native `:disabled` / `[disabled]`
+- `[aria-disabled="true"]`
+- PrimeNG `.p-disabled`
+- SubNav disabled items (`.is-disabled` buttons and links)
+
+**SSOT:** `--pds-cursor-disabled` in `01-settings/_settings.globals.scss`, applied once in `08-trumps/_trumps.disabled.scss`. Do not re-declare `cursor: not-allowed` per component.
+
+Allowed PrimeNG exception (cursor only): the trump may target `.p-disabled` and restore `pointer-events: auto` so the cursor can show — no `!important`, no other `.p-button:disabled` restyle.
+
+Do not set `pointer-events: none` on disabled SubNav items; that hides the not-allowed cursor. Clicks stay blocked by `disabled` / `aria-disabled` + the click guard.

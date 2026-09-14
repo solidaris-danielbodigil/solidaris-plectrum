@@ -1,8 +1,10 @@
 // Shared Storybook play-function helpers. Import from here so interaction
 // tests stay consistent across the catalogue (storybook/test = Interactions panel).
-export { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+// Re-export via a local binding — Vite's storybook/test transform cannot
+// rewrite `export { … } from 'storybook/test'` into valid ESM.
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 
-import { expect, waitFor, within } from 'storybook/test';
+export { expect, fn, userEvent, waitFor, within };
 
 /** Assert visible text in the story canvas (render / smoke contract). */
 export async function assertTextVisible(

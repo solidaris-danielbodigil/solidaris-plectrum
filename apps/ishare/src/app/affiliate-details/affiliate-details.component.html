@@ -1,15 +1,15 @@
 <div
-  class="c-affiliate-details o-flex o-flex--y o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
+  class="c-affiliate-details o-flex o-flex--y o-layout o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
 >
   <div
-    class="c-affiliate-documents-toolbar-shell o-layout--full-width o-flex__item--shrink-0"
+    class="c-affiliate-documents-toolbar-shell o-layout o-layout--full-width o-flex__item o-flex__item--shrink-0"
     [class.is-visible]="documentFiltersToolbarVisible()"
     [attr.aria-hidden]="documentFiltersToolbarVisible() ? null : 'true'"
     [attr.inert]="documentFiltersToolbarVisible() ? null : ''"
   >
     <div class="c-affiliate-documents-toolbar-shell__clip">
       <pds-toolbar
-        class="c-affiliate-details__toolbar c-affiliate-documents-toolbar c-affiliate-documents-toolbar__panel o-layout--full-width"
+        class="c-affiliate-details__toolbar c-affiliate-documents-toolbar c-affiliate-documents-toolbar__panel o-layout o-layout--full-width"
         [sticky]="false"
       >
         <ng-container slot="start">
@@ -18,7 +18,7 @@
         track toolbarFilterResetKey
       ) {
       <div
-        class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
+        class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
       >
         <div class="c-affiliate-documents-toolbar__field">
           <pds-form-field label="Secteur" inputId="document-sector">
@@ -120,22 +120,22 @@
   </div>
 
   <div
-    class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item--grow-1"
+    class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item o-flex__item--grow-1"
   >
     <p-card
-      class="c-affiliate-details__documents o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-flex__item--5 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
+      class="c-affiliate-details__documents o-flex o-flex--y o-layout o-layout--min-w-0 o-layout--min-h-0 o-flex__item o-flex__item--5 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
     >
       <ng-template pTemplate="header">
         <div
-          class="c-affiliate-details__card-header o-flex o-flex--y o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
+          class="c-affiliate-details__card-header o-flex o-flex--y o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
         >
           <div
-            class="c-affiliate-details__documents-header-top o-flex o-flex--wrap o-flex--align-items-center o-flex--justify-content-space-between o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
+            class="c-affiliate-details__documents-header-top o-flex o-flex--wrap o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
           >
             <div
-              class="c-affiliate-details__documents-header-title o-flex o-flex--align-items-center o-layout--gap-1-5"
+              class="c-affiliate-details__documents-header-title o-flex o-flex--align-items-center o-layout o-layout--gap-1-5 o-layout--min-w-0"
             >
-              <h2 class="c-list__title o-layout--margin-0">
+              <h2 class="c-list__title o-layout o-layout--margin-0">
                 Suivi des documents
               </h2>
               @if (pageLoading()) {
@@ -153,11 +153,11 @@
               }
             </div>
             <div
-              class="c-affiliate-details__documents-header-actions o-flex o-flex--align-items-center o-layout--gap-1"
+              class="c-affiliate-details__documents-header-actions o-flex o-flex--align-items-center o-flex--justify-content-flex-end o-layout o-layout--gap-1 o-layout--min-w-0"
             >
-              <div class="c-affiliate-details__documents-search">
+              <div class="c-affiliate-details__documents-search o-layout o-layout--min-w-0">
                 <p-iconfield
-                  class="c-affiliate-details__documents-search-input o-layout--full-width"
+                  class="c-affiliate-details__documents-search-input o-layout o-layout--full-width"
                 >
                   <p-inputicon>
                     <i class="bi bi-search" aria-hidden="true"></i>
@@ -175,7 +175,7 @@
                     (ngModelChange)="documentSearch.set($event)"
                     [disabled]="pageLoading()"
                     placeholder="Rechercher document..."
-                    class="c-affiliate-details__documents-search-input o-layout--full-width"
+                    class="c-affiliate-details__documents-search-input o-layout o-layout--full-width"
                   />
                   <p-inputicon>
                     <pds-input-clear
@@ -186,7 +186,7 @@
                   </p-inputicon>
                 </p-iconfield>
               </div>
-              <div class="c-affiliate-details__documents-filters-trigger o-flex__item--shrink-0">
+              <div class="c-affiliate-details__documents-filters-trigger o-flex__item o-flex__item--shrink-0">
                 <p-togglebutton
                   data-telemetry-id="documents-filters-toggle"
                   pdsTelemetryLabel="Filtres"
@@ -231,14 +231,14 @@
 
           @if (showCategoryTabs()) {
             <p-tabs
-              class="c-affiliate-details__category-tabs o-layout--full-width o-layout--min-w-0"
+              class="c-affiliate-details__category-tabs o-layout o-layout--full-width o-layout--min-w-0"
               [value]="selectedCategoryTab()"
               (valueChange)="onCategoryTabChange($event)"
             >
               <p-tablist>
                 @for (cat of categories(); track cat.id) {
                   <p-tab
-                    class="c-affiliate-details__category-tab o-flex o-flex--align-items-center o-layout--gap-1-5"
+                    class="c-affiliate-details__category-tab o-flex o-flex--align-items-center o-layout o-layout--gap-1-5"
                     [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
                     [value]="cat.id"
                     [disabled]="pageLoading()"
@@ -301,7 +301,7 @@
       </ng-template>
 
       <div
-        class="c-affiliate-details__documents-scroll o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0"
+        class="c-affiliate-details__documents-scroll o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0"
         [class.o-scroll-shadow]="!pageLoading()"
         [class.o-layout--overflow-y-auto]="!pageLoading()"
         [class.o-layout--overflow-hidden]="pageLoading()"
@@ -309,7 +309,7 @@
       @if (showCategoryTabs()) {
         @if (hasListResults()) {
           <div
-            class="c-affiliate-details__category-accordion o-layout--full-width o-layout--min-w-0 o-layout--padding-block-end-3"
+            class="c-affiliate-details__category-accordion o-layout o-layout--full-width o-layout--min-w-0 o-layout--padding-block-end-3"
           >
           <p-accordion
             [value]="openCategories()"
@@ -323,14 +323,14 @@
               >
                 <p-accordion-header>
                   <div
-                    class="c-affiliate-details__category-panel-header o-flex o-flex--align-items-center o-flex--justify-content-flex-start o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0"
+                    class="c-affiliate-details__category-panel-header o-flex o-flex--align-items-center o-flex--justify-content-flex-start o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0"
                   >
                     <span class="c-affiliate-details__category-panel-label">{{
                       cat.label
                     }}</span>
                     @if (cat.id === 'parcours') {
                       <span
-                        class="c-affiliate-details__category-panel-count o-flex o-flex--align-items-center o-layout--gap-1"
+                        class="c-affiliate-details__category-panel-count o-flex o-flex--align-items-center o-layout o-layout--gap-1"
                       >
                         @if (pageLoading()) {
                           <p-skeleton
@@ -370,13 +370,13 @@
                 <p-accordion-content>
                   @if (!cat.enabled) {
                     <p
-                      class="c-affiliate-details__category-empty-filter o-layout--margin-0 o-layout--padding-2 o-layout--padding-inline-3"
+                      class="c-affiliate-details__category-empty-filter o-layout o-layout--margin-0 o-layout--padding-2 o-layout--padding-inline-3"
                     >
                       {{ categoryEmptyFilterMessage }}
                     </p>
                   } @else if (cat.kind === 'journey' && cat.groups) {
                     <pds-list
-                      class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
+                      class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
                       [loading]="pageLoading()"
                       [groups]="cat.groups"
@@ -389,7 +389,7 @@
                     />
                   } @else if (cat.items) {
                     <pds-list
-                      class="o-flex o-flex--y o-layout--full-width o-layout--min-w-0"
+                      class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
                       [showHeader]="false"
                       [loading]="pageLoading()"
                       [groups]="null"
@@ -406,14 +406,14 @@
         </div>
         } @else {
           <pds-empty-state
-            class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
+            class="o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-layout o-layout--full-width o-layout--min-w-0"
             [title]="emptyListTitle()"
             [description]="emptyListDescription()"
           />
         }
       } @else {
         <pds-empty-state
-          class="o-flex o-flex--col o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0"
+          class="o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-layout o-layout--full-width o-layout--min-w-0"
           [title]="emptyListTitle()"
           [description]="emptyListDescription()"
         />
@@ -423,31 +423,31 @@
 
     @if (visibleDocuments().length > 0) {
       <p-card
-        class="c-affiliate-details__detail o-flex o-flex--y o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-hidden o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
+        class="c-affiliate-details__detail o-flex o-flex--y o-layout o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-hidden o-flex__item o-flex__item--7 o-flex__item--shrink-1 o-layout--padding-3 o-layout--gap-3"
         [class.c-affiliate-details__detail--empty]="!selectedDocumentId()"
       >
         @if (selectedDocumentId(); as documentId) {
           <ng-template pTemplate="header">
             <div
-              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
+              class="c-affiliate-details__card-header o-flex o-flex--align-items-center o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
             >
               @if (pageLoading()) {
                 <span
-                  class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--title o-flex__item--grow-1 o-layout--min-w-0"
+                  class="c-skeleton-slot c-affiliate-document-detail__skeleton-slot c-affiliate-document-detail__skeleton-slot--title o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
                   aria-hidden="true"
                 >
                   <p-skeleton />
                 </span>
               } @else {
                 <h2
-                  class="c-affiliate-document-detail__title o-flex__item--grow-1 o-layout--min-w-0 o-layout--margin-0"
+                  class="c-affiliate-document-detail__title o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--margin-0"
                 >
                   {{ selectedDocumentTitle() }}
                 </h2>
 
                 @if (showStepperViewToggle()) {
                   <p-selectbutton
-                    class="c-affiliate-document-detail__stepper-layout-switch o-flex__item--shrink-0"
+                    class="c-affiliate-document-detail__stepper-layout-switch o-flex__item o-flex__item--shrink-0"
                     [options]="stepperViewOptions"
                     optionLabel="label"
                     optionValue="value"
@@ -461,7 +461,7 @@
               }
 
               <div
-                class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout--gap-1 o-flex__item--shrink-0"
+                class="c-affiliate-document-detail__nav o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex__item o-flex__item--shrink-0"
               >
                 <button
                   pButton
@@ -490,10 +490,10 @@
           </ng-template>
 
           <div
-            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-flex__item--grow-1 o-layout--min-h-0 o-layout--min-w-0 o-layout--overflow-hidden"
+            class="c-affiliate-details__detail-scroll o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0 o-layout--overflow-hidden"
           >
             <app-affiliate-document-detail
-              class="o-layout--full-width o-layout--min-w-0 o-layout--full-height o-flex__item--grow-1 o-layout--min-h-0"
+              class="o-layout o-layout--full-width o-layout--min-w-0 o-layout--full-height o-flex__item o-flex__item--grow-1 o-layout--min-h-0"
               [selectedDocumentId]="documentId"
               [affiliateRouteId]="affiliateId()"
               [navigableDocuments]="navigableDocuments()"
@@ -509,7 +509,7 @@
           </div>
         } @else {
           <pds-empty-state
-            class="c-affiliate-details__detail-empty o-flex o-flex--y o-flex__item--grow-1 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0"
+            class="c-affiliate-details__detail-empty o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--full-width o-layout--min-w-0 o-layout--min-h-0"
             title="Aucun document sélectionné"
             description="Développez un parcours et sélectionnez un document pour afficher son détail."
           />
@@ -520,7 +520,7 @@
 
 </div>
 
-<pds-affiliate-detail-drawer
+<pds-profile-drawer
   [(visible)]="affiliateDetailDrawerVisible"
   [data]="affiliateDetailDrawerData()"
   [showNotes]="false"

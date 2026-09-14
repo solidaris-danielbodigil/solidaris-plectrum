@@ -38,7 +38,7 @@ For each --p-* override in the codebase:
 ```
 Compare Figma variable export against token files:
 - New Figma variables without code equivalent → FLAG for implementation
-- Code tokens without Figma equivalent → FLAG for review (may be component-level)
+- Code tokens without Figma equivalent → FLAG for review (may be component-level). If they should exist in Figma, they belong in `proposed.dtcg.json`; apply on `proposals/{app}` via agent + Figma MCP (default) or the Plectrum tokens plugin (no agent)
 - Value mismatches → FLAG for resolution
 ```
 

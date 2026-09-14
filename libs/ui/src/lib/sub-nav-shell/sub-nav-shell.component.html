@@ -1,30 +1,80 @@
 <!-- Header -->
-<header class="c-sub-nav-shell__header o-flex o-flex--align-items-center o-flex__item--shrink-0 o-layout--padding-inline-2">
-  <span class="c-sub-nav-shell__title">{{ title() }}</span>
+<header class="c-sub-nav-shell__header o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex__item o-flex__item--shrink-0 o-layout o-layout--padding-inline-2 o-layout--gap-1">
+  @if (!showSearch() || !searchExpanded()) {
+    <span class="c-sub-nav-shell__title o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">{{ title() }}</span>
+  }
+  @if (showSearch()) {
+    @if (searchExpanded()) {
+      <p-iconField class="c-sub-nav-shell__search o-flex o-flex--align-items-center o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
+        <p-inputIcon class="bi bi-search" />
+        <input
+          [id]="searchInputId"
+          class="c-sub-nav-shell__search-input o-layout o-layout--full-width"
+          pInputText
+          type="text"
+          role="searchbox"
+          autocomplete="off"
+          [value]="searchQuery()"
+          [placeholder]="searchPlaceholder()"
+          [attr.aria-label]="searchAriaLabel()"
+          (input)="onSearchInput($event)"
+          (blur)="onSearchBlur($event)"
+          (keydown)="onSearchKeydown($event)"
+        />
+        <p-inputicon>
+          <pds-input-clear
+            [visible]="!!searchQuery()"
+            [ariaLabel]="searchClearLabel()"
+            (clear)="clearSearch()"
+          />
+        </p-inputicon>
+      </p-iconField>
+    } @else {
+      <button
+        pButton
+        type="button"
+        text
+        severity="secondary"
+        class="c-sub-nav-shell__search-toggle o-flex__item o-flex__item--shrink-0"
+        [attr.aria-label]="searchAriaLabel()"
+        [attr.aria-controls]="searchInputId"
+        [attr.aria-expanded]="searchExpanded()"
+        (click)="openSearch()"
+      >
+        <i class="bi bi-search" aria-hidden="true"></i>
+      </button>
+    }
+  }
 </header>
 
 <!-- Scrollable body -->
-<div class="c-sub-nav-shell__body o-flex__item--grow-1 o-flex__item--shrink-1 o-layout--min-h-0 o-layout--overflow-x-hidden o-layout--overflow-y-auto">
+<div
+  class="c-sub-nav-shell__body o-flex__item o-flex__item--grow-1 o-flex__item--shrink-1 o-layout o-layout--min-h-0 o-layout--overflow-x-hidden o-layout--overflow-y-auto"
+  tabindex="0"
+>
+  @if (searchEmpty()) {
+    <p class="u-text-body-sm o-layout o-layout--margin-0 o-layout--padding-2">{{ searchEmptyLabel() }}</p>
+  } @else {
   @for (block of renderBlocks(); track $index) {
     @if (block.type === 'standalone') {
       <!-- Standalone items (sections without a label) -->
-      <div class="c-sub-nav-shell__featured o-flex o-flex--col o-layout--gap-0-5">
+      <div class="c-sub-nav-shell__featured o-flex o-flex--col o-layout o-layout--gap-0-5">
         @for (item of block.section.items; track item.id) {
           <ng-container *ngTemplateOutlet="menuItemTpl; context: { $implicit: item }" />
         }
       </div>
     } @else {
       <!-- Accordion group (consecutive labeled sections) -->
-      <p-accordion [multiple]="true" [value]="expandedPanels()" (valueChange)="expandedPanels.set($event)" expandIcon="bi bi-chevron-down" collapseIcon="bi bi-chevron-up" class="c-accordion--nav">
+      <p-accordion [multiple]="true" [value]="expandedPanels()" (valueChange)="expandedPanels.set($event)" expandIcon="bi bi-chevron-down" collapseIcon="bi bi-chevron-up" class="c-accordion c-accordion--nav">
         @for (section of block.sections; track section.id) {
           <p-accordion-panel [value]="section.id">
             <p-accordion-header>
-              <span class="c-sub-nav-shell__section-label o-flex__item--grow-1 o-layout--min-w-0">{{ section.label }}</span>
+              <span class="c-sub-nav-shell__section-label o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">{{ section.label }}</span>
             </p-accordion-header>
             <p-accordion-content>
-              <ul class="c-sub-nav-shell__items o-flex o-flex--col o-layout--gap-0-5 o-layout--margin-0 o-layout--padding-0" role="list">
+              <ul class="c-sub-nav-shell__items o-flex o-flex--col o-layout o-layout--gap-0-5 o-layout--margin-0 o-layout--padding-0 o-layout--min-w-0" role="list">
                 @for (item of section.items; track item.id) {
-                  <li>
+                  <li class="o-layout o-layout--min-w-0">
                     <ng-container *ngTemplateOutlet="menuItemTpl; context: { $implicit: item }" />
                   </li>
                 }
@@ -35,11 +85,12 @@
       </p-accordion>
     }
   }
+  }
 </div>
 
 <!-- Footer -->
 @if (version()) {
-  <footer class="c-sub-nav-shell__footer o-flex o-flex--col o-flex--align-items-center o-flex__item--shrink-0 o-layout--gap-0-5 o-layout--padding-block-6 o-layout--padding-inline-2">
+  <footer class="c-sub-nav-shell__footer o-flex o-flex--col o-flex--align-items-center o-flex__item o-flex__item--shrink-0 o-layout o-layout--gap-0-5 o-layout--padding-block-6 o-layout--padding-inline-2">
     <span class="c-sub-nav-shell__footer-version">Version {{ version() }}</span>
     <a
       class="c-sub-nav-shell__footer-link"
@@ -52,7 +103,7 @@
 <ng-template #menuItemTpl let-item>
   @if (item.routerLink) {
     <a
-      class="c-sub-nav-shell__item o-flex o-flex--align-items-center o-layout--gap-0-75 o-layout--padding-block-0-5 o-layout--padding-inline-1"
+      class="c-sub-nav-shell__item o-flex o-flex--align-items-center o-flex--justify-content-flex-start o-layout o-layout--full-width o-layout--min-w-0 o-layout--gap-0-75 o-layout--padding-block-0-5 o-layout--padding-inline-1"
       [class.is-active]="isActive(item)"
       [class.is-disabled]="item.disabled"
       [routerLink]="item.disabled ? null : item.routerLink"
@@ -65,14 +116,14 @@
       (click)="onItemClick(item)"
     >
       @if (item.icon) {
-        <span class="c-sub-nav-shell__item-icon o-flex__item--shrink-0 o-layout--overflow-hidden" aria-hidden="true">
+        <span class="c-sub-nav-shell__item-icon o-flex__item o-flex__item--shrink-0 o-layout o-layout--overflow-hidden" aria-hidden="true">
           <i [class]="'bi ' + item.icon"></i>
         </span>
       }
-      <span class="c-sub-nav-shell__item-label o-flex__item--grow-1 o-layout--min-w-0">{{ item.label }}</span>
+      <span class="c-sub-nav-shell__item-label o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">{{ item.label }}</span>
       @if (item.count !== undefined) {
         <p-badge
-          class="c-sub-nav-shell__counter o-flex__item--shrink-0"
+          class="c-sub-nav-shell__counter o-flex__item o-flex__item--shrink-0"
           [value]="'' + item.count"
           [severity]="item.countSeverity ?? null"
         />
@@ -81,7 +132,7 @@
   } @else {
     <button
       type="button"
-      class="c-sub-nav-shell__item o-flex o-flex--align-items-center o-layout--gap-0-75 o-layout--padding-block-0-5 o-layout--padding-inline-1"
+      class="c-sub-nav-shell__item o-flex o-flex--align-items-center o-flex--justify-content-flex-start o-layout o-layout--full-width o-layout--min-w-0 o-layout--gap-0-75 o-layout--padding-block-0-5 o-layout--padding-inline-1"
       [class.is-active]="isActive(item)"
       [class.is-disabled]="item.disabled"
       [disabled]="item.disabled"
@@ -91,14 +142,14 @@
       (click)="onItemClick(item)"
     >
       @if (item.icon) {
-        <span class="c-sub-nav-shell__item-icon o-flex__item--shrink-0 o-layout--overflow-hidden" aria-hidden="true">
+        <span class="c-sub-nav-shell__item-icon o-flex__item o-flex__item--shrink-0 o-layout o-layout--overflow-hidden" aria-hidden="true">
           <i [class]="'bi ' + item.icon"></i>
         </span>
       }
-      <span class="c-sub-nav-shell__item-label o-flex__item--grow-1 o-layout--min-w-0">{{ item.label }}</span>
+      <span class="c-sub-nav-shell__item-label o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">{{ item.label }}</span>
       @if (item.count !== undefined) {
         <p-badge
-          class="c-sub-nav-shell__counter o-flex__item--shrink-0"
+          class="c-sub-nav-shell__counter o-flex__item o-flex__item--shrink-0"
           [value]="'' + item.count"
           [severity]="item.countSeverity ?? null"
         />

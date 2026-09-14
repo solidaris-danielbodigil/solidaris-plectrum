@@ -1,3 +1,4 @@
+import { copyTextToClipboard } from '../lib/copyable-text/copy-to-clipboard';
 import {
   isStorybookPreviewRoot,
   resolveStorybookPreviewDocument,
@@ -47,7 +48,9 @@ export function resolveStorybookToastDocument(): Document {
 
 function isNestedStorybookCanvas(): boolean {
   try {
-    return /iframe\.html/i.test(window.location.href) && window.parent !== window.top;
+    return (
+      /iframe\.html/i.test(window.location.href) && window.parent !== window.top
+    );
   } catch {
     return false;
   }
@@ -74,7 +77,10 @@ function paintToast(
   const space4 = token('--pds-spacing-4', '1.5rem');
   const space6 = token('--pds-spacing-6', '2rem');
   const radius = token('--pds-radius-md', '6px');
-  const shadow = token('--pds-shadow-overlay-popover', '0 8px 24px rgba(0, 0, 0, 0.16)');
+  const shadow = token(
+    '--pds-shadow-overlay-popover',
+    '0 8px 24px rgba(0, 0, 0, 0.16)',
+  );
   const text = token('--pds-color-text', '#333');
   const family = token('--pds-font-family-body', '"Open Sans", sans-serif');
   const background =
@@ -108,6 +114,21 @@ function paintToast(
     'font-size:0.875rem',
     'line-height:1.4',
   ].join(';');
+}
+
+/** Clipboard write plus the preview toast used by token catalogues. */
+export async function copyStorybookText(text: string): Promise<void> {
+  const ok = await copyTextToClipboard(text);
+  if (ok) {
+    showStorybookToast({ summary: 'Copied', detail: text });
+    return;
+  }
+  showStorybookToast({
+    severity: 'error',
+    summary: 'Copy failed',
+    detail: 'Clipboard access was blocked by the browser.',
+    life: 3000,
+  });
 }
 
 export function showStorybookToast(toast: StorybookToast): void {
@@ -145,13 +166,19 @@ export function installStorybookToastListener(): void {
   }
 
   installed.__pdsSbToastInstalled = true;
-  window.addEventListener('message', (event: MessageEvent<StorybookToastMessage>) => {
-    if (event.data?.source !== PDS_STORYBOOK_TOAST_SOURCE || !event.data.toast) {
-      return;
-    }
+  window.addEventListener(
+    'message',
+    (event: MessageEvent<StorybookToastMessage>) => {
+      if (
+        event.data?.source !== PDS_STORYBOOK_TOAST_SOURCE ||
+        !event.data.toast
+      ) {
+        return;
+      }
 
-    renderStorybookToast(resolveStorybookToastDocument(), event.data.toast);
-  });
+      renderStorybookToast(resolveStorybookToastDocument(), event.data.toast);
+    },
+  );
 }
 
 export function clearStorybookToasts(target?: Document): void {

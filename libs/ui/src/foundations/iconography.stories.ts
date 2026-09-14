@@ -4,8 +4,9 @@
 // Bootstrap Icons catalog using the same token-block chrome.
 // =============================================================================
 
-import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
+import { doDontStory } from '../docs/docs-figure-stories';
 import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Badge } from 'primeng/badge';
@@ -20,26 +21,12 @@ import { type IconSize } from '../lib/icon/icon.types';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';
 import { showStorybookToast } from '../storybook/storybook-toast';
 import { assertRoleVisible, assertTextVisible } from '../storybook/story-tests';
+import icons from 'bootstrap-icons/font/bootstrap-icons.json';
 
 /** Unfiltered catalog is ~2k glyphs — enough to blow the test-runner 60s budget. */
 const CATALOG_PREVIEW = 48;
 
-const ALL_ICON_NAMES: string[] = (() => {
-  try {
-    // @ts-expect-error — require.context is a webpack/Storybook API
-    const ctx = require.context(
-      '../../../../node_modules/bootstrap-icons/icons',
-      false,
-      /\.svg$/
-    );
-    return ctx
-      .keys()
-      .map((k: string) => k.replace('./', '').replace('.svg', ''))
-      .sort() as string[];
-  } catch {
-    return ['house', 'heart', 'star', 'bell', 'gear', 'person', 'folder', 'search'];
-  }
-})();
+const ALL_ICON_NAMES: string[] = Object.keys(icons).sort();
 
 const VARIANT_OPTIONS = [
   { label: 'All', value: 'all' },
@@ -145,6 +132,31 @@ const meta: Meta<IconographyPageComponent> = {
 
 export default meta;
 type Story = StoryObj<IconographyPageComponent>;
+
+export const Usage = {
+  tags: ['!dev'],
+  ...doDontStory({
+    dos: [
+      {
+        title: 'Pick a glyph, render it with pds-icon',
+        detail:
+          'This page is the inventory. Copy bi bi-{name} into <pds-icon>. Size with xs–xl (--pds-icon-size-*).',
+      },
+    ],
+    donts: [
+      {
+        title: 'A raw <i class="bi …"> in an app template',
+        detail: 'pds-icon owns size, decorative hiding and custom SVG registration.',
+        alternative: '<pds-icon icon="bi bi-house" />. See Custom components / Icon.',
+      },
+      {
+        title: 'A sixth size or a hardcoded font-size on the glyph',
+        detail: 'The five stops are the contract.',
+        alternative: 'size="md" or var(--pds-icon-size-md) (or a component token that aliases it).',
+      },
+    ],
+  }),
+};
 
 export const Sizes: Story = {
   render: () => ({

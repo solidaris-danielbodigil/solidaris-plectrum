@@ -24,7 +24,7 @@ Related pages:
 
 **ITCSS** (Inverted Triangle CSS) is the folder order under `libs/styles/src/`. Earlier layers are broader and less specific. Later layers override them. A change belongs in exactly one layer.
 
-**BEMIT** is BEM plus a namespace prefix. The prefix says which ITCSS layer owns the class.
+**BEMIT** is BEM plus a namespace prefix and a responsive suffix. The prefix says which ITCSS layer owns the class (`o-`, `c-`, `u-`, `js-`, `is-` / `has-`). The suffix `@{breakpoint}` scopes a modifier to a media query (`o-layout--gap-4@md`, `o-flex--col@lg`).
 
 <Diagram
   title="ITCSS cascade"
@@ -113,17 +113,12 @@ How an author decides where a rule goes.
 </Unstyled>
 
 ```html
-<div
-  class="c-form-field o-flex o-layout--min-w-0"
-  [class.o-flex--y]="layout() === 'vertical'"
-  [class.o-layout--gap-1]="layout() === 'vertical'"
-  [class.is-invalid]="invalid()"
->
-  <span class="u-sr-only">({{ requiredLabel() }})</span>
+<div class="c-form-field o-flex o-flex--y o-layout o-layout--min-w-0 o-layout--gap-1 is-invalid">
+  <span class="u-sr-only">(required)</span>
 </div>
 ```
 
-`c-form-field` is the block. `o-flex` / `o-flex--y` / `o-layout--*` are the layout mix. `is-invalid` is state. `u-sr-only` is a utility. The SCSS file styles the block, the label and invalid colour — not `display: flex`.
+`c-form-field` is the component block. `o-flex` / `o-flex--y` and `o-layout` / `o-layout--min-w-0` / `o-layout--gap-1` are object mixes — a modifier sits on its block or element. An element is a child of that block (`c-form-field__label` inside `c-form-field`). `is-invalid` is state. `u-sr-only` is a utility. The SCSS file styles the block, the label and invalid colour — not `display: flex`.
 
 ---
 
@@ -143,7 +138,7 @@ Hard stops:
 - Never write gap, padding, margin or overflow in `06-components` when an `o-layout` modifier exists for that value.
 - Never put a new `--pds-*` value inline. Add it in `01-settings` first.
 - Never `@extend` or mixin an object class into a BEM file. The mix must be visible in the template.
-- Never create a nested feature block (`c-affiliate-detail-drawer__name`). Prefix the **element** on the shared block (`c-drawer__affiliate-detail-name`).
+- Never create a nested feature block (`c-profile-drawer__name`). Prefix the **element** on the shared block (`c-drawer__profile-name`).
 
 ---
 
@@ -153,8 +148,8 @@ Hard stops:
   headers={['Term', 'Definition']}
   rows={[
     ['ITCSS', 'Inverted Triangle CSS. Folder order from tokens to overrides. One layer per concern.'],
-    ['BEM', 'Block, Element, Modifier. .c-card, .c-card__header, .c-card--featured.'],
-    ['BEMIT', 'BEM plus a namespace prefix that names the ITCSS layer: o-, c-, u-, js-, is- / has-.'],
+    ['BEM', 'Block, Element, Modifier. A modifier sits on its block or element. An element is a child of its block.'],
+    ['BEMIT', 'BEM plus a namespace prefix (o-, c-, u-, js-, is- / has-) and a responsive suffix (@sm, @md, @lg, @xl).'],
     ['Mix', 'Two or more BEMIT classes on one HTML node. The block owns identity; the object owns layout.'],
     ['Object', 'Reusable layout pattern. o-flex, o-layout, o-scroll-shadow. Not a product component.'],
     ['Utility', 'Single-purpose class. u-sr-only, u-radius-md, u-border-bottom.'],
@@ -193,7 +188,7 @@ Components do not declare `styleUrl` — there is no colocated stylesheet. The B
 .c-card.is-loading      state (standalone class)
 ```
 
-Elements use `__`. Modifiers use `--`. States use `is-` / `has-` on the same node. Do not nest a second block inside a block in SCSS — compose in HTML.
+Elements use `__`. Modifiers use `--`. A modifier sits on the same node as its block or element (`c-card c-card--featured`, `c-card__header c-card__header--compact`). An element is a child of its block (`c-card__header` inside `c-card`; `o-flex__item` inside `o-flex`). States use `is-` / `has-` on the same node. Do not nest a second block inside a block in SCSS — compose in HTML.
 
 ```scss
 .c-card { }
@@ -230,10 +225,9 @@ Add a new block only when PrimeNG plus objects and utilities are not enough.
     ['c-form-field', 'Label + control + error layout'],
     ['c-drawer', 'Headless drawer shell. Feature children use __{feature}-{part}, not a nested block'],
     ['c-detail-list', 'Label / value description rows'],
-    ['c-accordion--bordered', 'Stacked bordered accordion'],
-    ['c-accordion--nav / --chromeless', 'Transparent accordion chrome for nav lists'],
-    ['c-timeline--content-only', 'Single-column timeline'],
-    ['c-list--journey / --flat', 'Tree list variants'],
+    ['c-accordion', 'PrimeNG accordion. Modifiers: --bordered, --nav'],
+    ['c-timeline', 'PrimeNG timeline. Modifier: --content-only'],
+    ['c-list', 'Tree list. Modifiers: --journey, --flat'],
     ['c-nav-shell · c-sub-nav-shell · c-top-nav', 'Application chrome. Standalone libs/ui blocks'],
   ]}
 />

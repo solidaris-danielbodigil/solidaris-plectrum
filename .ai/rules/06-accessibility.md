@@ -18,15 +18,15 @@
 
 Always prefer the correct semantic element over a generic `<div>` or `<span>`.
 
-| Use case | Element |
-|---|---|
-| Navigation | `<nav>` |
-| Navigation list | `<ul>` + `<li>` |
-| Page sections | `<main>`, `<section>`, `<article>`, `<aside>` |
-| Headings | `<h1>`–`<h6>` (in correct hierarchy) |
-| Buttons (action) | `<button>` |
-| Links (navigation) | `<a href>` |
-| Forms | `<form>`, `<label>`, `<input>`, `<fieldset>`, `<legend>` |
+| Use case           | Element                                                  |
+| ------------------ | -------------------------------------------------------- |
+| Navigation         | `<nav>`                                                  |
+| Navigation list    | `<ul>` + `<li>`                                          |
+| Page sections      | `<main>`, `<section>`, `<article>`, `<aside>`            |
+| Headings           | `<h1>`–`<h6>` (in correct hierarchy)                     |
+| Buttons (action)   | `<button>`                                               |
+| Links (navigation) | `<a href>`                                               |
+| Forms              | `<form>`, `<label>`, `<input>`, `<fieldset>`, `<legend>` |
 
 ---
 
@@ -76,7 +76,8 @@ Color must **never** be the only way to communicate state (also use an icon, lab
 ```scss
 // ✅ Correct
 .c-nav-shell__link:focus-visible {
-  outline: var(--pds-focus-ring-width) var(--pds-focus-ring-style) var(--pds-focus-ring-color);
+  outline: var(--pds-focus-ring-width) var(--pds-focus-ring-style)
+    var(--pds-focus-ring-color);
   outline-offset: var(--pds-focus-ring-offset);
 }
 ```
@@ -91,6 +92,7 @@ All interactive components must be fully operable by keyboard:
 - `Enter` / `Space` — activate buttons and links
 - `Arrow keys` — navigate within composite widgets (menus, tabs, lists)
 - `Escape` — close overlays, dropdowns, dialogs
+- Overflow containers (`o-layout--overflow-*-auto`, `o-scroll-shadow`) need `tabindex="0"` and an accessible name unless a child is already focusable
 
 ---
 

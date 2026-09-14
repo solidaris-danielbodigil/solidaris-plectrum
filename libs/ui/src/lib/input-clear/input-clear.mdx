@@ -1,4 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './input-clear.stories';
 
 <Meta of={Stories} />
@@ -9,9 +9,17 @@ import * as Stories from './input-clear.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Reusable clear affordance for `pInputText` fields. Uses the same PrimeNG `times` SVG as `showClear` on autocomplete, select, and multiselect (14×14 via `--p-icon-size`).
+## Usage
 
-Always keep the control in the DOM and toggle `[visible]` so `p-iconfield` padding stays reserved.
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Icon field
 
@@ -32,6 +40,21 @@ Clear control composed inside a PrimeNG input group.
 
 <Canvas of={Stories.InInputGroup} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

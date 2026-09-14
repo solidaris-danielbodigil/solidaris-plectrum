@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './elevation.stories';
 
 <Meta of={Stories} />
@@ -7,12 +7,40 @@ import * as Stories from './elevation.stories';
 
 Elevation utilities map directly to `--pds-shadow-*` tokens. Elevation only — status and focus rings are handled separately by the [Focus](?path=/docs/foundations-focus--docs) tokens.
 
-The stops below are read from the stylesheet, so this page always matches `_utilities.shadows.scss`. Token values live on [Foundations / Shadows](?path=/docs/foundations-shadows--docs).
+The stops below are read from the stylesheet, so this page always matches `_utilities.shadows.scss`. Click a card to copy the class. Token values live on [Foundations / Shadows](?path=/docs/foundations-shadows--docs).
 
 Each card uses `.u-shadow-{stop}`. Pick by the role of the surface, not by how strong the shadow looks.
 
 Styles: `libs/styles/src/07-utilities/_utilities.shadows.scss`.
 
+## Usage
+
 <Unstyled>
-  <Canvas of={Stories.Shadows} sourceState="none" />
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
+
+```html
+<div class="u-shadow-md">Raised panel</div>
+```
+
+```scss
+:root {
+  --pds-shadow-card: var(--pds-shadow-md);
+}
+```
+
+## Compose a shadow
+
+Pick a level. The preview applies the real class — copy the class for a template or the `var()` for SCSS.
+
+<Unstyled>
+  <Story of={Stories.Playground} />
+</Unstyled>
+
+## Shadows
+
+<Unstyled>
+  <Story of={Stories.Shadows} />
 </Unstyled>

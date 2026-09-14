@@ -1,0 +1,36 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.queue-card.scss
+// PrimeNG Card token bridge for the iGED queue card composition.
+// =============================================================================
+
+.c-queue-card {
+  --p-card-border-color: var(--#{$pds-prefix}-color-card-border);
+  --p-card-border-radius: var(--#{$pds-prefix}-radius-xl);
+  --p-card-shadow: none;
+  --p-card-body-padding: var(--#{$pds-prefix}-spacing-2);
+  border: 1px solid var(--#{$pds-prefix}-color-card-border);
+}
+
+.c-queue-card:hover {
+  --p-card-border-color: var(--#{$pds-prefix}-color-brand);
+  --p-card-shadow: var(--#{$pds-prefix}-shadow-sm);
+  border-color: var(--#{$pds-prefix}-color-brand);
+}
+
+.c-queue-card.is-favorite {
+  --p-card-shadow: var(--#{$pds-prefix}-shadow-md);
+}
+
+.c-queue-card.is-favorite:hover {
+  --p-card-border-color: var(--#{$pds-prefix}-color-brand);
+  --p-card-shadow: var(--#{$pds-prefix}-shadow-md);
+  border-color: var(--#{$pds-prefix}-color-brand);
+}
+
+.c-queue-card__kpis {
+  --p-button-padding-x: 0;
+  --p-button-padding-y: 0;
+  --p-button-border-radius: 0;
+}

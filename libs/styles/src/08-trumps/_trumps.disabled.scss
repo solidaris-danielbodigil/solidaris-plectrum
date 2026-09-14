@@ -1,0 +1,20 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 08-trumps/_trumps.disabled.scss
+// SSOT: disabled interactive controls use cursor: not-allowed.
+//
+// Trumps win over component `cursor: pointer` and PrimeNG's
+// `.p-disabled { cursor: default }`. Cursor only — no other disabled restyle.
+// PrimeNG `.p-disabled` sets `pointer-events: none`, which hides the cursor;
+// restore hit-testing so the token can show.
+// =============================================================================
+
+:is(:disabled, [disabled], [aria-disabled='true'], .is-disabled) {
+  cursor: var(--#{$pds-prefix}-cursor-disabled);
+}
+
+.p-disabled {
+  cursor: var(--#{$pds-prefix}-cursor-disabled);
+  pointer-events: auto;
+}

@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './scroll-shadow.stories';
 
@@ -8,7 +8,21 @@ import * as Stories from './scroll-shadow.stories';
 
 Scroll-driven edge fades for scroll containers — a visual cue that more content exists beyond the visible area. **Pure CSS** via [`scroll-timeline`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline); no JavaScript.
 
-## Block axis — `.o-scroll-shadow` (vertical)
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+The figures below mix the real object classes onto constrained PrimeNG chip stacks — not a Flex Grid demo, and not a fade on a PrimeNG internal.
+
+<Unstyled>
+  <Story of={Stories.UsageObjects} />
+</Unstyled>
+
+## Examples
+
+### Block axis — `.o-scroll-shadow` (vertical)
 
 Top/bottom fades on a **block-axis** scroller:
 
@@ -17,12 +31,17 @@ Top/bottom fades on a **block-axis** scroller:
 - **At the end** → only the **top** edge shows.
 
 ```html
-<div class="o-scroll-shadow o-layout--overflow-y-auto o-layout--min-h-0" style="max-height: 20rem">
+<div
+  class="o-scroll-shadow o-layout o-layout--overflow-y-auto o-layout--min-h-0"
+  tabindex="0"
+  aria-label="Liste défilante"
+  style="max-height: 20rem"
+>
   …tall content…
 </div>
 ```
 
-## Inline axis — `.o-scroll-shadow--inline` (horizontal)
+### Inline axis — `.o-scroll-shadow--inline` (horizontal)
 
 Start/end fades on an **inline-axis** scroller (left/right in LTR):
 
@@ -32,16 +51,18 @@ Start/end fades on an **inline-axis** scroller (left/right in LTR):
 
 ```html
 <div
-  class="o-scroll-shadow--inline o-layout--overflow-x-auto o-layout--min-w-0"
+  class="o-scroll-shadow o-scroll-shadow--inline o-layout o-layout--overflow-x-auto o-layout--min-w-0"
+  tabindex="0"
+  aria-label="Piste défilante"
   style="max-width: 20rem"
 >
-  <div class="o-flex o-flex--row o-layout--gap-1 o-layout--padding-2">
+  <div class="o-flex o-flex--row o-layout o-layout--gap-1 o-layout--padding-2">
     …wide content…
   </div>
 </div>
 ```
 
-## Mixins (containers you don't own)
+### Mixins (containers you don't own)
 
 ```scss
 @use '../02-tools/tools.scroll-shadow' as *;
@@ -62,6 +83,7 @@ Start/end fades on an **inline-axis** scroller (left/right in LTR):
 - Block axis: constrained **height** (`max-height`, flex `min-h-0`, etc.).
 - Inline axis: constrained **width** (`max-width`, flex `min-w-0`, etc.).
 - Block axis scrollers inside flex columns need `display: block` on the scroller (the object class sets this).
+- Keyboard: add `tabindex="0"` and an `aria-label` unless a child is already focusable (`scrollable-region-focusable`).
 
 ## Tuning
 

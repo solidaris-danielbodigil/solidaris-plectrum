@@ -28,13 +28,17 @@ If a token is missing, add it there **first**, then reference it.
 ```scss
 // ❌ Wrong — local variable
 $nav-bg: #f6f6f6;
-.c-nav { background: $nav-bg; }
+.c-nav {
+  background: $nav-bg;
+}
 
 // ✅ Correct
 // Step 1 — in 01-settings/_settings.colors-semantic.scss:
 //   --pds-color-nav-shell-bg: #f6f6f6; // Figma: surface/50, node 1:1433
 // Step 2 — in 06-components/_components.nav-shell.scss:
-.c-nav { background: var(--pds-color-nav-shell-bg); }
+.c-nav {
+  background: var(--pds-color-nav-shell-bg);
+}
 ```
 
 ---
@@ -46,7 +50,11 @@ Every value must reference a `var(--pds-*)` token.
 
 ```scss
 // ❌ Wrong
-.c-item { padding: 10px; color: rgba(0,0,0,0.8); border-radius: 10px; }
+.c-item {
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+}
 
 // ✅ Correct
 .c-item {
@@ -66,6 +74,7 @@ If a Figma value has no existing `--pds-*` token:
 2. Include a comment with the Figma variable name and node ID
 3. Reference it in the component SCSS via `var(--pds-*)`
 4. List it under `tokens.consumed` in the `.metadata.ts`
+5. If the token originated in code and should exist in Figma: `tokens:propose`, then apply selected names on `proposals/{app}` (agent + Figma MCP, or the Plectrum tokens plugin when no agent is running)
 
 ```scss
 // In libs/styles/src/01-settings/_settings.colors-semantic.scss:
@@ -76,33 +85,33 @@ If a Figma value has no existing `--pds-*` token:
 
 **Token file map** (where to add new tokens):
 
-| Token type | File |
-|---|---|
-| Colour (raw palette) | `_settings.colors-primitive.generated.scss` (+ hand extras) |
-| Colour (role/intent) | `_settings.colors-semantic.generated.scss` (+ hand extras) |
-| Spacing / sizing | `_settings.spacing.scss` (code-owned) |
-| Border radius | `_settings.radius.generated.scss` |
-| Typography (raw) | `_settings.typography-primitive.scss` |
-| Typography (roles) | `_settings.typography-semantic.scss` |
-| Shadows | `_settings.shadows.generated.scss` (+ hand extras) |
-| Transitions | `_settings.transitions.generated.scss` |
-| Focus ring | `_settings.focus.generated.scss` |
-| Global (opacity, icon size) | `_settings.globals.scss` |
-| PrimeNG token bridge | `_settings.{primeng-component}.scss` (e.g. `_settings.accordion.scss`) |
+| Token type                  | File                                                                   |
+| --------------------------- | ---------------------------------------------------------------------- |
+| Colour (raw palette)        | `_settings.colors-primitive.generated.scss` (+ hand extras)            |
+| Colour (role/intent)        | `_settings.colors-semantic.generated.scss` (+ hand extras)             |
+| Spacing / sizing            | `_settings.spacing.scss` (code-owned)                                  |
+| Border radius               | `_settings.radius.generated.scss`                                      |
+| Typography (raw)            | `_settings.typography-primitive.scss`                                  |
+| Typography (roles)          | `_settings.typography-semantic.scss`                                   |
+| Shadows                     | `_settings.shadows.generated.scss` (+ hand extras)                     |
+| Transitions                 | `_settings.transitions.generated.scss`                                 |
+| Focus ring                  | `_settings.focus.generated.scss`                                       |
+| Global (opacity, icon size) | `_settings.globals.scss`                                               |
+| PrimeNG token bridge        | `_settings.{primeng-component}.scss` (e.g. `_settings.accordion.scss`) |
 
 ---
 
 ## 4. ITCSS Layer Discipline
 
-| Layer | Folder | Prefix | Purpose |
-|---|---|---|---|
-| 01-settings | `01-settings/` | — | All CSS custom properties — design tokens only |
-| 02-tools | `02-tools/` | — | Mixins, functions — no CSS output |
-| 03-generic | `03-generic/` | — | Reset / normalize |
-| 04-elements | `04-elements/` | — | Bare HTML element defaults |
-| 05-objects | `05-objects/` | `o-` | Layout patterns — BEM object classes only |
-| 06-components | `06-components/` | `c-` | BEM components + PrimeNG wrappers — no Tailwind / `@apply` |
-| 07-utilities | `07-utilities/` | `u-` | Single-purpose helpers |
+| Layer         | Folder           | Prefix | Purpose                                                    |
+| ------------- | ---------------- | ------ | ---------------------------------------------------------- |
+| 01-settings   | `01-settings/`   | —      | All CSS custom properties — design tokens only             |
+| 02-tools      | `02-tools/`      | —      | Mixins, functions — no CSS output                          |
+| 03-generic    | `03-generic/`    | —      | Reset / normalize                                          |
+| 04-elements   | `04-elements/`   | —      | Bare HTML element defaults                                 |
+| 05-objects    | `05-objects/`    | `o-`   | Layout patterns — BEM object classes only                  |
+| 06-components | `06-components/` | `c-`   | BEM components + PrimeNG wrappers — no Tailwind / `@apply` |
+| 07-utilities  | `07-utilities/`  | `u-`   | Single-purpose helpers                                     |
 
 Every SCSS change must land in the correct layer. Never write styles outside `libs/styles`.
 
@@ -117,15 +126,15 @@ Layout and spacing on the global `--pds-spacing-*` scale must be expressed as **
 <!-- 06-components/_components.card.scss: .c-card { display: flex; gap: var(--pds-spacing-2); } -->
 
 <!-- ✅ Correct — BEM mix in template -->
-<div class="c-card o-flex o-flex--col o-layout--gap-2">
+<div class="c-card o-flex o-flex--col o-layout o-layout--gap-2"></div>
 ```
 
 **Exceptions** — the following may remain in `06-components` SCSS with a justification comment:
 
-| Allowed in SCSS | Why |
-|---|---|
-| `flex: 1 1 0`, `flex-shrink: 0`, `flex-basis: 100%` | No `o-flex` equivalent — structural constraints |
-| `min-width: 0`, `overflow: hidden` | Visual/containment concerns, not spacing |
+| Allowed in SCSS                                                    | Why                                                         |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- |
+| `flex: 1 1 0`, `flex-shrink: 0`, `flex-basis: 100%`                | No `o-flex` equivalent — structural constraints             |
+| `min-width: 0`, `overflow: hidden`                                 | Visual/containment concerns, not spacing                    |
 | `gap` / `padding` referencing a **component token** `var(--pds-*)` | Component-specific spacing that doesn't map to global scale |
 
 ---
@@ -137,23 +146,36 @@ Let content drive dimensions. Use `padding`, `gap`, and `flex`/`grid` instead.
 
 Only two categories justify a fixed size, and both require a comment:
 
-| Category | Example | Why it's justified |
-|---|---|---|
-| Icon / asset constraints | `.c-nav-shell__icon { width: 20px; height: 20px; }` | Icon fonts and SVGs must be constrained or they collapse to 0 |
+| Category                                | Example                                                        | Why it's justified                                                                                                                                   |
+| --------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Icon / asset constraints                | `.c-nav-shell__icon { width: 20px; height: 20px; }`            | Icon fonts and SVGs must be constrained or they collapse to 0                                                                                        |
 | Reserved in-flow slot (overlay layouts) | `.c-nav-shell { width: var(--pds-size-nav-shell-footprint); }` | An absolutely-positioned panel can't size its in-flow slot, so the slot reserves the collapsed footprint (itself derived from icon + padding tokens) |
 
 Everything else — container heights, item heights, expanded widths — must emerge from `padding` + `line-height` + `gap`.
 
 ```scss
 // ❌ Wrong — arbitrary fixed sizes
-.c-card { width: 320px; height: 200px; }
-.c-nav-shell__logo { height: 52px; }      // ← forces a height that should come from padding
-.c-nav-shell__link { min-height: 40px; }  // ← forces a height that should come from py + line-height
+.c-card {
+  width: 320px;
+  height: 200px;
+}
+.c-nav-shell__logo {
+  height: 52px;
+} // ← forces a height that should come from padding
+.c-nav-shell__link {
+  min-height: 40px;
+} // ← forces a height that should come from py + line-height
 
 // ✅ Correct — content-driven
-.c-card { min-width: 0; } /* layout via o-flex o-flex--col in the template */
-.c-nav-shell__logo { padding: var(--pds-space-nav-shell-item-px); } // height = padding + SVG height
-.c-nav-shell__link { padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px); }
+.c-card {
+  min-width: 0;
+} /* layout via o-flex o-flex--col in the template */
+.c-nav-shell__logo {
+  padding: var(--pds-space-nav-shell-item-px);
+} // height = padding + SVG height
+.c-nav-shell__link {
+  padding: var(--pds-space-nav-shell-item-py) var(--pds-space-nav-shell-item-px);
+}
 
 // ✅ Acceptable — structurally required, with justification comment
 .c-nav-shell__icon {
@@ -203,19 +225,26 @@ When overriding PrimeNG `--p-*` CSS variables to match the Plectrum design:
   --p-accordion-header-color: var(--color-sub-nav-shell-section-text);
   --p-accordion-header-hover-color: var(--color-sub-nav-shell-section-text);
   --p-accordion-header-active-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-header-padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-header-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
+  --p-accordion-header-padding: var(
+      --#{$pds-prefix}-space-sub-nav-shell-section-header-py
+    )
+    var(--#{$pds-prefix}-space-sub-nav-shell-section-header-px);
   --p-accordion-content-background: transparent;
   --p-accordion-content-padding: 0;
   --p-accordion-content-border-width: 0;
   --p-accordion-toggle-icon-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-toggle-icon-hover-color: var(--color-sub-nav-shell-section-text);
-  --p-accordion-toggle-icon-active-color: var(--color-sub-nav-shell-section-text);
+  --p-accordion-toggle-icon-hover-color: var(
+    --color-sub-nav-shell-section-text
+  );
+  --p-accordion-toggle-icon-active-color: var(
+    --color-sub-nav-shell-section-text
+  );
 }
 
 // ❌ Wrong — --p-* variables declared inline in 06-components/
 // _components.sub-nav-shell.scss
 .c-sub-nav-shell__accordion {
-  --p-accordion-header-background: transparent;  // ← belongs in 01-settings
+  --p-accordion-header-background: transparent; // ← belongs in 01-settings
 }
 ```
 

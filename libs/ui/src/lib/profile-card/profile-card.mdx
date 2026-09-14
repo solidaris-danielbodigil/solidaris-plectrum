@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './profile-card.stories';
+
+<Meta of={Stories} />
+
+# Profile Card
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
+
+## Variants
+
+<Unstyled>
+  <Story of={Stories.Variants} />
+</Unstyled>
+
+## Default
+
+Neutral profile summary with info tags, copyable identifiers, and primary action.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## In order
+
+Variant-only fallback — success subtle gradient (green-75 → surface). Prefer `statusAction.severity: success` for severity-driven setup.
+
+<Canvas of={Stories.InOrder} />
+
+## Warning
+
+Severity-driven warning — orange-50 → surface gradient (88deg) from `statusAction.severity` warn with variant default. Figma node 507:7910.
+
+<Canvas of={Stories.Warning} />
+
+## Multiple status actions
+
+Several corrective actions — summary chip (icon + « Actions à réaliser » + count) opens a popover list, same pattern as document comment/alert tags.
+
+<Canvas of={Stories.MultipleStatusActions} />
+
+## Danger
+
+Severity-driven danger — danger subtle → surface gradient (88deg) from `statusAction.severity` danger.
+
+<Canvas of={Stories.Danger} />
+
+## Loading
+
+Static loading state — avatar pill + header row (title, status, info tags, primary action) + identifier chips.
+
+<Canvas of={Stories.Loading} />
+
+## Simulated loading
+
+Flashes skeleton for 1000ms then reveals the warning card — use to preview the shimmer transition.
+
+<Canvas of={Stories.SimulatedLoading} />
+
+## Wrapped layout
+
+Narrow container (~24rem) demonstrating flex-wrap on header, metadata, and primary action rows.
+
+<Canvas of={Stories.WrappedLayout} />
+
+## Copy with toast
+
+Click an identifier chip to copy its value — a confirmation toast appears on the Storybook preview frame.
+
+<Canvas of={Stories.CopyWithToast} />
+
+## Composition
+
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

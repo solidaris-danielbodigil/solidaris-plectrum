@@ -2,14 +2,16 @@
 // libs/ui/src/storybook/docs-status.component.ts
 // Ownership badge at the top of every component docs page.
 //
-// Reads the `governance` block of the component's .metadata.ts (or the inline
-// declaration of a CSS-only block) and renders it the same way everywhere, so
-// an application developer sees "App-specific · iSHARE team" before reading
-// the API. Status meanings: Get started / Contribute → Status and owner.
+// Reads the `governance` block of the component's .metadata.ts and renders it
+// the same way everywhere, so an application developer sees "App-specific ·
+// iSHARE team" before reading the API. With `description` and `figmaUrl`
+// (component block of the same metadata) it is also the page lead, so the
+// MDX never restates what the component is or where its Figma node lives.
+// Status meanings: Get started / Contribute → Status and owner.
 //
 // PrimeNG components used:
 //   - p-tag — status (coloured by severity) and owner (secondary)
-//   - pds-docs-link — PrimeNG Button link to the status definitions
+//   - pds-docs-link — PrimeNG Button link to the status definitions / Figma
 //
 // Styles: c-docs-status* in libs/styles/src/06-components/_components.docs-figures.scss
 // (text rhythm only — PrimeNG owns the tag chrome).
@@ -32,14 +34,17 @@ import { DocsLinkComponent } from './docs-link.component';
 
 export type StatusSeverity = 'info' | 'warn' | 'success' | 'danger';
 
-interface StatusPresentation {
+export interface StatusPresentation {
   label: string;
   severity: StatusSeverity;
   /** One sentence for the reader; `{owner}` is replaced by the owning team, in-sentence form. */
   hint: string;
 }
 
-const STATUS: Readonly<Record<ComponentStatus, StatusPresentation>> = {
+/** Shared with the Component status index so both paint a status the same way. */
+export const STATUS_PRESENTATION: Readonly<
+  Record<ComponentStatus, StatusPresentation>
+> = {
   core: {
     label: 'Core',
     severity: 'info',
@@ -63,7 +68,7 @@ const STATUS: Readonly<Record<ComponentStatus, StatusPresentation>> = {
 };
 
 /** Badge text. */
-const OWNER_LABEL: Readonly<Record<ComponentOwner, string>> = {
+export const OWNER_LABEL: Readonly<Record<ComponentOwner, string>> = {
   'design-system': 'Design-system team',
   ishare: 'iSHARE team',
   icrm: 'iCRM team',
@@ -88,21 +93,29 @@ export const DOCS_STATUS_DEFINITIONS_PATH =
   encapsulation: ViewEncapsulation.None,
   host: {
     class:
-      'c-docs-status o-flex o-flex--col o-layout--gap-0-5 o-layout--margin-block-end-3',
+      'c-docs-status o-flex o-flex--col o-layout o-layout--gap-0-5 o-layout--margin-block-end-3',
   },
 })
 export class DocsStatusComponent {
   readonly status = input.required<ComponentStatus>();
   readonly owner = input.required<ComponentOwner>();
   readonly note = input<ComponentGovernance['note']>();
+  /** `component.description` from the metadata — the page's lead paragraph. */
+  readonly description = input<string>();
+  /** `component.figmaUrl` from the metadata — rendered as an external link. */
+  readonly figmaUrl = input<string>();
 
   protected readonly definitionsPath = DOCS_STATUS_DEFINITIONS_PATH;
 
-  protected readonly statusLabel = computed(() => STATUS[this.status()].label);
-  protected readonly severity = computed(() => STATUS[this.status()].severity);
+  protected readonly statusLabel = computed(
+    () => STATUS_PRESENTATION[this.status()].label,
+  );
+  protected readonly severity = computed(
+    () => STATUS_PRESENTATION[this.status()].severity,
+  );
   protected readonly ownerLabel = computed(() => OWNER_LABEL[this.owner()]);
   protected readonly hint = computed(() =>
-    STATUS[this.status()].hint.replace(
+    STATUS_PRESENTATION[this.status()].hint.replace(
       '{owner}',
       OWNER_IN_SENTENCE[this.owner()],
     ),

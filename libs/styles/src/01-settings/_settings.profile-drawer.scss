@@ -1,0 +1,20 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.profile-drawer.scss
+// Affiliate detail drawer semantic tokens (tiles, notes, info rows).
+// Drawer chrome uses default PrimeNG + Plectrum theme.
+// Tile padding is expressed via o-layout in the template.
+// =============================================================================
+
+:root {
+  --#{$pds-prefix}-color-profile-drawer-relationship: var(--#{$pds-prefix}-color-surface-700);
+
+  --#{$pds-prefix}-color-profile-drawer-tile-bg: var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-radius-profile-drawer-tile: var(--#{$pds-prefix}-radius-lg);
+
+  --#{$pds-prefix}-color-profile-drawer-note-bg: var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-radius-profile-drawer-note: var(--#{$pds-prefix}-radius-md);
+  --#{$pds-prefix}-color-profile-drawer-note-author: var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-profile-drawer-note-timestamp: var(--#{$pds-prefix}-color-black-alpha-700);
+}

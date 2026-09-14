@@ -1,5 +1,10 @@
 name: Apply tokens to Figma
 
+# Repository → Figma through the Variables REST API — Figma Enterprise only.
+# Live path on the Organization plan: tools/figma-plugin (Plectrum tokens plugin).
+# This job stays parked; it stops at the first Variables call with 403 Invalid scope.
+# See .ai/decisions/2026-09-10-repo-to-figma-plugin.md.
+
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +16,13 @@ on:
         description: 'Set true to POST (default is dry-run)'
         required: false
         default: 'false'
+      only:
+        description: 'Figma variable names to apply (comma-separated), e.g. color/surface/75. Required.'
+        required: true
+      branch_key:
+        description: 'Optional Figma branch file key. Use when GET branch_data returns no branches.'
+        required: false
+        default: ''
 
 jobs:
   apply:
@@ -27,10 +39,14 @@ jobs:
       - name: Apply (dry-run unless write=true)
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+          FIGMA_MAIN_FILE_KEY: YNZ1DlSjDNUXrvkxlSp10D
         run: |
+          FLAGS=(--app "${{ inputs.app }}" --only "${{ inputs.only }}")
+          if [ -n "${{ inputs.branch_key }}" ]; then
+            FLAGS+=(--branch-key "${{ inputs.branch_key }}")
+          fi
           if [ "${{ inputs.write }}" = "true" ]; then
-            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --write
+            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --write
           else
-            node tools/tokens/apply-to-figma.mjs --app "${{ inputs.app }}" --dry-run
+            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --dry-run
           fi

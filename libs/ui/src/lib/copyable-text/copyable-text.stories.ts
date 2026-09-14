@@ -1,10 +1,12 @@
 import { Component, inject, input } from '@angular/core';
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, within } from 'storybook/test';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { CopyableTextComponent } from './copyable-text.component';
 import { CopyableTextMetadata } from './copyable-text.metadata';
 
@@ -47,7 +49,7 @@ class CopyableTextToastDemoComponent {
   standalone: true,
   imports: [CopyableTextComponent],
   template: `
-    <div class="o-flex o-flex--align-items-center o-layout--gap-1 o-flex--wrap">
+    <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-flex--wrap">
       <pds-copyable-text
         label="Territoire"
         value="319"
@@ -87,6 +89,9 @@ class CopyableTextRowDemoComponent {
 }
 
 const meta: Meta<CopyableTextComponent> = {
+  parameters: {
+    ...storyDesign(CopyableTextMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Copyable Text',
   component: CopyableTextComponent,
   decorators: [
@@ -94,13 +99,9 @@ const meta: Meta<CopyableTextComponent> = {
       imports: [CopyableTextToastDemoComponent, CopyableTextRowDemoComponent],
     }),
   ],
-  argTypes: {
-    label: { control: 'text' },
-    value: { control: 'text' },
-    ariaLabel: { control: 'text' },
+  argTypes: argTypesFromProps(CopyableTextMetadata.props ?? [], {
     iconSize: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    disabled: { control: 'boolean' },
-  },
+  }),
   render: (args) => ({
     props: args,
     template: `
@@ -119,8 +120,14 @@ export default meta;
 
 type Story = StoryObj<CopyableTextComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(CopyableTextMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from copyable-text.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(CopyableTextMetadata.governance, CopyableTextMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'usage') };
+export const Anatomy = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'anatomy') };
+export const Composition = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {
@@ -153,6 +160,20 @@ export const CustomAriaLabel: Story = {
     label: 'Territoire',
     value: '319',
     ariaLabel: 'Copier le numéro de territoire 319',
+  },
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    label: 'Territoire',
+    value: '319',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('button', { name: 'Territoire kopiëren' }),
+    ).toBeVisible();
   },
 };
 

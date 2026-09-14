@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +16,7 @@ import { NavItem } from './nav-item.model';
 @Component({
   selector: 'pds-nav-shell',
   standalone: true,
-  imports: [RouterLink, IconComponent],
+  imports: [NgTemplateOutlet, RouterLink, IconComponent],
   templateUrl: './nav-shell.component.html',
   // ViewEncapsulation.None — styles live in libs/styles global sheet (SSOT).
   // Emulated encapsulation would add attribute selectors that conflict with

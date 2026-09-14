@@ -29,6 +29,15 @@ function initialStatus(owner: Schema['owner']): 'core' | 'candidate' {
   return owner === 'design-system' ? 'core' : 'candidate';
 }
 
+function storyTitle(owner: Schema['owner'], className: string): string {
+  if (owner === 'design-system') {
+    return `Custom components/${className}`;
+  }
+
+  const app = owner === 'ishare' ? 'iSHARE' : 'iCRM';
+  return `Patterns/${app}/${className}`;
+}
+
 function toFileName(str: string): string {
   return str
     .toLowerCase()
@@ -72,7 +81,7 @@ function generate(schema: Schema): void {
     'libs/styles/src/06-components',
     '_components.core.scss',
   );
-  const indexPath = path.join(root, 'libs/ui/src/index.ts');
+  const libBarrelPath = path.join(root, 'libs/ui/src/lib/index.ts');
 
   // Component TS — no styleUrl: styles live in libs/styles (ITCSS 06-components).
   writeFile(
@@ -154,32 +163,31 @@ describe('${className}Component', () => {
 `,
   );
 
-  // Storybook Story (colocated)
+  // Storybook Story (colocated) — CSF owns canvases; attached MDX owns prose.
   writeFile(
     path.join(componentDir, `${fileName}.stories.ts`),
-    `import type { Meta, StoryObj } from '@storybook/angular';
+    `import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { expect } from '../../storybook/story-tests';
 import { ${className}Component } from './${fileName}.component';
+import { ${className}Metadata } from './${fileName}.metadata';
 
 const meta: Meta<${className}Component> = {
-  title: '${schema.category}/${className}',
+  title: '${storyTitle(schema.owner, className)}',
   component: ${className}Component,
-  tags: ['autodocs'],
   parameters: {
-    docs: {
-      description: {
-        component: \`
-**${className}** — TODO: describe what this component does.
-- Figma: [TODO add Figma node URL]
-- PrimeNG: ${schema.primeNg ? `wraps \`${schema.primeNg}\`` : 'custom component'}
-        \`,
-      },
-    },
+    ...storyDesign(${className}Metadata.component.figmaUrl),
   },
+  argTypes: argTypesFromProps(${className}Metadata.props ?? []),
 };
 
 export default meta;
 type Story = StoryObj<${className}Component>;
+
+/** Ownership badge for the docs page — hidden from the sidebar. */
+export const Status = { tags: ['!dev'], ...statusStory(${className}Metadata.governance, ${className}Metadata.component) };
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {
@@ -188,11 +196,64 @@ export const Default: Story = {
 };
 
 // TODO: Add stories for all applicable states:
-// export const Hover: Story = {};
 // export const Disabled: Story = {};
 // export const Loading: Story = {};
 // export const Error: Story = {};
 // export const Empty: Story = {};
+`,
+  );
+
+  writeFile(
+    path.join(componentDir, `${fileName}.mdx`),
+    `import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../../.storybook/docs-table';
+import * as Stories from './${fileName}.stories';
+import { ${className}Metadata } from './${fileName}.metadata';
+
+<Meta of={Stories} />
+
+# ${className}
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+TODO: one sentence on what this component does.
+
+## When to use
+
+- TODO
+
+## When not to use
+
+- TODO
+
+## Anatomy
+
+<DocsTable
+  headers={['Part', 'Role']}
+  rows={[
+    ['Host', 'c-${fileName}'],
+    ['TODO', 'TODO'],
+  ]}
+/>
+
+## Accessibility
+
+- TODO: label association, keyboard, ARIA
+
+Figma: [${className}Metadata.component.figmaUrl ? 'Open in Figma' : 'TODO add Figma node URL'](${className}Metadata.component.figmaUrl ?? 'https://www.figma.com/design/')
+
+## Default
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+`,
+  );
+
+  writeFile(
+    path.join(componentDir, 'index.ts'),
+    `export * from './${fileName}.component';
 `,
   );
 
@@ -214,6 +275,7 @@ export const ${className}Metadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.${fileName}.scss',
     created: '${today}',
     modified: '${today}',
+    figmaUrl: undefined,
   },
   governance: {
     status: '${initialStatus(schema.owner)}',
@@ -232,6 +294,7 @@ export const ${className}Metadata: ComponentMetadata = {
   accessibility: {
     wcagLevel: 'AA',
   },
+  props: [],
   tokens: {
     consumed: [],
   },
@@ -288,14 +351,13 @@ export const ${className}Metadata: ComponentMetadata = {
     );
   }
 
-  // Update barrel export
-  const exportLine = `export { ${className}Component } from './lib/${fileName}/${fileName}.component';\n`;
-  const currentIndex = fs.existsSync(indexPath)
-    ? fs.readFileSync(indexPath, 'utf-8')
+  const exportLines = `export * from './${fileName}';\nexport * from './${fileName}/${fileName}.metadata';\n`;
+  const currentLibIndex = fs.existsSync(libBarrelPath)
+    ? fs.readFileSync(libBarrelPath, 'utf-8')
     : '';
-  if (!currentIndex.includes(exportLine)) {
-    fs.appendFileSync(indexPath, exportLine, 'utf-8');
-    console.log(`  updated  libs/ui/src/index.ts`);
+  if (!currentLibIndex.includes(`export * from './${fileName}'`)) {
+    fs.appendFileSync(libBarrelPath, exportLines, 'utf-8');
+    console.log(`  updated  libs/ui/src/lib/index.ts`);
   }
 
   // Keep the contracts index in sync — no manual step, no stale index.
@@ -310,10 +372,12 @@ Files created:
   libs/ui/src/lib/${fileName}/${fileName}.component.html
   libs/ui/src/lib/${fileName}/${fileName}.component.spec.ts
   libs/ui/src/lib/${fileName}/${fileName}.stories.ts            ← STORYBOOK (colocated)
+  libs/ui/src/lib/${fileName}/${fileName}.mdx                   ← ATTACHED DOCS
+  libs/ui/src/lib/${fileName}/index.ts
   libs/ui/src/lib/${fileName}/${fileName}.metadata.ts           ← CONTRACT
   libs/styles/src/06-components/_components.${fileName}.scss    ← BEM STYLES (ITCSS)
 
-_components.core.scss forwards the new partial; .ai/contracts/index.json regenerated.
+_components.core.scss forwards the new partial; libs/ui/src/lib/index.ts exports the component; .ai/contracts/index.json regenerated.
 Commit both with the component.
 
 Governance: status '${initialStatus(schema.owner)}', owner '${schema.owner}'.
@@ -390,7 +454,9 @@ async function main() {
       : 'display'
   ) as Schema['type'];
   const owner = (
-    (OWNERS as readonly string[]).includes(ownerRaw) ? ownerRaw : 'design-system'
+    (OWNERS as readonly string[]).includes(ownerRaw)
+      ? ownerRaw
+      : 'design-system'
   ) as Schema['owner'];
 
   generate({ name, category, type, primeNg: primeNg || undefined, owner });

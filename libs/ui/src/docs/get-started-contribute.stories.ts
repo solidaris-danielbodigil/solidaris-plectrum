@@ -1,5 +1,5 @@
 // Figures for Get started/Contribute (get-started-contribute.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {
@@ -29,7 +29,8 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'Dev',
     tone: 'system',
     title: 'Set up',
-    detail: 'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
+    detail:
+      'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
   },
   {
     who: 'Dev',
@@ -42,13 +43,15 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'Dev',
     tone: 'design',
     title: 'Check the sources first',
-    detail: 'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Custom code only when neither covers the need.',
+    detail:
+      'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Storybook MCP (docs-list) when npm run storybook is up: is it already in this catalogue? Custom code only when none cover the need.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Implement in Storybook',
-    detail: 'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
+    detail:
+      'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
   },
   {
     who: 'Core team',
@@ -61,7 +64,8 @@ export const DevLoop: StoryObj = stepsStory([
     who: 'CI',
     tone: 'neutral',
     title: 'Ship through the gates',
-    detail: 'Token audits, generated-file diffs, contracts-index freshness, build, tests. Changesets version and publish the packages; applications receive bump pull requests.',
+    detail:
+      'Token audits, generated-file diffs (tokens, changelog, contracts index), build, unit tests, story tests, pack smoke. A changeset records the bump; the release workflow versions and publishes the packages, and applications receive bump pull requests.',
   },
 ]);
 
@@ -92,7 +96,7 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Designs against the source',
       items: [
-        'Core designers edit the UI Kit main file and run the plugin sync',
+        'Core designers edit the UI Kit main file and run the plugin sync; they may also draw a core component from the repo by hand',
         'Application designers work in proposals/{app} and never touch Primitive or Semantic collections',
         'Both review stories against the UI Kit; proposals reach the core designers, not the main file',
       ],
@@ -100,9 +104,9 @@ export const Roles: StoryObj = cardsStory(
     {
       eyebrow: 'Consumer',
       tone: 'system',
-      title: 'Uses what is published',
+      title: 'Uses what is packaged',
       items: [
-        'Installs the versioned @solidaris/* packages',
+        'Installs the versioned @solidaris/* packages — never source paths',
         'Imports Core components; asks before importing a Candidate',
         'Never imports an App-specific component from another team',
       ],
@@ -113,10 +117,11 @@ export const Roles: StoryObj = cardsStory(
 
 export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'While a component is app-owned, drift stays contained by tooling — not by trust',
+  title:
+    'While a component is app-owned, drift stays contained by tooling — not by trust',
   items: [
     'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose registers them in the proposals/{app} Figma collection.',
+    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them; apply selected names on proposals/{app} via agent + Figma MCP when a session is running, or the Plectrum tokens plugin otherwise (see Token pipeline → Figma sync).',
     'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
     'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
   ],

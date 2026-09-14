@@ -2,5 +2,7 @@
   "buildScriptName": "build-storybook",
   "exitZeroOnChanges": true,
   "onlyChanged": true,
+  "projectId": "Project:6a9fd7dac5dd827d8188918d",
+  "storybookConfigDir": "libs\\ui\\.storybook",
   "zip": true
 }

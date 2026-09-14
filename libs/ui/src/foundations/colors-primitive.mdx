@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './colors.stories';
 
@@ -12,13 +12,13 @@ Mapped swatches emit as `var(--p-*, <literal>)`. Toggle Plectrum v0.6 ↔ v1 in 
 
 Figma: [Plectrum DS — PrimeNG v21 / Colors](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4-2)
 
-## How to use
+## Usage
 
-1. Pick a ramp step only when defining a new semantic token in `01-settings`.
-2. Point the role at the step: `--pds-color-text: var(--pds-color-gray-900);`.
-3. In components, consume the role — `var(--pds-color-text)` — not the ramp.
+<Unstyled>
+  <Story of={Stories.UsagePrimitive} />
+</Unstyled>
 
-Do not reach for `blue-600` from a card or button. That is how a new semantic role gets skipped.
+## Examples
 
 ```scss
 // 01-settings/_settings.colors-semantic.scss
@@ -26,6 +26,12 @@ Do not reach for `blue-600` from a card or button. That is how a new semantic ro
   --pds-color-text: var(--pds-color-gray-900);
 }
 ```
+
+## How to use
+
+1. Pick a ramp step only when defining a new semantic token in `01-settings`.
+2. Point the role at the step: `--pds-color-text: var(--pds-color-gray-900);`.
+3. In components, consume the role — `var(--pds-color-text)` — not the ramp.
 
 ## Groups
 
@@ -46,5 +52,5 @@ Section labels match Figma (`blue`, `gray`, `rose` — not “Blue ramp”). Ord
 />
 
 <Unstyled>
-  <Canvas of={Stories.Primitive} sourceState="none" />
+  <Story of={Stories.Primitive} />
 </Unstyled>

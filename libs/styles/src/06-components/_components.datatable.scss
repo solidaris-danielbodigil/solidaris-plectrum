@@ -1,0 +1,189 @@
+@use '../01-settings/settings.prefix' as *;
+
+// =============================================================================
+// 06-components/_components.datatable.scss
+// PrimeNG p-table wrapper — <p-table class="c-datatable">
+//
+// Flex-fill the PrimeNG scroller only (`scrollHeight="flex"` + host
+// `o-layout--full-height`). The `table` stays `max-content` so leftover
+// scroller height does not stretch rows (~43px). Paginator is a sibling
+// below the scroller and stays pinned when the host fills leftover space.
+//
+// Cells stay on one line so columns grow with content. `[scrollable]="true"`
+// keeps overflow on `.p-datatable-table-container`. The scroller is a flex
+// row for zero-width inline fades. `align-items: stretch` must not apply to
+// the `table` — a stretched table gets a used height equal to the container,
+// and HTML distributes leftover height across body rows (compact ~43px cells
+// become 50–90px+). Rows stay `max-content`.
+//
+// Inline fades cannot use `scroll-shadow-inline()` here: that mixin makes the
+// scroller a flex row, and a `table` flex child is offset by the start strip
+// (~18px leftover scroll, first column clipped). Zero-width sticky strips keep
+// the same keyframes without shifting the table.
+//
+// Block fades cannot use `scroll-shadow()` on the `table` flex child: the
+// table is `height: max-content` and does not scroll. The scroller owns both
+// named timelines. Container `::before`/`::after` are the inline strips.
+// Top caption sticky fails inside this flex scroller; the top fade hangs off
+// the frozen `thead` instead. Bottom fade is a zero-size sticky caption.
+// Token bridge: `_settings.datatable.scss`
+// =============================================================================
+
+.c-datatable {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  th,
+  td {
+    white-space: nowrap;
+  }
+
+  .p-datatable,
+  &.p-datatable {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .p-datatable-table-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 0;
+    scroll-timeline-name: --c-datatable-inline, --c-datatable-block;
+    scroll-timeline-axis: inline, block;
+
+    &::before,
+    &::after {
+      content: '';
+      position: sticky;
+      z-index: 2;
+      flex: 0 0 0;
+      align-self: stretch;
+      inset-block-start: 0;
+      width: 0;
+      box-sizing: content-box;
+      pointer-events: none;
+      opacity: 0;
+      animation-timeline: --c-datatable-inline;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+
+    &::before {
+      inset-inline-start: 0;
+      padding-inline-end: var(--#{$pds-prefix}-size-scroll-shadow-height);
+      margin-inline-end: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
+      background: linear-gradient(to right,
+        var(--#{$pds-prefix}-color-scroll-shadow),
+        transparent);
+      animation-name: o-scroll-shadow-inline-start;
+    }
+
+    &::after {
+      inset-inline-end: 0;
+      padding-inline-start: var(--#{$pds-prefix}-size-scroll-shadow-height);
+      margin-inline-start: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
+      background: linear-gradient(to left,
+        var(--#{$pds-prefix}-color-scroll-shadow),
+        transparent);
+      animation-name: o-scroll-shadow-inline-end;
+    }
+  }
+
+  .p-datatable-table {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    height: max-content;
+    min-width: 100%;
+
+    &::after {
+      content: '';
+      display: table-caption;
+      caption-side: bottom;
+      position: sticky;
+      z-index: 2;
+      inset-block-end: 0;
+      block-size: 0;
+      padding-block-start: var(--#{$pds-prefix}-size-scroll-shadow-height);
+      margin-block-start: calc(-1 * var(--#{$pds-prefix}-size-scroll-shadow-height));
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        to top,
+        var(--#{$pds-prefix}-color-scroll-shadow),
+        transparent
+      );
+      animation-name: o-scroll-shadow-bottom;
+      animation-timeline: --c-datatable-block;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+  }
+
+  // Top fade sits on the frozen header — `table::before` caption sticky does
+  // not pin to this flex scroller (the strip stays at the table start).
+  .p-datatable-thead {
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 100%;
+      z-index: 2;
+      block-size: var(--#{$pds-prefix}-size-scroll-shadow-height);
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--#{$pds-prefix}-color-scroll-shadow),
+        transparent
+      );
+      animation-name: o-scroll-shadow-top;
+      animation-timeline: --c-datatable-block;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+  }
+
+  // Zero-width sticky overlay — not a visible Actions column.
+  .c-datatable__actions-col {
+    position: sticky;
+    inset-inline-end: 0;
+    z-index: 3;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    padding: var(--#{$pds-prefix}-space-datatable-actions-col-padding);
+    border-width: 0;
+    overflow: visible;
+    background-color: transparent;
+  }
+
+  .c-datatable__row-actions {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: var(--#{$pds-prefix}-space-datatable-row-actions-inset);
+    z-index: 2;
+    translate: 0 -50%;
+    background-color: var(--#{$pds-prefix}-color-datatable-row-actions-bg);
+    border-radius: var(--#{$pds-prefix}-radius-datatable-row-actions);
+    box-shadow: var(--#{$pds-prefix}-shadow-datatable-row-actions);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  tbody tr:hover .c-datatable__row-actions,
+  tbody tr:focus-within .c-datatable__row-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

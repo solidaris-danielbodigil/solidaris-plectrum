@@ -17,7 +17,7 @@ Drift between Figma and CSS fails CI. No automated step writes the main Figma fi
 
 Related pages:
 
-- [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) — Figma → repo import, repo → Figma proposals, package distribution
+- [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) — Figma → repo import, repo → Figma (agent or plugin; REST parked), package distribution
 - [Sync status](?path=/docs/docs-token-pipeline-sync-status--docs) — the last promoted plugin sync: what changed, which checks passed
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — the CSS contract for component authors
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX for designers and developers
@@ -80,7 +80,7 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     { id: 'css', x: 369, y: 200, w: 220, h: 76, tone: 'system', title: 'Generated CSS + Storybook', lines: ['--pds-* custom properties', 'Foundations pages'] },
     { id: 'code', x: 369, y: 320, w: 220, h: 76, tone: 'system', title: 'Code-owned tokens', lines: ['--pds-* declared in 01-settings', 'spacing, typography, features'] },
     { id: 'pkg', x: 697, y: 200, w: 220, h: 76, tone: 'app', title: 'Published packages', lines: ['@solidaris/ui · styles · plectrum', 'versioned together'] },
-    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'iSHARE · iCRM', lines: ['install published versions'] },
+    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'iSHARE · iCRM', lines: ['install published versions', 'candidate tokens via PR'] },
   ]}
   edges={[
     { from: 'kit', to: 'json', label: '1 · plugin sync' },
@@ -88,8 +88,9 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     { from: 'css', to: 'pkg', label: '3 · publish' },
     { from: 'pkg', to: 'apps', label: '4 · install' },
     { from: 'code', to: 'css', label: 'compiled' },
-    { from: 'code', to: 'branch', label: '5 · propose' },
-    { from: 'branch', to: 'kit', label: '6 · merge + publish', dashed: true },
+    { from: 'apps', to: 'code', label: '5 · candidate PR', dashed: true },
+    { from: 'code', to: 'branch', label: '6 · propose', dashed: true },
+    { from: 'branch', to: 'kit', label: '7 · merge + publish', dashed: true },
   ]}
 />
 
@@ -100,15 +101,18 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     ['2', 'tokens.json → CSS', 'tokens:build (Style Dictionary) writes *.generated.scss and the Storybook manifest tokens.generated.ts.'],
     ['3', 'Repository → packages', 'Changesets version and publish @solidaris/ui, @solidaris/styles and @solidaris/plectrum together.'],
     ['4', 'Packages → applications', 'Renovate or Dependabot opens a bump pull request in each application repository.'],
-    ['5', 'Code → Figma branch', 'tokens:propose lists code-owned tokens missing from tokens.json; tokens:apply writes them to the Figma branch proposals/{app}.'],
-    ['6', 'Figma branch → main file', 'A designer reviews, merges and publishes the library. The LIBRARY_PUBLISH event triggers a re-pull.'],
+    ['5', 'Applications → code-owned tokens', 'An application team opens a pull request in this repository that adds --pds-* aliases in 01-settings/_settings.{feature}.scss. Token values stay out of the application repository. The owning app is later visible as proposals/{app}.'],
+    ['6', 'Code → Figma branch', 'tokens:propose writes a committed, typed proposed.dtcg.json. An agent applies selected tokens via Figma MCP when a session is running; otherwise a designer runs the Plectrum tokens plugin. Both write proposals/{app} through the Plugin API. tokens:apply (Variables REST API) stays parked for Enterprise.'],
+    ['7', 'Figma branch → main file', 'A designer reviews, merges and publishes the library. The LIBRARY_PUBLISH re-pull (tokens:pull-figma) is behind the same Enterprise gate.'],
   ]}
 />
 
 Constraints:
 
 - Automated writes of design data (variables, styles, nodes) target Figma branches only. The main Figma file is edited and published by designers; CI only posts sync comments on it.
+- Repository → Figma on the Organization plan uses the Plugin API: agent + Figma MCP by default, Plectrum tokens plugin when no agent is available. The Variables REST API (tokens:apply, tokens:pull-figma) is Enterprise only and stays parked; see [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs).
 - Applications install a package version. Token values are never copied into an application repository.
+- Application teams send candidate tokens as a pull request into 01-settings in this repository, not as files under apps/.
 - Code-owned tokens (spacing, typography, feature-specific values) compile into the same stylesheet as imported tokens.
 
 ---
@@ -156,6 +160,8 @@ Sequence for one token change, from Figma to a running application.
     ['--p-*', 'A PrimeNG theme custom property, emitted by the preset. Bridged to --pds-* in 01-settings only.'],
     ['Preset', 'The PrimeNG theme configuration. v1 runs in production; v0.6 remains available via the toolbar toggle.'],
     ['Staging branch', 'design-tokens/sync. The only branch the Figma plugin writes to. Promotion to main requires a reviewed pull request.'],
+    ['Variables REST API', 'Figma HTTP endpoints that read and write variables (tokens:apply, tokens:pull-figma). Enterprise plan only; parked. The live Organization-plan write is the Plugin API: agent + Figma MCP, or the Plectrum tokens plugin when no agent is running.'],
+    ['Plugin API', 'Figma desktop / MCP API (figma.variables and nodes). Not plan-gated. Default write: agent + Figma MCP. Fallback: Plectrum tokens plugin. A human may still draw the Figma component by hand.'],
     ['Pull request (PR)', 'A proposed change reviewed before merge.'],
     ['CI', 'Automated checks on every change: audits, build, lint, pack smoke test.'],
     ['Package', 'A published, versioned artifact: @solidaris/ui, @solidaris/styles, @solidaris/plectrum, @solidaris/tokens-cli.'],
@@ -191,9 +197,9 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
     ['tokens:check-prefix', 'check-prefix.mjs', 'Reject new bare --spacing- / --text- / --font- / --line-height- declarations outside _settings.legacy-aliases.scss.', 'Blocking'],
     ['tokens:build', 'build.mjs', 'Style Dictionary writes hybrid --pds-* SCSS and the Storybook annotation manifest. Spacing and typography stay hand-authored.', 'Blocking — generated files must be committed'],
     ['tokens:lint', 'lint-usage.mjs', '--p-* declarations outside 01-settings, PrimeUI runtime imports in apps/ or libs/ui, unknown --pds-* names.', 'Blocking. --strict (hex/px) is local only'],
-    ['tokens:propose', 'propose-to-figma.mjs', 'Diff code-owned --pds-* in 01-settings against tokens.json. Emit proposed.dtcg.json.', 'Not in default CI. Used by apply-to-figma.yml'],
-    ['tokens:apply', 'apply-to-figma.mjs', 'POST proposed variables to the Figma branch proposals/{app}. Dry-run is the default. Aborts if the branch is missing. Never writes the main file.', 'Manual / workflow_dispatch with Environment approval'],
-    ['tokens:pull-figma', 'pull-figma.mjs', 'Read-only Variables API check. Flags published Figma variables that never landed in tokens.json.', 'library-publish.yml safety net'],
+    ['tokens:propose', 'propose-to-figma.mjs', 'Diff code-owned --pds-* in 01-settings against tokens.json. Emit a typed, committed proposed.dtcg.json.', 'Blocking — file must be committed'],
+    ['tokens:apply', 'apply-to-figma.mjs', 'POST proposed variables into the collection proposals/{app} on the Figma branch of the same name. Dry-run is the default; --only is required. Aborts if the branch is missing. Never writes the main file.', 'workflow_dispatch behind the figma-write environment. Parked: Enterprise-only API. Live path: agent + Figma MCP, or the Plectrum tokens plugin'],
+    ['tokens:pull-figma', 'pull-figma.mjs', 'Read-only Variables API check. Flags published Figma variables that never landed in tokens.json.', 'library-publish.yml safety net. Parked: Enterprise-only API (file_variables:read)'],
     ['pack:smoke', 'tools/packaging/smoke-test.mjs', 'Pack library tarballs, install them in a throwaway Angular app without path aliases, and build it.', 'pack-smoke job'],
   ]}
 />
@@ -222,12 +228,16 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
     ['--quiet', 'tokens:resolve', 'Suppress the summary line.'],
     ['--strict', 'tokens:lint', 'Fail on hardcoded hex/px in apps/ and libs/ui. Without it those findings are informational.'],
     ['--app <name>', 'tokens:apply', 'Resolve Figma branch proposals/{name}. Required for a real apply.'],
+    ['--only name[,name]', 'tokens:apply', 'Apply only these Figma names. Required unless --all.'],
+    ['--all', 'tokens:apply', 'Include every colour in proposed.dtcg.json. Never for a first write.'],
+    ['--branch-key KEY', 'tokens:apply', 'Figma branch file key from the URL /design/{main}/branch/{key}/. Skips the branch listing.'],
     ['--dry-run', 'tokens:apply', 'Default. Print payload and branch key. Zero writes.'],
-    ['--write', 'tokens:apply', 'POST /v1/files/:branchKey/variables. Needs FIGMA_TOKEN and Environment approval.'],
+    ['--write', 'tokens:apply', 'POST /v1/files/:branchKey/variables. Needs FIGMA_TOKEN with file_variables:write (Enterprise) and Environment approval.'],
     ['--proposal path', 'tokens:apply', 'Alternate proposed.dtcg.json.'],
-    ['--file-key KEY', 'tokens:apply, tokens:pull-figma', 'Override FIGMA_FILE_KEY. Default is the Plectrum UI Kit.'],
-    ['FIGMA_TOKEN', 'tokens:apply, tokens:pull-figma', 'Repo secret. Unset: apply stays dry-run; pull skips with a message.'],
-    ['FIGMA_FILE_KEY', 'tokens:apply, tokens:pull-figma', 'Optional file key. Same default as --file-key.'],
+    ['--file-key KEY', 'tokens:apply, tokens:pull-figma', 'apply: the main UI Kit key used to list branches. pull: the file to read. Default is the Plectrum UI Kit.'],
+    ['FIGMA_TOKEN', 'tokens:apply, tokens:pull-figma, tokens:notify-figma', 'Repo secret. Comments need file_comments:read/write; apply and pull need file_variables:read/write, which only Enterprise tokens can carry. Unset: apply prints the payload; pull and notify skip with a message.'],
+    ['FIGMA_FILE_KEY', 'tokens:pull-figma, tokens:notify-figma', 'File the comment thread and the pull target. May be a Figma branch key.'],
+    ['FIGMA_MAIN_FILE_KEY', 'tokens:apply', 'Main UI Kit key for the branch listing. Set in apply-to-figma.yml; never written to.'],
   ]}
 />
 
@@ -237,8 +247,8 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
     ['tokens.json or alias-map.json changed', 'tokens:audit, then tokens:build. Commit the generated SCSS and tokens.generated.ts.'],
     ['A --pds-* declaration was added in 01-settings', 'tokens:check-prefix, tokens:lint, tokens:propose if it should exist in Figma.'],
     ['Component SCSS uses a new --pds-* name', 'tokens:lint. Add the name to the component .metadata.ts tokens.consumed list.'],
-    ['Proposing a code-owned token to Figma', 'tokens:propose, then tokens:apply -- --app <name> (dry-run first, --write after review).'],
-    ['Suspect the plugin missed a Figma publish', 'tokens:pull-figma (needs FIGMA_TOKEN).'],
+    ['Proposing a code-owned token to Figma', 'tokens:propose, commit proposed.dtcg.json, then apply selected names on proposals/{app}: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. tokens:apply remains the Enterprise REST alternative.'],
+    ['Suspect the plugin missed a Figma publish', 'tokens:pull-figma (needs FIGMA_TOKEN with file_variables:read — Enterprise). Otherwise compare the Figma branch by eye against tokens.json.'],
     ['Checking a consumer install', 'pack:smoke. CI also builds Storybook against packed tarballs.'],
   ]}
 />
@@ -252,13 +262,13 @@ npm run tokens:build              # regenerate *.generated.scss + tokens.generat
 npm run tokens:lint               # --p-* decls, PrimeUI runtime imports, unknown --pds-*
 npm run tokens:lint -- --strict   # also fail hardcoded hex/px
 npm run tokens:propose            # code-only tokens → proposed.dtcg.json
-npm run tokens:apply -- --app scratch --dry-run
-npm run tokens:apply -- --app scratch --write
-npm run tokens:pull-figma         # Variables API safety net (FIGMA_TOKEN)
+npm run tokens:apply -- --app scratch --only color/surface/75 --dry-run   # Enterprise only
+npm run tokens:apply -- --app scratch --only color/surface/75 --write     # Enterprise only
+npm run tokens:pull-figma         # Variables API safety net (FIGMA_TOKEN, Enterprise only)
 npm run pack:smoke                # pack tarballs and build a throwaway app
 ```
 
-CI (`.github/workflows/ci.yml`) runs audit, prefix guard, `tokens:build` plus a **scoped** `git diff --exit-code` on `*.generated.scss` and `tokens.generated.ts` only, then lint. A separate `pack-smoke` job runs `pack:smoke`. `storybook-packed` builds Storybook against the packed tarballs. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path. The build diff does not fail on unrelated lockfile or workspace noise.
+CI (`.github/workflows/ci.yml`) runs audit, prefix guard, `tokens:build` plus a **scoped** `git diff --exit-code` on `*.generated.scss` and `tokens.generated.ts`, rebuilds `proposed.dtcg.json` the same way, then lint. A separate `figma-plugin` job typechecks, tests and builds the Plectrum tokens plugin. A `pack-smoke` job runs `pack:smoke`. `storybook-packed` builds Storybook against the packed tarballs. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path. The build diff does not fail on unrelated lockfile or workspace noise.
 
 ### Delivery status
 
@@ -271,7 +281,7 @@ CI (`.github/workflows/ci.yml`) runs audit, prefix guard, `tokens:build` plus a 
     ['4', 'tokens.generated.ts, token explorer, foundation stories, lint, docs hygiene', 'Done'],
     ['5', 'Staging tree, tokens-sync.yml, plugin setup, pull-figma safety net', 'Done'],
     ['6', 'Publishable @solidaris/ui / plectrum / styles, changesets, pack smoke test', 'Done'],
-    ['7', 'propose-to-figma + apply-to-figma (dry-run default) + LIBRARY_PUBLISH', 'Done'],
+    ['7', 'propose-to-figma + Plugin API writes (agent or plugin); apply-to-figma + LIBRARY_PUBLISH parked', 'Agent + Figma MCP default; plugin when no agent. REST apply parked for Enterprise (.ai/decisions/2026-09-10-repo-to-figma-plugin.md, 2026-09-12-repo-to-figma-agent-and-plugin.md)'],
     ['8', 'Renovate/Dependabot templates, token-usage CLI, component promotion', 'Done'],
   ]}
 />

@@ -13,9 +13,9 @@ import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
 import type {
-  ListDocumentItem,
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ListEntryItem,
+  ListEntryTag,
+  ListEntryTagTarget,
 } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
@@ -499,7 +499,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.affiliateDetailDrawerVisible()).toBe(true);
     expect(
-      fixture.nativeElement.querySelector('pds-affiliate-detail-drawer'),
+      fixture.nativeElement.querySelector('pds-profile-drawer'),
     ).toBeTruthy();
   });
 
@@ -550,7 +550,7 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const drawer = fixture.nativeElement.querySelector(
-      'pds-affiliate-detail-drawer',
+      'pds-profile-drawer',
     );
     expect(drawer).toBeTruthy();
 
@@ -560,7 +560,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(sectionTitles).not.toContain('Notes');
     expect(
-      fixture.nativeElement.querySelector('.c-drawer__affiliate-detail-notes'),
+      fixture.nativeElement.querySelector('.c-drawer__profile-notes'),
     ).toBeNull();
   });
 
@@ -775,12 +775,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(archivesList?.classList.contains('c-list--flat')).toBe(true);
     expect(
       fixture.nativeElement.querySelectorAll(
-        '#category-panel-isoles .c-list__item--document',
+        '#category-panel-isoles .c-list__item--entry',
       ).length,
     ).toBe(2);
     expect(
       fixture.nativeElement.querySelectorAll(
-        '#category-panel-archives .c-list__item--document',
+        '#category-panel-archives .c-list__item--entry',
       ).length,
     ).toBe(1);
   });
@@ -1069,15 +1069,15 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should decode tag target id and set selectedDocumentId + documentFocus on tag target click', () => {
-    const doc: ListDocumentItem = {
+    const doc: ListEntryItem = {
       id: 'doc-incapacite',
       title: 'Incapacité',
     };
-    const target: ListDocumentTagTarget = {
+    const target: ListEntryTagTarget = {
       id: '2::compte-financier-liasse',
       label: 'Feuilles de renseignement - Compte financier - Liasse',
     };
-    const tag: ListDocumentTag = {
+    const tag: ListEntryTag = {
       label: '1',
       severity: 'info',
       targets: [target],
@@ -1339,7 +1339,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.expandedGroupIds()).toContain('parcours-rechute');
 
     const selectedInTree = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected',
+      '.c-list__item--entry.c-list__item--selected',
     ) as HTMLElement | null;
 
     expect(selectedInTree?.textContent).toContain('Rechute');
@@ -1408,7 +1408,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.expandedGroupIds()).toContain('parcours-clotures');
 
     const selectedInTree = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
+      '.c-list__item--entry.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
     ) as HTMLElement | null;
 
     expect(selectedInTree)
@@ -1780,7 +1780,7 @@ describe('AffiliateDetailsComponent', () => {
     });
 
     it('should list all family members except self in Eva drawer data', () => {
-      const family = component.affiliateDetailDrawerData().family;
+      const family = component.affiliateDetailDrawerData().relatedMembers;
 
       expect(family.map((member) => member.name)).toEqual([
         'Quinten Mota',
@@ -1861,13 +1861,13 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
     const component = fixture.componentInstance;
 
     expect(
-      component.affiliateDetailDrawerData().family.map((m) => m.name),
+      component.affiliateDetailDrawerData().relatedMembers.map((m) => m.name),
     ).toEqual(['Eva Martinez', 'Quinten Mota', 'Shiloh Mota']);
   });
 
   it('should show parent and sibling labels in Jack drawer', async () => {
     const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
-    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const family = fixture.componentInstance.affiliateDetailDrawerData().relatedMembers;
     const byName = Object.fromEntries(
       family.map((member) => [member.name, member.relationship]),
     );
@@ -1879,7 +1879,7 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
 
   it('should show parent and sibling labels in Shiloh drawer', async () => {
     const fixture = await createFixtureForAffiliate(SHILOH_MOTA_NISS);
-    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const family = fixture.componentInstance.affiliateDetailDrawerData().relatedMembers;
     const byName = Object.fromEntries(
       family.map((member) => [member.name, member.relationship]),
     );

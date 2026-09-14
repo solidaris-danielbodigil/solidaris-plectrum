@@ -25,11 +25,14 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import type {
-  ListDocumentItem,
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ListEntryItem,
+  ListEntryTag,
+  ListEntryTagTarget,
 } from '@solidaris/ui';
-import { PdsTelemetryLabelDirective, DelayPredictionCardComponent } from '@solidaris/ui';
+import {
+  PdsTelemetryLabelDirective,
+  DelayPredictionCardComponent,
+} from '@solidaris/ui';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   summarizeDocumentStep,
@@ -81,7 +84,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      'c-affiliate-document-detail o-flex o-flex--y o-layout--min-w-0 o-layout--full-height o-layout--min-h-0 o-flex__item--grow-1',
+      'c-affiliate-document-detail o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--full-height o-layout--min-h-0',
     '[class.is-loading]': 'loading()',
     '[attr.aria-busy]': 'loading()',
   },
@@ -107,7 +110,7 @@ export class AffiliateDocumentDetailComponent {
   );
   readonly activeStepTagContext = signal<{
     step: DocumentStep;
-    tag: ListDocumentTag;
+    tag: ListEntryTag;
   } | null>(null);
 
   /**
@@ -120,7 +123,7 @@ export class AffiliateDocumentDetailComponent {
 
   readonly selectedDocumentId = input.required<string>();
   readonly affiliateRouteId = input('');
-  readonly navigableDocuments = input.required<ListDocumentItem[]>();
+  readonly navigableDocuments = input.required<ListEntryItem[]>();
 
   /**
    * Programmatic deep-link target. When set, the document-change effect jumps to
@@ -319,7 +322,7 @@ export class AffiliateDocumentDetailComponent {
   onStepTagClick(
     event: MouseEvent | KeyboardEvent,
     step: DocumentStep,
-    tag: ListDocumentTag,
+    tag: ListEntryTag,
   ): void {
     const targets = tag.targets ?? [];
     event.stopPropagation();
@@ -349,7 +352,7 @@ export class AffiliateDocumentDetailComponent {
   onStepTagKeydown(
     event: KeyboardEvent,
     step: DocumentStep,
-    tag: ListDocumentTag,
+    tag: ListEntryTag,
   ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -366,7 +369,7 @@ export class AffiliateDocumentDetailComponent {
     this.tagPopoverStyle.set(undefined);
   }
 
-  onStepTagTargetSelect(event: Event, target: ListDocumentTagTarget): void {
+  onStepTagTargetSelect(event: Event, target: ListEntryTagTarget): void {
     event.stopPropagation();
     const active = this.activeStepTagContext();
     if (!active) {
@@ -379,7 +382,7 @@ export class AffiliateDocumentDetailComponent {
 
   onStepTagTargetKeydown(
     event: KeyboardEvent,
-    target: ListDocumentTagTarget,
+    target: ListEntryTagTarget,
   ): void {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -555,11 +558,10 @@ export class AffiliateDocumentDetailComponent {
 
   private navigateToCommentTarget(
     stepValue: number,
-    target: ListDocumentTagTarget,
+    target: ListEntryTagTarget,
   ): void {
     const separator = target.id.indexOf('::');
-    const panelId =
-      separator >= 0 ? target.id.slice(separator + 2) : target.id;
+    const panelId = separator >= 0 ? target.id.slice(separator + 2) : target.id;
 
     if (panelId.length === 0) {
       return;
@@ -621,7 +623,9 @@ export class AffiliateDocumentDetailComponent {
     const style = this.popoverStyleFromRect(rect);
     this.tagPopoverStyle.set(style);
 
-    const panel = document.body.querySelector('.p-popover') as HTMLElement | null;
+    const panel = document.body.querySelector(
+      '.p-popover',
+    ) as HTMLElement | null;
     if (!panel) {
       return;
     }

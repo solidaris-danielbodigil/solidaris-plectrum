@@ -35,6 +35,8 @@
 
 **If a token is missing from `libs/styles`, add it there first — never inline it.**
 
+User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (`{name}.i18n.ts`). String inputs may override a message; they must not be the only source of default copy. Telemetry labels stay static.
+
 ### Ownership ⛔
 
 Being in `libs/ui` does not make a component part of the design system. `governance.status` does:
@@ -44,7 +46,7 @@ Being in `libs/ui` does not make a component part of the design system. `governa
 - `deprecated` — scheduled for removal, `note` names the replacement
 
 Every component starts as a proposal to the core design-system team, which answers *exists / system-level / app-specific*.
-Promotion (`candidate` → `core`) is a core-team move, not a rename: generic API, tokens into shared settings, Storybook title into the core sections (`docs/component-promotion.md`).
+Promotion (`candidate` → `core`) is a core-team move, not a rename: generic API, tokens into shared settings, Storybook title into the core sections, then the Figma component from the repo on a branch (`docs/component-promotion.md`).
 
 ---
 

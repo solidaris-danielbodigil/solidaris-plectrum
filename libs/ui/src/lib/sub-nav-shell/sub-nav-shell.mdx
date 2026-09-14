@@ -1,4 +1,4 @@
-import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './sub-nav-shell.stories';
 
 <Meta of={Stories} />
@@ -9,23 +9,24 @@ import * as Stories from './sub-nav-shell.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Second-level navigation sidebar. Child of `NavShellComponent` — opens when a nav-shell item is clicked.
+## Usage
 
-Renders a fixed-width panel with:
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-- A heading header with the module/app title
-- Optional featured items (sections without a label) rendered above the accordion
-- Collapsible grouped sections using PrimeNG Accordion (`p-accordion`)
-- Menu items with optional leading icon and PrimeNG Badge (`p-badge`) counter
-- A version/changelog footer
+## Anatomy
 
-Figma: [Custom components — node 1:1476](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components?node-id=1-1476)
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Maatschappelijk Werk
 
 Default state matching the Figma variant. “Lopend” is the active item. Danger badge on “Onvolledig” (red).
 
 <Canvas of={Stories.MaatschappelijkWerk} />
+<Controls of={Stories.MaatschappelijkWerk} />
 
 ## Processen
 
@@ -44,6 +45,12 @@ Default state matching the Figma variant. “Lopend” is the active item. Dange
 Section “Dossiers” rendered collapsed via the `collapsed` property.
 
 <Canvas of={Stories.WithCollapsedSection} />
+
+## Search
+
+Optional header search that filters section titles and item labels. Used by iGED; iSHARE leaves it off.
+
+<Canvas of={Stories.WithSearch} />
 
 ## Disabled items
 
@@ -69,6 +76,21 @@ iCRM Audit variant (Figma [node 20:1447](https://www.figma.com/design/IRkr21rHS0
 
 <Canvas of={Stories.ICRM} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

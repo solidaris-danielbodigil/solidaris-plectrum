@@ -80,10 +80,32 @@ Forward the new file from `_components.core.scss`.
 
 ### 4 — Write Storybook stories
 
-Colocated at `libs/ui/src/lib/{name}/{name}.stories.ts`.
-Required exports: `Default`, plus all states listed in the brief.
-Every story must include `parameters.docs.description.story`.
+Colocated at `libs/ui/src/lib/{name}/{name}.stories.ts` plus attached `{name}.mdx`.
+Required exports: `Default`, plus all states listed in the brief. Each required
+canvas needs a `play` from `libs/ui/src/storybook/story-tests.ts`.
+
+When `npm run storybook` is up, author against Storybook MCP
+(`http://localhost:6006/mcp`):
+
+1. `docs-show` a finished sibling (Copyable Text, Form Field, Accordion)
+2. `get-storybook-story-instructions`
+3. Write CSF + MDX per `.ai/rules/03-storybook.md`
+4. `stories-preview` the new canvases
+
+Do not add a Control missing from `.metadata.ts` `props`. Do not put usage in
+`parameters.docs.description` — the MDX embeds Status / Usage / Anatomy /
+Accessibility from the metadata. Do not call `test-run` (`npm run test-storybook`
+is the Tester's gate). Offline fallback: `.ai/contracts/index.json`.
 
 ### 5 — Update `_components.core.scss`
 
 Add `@forward` for the new component file.
+
+### 6 — Code → Figma
+
+New `--pds-*` names go through `tokens:propose`. Apply selected names on
+`proposals/{app}` via Figma MCP when this session can write; otherwise tell
+the coordinator a designer must run the Plectrum tokens plugin. After
+promotion to `core`, the Figma component may be built from the repo in the
+same session (variables first, then frames bound to those variables) or
+drawn by a designer. Never write the main UI Kit.

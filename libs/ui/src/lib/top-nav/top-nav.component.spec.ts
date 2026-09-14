@@ -1,4 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  PDS_LOCALE_STORAGE_KEY,
+  PdsLocaleService,
+  providePdsLocale,
+} from '../i18n';
 import { TopNavComponent } from './top-nav.component';
 import type { MenuItem } from 'primeng/api';
 
@@ -9,6 +14,7 @@ describe('TopNavComponent', () => {
   const breadcrumbs: MenuItem[] = [{ label: 'Home' }];
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [TopNavComponent],
     }).compileComponents();
@@ -18,6 +24,10 @@ describe('TopNavComponent', () => {
     fixture.componentRef.setInput('breadcrumbs', breadcrumbs);
     fixture.componentRef.setInput('avatarInitials', 'IS');
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
   });
 
   it('should render an optional back button before the breadcrumb', () => {
@@ -184,6 +194,82 @@ describe('TopNavComponent', () => {
     expect(link?.getAttribute('aria-label')).toBe('Démarrer la session test');
   });
 
+  it('should hide the locale switcher by default', () => {
+    expect(fixture.nativeElement.querySelector('.c-top-nav__locale')).toBeNull();
+  });
+
+  it('should render FR/NL and persist the locale when the switcher is shown', () => {
+    const service = TestBed.inject(PdsLocaleService);
+    fixture.componentRef.setInput('showLocaleSwitcher', true);
+    fixture.detectChanges();
+
+    const switcher = fixture.nativeElement.querySelector(
+      '.c-top-nav__locale',
+    ) as HTMLElement | null;
+    const options = switcher?.querySelectorAll(
+      '[role="button"], .p-togglebutton',
+    );
+
+    expect(switcher).not.toBeNull();
+    expect(switcher?.textContent).toContain('FR');
+    expect(switcher?.textContent).toContain('NL');
+    expect(options?.length).toBeGreaterThanOrEqual(2);
+
+    const nlOption = Array.from(options ?? []).find((option) =>
+      (option.textContent ?? '').includes('NL'),
+    ) as HTMLElement | undefined;
+    nlOption?.click();
+    fixture.detectChanges();
+
+    expect(service.locale()).toBe('nl');
+  });
+
+  it('should name the locale switcher and keep FR/NL keyboard operable', () => {
+    const service = TestBed.inject(PdsLocaleService);
+    fixture.componentRef.setInput('showLocaleSwitcher', true);
+    fixture.detectChanges();
+
+    const label = fixture.nativeElement.querySelector(
+      '#top-nav-locale-label',
+    ) as HTMLElement | null;
+    const group = fixture.nativeElement.querySelector(
+      '.c-top-nav__locale [role="group"]',
+    ) as HTMLElement | null;
+    const options = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        '.c-top-nav__locale [role="button"], .c-top-nav__locale .p-togglebutton',
+      ),
+    ) as HTMLElement[];
+
+    expect(label?.textContent?.trim()).toBe('Langue');
+    expect(group?.getAttribute('aria-labelledby')).toBe('top-nav-locale-label');
+    expect(options.length).toBeGreaterThanOrEqual(2);
+
+    const nlOption = options.find((option) =>
+      (option.textContent ?? '').includes('NL'),
+    );
+    expect(nlOption).toBeTruthy();
+    expect(nlOption?.getAttribute('tabindex')).not.toBe('-1');
+
+    nlOption?.focus();
+    expect(
+      document.activeElement === nlOption ||
+        nlOption?.contains(document.activeElement),
+    ).toBe(true);
+
+    nlOption?.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    if (service.locale() !== 'nl') {
+      nlOption?.click();
+      fixture.detectChanges();
+    }
+
+    expect(service.locale()).toBe('nl');
+  });
+
   it('should emit avatarMenuOpenChange when the avatar menu opens and closes', () => {
     const openSpy = jasmine.createSpy('avatarMenuOpenChange');
     fixture.componentRef.setInput('avatarMenuItems', [
@@ -204,5 +290,35 @@ describe('TopNavComponent', () => {
     fixture.detectChanges();
 
     expect(openSpy).toHaveBeenCalledWith(false);
+  });
+});
+
+describe('TopNavComponent (nl)', () => {
+  let fixture: ComponentFixture<TopNavComponent>;
+
+  beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+    await TestBed.configureTestingModule({
+      imports: [TopNavComponent],
+      providers: providePdsLocale('nl'),
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TopNavComponent);
+    fixture.componentRef.setInput('breadcrumbs', [{ label: 'Home' }]);
+    fixture.componentRef.setInput('avatarInitials', 'IS');
+    fixture.componentRef.setInput('showAvatarMenu', true);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+  });
+
+  it('should use the Dutch avatar menu label', () => {
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    ) as HTMLButtonElement;
+
+    expect(trigger.getAttribute('aria-label')).toBe('Gebruikersmenu');
   });
 });

@@ -1,5 +1,4 @@
-import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './detail-list.stories';
 
 <Meta of={Stories} />
@@ -10,22 +9,42 @@ import * as Stories from './detail-list.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`c-detail-list` renders label / value description rows on a semantic `<dl>`. The block owns the label column width and typography; layout is `o-flex` mixes in the template. The `DetailListRow` type is exported from `@solidaris/ui` (`libs/ui/src/lib/drawer`).
+## Usage
 
-- **Styles**: `libs/styles/src/06-components/_components.detail-list.scss`
-- **Used by**: [Affiliate Detail Drawer](?path=/docs/shell-affiliate-detail-drawer--docs) sections
-
-<Canvas of={Stories.Default} />
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
 ## Anatomy
 
-<DocsTable
-  headers={['Class', 'Element', 'Role']}
-  rows={[
-    ['c-detail-list', 'dl', 'Block — rows are flex children'],
-    ['c-detail-list__label', 'dt', 'Fixed-width label column'],
-    ['c-detail-list__value', 'dd', 'Value — margin reset via o-layout--margin-0'],
-  ]}
-/>
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
+
+## Default
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## In a section
 
 <Canvas of={Stories.InASection} />
+
+## Composition
+
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+

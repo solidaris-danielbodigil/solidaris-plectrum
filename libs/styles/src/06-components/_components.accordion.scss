@@ -17,7 +17,7 @@
     opacity: var(--#{$pds-prefix}-disabled-opacity);
 
     .p-accordionheader {
-      cursor: not-allowed;
+      cursor: var(--#{$pds-prefix}-cursor-disabled);
       color: var(--#{$pds-prefix}-color-text-muted);
     }
   }
@@ -25,10 +25,8 @@
   // Panel radii adapt to sibling-count() — stacked bordered accordion.
   .p-accordionpanel {
     overflow: hidden;
-    @include radius.radius(
-      var(--#{$pds-prefix}-radius-accordion-bordered-section),
-      all
-    );
+    @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-section),
+      all);
 
     @supports (width: calc(1px * sibling-count())) {
       --_accordion-panel-sibling-count: sibling-count();
@@ -36,47 +34,35 @@
 
     .p-accordionheader {
       gap: var(--#{$pds-prefix}-space-accordion-bordered-header-gap);
-      @include radius.radius(
-        var(--#{$pds-prefix}-radius-accordion-bordered-header),
-        top
-      );
+      @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-header),
+        top);
 
       &[aria-expanded='true'] {
-        @include border.border(
-          bottom,
-          var(--#{$pds-prefix}-color-panel-border)
-        );
+        @include border.border(bottom,
+          var(--#{$pds-prefix}-color-panel-border));
       }
 
       &[aria-expanded='false'] {
-        @include radius.radius(
-          var(--#{$pds-prefix}-radius-accordion-bordered-content),
-          bottom
-        );
+        @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-content),
+          bottom);
       }
     }
 
     .p-accordioncontent {
-      @include radius.radius(
-        var(--#{$pds-prefix}-radius-accordion-bordered-content),
-        bottom
-      );
+      @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-content),
+        bottom);
     }
 
     &:not(:only-child) {
       @include radius.radius(var(--#{$pds-prefix}-radius-none), all);
 
       &:first-child {
-        @include radius.radius(
-          var(--#{$pds-prefix}-radius-accordion-bordered-section),
-          top
-        );
+        @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-section),
+          top);
 
         .p-accordionheader {
-          @include radius.radius(
-            var(--#{$pds-prefix}-radius-accordion-bordered-header),
-            top
-          );
+          @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-header),
+            top);
 
           &[aria-expanded='false'] {
             @include radius.radius(0, bottom);
@@ -89,27 +75,21 @@
       }
 
       &:last-child {
-        @include radius.radius(
-          var(--#{$pds-prefix}-radius-accordion-bordered-section),
-          bottom
-        );
+        @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-section),
+          bottom);
 
         .p-accordionheader {
           @include radius.radius(0, top);
 
           &[aria-expanded='false'] {
-            @include radius.radius(
-              var(--#{$pds-prefix}-radius-accordion-bordered-content),
-              bottom
-            );
+            @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-content),
+              bottom);
           }
         }
 
         .p-accordioncontent {
-          @include radius.radius(
-            var(--#{$pds-prefix}-radius-accordion-bordered-content),
-            bottom
-          );
+          @include radius.radius(var(--#{$pds-prefix}-radius-accordion-bordered-content),
+            bottom);
         }
       }
 
@@ -135,6 +115,13 @@
 }
 
 // Nav variant — section panel padding (non-scale 14px horizontal; see sub-nav-shell tokens)
-.c-sub-nav-shell .c-accordion--nav .p-accordionpanel {
-  padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
+.c-sub-nav-shell .c-accordion--nav {
+  min-width: 0;
+  max-width: 100%;
+
+  .p-accordionpanel {
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--#{$pds-prefix}-space-sub-nav-shell-section-py) var(--#{$pds-prefix}-space-sub-nav-shell-section-px);
+  }
 }

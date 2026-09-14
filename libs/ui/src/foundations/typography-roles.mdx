@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './typography.stories';
 
@@ -10,20 +10,13 @@ Type is code-owned: the Foundations file exposes it as text styles, not Figma va
 
 Type your own copy in the playground field to check a real string — long French labels and currency amounts behave differently from lorem ipsum.
 
-## How to use
+## Usage
 
-1. In `06-components`, include a mixin: `@use "../02-tools/tools.typography" as *; .c-x__title { @include text-heading-sm; }`.
-2. Use a raw `--pds-text-{role}-{size}-{prop}` var only when you need one property in isolation.
-3. Take the whole role. Mixing a size from one role with a line-height from another is how vertical rhythm drifts.
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-Copy gives you `@include text-body-md;` for component SCSS, `.u-text-body-md` for a template, or the resolved `font` shorthand.
-
-## When to reach for it
-
-- A semantic role that matches the content: display for hero numbers, heading for titles, label for form and UI chrome, body for prose.
-- The `u-text-*` utilities for one-off documentation text.
-
-Do not hardcode `font-size` or `font-family`. Do not mix a primitive size with a semantic line-height.
+## Examples
 
 ```scss
 // 06-components/_components.card.scss
@@ -32,6 +25,14 @@ Do not hardcode `font-size` or `font-family`. Do not mix a primitive size with a
 .c-card__title { @include text-heading-sm; }
 .c-card__meta  { @include text-body-xs; }
 ```
+
+## How to use
+
+1. In `06-components`, include a mixin: `@use "../02-tools/tools.typography" as *; .c-x__title { @include text-heading-sm; }`.
+2. Use a raw `--pds-text-{role}-{size}-{prop}` var only when you need one property in isolation.
+3. Take the whole role. Mixing a size from one role with a line-height from another is how vertical rhythm drifts.
+
+Copy gives you `@include text-body-md;` for component SCSS, `.u-text-body-md` for a template, or the resolved `font` shorthand.
 
 Declared in `_settings.typography-primitive.scss` and `_settings.typography-semantic.scss`. Classes: `.u-text-{role}-{size}`. Primitives live on [Foundations / Typography / Primitives](?path=/docs/foundations-typography-primitives--docs).
 
@@ -48,5 +49,5 @@ Declared in `_settings.typography-primitive.scss` and `_settings.typography-sema
 />
 
 <Unstyled>
-  <Canvas of={Stories.Roles} sourceState="none" />
+  <Story of={Stories.Roles} />
 </Unstyled>

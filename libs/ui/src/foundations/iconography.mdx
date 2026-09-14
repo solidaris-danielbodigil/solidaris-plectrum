@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './iconography.stories';
 
 <Meta of={Stories} />
@@ -8,6 +8,14 @@ import * as Stories from './iconography.stories';
 Size tokens and the Bootstrap Icons catalog, on the same token blocks as Colors and Typography. Search, filter, and click a card to copy.
 
 This page is the **inventory**. The Angular primitive that renders one icon is [`pds-icon`](?path=/docs/custom-components-icon--docs) under **Custom components / Icon**. Keep both: this page answers “which icon and which size?”, that page answers “how do I render it?”.
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
 
 ```html
 <pds-icon icon="bi bi-house" />
@@ -32,13 +40,6 @@ Figma: [Foundations — Iconography](https://www.figma.com/design/YNZ1DlSjDNUXrv
 2. Size with `xs | sm | md | lg | xl`. Those steps are `--pds-icon-size-*` from `_settings.globals.scss`.
 3. In SCSS, size through `var(--pds-icon-size-md)` (or a component token that aliases it). Never hardcode `font-size` on an icon.
 
-## When to reach for it
-
-- Choosing a Bootstrap Icons class for `pds-icon`.
-- Setting or documenting an icon size token.
-
-Do not invent a sixth size. Do not put a raw `<i class="bi …">` in an app template when `pds-icon` covers the case.
-
 Declared in `_settings.globals.scss`. Component: [`pds-icon`](?path=/docs/custom-components-icon--docs).
 
 ## Size tokens
@@ -46,7 +47,7 @@ Declared in `_settings.globals.scss`. Component: [`pds-icon`](?path=/docs/custom
 Each card is a `--pds-icon-size-*` token. The house glyph is drawn at the real token size. Click to copy `var()`, the name, or the computed value.
 
 <Unstyled>
-  <Canvas of={Stories.Sizes} sourceState="none" />
+  <Story of={Stories.Sizes} />
 </Unstyled>
 
 ## Icon browser
@@ -54,5 +55,5 @@ Each card is a `--pds-icon-size-*` token. The house glyph is drawn at the real t
 Search by name, filter Regular / Filled, and preview at a size token. **Click any card** to copy `bi bi-{name}`.
 
 <Unstyled>
-  <Canvas of={Stories.AllIcons} sourceState="none" />
+  <Story of={Stories.AllIcons} />
 </Unstyled>

@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './typography.stories';
 
@@ -30,5 +30,5 @@ Base is `1rem = 14px`. Plectrum type is untracked (`letter-spacing: 0`).
 />
 
 <Unstyled>
-  <Canvas of={Stories.Primitives} sourceState="none" />
+  <Story of={Stories.Primitives} />
 </Unstyled>
