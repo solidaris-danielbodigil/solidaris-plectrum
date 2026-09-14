@@ -141,36 +141,48 @@
 <ul class="c-nav-shell__list o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-flex__item--align-self-stretch o-layout o-layout--gap-2 o-layout--overflow-y-auto o-layout--min-h-0 o-layout--margin-0" role="list">
   @for (item of items(); track item.id) {
     <li class="c-nav-shell__item o-flex o-flex__item o-flex__item--shrink-0">
-      <a
-        class="c-nav-shell__link o-flex o-flex--align-items-center o-layout o-layout--full-width o-layout--overflow-hidden"
-        [class.is-active]="item.id === activeId()"
-        [routerLink]="item.routerLink ?? null"
-        [attr.aria-label]="item.label"
-        [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
-        (click)="onItemClick(item)"
-      >
-        <!-- Icon — delegated to <pds-icon>; decorative here (label is on the <a>) -->
-        <pds-icon
-          class="c-nav-shell__icon o-flex__item o-flex__item--shrink-0"
-          [icon]="item.icon"
-          [source]="item.iconSource ?? 'svg'"
-          size="md"
-        />
-
-        <!-- Label — hidden in collapsed state via CSS -->
-        <span class="c-nav-shell__label">{{ item.label }}</span>
-
-        <!-- Trailing external-link icon — only visible in expanded mode -->
-        @if (item.trailingIcon) {
-          <pds-icon
-            class="c-nav-shell__trailing-icon"
-            icon="bi bi-box-arrow-up-right"
-            source="class"
-            size="sm"
-          />
-        }
-      </a>
+      @if (item.href) {
+        <a
+          class="c-nav-shell__link o-flex o-flex--align-items-center o-layout o-layout--full-width o-layout--overflow-hidden"
+          [class.is-active]="item.id === activeId()"
+          [href]="item.href"
+          [attr.aria-label]="item.label"
+          [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
+          (click)="onItemClick(item)"
+        >
+          <ng-container *ngTemplateOutlet="linkInner; context: { $implicit: item }" />
+        </a>
+      } @else {
+        <a
+          class="c-nav-shell__link o-flex o-flex--align-items-center o-layout o-layout--full-width o-layout--overflow-hidden"
+          [class.is-active]="item.id === activeId()"
+          [routerLink]="item.routerLink ?? null"
+          [attr.aria-label]="item.label"
+          [attr.aria-current]="item.id === activeItemId() ? 'page' : null"
+          (click)="onItemClick(item)"
+        >
+          <ng-container *ngTemplateOutlet="linkInner; context: { $implicit: item }" />
+        </a>
+      }
     </li>
   }
 </ul>
 </div>
+
+<ng-template #linkInner let-item>
+  <pds-icon
+    class="c-nav-shell__icon o-flex__item o-flex__item--shrink-0"
+    [icon]="item.icon"
+    [source]="item.iconSource ?? 'svg'"
+    size="md"
+  />
+  <span class="c-nav-shell__label">{{ item.label }}</span>
+  @if (item.trailingIcon) {
+    <pds-icon
+      class="c-nav-shell__trailing-icon"
+      icon="bi bi-box-arrow-up-right"
+      source="class"
+      size="sm"
+    />
+  }
+</ng-template>

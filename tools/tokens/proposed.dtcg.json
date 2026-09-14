@@ -354,6 +354,17 @@
         }
       }
     },
+    "cursor/disabled": {
+      "$type": "other",
+      "$value": "not-allowed",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-cursor-disabled",
+          "source": "_settings.globals.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
     "docs/sync/swatch": {
       "$type": "color",
       "$value": "transparent",
@@ -2154,6 +2165,19 @@
         }
       }
     },
+    "space/datatable/actions/col/padding": {
+      "$type": "dimension",
+      "$value": {
+        "value": 0,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-datatable-actions-col-padding",
+          "source": "_settings.datatable.scss"
+        }
+      }
+    },
     "space/form/field/gap/xs": {
       "$type": "dimension",
       "$value": {
@@ -2487,6 +2511,17 @@
         "com.solidaris.pds": {
           "cssVar": "--pds-spacing-unit",
           "source": "_settings.spacing.scss"
+        }
+      }
+    },
+    "sub/nav/shell/item/justify": {
+      "$type": "other",
+      "$value": "flex-start",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-sub-nav-shell-item-justify",
+          "source": "_settings.sub-nav-shell.scss",
+          "reason": "unsupported:value"
         }
       }
     },

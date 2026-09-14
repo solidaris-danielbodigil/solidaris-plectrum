@@ -55,6 +55,30 @@ const SVG_ISHARE = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" 
 </defs>
 </svg>`;
 
+const SVG_IGED = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="logo/solidaris/iged">
+<path id="sheet-back" d="M6.4 1H16.5C17.605 1 18.5 1.895 18.5 3V14.7C18.5 15.805 17.605 16.7 16.5 16.7H6.4V1Z" fill="url(#paint1_iged)"/>
+<path id="sheet-front" d="M1.5 3.8C1.5 2.695 2.395 1.8 3.5 1.8H10.2L15.6 7.2V16.7C15.6 17.805 14.705 18.7 13.6 18.7H3.5C2.395 18.7 1.5 17.805 1.5 16.7V3.8Z" fill="url(#paint0_iged)"/>
+<path id="dog-ear" d="M10.2 1.8V6.35C10.2 6.82 10.58 7.2 11.05 7.2H15.6L10.2 1.8Z" fill="url(#paint2_iged)"/>
+<rect id="line-1" x="3.85" y="10.15" width="8.3" height="1.75" rx="0.7" fill="url(#paint2_iged)"/>
+<rect id="line-2" x="3.85" y="13.3" width="6.1" height="1.75" rx="0.7" fill="url(#paint2_iged)"/>
+</g>
+<defs>
+<linearGradient id="paint0_iged" x1="1.2" y1="1.4" x2="16.6" y2="18.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF1D25"/>
+<stop offset="1" stop-color="#D4145A"/>
+</linearGradient>
+<linearGradient id="paint1_iged" x1="6.2" y1="0.9" x2="18.6" y2="16.4" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF1568"/>
+<stop offset="1" stop-color="#D04521"/>
+</linearGradient>
+<linearGradient id="paint2_iged" x1="10" y1="1.8" x2="15.8" y2="14.8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E005D"/>
+<stop offset="1" stop-color="#ED1E79"/>
+</linearGradient>
+</defs>
+</svg>`;
+
 // ---------------------------------------------------------------------------
 // Sample items — exactly two, mirroring Figma node 18:6419
 // ---------------------------------------------------------------------------
@@ -74,6 +98,13 @@ const SAMPLE_ITEMS: NavItem[] = [
     icon: 'logo-ishare',
     iconSource: 'svg',
     routerLink: '/ishare',
+  },
+  {
+    id: 'iged',
+    label: 'iGED',
+    icon: 'logo-iged',
+    iconSource: 'svg',
+    routerLink: '/iged',
   },
 ];
 
@@ -96,6 +127,7 @@ const meta: Meta<NavShellComponent> = {
           const registry = inject(IconRegistry);
           registry.register('logo-icrm', SVG_ICRM);
           registry.register('logo-ishare', SVG_ISHARE);
+          registry.register('logo-iged', SVG_IGED);
         }),
       ],
     }),
@@ -118,12 +150,30 @@ type Story = StoryObj<NavShellComponent>;
 // Docs figures — hidden from the sidebar. The MDX page embeds these; the
 // content comes from nav-shell.metadata.ts, the documentation SSOT.
 // `tags` must be a CSF literal: the indexer does not see factory returns.
-export const Status = { tags: ['!dev'], ...statusStory(NavShellMetadata.governance, NavShellMetadata.component) };
-export const Usage = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'anatomy') };
-export const Composition = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'composition') };
-export const Behavior = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'behavior') };
-export const Accessibility = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'accessibility') };
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory(NavShellMetadata.governance, NavShellMetadata.component),
+};
+export const Usage = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'usage'),
+};
+export const Anatomy = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'anatomy'),
+};
+export const Composition = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'composition'),
+};
+export const Behavior = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'behavior'),
+};
+export const Accessibility = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'accessibility'),
+};
 
 // ---------------------------------------------------------------------------
 // Stories

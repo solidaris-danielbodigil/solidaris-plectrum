@@ -16,7 +16,7 @@ import {
   writeStoredPresetVersion,
   type PlectrumPresetVersion,
 } from '@solidaris/plectrum';
-import { providePdsLocale, type PdsLocale } from '../src/lib/i18n';
+import { PdsLocaleService, providePdsLocale, type PdsLocale } from '../src/lib/i18n';
 import { IconRegistry, registerPlectrumIcons } from '../src/lib/icon';
 import { installStorybookToastListener } from '../src/storybook/storybook-toast';
 import { PlectrumDocsContainer } from './docs-container';
@@ -81,6 +81,7 @@ const preview: Preview = {
           providePlectrum(version),
           providePdsLocale(locale),
           provideAppInitializer(() => {
+            inject(PdsLocaleService).setLocale(locale);
             registerPlectrumIcons(inject(IconRegistry));
             // PrimeNG injects .p-button CSS on first Button create. MDX anchors
             // only wear those classes — mount a detached link button so prose

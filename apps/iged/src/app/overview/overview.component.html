@@ -1,0 +1,30 @@
+<h1 class="u-text-heading-lg o-layout o-layout--margin-0">{{ copy().overview.title }}</h1>
+
+<p-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
+  <p-tablist>
+    <p-tab value="journee">{{ copy().overview.tabDay }}</p-tab>
+    <p-tab value="indicateurs">{{ copy().overview.tabIndicators }}</p-tab>
+  </p-tablist>
+  <p-tabpanels class="o-layout o-layout--padding-block-start-3">
+    <p-tabpanel value="journee">
+      <app-overview-queues
+        [copy]="copy()"
+        [favorites]="favoriteCards()"
+        [others]="otherSections()"
+        [searchEmpty]="searchEmpty()"
+        (favoriteToggle)="toggleFavorite($event)"
+        (statusClick)="onStatusClick($event.card)"
+      />
+    </p-tabpanel>
+    <p-tabpanel value="indicateurs">
+      <app-overview-queues
+        [copy]="copy()"
+        [favorites]="favoriteCards()"
+        [others]="otherSections()"
+        [searchEmpty]="searchEmpty()"
+        (favoriteToggle)="toggleFavorite($event)"
+        (statusClick)="onStatusClick($event.card)"
+      />
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

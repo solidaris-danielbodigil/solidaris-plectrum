@@ -99,6 +99,30 @@
       <i class="bi bi-question-circle c-top-nav__action-icon" aria-hidden="true"></i>
     </button>
 
+    @if (showLocaleSwitcher()) {
+      <div
+        class="c-top-nav__locale o-flex o-flex__item o-flex__item--shrink-0 o-flex--align-items-center"
+      >
+        <span [id]="localeSwitcherLabelId" class="u-sr-only">{{
+          messages().localeSwitcher
+        }}</span>
+        <p-selectbutton
+          [options]="localeOptions()"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+          size="small"
+          [ngModel]="activeLocale()"
+          (ngModelChange)="onLocaleChange($event)"
+          [ariaLabelledBy]="localeSwitcherLabelId"
+        >
+          <ng-template #item let-option>
+            <span [attr.aria-label]="option.ariaLabel">{{ option.label }}</span>
+          </ng-template>
+        </p-selectbutton>
+      </div>
+    }
+
     @if (hasAvatarMenu()) {
       <button
         pButton

@@ -3,7 +3,7 @@
     class="c-list__header-row o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2"
   >
     <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1-5">
-      <p class="c-list__title o-layout o-layout--margin-0">{{ messages.regionLabel }}</p>
+      <p class="c-list__title o-layout o-layout--margin-0">{{ messages().regionLabel }}</p>
       <span
         class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
         >{{ documentCount() }}</span
@@ -66,8 +66,8 @@
       selectionMode="single"
       [selection]="selectedTreeNode()"
       [metaKeySelection]="false"
-      [togglerAriaLabel]="messages.toggleGroup"
-      [pt]="treePassThrough"
+      [togglerAriaLabel]="messages().toggleGroup"
+      [pt]="treePassThrough()"
       (onNodeSelect)="onTreeNodeSelect($event)"
       (onNodeExpand)="onTreeNodeExpand($event)"
       (onNodeCollapse)="onTreeNodeCollapse($event)"
@@ -103,11 +103,11 @@
             @if (groupHasFooterContent(group)) {
               <div class="c-list__dates o-flex o-layout o-layout--gap-0-25">
                 <p class="c-list__date o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
-                  {{ messages.startDate }} :
+                  {{ messages().startDate }} :
                   <span class="c-list__date-value">{{ group.startDate }}</span>
                 </p>
                 <p class="c-list__date c-list__date--end o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
-                  {{ messages.endDate }} :
+                  {{ messages().endDate }} :
                   <span class="c-list__date-value">{{ group.endDate }}</span>
                 </p>
               </div>

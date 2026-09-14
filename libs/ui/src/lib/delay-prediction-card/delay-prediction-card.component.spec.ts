@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PDS_LOCALE } from '../i18n';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 
 describe('DelayPredictionCardComponent', () => {
@@ -7,6 +7,7 @@ describe('DelayPredictionCardComponent', () => {
   let component: DelayPredictionCardComponent;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [DelayPredictionCardComponent],
     }).compileComponents();
@@ -71,9 +72,10 @@ describe('DelayPredictionCardComponent (nl)', () => {
   let fixture: ComponentFixture<DelayPredictionCardComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [DelayPredictionCardComponent],
-      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+      providers: providePdsLocale('nl'),
     }).compileComponents();
 
     fixture = TestBed.createComponent(DelayPredictionCardComponent);

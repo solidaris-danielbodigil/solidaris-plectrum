@@ -67,20 +67,20 @@ export interface ListEntryNodeData {
     '[class.c-list--flat]': '!isJourneyMode()',
     '[class.is-loading]': 'loading()',
     role: 'region',
-    '[attr.aria-label]': 'messages.regionLabel',
+    '[attr.aria-label]': 'messages().regionLabel',
     '[attr.aria-busy]': 'loading()',
   },
 })
 export class ListComponent {
   protected readonly messages = injectPdsMessages(ListMessages);
-  protected readonly treePassThrough = {
-    nodeToggleButton: { 'aria-label': this.messages.toggleGroup },
-  };
+  protected readonly treePassThrough = computed(() => ({
+    nodeToggleButton: { 'aria-label': this.messages().toggleGroup },
+  }));
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly labelTreeTogglers = afterRenderEffect(() => {
     this.treeNodes();
     this.expandedGroupIds();
-    const label = this.messages.toggleGroup;
+    const label = this.messages().toggleGroup;
     const root = this.host.nativeElement as HTMLElement;
     root.querySelectorAll('.p-tree-node-toggle-button').forEach((button) => {
       button.setAttribute('aria-label', label);

@@ -237,7 +237,7 @@ export class ProfileDrawerComponent {
   );
 
   protected readonly resolvedLabels = computed<ProfileDrawerLabelSet>(() => ({
-    ...this.messages,
+    ...this.messages(),
     ...this.labels(),
   }));
 

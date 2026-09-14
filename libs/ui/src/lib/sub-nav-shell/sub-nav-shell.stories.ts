@@ -279,6 +279,25 @@ export const NoFooter: Story = {
   },
 };
 
+export const WithSearch: Story = {
+  args: {
+    title: 'iGED',
+    showSearch: true,
+    searchPlaceholder: 'Filtrer le menu',
+    searchAriaLabel: 'Rechercher',
+    searchClearLabel: 'Effacer la recherche',
+    searchEmptyLabel: 'Aucun résultat trouvé.',
+    sections: maatschappelijkWerkSections,
+    activeItemId: 'lopend',
+    version: '0.1.001',
+    changelogUrl: '#',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('button', { name: 'Rechercher' })).toBeVisible();
+  },
+};
+
 export const Empty: Story = {
   args: {
     title: 'Empty module',

@@ -1,0 +1,58 @@
+<div class="o-layout o-layout--full-height o-flex o-layout--overflow-hidden">
+  <pds-nav-shell
+    class="o-layout o-layout--relative o-flex__item o-flex__item--shrink-0"
+    [items]="navItems"
+    [activeItemId]="activeAppId"
+  ></pds-nav-shell>
+
+  @if (subNavExpanded()) {
+    <pds-sub-nav-shell
+      [id]="subNavControlsId"
+      class="o-flex__item o-flex__item--shrink-0"
+      [title]="subNavTitle()"
+      [sections]="subNavSections()"
+      [activeItemId]="activeSubNavItemId()"
+      [showSearch]="true"
+      [searchPlaceholder]="copy().subNavSearchPlaceholder"
+      [searchAriaLabel]="copy().subNavSearchAria"
+      [searchClearLabel]="copy().searchClear"
+      [searchEmptyLabel]="copy().subNavSearchEmpty"
+    ></pds-sub-nav-shell>
+  }
+
+  <div
+    class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--min-h-0 o-layout--overflow-hidden"
+  >
+    <pds-top-nav
+      class="o-layout o-layout--full-width o-flex__item o-flex__item--shrink-0"
+      [home]="homeBreadcrumb"
+      [breadcrumbs]="breadcrumbs()"
+      [showBackButton]="showBackButton()"
+      [backLabel]="copy().back"
+      (backClicked)="onBackClick()"
+      [showSubNavToggle]="true"
+      [subNavExpanded]="subNavExpanded()"
+      [subNavControlsId]="subNavControlsId"
+      [subNavToggleLabel]="copy().subNavToggle"
+      [searchPlaceholder]="copy().searchPlaceholder"
+      [searchAriaLabel]="copy().searchAria"
+      [searchClearLabel]="copy().searchClear"
+      [helpLabel]="copy().help"
+      [showLocaleSwitcher]="true"
+      avatarInitials="IG"
+      avatarState="initials"
+      [avatarAriaLabel]="copy().avatarAria"
+      [showAvatarMenu]="true"
+      [avatarMenuAriaLabel]="copy().avatarMenu"
+      (subNavExpandedChange)="onSubNavExpandedChange($event)"
+      (searchQueryChange)="onSearchQueryChange($event)"
+      (searchSubmit)="onSearchSubmit($event)"
+    ></pds-top-nav>
+
+    <main
+      class="o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0 o-layout--min-h-0 o-layout--padding-2 o-layout--overflow-y-auto"
+    >
+      <router-outlet />
+    </main>
+  </div>
+</div>

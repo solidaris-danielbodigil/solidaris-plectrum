@@ -95,6 +95,20 @@ export const AvatarMenu: Story = {
   },
 };
 
+export const LocaleSwitcher: Story = {
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'IG',
+    showLocaleSwitcher: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText('Langue')).toBeVisible();
+    await expect(canvas.getByText('FR')).toBeVisible();
+    await expect(canvas.getByText('NL')).toBeVisible();
+  },
+};
+
 export const SearchOpen: Story = {
   args: {
     breadcrumbs: breadcrumbItems,

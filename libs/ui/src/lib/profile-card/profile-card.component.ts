@@ -235,9 +235,12 @@ export class ProfileCardComponent {
   readonly statusMenuSelect = output<MenuItem>();
 
   protected readonly titleId = `pds-profile-card-title-${nextTitleId++}`;
-  protected readonly statusActionTagPrefix = this.messages.statusActionPrefix;
-  protected readonly statusActionsMultipleLabel =
-    this.messages.statusActionsMultiple;
+  protected readonly statusActionTagPrefix = computed(
+    () => this.messages().statusActionPrefix,
+  );
+  protected readonly statusActionsMultipleLabel = computed(
+    () => this.messages().statusActionsMultiple,
+  );
   protected readonly skeletonIdentifierSlots = [1, 2, 3, 4] as const;
   protected readonly cardPanelBorderStyle = PDS_PANEL_BORDER_BOTTOM_STYLE;
 
@@ -555,17 +558,17 @@ export class ProfileCardComponent {
     }
 
     if (this.hasMultipleStatusActions()) {
-      return this.messages.statusActionCount(this.statusActionCount());
+      return this.messages().statusActionCount(this.statusActionCount());
     }
 
-    return action?.label ?? this.messages.actionFallback;
+    return action?.label ?? this.messages().actionFallback;
   }
 
   statusActionExpandAriaLabel(): string {
     const label = this.statusAction()?.label;
 
     return label
-      ? this.messages.showMenu(label)
-      : this.messages.showMenuFallback;
+      ? this.messages().showMenu(label)
+      : this.messages().showMenuFallback;
   }
 }

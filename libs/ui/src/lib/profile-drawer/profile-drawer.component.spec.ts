@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { Accordion } from 'primeng/accordion';
 import { SelectButton } from 'primeng/selectbutton';
 import { Tag } from 'primeng/tag';
-import { PDS_LOCALE } from '../i18n';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import {
   ProfileDrawerComponent,
@@ -61,6 +61,7 @@ describe('ProfileDrawerComponent', () => {
   }
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [ProfileDrawerComponent],
       providers: [
@@ -444,10 +445,11 @@ describe('ProfileDrawerComponent (nl)', () => {
   }
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [ProfileDrawerComponent],
       providers: [
-        { provide: PDS_LOCALE, useValue: 'nl' },
+        ...providePdsLocale('nl'),
         {
           provide: IconRegistry,
           useFactory: () => {

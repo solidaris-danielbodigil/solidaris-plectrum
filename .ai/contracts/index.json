@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-09T08:15:56.225Z",
+    "generated": "2026-09-14T12:06:11.317Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -16,6 +16,10 @@
       {
         "name": "icrm",
         "path": "apps/icrm"
+      },
+      {
+        "name": "iged",
+        "path": "apps/iged"
       }
     ],
     "libs": [
@@ -148,6 +152,7 @@
       "scssPath": "libs/styles/src/06-components/_components.input-clear.scss",
       "uses": [],
       "usedBy": [
+        "SubNavShell",
         "TopNav"
       ]
     },
@@ -232,7 +237,9 @@
       "bemBlock": "c-sub-nav-shell",
       "primeNg": "Accordion",
       "scssPath": "libs/styles/src/06-components/_components.sub-nav-shell.scss",
-      "uses": [],
+      "uses": [
+        "InputClear"
+      ],
       "usedBy": []
     },
     "Toolbar": {
@@ -307,6 +314,7 @@
     "InputClear": {
       "uses": [],
       "usedBy": [
+        "SubNavShell",
         "TopNav"
       ]
     },
@@ -343,7 +351,9 @@
       "usedBy": []
     },
     "SubNavShell": {
-      "uses": [],
+      "uses": [
+        "InputClear"
+      ],
       "usedBy": []
     },
     "Toolbar": {
@@ -365,7 +375,7 @@
   "summary": {
     "totalComponents": 15,
     "componentsWithMetadata": 15,
-    "relationshipsMapped": 16,
+    "relationshipsMapped": 18,
     "tokenFiles": 11,
     "primeNgMappings": 11,
     "byStatus": {

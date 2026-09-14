@@ -5,7 +5,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     name: 'Toolbar',
     category: 'molecules',
     description:
-      'Sticky-capable action row on a PrimeNG Card surface with two named slots, start and end. Layout inside the card is o-flex / o-layout mixes in the template; the SCSS owns only the sticky position and the wrap constraint.',
+      'Sticky-capable action row on a PrimeNG Card surface with two named slots, start and end. Layout inside the card is o-flex / o-layout mixes in the template; the SCSS owns only the sticky position and the wrap constraint. variant="bordered" switches the card to the existing u-border-all / card-border ring and clears the elevated --p-card-shadow.',
     type: 'container',
     path: 'libs/ui/src/lib/toolbar/toolbar.component.ts',
     primeNgComponent: 'Card',
@@ -15,7 +15,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     figmaUrl:
       'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772',
     created: '2026-09-05',
-    modified: '2026-09-09',
+    modified: '2026-09-14',
   },
   governance: {
     status: 'core',
@@ -42,6 +42,13 @@ export const ToolbarMetadata: ComponentMetadata = {
         composition:
           '<pds-toolbar class="c-affiliate-documents-toolbar">…</pds-toolbar>',
       },
+      {
+        name: 'Bordered card',
+        description:
+          'Filter rows that need a flat outlined surface use the existing bordered card chrome — not a hand-rolled border.',
+        composition:
+          '<pds-toolbar variant="bordered" [sticky]="true">…</pds-toolbar>',
+      },
     ],
     antiPatterns: [
       {
@@ -58,7 +65,7 @@ export const ToolbarMetadata: ComponentMetadata = {
   },
   anatomy: [
     { part: 'c-toolbar', role: 'Host — c-toolbar--sticky bound to the sticky input, so position: sticky sits on the scroll-ancestor boundary' },
-    { part: 'p-card', role: 'PrimeNG surface' },
+    { part: 'p-card', role: 'PrimeNG surface — default elevated; bordered adds u-border-all, --pds-color-card-border, and --p-card-shadow: none' },
     { part: 'c-toolbar__inner', role: 'o-flex wrap row with row / column gaps' },
     { part: 'c-toolbar__start', role: 'Start slot wrapper — grows, wraps its content on narrow viewports' },
     { part: 'c-toolbar__end', role: 'End slot wrapper — forced onto its own line by the SCSS wrap constraint' },
@@ -85,11 +92,31 @@ export const ToolbarMetadata: ComponentMetadata = {
         'When true (default) the toolbar sticks to the top of its scroll container.',
       required: false,
     },
+    {
+      name: 'variant',
+      type: 'ToolbarVariant',
+      default: 'default',
+      description:
+        'Card chrome. bordered applies u-border-all with --pds-color-card-border and sets --p-card-shadow to none; default keeps the elevated PrimeNG Card.',
+      required: false,
+    },
   ],
+  variants: {
+    variant: {
+      options: ['default', 'bordered'],
+      default: 'default',
+      purpose: {
+        default: 'Elevated PrimeNG Card (theme --p-card-shadow)',
+        bordered:
+          'Existing bordered card: u-border-all + --pds-color-card-border, --p-card-shadow none',
+      },
+    },
+  },
   behavior: {
-    states: ['default', 'sticky'],
+    states: ['default', 'sticky', 'bordered'],
     interactions: [
       'sticky (default true) toggles c-toolbar--sticky on the host: position: sticky against the nearest scroll container, including overflow-constrained app shells',
+      'variant="bordered" toggles c-toolbar--bordered on the host and the existing bordered card utilities on the inner p-card',
       'The toolbar renders whatever is projected into the slots and adds no behaviour of its own',
     ],
     responsive: [
@@ -109,7 +136,14 @@ export const ToolbarMetadata: ComponentMetadata = {
     ],
   },
   tokens: {
-    consumed: ['--pds-z-sticky', '--pds-color-surface-0'],
+    consumed: [
+      '--pds-z-sticky',
+      '--pds-color-surface-0',
+      '--pds-color-card-border',
+    ],
+    primeNgMappings: {
+      '--p-card-shadow': 'none when variant is bordered',
+    },
   },
   aiHints: {
     priority: 'medium',
@@ -119,13 +153,18 @@ export const ToolbarMetadata: ComponentMetadata = {
       'action row above content': 'Toolbar',
       'app navigation': 'TopNav / NavShell instead',
     },
-    keywords: ['toolbar', 'filter bar', 'action row', 'sticky'],
+    keywords: ['toolbar', 'filter bar', 'action row', 'sticky', 'bordered card'],
   },
   examples: [
     {
       name: 'default',
       description: 'Search + actions toolbar',
       code: '<pds-toolbar [sticky]="true">\n  <ng-container slot="start"><input pInputText placeholder="Search" /></ng-container>\n  <ng-container slot="end"><p-badge value="12" /></ng-container>\n</pds-toolbar>',
+    },
+    {
+      name: 'bordered',
+      description: 'Filter toolbar on the bordered PrimeNG Card',
+      code: '<pds-toolbar variant="bordered" [sticky]="true">\n  <ng-container slot="start"><input pInputText placeholder="Search" /></ng-container>\n  <ng-container slot="end"><p-badge value="12" /></ng-container>\n</pds-toolbar>',
     },
   ],
 };

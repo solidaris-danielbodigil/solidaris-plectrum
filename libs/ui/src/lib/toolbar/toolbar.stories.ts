@@ -19,7 +19,7 @@ const meta: Meta<ToolbarComponent> = {
     ...storyDesign(ToolbarMetadata.component.figmaUrl),
   },
   argTypes: argTypesFromProps(ToolbarMetadata.props ?? []),
-  args: { sticky: true },
+  args: { sticky: true, variant: 'default' },
 };
 
 export default meta;
@@ -47,7 +47,7 @@ const SLOTS = `
 export const Default: Story = {
   render: (args) => ({
     props: args,
-    template: `<pds-toolbar [sticky]="sticky">${SLOTS}</pds-toolbar>`,
+    template: `<pds-toolbar [sticky]="sticky" [variant]="variant">${SLOTS}</pds-toolbar>`,
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -81,6 +81,29 @@ export const Sticky: Story = {
     scroller!.scrollTop = 240;
     await expect(toolbar).toHaveClass('c-toolbar--sticky');
     await expect(getComputedStyle(toolbar!).position).toBe('sticky');
+  },
+};
+
+export const Bordered: Story = {
+  args: { sticky: true, variant: 'bordered' },
+  render: (args) => ({
+    props: args,
+    template: `<pds-toolbar [sticky]="sticky" variant="bordered">${SLOTS}</pds-toolbar>`,
+  }),
+  play: async ({ canvasElement }) => {
+    const toolbar = canvasElement.querySelector(
+      'pds-toolbar',
+    ) as HTMLElement | null;
+    const card = canvasElement.querySelector('p-card') as HTMLElement | null;
+
+    await expect(toolbar).toHaveClass('c-toolbar--bordered');
+    await expect(card).toHaveClass('u-border-all');
+    await expect(card?.style.getPropertyValue('--p-card-shadow').trim()).toBe(
+      'none',
+    );
+    await expect(
+      card?.style.getPropertyValue('--pds-border-color').trim(),
+    ).toBe('var(--pds-color-card-border)');
   },
 };
 

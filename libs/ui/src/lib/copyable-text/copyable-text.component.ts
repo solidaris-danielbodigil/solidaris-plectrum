@@ -45,7 +45,7 @@ export class CopyableTextComponent {
   private readonly messages = injectPdsMessages(CopyableTextMessages);
 
   protected readonly resolvedAriaLabel = computed(
-    () => this.ariaLabel() ?? this.messages.copyLabel(this.label()),
+    () => this.ariaLabel() ?? this.messages().copyLabel(this.label()),
   );
 
   async onCopy(event: Event): Promise<void> {

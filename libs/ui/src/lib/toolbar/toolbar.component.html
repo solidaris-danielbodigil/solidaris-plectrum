@@ -1,6 +1,10 @@
-<p-card>
+<p-card
+  [class.u-border-all]="bordered()"
+  [style.--pds-border-color]="bordered() ? 'var(--pds-color-card-border)' : null"
+  [style.--p-card-shadow]="bordered() ? 'none' : null"
+>
   <!-- o-flex owns display/alignment/wrapping; o-layout owns gap and padding -->
-  <div class="c-toolbar__inner o-flex o-flex--align-items-flex-start o-flex--row-wrap o-layout o-layout--row-gap-1 o-layout--column-gap-3 o-layout--padding-3">
+  <div class="c-toolbar__inner o-flex o-flex--align-items-flex-start o-flex--row-wrap o-layout o-layout--row-gap-1 o-layout--column-gap-3">
 
     <!-- Start slot: grows to fill row, wraps filter buttons below search on small viewports -->
     <div class="c-toolbar__start o-flex o-flex--align-items-flex-start o-flex--row-wrap o-layout o-layout--gap-3">

@@ -99,6 +99,70 @@
         }
       }
     },
+    "iged": {
+      "projectType": "application",
+      "root": "apps/iged",
+      "sourceRoot": "apps/iged/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apps/iged",
+            "index": "apps/iged/src/index.html",
+            "browser": "apps/iged/src/main.ts",
+            "tsConfig": "apps/iged/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "libs/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "iged:build:production"
+            },
+            "development": {
+              "buildTarget": "iged:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
     "icrm": {
       "projectType": "application",
       "root": "apps/icrm",

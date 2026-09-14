@@ -34,6 +34,9 @@ jobs:
       - name: Build iSHARE for production
         run: npx ng build ishare --configuration=production --base-href=/solidaris-plectrum/
 
+      - name: Build iGED for production
+        run: npx ng build iged --configuration=production --base-href=/solidaris-plectrum/iged/
+
       - name: Build Storybook
         run: npx ng run ui:build-storybook
         env:
@@ -41,9 +44,11 @@ jobs:
 
       - name: Assemble Pages site
         run: |
-          mkdir -p dist/pages/storybook
+          mkdir -p dist/pages/storybook dist/pages/iged
           cp -R dist/apps/ishare/browser/. dist/pages/
           cp dist/pages/index.html dist/pages/404.html
+          node tools/pages/inject-iged-404-dispatcher.mjs dist/pages/404.html
+          cp -R dist/apps/iged/browser/. dist/pages/iged/
           cp -R dist/storybook/ui/. dist/pages/storybook/
 
       - name: Upload Pages artifact

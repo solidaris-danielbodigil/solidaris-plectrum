@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PDS_LOCALE } from '../i18n';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { CopyableTextComponent } from './copyable-text.component';
 
@@ -20,6 +20,7 @@ describe('CopyableTextComponent', () => {
   let component: CopyableTextComponent;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [CopyableTextComponent],
     }).compileComponents();
@@ -122,9 +123,10 @@ describe('CopyableTextComponent (nl)', () => {
   let fixture: ComponentFixture<CopyableTextComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [CopyableTextComponent],
-      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+      providers: providePdsLocale('nl'),
     }).compileComponents();
 
     fixture = TestBed.createComponent(CopyableTextComponent);

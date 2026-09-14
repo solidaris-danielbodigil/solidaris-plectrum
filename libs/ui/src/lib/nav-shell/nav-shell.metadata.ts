@@ -13,7 +13,7 @@ export const NavShellMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.nav-shell.scss',
     figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=1-1433',
     created: '2025-01-01',
-    modified: '2026-09-09',
+    modified: '2026-09-14',
   },
   governance: {
     status: 'core',
@@ -67,7 +67,7 @@ export const NavShellMetadata: ComponentMetadata = {
       'Collapsed by default: icon-only, the width follows the icon column + padding',
       'Expands on :hover / :focus-within (CSS only): labels and wordmark fade in through a discrete display transition and the panel grows to its widest item, overlaying the content',
       'activeItemId marks the current item (is-active + aria-current="page"); when it is null the highlight falls back to the first item and follows clicks locally',
-      'itemClicked emits the NavItem; routing is left to the routerLink on the item',
+      'itemClicked emits the NavItem; in-app routing uses routerLink, sibling apps use href',
     ],
   },
 
@@ -86,7 +86,7 @@ export const NavShellMetadata: ComponentMetadata = {
       'The logo (logomark + wordmark) is aria-hidden — it is not a link',
     ],
     keyboardSupport: [
-      'Tab / Shift+Tab move between links — an item needs a routerLink to be focusable',
+      'Tab / Shift+Tab move between links — an item needs a routerLink or href to be focusable',
       'Focus inside the shell expands it (:focus-within), so keyboard users see the labels',
       'Enter activates the focused link',
     ],

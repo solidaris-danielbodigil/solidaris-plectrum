@@ -12,9 +12,10 @@ export const SubNavShellMetadata: ComponentMetadata = {
     bemBlock: 'c-sub-nav-shell',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.sub-nav-shell.scss',
-    figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1476',
+    figmaUrl:
+      'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1476',
     created: '2026-05-26',
-    modified: '2026-09-09',
+    modified: '2026-09-14',
   },
   governance: {
     status: 'core',
@@ -29,8 +30,10 @@ export const SubNavShellMetadata: ComponentMetadata = {
     commonPatterns: [
       {
         name: 'Paired with Nav Shell',
-        description: 'Sub Nav Shell renders immediately to the right of Nav Shell and shows the sections of the selected first-level item.',
-        composition: '<(pds|app|lib)-nav-shell /> <(pds|app|lib)-sub-nav-shell [title]="module" [sections]="sections" [activeItemId]="activeId" />',
+        description:
+          'Sub Nav Shell renders immediately to the right of Nav Shell and shows the sections of the selected first-level item.',
+        composition:
+          '<(pds|app|lib)-nav-shell /> <(pds|app|lib)-sub-nav-shell [title]="module" [sections]="sections" [activeItemId]="activeId" />',
       },
     ],
     antiPatterns: [
@@ -42,27 +45,57 @@ export const SubNavShellMetadata: ComponentMetadata = {
       {
         scenario: 'First-level app switching',
         reason: 'Switching between applications belongs to the first level.',
-        alternative: 'Put the apps in Nav Shell [items]; Sub Nav Shell shows the sections of the selected app.',
+        alternative:
+          'Put the apps in Nav Shell [items]; Sub Nav Shell shows the sections of the selected app.',
       },
     ],
   },
   anatomy: [
-    { part: 'c-sub-nav-shell__header', role: 'Module / app title' },
-    { part: 'c-sub-nav-shell__featured', role: 'Standalone items — sections without a label, rendered outside the accordion' },
-    { part: 'c-accordion--nav', role: 'PrimeNG accordion grouping consecutive labelled sections' },
+    {
+      part: 'c-sub-nav-shell__header',
+      role: 'Module / app title and optional scoped search',
+    },
+    {
+      part: 'c-sub-nav-shell__search',
+      role: 'Optional IconField + InputText filter for section and item labels',
+    },
+    {
+      part: 'c-sub-nav-shell__featured',
+      role: 'Standalone items — sections without a label, rendered outside the accordion',
+    },
+    {
+      part: 'c-accordion--nav',
+      role: 'PrimeNG accordion grouping consecutive labelled sections',
+    },
     { part: 'c-sub-nav-shell__items', role: 'Section item list' },
-    { part: 'c-sub-nav-shell__item', role: 'Item — a link when it has a routerLink, otherwise a button; is-active + aria-current="page", is-disabled' },
+    {
+      part: 'c-sub-nav-shell__item',
+      role: 'Item — a link when it has a routerLink, otherwise a native button; is-active + aria-current="page", is-disabled',
+    },
     { part: 'p-badge', role: 'Optional count on an item (countSeverity)' },
-    { part: 'c-sub-nav-shell__footer', role: 'Version / changelog — hidden when version is empty' },
+    {
+      part: 'c-sub-nav-shell__footer',
+      role: 'Version / changelog — hidden when version is empty',
+    },
   ],
   behavior: {
-    states: ['default', 'item-hover', 'item-active', 'item-disabled', 'section-collapsed', 'no-footer', 'empty'],
+    states: [
+      'default',
+      'item-hover',
+      'item-active',
+      'item-disabled',
+      'section-collapsed',
+      'search-open',
+      'no-footer',
+      'empty',
+    ],
     interactions: [
       'Sections without a label render as standalone items; consecutive labelled sections are grouped into one PrimeNG Accordion with several panels open at once',
       'A section with collapsed: true starts closed; expand / collapse state is then kept locally',
-      'Items with a routerLink render as links (routerLinkActive adds is-active); items without one render as buttons — both emit itemClicked',
+      'Items with a routerLink render as links (routerLinkActive adds is-active); items without one render as PrimeNG text buttons — both emit itemClicked',
       'Disabled items keep their label at reduced opacity and do not emit itemClicked',
       'The footer renders only when version is set; the changelog link is a plain text link',
+      'When showSearch is true, the header search icon expands into an IconField that filters sections and items by label',
     ],
     responsive: [
       'Fixed-width panel; the body scrolls while header and footer stay pinned',
@@ -82,7 +115,7 @@ export const SubNavShellMetadata: ComponentMetadata = {
       'Disabled items are removed from the tab order',
     ],
     contrastRequirements: [
-      'Disabled items stay visible at reduced opacity (--pds-disabled-opacity)',
+      'Disabled items stay visible at reduced opacity (--pds-disabled-opacity) and use cursor: not-allowed (--pds-cursor-disabled)',
       'A badge count complements the item label — it is never the only indication of status',
     ],
     wcagLevel: 'AA',
@@ -114,6 +147,7 @@ export const SubNavShellMetadata: ComponentMetadata = {
       '--pds-space-sub-nav-shell-footer-px',
       '--pds-radius-lg',
       '--pds-disabled-opacity',
+      '--pds-cursor-disabled',
       '--pds-focus-ring-width',
       '--pds-focus-ring-style',
       '--pds-focus-ring-color',
@@ -121,23 +155,115 @@ export const SubNavShellMetadata: ComponentMetadata = {
     ],
   },
   props: [
-    { name: 'title', type: 'string', required: false, default: "''", description: 'Module or app title in the header.' },
-    { name: 'sections', type: 'SubNavShellSection[]', required: false, default: '[]', description: 'Accordion sections and their items.' },
-    { name: 'activeItemId', type: 'string | null', required: false, default: 'null', description: 'ID of the currently active nav item.' },
-    { name: 'version', type: 'string', required: false, default: "''", description: 'Version string in the footer.' },
-    { name: 'changelogUrl', type: 'string', required: false, default: "'#'", description: 'URL for the changelog link.' },
-    { name: 'itemClicked', type: 'output<SubNavShellItem>', required: false, description: 'Emitted when a nav item is activated.' },
+    {
+      name: 'title',
+      type: 'string',
+      required: false,
+      default: "''",
+      description: 'Module or app title in the header.',
+    },
+    {
+      name: 'sections',
+      type: 'SubNavShellSection[]',
+      required: false,
+      default: '[]',
+      description: 'Accordion sections and their items.',
+    },
+    {
+      name: 'activeItemId',
+      type: 'string | null',
+      required: false,
+      default: 'null',
+      description: 'ID of the currently active nav item.',
+    },
+    {
+      name: 'version',
+      type: 'string',
+      required: false,
+      default: "''",
+      description: 'Version string in the footer.',
+    },
+    {
+      name: 'changelogUrl',
+      type: 'string',
+      required: false,
+      default: "'#'",
+      description: 'URL for the changelog link.',
+    },
+    {
+      name: 'itemClicked',
+      type: 'output<SubNavShellItem>',
+      required: false,
+      description: 'Emitted when a nav item is activated.',
+    },
+    {
+      name: 'showSearch',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description:
+        'Shows a header search that filters section and item labels.',
+    },
+    {
+      name: 'searchPlaceholder',
+      type: 'string',
+      required: false,
+      default: "'Search'",
+      description: 'Placeholder for the expanded sub-nav search field.',
+    },
+    {
+      name: 'searchAriaLabel',
+      type: 'string',
+      required: false,
+      default: "'Search'",
+      description: 'Accessible name for the sub-nav search toggle and field.',
+    },
+    {
+      name: 'searchClearLabel',
+      type: 'string',
+      required: false,
+      default: "'Clear search'",
+      description: 'Accessible name for the sub-nav search clear control.',
+    },
+    {
+      name: 'searchEmptyLabel',
+      type: 'string',
+      required: false,
+      default: "'No results found.'",
+      description: 'Copy shown when the sub-nav search matches nothing.',
+    },
   ],
   composition: {
-    nestedComponents: ['Accordion', 'Badge', 'Tooltip'],
+    nestedComponents: [
+      'Accordion',
+      'Badge',
+      'Button',
+      'Tooltip',
+      'IconField',
+      'InputText',
+      'InputClear',
+    ],
     companions: ['NavShellComponent', 'TopNavComponent'],
     slots: [],
   },
   aiHints: {
     priority: 'high',
-    context: 'Always used alongside NavShellComponent as the second navigation level. Uses PrimeNG Accordion for collapsible sections and PrimeNG Badge for counters.',
-    selectionCriteria: { useWhen: 'A module needs a grouped, collapsible secondary navigation panel' },
-    keywords: ['sub-nav', 'second-level', 'sidebar', 'navigation', 'menu', 'sections', 'accordion', 'badge'],
+    context:
+      'Always used alongside NavShellComponent as the second navigation level. Uses PrimeNG Accordion for collapsible sections and PrimeNG Badge for counters.',
+    selectionCriteria: {
+      useWhen:
+        'A module needs a grouped, collapsible secondary navigation panel',
+    },
+    keywords: [
+      'sub-nav',
+      'second-level',
+      'sidebar',
+      'navigation',
+      'menu',
+      'sections',
+      'accordion',
+      'badge',
+    ],
   },
   examples: [],
 };

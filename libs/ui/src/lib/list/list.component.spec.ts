@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PDS_LOCALE } from '../i18n';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 
 import { ListComponent } from './list.component';
 
@@ -106,6 +106,8 @@ describe('ListComponent', () => {
   let fixture: ComponentFixture<ListComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+
     await TestBed.configureTestingModule({
       imports: [ListComponent],
     }).compileComponents();
@@ -1093,9 +1095,11 @@ describe('ListComponent (nl)', () => {
   let fixture: ComponentFixture<ListComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+
     await TestBed.configureTestingModule({
       imports: [ListComponent],
-      providers: [{ provide: PDS_LOCALE, useValue: 'nl' }],
+      providers: providePdsLocale('nl'),
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListComponent);

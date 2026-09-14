@@ -3,10 +3,12 @@ import {
   Component,
   ViewEncapsulation,
   computed,
+  inject,
   input,
   output,
   signal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import type { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -15,7 +17,8 @@ import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
 import { RippleModule } from 'primeng/ripple';
-import { injectPdsMessages } from '../i18n';
+import { SelectButton } from 'primeng/selectbutton';
+import { PdsLocaleService, injectPdsMessages, type PdsLocale } from '../i18n';
 import { InputClearComponent } from '../input-clear';
 import { PlectrumAvatarComponent } from '../plectrum-avatar';
 import { PlectrumAvatarState } from '../plectrum-avatar/plectrum-avatar.types';
@@ -44,8 +47,10 @@ import { TopNavMessages } from './top-nav.i18n';
     InputClearComponent,
     InputIcon,
     InputText,
+    FormsModule,
     MenuModule,
     RippleModule,
+    SelectButton,
     PlectrumAvatarComponent,
   ],
   templateUrl: './top-nav.component.html',
@@ -58,6 +63,11 @@ import { TopNavMessages } from './top-nav.i18n';
 })
 export class TopNavComponent {
   private readonly messages = injectPdsMessages(TopNavMessages);
+  private readonly localeService = inject(PdsLocaleService);
+
+  /** When true, renders a PrimeNG SelectButton (FR / NL) before the avatar. */
+  readonly showLocaleSwitcher = input<boolean>(false);
+
   /** When true, renders a text back button before the breadcrumb. */
   readonly showBackButton = input<boolean>(false);
 
@@ -167,12 +177,24 @@ export class TopNavComponent {
   readonly avatarMenuExpanded = computed(() => this._avatarMenuOpen());
 
   readonly resolvedAvatarMenuAriaLabel = computed(
-    () => this.avatarMenuAriaLabel() ?? this.messages.userMenu,
+    () => this.avatarMenuAriaLabel() ?? this.messages().userMenu,
   );
 
   readonly resolvedBreadcrumbAriaLabel = computed(
-    () => this.breadcrumbAriaLabel() ?? this.messages.breadcrumb,
+    () => this.breadcrumbAriaLabel() ?? this.messages().breadcrumb,
   );
+
+  readonly localeSwitcherLabelId = 'top-nav-locale-label';
+
+  readonly localeOptions = computed(() => {
+    const copy = this.messages();
+    return [
+      { label: 'FR', value: 'fr' as const, ariaLabel: copy.localeFr },
+      { label: 'NL', value: 'nl' as const, ariaLabel: copy.localeNl },
+    ];
+  });
+
+  readonly activeLocale = this.localeService.locale;
 
   /** Resolved sub-navigation state — controlled input wins, otherwise use the local fallback. */
   readonly resolvedSubNavExpanded = computed(() => {
@@ -258,6 +280,10 @@ export class TopNavComponent {
 
   onHelpClick(): void {
     this.helpClicked.emit();
+  }
+
+  onLocaleChange(next: PdsLocale): void {
+    this.localeService.setLocale(next);
   }
 
   toggleAvatarMenu(event: Event, menu: { toggle: (e: Event) => void }): void {

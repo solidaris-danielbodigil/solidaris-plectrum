@@ -1,6 +1,6 @@
 <article
   class="c-delay-prediction-card o-layout o-layout--min-w-0"
-  [attr.aria-label]="messages.regionLabel"
+  [attr.aria-label]="messages().regionLabel"
 >
   @if (unavailable()) {
     <div
@@ -11,7 +11,7 @@
         aria-hidden="true"
       ></i>
       <p class="c-delay-prediction-card__unavailable-text o-layout o-layout--margin-0">
-        {{ messages.empty }}
+        {{ messages().empty }}
       </p>
     </div>
   } @else {
@@ -20,7 +20,7 @@
     >
       <div class="c-delay-prediction-card__metric o-flex__item o-flex__item--shrink-0">
         <span class="c-delay-prediction-card__value o-layout o-layout--block">{{ daysRemaining() }}</span>
-        <span class="c-delay-prediction-card__label o-layout o-layout--block">{{ messages.daysRemaining }}</span>
+        <span class="c-delay-prediction-card__label o-layout o-layout--block">{{ messages().daysRemaining }}</span>
       </div>
 
       <p-divider
@@ -32,7 +32,7 @@
         <span class="c-delay-prediction-card__value o-layout o-layout--block">{{
           predictedCloseDate()
         }}</span>
-        <span class="c-delay-prediction-card__label o-layout o-layout--block">{{ messages.predictedClose }}</span>
+        <span class="c-delay-prediction-card__label o-layout o-layout--block">{{ messages().predictedClose }}</span>
       </div>
 
       <p-divider
@@ -47,7 +47,7 @@
         severity="secondary"
         outlined
         icon="bi bi-three-dots-vertical"
-        [attr.aria-label]="messages.menu"
+        [attr.aria-label]="messages().menu"
         data-telemetry-id="delay-prediction-menu"
         (click)="onMenuClick()"
       ></button>

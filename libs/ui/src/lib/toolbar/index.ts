@@ -1,1 +1,1 @@
-export { ToolbarComponent } from './toolbar.component';
+export { ToolbarComponent, type ToolbarVariant } from './toolbar.component';

@@ -43,6 +43,12 @@
   &--full-dvh {
     height: 100dvh;
   }
+  // Opt-in paint containment — do not hang this on `--full-dvh` (iSHARE and
+  // other apps use that class). iGED applies it on app-root / app-shell so a
+  // tall `main` scroller cannot inflate `html.scrollHeight`.
+  &--contain-paint {
+    contain: paint;
+  }
   &--min-h-0 {
     min-height: 0;
   }

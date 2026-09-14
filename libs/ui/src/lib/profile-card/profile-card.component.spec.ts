@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PDS_LOCALE } from '../i18n';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { getPlectrumAvatarIllustrationSrc } from '../plectrum-avatar/plectrum-avatar.assets';
 import {
@@ -17,6 +17,7 @@ describe('ProfileCardComponent', () => {
   let fixture: ComponentFixture<ProfileCardComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [ProfileCardComponent],
       providers: [
@@ -803,10 +804,11 @@ describe('ProfileCardComponent (nl)', () => {
   let fixture: ComponentFixture<ProfileCardComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [ProfileCardComponent],
       providers: [
-        { provide: PDS_LOCALE, useValue: 'nl' },
+        ...providePdsLocale('nl'),
         {
           provide: IconRegistry,
           useFactory: () => {

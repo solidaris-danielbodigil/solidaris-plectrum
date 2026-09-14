@@ -1,0 +1,31 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.queue-card.scss
+// iGED overview queue card — composed on PrimeNG p-card.
+// Layout lives in the template (o-flex / table). This file owns hover/favorite
+// chrome already bridged in _settings.queue-card.scss, plus table rules that
+// have no o-* equivalent.
+// =============================================================================
+
+.c-queue-card__kpis {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.c-queue-card__kpis th,
+.c-queue-card__kpis td {
+  border-bottom: 1px solid var(--#{$pds-prefix}-color-card-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.c-queue-card__kpis tbody tr:last-child th,
+.c-queue-card__kpis tbody tr:last-child td {
+  border-bottom-width: 0;
+}
+
+.c-queue-card__fav .bi-star-fill {
+  color: var(--#{$pds-prefix}-color-brand);
+}

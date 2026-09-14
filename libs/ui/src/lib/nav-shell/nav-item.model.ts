@@ -14,8 +14,13 @@ export interface NavItem {
    * Defaults to 'svg' (custom brand-mark SVG via IconRegistry).
    */
   iconSource?: 'class' | 'svg';
-  /** Optional router link */
+  /** Optional in-app router link */
   routerLink?: string | string[];
+  /**
+   * Optional absolute or root-relative URL for a sibling app.
+   * When set, Nav Shell renders a plain `<a href>` (RouterLink is not applied).
+   */
+  href?: string;
   /** Optional badge count */
   badge?: number;
   /** Show an external-link trailing icon in expanded mode (Figma: box-arrow-up-right) */

@@ -1,0 +1,388 @@
+<h1 class="u-text-heading-lg o-flex__item o-flex__item--shrink-0 o-layout o-layout--margin-0">{{ copy().queue.title }}</h1>
+
+<pds-toolbar class="o-flex__item o-flex__item--shrink-0" [sticky]="true" variant="bordered">
+  <ng-container slot="start">
+    <div class="o-flex o-flex--y o-layout o-layout--gap-3 o-layout--full-width">
+      <div
+        class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--row-wrap o-layout o-layout--gap-3 o-layout--full-width"
+      >
+        <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-1">
+          <h2 class="u-text-heading-sm o-layout o-layout--margin-0">{{ copy().queue.filters }}</h2>
+          @if (activeFilterCount() > 0) {
+            <p-badge
+              [value]="activeFilterCount()"
+              [pTooltip]="copy().queue.filtersHelp"
+              tooltipPosition="bottom"
+              [attr.aria-label]="filtersCountAria()"
+            />
+          }
+        </div>
+
+        <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
+          <p-iconField>
+            <p-inputIcon class="bi bi-search" />
+            <input
+              pInputText
+              type="search"
+              role="searchbox"
+              autocomplete="off"
+              [ngModel]="draftSearch()"
+              (ngModelChange)="draftSearch.set($event)"
+              [placeholder]="searchPlaceholder()"
+              [attr.aria-label]="copy().queue.searchAria"
+            />
+            <p-inputicon>
+              <pds-input-clear
+                [visible]="!!draftSearch()"
+                [ariaLabel]="copy().queue.searchClear"
+                (clear)="draftSearch.set('')"
+              />
+            </p-inputicon>
+          </p-iconField>
+
+          @if (savedFilters().length > 0) {
+            @if (!useDropdown()) {
+              <p-selectbutton
+                [options]="filterOptions()"
+                [ngModel]="selectedFilterId()"
+                (ngModelChange)="onFilterSelect($event)"
+                optionLabel="label"
+                optionValue="value"
+                size="small"
+              />
+            } @else {
+              <p-select
+                [options]="filterOptions()"
+                [ngModel]="selectedFilterId()"
+                (ngModelChange)="onFilterSelect($event)"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="copy().queue.chooseFilter"
+                appendTo="body"
+                size="small"
+              />
+            }
+          }
+
+          <button
+            pButton
+            type="button"
+            text
+            severity="secondary"
+            [icon]="expanded() ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"
+            [attr.aria-label]="expanded() ? copy().queue.filtersCollapse : copy().queue.filtersExpand"
+            [attr.aria-expanded]="expanded()"
+            (click)="toggleExpanded()"
+          ></button>
+        </div>
+      </div>
+
+      @if (expanded()) {
+        <p-divider class="o-layout o-layout--margin-0" />
+
+        <div class="o-flex o-flex--nowrap o-layout o-layout--gap-3 o-layout--full-width">
+          @for (field of autocompleteFilters; track field.id) {
+            <pds-form-field
+              class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
+              [label]="autocompleteLabel(field.id)"
+              [inputId]="'queue-filter-' + field.id"
+            >
+              <p-autocomplete
+                [inputId]="'queue-filter-' + field.id"
+                [(ngModel)]="field.selectedValues"
+                (ngModelChange)="onFilterDraftChange()"
+                [suggestions]="suggestions[field.id]"
+                (completeMethod)="onAutocompleteSuggest($event, field.id)"
+                [multiple]="true"
+                [dropdown]="true"
+                [forceSelection]="true"
+                appendTo="body"
+                fluid
+              />
+            </pds-form-field>
+          }
+        </div>
+
+        <p-divider class="o-layout o-layout--margin-0" />
+
+        <div class="o-flex o-flex--nowrap o-layout o-layout--gap-3 o-layout--full-width">
+          @for (toggle of toggleFilters; track toggle.id) {
+            <pds-form-field
+              class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
+              [label]="toggleLabel(toggle.id)"
+              [inputId]="'queue-toggle-' + toggle.id"
+            >
+              <p-toggleswitch
+                [inputId]="'queue-toggle-' + toggle.id"
+                [(ngModel)]="toggle.value"
+                (ngModelChange)="onFilterDraftChange()"
+              />
+            </pds-form-field>
+          }
+        </div>
+
+        <p-divider class="o-layout o-layout--margin-0" />
+
+        <div class="o-flex o-flex--row-wrap o-flex--align-items-center o-layout o-layout--gap-2">
+          <button
+            pButton
+            type="button"
+            [label]="copy().queue.apply"
+            icon="bi bi-check-lg"
+            (click)="onApply()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            [label]="copy().queue.saveAndApply"
+            icon="bi bi-floppy"
+            (click)="onSaveAndApply()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            [label]="copy().queue.rename"
+            icon="bi bi-pencil"
+            [disabled]="!hasSelectedFilter()"
+            (click)="onRename()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            [label]="copy().queue.delete"
+            icon="bi bi-trash3"
+            [disabled]="!hasSelectedFilter()"
+            (click)="onDelete()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            [label]="copy().queue.cancel"
+            icon="bi bi-x-lg"
+            (click)="onCancel()"
+          ></button>
+        </div>
+      }
+    </div>
+  </ng-container>
+</pds-toolbar>
+
+<div
+  class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0"
+>
+  <p-table
+    class="c-datatable o-layout o-layout--full-width o-layout--full-height o-layout--min-h-0"
+    [value]="rows()"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 25, 40]"
+    [paginatorDropdownAppendTo]="overlayAppendTo"
+    [scrollable]="true"
+    scrollHeight="flex"
+    [pt]="tablePassThrough"
+    [rowHover]="true"
+    dataKey="id"
+    sortMode="single"
+  >
+    <ng-template #paginatorleft>
+      <p-tag [value]="resultsCountLabel()" severity="secondary" />
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        @for (col of sortableColumns(); track col.field) {
+          <th scope="col" [pSortableColumn]="col.field">
+            <span
+              class="o-flex o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-1 o-layout--full-width"
+            >
+              <span>{{ col.label }}</span>
+              <p-sortIcon [field]="col.field" />
+            </span>
+          </th>
+        }
+        <th scope="col" class="c-datatable__actions-col">
+          <span class="u-sr-only">{{ copy().queue.rowActions }}</span>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-row>
+      <tr>
+        <td>{{ row.oa }}</td>
+        <td>{{ row.ter }}</td>
+        <td>{{ row.source }}</td>
+        <td>{{ row.identification }}</td>
+        <td class="c-datatable__cell-link">
+          <p-button link [label]="row.nom" (onClick)="onOpenDocument(row)" />
+        </td>
+        <td class="c-datatable__cell-link">
+          <p-button link [label]="row.type" (onClick)="onOpenDocument(row)" />
+        </td>
+        <td>{{ row.dateReception }}</td>
+        <td>{{ row.dateEntree }}</td>
+        <td>{{ row.dateEtat }}</td>
+        <td>
+          <p-tag [value]="statusLabel(row.etat)" [severity]="statusSeverity(row.etat)" />
+        </td>
+        <td class="c-datatable__actions-col">
+          <div
+            class="c-datatable__row-actions o-flex o-flex--align-items-center o-layout o-layout--gap-1 o-layout--padding-1"
+          >
+            @for (action of rowActions; track action.id) {
+              <button
+                pButton
+                type="button"
+                text
+                rounded
+                [icon]="action.icon"
+                [attr.aria-label]="rowActionLabel(action.id)"
+                [pTooltip]="rowActionLabel(action.id)"
+                tooltipPosition="top"
+              ></button>
+            }
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="11">{{ copy().queue.empty }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [header]="copy().queue.saveFilterTitle"
+  [visible]="showSaveDialog()"
+  (visibleChange)="showSaveDialog.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [appendTo]="overlayAppendTo"
+>
+  <pds-form-field [label]="copy().queue.filterName" inputId="save-filter-name">
+    <input
+      id="save-filter-name"
+      pInputText
+      type="text"
+      class="o-layout o-layout--full-width"
+      [ngModel]="saveFilterName()"
+      (ngModelChange)="saveFilterName.set($event)"
+      [placeholder]="copy().queue.filterNamePlaceholder"
+      (keydown.enter)="duplicateExists() ? onReplace() : onConfirmSave()"
+    />
+  </pds-form-field>
+  @if (duplicateExists()) {
+    <p class="u-text-body-sm o-layout o-layout--margin-0">{{ copy().queue.duplicateHint }}</p>
+  }
+  <ng-template #footer>
+    <div class="o-flex o-flex--justify-content-flex-end o-layout o-layout--gap-2">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="copy().queue.cancel"
+        (click)="showSaveDialog.set(false)"
+      ></button>
+      @if (duplicateExists()) {
+        <button
+          pButton
+          type="button"
+          [label]="copy().queue.replace"
+          icon="bi bi-arrow-repeat"
+          (click)="onReplace()"
+        ></button>
+      } @else {
+        <button
+          pButton
+          type="button"
+          [label]="copy().queue.save"
+          icon="bi bi-floppy"
+          [disabled]="!saveFilterName().trim()"
+          (click)="onConfirmSave()"
+        ></button>
+      }
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [header]="copy().queue.deleteFilterTitle"
+  [visible]="showDeleteDialog()"
+  (visibleChange)="showDeleteDialog.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [appendTo]="overlayAppendTo"
+>
+  <p class="u-text-body-sm o-layout o-layout--margin-0">{{ deleteConfirmMessage() }}</p>
+  <ng-template #footer>
+    <div class="o-flex o-flex--justify-content-flex-end o-layout o-layout--gap-2">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="copy().queue.cancel"
+        (click)="showDeleteDialog.set(false)"
+      ></button>
+      <button
+        pButton
+        type="button"
+        severity="danger"
+        [label]="copy().queue.delete"
+        icon="bi bi-trash3"
+        (click)="onConfirmDelete()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [header]="copy().queue.renameFilterTitle"
+  [visible]="showRenameDialog()"
+  (visibleChange)="showRenameDialog.set($event)"
+  [modal]="true"
+  [closable]="true"
+  [appendTo]="overlayAppendTo"
+>
+  <pds-form-field [label]="copy().queue.newName" inputId="rename-filter-name">
+    <input
+      id="rename-filter-name"
+      pInputText
+      type="text"
+      class="o-layout o-layout--full-width"
+      [ngModel]="renameFilterName()"
+      (ngModelChange)="renameFilterName.set($event)"
+      [placeholder]="copy().queue.filterNamePlaceholder"
+      (keydown.enter)="onConfirmRename()"
+    />
+  </pds-form-field>
+  @if (renameDuplicateExists()) {
+    <p class="u-text-body-sm o-layout o-layout--margin-0">{{ copy().queue.renameDuplicateHint }}</p>
+  }
+  <ng-template #footer>
+    <div class="o-flex o-flex--justify-content-flex-end o-layout o-layout--gap-2">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="copy().queue.cancel"
+        (click)="showRenameDialog.set(false)"
+      ></button>
+      <button
+        pButton
+        type="button"
+        [label]="copy().queue.rename"
+        icon="bi bi-pencil"
+        [disabled]="!renameFilterName().trim() || renameDuplicateExists()"
+        (click)="onConfirmRename()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
