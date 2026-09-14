@@ -37,7 +37,7 @@ export default {
     'o-layout--full-dvh': {
       name: '.o-layout--full-dvh',
       description:
-        'Sets height: 100dvh — full dynamic viewport height (mobile-aware)',
+        'Sets height: 100dvh and contain: paint — viewport box that does not expand the document scrollbar',
       table: { category: 'Dimensions' },
     },
     'o-layout--min-h-0': {

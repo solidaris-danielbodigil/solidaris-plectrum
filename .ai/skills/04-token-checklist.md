@@ -81,6 +81,7 @@ Sizes: `2xl`, `xl`, `lg`, `md`, `sm`, `xs`
 | Focus ring width | `--pds-focus-ring-width` | `--pds-focus-ring-width` |
 | Focus ring offset | `--pds-focus-ring-offset` | `--pds-focus-ring-offset` |
 | Disabled opacity | `--pds-disabled-opacity` | `--pds-disabled-opacity` |
+| Disabled cursor | `--pds-cursor-disabled` | `--pds-cursor-disabled` |
 
 ---
 

@@ -68,7 +68,7 @@
 .c-affiliate-details__category-tab {
   &--disabled {
     opacity: var(--#{$pds-prefix}-disabled-opacity);
-    cursor: not-allowed;
+    cursor: var(--#{$pds-prefix}-cursor-disabled);
     color: var(--#{$pds-prefix}-color-text-muted);
   }
 }
@@ -82,7 +82,7 @@
 .c-affiliate-details__category-eye {
   &--disabled {
     opacity: var(--#{$pds-prefix}-disabled-opacity);
-    cursor: not-allowed;
+    cursor: var(--#{$pds-prefix}-cursor-disabled);
     pointer-events: none;
   }
 }

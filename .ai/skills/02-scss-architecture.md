@@ -46,7 +46,7 @@ libs/styles/src/
 │   ├── _settings.shadows.scss           --pds-shadow-*
 │   ├── _settings.transitions.scss       --pds-transition-*
 │   ├── _settings.focus.scss             --pds-focus-ring-*
-│   ├── _settings.globals.scss           --pds-disabled-opacity, --pds-icon-size
+│   ├── _settings.globals.scss           --pds-disabled-opacity, --pds-cursor-disabled, --pds-icon-size
 │   ├── _settings.grid.scss              SCSS maps consumed by 05-objects
 │   ├── _settings.breakpoints.scss       SCSS maps consumed by 02-tools
 │   └── _settings.{primeng-component}.scss  PrimeNG token bridge (e.g. _settings.accordion.scss)
@@ -88,8 +88,9 @@ libs/styles/src/
 │   ├── _utilities.core.scss             barrel
 │   └── _utilities.utilities.scss
 │
-├── 08-trumps/                           ← Storybook / override styles
+├── 08-trumps/                           ← Global overrides that must win (disabled cursor) + Storybook
 │   ├── _trumps.core.scss                barrel
+│   ├── _trumps.disabled.scss            --pds-cursor-disabled SSOT
 │   └── _trumps.storybook.scss
 │
 └── main.scss                            ← ITCSS entry point

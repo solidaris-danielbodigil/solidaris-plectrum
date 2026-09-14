@@ -11,23 +11,13 @@
 
 .p-autocomplete-input-multiple[data-p~='small'] {
   font-size: var(--p-autocomplete-sm-font-size);
-  padding-block: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  padding-block: var(--p-autocomplete-sm-padding-y);
   padding-inline: var(--p-autocomplete-sm-padding-x);
-  gap: calc(var(--p-autocomplete-sm-padding-y) / 2);
+  gap: var(--p-autocomplete-sm-padding-y);
 
   &:has(.p-autocomplete-chip) {
-    padding-inline-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
-    padding-inline-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
-  }
-
-  .p-autocomplete-chip.p-chip {
-    padding-block-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
-    padding-block-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
-  }
-
-  .p-autocomplete-input-chip {
-    padding-block-start: calc(var(--p-autocomplete-sm-padding-y) / 2);
-    padding-block-end: calc(var(--p-autocomplete-sm-padding-y) / 2);
+    padding-inline-start: var(--p-autocomplete-sm-padding-y);
+    padding-inline-end: var(--p-autocomplete-sm-padding-x);
   }
 
   .p-autocomplete-input-chip input {
@@ -37,23 +27,13 @@
 
 .p-autocomplete-input-multiple[data-p~='large'] {
   font-size: var(--p-autocomplete-lg-font-size);
-  padding-block: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  padding-block: var(--p-autocomplete-lg-padding-y);
   padding-inline: var(--p-autocomplete-lg-padding-x);
-  gap: calc(var(--p-autocomplete-lg-padding-y) / 2);
+  gap: var(--p-autocomplete-lg-padding-y);
 
   &:has(.p-autocomplete-chip) {
-    padding-inline-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
-    padding-inline-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
-  }
-
-  .p-autocomplete-chip.p-chip {
-    padding-block-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
-    padding-block-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
-  }
-
-  .p-autocomplete-input-chip {
-    padding-block-start: calc(var(--p-autocomplete-lg-padding-y) / 2);
-    padding-block-end: calc(var(--p-autocomplete-lg-padding-y) / 2);
+    padding-inline-start: var(--p-autocomplete-lg-padding-y);
+    padding-inline-end: var(--p-autocomplete-lg-padding-x);
   }
 
   .p-autocomplete-input-chip input {

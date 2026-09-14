@@ -23,6 +23,7 @@
 12. [Scroll Affordance](#12-scroll-affordance)
 13. [Global Parity](#13-global-parity)
 14. [Navigation Shell Exceptions](#14-navigation-shell-exceptions)
+15. [Disabled cursor](#15-disabled-cursor)
 
 ---
 
@@ -199,3 +200,20 @@ Allowed without approval:
 ## 14. Navigation Shell Exceptions
 
 `c-accordion--nav` uses a transparent accordion bridge for nav chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.
+
+---
+
+## 15. Disabled cursor
+
+Disabled interactive controls must show `cursor: not-allowed`:
+
+- native `:disabled` / `[disabled]`
+- `[aria-disabled="true"]`
+- PrimeNG `.p-disabled`
+- SubNav disabled items (`.is-disabled` buttons and links)
+
+**SSOT:** `--pds-cursor-disabled` in `01-settings/_settings.globals.scss`, applied once in `08-trumps/_trumps.disabled.scss`. Do not re-declare `cursor: not-allowed` per component.
+
+Allowed PrimeNG exception (cursor only): the trump may target `.p-disabled` and restore `pointer-events: auto` so the cursor can show — no `!important`, no other `.p-button:disabled` restyle.
+
+Do not set `pointer-events: none` on disabled SubNav items; that hides the not-allowed cursor. Clicks stay blocked by `disabled` / `aria-disabled` + the click guard.

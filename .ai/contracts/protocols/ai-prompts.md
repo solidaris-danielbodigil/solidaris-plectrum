@@ -150,7 +150,7 @@ Token layers:
 - _settings.shadows.scss               — --pds-shadow-*
 - _settings.transitions.scss           — --pds-transition-*
 - _settings.focus.scss                 — --pds-focus-ring-*
-- _settings.globals.scss               — --pds-disabled-opacity, --pds-icon-size, --pds-anchor-gutter
+- _settings.globals.scss               — --pds-disabled-opacity, --pds-cursor-disabled, --pds-icon-size, --pds-anchor-gutter
 - _settings.{primeng-component}.scss   — PrimeNG --p-* token bridge (e.g. _settings.accordion.scss)
 
 Bridge pattern (preferred):
