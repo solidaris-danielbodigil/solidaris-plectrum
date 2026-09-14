@@ -62,19 +62,24 @@ export const Usage = {
     donts: [
       {
         title: 'An unconstrained box',
-        detail: 'Without a capped height or width the element never scrolls, so the fade never appears.',
+        detail:
+          'Without a capped height or width the element never scrolls, so the fade never appears.',
         alternative:
           'Constrain the scroller, then add the matching overflow class.',
       },
       {
         title: 'Fading a PrimeNG internal (.p-card-body, .p-datatable-wrapper)',
-        detail: 'We do not own that node; doubled selectors break with the next PrimeNG release.',
-        alternative: 'An owned wrapper on our element, then o-scroll-shadow on that wrapper.',
+        detail:
+          'We do not own that node; doubled selectors break with the next PrimeNG release.',
+        alternative:
+          'An owned wrapper on our element, then o-scroll-shadow on that wrapper.',
       },
       {
         title: 'A JS scroll listener or a handmade box-shadow fade',
-        detail: 'The object is pure CSS (scroll-timeline). A second implementation will drift.',
-        alternative: 'o-scroll-shadow / o-scroll-shadow--inline, or the mixin on a container you cannot class.',
+        detail:
+          'The object is pure CSS (scroll-timeline). A second implementation will drift.',
+        alternative:
+          'o-scroll-shadow / o-scroll-shadow--inline, or the mixin on a container you cannot class.',
       },
     ],
   }),
@@ -96,8 +101,7 @@ const inlineChips = (count: number) =>
   ).join('');
 
 /** Overflow containers with no focusable child need a tab stop (WCAG 2.1.1). */
-const keyboardScroll = (label: string) =>
-  `tabindex="0" aria-label="${label}"`;
+const keyboardScroll = (label: string) => `tabindex="0" aria-label="${label}"`;
 
 /** Visual Do / Don't — real object classes on constrained PrimeNG chip stacks. */
 export const UsageObjects = {
