@@ -14,7 +14,11 @@ Related pages:
 - [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP tools
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 
-Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: a **proposal to the core design-system team**, not a scaffold. The core team answers within the triage below; nobody waits for the core team to build.
+Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: check the catalogue, then a **proposal to the core design-system team**, not a scaffold. Open a [proposal issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). The core team answers within the triage below; nobody waits for the core team to build.
+
+<Unstyled>
+  <Story of={Figures.ProposeEarly} />
+</Unstyled>
 
 <Unstyled>
   <Story of={Figures.DevLoop} />
@@ -37,11 +41,19 @@ Application teams migrating to Plectrum need variants the system does not have y
   rows={[
     ['It already exists — PrimeNG, a Core component, a token', 'Nowhere new. Use it; the docs page gets the missing example if that is why you missed it', 'Design-system team', 'Core'],
     ['System-level — a second application will need it, or it is a variant of a Core component', 'libs/ui / libs/styles / the UI Kit Component collection, through the normal pull request and design-system review', 'Design-system team', 'Core'],
-    ['App-specific — only your screens need it', 'Your application layer: Patterns/{App} in Storybook, owner: <app> in the metadata, tokens in 01-settings/_settings.{feature}.scss', 'Application team', 'Candidate or App-specific'],
+    ['App-specific — only your screens need it', 'The application team builds and owns it: Patterns/{App} in Storybook, owner: <app>, tokens in 01-settings/_settings.{feature}.scss. Promotion is optional and later — a Candidate is not a core backlog', 'Application team', 'Candidate or App-specific'],
   ]}
 />
 
 Running Storybook locally is never the drift risk — nothing leaves a branch without a pull request and the CI gates. The risk is building before the decision, or a code-owned token teaching Figma after the fact. Both are what the Propose and Review steps exist for.
+
+## Already built it?
+
+If an application team already designed or coded something without a proposal, open the [same issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml) and attach what exists. The core team still decides — rewrite onto PrimeNG or Core, keep it App-specific, or promote later. It does not land as Core and it is not added to a core backlog by default.
+
+<Unstyled>
+  <Story of={Figures.AlreadyBuilt} />
+</Unstyled>
 
 ## Application layer
 
@@ -57,7 +69,7 @@ Every component docs page opens with two badges from its `.metadata.ts` `governa
   headers={['Status', 'Meaning', 'Who may import it', 'What changes it']}
   rows={[
     ['Core', 'Generic, owned by the design-system team. Filed under Custom components or Shell', 'Every application', 'Deprecation, by the core team'],
-    ['Candidate', 'Built for one application and flagged for promotion. Filed under Patterns/{App}', 'The owning application; others ask the core team first', 'Promotion to Core, or settling as App-specific'],
+    ['Candidate', 'Built for one application. Filed under Patterns/{App}. The owning team keeps it — a Candidate badge is not a core-team ticket', 'The owning application; others ask the core team first', 'Promotion to Core only if the core team chooses, or settling as App-specific'],
     ['App-specific', 'Owned by one application for its own screens. Documented here, not part of the design-system contract', 'The owning application only', 'A second application needing it — which reopens the proposal'],
     ['Deprecated', 'Scheduled for removal; the note names the replacement or the reason', 'Nobody new', 'Removal in a later release, after usages migrated'],
   ]}
@@ -113,7 +125,7 @@ Node **20.19+, 22.12+ or 24** — the range Angular 21 supports. CI (`ci.yml`) r
 
 ## Create a component
 
-Only after the core team's decision. Then:
+Only after the core team's decision on a [proposal issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Then:
 
 ```bash
 npm run pds:component -- --owner=design-system   # core team: status core

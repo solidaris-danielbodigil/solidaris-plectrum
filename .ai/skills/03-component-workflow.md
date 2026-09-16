@@ -20,9 +20,10 @@ Follow this sequence **every time** before writing any code:
 3. **If Figma maps to a PrimeNG primitive** → use `p-*` with default theme styles; layout via `o-layout`/`o-flex` only (see `.ai/rules/04-primeng.md` §5)
 4. **Check `contracts/index.json`** → does a similar component already exist in `libs/ui`?
 5. **When `npm run storybook` is up, Storybook MCP `docs-list` / `docs-show`** → confirm the live catalogue. MCP does not scaffold.
-6. **Check `01-settings/`** → which required tokens already exist? Which are missing?
-7. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
-8. Only then → scaffold and implement
+6. **If none cover the need → propose** (GitHub issue template `proposal.yml`) and wait for *exists / system-level / app-specific*. Do not scaffold on a guess. Already built without asking → the same issue, attach what exists.
+7. **Check `01-settings/`** → which required tokens already exist? Which are missing?
+8. **Add missing tokens** to the correct `01-settings` file before writing any SCSS
+9. Only then → scaffold and implement (`npm run pds:component`)
 
 ---
 
@@ -62,7 +63,7 @@ npm run pds:component -- --owner=ishare          # application team → 'candida
 
 This creates the component folder (no colocated stylesheet), the metadata contract with its `governance` block, the `_components.{name}.scss` partial with its core-barrel `@forward`, and the Storybook story template — then regenerates `.ai/contracts/index.json`.
 
-The owner is not a guess: it is the core team's answer to the proposal (`protocols/component-creation.md` → Pre-flight 0). Missing decision → `.ai/questions/`, not a scaffold.
+The owner is not a guess: it is the core team's answer to the proposal (`protocols/component-creation.md` → Pre-flight 0; GitHub issue template `proposal.yml`). Missing decision → `.ai/questions/`, not a scaffold.
 
 ---
 

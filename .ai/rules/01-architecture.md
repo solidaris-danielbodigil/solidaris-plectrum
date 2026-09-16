@@ -45,7 +45,7 @@ Being in `libs/ui` does not make a component part of the design system. `governa
 - `candidate` / `app` — owned by an application team (`ishare`, `icrm`); titled `Patterns/{App}/…`; other applications propose instead of importing
 - `deprecated` — scheduled for removal, `note` names the replacement
 
-Every component starts as a proposal to the core design-system team, which answers *exists / system-level / app-specific*.
+Every component starts as a proposal to the core design-system team (GitHub issue template `proposal.yml`), which answers *exists / system-level / app-specific*. Check Plectrum-themed PrimeNG and Core `pds-*` first; do not scaffold on a guess. A Candidate is not a core-team ticket — the owning app keeps it until the core team *chooses* to promote.
 Promotion (`candidate` → `core`) is a core-team move, not a rename: generic API, tokens into shared settings, Storybook title into the core sections, then the Figma component from the repo on a branch (`docs/component-promotion.md`).
 
 ---

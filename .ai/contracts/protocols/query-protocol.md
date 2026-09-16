@@ -52,8 +52,9 @@ Do not invent a Control that is missing from `.metadata.ts` `props`. After `stor
 3. Check index.json → components section (always; offline)
 4. When npm run storybook is up → docs-list / docs-show the catalogue
 5. If match found → read its .metadata.ts → check if it covers the use case
-6. If none cover it → npm run pds:component (MCP does not scaffold)
-7. After the stub → docs-show a sibling (Copyable Text, Form Field) and copy that CSF + MDX shape
+6. If none cover it → open a proposal issue (`.github/ISSUE_TEMPLATE/proposal.yml`) and wait for exists / system-level / app-specific. Do not scaffold on a guess.
+7. Only then → npm run pds:component (MCP does not scaffold)
+8. After the stub → docs-show a sibling (Copyable Text, Form Field) and copy that CSF + MDX shape
 ```
 
 ### "How do I write stories for this component?"

@@ -10,62 +10,86 @@ const meta: Meta = {
 
 export default meta;
 
+export const ProposeEarly: StoryObj = calloutStory({
+  tone: 'warning',
+  title: 'Propose before code — a Candidate is not a core-team ticket',
+  items: [
+    'Look at themed PrimeNG, then Core components. If neither fits, open a proposal. Do not start a new component on a guess.',
+    'Talking first is cheaper than two teams building the same thing, and cheaper than the core team inheriting work they never agreed to.',
+    'If you build a Candidate, your team owns it. Another app that needs it opens a new proposal — they do not import yours.',
+  ],
+});
+
+export const AlreadyBuilt: StoryObj = calloutStory({
+  tone: 'info',
+  title: 'Already built it without asking?',
+  items: [
+    'Open the same proposal and attach what you already have — a screen, a local component, or a Figma frame.',
+    'The core team still decides: switch to what already exists, keep it as yours, or promote it later.',
+    'It does not become Core automatically, and it does not land on the core team’s backlog.',
+  ],
+});
+
 export const DevLoop: StoryObj = stepsStory([
+  {
+    who: 'Anyone',
+    tone: 'design',
+    title: 'Check the catalogue',
+    detail:
+      'Look in the theme gallery first (PrimeNG with the Plectrum theme), then at Core components on Component status. If something already does the job, use it. If the docs were just hard to find, add an example on that page instead of inventing a new component.',
+    links: [
+      { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
+      { label: 'Component status', path: '/docs/docs-component-status--docs' },
+    ],
+  },
   {
     who: 'Anyone',
     tone: 'neutral',
     title: 'Propose',
     detail:
-      'Before any code: the screen or need, the Figma node or mock, and whether it is specific to your application. Send it to the core design-system team.',
+      'If nothing in the catalogue covers the need, open a GitHub proposal. Write what the screen must do, which PrimeNG or Core components you already tried, and attach a Figma link or mock. Do not start building until the core team answers.',
   },
   {
     who: 'Core team',
     tone: 'design',
     title: 'Decide',
     detail:
-      'Three possible answers, none of them a waiting list: it already exists (use it), it is system-level (the core team takes it, pairing with you if needed), or it is app-specific (you build it in your application layer as a candidate).',
+      'The core team answers in one of three ways: it already exists (use that), it belongs in the design system (they build it, with you if needed), or it is only for your app (you build it and you own it).',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Set up',
     detail:
-      'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
+      'Clone the repo, run npm install and npm run storybook. The catalogue is at localhost:6006. Local work stays on your machine until you open a pull request.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Scaffold',
     detail:
-      'npm run pds:component -- --owner=<team> creates the component, stories, metadata contract with its governance block, the 06-components partial with its @forward, and regenerates the index. An application owner scaffolds a candidate, the core team scaffolds core.',
-  },
-  {
-    who: 'Dev',
-    tone: 'design',
-    title: 'Check the sources first',
-    detail:
-      'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Storybook MCP (docs-list) when npm run storybook is up: is it already in this catalogue? Custom code only when none cover the need.',
+      'Only after the decision. Run npm run pds:component -- --owner=<team>. That creates the files, stories and metadata. Use --owner=design-system for Core, or your app name (ishare, icrm) for a Candidate your team will own.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Implement in Storybook',
     detail:
-      'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
+      'Build it here first: tokens, then styles, layout classes in the template, one story per state. An application should not use it until it looks right in Storybook.',
   },
   {
     who: 'Core team',
     tone: 'design',
     title: 'Review',
     detail:
-      'One developer review plus the design-system review for anything under libs/ (rule 07 §3). Medium and high-risk token changes need design and technical review. Code-owned tokens are proposed to Figma and accepted before the merge, not after.',
+      'Every pull request needs a developer review. Changes under libs/ also need a design-system review. New tokens go to Figma and get accepted before merge, not after.',
   },
   {
     who: 'CI',
     tone: 'neutral',
     title: 'Ship through the gates',
     detail:
-      'Token audits, generated-file diffs (tokens, changelog, contracts index), build, unit tests, story tests, pack smoke. A changeset records the bump; the release workflow versions and publishes the packages, and applications receive bump pull requests.',
+      'CI checks tokens, generated files, tests and Storybook. A changeset records the version bump. After release, applications get an upgrade pull request.',
   },
 ]);
 
@@ -86,8 +110,8 @@ export const Roles: StoryObj = cardsStory(
       tone: 'app',
       title: 'Owns its screens',
       items: [
-        'Proposes first — a Storybook page is never the first move',
-        'Builds app-specific components in its own layer, as candidates',
+        'Use themed PrimeNG and Core first; propose a gap — do not hand the core team a finished candidate',
+        'Builds app-specific work in its own layer, as a Candidate it owns',
         'Never adds primitives or semantic tokens; a missing token is a proposal',
       ],
     },

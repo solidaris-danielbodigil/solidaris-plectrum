@@ -111,6 +111,14 @@ export class App {}
 
 PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris/ui` — [Component status](?path=/docs/docs-component-status--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
 
+## Before you invent
+
+Screens start from what already exists. A gap is a proposal, not a new component — [Contribute](?path=/docs/get-started-contribute--docs) is the intake.
+
+<Unstyled>
+  <Story of={Figures.BeforeYouInvent} />
+</Unstyled>
+
 ## Rules for application code
 
 <DocsTable
@@ -118,6 +126,7 @@ PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/pr
   rows={[
     ['CSS is the API', 'Consume var(--pds-*) and the o-/c-/u- classes. Never import PrimeNG theme helpers ($dt, usePreset) at runtime'],
     ['No token copies', 'If a value is missing, request it in the design-system repo — do not inline it'],
+    ['No silent duplicates', 'Do not invent a local component or token that duplicates the catalogue. If PrimeNG and Core do not cover the need, [propose](?path=/docs/get-started-contribute--docs) before building'],
     ['Version bumps as PRs', 'Once the packages publish, copy tools/consumers/renovate.json (or dependabot.yml) so upgrades arrive as reviewed pull requests'],
     ['Lint your usage (optional)', 'Install @solidaris/tokens-cli and run pds-tokens-lint in app CI — it fails hardcoded hex/px and unknown --pds-* names'],
   ]}

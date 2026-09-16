@@ -71,6 +71,13 @@ Figma desktop → Plugins → Manage plugins → Plectrum tokens → Publish →
 Organization-plan internal plugins skip Figma's Community review. Any member can publish; only the
 original publisher can later change access.
 
+Upload these on the **Choose some images** step:
+
+| Slot      | Size         | File                                                          |
+| --------- | ------------ | ------------------------------------------------------------- |
+| Icon      | 128 × 128 px | [`publish/icon-128.png`](publish/icon-128.png)                 |
+| Thumbnail | 1920 × 1080  | [`publish/thumbnail-1920x1080.png`](publish/thumbnail-1920x1080.png) |
+
 ## Guards
 
 - `figma.fileKey` missing or equal to the main file → refuse

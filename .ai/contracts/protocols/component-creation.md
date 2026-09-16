@@ -4,7 +4,7 @@
 
 0. Confirm the **core-team decision and owner**. Every component starts as a proposal to the
    design-system team; the answer is one of _exists / system-level / app-specific_
-   (Storybook → Get started / Contribute). If the decision or the owner is missing, write
+   (Storybook → Get started / Contribute; GitHub issue template `proposal.yml`). If the decision or the owner is missing, write
    `.ai/questions/{date}-{component}-owner.md` and stop — do not scaffold on a guess.
 1. Query **PrimeNG MCP** — does a component already exist?
 2. Query **Figma MCP** — extract design specs from Plectrum UI Kit (tokens, spacing, typography, states)
@@ -14,7 +14,7 @@
 5. Check **`libs/styles/src/01-settings/`** — do the required tokens already exist?
    - If missing → add them to the correct `01-settings` file **first**, before writing any SCSS
    - Application-owned work aliases semantic roles only — never a new primitive or semantic role
-6. If all clear → proceed with creation (`npm run pds:component`)
+6. If all clear and the proposal is answered → proceed with creation (`npm run pds:component`)
 
 ## Governance
 

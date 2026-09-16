@@ -57,3 +57,35 @@ export const InstallFlow: StoryObj = stepsStory([
     ],
   },
 ]);
+
+/** Check, then ask, then maybe build — the default before inventing. */
+export const BeforeYouInvent: StoryObj = stepsStory([
+  {
+    who: 'App team',
+    tone: 'app',
+    title: 'Use Plectrum-themed PrimeNG',
+    detail:
+      'Start in the theme gallery. Most screens are a PrimeNG control with the Plectrum theme, plus layout classes.',
+    links: [{ label: 'Theme gallery', path: '/docs/primeng-actions--docs' }],
+  },
+  {
+    who: 'App team',
+    tone: 'app',
+    title: 'Use a Core pds-* component',
+    detail:
+      'If PrimeNG is not enough, import a Core component from @solidaris/ui. Component status lists each one and who may use it.',
+    links: [
+      { label: 'Component status', path: '/docs/docs-component-status--docs' },
+    ],
+  },
+  {
+    who: 'App team',
+    tone: 'design',
+    title: 'Propose the gap',
+    detail:
+      'If still nothing covers the need, open a proposal. Do not start a new component. The core team will say whether to use something that already exists, whether they will build it, or whether your team should build it.',
+    links: [
+      { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
+    ],
+  },
+]);

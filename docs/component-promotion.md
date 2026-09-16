@@ -4,7 +4,9 @@ Every component carries `governance: { status, owner }` in its `.metadata.ts`
 (`.ai/contracts/schema/component.metadata.ts`). Promotion is the move from
 `candidate` (owned by an application team) to `core` (owned by `design-system`).
 It is a core-team decision, taken when a proposal comes back with the
-_system-level_ answer — see Storybook → Get started / Contribute.
+_system-level_ answer — see Storybook → Get started / Contribute. A
+Candidate badge never implies promotion; the owning application keeps
+the component until the core team chooses to move it.
 
 ## Before promotion
 
