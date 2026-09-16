@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular-vite';
 import { Badge } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -29,7 +29,6 @@ type Story = StoryObj<ToolbarComponent>;
 // content comes from toolbar.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(ToolbarMetadata.governance, ToolbarMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'accessibility') };
@@ -55,6 +54,8 @@ export const Default: Story = {
     await expect(canvas.getByRole('button', { name: 'New' })).toBeVisible();
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(ToolbarMetadata, Default) };
 
 export const Sticky: Story = {
   render: (args) => ({

@@ -4,7 +4,7 @@ import { expect, within } from 'storybook/test';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { CopyableTextComponent } from './copyable-text.component';
@@ -99,6 +99,12 @@ const meta: Meta<CopyableTextComponent> = {
       imports: [CopyableTextToastDemoComponent, CopyableTextRowDemoComponent],
     }),
   ],
+  args: {
+    label: 'Territoire',
+    value: '319',
+    iconSize: 'xs',
+    disabled: false,
+  },
   argTypes: argTypesFromProps(CopyableTextMetadata.props ?? [], {
     iconSize: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
   }),
@@ -124,18 +130,12 @@ type Story = StoryObj<CopyableTextComponent>;
 // content comes from copyable-text.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(CopyableTextMetadata.governance, CopyableTextMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'anatomy') };
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(CopyableTextMetadata) };
 export const Composition = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'accessibility') };
 
 export const Default: Story = {
-  args: {
-    label: 'Territoire',
-    value: '319',
-    iconSize: 'xs',
-    disabled: false,
-  },
   // Render contract only — the copy click writes to navigator.clipboard, whose
   // permission is not granted in headless CI, so the interaction stays manual.
   play: async ({ canvasElement }) => {

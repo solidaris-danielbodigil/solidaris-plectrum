@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { moduleMetadata } from '@storybook/angular-vite';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
@@ -45,7 +45,6 @@ export const Status = { tags: ['!dev'], ...statusStory(
   DelayPredictionCardMetadata.component,
 ) };
 export const Usage = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'accessibility') };
@@ -59,6 +58,11 @@ export const Default: Story = {
     await assertRoleVisible(canvasElement, 'article', /Prédiction du délai/);
     await assertTextVisible(canvasElement, 'Jours restants');
   },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(DelayPredictionCardMetadata, Default),
 };
 
 export const Dutch: Story = {

@@ -5,7 +5,7 @@
 
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { applicationConfig, moduleMetadata } from '@storybook/angular-vite';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, expect } from '../../storybook/story-tests';
@@ -38,7 +38,6 @@ type Story = StoryObj<IconComponent>;
 // content comes from icon.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(IconMetadata.governance, IconMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(IconMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(IconMetadata, 'anatomy') };
 export const Variants = { tags: ['!dev'], ...contractStory(IconMetadata, 'variants') };
 export const Behavior = { tags: ['!dev'], ...contractStory(IconMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(IconMetadata, 'accessibility') };
@@ -52,6 +51,8 @@ export const Default: Story = {
     await expect(icon).toHaveAttribute('aria-hidden', 'true');
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(IconMetadata, Default) };
 
 export const SizeVariants: Story = {
   render: () => ({

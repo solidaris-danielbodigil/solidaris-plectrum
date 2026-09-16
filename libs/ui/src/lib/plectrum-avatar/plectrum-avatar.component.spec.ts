@@ -2,6 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlectrumAvatarComponent } from './plectrum-avatar.component';
 import { getPlectrumAvatarIllustrationSrc } from './plectrum-avatar.assets';
 
+describe('getPlectrumAvatarIllustrationSrc', () => {
+  it('encodes only the space so Storybook can serve the catalog SVG', () => {
+    expect(getPlectrumAvatarIllustrationSrc('female', 1)).toBe(
+      'assets/Gender=Female,%20Variant=1.svg',
+    );
+    expect(getPlectrumAvatarIllustrationSrc('male', 2)).toBe(
+      'assets/Gender=Male,%20Variant=2.svg',
+    );
+    expect(getPlectrumAvatarIllustrationSrc('other', 3)).toBe(
+      'assets/Gender=Other,%20Variant=1.svg',
+    );
+  });
+});
+
 describe('PlectrumAvatarComponent', () => {
   let fixture: ComponentFixture<PlectrumAvatarComponent>;
 

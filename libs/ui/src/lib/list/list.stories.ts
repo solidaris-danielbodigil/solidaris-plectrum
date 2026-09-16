@@ -11,7 +11,7 @@ import { ListComponent } from './list.component';
 import { ListMetadata } from './list.metadata';
 import type { ListEntryItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 
@@ -154,10 +154,6 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(ListMetadata, 'usage'),
 };
-export const Anatomy = {
-  tags: ['!dev'],
-  ...contractStory(ListMetadata, 'anatomy'),
-};
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(ListMetadata, 'composition'),
@@ -188,6 +184,8 @@ export const Default: Story = {
     ).toBeVisible();
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(ListMetadata, Default) };
 
 @Component({
   selector: 'pds-list-expand-demo',

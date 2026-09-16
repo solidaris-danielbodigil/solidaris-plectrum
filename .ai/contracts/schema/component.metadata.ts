@@ -81,7 +81,8 @@ export interface ComponentMetadata {
 
   /**
    * Named parts of the rendered block — BEM elements, PrimeNG hosts, slots —
-   * and what each one is for. Rendered as the Anatomy table on the docs page.
+   * and what each one is for. Rendered as the Anatomy figure on the docs page
+   * (live specimen, numbered leader-line callouts, legend of parts in that example).
    */
   anatomy?: AnatomyPart[];
 

@@ -13,6 +13,7 @@
 //   c-docs-do-dont   pds-docs-do-dont → p-card + p-tag + pds-icon (Do / Don't columns)
 //   c-docs-contract  pds-docs-contract → pds-docs-do-dont / p-table / p-card / p-tag
 //                    (one .metadata.ts block per embed — the docs SSOT)
+//   c-docs-anatomy   pds-docs-anatomy → live specimen + p-badge callouts + SVG leaders + legend
 //   c-docs-sync-checks   pds-docs-sync-checks  → pds-docs-callout + p-tag
 //   c-docs-sync-changes  pds-docs-sync-changes → pds-toolbar + p-table + p-selectButton + p-tag
 //   c-docs-changesets    pds-docs-changesets   → p-card + p-tag + p-badge (+ pds-empty-state)
@@ -242,6 +243,62 @@ $docs-tones: design, system, app, neutral;
 }
 
 .c-docs-do-dont__alternative strong {
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+// ── Anatomy (pds-docs-anatomy) ───────────────────────────────────────────────
+// Overlay positions are measured from the specimen (rule 09 §5 overlay exception).
+// Leader lines are SVG — PrimeNG has no equivalent (same exception as c-docs-diagram).
+.c-docs-anatomy__stage {
+  position: relative;
+  background: var(--#{$pds-prefix}-color-docs-lane-bg);
+}
+
+.c-docs-anatomy__stage:not(:has(.c-docs-anatomy__specimen > *)) {
+  display: none;
+}
+
+.c-docs-anatomy__leaders,
+.c-docs-anatomy__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.c-docs-anatomy__leader {
+  fill: none;
+  stroke: var(--#{$pds-prefix}-color-docs-edge);
+  stroke-width: var(--#{$pds-prefix}-border-width-default);
+}
+
+.c-docs-anatomy__anchor {
+  fill: var(--#{$pds-prefix}-color-docs-lane-bg);
+  stroke: var(--#{$pds-prefix}-color-docs-edge);
+  stroke-width: var(--#{$pds-prefix}-border-width-default);
+}
+
+.c-docs-anatomy__marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+// Outlined circle — Material anatomy callout. Token bridge on our BEM class.
+.c-docs-anatomy__marker,
+.c-docs-anatomy__index {
+  --p-badge-background: var(--#{$pds-prefix}-color-surface-0);
+  --p-badge-color: var(--#{$pds-prefix}-color-text);
+  --p-badge-border-radius: var(--#{$pds-prefix}-radius-pill);
+  --p-badge-min-width: var(--#{$pds-prefix}-size-docs-anatomy-marker);
+  --p-badge-height: var(--#{$pds-prefix}-size-docs-anatomy-marker);
+  box-shadow: 0 0 0 var(--#{$pds-prefix}-border-width-default) var(--#{$pds-prefix}-color-docs-edge);
+}
+
+.c-docs-anatomy__legend {
+  list-style: none;
+}
+
+.c-docs-anatomy__label {
+  @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text);
 }
 

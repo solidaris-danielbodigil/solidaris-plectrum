@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { AccordionModule } from 'primeng/accordion';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import {
   argTypesFromProps,
   classArgTypes,
@@ -93,10 +93,6 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(AccordionMetadata, 'usage'),
 };
-export const Anatomy = {
-  tags: ['!dev'],
-  ...contractStory(AccordionMetadata, 'anatomy'),
-};
 export const Variants = {
   tags: ['!dev'],
   ...contractStory(AccordionMetadata, 'variants'),
@@ -172,6 +168,8 @@ export const Bordered: Story = {
     ).toHaveAttribute('aria-expanded', 'true');
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(AccordionMetadata, Bordered) };
 
 export const Collapsed: Story = {
   render: renderWithClass(BORDERED_CLASS),

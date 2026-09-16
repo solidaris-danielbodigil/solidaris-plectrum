@@ -2,7 +2,7 @@
 // stories carry the markup directly (same pattern as Accordion).
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import type { DetailListRow } from '../drawer';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import {
   argTypesFromProps,
   classArgTypes,
@@ -96,10 +96,6 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(DetailListMetadata, 'usage'),
 };
-export const Anatomy = {
-  tags: ['!dev'],
-  ...contractStory(DetailListMetadata, 'anatomy'),
-};
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(DetailListMetadata, 'composition'),
@@ -130,6 +126,8 @@ export const Default: Story = {
     await assertTextVisible(canvasElement, '85.07.30-033.61');
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(DetailListMetadata, Default) };
 
 export const InASection: Story = {
   name: 'In a drawer section',

@@ -53,7 +53,7 @@ export const DocsSource: StoryObj = doDontStory({
       title: 'Put the Anatomy rows in a <DocsTable>',
       detail: 'A table the schema has a field for is a second source.',
       alternative:
-        'metadata.anatomy: [{ part, role }] and <Story of={Stories.Anatomy} />.',
+        'metadata.anatomy: [{ part, role }] and anatomyStory(XMetadata, Default).',
     },
     {
       title: 'Restate the description or the Figma URL in the MDX',

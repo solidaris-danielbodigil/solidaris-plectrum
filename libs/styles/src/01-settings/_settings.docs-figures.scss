@@ -53,6 +53,10 @@
   --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow
   --#{$pds-prefix}-size-docs-swatch:        0.875rem; // 12px colour chip beside a before/after value (sync status)
   --#{$pds-prefix}-size-docs-releases-head: 1.75rem;  // rounded p-tag height the release dot marker centres on (What's new)
+  --#{$pds-prefix}-size-docs-anatomy-marker: 1.5rem; // p-badge circle on the specimen and in the legend
+  --#{$pds-prefix}-size-docs-anatomy-clearance: var(--#{$pds-prefix}-spacing-3); // min gap between stacked badges
+  --#{$pds-prefix}-size-docs-anatomy-anchor: 0.375rem; // open circle where a leader meets the part
+  --#{$pds-prefix}-space-docs-anatomy-gutter: var(--#{$pds-prefix}-spacing-4); // badge centre to the part edge
   // Instance slot: each sync-status row binds this to the before/after colour.
   --#{$pds-prefix}-docs-sync-swatch:        transparent;
 }

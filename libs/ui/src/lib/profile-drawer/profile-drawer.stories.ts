@@ -7,7 +7,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { showStorybookToast } from '../../storybook/storybook-toast';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { userEvent, waitForText, within } from '../../storybook/story-tests';
@@ -188,7 +188,6 @@ type Story = StoryObj<ProfileDrawerStoryArgs>;
 // content comes from profile-drawer.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(ProfileDrawerMetadata.governance, ProfileDrawerMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'accessibility') };
@@ -206,6 +205,8 @@ export const Default: Story = {
     await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(ProfileDrawerMetadata, Default) };
 
 export const Dutch: Story = {
   globals: { locale: 'nl' },

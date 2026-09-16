@@ -67,7 +67,7 @@ The `.metadata.ts` is the single source of truth for a component's documentation
   rows={[
     ['governance · component.description · component.figmaUrl', 'pds-docs-status — badges, lead paragraph, Open in Figma', "Status = { tags: ['!dev'], ...statusStory(XMetadata.governance, XMetadata.component) }"],
     ['usage.useCases · usage.antiPatterns', 'pds-docs-do-dont — Do / Don’t cards; each Don’t carries its reason and an Instead line', "Usage = { tags: ['!dev'], ...contractStory(XMetadata, 'usage') }"],
-    ['anatomy', 'p-table — Part / Role', "Anatomy = { tags: ['!dev'], ...contractStory(XMetadata, 'anatomy') }"],
+    ['anatomy', 'pds-docs-anatomy — live specimen, numbered leader-line callouts, legend of found parts', "Anatomy = { tags: ['!dev'], ...anatomyStory(XMetadata, Default) }"],
     ['accessibility', 'p-card — WCAG level, role, names and ARIA, keyboard and focus, contrast', "Accessibility = { tags: ['!dev'], ...contractStory(XMetadata, 'accessibility') }"],
     ['composition · behavior · variants · usage.commonPatterns · examples', 'Tags, lists, tables, code cards — embed only when the block has content', "{ tags: ['!dev'], ...contractStory(XMetadata, 'composition' | 'behavior' | 'variants' | 'patterns' | 'examples') }"],
     ['props', 'Controls under the primary canvas', 'argTypesFromProps(XMetadata.props) in meta.argTypes'],
@@ -277,7 +277,7 @@ The description, the Figma link, the use cases, the constraints (as anti-pattern
 ~~~ts
 export const Status = { tags: ['!dev'], ...statusStory(AccordionMetadata.governance, AccordionMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'anatomy') };
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(AccordionMetadata, Default) };
 export const Accessibility = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'accessibility') };
 ~~~
 
@@ -299,18 +299,18 @@ import * as Stories from './accordion.stories';
   <Story of={Stories.Usage} />
 </Unstyled>
 
-## Anatomy
-
-<Unstyled>
-  <Story of={Stories.Anatomy} />
-</Unstyled>
-
 ## Default
 
 Stock Plectrum `p-accordion`. No BEMIT modifier on the host.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Bordered
 
@@ -355,9 +355,9 @@ Two bordered panels. Sibling radii and shared outer edge are why the layer lives
     ['Meta of Stories', 'Attaches this page to the CSF meta (title, tags, argTypes)'],
     ['Story of Stories.Status', 'Badges, description and Figma link — from governance and component in the metadata'],
     ['Usage heading + Story of Stories.Usage', 'Do / Don’t cards from usage.useCases and usage.antiPatterns'],
-    ['Anatomy heading + Story of Stories.Anatomy', 'Part / Role table from metadata.anatomy'],
     ['Heading per state + Canvas of that story', 'One heading per canvas so On this page can list them; the prose here is the page’s own'],
     ['Controls of the Default story', 'Immediately under the Default canvas — the only args table on the page'],
+    ['Anatomy heading + Story of Stories.Anatomy', 'After Default: live specimen with numbered leader-line callouts and a legend of the parts in that example'],
     ['Accessibility heading + Story of Stories.Accessibility', 'WCAG level, ARIA and keyboard notes from metadata.accessibility'],
   ]}
 />

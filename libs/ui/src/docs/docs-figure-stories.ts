@@ -6,7 +6,11 @@
 // props from MDX directly.
 // =============================================================================
 
-import type { StoryObj } from '@storybook/angular-vite';
+import {
+  componentWrapperDecorator,
+  moduleMetadata,
+  type StoryObj,
+} from '@storybook/angular-vite';
 import type {
   ComponentGovernance,
   ComponentMetadata,
@@ -22,6 +26,7 @@ import {
   type ContractsIndex,
   DocsComponentIndexComponent,
 } from '../storybook/docs-component-index.component';
+import { DocsAnatomyComponent } from '../storybook/docs-anatomy.component';
 import { DocsContractComponent } from '../storybook/docs-contract.component';
 import { DocsDoDontComponent } from '../storybook/docs-do-dont.component';
 import type {
@@ -162,11 +167,16 @@ export function statusStory(
  *
  *   export const Usage = { tags: ['!dev'], ...contractStory(XMetadata, 'usage') };
  *   <Unstyled><Story of={Stories.Usage} /></Unstyled>
+ *
+ * Anatomy is a live specimen with numbered callouts — use `anatomyStory`.
  */
 export function contractStory(
   metadata: ComponentMetadata,
   section: DocsContractSection,
 ): StoryObj {
+  if (section === 'anatomy') {
+    return anatomyStory(metadata);
+  }
   return {
     tags: ['!dev'],
     parameters: DOCS_FIGURE_PARAMETERS,
@@ -175,6 +185,49 @@ export function contractStory(
       props: { metadata, section },
       template: `<pds-docs-contract [metadata]="metadata" [section]="section" />`,
     }),
+  };
+}
+
+/**
+ * Anatomy figure: wraps a catalogue story (usually Default) with numbered
+ * leader-line callouts on each metadata.anatomy part found in the specimen.
+ *
+ * Define the specimen first — the factory copies its args and render:
+ *
+ *   export const Default = { args: { … }, play: … };
+ *   export const Anatomy = { tags: ['!dev'], ...anatomyStory(XMetadata, Default) };
+ */
+export function anatomyStory(
+  metadata: ComponentMetadata,
+  specimen: StoryObj = {},
+): StoryObj {
+  const {
+    play: _play,
+    tags: _tags,
+    name: _name,
+    parameters,
+    decorators,
+    ...rest
+  } = specimen;
+  return {
+    ...rest,
+    tags: ['!dev'],
+    parameters: {
+      ...parameters,
+      ...DOCS_FIGURE_PARAMETERS,
+    },
+    decorators: [
+      ...(decorators ?? []),
+      moduleMetadata({ imports: [DocsAnatomyComponent] }),
+      componentWrapperDecorator(
+        (story) =>
+          `<pds-docs-anatomy [parts]="__anatomyParts" [bemBlock]="__anatomyBem">${story}</pds-docs-anatomy>`,
+        {
+          __anatomyParts: metadata.anatomy ?? [],
+          __anatomyBem: metadata.component.bemBlock,
+        },
+      ),
+    ],
   };
 }
 

@@ -6,7 +6,7 @@ import type {
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { expect, waitFor, within } from 'storybook/test';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { FormFieldComponent } from './form-field.component';
@@ -66,7 +66,6 @@ type Story = StoryObj<FormFieldStoryArgs>;
 // content comes from form-field.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(FormFieldMetadata.governance, FormFieldMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(FormFieldMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(FormFieldMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(FormFieldMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(FormFieldMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(FormFieldMetadata, 'accessibility') };
@@ -103,6 +102,8 @@ export const Vertical: Story = {
     await expectLabelWiring(canvasElement, input);
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(FormFieldMetadata, Vertical) };
 
 export const VerticalInvalid: Story = {
   args: {

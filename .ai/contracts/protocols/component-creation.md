@@ -85,7 +85,7 @@ The `.metadata.ts` documents the component; the attached `{name}.mdx` renders it
 
 - `component.description` (lead paragraph) and `component.figmaUrl` → Status figure
 - `usage.useCases` / `usage.antiPatterns` (scenario + reason + alternative) → Do / Don't cards
-- `anatomy` (`{ part, role }`) → Anatomy table
+- `anatomy` (`{ part, role }`) → Anatomy figure (live specimen + numbered leader-line legend)
 - `accessibility.ariaAttributes` / `keyboardSupport` / `contrastRequirements` → Accessibility card
 - `behavior`, `composition`, `variants` when they add something the canvases do not show
 
@@ -163,7 +163,7 @@ export const {Name}Metadata: ComponentMetadata = {
 - [ ] Every required canvas story has a `play` function (`story-tests.ts`); interactive stories use `userEvent`
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)
 - [ ] Accessibility not disabled; Chromatic snapshots left on (except `Status` / docs figures)
-- [ ] Attached `{name}.mdx` follows the Top Nav template (Status → Usage → Anatomy → canvases + Controls → optional Composition / Behavior → Accessibility), every block embedded from the metadata; no `## API` when Controls are on the page; `npm run docs:check` passes
+- [ ] Attached `{name}.mdx` follows the Top Nav template (Status → Usage → primary canvas + Controls → Anatomy → remaining canvases → optional Composition / Behavior → Accessibility), every block embedded from the metadata; no `## API` when Controls are on the page; `npm run docs:check` passes
 - [ ] `{name}.metadata.ts` `props` lists every input and output; stories use `argTypesFromProps` so the API table has description, type, and default (never the empty auto-generated placeholder); `npm run contracts:check` passes
 - [ ] Component + metadata exported from `libs/ui/src/lib/index.ts` (not `src/index.ts`)
 - [ ] User-facing copy in `libs/ui` goes through `PDS_LOCALE` messages (inputs may override)

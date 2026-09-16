@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { assertTextVisible } from '../../storybook/story-tests';
@@ -28,7 +28,6 @@ type Story = StoryObj<PlectrumAvatarComponent>;
 // content comes from plectrum-avatar.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(PlectrumAvatarMetadata.governance, PlectrumAvatarMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(PlectrumAvatarMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(PlectrumAvatarMetadata, 'anatomy') };
 export const Variants = { tags: ['!dev'], ...contractStory(PlectrumAvatarMetadata, 'variants') };
 export const Composition = { tags: ['!dev'], ...contractStory(PlectrumAvatarMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(PlectrumAvatarMetadata, 'behavior') };
@@ -43,6 +42,8 @@ export const Default: Story = {
     await assertTextVisible(canvasElement, 'LV');
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(PlectrumAvatarMetadata, Default) };
 
 export const Active: Story = {
   args: {

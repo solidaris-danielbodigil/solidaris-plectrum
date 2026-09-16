@@ -5,7 +5,7 @@ import {
 } from '@storybook/angular-vite';
 import { inject, provideAppInitializer } from '@angular/core';
 import { provideStoryRouter } from '../../storybook/story-router';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -158,10 +158,6 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(NavShellMetadata, 'usage'),
 };
-export const Anatomy = {
-  tags: ['!dev'],
-  ...contractStory(NavShellMetadata, 'anatomy'),
-};
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(NavShellMetadata, 'composition'),
@@ -192,6 +188,8 @@ export const Collapsed: Story = {
     await expect(canvas.getByRole('link', { name: /iCRM/ })).toBeVisible();
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(NavShellMetadata, Collapsed) };
 
 /** Expanded state — focusing an item triggers the CSS :focus-within reveal. */
 export const Expanded: Story = {

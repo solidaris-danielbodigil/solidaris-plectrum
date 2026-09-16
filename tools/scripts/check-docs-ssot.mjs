@@ -6,7 +6,7 @@
 // metadata block as prose instead of embedding the figure that renders it:
 //
 //   ## When to use / ## When not to use   → contractStory(meta, 'usage')
-//   ## Anatomy  + <DocsTable>            → contractStory(meta, 'anatomy')
+//   ## Anatomy  + <DocsTable>            → anatomyStory(meta, Default) after the primary canvas
 //   ## Accessibility + bullet list       → contractStory(meta, 'accessibility')
 //   ## Figma section / bare Figma URL     → statusStory(governance, component)
 //
@@ -59,6 +59,12 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true })) {
   const anatomy = sectionBody(mdx, '## Anatomy');
   if (anatomy && (hasDocsTable(anatomy) || hasBullets(anatomy))) {
     fail('"## Anatomy" is hand-written — move the rows to metadata.anatomy and embed <Story of={Stories.Anatomy} />');
+  }
+
+  const anatomyAt = mdx.indexOf('## Anatomy');
+  const canvasAt = mdx.indexOf('<Canvas');
+  if (anatomyAt !== -1 && canvasAt !== -1 && anatomyAt < canvasAt) {
+    fail('"## Anatomy" must come after the primary canvas (Default / first story)');
   }
 
   const a11y = sectionBody(mdx, '## Accessibility');

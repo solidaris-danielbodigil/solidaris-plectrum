@@ -3,7 +3,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { moduleMetadata } from '@storybook/angular-vite';
 import { Skeleton } from 'primeng/skeleton';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { classArgTypes } from '../../storybook/arg-types-from-props';
 import { expect } from '../../storybook/story-tests';
 import { SkeletonSlotMetadata } from './skeleton-slot.metadata';
@@ -31,7 +31,6 @@ type Story = StoryObj;
 // content comes from skeleton-slot.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(SkeletonSlotMetadata.governance, SkeletonSlotMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'accessibility') };
@@ -54,6 +53,8 @@ export const Slots: Story = {
       </div>`,
   }),
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(SkeletonSlotMetadata, Slots) };
 
 export const CardLoading: Story = {
   name: 'Card loading state',

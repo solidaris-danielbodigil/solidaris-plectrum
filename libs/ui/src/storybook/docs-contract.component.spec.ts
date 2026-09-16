@@ -6,6 +6,7 @@ import {
   DocsContractComponent,
   usageToDoDont,
 } from './docs-contract.component';
+import { DocsAnatomyComponent } from './docs-anatomy.component';
 import { DocsDoDontComponent } from './docs-do-dont.component';
 import type { DocsContractSection } from './docs-figures.types';
 import { DocsStatusComponent } from './docs-status.component';
@@ -29,6 +30,7 @@ describe('docs contract figures (metadata is the docs SSOT)', () => {
     await TestBed.configureTestingModule({
       imports: [
         DocsContractComponent,
+        DocsAnatomyComponent,
         DocsDoDontComponent,
         DocsStatusComponent,
       ],
@@ -110,13 +112,13 @@ describe('docs contract figures (metadata is the docs SSOT)', () => {
       ).toBe(TopNavMetadata.usage.antiPatterns.length);
     });
 
-    it('renders the anatomy block as a p-table with one row per part', () => {
+    it('renders the anatomy figure and notes that extra parts live in other variants', () => {
       const host = renderContract(TopNavMetadata, 'anatomy');
-      const rows = host.querySelectorAll('tbody tr');
 
-      expect(rows.length).toBe(TopNavMetadata.anatomy?.length ?? -1);
-      expect(text(rows[0].querySelector('code'))).toBe(
-        TopNavMetadata.anatomy![0].part,
+      expect(host.querySelector('pds-docs-anatomy')).not.toBeNull();
+      expect(host.querySelectorAll('.c-docs-anatomy__legend-item').length).toBe(0);
+      expect(text(host.querySelector('p-message'))).toContain(
+        'Extra elements may appear in other variants.',
       );
     });
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { applicationConfig } from '@storybook/angular-vite';
 import { provideStoryRouter } from '../../storybook/story-router';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
@@ -185,7 +185,6 @@ type Story = StoryObj<SubNavShellComponent>;
 // content comes from sub-nav-shell.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(SubNavShellMetadata.governance, SubNavShellMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'accessibility') };
@@ -207,6 +206,11 @@ export const MaatschappelijkWerk: Story = {
     await expect(canvas.getByText('Maatschappelijk Werk')).toBeVisible();
     await expect(canvas.getByText('Openstaand dossier')).toBeVisible();
   },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(SubNavShellMetadata, MaatschappelijkWerk),
 };
 
 export const Processen: Story = {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { moduleMetadata } from '@storybook/angular-vite';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
@@ -32,7 +32,6 @@ type Story = StoryObj<TopNavComponent>;
 // content comes from top-nav.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(TopNavMetadata.governance, TopNavMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'accessibility') };
@@ -51,6 +50,8 @@ export const Default: Story = {
     );
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(TopNavMetadata, Default) };
 
 export const SubNavExpanded: Story = {
   args: {

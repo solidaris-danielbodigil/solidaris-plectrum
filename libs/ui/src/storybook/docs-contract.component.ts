@@ -12,7 +12,8 @@
 //
 // PrimeNG components used:
 //   - pds-docs-do-dont (p-card + p-tag + pds-icon) — usage
-//   - p-table — anatomy, slots, variant options
+//   - pds-docs-anatomy — live specimen + numbered callouts (anatomy)
+//   - p-table — slots, variant options
 //   - p-card  — patterns, examples, accessibility
 //   - p-tag   — states, companions, nested components, WCAG level, role
 //
@@ -31,6 +32,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 import { Card } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
+import { DocsAnatomyComponent } from './docs-anatomy.component';
 import { DocsDoDontComponent } from './docs-do-dont.component';
 import type { DocsContractSection, DocsDoDontItem } from './docs-figures.types';
 
@@ -63,7 +65,7 @@ export function usageToDoDont(usage: ComponentMetadata['usage']): {
 
 @Component({
   selector: 'pds-docs-contract',
-  imports: [Card, TableModule, Tag, DocsDoDontComponent],
+  imports: [Card, TableModule, Tag, DocsAnatomyComponent, DocsDoDontComponent],
   templateUrl: './docs-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

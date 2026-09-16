@@ -3,7 +3,7 @@
 // classes. This story shows the shell statically so the structure is
 // inspectable without an overlay.
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import {
   argTypesFromProps,
   classArgTypes,
@@ -79,10 +79,6 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(DrawerMetadata, 'usage'),
 };
-export const Anatomy = {
-  tags: ['!dev'],
-  ...contractStory(DrawerMetadata, 'anatomy'),
-};
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(DrawerMetadata, 'composition'),
@@ -136,3 +132,5 @@ export const Shell: Story = {
       </div>`,
   }),
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(DrawerMetadata, Shell) };

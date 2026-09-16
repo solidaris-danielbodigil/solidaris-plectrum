@@ -6,7 +6,7 @@ import {
   type StoryObj,
 } from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
@@ -60,7 +60,6 @@ export const Status = { tags: ['!dev'], ...statusStory(
   TransactionsCicsModalMetadata.component,
 ) };
 export const Usage = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'accessibility') };
@@ -90,4 +89,9 @@ export const Default: Story = {
       expect(page.getByRole('dialog', { name: /Transactions CICS/ })).toBeVisible();
     });
   },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(TransactionsCicsModalMetadata, Default),
 };

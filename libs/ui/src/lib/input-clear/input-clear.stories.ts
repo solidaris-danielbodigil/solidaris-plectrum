@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { FormsModule } from '@angular/forms';
-import { contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { InputClearMetadata } from './input-clear.metadata';
@@ -29,7 +29,6 @@ type Story = StoryObj<InputClearComponent>;
 // content comes from input-clear.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(InputClearMetadata.governance, InputClearMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'usage') };
-export const Anatomy = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'anatomy') };
 export const Composition = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'accessibility') };
@@ -76,6 +75,8 @@ export const IconField: Story = {
     await expect(input).toHaveValue('');
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(InputClearMetadata, IconField) };
 
 export const SearchWithLeadingIcon: Story = {
   render: (args) => ({
