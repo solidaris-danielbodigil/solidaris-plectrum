@@ -22,20 +22,27 @@ const config: StorybookConfig = {
     },
     '@storybook/addon-a11y',
     '@storybook/addon-designs',
-    {
-      name: '@storybook/addon-coverage',
-      options: {
-        istanbul: {
-          include: ['**/libs/ui/src/lib/**'],
-          exclude: [
-            '**/*.stories.ts',
-            '**/*.mdx',
-            '**/*.spec.ts',
-            '**/*.metadata.ts',
-          ],
-        },
-      },
-    },
+    // Istanbul instrumentation of the whole Angular preview is expensive. Only
+    // enable it when the test-runner needs coverage (`STORYBOOK_COVERAGE=1` on
+    // `build-storybook` / `storybook`). Local `npm run storybook` stays lean.
+    ...(process.env.STORYBOOK_COVERAGE
+      ? [
+          {
+            name: '@storybook/addon-coverage',
+            options: {
+              istanbul: {
+                include: ['**/libs/ui/src/lib/**'],
+                exclude: [
+                  '**/*.stories.ts',
+                  '**/*.mdx',
+                  '**/*.spec.ts',
+                  '**/*.metadata.ts',
+                ],
+              },
+            },
+          },
+        ]
+      : []),
     '@chromatic-com/storybook',
     '@storybook/addon-vitest',
     '@storybook/addon-mcp',

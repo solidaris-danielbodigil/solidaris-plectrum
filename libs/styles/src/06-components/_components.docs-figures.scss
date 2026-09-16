@@ -282,14 +282,8 @@ $docs-tones: design, system, app, neutral;
   transform: translate(-50%, -50%);
 }
 
-// Outlined circle — Material anatomy callout. Token bridge on our BEM class.
 .c-docs-anatomy__marker,
 .c-docs-anatomy__index {
-  --p-badge-background: var(--#{$pds-prefix}-color-surface-0);
-  --p-badge-color: var(--#{$pds-prefix}-color-text);
-  --p-badge-border-radius: var(--#{$pds-prefix}-radius-pill);
-  --p-badge-min-width: var(--#{$pds-prefix}-size-docs-anatomy-marker);
-  --p-badge-height: var(--#{$pds-prefix}-size-docs-anatomy-marker);
   box-shadow: 0 0 0 var(--#{$pds-prefix}-border-width-default) var(--#{$pds-prefix}-color-docs-edge);
 }
 

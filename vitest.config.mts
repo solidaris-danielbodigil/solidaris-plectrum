@@ -49,6 +49,11 @@ export default defineConfig({
         ],
         test: {
           name: 'storybook',
+          // One Chromium context. The testing widget + coverage-v8 + Chromatic
+          // `build-storybook` in the same Node process is what OOM'd local machines.
+          fileParallelism: false,
+          maxWorkers: 1,
+          isolate: true,
           browser: {
             enabled: true,
             headless: true,
@@ -56,7 +61,10 @@ export default defineConfig({
             instances: [{ browser: 'chromium' }],
           },
           coverage: {
+            // Widget/CLI opt in with the Coverage checkbox or `--coverage`.
+            enabled: false,
             provider: 'v8',
+            processingConcurrency: 1,
             include: ['libs/ui/src/lib/**'],
             exclude: [
               '**/*.stories.ts',

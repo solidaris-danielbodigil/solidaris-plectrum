@@ -68,3 +68,13 @@
   --p-button-padding-x: 0;
   --p-button-padding-y: 0;
 }
+
+// Outlined anatomy callouts — Material-style p-badge on the specimen and legend.
+.c-docs-anatomy__marker,
+.c-docs-anatomy__index {
+  --p-badge-background: var(--#{$pds-prefix}-color-surface-0);
+  --p-badge-color: var(--#{$pds-prefix}-color-text);
+  --p-badge-border-radius: var(--#{$pds-prefix}-radius-pill);
+  --p-badge-min-width: var(--#{$pds-prefix}-size-docs-anatomy-marker);
+  --p-badge-height: var(--#{$pds-prefix}-size-docs-anatomy-marker);
+}

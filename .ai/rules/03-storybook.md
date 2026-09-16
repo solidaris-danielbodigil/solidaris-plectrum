@@ -110,7 +110,9 @@ Import the component using its local relative path — **not** `@solidaris/ui` �
 
 **A component is not complete without Storybook tests.** A canvas that only mounts is a smoke check; that is not enough for the required story exports in §2.
 
-Stories are the executable test suite. In the catalogue, run them from the **testing widget** (bottom of the sidebar) via `@storybook/addon-vitest` — that paints story statuses, Interactions, a11y, and coverage. CLI: `npm run test-storybook:vitest`. CI still uses `npm run test-storybook` (`@storybook/test-runner`). Storybook MCP `test-run` is wired. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
+Stories are the executable test suite. In the catalogue, run them from the **testing widget** (bottom of the sidebar) via `@storybook/addon-vitest` — that paints story statuses, Interactions, and a11y. CLI: `npm run test-storybook:vitest`. CI still uses `npm run test-storybook` (`@storybook/test-runner`). Storybook MCP `test-run` is wired. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
+
+The widget **Coverage** and **Visual tests** checkboxes share Storybook’s Node heap. Coverage-v8 stringifies the whole map in-process; Chromatic’s addon runs `build-storybook` in that same process. Together they OOM a laptop. Use them from a **separate process** instead (scripts below) — do not tick both on a live `npm run storybook`.
 
 | Kind               | Required on every `libs/ui` component                                                                                                                                                                                                                                 |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,16 +120,19 @@ Stories are the executable test suite. In the catalogue, run them from the **tes
 | Interaction / play | Every required canvas story in §2 has a `play` function. Interactive states use `userEvent` and assert the outcome. Display / CSS-only stories assert a render contract (visible text, role, or host class). Exception: `Status` and other `!dev` docs-figure stories |
 | Accessibility      | Global `parameters.a11y` in `.storybook/preview.ts` (WCAG 2.1 AA). Do **not** set `a11y.test: 'off'` on a component story without a comment. Do not ship a new component that adds unreviewed violations                                                              |
 | Visual             | Chromatic (`npm run chromatic`). Docs-figure / Status stories set `chromatic.disableSnapshot`. Do not disable snapshots on a catalogue story without a comment                                                                                                        |
-| Coverage           | Testing widget Coverage toggle, `npm run test-storybook:vitest`, `npm run test:coverage` (unit), `npm run test-storybook:coverage` (test-runner Istanbul)                                                                                                              |
+| Coverage           | `npm run test-storybook:vitest:coverage` (separate Vitest process; Storybook may stay up). Unit: `npm run test:coverage`. Test-runner Istanbul: `STORYBOOK_COVERAGE=1 npm run storybook` then `npm run test-storybook:coverage`. Widget Coverage toggle is the same runner **in** the Storybook process — skip it locally |
 
 Do **not** add a `test-runner.(js|ts)` hooks file under `libs/ui/.storybook/` — Jest 30 rejects `module.register()` inside workers. Visual diffs go through Chromatic, not Playwright image snapshots.
 
 ```bash
-# In Storybook: testing widget → Run tests (statuses + Interactions + a11y + coverage)
-npm run test-storybook:vitest     # same runner from the CLI
-npm run test-storybook            # test-runner (CI; Storybook on localhost:6006)
-npm run test-storybook:coverage   # test-runner + Istanbul under coverage/storybook
-npm run chromatic                 # visual baselines (needs CHROMATIC_PROJECT_TOKEN)
+# In Storybook: testing widget → Run tests (Component tests + a11y)
+npm run test-storybook:vitest              # same runner, own process
+npm run test-storybook:vitest:coverage     # coverage without sharing Storybook’s heap
+npm run test-storybook                     # test-runner (CI; Storybook on localhost:6006)
+STORYBOOK_COVERAGE=1 npm run storybook     # then test-storybook:coverage
+npm run test-storybook:coverage            # test-runner + Istanbul under coverage/storybook
+npm run chromatic                          # visual baselines (builds Storybook — quit the dev server first)
+npm run build-storybook && npm run chromatic:from-build  # reuse a build, no second compile
 ```
 
 A component that fails `test-storybook`, or whose required stories have no `play`, is not done.

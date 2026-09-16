@@ -85,6 +85,7 @@
             "browsers": ["chromium"],
             "headless": true,
             "browserViewport": "1440x900",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
             "coverageReporters": ["html", "text-summary", "lcovonly"]
           }
         }
@@ -385,6 +386,7 @@
             "browsers": ["chromium"],
             "headless": true,
             "browserViewport": "1440x900",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
             "coverageReporters": ["html", "text-summary", "lcovonly"]
           }
         }
@@ -416,6 +418,7 @@
           "options": {
             "tsConfig": "libs/plectrum/tsconfig.spec.json",
             "buildTarget": "plectrum:build:development",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
             "coverageReporters": ["html", "text-summary", "lcovonly"]
           }
         }

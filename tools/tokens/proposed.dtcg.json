@@ -1482,6 +1482,32 @@
         }
       }
     },
+    "size/docs/anatomy/anchor": {
+      "$type": "dimension",
+      "$value": {
+        "value": 5.25,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-anatomy-anchor",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
+    "size/docs/anatomy/marker": {
+      "$type": "dimension",
+      "$value": {
+        "value": 21,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-docs-anatomy-marker",
+          "source": "_settings.docs-figures.scss"
+        }
+      }
+    },
     "size/docs/card/min": {
       "$type": "dimension",
       "$value": {

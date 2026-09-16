@@ -108,8 +108,8 @@ Import from `libs/ui/src/storybook/story-tests.ts`. The catalogue widget uses `@
 | Render        | `npm run test-storybook` passes for every exported story                                                                                                                                          |
 | `play`        | Every required canvas story. Interactive: `userEvent` + assert outcome. Display / CSS-only: render contract (`assertTextVisible` / `assertRoleVisible`). Skip only `Status` / `!dev` docs figures |
 | Accessibility | Inherit global WCAG 2.1 AA (`preview.ts`). Do not set `a11y.test: 'off'` without a comment                                                                                                        |
-| Visual        | Chromatic snapshots on. Docs-figure / Status stories set `chromatic.disableSnapshot`                                                                                                              |
-| Coverage      | New component code is exercised by stories (`npm run test-storybook:coverage`) and unit specs (`npm run test:coverage`)                                                                           |
+| Visual        | Chromatic via `npm run chromatic` (or `chromatic:from-build` after `build-storybook`). The widget Visual tests checkbox rebuilds Storybook in-process — skip it while the catalogue is up. Docs-figure / Status stories set `chromatic.disableSnapshot` |
+| Coverage      | Stories: `npm run test-storybook:vitest:coverage`. Units: `npm run test:coverage`. Widget Coverage toggle runs the same work inside Storybook’s heap — skip it locally                                                                                   |
 
 ## Metadata Contract Template
 
