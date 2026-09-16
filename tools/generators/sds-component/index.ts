@@ -112,7 +112,7 @@ export class ${className}Component {}
   // display rule under ViewEncapsulation, added by hand with a comment.
 
   // Component Spec — Tester-agent checklist as skeletons (fill or delete the
-  // pending cases; a bare "should create" is not enough for review).
+  // it.todo cases; a bare "should create" is not enough for review).
   writeFile(
     path.join(componentDir, `${fileName}.component.spec.ts`),
     `import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -138,27 +138,11 @@ describe('${className}Component', () => {
 
   // Tester checklist (.cursor/agents/tester.md) — implement what applies:
 
-  it('should render the correct semantic element', () => {
-    // e.g. expect(fixture.nativeElement.querySelector('nav')).toBeTruthy();
-    pending('TODO: assert the semantic root element');
-  });
-
-  it('should apply the BEM host class', () => {
-    // e.g. expect(fixture.nativeElement.classList).toContain('c-${fileName}');
-    pending('TODO: assert c-${fileName} on the host');
-  });
-
-  it('should apply modifier classes from inputs', () => {
-    pending('TODO: set an input, assert the --modifier / is-* class');
-  });
-
-  it('should emit outputs when triggered', () => {
-    pending('TODO: trigger the interaction, assert the output emission');
-  });
-
-  it('should project slot content', () => {
-    pending('TODO: render with projected content, assert it appears');
-  });
+  it.todo('should render the correct semantic element');
+  it.todo('should apply the BEM host class');
+  it.todo('should apply modifier classes from inputs');
+  it.todo('should emit outputs when triggered');
+  it.todo('should project slot content');
 });
 `,
   );

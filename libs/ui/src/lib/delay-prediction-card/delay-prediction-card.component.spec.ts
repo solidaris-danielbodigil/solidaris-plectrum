@@ -46,7 +46,7 @@ describe('DelayPredictionCardComponent', () => {
     fixture.componentRef.setInput('predictedCloseDate', '19/06/2026');
     fixture.detectChanges();
 
-    const spy = jasmine.createSpy('menuClick');
+    const spy = vi.fn();
     component.menuClick.subscribe(spy);
     const button = fixture.nativeElement.querySelector(
       '.c-delay-prediction-card__menu',

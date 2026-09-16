@@ -26,7 +26,7 @@ Owner: unresolved · Verified: unresolved
 
 Purpose: run the catalogue and change a component safely.
 
-Prerequisites: Node `^20.19.0 || ^22.12.0 || ^24.0.0` (Angular 21 range; CI uses 20, Pages deploy uses 24), npm, Chrome (Karma). Optional: Cursor/VS Code with the repo agents (`.cursor/agents`, `.github/agents`).
+Prerequisites: Node `^20.19.0 || ^22.12.0 || ^24.0.0` (Angular 21 range; CI uses 20, Pages deploy uses 24), npm. Optional: Cursor/VS Code with the repo agents (`.cursor/agents`, `.github/agents`).
 
 Steps:
 
@@ -34,7 +34,7 @@ Steps:
 2. `npm run storybook` → http://localhost:6006 (runs `changelog:build` first)
 3. Scaffold: `npm run pds:component -- --owner=<design-system|ishare|icrm>` — creates component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + `@forward`, regenerates `index.json`.
 4. Implement per `.ai/contracts/protocols/component-creation.md`; every state has a story; tokens via `var(--pds-*)`.
-5. Unit tests: `npx ng test ui --watch=false --browsers=ChromeHeadless`.
+5. Unit tests: `npm test` (Vitest — ui, ishare, plectrum).
 6. Story tests against the dev server: `npm run test-storybook` (play + a11y `error` level).
 7. Add a changeset: `npm run changeset`.
 
@@ -72,7 +72,7 @@ Purpose: add or change a shared component.
 2. Contract — `.metadata.ts` (`.ai/contracts/schema/component.metadata.ts`): usage, anti-patterns, `tokens.consumed`, a11y, props, `governance.status/owner`.
 3. Styles — `libs/styles/src/06-components/_components.{name}.scss`; layout via `o-flex` / `o-layout` in the template.
 4. Stories — one per state; docs figures are PrimeNG components (`.ai/rules/03-storybook.md`).
-5. Tests — Karma spec + story play tests; a11y at `error`.
+5. Tests — Vitest spec + story play tests; a11y at `error`.
 6. Docs — attached `.mdx` with purpose, example, API (from metadata), keyboard/a11y responsibilities, Figma link.
 7. Promotion candidate → core: `docs/component-promotion.md`.
 8. Compatibility review — public API change ⇒ changeset `minor`/`major`; regenerate `index.json`.

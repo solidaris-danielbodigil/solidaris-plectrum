@@ -154,11 +154,13 @@ Stories are the test suite: every story is executed headless in CI, so covering 
 <DocsTable
   headers={['Layer', 'Command', 'What it checks']}
   rows={[
-    ['Unit (Karma / Jasmine)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons'],
+    ['Unit (Vitest)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons'],
     ['Unit coverage', 'npm run test:coverage', 'Istanbul / lcov under coverage/ — CI runs this instead of npm test'],
-    ['Story smoke + interaction', 'npm run test-storybook', 'Every story renders; play functions run (storybook/test). Debug in the Interactions panel'],
-    ['Story coverage', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
-    ['Accessibility', 'same run + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y on every story — parameters.a11y.test = 'error' fails the story when a violation is found"],
+    ['Story widget (local)', 'Testing widget → Run tests', 'Component tests, Interactions, a11y, coverage, story statuses — @storybook/addon-vitest. Sign in for Visual tests'],
+    ['Story CLI (Vitest)', 'npm run test-storybook:vitest', 'Same Vitest browser project the widget uses'],
+    ['Story smoke + interaction (CI)', 'npm run test-storybook', 'test-runner: every story renders; play functions run. Debug in the Interactions panel'],
+    ['Story coverage (CI)', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
+    ['Accessibility', 'widget + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y — parameters.a11y.test = 'error' fails the story when a violation is found"],
     ['Visual tests', 'npm run chromatic', 'Pixel diffs against Chromatic baselines. Sign in via the Visual tests panel, then set CHROMATIC_PROJECT_TOKEN and repo variable CHROMATIC_ENABLED=true for CI'],
     ['Manual / agent QA', 'Tester subagent', 'Story coverage, missing states, contrast — fixes what it finds'],
   ]}
@@ -178,7 +180,7 @@ What `.github/workflows/ci.yml` runs on every push and pull request to `main`, i
     ['build', 'changelog:build + diff', 'changelog.generated.ts no longer matches .changeset/*.md and libs/*/CHANGELOG.md'],
     ['build', 'tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
     ['build', 'generate-index + diff', '.ai/contracts/index.json is stale — including a component whose governance changed'],
-    ['build', 'build · test:coverage', 'The iSHARE build breaks, or a ui / ishare unit test fails'],
+    ['build', 'build · test:coverage', 'The iSHARE build breaks, or a ui / ishare / plectrum unit test fails'],
     ['pack-smoke', 'pack:smoke', 'The packed tarballs cannot install into and build the throwaway consumer app'],
     ['storybook-tests', 'build-storybook · test-storybook:ci', 'A story fails to render, an interaction (play) test fails, an a11y assertion fails, or story coverage collection errors'],
     ['storybook-packed', 'pack:libs · build-storybook:packed', 'Storybook does not build against the packed dist/ libraries'],

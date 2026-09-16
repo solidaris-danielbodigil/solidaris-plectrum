@@ -96,4 +96,4 @@
 - [x] Drift detection: compare `.metadata.ts` `props` against Angular inputs (`npm run contracts:check`)
 - [x] `tokens.consumed` vs CSSOM as a CI gate (Foundations / Token contracts `Consumed` play test)
 - [ ] Token CI: semantic coverage and contrast
-- [x] Storybook MCP components manifest (`@storybook/angular-vite` + `@storybook/addon-mcp` at `http://localhost:6006/mcp`) — `test-run` not wired (needs `@storybook/addon-vitest`; keep `npm run test-storybook`)
+- [x] Storybook MCP components manifest (`@storybook/angular-vite` + `@storybook/addon-mcp` at `http://localhost:6006/mcp`) — `test-run` uses `@storybook/addon-vitest`; CI keeps `npm run test-storybook`

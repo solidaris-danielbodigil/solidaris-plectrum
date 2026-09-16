@@ -170,7 +170,7 @@ const preview: Preview = {
         },
       },
     },
-    // addon-a11y × test-runner: WCAG 2.1 AA per story (rules/06-accessibility.md).
+    // addon-a11y × testing widget / test-runner: WCAG 2.1 AA per story.
     // WCAG 2.1 AA — addon-a11y fails the story when a violation is found.
     a11y: {
       test: 'error',

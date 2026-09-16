@@ -23,13 +23,26 @@ const SAMPLE_DATA: ProfileDrawerData = {
     { label: 'NSI', value: '00004212182' },
     { label: 'Date de naissance', value: '14/08/1989 (36 ans)' },
   ],
-  contactRows: [
-    { label: 'E-mail', value: 'lies.verhoeven@gmail.com' },
-  ],
+  contactRows: [{ label: 'E-mail', value: 'lies.verhoeven@gmail.com' }],
   relatedMembers: [
-    { initials: 'Q', name: 'Quinten Mota', relationship: 'partenaire', color: 'blue' },
-    { initials: 'S', name: 'Shiloh Mota', relationship: 'enfant à charge', color: 'green' },
-    { initials: 'J', name: 'Jack Mota', relationship: 'enfant à charge', color: 'yellow' },
+    {
+      initials: 'Q',
+      name: 'Quinten Mota',
+      relationship: 'partenaire',
+      color: 'blue',
+    },
+    {
+      initials: 'S',
+      name: 'Shiloh Mota',
+      relationship: 'enfant à charge',
+      color: 'green',
+    },
+    {
+      initials: 'J',
+      name: 'Jack Mota',
+      relationship: 'enfant à charge',
+      color: 'yellow',
+    },
   ],
   notes: [
     {
@@ -83,9 +96,7 @@ describe('ProfileDrawerComponent', () => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
       value: {
-        writeText: jasmine
-          .createSpy('writeText')
-          .and.returnValue(Promise.resolve()),
+        writeText: vi.fn().mockReturnValue(Promise.resolve()),
       },
     });
     fixture.detectChanges();
@@ -121,9 +132,7 @@ describe('ProfileDrawerComponent', () => {
   it('should render copyable identifier buttons with label and value', async () => {
     await openDrawer();
 
-    const identifiers = document.querySelectorAll(
-      '.c-copyable-text',
-    );
+    const identifiers = document.querySelectorAll('.c-copyable-text');
     expect(identifiers.length).toBe(SAMPLE_DATA.identifiers.length);
     expect(identifiers[0].textContent).toContain('Territoire');
     expect(identifiers[0].textContent).toContain('315');
@@ -140,7 +149,7 @@ describe('ProfileDrawerComponent', () => {
 
   it('should emit identifierCopy when an identifier button is clicked', async () => {
     await openDrawer();
-    const onCopy = jasmine.createSpy('identifierCopy');
+    const onCopy = vi.fn();
     component.identifierCopy.subscribe(onCopy);
 
     const button = document.querySelector(
@@ -149,7 +158,9 @@ describe('ProfileDrawerComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_DATA.identifiers[0]);
+    expect(onCopy).toHaveBeenCalledTimes(1);
+
+    expect(onCopy).toHaveBeenCalledWith(SAMPLE_DATA.identifiers[0]);
   });
 
   it('should render the Détails/Documents select button', async () => {
@@ -173,9 +184,15 @@ describe('ProfileDrawerComponent', () => {
       'pds-plectrum-avatar.c-drawer__profile-family-avatar',
     );
     expect(avatars.length).toBe(3);
-    expect(avatars[0].classList.contains('c-plectrum-avatar--color-blue')).toBe(true);
-    expect(avatars[1].classList.contains('c-plectrum-avatar--color-green')).toBe(true);
-    expect(avatars[2].classList.contains('c-plectrum-avatar--color-yellow')).toBe(true);
+    expect(avatars[0].classList.contains('c-plectrum-avatar--color-blue')).toBe(
+      true,
+    );
+    expect(
+      avatars[1].classList.contains('c-plectrum-avatar--color-green'),
+    ).toBe(true);
+    expect(
+      avatars[2].classList.contains('c-plectrum-avatar--color-yellow'),
+    ).toBe(true);
 
     const initials = document.querySelectorAll(
       '.c-drawer__profile-family-avatar .c-plectrum-avatar__initials',
@@ -187,9 +204,7 @@ describe('ProfileDrawerComponent', () => {
   it('should render family member names and relationships', async () => {
     await openDrawer();
 
-    const names = document.querySelectorAll(
-      '.c-drawer__profile-family-name',
-    );
+    const names = document.querySelectorAll('.c-drawer__profile-family-name');
     const relationships = document.querySelectorAll(
       '.c-drawer__profile-family-relationship',
     );
@@ -203,13 +218,11 @@ describe('ProfileDrawerComponent', () => {
 
     const accordions = fixture.debugElement.queryAll(By.directive(Accordion));
     expect(accordions.length).toBe(1);
+    expect(document.querySelector('.c-drawer__profile-notes')).toBeFalsy();
     expect(
-      document.querySelector('.c-drawer__profile-notes'),
-    ).toBeFalsy();
-    expect(
-      Array.from(
-        document.querySelectorAll('.c-drawer__section-title'),
-      ).some((title) => title.textContent?.trim() === 'Notes'),
+      Array.from(document.querySelectorAll('.c-drawer__section-title')).some(
+        (title) => title.textContent?.trim() === 'Notes',
+      ),
     ).toBe(false);
   });
 
@@ -219,11 +232,13 @@ describe('ProfileDrawerComponent', () => {
     const notes = document.querySelectorAll('.c-drawer__profile-note');
     expect(notes.length).toBe(2);
     expect(
-      notes[0].querySelector('.c-drawer__profile-note-author')
+      notes[0]
+        .querySelector('.c-drawer__profile-note-author')
         ?.textContent?.trim(),
     ).toBe('Eva de Moyer');
     expect(
-      notes[0].querySelector('.c-drawer__profile-note-body')
+      notes[0]
+        .querySelector('.c-drawer__profile-note-body')
         ?.textContent?.trim(),
     ).toBe('Personne agressive');
   });
@@ -236,7 +251,9 @@ describe('ProfileDrawerComponent', () => {
     expect(tags[0].componentInstance.severity).toBe('danger');
     expect(tags[1].componentInstance.severity).toBe('secondary');
 
-    const sensitiveTag = document.querySelector('.c-drawer__profile-note p-tag.p-tag-danger');
+    const sensitiveTag = document.querySelector(
+      '.c-drawer__profile-note p-tag.p-tag-danger',
+    );
     expect(sensitiveTag).toBeTruthy();
   });
 
@@ -251,7 +268,7 @@ describe('ProfileDrawerComponent', () => {
 
   it('should emit visibleChange when the close button is clicked', async () => {
     await openDrawer();
-    const onVisibleChange = jasmine.createSpy('visibleChange');
+    const onVisibleChange = vi.fn();
     component.visible.subscribe(onVisibleChange);
 
     const closeButton = document.querySelector(
@@ -266,29 +283,39 @@ describe('ProfileDrawerComponent', () => {
 
   it('should emit viewChange when the Documents option is selected', async () => {
     await openDrawer();
-    const onViewChange = jasmine.createSpy('viewChange');
+    const onViewChange = vi.fn();
     component.viewChange.subscribe(onViewChange);
 
     const selectButton = fixture.debugElement.query(By.directive(SelectButton));
     selectButton.triggerEventHandler('onChange', { value: 'documents' });
 
-    expect(onViewChange).toHaveBeenCalledOnceWith('documents');
+    expect(onViewChange).toHaveBeenCalledTimes(1);
+
+    expect(onViewChange).toHaveBeenCalledWith('documents');
     expect(component['selectedView']()).toBe('details');
   });
 
   it('should emit menuClick, quickActionsClick, callClick and emailClick', async () => {
     await openDrawer();
-    const onMenu = jasmine.createSpy('menuClick');
-    const onQuick = jasmine.createSpy('quickActionsClick');
-    const onCall = jasmine.createSpy('callClick');
-    const onEmail = jasmine.createSpy('emailClick');
+    const onMenu = vi.fn();
+    const onQuick = vi.fn();
+    const onCall = vi.fn();
+    const onEmail = vi.fn();
     component.menuClick.subscribe(onMenu);
     component.quickActionsClick.subscribe(onQuick);
     component.callClick.subscribe(onCall);
     component.emailClick.subscribe(onEmail);
 
-    (document.querySelector('[aria-label="Plus d\'actions"]') as HTMLButtonElement).click();
-    (document.querySelector('.c-drawer__profile-quick-actions') as HTMLButtonElement).click();
+    (
+      document.querySelector(
+        '[aria-label="Plus d\'actions"]',
+      ) as HTMLButtonElement
+    ).click();
+    (
+      document.querySelector(
+        '.c-drawer__profile-quick-actions',
+      ) as HTMLButtonElement
+    ).click();
     const contactActions = document.querySelectorAll(
       '.c-drawer__profile-contact-action',
     );
@@ -303,7 +330,7 @@ describe('ProfileDrawerComponent', () => {
 
   it('should emit familyMemberSelect when a family tile is clicked', async () => {
     await openDrawer();
-    const onSelect = jasmine.createSpy('familyMemberSelect');
+    const onSelect = vi.fn();
     component.familyMemberSelect.subscribe(onSelect);
 
     const tile = document.querySelector(
@@ -311,22 +338,26 @@ describe('ProfileDrawerComponent', () => {
     ) as HTMLButtonElement;
     tile.click();
 
-    expect(onSelect).toHaveBeenCalledOnceWith(SAMPLE_DATA.relatedMembers[0]);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+
+    expect(onSelect).toHaveBeenCalledWith(SAMPLE_DATA.relatedMembers[0]);
   });
 
   it('should expose an accessible label on each family tile', async () => {
     await openDrawer();
 
-    const tiles = document.querySelectorAll(
-      '.c-drawer__profile-family-tile',
+    const tiles = document.querySelectorAll('.c-drawer__profile-family-tile');
+    expect(tiles[0].getAttribute('aria-label')).toBe(
+      'Quinten Mota (partenaire)',
     );
-    expect(tiles[0].getAttribute('aria-label')).toBe('Quinten Mota (partenaire)');
-    expect(tiles[2].getAttribute('aria-label')).toBe('Jack Mota (enfant à charge)');
+    expect(tiles[2].getAttribute('aria-label')).toBe(
+      'Jack Mota (enfant à charge)',
+    );
   });
 
   it('should emit familyMemberSelect when clicking anywhere on the family tile', async () => {
     await openDrawer();
-    const onSelect = jasmine.createSpy('familyMemberSelect');
+    const onSelect = vi.fn();
     component.familyMemberSelect.subscribe(onSelect);
 
     const name = document.querySelector(
@@ -334,7 +365,9 @@ describe('ProfileDrawerComponent', () => {
     ) as HTMLSpanElement;
     name.click();
 
-    expect(onSelect).toHaveBeenCalledOnceWith(SAMPLE_DATA.relatedMembers[0]);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+
+    expect(onSelect).toHaveBeenCalledWith(SAMPLE_DATA.relatedMembers[0]);
   });
 
   describe('dialog semantics and focus management', () => {
@@ -362,7 +395,7 @@ describe('ProfileDrawerComponent', () => {
       await openDrawer();
 
       const root = surface();
-      expect(root).withContext('drawer root').not.toBeNull();
+      expect(root, 'drawer root').not.toBeNull();
       expect(root?.getAttribute('role')).toBe('dialog');
       expect(root?.getAttribute('aria-modal')).toBe('true');
       expect(heading()?.id).toBeTruthy();

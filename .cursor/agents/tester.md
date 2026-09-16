@@ -29,9 +29,13 @@ Each story must have:
 - `argTypes` from `.metadata.ts` `props` (`argTypesFromProps`) — no Control missing from that list
 - Docs in the metadata + attached MDX embeds — not `parameters.docs.description`
 
-Run `npm run test-storybook`. Do not call Storybook MCP `test-run` (needs `@storybook/addon-vitest`, not installed). When the catalogue is up, `docs-show` / `stories-preview` may inspect canvases; they do not replace the test-runner.
+Run the testing widget in Storybook or `npm run test-storybook:vitest`. CI gate is still `npm run test-storybook`. Storybook MCP `test-run` is available while the catalogue is up. `docs-show` / `stories-preview` may inspect canvases; they do not replace a test run.
 
 ### 2 — Unit test checklist
+
+Run `npm test` (Vitest via `@angular/build:unit-test`). `ui` and `ishare` use
+headless Chromium; `plectrum` uses jsdom. Specs use Vitest globals (`vi`,
+`expect`, `it.todo`) — not Jasmine.
 
 For each `{name}.component.spec.ts`, verify coverage:
 

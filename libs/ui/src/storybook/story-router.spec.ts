@@ -21,7 +21,7 @@ describe('provideStoryRouter', () => {
   it('resolves unmatched sample links instead of failing the navigation', async () => {
     const router = TestBed.inject(Router);
 
-    await expectAsync(router.navigateByUrl('/ishare')).toBeResolvedTo(true);
+    await expect(router.navigateByUrl('/ishare')).resolves.toEqual(true);
     expect(TestBed.inject(Location).path()).toBe('/ishare');
   });
 

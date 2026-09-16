@@ -283,7 +283,9 @@ describe('ListComponent', () => {
       'url(#pds-list-timeline-body-gradient)',
     );
     expect(timelineBody?.getAttribute('stroke-dasharray')).toBe('2 2');
-    expect(fixture.nativeElement.querySelector('.c-list__timeline-img')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-list__timeline-img'),
+    ).toBeNull();
   });
 
   it('should hide PrimeNG toggler placeholders on journey leaf document nodes', () => {
@@ -413,7 +415,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('selectedItemId', 'doc-demande-primaire');
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     fixture.componentRef.setInput('selectedItemId', 'doc-rechute');
@@ -433,9 +435,9 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('selectedItemId', 'doc-rechute');
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
-    emitSpy.calls.reset();
+    emitSpy.mockClear();
 
     fixture.componentRef.setInput('expandedGroupIds', [
       'parcours-demande-primaire',
@@ -460,7 +462,7 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
 
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
@@ -482,7 +484,7 @@ describe('ListComponent', () => {
     ]);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     const groupHeader = fixture.nativeElement.querySelector(
@@ -496,11 +498,13 @@ describe('ListComponent', () => {
 
   it('should allow collapsing a group that contains the selected document', () => {
     fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
-    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.componentRef.setInput('expandedGroupIds', [
+      'parcours-demande-primaire',
+    ]);
     fixture.componentRef.setInput('selectedItemId', 'doc-demande-primaire');
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     const groupHeader = fixture.nativeElement.querySelector(
@@ -518,7 +522,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('expandedGroupIds', []);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     const groupHeader = fixture.nativeElement.querySelector(
@@ -537,7 +541,7 @@ describe('ListComponent', () => {
     ]);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     const groupHeader = fixture.nativeElement.querySelector(
@@ -556,7 +560,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('expandedGroupIds', []);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
     const groupHeader = fixture.nativeElement.querySelector(
@@ -592,7 +596,7 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('itemClick');
+    const emitSpy = vi.fn();
 
     component.itemClick.subscribe(emitSpy);
 
@@ -745,7 +749,9 @@ describe('ListComponent', () => {
 
     expect(fixture.nativeElement.classList.contains('is-loading')).toBe(true);
 
-    expect(fixture.nativeElement.querySelectorAll('p-skeleton').length).toBeGreaterThanOrEqual(9);
+    expect(
+      fixture.nativeElement.querySelectorAll('p-skeleton').length,
+    ).toBeGreaterThanOrEqual(9);
   });
 
   it('should mark decorative sort icon as aria-hidden', () => {
@@ -804,7 +810,7 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const emitSpy = vi.fn();
 
     component.expandedGroupIdsChange.subscribe(emitSpy);
 
@@ -832,7 +838,7 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('itemClick');
+    const emitSpy = vi.fn();
 
     component.itemClick.subscribe(emitSpy);
 
@@ -856,9 +862,9 @@ describe('ListComponent', () => {
 
     fixture.detectChanges();
 
-    const expandedSpy = jasmine.createSpy('expandedGroupIdsChange');
+    const expandedSpy = vi.fn();
 
-    const itemSpy = jasmine.createSpy('itemClick');
+    const itemSpy = vi.fn();
 
     component.expandedGroupIdsChange.subscribe(expandedSpy);
 
@@ -911,7 +917,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('tagTargetClick');
+    const emitSpy = vi.fn();
     component.tagTargetClick.subscribe(emitSpy);
 
     const tagButton = fixture.nativeElement.querySelector(
@@ -931,7 +937,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
 
-    const itemSpy = jasmine.createSpy('itemClick');
+    const itemSpy = vi.fn();
     component.itemClick.subscribe(itemSpy);
 
     const tagButton = fixture.nativeElement.querySelector(
@@ -947,7 +953,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
 
-    const itemSpy = jasmine.createSpy('itemClick');
+    const itemSpy = vi.fn();
     component.itemClick.subscribe(itemSpy);
 
     const tagsRow = fixture.nativeElement.querySelector(
@@ -963,7 +969,7 @@ describe('ListComponent', () => {
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
 
-    const emitSpy = jasmine.createSpy('tagTargetClick');
+    const emitSpy = vi.fn();
     component.tagTargetClick.subscribe(emitSpy);
 
     const tagButtons = fixture.nativeElement.querySelectorAll(
@@ -979,7 +985,7 @@ describe('ListComponent', () => {
     // Popover overlay must escape the (overflow-clipping) list/card by being
     // appended to the document body, otherwise it is invisible in the app.
     const popoverPanel = document.body.querySelector('.p-popover');
-    expect(popoverPanel).withContext('popover appended to body').toBeTruthy();
+    expect(popoverPanel, 'popover appended to body').toBeTruthy();
     expect(popoverPanel?.contains(fixture.nativeElement)).toBe(false);
 
     const options = document.querySelectorAll(
@@ -998,7 +1004,7 @@ describe('ListComponent', () => {
   });
 
   it('should render footnote below the tree and emit footnoteClick', () => {
-    const footnoteSpy = jasmine.createSpy('footnoteClick');
+    const footnoteSpy = vi.fn();
     component.footnoteClick.subscribe(footnoteSpy);
 
     fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
@@ -1045,7 +1051,9 @@ describe('ListComponent', () => {
       {
         id: 'doc-with-tags',
         title: 'Demande primaire -',
-        tags: [{ label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' }],
+        tags: [
+          { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
+        ],
       },
     ]);
     fixture.detectChanges();

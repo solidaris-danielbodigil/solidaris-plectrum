@@ -116,7 +116,7 @@ The index stays. MCP is the live catalogue (stories, Controls, docs pages). The 
   rows={[
     ['Docs', 'docs-list, docs-show, docs-show-story', 'Find a Plectrum component and read its props before writing UI or stories'],
     ['Development', 'get-storybook-story-instructions, stories-find-by-component, stories-preview', 'Author CSF; preview Default / Disabled / Empty. Then follow rule 03'],
-    ['Testing', 'test-run', 'Not wired. Needs @storybook/addon-vitest. Run npm run test-storybook'],
+    ['Testing', 'test-run', 'Wired. Same Vitest runner as the testing widget. CI still uses npm run test-storybook'],
   ]}
 />
 
@@ -180,7 +180,7 @@ Component work is delegated to specialist subagents. Ask **Plectrum** for a comp
     ['index.json', 'Offline map of libs/ui: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner. Kept; MCP does not replace it.'],
     ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Foundations / Token contracts play test fails undeclared names in CI.'],
     ['contracts:check', 'CI gate. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
-    ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp (docs-list, docs-show, stories-preview). Needs npm run storybook. Tests stay on the test-runner.'],
+    ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp (docs-list, docs-show, stories-preview, test-run). Needs npm run storybook. CI still uses the test-runner.'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
     ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],

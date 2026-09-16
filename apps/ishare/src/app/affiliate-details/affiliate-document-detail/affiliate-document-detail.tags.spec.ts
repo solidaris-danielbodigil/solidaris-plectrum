@@ -50,14 +50,14 @@ describe('affiliate-document-detail.tags', () => {
     const calculTags = deriveStepCommentTags(primaire.steps[2]);
 
     expect(fdrTags).toEqual([
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: '2',
         severity: 'secondary',
         ariaLabel: '2 commentaires',
       }),
     ]);
     expect(calculTags).toEqual([
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: '1',
         severity: 'warn',
         ariaLabel: '1 avertissement',
@@ -72,12 +72,12 @@ describe('affiliate-document-detail.tags', () => {
     );
 
     expect(documentTags).toEqual([
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: '2',
         severity: 'secondary',
         ariaLabel: '2 commentaires',
       }),
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: '1',
         severity: 'warn',
         ariaLabel: '1 avertissement',

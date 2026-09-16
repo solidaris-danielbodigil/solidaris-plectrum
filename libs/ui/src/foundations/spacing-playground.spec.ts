@@ -1,7 +1,7 @@
 // =============================================================================
 // Spacing playground — the stop options are derived from the compiled
 // stylesheet (.ai/rules/10-css-ssot.md), so these tests run against the real
-// CSSOM, not a copied list. Karma loads libs/styles/src/main.scss.
+// CSSOM, not a copied list. The ui unit-test target loads libs/styles/src/main.scss.
 // =============================================================================
 
 import { readClassNames, readTokenDeclarations } from '../storybook/cssom';
@@ -19,9 +19,7 @@ import {
 describe('spacing playground stops', () => {
   it('finds generated stops for every property (guards against an empty stylesheet)', () => {
     for (const property of SPACING_PROPERTIES) {
-      expect(spacingStops(property).length)
-        .withContext(property)
-        .toBeGreaterThan(1);
+      expect(spacingStops(property).length, property).toBeGreaterThan(1);
     }
   });
 
@@ -49,16 +47,15 @@ describe('spacing playground stops', () => {
     const tokens = readTokenDeclarations();
     for (const property of SPACING_PROPERTIES) {
       for (const stop of spacingStops(property)) {
-        expect(tokens.has(spacingTokenVar(stop)))
-          .withContext(`${property} ${stop}`)
-          .toBe(true);
-        expect(acceptsStop(property, stop))
-          .withContext(`${property} ${stop}`)
-          .toBe(true);
+        expect(tokens.has(spacingTokenVar(stop)), `${property} ${stop}`).toBe(
+          true,
+        );
+        expect(acceptsStop(property, stop), `${property} ${stop}`).toBe(true);
         // Sub-property classes (o-layout--padding-top-2) are not stops.
-        expect(readClassNames(new RegExp(`^o-layout--${property}-${stop}$`)))
-          .withContext(`${property} ${stop}`)
-          .toEqual([`o-layout--${property}-${stop}`]);
+        expect(
+          readClassNames(new RegExp(`^o-layout--${property}-${stop}$`)),
+          `${property} ${stop}`,
+        ).toEqual([`o-layout--${property}-${stop}`]);
       }
     }
   });

@@ -110,7 +110,7 @@ Import the component using its local relative path — **not** `@solidaris/ui` �
 
 **A component is not complete without Storybook tests.** A canvas that only mounts is a smoke check; that is not enough for the required story exports in §2.
 
-Stories are the executable test suite. `@storybook/angular-vite` uses `@storybook/test-runner`, not the Vite Vitest addon. `@storybook/addon-mcp` exposes `test-run`, but that tool needs `@storybook/addon-vitest`, which is not installed — do not call it. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
+Stories are the executable test suite. In the catalogue, run them from the **testing widget** (bottom of the sidebar) via `@storybook/addon-vitest` — that paints story statuses, Interactions, a11y, and coverage. CLI: `npm run test-storybook:vitest`. CI still uses `npm run test-storybook` (`@storybook/test-runner`). Storybook MCP `test-run` is wired. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
 
 | Kind               | Required on every `libs/ui` component                                                                                                                                                                                                                                 |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,13 +118,15 @@ Stories are the executable test suite. `@storybook/angular-vite` uses `@storyboo
 | Interaction / play | Every required canvas story in §2 has a `play` function. Interactive states use `userEvent` and assert the outcome. Display / CSS-only stories assert a render contract (visible text, role, or host class). Exception: `Status` and other `!dev` docs-figure stories |
 | Accessibility      | Global `parameters.a11y` in `.storybook/preview.ts` (WCAG 2.1 AA). Do **not** set `a11y.test: 'off'` on a component story without a comment. Do not ship a new component that adds unreviewed violations                                                              |
 | Visual             | Chromatic (`npm run chromatic`). Docs-figure / Status stories set `chromatic.disableSnapshot`. Do not disable snapshots on a catalogue story without a comment                                                                                                        |
-| Coverage           | `npm run test:coverage` (Karma unit) and `npm run test-storybook:coverage` (stories vs `libs/ui/src/lib`)                                                                                                                                                             |
+| Coverage           | Testing widget Coverage toggle, `npm run test-storybook:vitest`, `npm run test:coverage` (unit), `npm run test-storybook:coverage` (test-runner Istanbul)                                                                                                              |
 
 Do **not** add a `test-runner.(js|ts)` hooks file under `libs/ui/.storybook/` — Jest 30 rejects `module.register()` inside workers. Visual diffs go through Chromatic, not Playwright image snapshots.
 
 ```bash
-npm run test-storybook            # smoke + play + a11y report (Storybook on localhost:6006)
-npm run test-storybook:coverage   # same + Istanbul under coverage/storybook
+# In Storybook: testing widget → Run tests (statuses + Interactions + a11y + coverage)
+npm run test-storybook:vitest     # same runner from the CLI
+npm run test-storybook            # test-runner (CI; Storybook on localhost:6006)
+npm run test-storybook:coverage   # test-runner + Istanbul under coverage/storybook
 npm run chromatic                 # visual baselines (needs CHROMATIC_PROJECT_TOKEN)
 ```
 

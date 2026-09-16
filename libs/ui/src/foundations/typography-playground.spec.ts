@@ -1,7 +1,7 @@
 // =============================================================================
 // Typography playground — the token references it prints are read from the
 // compiled stylesheet (.ai/rules/10-css-ssot.md), so each one must resolve.
-// Karma loads libs/styles/src/main.scss.
+// The ui unit-test target loads libs/styles/src/main.scss.
 // =============================================================================
 
 import { resolveToken } from '../storybook/cssom';
@@ -35,9 +35,9 @@ describe('typography playground tokens', () => {
     const tokens = textStyleTokens(DEFAULT_STYLE);
     expect(tokens.length).toBeGreaterThan(0);
     for (const cssVar of tokens) {
-      expect(resolveToken(document.documentElement, cssVar))
-        .withContext(cssVar)
-        .not.toBe('');
+      expect(resolveToken(document.documentElement, cssVar), cssVar).not.toBe(
+        '',
+      );
     }
   });
 
@@ -52,11 +52,11 @@ describe('typography playground tokens', () => {
   it('resolves every reference for every generated style', () => {
     for (const style of textStyles()) {
       const tokens = textStyleTokens(style);
-      expect(tokens.length).withContext(style).toBeGreaterThan(0);
+      expect(tokens.length, style).toBeGreaterThan(0);
       for (const cssVar of tokens) {
-        expect(resolveToken(document.documentElement, cssVar))
-          .withContext(cssVar)
-          .not.toBe('');
+        expect(resolveToken(document.documentElement, cssVar), cssVar).not.toBe(
+          '',
+        );
       }
     }
   });

@@ -25,7 +25,7 @@ MCP does **not** replace the index. The index has paths, BEM, PrimeNG wraps, `us
 |---|---|---|
 | Docs | `docs-list`, `docs-show`, `docs-show-story` | Find a Plectrum page and read props / canvases before writing UI or stories |
 | Development | `get-storybook-story-instructions`, `stories-find-by-component`, `stories-preview` | Author CSF; preview Default / Disabled / Empty. Then follow `.ai/rules/03-storybook.md` |
-| Testing | `test-run` | **Not wired.** Needs `@storybook/addon-vitest`. Run `npm run test-storybook` |
+| Testing | `test-run` | Storybook MCP while the catalogue is up. Same runner as the testing widget (`@storybook/addon-vitest`). CI still uses `npm run test-storybook` |
 
 Do not invent a Control that is missing from `.metadata.ts` `props`. After `stories-preview`, gate with `npm run contracts:check`, `npm run docs:check`, and `npm run test-storybook`.
 

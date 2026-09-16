@@ -43,9 +43,10 @@ describe('TokenFinderComponent', () => {
 
     const names = cardNames(fixture);
     expect(names.length).toBeGreaterThan(0);
-    expect(names.every((name) => name.includes('border')))
-      .withContext(names.join(', '))
-      .toBe(true);
+    expect(
+      names.every((name) => name.includes('border')),
+      names.join(', '),
+    ).toBe(true);
     // Whole-group members that used to leak in through groups: ['surface', 'content', 'form'].
     expect(names).not.toContain('color-text');
     expect(names).not.toContain('color-surface-0');

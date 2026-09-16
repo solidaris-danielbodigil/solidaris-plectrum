@@ -65,6 +65,9 @@ jobs:
       - name: Build iGED
         run: npx ng build iged --configuration=production
 
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Run tests
         run: npm run test:coverage
 

@@ -44,7 +44,7 @@ describe('TopNavComponent', () => {
   });
 
   it('should emit backClicked when the back button is activated', () => {
-    const backSpy = jasmine.createSpy('backClicked');
+    const backSpy = vi.fn();
     fixture.componentRef.setInput('showBackButton', true);
     fixture.componentInstance.backClicked.subscribe(backSpy);
     fixture.detectChanges();
@@ -58,7 +58,9 @@ describe('TopNavComponent', () => {
   });
 
   it('should render a plain avatar when no menu items are provided', () => {
-    const trigger = fixture.nativeElement.querySelector('.c-top-nav__avatar-trigger');
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    );
     const avatar = fixture.nativeElement.querySelector('.c-top-nav__avatar');
 
     expect(trigger).toBeNull();
@@ -69,7 +71,9 @@ describe('TopNavComponent', () => {
     fixture.componentRef.setInput('showAvatarMenu', true);
     fixture.detectChanges();
 
-    const trigger = fixture.nativeElement.querySelector('.c-top-nav__avatar-trigger');
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    );
     const avatar = trigger?.querySelector('.c-top-nav__avatar');
 
     expect(trigger).not.toBeNull();
@@ -83,7 +87,9 @@ describe('TopNavComponent', () => {
     ]);
     fixture.detectChanges();
 
-    const trigger = fixture.nativeElement.querySelector('.c-top-nav__avatar-trigger');
+    const trigger = fixture.nativeElement.querySelector(
+      '.c-top-nav__avatar-trigger',
+    );
 
     expect(trigger).not.toBeNull();
     expect(trigger?.getAttribute('aria-haspopup')).toBe('menu');
@@ -110,13 +116,20 @@ describe('TopNavComponent', () => {
     expect(link).not.toBeNull();
     expect(link?.getAttribute('data-test')).toBe('Export');
     expect(link?.querySelector('.p-menu-item-icon')).not.toBeNull();
-    expect(link?.querySelector('.p-menu-item-label')?.textContent).toBe('Export');
+    expect(link?.querySelector('.p-menu-item-label')?.textContent).toBe(
+      'Export',
+    );
   });
 
   it('should invoke avatar menu item command only once per click', () => {
-    const command = jasmine.createSpy('command');
+    const command = vi.fn();
     fixture.componentRef.setInput('avatarMenuItems', [
-      { label: 'Démarrer la session test', icon: 'bi bi-play-circle', id: 'session-start', command },
+      {
+        label: 'Démarrer la session test',
+        icon: 'bi bi-play-circle',
+        id: 'session-start',
+        command,
+      },
     ]);
     fixture.detectChanges();
 
@@ -158,8 +171,12 @@ describe('TopNavComponent', () => {
     const label = link?.querySelector('.p-menu-item-label');
 
     expect(label?.textContent).toBe('Arrêter la session test');
-    expect(link?.querySelector('.c-top-nav__menu-timer')?.textContent).toBe('02:34');
-    expect(link?.getAttribute('aria-label')).toBe('Arrêter la session test (02:34)');
+    expect(link?.querySelector('.c-top-nav__menu-timer')?.textContent).toBe(
+      '02:34',
+    );
+    expect(link?.getAttribute('aria-label')).toBe(
+      'Arrêter la session test (02:34)',
+    );
 
     fixture.componentRef.setInput('avatarMenuTimerLabel', '02:35');
     fixture.detectChanges();
@@ -168,13 +185,21 @@ describe('TopNavComponent', () => {
       '.p-menu-item-link[data-telemetry-id="session-stop"]',
     ) as HTMLAnchorElement | null;
 
-    expect(updatedLink?.querySelector('.c-top-nav__menu-timer')?.textContent).toBe('02:35');
-    expect(updatedLink?.getAttribute('aria-label')).toBe('Arrêter la session test (02:35)');
+    expect(
+      updatedLink?.querySelector('.c-top-nav__menu-timer')?.textContent,
+    ).toBe('02:35');
+    expect(updatedLink?.getAttribute('aria-label')).toBe(
+      'Arrêter la session test (02:35)',
+    );
   });
 
   it('should not render a timer on items that do not match the timer item id', () => {
     fixture.componentRef.setInput('avatarMenuItems', [
-      { label: 'Démarrer la session test', icon: 'bi bi-play-circle', id: 'session-start' },
+      {
+        label: 'Démarrer la session test',
+        icon: 'bi bi-play-circle',
+        id: 'session-start',
+      },
     ]);
     fixture.componentRef.setInput('avatarMenuTimerItemId', 'session-stop');
     fixture.componentRef.setInput('avatarMenuTimerLabel', '02:34');
@@ -195,7 +220,9 @@ describe('TopNavComponent', () => {
   });
 
   it('should hide the locale switcher by default', () => {
-    expect(fixture.nativeElement.querySelector('.c-top-nav__locale')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-top-nav__locale'),
+    ).toBeNull();
   });
 
   it('should render FR/NL and persist the locale when the switcher is shown', () => {
@@ -271,7 +298,7 @@ describe('TopNavComponent', () => {
   });
 
   it('should emit avatarMenuOpenChange when the avatar menu opens and closes', () => {
-    const openSpy = jasmine.createSpy('avatarMenuOpenChange');
+    const openSpy = vi.fn();
     fixture.componentRef.setInput('avatarMenuItems', [
       { label: 'Export', icon: 'bi bi-download', id: 'session-export' },
     ]);

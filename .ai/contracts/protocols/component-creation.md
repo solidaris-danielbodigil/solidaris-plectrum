@@ -95,13 +95,13 @@ Author against Storybook MCP when the catalogue is running:
 2. `get-storybook-story-instructions`, then apply `.ai/rules/03-storybook.md`.
 3. Do not add a Control that is missing from `.metadata.ts` `props`.
 4. `stories-preview` the new canvases.
-5. Gate with `npm run contracts:check`, `npm run docs:check`, and `npm run test-storybook`. Do not call `test-run` (needs `@storybook/addon-vitest`, not installed).
+5. Gate with `npm run contracts:check`, `npm run docs:check`, and `npm run test-storybook` (CI). Locally the testing widget / `npm run test-storybook:vitest` / MCP `test-run` are the same Vitest runner.
 
 The MDX keeps: headings, `<Story of={Stories.Status|Usage|Anatomy|Accessibility} />` embeds, canvases with their state prose, `<Controls>`, `<ArgTypes>` last, and any visuals. `npm run docs:check` fails on hand-written copies. Catalogue stories stay visible in the sidebar; `!dev` is only for docs figures.
 
 ## Storybook Tests (mandatory)
 
-Import from `libs/ui/src/storybook/story-tests.ts`. `@storybook/angular-vite` uses `@storybook/test-runner`, not the Vitest addon.
+Import from `libs/ui/src/storybook/story-tests.ts`. The catalogue widget uses `@storybook/addon-vitest`; CI still uses `@storybook/test-runner`.
 
 | Kind          | Required                                                                                                                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

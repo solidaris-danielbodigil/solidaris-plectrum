@@ -15,7 +15,10 @@ function row(argTypes: ArgTypes, name: string): StoryArgType {
 
 function controlFor(
   type: string,
-  extra: Partial<{ default: string; required: boolean }> = {},
+  extra: Partial<{
+    default: string;
+    required: boolean;
+  }> = {},
 ): StoryArgType['control'] {
   return row(
     argTypesFromProps([
@@ -43,7 +46,7 @@ describe('argTypesFromProps', () => {
     ]);
 
     expect(argTypes['label']).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         description: 'Visible label.',
         control: { type: 'text' },
         table: {
@@ -252,9 +255,7 @@ describe('classArgTypes', () => {
 
     expect(argTypes['.c-drawer__header'].control).toBe(false);
     expect(row(argTypes, '.c-drawer__header').table.category).toBe('Classes');
-    expect(row(argTypes, '.c-drawer__header').table.type.summary).toBe(
-      'class',
-    );
+    expect(row(argTypes, '.c-drawer__header').table.type.summary).toBe('class');
     expect(argTypes['.c-drawer__header'].description).toBe('Header row.');
   });
 });

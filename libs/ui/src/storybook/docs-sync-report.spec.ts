@@ -114,11 +114,11 @@ describe('sync report figures', () => {
     });
 
     it('recognises flat colours only', () => {
-      expect(isColorValue('#f6f6f6')).toBeTrue();
-      expect(isColorValue('rgba(0, 0, 0, 0.1)')).toBeTrue();
-      expect(isColorValue('0 8px 10px -6px rgba(0, 0, 0, 0.1)')).toBeFalse();
-      expect(isColorValue('12')).toBeFalse();
-      expect(isColorValue(null)).toBeFalse();
+      expect(isColorValue('#f6f6f6')).toBe(true);
+      expect(isColorValue('rgba(0, 0, 0, 0.1)')).toBe(true);
+      expect(isColorValue('0 8px 10px -6px rgba(0, 0, 0, 0.1)')).toBe(false);
+      expect(isColorValue('12')).toBe(false);
+      expect(isColorValue(null)).toBe(false);
     });
 
     it('flattens the diff in reading order with a kind per row', () => {
@@ -133,11 +133,11 @@ describe('sync report figures', () => {
 
     it('phrases the outcome for main', () => {
       expect(syncOutcome(REPORT)).toEqual(
-        jasmine.objectContaining({ tone: 'success', title: 'Promoted' }),
+        expect.objectContaining({ tone: 'success', title: 'Promoted' }),
       );
       expect(syncOutcome({ ...REPORT, result: 'blocked' }).tone).toBe('error');
       expect(syncOutcome({ ...REPORT, result: 'preview' })).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           tone: 'info',
           title: 'No promoted sync recorded yet',
         }),
@@ -157,9 +157,8 @@ describe('sync report figures', () => {
         host
           .querySelector('p-message')
           ?.classList.contains('p-message-success'),
-      )
-        .withContext('promote → success')
-        .toBeTrue();
+        'promote → success',
+      ).toBe(true);
       expect(
         host.querySelector('.c-docs-callout__title')?.textContent?.trim(),
       ).toBe('Promoted');
@@ -173,12 +172,13 @@ describe('sync report figures', () => {
         'WARN',
         'SKIP',
       ]);
-      expect(tags[0].classList.contains('p-tag-success')).toBeTrue();
-      expect(tags[2].classList.contains('p-tag-warn')).toBeTrue();
-      expect(tags[3].classList.contains('p-tag-secondary')).toBeTrue();
-      expect(host.querySelectorAll('.c-docs-sync-checks__items > li').length)
-        .withContext('only the coverage check has items')
-        .toBe(1);
+      expect(tags[0].classList.contains('p-tag-success')).toBe(true);
+      expect(tags[2].classList.contains('p-tag-warn')).toBe(true);
+      expect(tags[3].classList.contains('p-tag-secondary')).toBe(true);
+      expect(
+        host.querySelectorAll('.c-docs-sync-checks__items > li').length,
+        'only the coverage check has items',
+      ).toBe(1);
     });
 
     it('shows the blocked outcome as an error message', () => {
@@ -187,7 +187,7 @@ describe('sync report figures', () => {
       fixture.detectChanges();
       const message = fixture.nativeElement.querySelector('p-message');
 
-      expect(message?.classList.contains('p-message-error')).toBeTrue();
+      expect(message?.classList.contains('p-message-error')).toBe(true);
     });
 
     it('shows only the explanation while no sync has been promoted', () => {
@@ -198,7 +198,7 @@ describe('sync report figures', () => {
 
       expect(
         host.querySelector('p-message')?.classList.contains('p-message-info'),
-      ).toBeTrue();
+      ).toBe(true);
       expect(host.querySelectorAll('.c-docs-sync-checks__item').length).toBe(0);
     });
   });
@@ -210,20 +210,20 @@ describe('sync report figures', () => {
       fixture.detectChanges();
       const host: HTMLElement = fixture.nativeElement;
 
-      expect(host.querySelector('p-table'))
-        .withContext('p-table host')
-        .not.toBeNull();
+      expect(host.querySelector('p-table'), 'p-table host').not.toBeNull();
       expect(host.querySelectorAll('tbody tr').length).toBe(5);
       expect(host.querySelectorAll('tbody p-tag').length).toBe(5);
-      expect(host.querySelectorAll('.c-docs-sync-changes__swatch').length)
-        .withContext('surface.50 before + after, card.background after')
-        .toBe(3);
+      expect(
+        host.querySelectorAll('.c-docs-sync-changes__swatch').length,
+        'surface.50 before + after, card.background after',
+      ).toBe(3);
       expect(host.querySelector('p-badge')?.textContent?.trim()).toBe(
         '5 / 5 changes',
       );
-      expect(host.querySelectorAll('p-selectbutton [role="button"]').length)
-        .withContext('All + four kinds present in the fixture')
-        .toBe(5);
+      expect(
+        host.querySelectorAll('p-selectbutton [role="button"]').length,
+        'All + four kinds present in the fixture',
+      ).toBe(5);
     });
 
     it('filters rows by search text and by kind', () => {
@@ -239,9 +239,7 @@ describe('sync report figures', () => {
       search!.value = 'neutral';
       search!.dispatchEvent(new Event('input'));
       fixture.detectChanges();
-      expect(host.querySelectorAll('tbody tr').length)
-        .withContext('alias match')
-        .toBe(1);
+      expect(host.querySelectorAll('tbody tr').length, 'alias match').toBe(1);
       expect(host.querySelector('tbody code')?.textContent).toBe('surface.50');
 
       search!.value = 'no-such-token';

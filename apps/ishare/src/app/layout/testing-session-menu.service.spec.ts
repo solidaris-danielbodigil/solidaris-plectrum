@@ -10,7 +10,11 @@ describe('TestingSessionMenuService', () => {
   beforeEach(() => {
     sessionStorage.clear();
     TestBed.configureTestingModule({
-      providers: [TestingSessionMenuService, TestingTelemetryService, MessageService],
+      providers: [
+        TestingSessionMenuService,
+        TestingTelemetryService,
+        MessageService,
+      ],
     });
     service = TestBed.inject(TestingSessionMenuService);
     telemetry = TestBed.inject(TestingTelemetryService);
@@ -34,10 +38,14 @@ describe('TestingSessionMenuService', () => {
   it('should start capture when toggling from idle', () => {
     service.toggleCapture();
 
-    expect(telemetry.capturing()).toBeTrue();
+    expect(telemetry.capturing()).toBe(true);
     expect(telemetry.getSessionId()).toBeTruthy();
-    expect(telemetry.getEvents().some((event) => event.event === 'session_new')).toBeTrue();
-    expect(telemetry.getEvents().some((event) => event.event === 'session_start')).toBeTrue();
+    expect(
+      telemetry.getEvents().some((event) => event.event === 'session_new'),
+    ).toBe(true);
+    expect(
+      telemetry.getEvents().some((event) => event.event === 'session_start'),
+    ).toBe(true);
   });
 
   it('should expose a stable stop label and publish the timer separately while capturing', () => {
@@ -65,23 +73,23 @@ describe('TestingSessionMenuService', () => {
   });
 
   it('should stop capture and export telemetry when toggling from capturing', () => {
-    const downloadSpy = spyOn(telemetry, 'downloadSession').and.callThrough();
+    const downloadSpy = vi.spyOn(telemetry, 'downloadSession');
 
     service.toggleCapture();
-    expect(telemetry.capturing()).toBeTrue();
+    expect(telemetry.capturing()).toBe(true);
 
     service.toggleCapture();
 
-    expect(telemetry.capturing()).toBeFalse();
+    expect(telemetry.capturing()).toBe(false);
     expect(downloadSpy).toHaveBeenCalledWith('ishare', {
-      production: jasmine.any(Boolean),
-      telemetryEnabled: jasmine.any(Boolean),
+      production: expect.any(Boolean),
+      telemetryEnabled: expect.any(Boolean),
     });
     expect(
       telemetry.getEvents().some((event) => event.event === 'session_stop'),
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       telemetry.getEvents().some((event) => event.event === 'session_export'),
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

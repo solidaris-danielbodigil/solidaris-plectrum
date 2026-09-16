@@ -40,9 +40,7 @@ describe('ProfileCardComponent', () => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
       value: {
-        writeText: jasmine
-          .createSpy('writeText')
-          .and.returnValue(Promise.resolve()),
+        writeText: vi.fn().mockReturnValue(Promise.resolve()),
       },
     });
     fixture.detectChanges();
@@ -156,14 +154,11 @@ describe('ProfileCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card__skeleton-avatar',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card__skeleton-avatar'),
     ).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelectorAll(
-        '.c-profile-card__skeleton-slot',
-      ).length,
+      fixture.nativeElement.querySelectorAll('.c-profile-card__skeleton-slot')
+        .length,
     ).toBe(7);
     expect(fixture.nativeElement.querySelector('h2')).toBeNull();
   });
@@ -194,7 +189,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should emit identifierCopy when an identifier chip is clicked', async () => {
-    const onCopy = jasmine.createSpy('identifierCopy');
+    const onCopy = vi.fn();
     component.identifierCopy.subscribe(onCopy);
 
     const button = fixture.nativeElement.querySelector(
@@ -203,7 +198,9 @@ describe('ProfileCardComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(onCopy).toHaveBeenCalledOnceWith(SAMPLE_IDENTIFIERS[0]);
+    expect(onCopy).toHaveBeenCalledTimes(1);
+
+    expect(onCopy).toHaveBeenCalledWith(SAMPLE_IDENTIFIERS[0]);
   });
 
   it('should derive warning gradient from statusAction severity with default variant', () => {
@@ -216,9 +213,7 @@ describe('ProfileCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card--warning',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card--warning'),
     ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-profile-card__status-action',
@@ -237,9 +232,7 @@ describe('ProfileCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card--in-order',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card--in-order'),
     ).toBeTruthy();
     const statusButton = fixture.nativeElement.querySelector(
       '.c-profile-card__status-action',
@@ -253,9 +246,7 @@ describe('ProfileCardComponent', () => {
     fixture.detectChanges();
 
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card__status-action',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card__status-action'),
     ).toBeFalsy();
   });
 
@@ -266,22 +257,18 @@ describe('ProfileCardComponent', () => {
     });
     fixture.detectChanges();
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card__status-action',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card__status-action'),
     ).toBeTruthy();
 
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
     expect(
-      fixture.nativeElement.querySelector(
-        '.c-profile-card__status-action',
-      ),
+      fixture.nativeElement.querySelector('.c-profile-card__status-action'),
     ).toBeFalsy();
   });
 
   it('should emit statusActionClick when status action button fires', () => {
-    const onStatusAction = jasmine.createSpy('statusActionClick');
+    const onStatusAction = vi.fn();
     component.statusActionClick.subscribe(onStatusAction);
     fixture.componentRef.setInput('statusAction', {
       label: 'Paiement non versé',
@@ -341,7 +328,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit statusActionClick when status action is disabled', () => {
-    const onStatusAction = jasmine.createSpy('statusActionClick');
+    const onStatusAction = vi.fn();
     component.statusActionClick.subscribe(onStatusAction);
     fixture.componentRef.setInput('statusAction', {
       label: 'Paiement non versé',
@@ -356,17 +343,19 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should emit statusMenuSelect when a menu item is selected', () => {
-    const onMenuSelect = jasmine.createSpy('statusMenuSelect');
+    const onMenuSelect = vi.fn();
     component.statusMenuSelect.subscribe(onMenuSelect);
     const menuItem = { label: 'Relancer' };
 
     component.onStatusMenuItemClick(menuItem);
 
-    expect(onMenuSelect).toHaveBeenCalledOnceWith(menuItem);
+    expect(onMenuSelect).toHaveBeenCalledTimes(1);
+
+    expect(onMenuSelect).toHaveBeenCalledWith(menuItem);
   });
 
   it('should not emit statusMenuSelect when a disabled menu item is clicked', () => {
-    const onMenuSelect = jasmine.createSpy('statusMenuSelect');
+    const onMenuSelect = vi.fn();
     component.statusMenuSelect.subscribe(onMenuSelect);
 
     component.onStatusMenuItemClick({
@@ -403,7 +392,7 @@ describe('ProfileCardComponent', () => {
       ),
     ) as HTMLElement[];
 
-    expect(options).toHaveSize(2);
+    expect(options).toHaveLength(2);
     expect(options[1].classList.contains('p-disabled')).toBe(true);
     expect(options[1].getAttribute('aria-disabled')).toBe('true');
     expect(options[1].getAttribute('tabindex')).toBe('-1');
@@ -414,10 +403,7 @@ describe('ProfileCardComponent', () => {
       label: 'Actions groupées',
       severity: 'warn',
       icon: 'bi bi-exclamation-triangle-fill',
-      menuItems: [
-        { label: 'C4 non reçu' },
-        { label: 'Paiement non versé' },
-      ],
+      menuItems: [{ label: 'C4 non reçu' }, { label: 'Paiement non versé' }],
     });
     fixture.detectChanges();
 
@@ -433,14 +419,16 @@ describe('ProfileCardComponent', () => {
 
     expect(label?.textContent?.trim()).toBe('Actions à réaliser');
     expect(badge?.textContent?.trim()).toBe('2');
-    expect(statusButton.getAttribute('aria-label')).toBe('2 actions à réaliser');
+    expect(statusButton.getAttribute('aria-label')).toBe(
+      '2 actions à réaliser',
+    );
     expect(
       statusButton.querySelector('.c-profile-card__status-action-prefix'),
     ).toBeFalsy();
   });
 
   it('should not emit statusActionClick when multi-action button is clicked', () => {
-    const onStatusAction = jasmine.createSpy('statusActionClick');
+    const onStatusAction = vi.fn();
     component.statusActionClick.subscribe(onStatusAction);
     fixture.componentRef.setInput('statusAction', {
       label: 'Actions groupées',
@@ -459,7 +447,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should emit primaryActionClick when title action button is clicked', () => {
-    const onPrimary = jasmine.createSpy('primaryActionClick');
+    const onPrimary = vi.fn();
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
@@ -477,7 +465,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should emit primaryActionClick when the primary action shortcut is pressed', () => {
-    const onPrimary = jasmine.createSpy('primaryActionClick');
+    const onPrimary = vi.fn();
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
@@ -536,7 +524,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit primaryActionClick for shortcut when loading', () => {
-    const onPrimary = jasmine.createSpy('primaryActionClick');
+    const onPrimary = vi.fn();
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
@@ -557,7 +545,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit primaryActionClick for shortcut while typing in an input', () => {
-    const onPrimary = jasmine.createSpy('primaryActionClick');
+    const onPrimary = vi.fn();
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('primaryAction', {
       label: 'Voir carte affilié',
@@ -650,15 +638,13 @@ describe('ProfileCardComponent', () => {
 
     expect(button.getAttribute('tabindex')).toBe('-1');
     expect(
-      button.classList.contains(
-        'c-profile-card__info-tag--filterable',
-      ),
+      button.classList.contains('c-profile-card__info-tag--filterable'),
     ).toBe(false);
     expect(fixture.nativeElement.querySelector('p-selectbutton')).toBeFalsy();
   });
 
   it('should emit infoTagClick when a filterable info tag is clicked', () => {
-    const onInfoTagClick = jasmine.createSpy('infoTagClick');
+    const onInfoTagClick = vi.fn();
     component.infoTagClick.subscribe(onInfoTagClick);
     const tag = {
       label: 'Documents actifs:',
@@ -674,7 +660,9 @@ describe('ProfileCardComponent', () => {
     ) as HTMLElement;
     toggle.click();
 
-    expect(onInfoTagClick).toHaveBeenCalledOnceWith(tag);
+    expect(onInfoTagClick).toHaveBeenCalledTimes(1);
+
+    expect(onInfoTagClick).toHaveBeenCalledWith(tag);
   });
 
   it('should bind active info tags to the select button model', async () => {
@@ -694,7 +682,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit infoTagClick when loading', () => {
-    const onInfoTagClick = jasmine.createSpy('infoTagClick');
+    const onInfoTagClick = vi.fn();
     component.infoTagClick.subscribe(onInfoTagClick);
     fixture.componentRef.setInput('infoTags', [
       {
@@ -742,9 +730,9 @@ describe('ProfileCardComponent', () => {
     ) as HTMLElement;
 
     expect(labelledBy).toBeTruthy();
-    expect(titleControl.classList.contains('c-profile-card__title-action')).toBe(
-      true,
-    );
+    expect(
+      titleControl.classList.contains('c-profile-card__title-action'),
+    ).toBe(true);
   });
 
   it('should show danger status action button for danger severity', () => {
@@ -767,7 +755,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit identifierCopy when loading', () => {
-    const onCopy = jasmine.createSpy('identifierCopy');
+    const onCopy = vi.fn();
     component.identifierCopy.subscribe(onCopy);
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
@@ -778,7 +766,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit statusActionClick when loading', () => {
-    const onStatusAction = jasmine.createSpy('statusActionClick');
+    const onStatusAction = vi.fn();
     component.statusActionClick.subscribe(onStatusAction);
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
@@ -789,7 +777,7 @@ describe('ProfileCardComponent', () => {
   });
 
   it('should not emit primaryActionClick when loading', () => {
-    const onPrimary = jasmine.createSpy('primaryActionClick');
+    const onPrimary = vi.fn();
     component.primaryActionClick.subscribe(onPrimary);
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();

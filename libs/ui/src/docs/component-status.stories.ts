@@ -96,14 +96,16 @@ export const Index: StoryObj = {
     await expect(
       canvas.getByText(`${total} / ${total} components`),
     ).toBeVisible();
-    // Component names link to their docs page once Storybook's index.json is read.
+    // Names become docs links after the figure reads Storybook's index.json
+    // (iframe / test-runner). Vitest portable stories cannot fetch that file,
+    // so names stay text and only the badge-definitions link remains.
+    const docsLinks = () =>
+      canvas
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('href')?.includes('?path=/docs/'));
+    const inStorybookIframe = /iframe\.html/i.test(window.location.href);
     await waitFor(() =>
-      expect(
-        canvas
-          .getAllByRole('link')
-          .filter((link) => link.getAttribute('href')?.includes('?path=/docs/'))
-          .length,
-      ).toBeGreaterThan(1),
+      expect(docsLinks().length).toBeGreaterThan(inStorybookIframe ? 1 : 0),
     );
     const search = canvas.getByRole('searchbox', { name: 'Search components' });
     await userEvent.type(search, 'no-such-component');
