@@ -14,10 +14,11 @@ import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@a
 import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { type DocsCard, type FigureTone, toneSeverity } from './docs-figures.types';
+import { DocsLinkComponent } from './docs-link.component';
 
 @Component({
   selector: 'pds-docs-cards',
-  imports: [Card, Tag],
+  imports: [Card, Tag, DocsLinkComponent],
   templateUrl: './docs-cards.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

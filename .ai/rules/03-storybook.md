@@ -69,10 +69,11 @@ CSF owns the Angular stories. Attached MDX owns all prose.
 Each MDX page must include, in this order:
 
 - `# Name`, then the Status figure: `<Unstyled><Story of={Stories.Status} /></Unstyled>` — no description paragraph in the MDX, it comes from `component.description`
-- `## Usage` → `<Unstyled><Story of={Stories.Usage} /></Unstyled>`. Visuals for a Do / Don't (screenshots, a canvas) may be added in the MDX **under the figure** — the text stays in metadata
-- An `h2` / `h3` per canvas with its prose so the docs TOC can list sections; `<Controls of={Stories.X} />` immediately under the primary canvas (usually `Default`). State prose about the examples is the MDX's own content. `argTypesFromProps` (and `classArgTypes` for CSS-only blocks) fill those Controls — every row needs a description, `table.type`, and `table.defaultValue`
-- `## Anatomy` → `<Unstyled><Story of={Stories.Anatomy} /></Unstyled>` **after** that primary canvas + Controls. The figure numbers only the parts in the specimen; a `p-message` notes that other variants may add parts
-- Optional `## Composition` / `## Behavior` / `## Variants` figures
+- The primary canvas first (usually `## Default`) with `<Controls of={Stories.X} />` immediately under it. State prose about the examples is the MDX's own content. `argTypesFromProps` (and `classArgTypes` for CSS-only blocks) fill those Controls — every row needs a description, `table.type`, and `table.defaultValue`
+- `## Usage` → `<Unstyled><Story of={Stories.Usage} /></Unstyled>` **after** that primary canvas. Visuals for a Do / Don't may be added in the MDX **under the figure** — the text stays in metadata
+- `## Variants` when the metadata has a variants block, after Usage
+- `## Anatomy` → `<Unstyled><Story of={Stories.Anatomy} /></Unstyled>` after Usage and Variants. The figure numbers only the parts in the specimen; a `p-message` notes that other variants may add parts
+- Optional `## Composition` / `## Behavior` figures
 - `## Accessibility` → `<Unstyled><Story of={Stories.Accessibility} /></Unstyled>`
 - Do **not** add `## API` + `<ArgTypes>` on a page that already has Controls — they are the same table. `<ArgTypes of={Stories} />` is only for pages with no Controls (foundations class catalogues)
 

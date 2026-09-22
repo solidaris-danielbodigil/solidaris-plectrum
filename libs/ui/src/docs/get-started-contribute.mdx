@@ -2,11 +2,11 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-contribute.stories';
 
-<Meta title="Get started/Contribute" />
+<Meta title="Start here/Contribute" id="get-started-contribute" />
 
 # Contribute
 
-Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install versioned packages (packed tarballs today, the registry after the first release) — never source paths.
+Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first. Applications install versioned packages — packed tarballs of the current version until npm publish is on — never source paths.
 
 Related pages:
 
@@ -99,10 +99,15 @@ The live table is [Component status](?path=/docs/docs-component-status--docs) �
 
 ---
 
+## A small correction
+
+A typo, a broken example or a wrong link is a pull request. You do not open a proposal for that. A new component or a new token still starts with a proposal, because the core team has to say who owns it.
+
 ## Set up
 
 ```bash
-git clone <repo> && cd solidaris-nx
+git clone https://github.com/solidaris-danielbodigil/solidaris-plectrum.git
+cd solidaris-plectrum
 npm install
 npm run storybook     # http://localhost:6006
 ```

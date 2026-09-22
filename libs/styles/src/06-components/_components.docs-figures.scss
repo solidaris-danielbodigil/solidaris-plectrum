@@ -524,3 +524,8 @@ $docs-tones: design, system, app, neutral;
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text-muted);
 }
+
+.c-docs-catalogue__summary {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-text-muted);
+}

@@ -16,29 +16,33 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Install the packages',
     detail:
-      '@solidaris/ui, @solidaris/plectrum and @solidaris/styles, plus primeng and @primeuix/themes as peers. Until the first release they install as packed tarballs from npm run pack:libs; afterwards from the registry.',
+      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus `primeng` and `@primeuix/themes`. Until npm publish is on, use the packed tarballs from `npm run pack:libs`.',
+    links: [{ label: 'Packages and how to get them', href: '#packages-and-how-to-get-them' }],
   },
   {
     who: 'Dev',
     tone: 'app',
     title: 'Wire the stylesheet',
     detail:
-      'Add node_modules/@solidaris/styles/src to stylePreprocessorOptions.includePaths and @use main in styles.scss.',
+      'Add `node_modules/@solidaris/styles/src` to `stylePreprocessorOptions.includePaths` and `@use \'main\'` in `styles.scss`.',
+    links: [{ label: 'Wire the stylesheet', href: '#wire-the-stylesheet' }],
   },
   {
     who: 'Dev',
     tone: 'app',
     title: 'Boot the theme',
     detail:
-      'providePlectrum() in the application config. Every --p-* and --pds-* custom property exists after this.',
+      '`providePlectrum()` in the application config. Every `--p-*` and `--pds-*` custom property exists after this.',
+    links: [{ label: 'Boot the theme', href: '#boot-the-theme' }],
   },
   {
     who: 'Dev',
     tone: 'app',
     title: 'Render the first component',
     detail:
-      'pds-form-field from @solidaris/ui around a pInputText — the same component the sample application builds in CI.',
+      '`pds-form-field` from `@solidaris/ui` around a `pInputText` — the same component the sample application builds in CI.',
     links: [
+      { label: 'First component', href: '#first-component' },
       {
         label: 'Form Field',
         path: '/docs/custom-components-form-field--docs',
@@ -48,12 +52,13 @@ export const InstallFlow: StoryObj = stepsStory([
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Build with the catalogue',
+    title: 'Build screens',
     detail:
-      'PrimeNG and pds-* components from this Storybook. Layout via o-flex / o-layout classes.',
+      'PrimeNG and `pds-*` components from this Storybook. Layout via `o-flex` / `o-layout` classes.',
     links: [
-      { label: 'Component status', path: '/docs/docs-component-status--docs' },
-      { label: 'Token finder', path: '/docs/foundations-token-finder--docs' },
+      { label: 'Build screens', href: '#build-screens' },
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+      { label: 'Find a Token', path: '/docs/foundations-token-finder--docs' },
     ],
   },
 ]);

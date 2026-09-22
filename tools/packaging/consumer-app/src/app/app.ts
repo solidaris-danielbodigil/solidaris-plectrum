@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
+import { InputText } from 'primeng/inputtext';
 import { FormFieldComponent } from '@solidaris/ui';
 
 @Component({
   selector: 'app-root',
-  imports: [FormFieldComponent],
+  imports: [FormFieldComponent, InputText],
   template: `
-    <pds-form-field label="Packed consumer" inputId="smoke">
-      <input id="smoke" type="text" value="ok" />
+    <pds-form-field
+      label="Member number"
+      inputId="member"
+      hint="Ten digits, no spaces"
+      requiredLabel="obligatoire"
+    >
+      <input pInputText id="member" type="text" autocomplete="off" />
     </pds-form-field>
   `,
 })

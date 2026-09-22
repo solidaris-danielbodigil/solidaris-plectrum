@@ -14,6 +14,7 @@
     "src/test-setup.ts",
     "**/*.spec.ts",
     "**/*.stories.ts",
+    "**/*.figma.ts",
     "**/*.metadata.ts",
     "src/foundations/**",
     "src/storybook/**"

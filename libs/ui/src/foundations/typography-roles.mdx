@@ -6,7 +6,19 @@ import * as Stories from './typography.stories';
 
 # Typography roles
 
-Type is code-owned: the Foundations file exposes it as text styles, not Figma variables. Base is `1rem = 14px`. Semantic roles bundle five properties — family, size, weight, line-height and letter-spacing.
+## Choose a hierarchy
+
+One page, top to bottom:
+
+1. **Display** or **heading lg** — the page title, once.
+2. **Heading md** — a section.
+3. **Heading sm** — a card or a group inside that section.
+4. **Body** — sentences and values.
+5. **Label** — control names and table headers. Do not set a whole paragraph in a label role.
+
+Do not skip from the page title to a tiny label with nothing in between. On a narrow screen, keep the same roles — do not invent a smaller size. Long French labels belong in the body or label role you already chose; check them in the playground below.
+
+Type styles live in code, not as Figma variables. Base is `1rem = 14px`. Each role bundles family, size, weight, line-height and letter-spacing.
 
 Type your own copy in the playground field to check a real string — long French labels and currency amounts behave differently from lorem ipsum.
 

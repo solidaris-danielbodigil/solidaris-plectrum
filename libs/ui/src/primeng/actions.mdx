@@ -11,7 +11,20 @@ import * as Stories from './actions.stories';
 
 Theme proof for PrimeNG actions. Plectrum styles `p-button`, `p-togglebutton` and `p-selectbutton` through `providePlectrum()` — there is no Angular wrapper.
 
-What Plectrum changes: none for this family. Buttons stay [deliberately stock](?path=/docs/docs-primeng-customizations--docs#deliberately-stock).
+What Plectrum changes: none for this family. Buttons stay [deliberately stock](?path=/docs/docs-primeng-customizations--docs#deliberately-stock). The choices below are the Solidaris rules for those stock controls.
+
+## When to use
+
+One primary action on a view. Name it with the verb the person came to do: Save changes, Send, Search.
+
+- **Primary** — the action you expect. Filled button, default severity.
+- **Secondary** — Cancel, Back, or another safe choice. Outlined or text.
+- **Destructive** — Delete document, Remove member. Danger severity, and a [dialog](?path=/docs/primeng-overlays--docs#when-to-use) that asks before it runs.
+- **Link** — goes to another page. If it changes data, it is a button.
+
+ToggleButton turns one setting on or off. SelectButton picks one option from two or three. A longer list is a [Select](?path=/docs/primeng-forms--docs#choose-a-control).
+
+Accessibility target is WCAG 2.1 AA. Storybook runs automated checks on these canvases. A manual screen-reader pass is **not assessed** — see [Accessibility](?path=/docs/foundations-accessibility-overview--docs).
 
 ## Endorsed composition
 
@@ -19,7 +32,7 @@ What Plectrum changes: none for this family. Buttons stay [deliberately stock](?
 - Prefer `size="small"` in toolbars; default size on page actions
 - Use `severity` for meaning, not custom colours
 
-Figma: [Button](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-49717) · [ToggleButton](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-46435) · [SelectButton](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-46433)
+Figma: [Button](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=10-125) · [ToggleButton](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=187-6103) · [SelectButton](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=191-6703) · [full map](?path=/docs/primeng-ui-kit--docs)
 
 API: [primeng.org/button](https://primeng.org/button) · [togglebutton](https://primeng.org/togglebutton) · [selectbutton](https://primeng.org/selectbutton)
 

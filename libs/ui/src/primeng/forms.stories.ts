@@ -88,6 +88,7 @@ export const Invalid: Story = {
         label="O.A."
         inputId="gallery-oa-invalid"
         [required]="true"
+        requiredLabel="obligatoire"
         [invalid]="true"
         errorMessage="Sélectionnez une O.A."
       >

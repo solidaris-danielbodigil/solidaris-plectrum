@@ -10,6 +10,7 @@ import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import { FormFieldComponent } from './form-field.component';
+import { FORM_FIELD_CONSUMER_EXAMPLE } from './form-field.example';
 import { FormFieldMetadata } from './form-field.metadata';
 
 /** Component inputs (unwrapped signals) plus one story-only knob: the projected control value. */
@@ -85,6 +86,14 @@ async function expectLabelWiring(
 }
 
 export const Vertical: Story = {
+  parameters: {
+    docs: {
+      source: {
+        language: 'typescript',
+        code: FORM_FIELD_CONSUMER_EXAMPLE,
+      },
+    },
+  },
   args: {
     label: 'O.A.',
     layout: 'vertical',

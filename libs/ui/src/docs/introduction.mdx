@@ -1,31 +1,41 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Figures from './introduction.stories';
 
-<Meta title="Introduction" />
+<Meta title="Start here/Overview" id="introduction" />
 
 <Unstyled>
   <Story of={Figures.Hero} />
 </Unstyled>
 
-Plectrum is the Solidaris design system — shared Angular components, tokens and layout classes for every application.
-
-Packages are unreleased (`0.1.0`) and are not on a registry yet. Until the first release lands in [What's new](?path=/docs/docs-what-s-new--docs), install **packed tarballs**. [Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs) has the install command for each case.
-
-Start by installing the packages and rendering one Core component. Then pick the next component or token from the catalogues. Screens start from the [theme gallery](?path=/docs/primeng-actions--docs) and Core `pds-*` components; a gap is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml), not a new component.
+Plectrum is the Solidaris design system — shared components, tokens and layout for every application. This Storybook is the published guidance. Figma is where you design; it is not a second set of rules.
 
 <Unstyled>
-  <Story of={Figures.FirstHour} />
+  <Story of={Figures.Release} />
 </Unstyled>
 
-Core components are maintained for reuse across Solidaris applications. Candidate and App-specific work stays with an application team until the core team promotes it. Every component page shows **status** and **owner** — definitions: [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
+<Unstyled>
+  <Story of={Figures.Audience} />
+</Unstyled>
 
-Design and support: [Figma UI Kit](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390) · [Plectrum on zeroheight](https://zeroheight.com/5cba76f64/p/8028d1-plectrum-design-system) · [Token finder](?path=/docs/foundations-token-finder--docs) · [Component status](?path=/docs/docs-component-status--docs)
+Core components are shared. Candidate and app-specific work stays with the application team until the core team promotes it. Every component page shows status and owner — [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
+
+## Words we use
+
+<Unstyled>
+  <Story of={Figures.Glossary} />
+</Unstyled>
+
+## Get help
+
+A typo or a wrong example is a pull request. A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Say what the screen must do, what you already tried, and attach a Figma link. The core team answers: use what exists, they will build it, or your team builds it and owns it.
+
+Next: [Design with Plectrum](?path=/docs/start-here-design-with-plectrum--docs) or [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
 
 ## Maintainers
 
-Routes for people who change the system rather than consume it. Nothing here is needed to build a screen.
+Nothing below is needed to design or build a screen.
 
-- [Contribute](?path=/docs/get-started-contribute--docs) — check the catalogue, [open a proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml), get the core team's decision, then scaffold with `pds:component`.
-- [CSS architecture](?path=/docs/docs-css-architecture--docs) — where styles live (ITCSS layers, BEMIT names, `--p-*` bridges).
-- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — where values come from (Figma → `tokens.json` → generated `--pds-*`).
+- [Contribute](?path=/docs/get-started-contribute--docs) — check Find a component, open a proposal, then scaffold.
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — where styles live and how classes are named.
+- [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how Figma values become tokens.
 - [Writing stories](?path=/docs/docs-writing-stories--docs) · [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) · [AI strategy](?path=/docs/docs-ai-strategy--docs).

@@ -13,6 +13,15 @@ Theme proof for PrimeNG overlays. Every overlay in an app **must** use `appendTo
 
 What Plectrum changes: [Drawer width tokens and `c-drawer` shell](?path=/docs/docs-primeng-customizations--docs#structural-restyles-06-components). Dialog, Popover, Toast, Tooltip and Menu stay stock. Feature drawers compose the [Drawer](?path=/docs/custom-components-drawer--docs) shell inside `p-drawer` `#headless`.
 
+## When to use
+
+- **Dialog** — the person must answer before they continue. Confirm a destructive action here.
+- **Drawer** — a side panel for a record or a short task. The page underneath stays in place. A panel that is always visible is a column, not a drawer.
+- **Toast** — a short confirmation. It must not be the only place an error is explained.
+- **Popover** — a small extra, tied to the control that opened it.
+
+Opening a dialog or drawer moves focus into it. Closing it returns focus to the control that opened it.
+
 ## Endorsed composition
 
 - `appendTo="body"` on Dialog, Drawer, Popover, Select, DatePicker, AutoComplete, Toast
@@ -20,7 +29,7 @@ What Plectrum changes: [Drawer width tokens and `c-drawer` shell](?path=/docs/do
 - Icons are Bootstrap Icons
 - Toast is a singleton near the app root; do not mount one per feature
 
-Figma: [Dialog](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50209) · [Drawer](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50210) · [Popover](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50211) · [Toast](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-53165) · [Tooltip](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-50212) · [Menu](https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6738-52936)
+Figma: [Dialog](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=243-9556) · [Drawer](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4461-50366) · [Popover](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=605-37190) · [Toast](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=393-42317) · [Tooltip](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=327-12832) · [Menu](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=452-28358) · [full map](?path=/docs/primeng-ui-kit--docs)
 
 API: [primeng.org/dialog](https://primeng.org/dialog) · [drawer](https://primeng.org/drawer) · [popover](https://primeng.org/popover) · [toast](https://primeng.org/toast) · [tooltip](https://primeng.org/tooltip) · [menu](https://primeng.org/menu)
 

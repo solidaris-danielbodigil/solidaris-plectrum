@@ -1,0 +1,16 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Figures from './catalogue.stories';
+
+<Meta title="Start here/Find a component" id="start-here-catalogue" />
+
+# Find a component
+
+One list for PrimeNG controls, Angular components and CSS shells. Search by the task, not by which folder the code lives in. `error` finds Form Field. `side panel` finds Drawer.
+
+Scope is who may reuse it. Core is for every application. App example is one product’s screen — read it, do not import it into another app.
+
+The list is generated. Plectrum rows come from each component’s `.metadata.ts` (the description is the summary). PrimeNG rows come from `plectrum-figma.ts`. A new component appears when its metadata file is added. A new PrimeNG control appears when its Figma key is added. [Component status](?path=/docs/docs-component-status--docs) stays the maintainer index.
+
+<Unstyled>
+  <Story of={Figures.Index} />
+</Unstyled>

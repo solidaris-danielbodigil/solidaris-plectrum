@@ -40,7 +40,7 @@
     "chromatic": "chromatic --exit-zero-on-changes",
     "chromatic:from-build": "chromatic --exit-zero-on-changes --storybook-build-dir dist/storybook/ui",
     "generate-index": "tsx tools/scripts/generate-index.ts",
-    "docs:check": "node tools/scripts/check-docs-ssot.mjs",
+    "docs:check": "node tools/scripts/check-docs-ssot.mjs && node tools/scripts/check-docs-release.mjs",
     "contracts:check": "tsx tools/scripts/check-metadata-props.ts",
     "pds:component": "tsx tools/generators/sds-component/index.ts",
     "tokens:resolve": "node tools/tokens/resolve-dtcg.mjs",

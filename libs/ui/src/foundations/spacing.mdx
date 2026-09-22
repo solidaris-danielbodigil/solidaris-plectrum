@@ -5,9 +5,20 @@ import * as Stories from './spacing.stories';
 
 # Spacing
 
-Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit (`0.5rem` = 7px). Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two (`1rem`). Each bar below is the live token width.
+## Choose a space
 
-In templates write `o-layout o-layout--gap-2` or `o-layout o-layout--padding-3`. Use `var(--pds-spacing-*)` only when defining a component token in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
+Use the classes, not a custom margin.
+
+- Inside a control (icon and label): a half step, `o-layout--gap-0-5` or `o-layout--gap-1`.
+- Related items in one group (fields in a form, actions in a toolbar): `o-layout--gap-2`.
+- Unrelated blocks on a page (a filter and the results): `o-layout--gap-4` or `o-layout--gap-5`.
+- Page gutter: `o-layout--padding-3` on small screens, `o-layout--padding-4` from `md` up.
+
+The live bars show the size. The root type size is 14px. A missing step is a proposal — application teams do not add spacing tokens.
+
+Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit. Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two. Each bar below is the live token width.
+
+In templates write `o-layout o-layout--gap-2` or `o-layout o-layout--padding-3`. Use `var(--pds-spacing-*)` only when the design-system team defines a component token. See [Layout](?path=/docs/foundations-layout--docs#spacing) for the class surface.
 
 ## Usage
 

@@ -6,13 +6,18 @@ import * as Stories from './layout.stories';
 
 # Layout
 
-The layout object `.o-layout` provides utility modifier classes for **spacing**, **overflow**, **dimensions**, **display**, and **position**.
+## How a page adapts
 
-Apply these classes as **BEM mixes** directly in HTML templates alongside `.o-flex` — never write raw spacing values in component SCSS.
+Start from the narrow screen. The column is the default.
 
-All modifiers support **responsive variants** via the `@{breakpoint}` suffix: `o-layout--hidden@md`, `o-layout--gap-4@lg`, `o-layout--overflow-y-auto@sm`.
+- A side navigation hides until `md`, then becomes a column beside the content (`o-layout--hidden` and `o-layout--block@md`).
+- Page padding grows with the screen: `o-layout--padding-3` then `o-layout--padding-4@md`.
+- A two-column form becomes one column by stacking. Do not keep two columns if the labels no longer fit.
+- A data table scrolls inside its region (`o-layout--overflow-x-auto`). Do not shrink the type to make the columns fit.
 
-Breakpoints: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem)
+Add these classes in the HTML, next to `o-flex`. Do not write spacing in a component stylesheet.
+
+Breakpoints are mobile-first: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem). In a media query, `rem` uses the browser’s initial 16px root, so `sm` is 768px wide. Spacing inside the page still uses the 14px type root.
 
 <DocsTable
   headers={['Category', 'Modifier pattern', 'Purpose']}
@@ -180,7 +185,7 @@ padding: var(--pds-spacing-2) var(--pds-spacing-1-5) var(--pds-spacing-0) var(--
 
 All layout modifiers support responsive variants using the `@{breakpoint}` suffix.
 
-**Breakpoints:** `sm` (768px) · `md` (992px) · `lg` (1200px) · `xl` (1400px)
+**Breakpoints:** same scale as the top of this page. `sm` is 48rem, which is 768px in a media query.
 
 Pattern: `.o-layout--{modifier}@{breakpoint}`
 

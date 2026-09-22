@@ -25,10 +25,13 @@ export function toneSeverity(tone: FigureTone = 'neutral'): ToneSeverity {
   return TONE_SEVERITY[tone];
 }
 
-/** A Storybook page a figure points at. `path` is the manager route, e.g. `/docs/foundations-spacing--docs`. */
+/** A Storybook page or an external / in-page URL a figure points at. */
 export interface DocsLink {
   label: string;
-  path: string;
+  /** Manager route, e.g. `/docs/foundations-spacing--docs`. */
+  path?: string;
+  /** In-page hash (`#wire-the-stylesheet`) or an absolute URL. */
+  href?: string;
 }
 
 export type DocsLinkTarget = '_top' | '_blank' | '_self';
@@ -79,6 +82,7 @@ export interface DocsCard {
   lead?: string;
   items?: readonly string[];
   tone?: FigureTone;
+  links?: readonly DocsLink[];
 }
 
 /** One Do or Don't entry. `detail` explains why; `alternative` is what to do instead. */

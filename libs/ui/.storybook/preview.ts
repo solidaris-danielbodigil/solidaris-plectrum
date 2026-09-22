@@ -37,9 +37,10 @@ function readInitialPreset(): PlectrumPresetVersion {
 const preview: Preview = {
   globalTypes: {
     locale: {
-      description: 'Plectrum UI locale',
+      description:
+        'Example language for component UI copy. Documentation stays in English.',
       toolbar: {
-        title: 'Locale',
+        title: 'Example language',
         icon: 'globe',
         dynamicTitle: true,
         items: [
@@ -100,30 +101,34 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Introduction',
-          'Get started',
-          ['Use Plectrum in an app', 'Contribute'],
-          'Docs',
+          'Start here',
           [
-            'Writing stories',
-            'CSS architecture',
-            'Token pipeline',
-            'PrimeNG customizations',
-            'Releases and versioning',
-            'AI strategy',
-            "What's new",
-            'Component status',
+            'Overview',
+            'Design with Plectrum',
+            'Build with Plectrum',
+            'Find a component',
+            'Find a token',
+            'Contribute',
           ],
           'Foundations',
-          ['Token finder'],
           'PrimeNG',
-          ['Actions', 'Forms', 'Data', 'Content and navigation', 'Overlays'],
-          // Core catalogue first; app-owned (status app / candidate) work sits
-          // under Patterns/{App}.
+          ['UI kit', 'Actions', 'Forms', 'Data', 'Content and navigation', 'Overlays'],
           'Custom components',
           'Shell',
           'Patterns',
           ['iSHARE'],
+          'Docs',
+          [
+            "What's new",
+            'Accessibility overview',
+            'Releases and versioning',
+            'Component status',
+            'Writing stories',
+            'CSS architecture',
+            'Token pipeline',
+            'PrimeNG customizations',
+            'AI strategy',
+          ],
         ],
       },
     },

@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+
+<Meta title="Docs/Accessibility overview" id="foundations-accessibility-overview" />
+
+# Accessibility
+
+The target for Plectrum is **WCAG 2.1 AA**. A component page that shows that label is stating the target. It is not a certificate, and it is not a claim that a person has completed a manual assessment.
+
+Storybook runs automated checks (axe, WCAG 2.1 A and AA tags) on catalogue stories. Those checks fail the story when they find a violation. They do not cover screen-reader announcements, reading order in a real page, or whether focus is easy to see in context.
+
+WCAG 2.2 AA adds rules we have not adopted as the target yet, including focus not being fully hidden and a minimum target size. That is a product decision still open. It is not a finding that Plectrum fails those rules.
+
+## What the status words mean
+
+<DocsTable
+  headers={['Status', 'Meaning']}
+  rows={[
+    ['Target', 'The bar we build toward. Today that is WCAG 2.1 AA.'],
+    ['Automated', 'The Storybook accessibility check passed or failed for that story.'],
+    ['Manual keyboard', 'A person walked the story with a keyboard. Say Not assessed when that has not happened.'],
+    ['Manual screen reader', 'A person used a screen reader on the story. Not assessed until that session exists.'],
+    ['Known limitation', 'A gap we already know. Shipping the page does not close it.'],
+  ]}
+/>
+
+Priority pages (Button, Form Field, Drawer, Empty State) currently have **automated** checks in Storybook and **Not assessed** for manual screen-reader review. Do not mark a component compliant because the automated check passed.
+
+## Who does what
+
+Plectrum provides the focus ring, the required and invalid wiring on Form Field, names on icon-only buttons in its own components, and the keyboard behaviour of the PrimeNG controls it themes.
+
+The application provides the page heading order, the visible label text, the error wording, focus return when a feature opens its own dialog, and contrast when it places text on a custom surface.
+
+## Shared expectations
+
+- **Keyboard and focus.** Every action is reachable in order. The focus ring is the one on [Focus](?path=/docs/foundations-focus--docs). Do not remove it.
+- **Names.** Icon-only buttons have a name. Inputs have a visible label through Form Field.
+- **Errors.** The error is connected to the field (`aria-describedby` via Form Field) and says how to fix it. A toast is not the only error.
+- **Contrast.** Use semantic text and surface roles. Check the pair on [Semantic colors](?path=/docs/foundations-colors-semantic-common--docs).
+- **Reflow.** At 320px wide and at 200% zoom, content stacks. It does not require horizontal scrolling of the whole page. Tables may scroll inside their region.
+- **Motion.** [Transitions](?path=/docs/foundations-transitions--docs) — keep the state change, drop the travel, when reduced motion is requested.
+- **Target size.** Prefer the default control size. `size="small"` is for toolbars, not for the only action on a page.
+
+Next: [Focus](?path=/docs/foundations-focus--docs) · [Form Field](?path=/docs/custom-components-form-field--docs)

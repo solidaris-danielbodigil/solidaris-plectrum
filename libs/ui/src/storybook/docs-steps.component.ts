@@ -51,4 +51,13 @@ export class DocsStepsComponent {
       severity: toneSeverity(step.tone),
     })),
   );
+
+  /** Backticks in `detail` render as code. The rest stays text. */
+  protected detailParts(detail: string): readonly { text: string; code: boolean }[] {
+    return detail.split(/(`[^`]+`)/g).filter(Boolean).map((part) =>
+      part.startsWith('`') && part.endsWith('`')
+        ? { text: part.slice(1, -1), code: true }
+        : { text: part, code: false },
+    );
+  }
 }

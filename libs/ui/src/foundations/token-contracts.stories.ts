@@ -12,12 +12,14 @@
 // =============================================================================
 
 import { afterNextRender, Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { Badge } from 'primeng/badge';
 import { Button } from 'primeng/button';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { SelectButton } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { showStorybookToast } from '../storybook/storybook-toast';
@@ -43,6 +45,7 @@ interface TokenContractGroup {
   standalone: true,
   selector: 'pds-token-contracts-page',
   imports: [
+    FormsModule,
     ToolbarComponent,
     IconField,
     InputIcon,
@@ -50,6 +53,7 @@ interface TokenContractGroup {
     InputClearComponent,
     Badge,
     Button,
+    SelectButton,
     TableModule,
     Tag,
   ],
@@ -80,6 +84,15 @@ interface TokenContractGroup {
               />
             </p-inputicon>
           </p-iconField>
+          <p-selectButton
+            [options]="originOptions"
+            [ngModel]="origin()"
+            (ngModelChange)="origin.set($event)"
+            optionLabel="label"
+            optionValue="value"
+            [allowEmpty]="false"
+            aria-label="Filter by token origin"
+          />
         </ng-container>
         <ng-container slot="end">
           <p-badge
@@ -186,7 +199,7 @@ interface TokenContractGroup {
 
           <ng-template #emptymessage>
             <tr>
-              <td>No contract matches “{{ search() }}”.</td>
+              <td>No contract matches this search or origin.</td>
             </tr>
           </ng-template>
         </p-table>
@@ -202,6 +215,16 @@ class TokenContractsPageComponent {
     0,
   );
   readonly search = signal('');
+  readonly origin = signal<ConsumedTokenOrigin | 'all'>('all');
+  protected readonly originOptions: readonly {
+    label: string;
+    value: ConsumedTokenOrigin | 'all';
+  }[] = [
+    { label: 'All', value: 'all' },
+    { label: 'Figma', value: 'Figma' },
+    { label: 'Code-owned', value: 'code-owned' },
+    { label: 'Not declared', value: 'not declared' },
+  ];
   /** Empty map — PrimeNG keeps every component row collapsed until toggled. */
   expandedRows: Record<string, boolean> = {};
 
@@ -220,9 +243,11 @@ class TokenContractsPageComponent {
 
   readonly groups = computed<TokenContractGroup[]>(() => {
     const query = this.search().trim().toLowerCase();
+    const origin = this.origin();
     const buckets = new Map<string, ConsumedTokenCheck[]>();
 
     for (const row of this.checked()) {
+      if (origin !== 'all' && row.origin !== origin) continue;
       if (query && !row.haystack.includes(query)) continue;
       const bucket = buckets.get(row.component);
       if (bucket) bucket.push(row);

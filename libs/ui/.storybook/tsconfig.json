@@ -18,7 +18,10 @@
     "../src/**/*.mdx",
     "../src/storybook/**/*.ts",
     "../src/foundations/*-playground.ts",
-    "../../../.ai/contracts/index.json"
+    "../../../.ai/contracts/index.json",
+    "../package.json",
+    "../../plectrum/package.json",
+    "../../styles/package.json"
   ],
   "files": [
     "main.ts",
