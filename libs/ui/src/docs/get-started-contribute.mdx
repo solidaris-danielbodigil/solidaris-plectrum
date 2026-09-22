@@ -14,6 +14,12 @@ Related pages:
 - [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP tools
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 
+## A small correction
+
+A typo, a broken example or a wrong link is a pull request on this repository. You do not open a proposal for that.
+
+A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Say what the screen must do, which components you tried, and attach a Figma link. The core team answers within two working days: use what exists, they will build it, or your team builds it and owns it. That response time is provisional until the team confirms it.
+
 Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: check the catalogue, then a **proposal to the core design-system team**, not a scaffold. Open a [proposal issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). The core team answers within the triage below; nobody waits for the core team to build.
 
 <Unstyled>
@@ -89,19 +95,7 @@ Promotion is a move, done by the core team when a proposal comes back with the s
 
 Until step 3 the component stays the application's, whatever `libs/` folder it sits in. Token writes use the Plugin API: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise ([Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs)).
 
-## Audit outcome
-
-The live table is [Component status](?path=/docs/docs-component-status--docs) — it reads `.ai/contracts/index.json`. Decisions from the September 2026 catalogue audit:
-
-- Core stays generic: List, Profile Card, Profile Drawer, Copyable Text, Form Field, Empty State, Icon, Avatar, Input Clear, Detail List, Drawer, Accordion, Timeline, Skeleton Slot, Toolbar, and the navigation shells.
-- Delay Prediction Card and Transactions CICS Modal stay App-specific (iSHARE).
-- CSS-only blocks (Accordion bordered, Timeline content-only) stay documented on their own pages, not in the Angular index.
-
 ---
-
-## A small correction
-
-A typo, a broken example or a wrong link is a pull request. You do not open a proposal for that. A new component or a new token still starts with a proposal, because the core team has to say who owns it.
 
 ## Set up
 
@@ -171,9 +165,15 @@ Stories are the test suite: every story is executed headless in CI, so covering 
   ]}
 />
 
+## Before you commit
+
+`npm install` installs a git hook. It runs `npm run check:commit` before the commit is created. That run checks docs, contracts, token prefix, token usage, style lint, and that the generated index, changelog and token files are already saved. Fix the failure, stage any regenerated file, and commit again.
+
+`git commit --no-verify` skips this hook. A pull request into `main` still runs the full CI gates below. A push of a feature branch by itself does not.
+
 ## CI gates
 
-What `.github/workflows/ci.yml` runs on every push and pull request to `main`, in order. Each row is a required step unless marked otherwise.
+What `.github/workflows/ci.yml` runs on every push and pull request to `main`, in order. Each row is a required step unless marked otherwise. The application build, unit tests, pack smoke and Storybook run here, not in the commit hook.
 
 <DocsTable
   headers={['Job', 'Gate', 'Fails when']}

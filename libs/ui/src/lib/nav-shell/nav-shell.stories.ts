@@ -158,6 +158,8 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(NavShellMetadata, 'usage'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'examples') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(NavShellMetadata, 'composition'),

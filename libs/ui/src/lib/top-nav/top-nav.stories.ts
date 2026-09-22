@@ -32,6 +32,8 @@ type Story = StoryObj<TopNavComponent>;
 // content comes from top-nav.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(TopNavMetadata.governance, TopNavMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'examples') };
 export const Composition = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'accessibility') };

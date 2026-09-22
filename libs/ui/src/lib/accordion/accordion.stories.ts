@@ -97,6 +97,8 @@ export const Variants = {
   tags: ['!dev'],
   ...contractStory(AccordionMetadata, 'variants'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(AccordionMetadata, 'examples') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(AccordionMetadata, 'composition'),

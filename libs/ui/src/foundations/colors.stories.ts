@@ -15,6 +15,7 @@ import {
 } from '../storybook/hide-explorer-controls';
 import { assertTextVisible } from '../storybook/story-tests';
 import { showStorybookToast } from '../storybook/storybook-toast';
+import { DocsRecommendedPairsComponent } from '../storybook/docs-recommended-pairs.component';
 import { TokenExplorerComponent } from '../storybook/token-explorer.component';
 import {
   COLOR_PRIMITIVE_GROUPS,
@@ -86,8 +87,10 @@ export const Primitive: Story = {
   args: { groups: COLOR_PRIMITIVE_GROUPS },
 };
 
+const REUSABLE_COLOR_ROLES = ['text', 'surface', 'content', 'form', 'navigation', 'primary'] as const;
+
 export const SemanticCommon: Story = {
-  args: { groups: [...COLOR_SEMANTIC_GROUPS, COMPONENT_GROUP] },
+  args: { groups: [...REUSABLE_COLOR_ROLES] },
 };
 
 export const StubbedProvidePlectrum: Story = {
@@ -100,6 +103,13 @@ export const StubbedProvidePlectrum: Story = {
  * SCSS. Thresholds from .ai/rules/06-accessibility.md. Results are for text
  * size, not a whole-component certification.
  */
+export const RecommendedPairs: StoryObj = {
+  tags: ['!dev'],
+  decorators: [moduleMetadata({ imports: [DocsRecommendedPairsComponent] })],
+  parameters: { layout: 'padded', chromatic: { disableSnapshot: true } },
+  render: () => ({ template: '<pds-docs-recommended-pairs />' }),
+};
+
 export const Contrast: StoryObj = {
   tags: ['dev'],
   decorators: [moduleMetadata({ imports: [ContrastCheckerComponent] })],

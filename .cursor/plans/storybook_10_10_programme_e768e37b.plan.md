@@ -4,37 +4,37 @@ overview: Close every remaining gap from the UX audit (all dimensions except wor
 todos:
   - id: plans-reconcile
     content: Annotate superseded items in storybook_docs_audit plan, fold remaining into this programme, move it to .cursor/plans/Done/
-    status: pending
+    status: completed
   - id: w0-voice
     content: "W0: delete dated/audit lines, rewrite AppLayer and rule references, voice pass on process and foundations pages and metadata leads"
-    status: pending
+    status: completed
   - id: w1-wire
     content: "W1: export Patterns/Examples/Variants figures, hide empty sections, companion links, anatomy part names, generated lists, docs:check gate"
-    status: pending
+    status: completed
   - id: w2-evidence
     content: "W2: accessibility.evidence schema, figure, agent-run keyboard fills for four priority components, zoom and long-label stories"
-    status: pending
+    status: completed
   - id: w3-template
     content: "W3: control page template in rules and check, primeng.examples.ts, consumer-app mounts, pack:smoke"
-    status: pending
+    status: completed
   - id: w4-pages
     content: "W4: eight per-control PrimeNG pages, storySort, PRIMENG_KIT storybook paths"
-    status: pending
+    status: completed
   - id: w5-foundations
     content: "W5: composed page example figure, colour explorer default roles, provisional approved pairs and illustration mapping with .ai/questions entries"
-    status: pending
+    status: completed
   - id: w6-routes
     content: "W6: Figma component links and state figures on Design with Plectrum; fonts, icons, browsers, release date on Build with Plectrum; release check"
-    status: pending
+    status: completed
   - id: w7-catalogue
     content: "W7: Figma thumbnail script and assets, catalogue preview column, keyboard spec and browser check"
-    status: pending
+    status: completed
   - id: w8-governance
     content: "W8: small-correction path at top of Contribute, ask route and response expectation, FR/NL conventions on Forms and Actions"
-    status: pending
+    status: completed
   - id: w9-proof
     content: "W9: session kit, agent dry-run of seven tasks, all gates, rescore canvas update"
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -53,8 +53,8 @@ Coordinator: **Claude Fable 5.1** (this session, `claude-fable-5-1-thinking-high
 
 ## Status of the two existing plans
 
-- [.cursor/plans/plectrum-ux-audit-and-plan.md](.cursor/plans/plectrum-ux-audit-and-plan.md): T01–T05 and T07/T08 largely done (rescore 7/10). Remaining: T06 per-control pages, T07 composed foundations example and approved pairs, T08 recorded evidence and FR/NL glossary, T10 sessions and drift checks. T09 (patterns) is out of scope by your decision.
-- [.cursor/plans/storybook_docs_audit_15622331.plan.md](.cursor/plans/storybook_docs_audit_15622331.plan.md): still relevant for its **section 2 (wire Patterns/Examples/Variants, generate lists)** and most of **section 1 leftovers**. Three items are superseded and the file must be corrected before archiving: the MDX order rule (you chose primary canvas → Usage → Variants → Anatomy, now in `.ai/rules/03-storybook.md`), the "no Glossary on Introduction" line (Overview now has "Words we use" by your request), and the Introduction Hero/FirstHour rows (replaced by the Audience figure). Done already: `solidaris-nx`, versions from `package.json`, Figma map page. Action: annotate those, fold the rest into this plan, move the file to `.cursor/plans/Done/`.
+- [.cursor/plans/plectrum-ux-audit-and-plan.md](.cursor/plans/done/plectrum-ux-audit-and-plan.md): T01–T05 and T07/T08 largely done (rescore 7/10). Remaining: T06 per-control pages, T07 composed foundations example and approved pairs, T08 recorded evidence and FR/NL glossary, T10 sessions and drift checks. T09 (patterns) is out of scope by your decision.
+- [.cursor/plans/storybook_docs_audit_15622331.plan.md](.cursor/plans/done/storybook_docs_audit_15622331.plan.md): still relevant for its **section 2 (wire Patterns/Examples/Variants, generate lists)** and most of **section 1 leftovers**. Three items are superseded and the file must be corrected before archiving: the MDX order rule (you chose primary canvas → Usage → Variants → Anatomy, now in `.ai/rules/03-storybook.md`), the "no Glossary on Introduction" line (Overview now has "Words we use" by your request), and the Introduction Hero/FirstHour rows (replaced by the Audience figure). Done already: `solidaris-nx`, versions from `package.json`, Figma map page. Action: annotate those, fold the rest into this plan, move the file to `.cursor/plans/Done/`.
 
 ## Work packages
 

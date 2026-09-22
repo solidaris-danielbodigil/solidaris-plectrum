@@ -26,6 +26,7 @@ import {
   Component,
   computed,
   input,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
 import type { ComponentMetadata } from '@solidaris/contracts';
@@ -34,7 +35,18 @@ import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { DocsAnatomyComponent } from './docs-anatomy.component';
 import { DocsDoDontComponent } from './docs-do-dont.component';
+import { DocsLinkComponent } from './docs-link.component';
 import type { DocsContractSection, DocsDoDontItem } from './docs-figures.types';
+import {
+  loadDocsIdsByFolder,
+  resolveComponentDocsPath,
+} from './docs-storybook-index';
+
+/** A composition companion / nested component name, with its docs page when resolvable. */
+export interface CompositionRef {
+  name: string;
+  docsPath: string | null;
+}
 
 interface VariantRow {
   option: string;
@@ -65,7 +77,14 @@ export function usageToDoDont(usage: ComponentMetadata['usage']): {
 
 @Component({
   selector: 'pds-docs-contract',
-  imports: [Card, TableModule, Tag, DocsAnatomyComponent, DocsDoDontComponent],
+  imports: [
+    Card,
+    TableModule,
+    Tag,
+    DocsAnatomyComponent,
+    DocsDoDontComponent,
+    DocsLinkComponent,
+  ],
   templateUrl: './docs-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -77,6 +96,13 @@ export function usageToDoDont(usage: ComponentMetadata['usage']): {
 export class DocsContractComponent {
   readonly metadata = input.required<ComponentMetadata>();
   readonly section = input.required<DocsContractSection>();
+
+  /** Component folder → docs page id, from Storybook's index.json (rule 10 — read at runtime, never hand-copied). */
+  private readonly docsIds = signal<ReadonlyMap<string, string>>(new Map());
+
+  constructor() {
+    void loadDocsIdsByFolder().then((ids) => this.docsIds.set(ids));
+  }
 
   protected readonly name = computed(() => this.metadata().component.name);
 
@@ -92,11 +118,16 @@ export class DocsContractComponent {
 
   protected readonly composition = computed(() => {
     const composition = this.metadata().composition;
+    const docsIds = this.docsIds();
+    const toRef = (name: string): CompositionRef => ({
+      name,
+      docsPath: resolveComponentDocsPath(name, docsIds),
+    });
     return {
       slots: composition?.slots ?? [],
       parents: composition?.parentConstraints ?? [],
-      companions: composition?.companions ?? [],
-      nested: composition?.nestedComponents ?? [],
+      companions: (composition?.companions ?? []).map(toRef),
+      nested: (composition?.nestedComponents ?? []).map(toRef),
     };
   });
 

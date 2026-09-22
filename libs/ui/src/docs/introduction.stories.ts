@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import type { DocsStep } from '../storybook/docs-figures.types';
 import { DocsAudienceComponent } from '../storybook/docs-audience.component';
-import { calloutStory, cardsStory, heroStory } from './docs-figure-stories';
+import { calloutStory, heroStory } from './docs-figure-stories';
 import { RELEASE_SUMMARY } from '../storybook/release-state';
 
 const meta: Meta = {
@@ -121,33 +121,3 @@ export const Audience: StoryObj = {
       '<pds-docs-audience [designSteps]="designSteps" [devSteps]="devSteps" />',
   }),
 };
-
-export const Glossary: StoryObj = cardsStory(
-  [
-    {
-      eyebrow: 'Token',
-      tone: 'system',
-      title: 'A named design value',
-      items: ['You use var(--pds-*). You do not copy the hex or the pixel value.'],
-    },
-    {
-      eyebrow: 'Preset',
-      tone: 'design',
-      title: 'The PrimeNG theme',
-      items: ['v1 is the current theme. v0.6 is the previous one. Neither number is the package version.'],
-    },
-    {
-      eyebrow: 'Core',
-      tone: 'app',
-      title: 'Shared by every app',
-      items: ['Candidate and App-specific components stay with the team that built them.'],
-    },
-    {
-      eyebrow: 'Shell',
-      tone: 'neutral',
-      title: 'Page chrome',
-      items: ['Nav, top bar and drawers. A wrapper such as Form Field holds a PrimeNG control without restyling it.'],
-    },
-  ],
-  2,
-);

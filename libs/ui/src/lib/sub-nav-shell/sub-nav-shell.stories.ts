@@ -185,6 +185,7 @@ type Story = StoryObj<SubNavShellComponent>;
 // content comes from sub-nav-shell.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(SubNavShellMetadata.governance, SubNavShellMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'patterns') };
 export const Composition = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'accessibility') };

@@ -13,7 +13,7 @@ export const TopNavMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.top-nav.scss',
     figmaUrl:
-      'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1533',
+      'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1532',
     created: '2026-06-05',
     modified: '2026-09-14',
   },

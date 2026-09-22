@@ -53,4 +53,4 @@ Short form — full detail and examples in `.ai/rules/`:
 
 ## Typography
 
-`1rem = 14px`. Agenda = display/headings, Open Sans = body/labels — always via `--pds-text-*` tokens, never hardcoded `font-size` / `font-family`.
+`1rem = 14px`. Agenda = display, Open Sans = body/labels — always via `--pds-text-*` tokens, never hardcoded `font-size` / `font-family`.

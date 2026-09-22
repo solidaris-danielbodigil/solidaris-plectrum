@@ -50,6 +50,7 @@ import {
   STATUS_PRESENTATION,
   type StatusSeverity,
 } from './docs-status.component';
+import { folderOf, loadDocsIdsByFolder } from './docs-storybook-index';
 
 /** The slice of .ai/contracts/index.json the figure reads. */
 export interface ContractsComponentEntry {
@@ -67,13 +68,6 @@ export interface ContractsIndex {
   meta: { generated: string };
   components: Readonly<Record<string, ContractsComponentEntry>>;
   summary: { totalComponents: number; componentsWithMetadata: number };
-}
-
-/** Storybook's index.json (v5) — the part needed to find a docs page. */
-interface StorybookIndex {
-  entries: Readonly<
-    Record<string, { id: string; type: string; importPath: string }>
-  >;
 }
 
 type IndexStatus = ComponentStatus | 'undeclared';
@@ -132,10 +126,6 @@ function statusSeverity(status: IndexStatus): StatusSeverity | 'secondary' {
   return status === 'undeclared'
     ? 'secondary'
     : STATUS_PRESENTATION[status].severity;
-}
-
-function folderOf(path: string): string {
-  return path.replace(/^\.\//, '').replace(/\/[^/]*$/, '');
 }
 
 @Component({
@@ -246,21 +236,6 @@ export class DocsComponentIndexComponent {
   }
 
   private async loadDocsIds(): Promise<void> {
-    if (typeof fetch !== 'function') return;
-    try {
-      // Relative to iframe.html, so it resolves in dev and in a static build under a sub-path.
-      const response = await fetch('./index.json');
-      if (!response.ok) return;
-      const storybook = (await response.json()) as StorybookIndex;
-      const byFolder = new Map<string, string>();
-      for (const entry of Object.values(storybook.entries ?? {})) {
-        if (entry.type !== 'docs') continue;
-        const folder = folderOf(entry.importPath);
-        if (!byFolder.has(folder)) byFolder.set(folder, entry.id);
-      }
-      this.docsIds.set(byFolder);
-    } catch {
-      // Index unavailable — component names stay plain text.
-    }
+    this.docsIds.set(await loadDocsIdsByFolder());
   }
 }

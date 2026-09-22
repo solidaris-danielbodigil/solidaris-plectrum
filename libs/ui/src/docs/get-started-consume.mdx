@@ -27,7 +27,7 @@ An application installs versioned packages and consumes CSS custom properties. N
   ]}
 />
 
-**Current install.** The packages are at **1.0.0**. [What's new](?path=/docs/docs-what-s-new--docs) lists that version under Released, and there are no pending changesets. npm publish is not switched on yet (`release.yml` opens the version pull request only), so applications install **packed tarballs** of 1.0.0:
+**Current install.** The packages are at **1.0.0**, released **2026-09-14**. [What's new](?path=/docs/docs-what-s-new--docs) lists that version under Released, and there are no pending changesets. npm publish is not switched on yet (`release.yml` opens the version pull request only), so applications install **packed tarballs** of 1.0.0:
 
 ```bash
 # in the design-system repository
@@ -48,6 +48,18 @@ npm install @solidaris/ui @solidaris/plectrum @solidaris/styles primeng @primeui
 Supported peers: Angular `^21`, PrimeNG `^21`, `@primeuix/themes` `^2`. The three `@solidaris/*` packages version together — always upgrade them as a set.
 
 The Storybook **Preset** control (`v1` / `v0.6`) switches the theme inside this catalogue. It is not the package version. `providePlectrum()` with no argument uses preset v1.
+
+Moved from a 0.x preset? Find every renamed input on [What's new](?path=/docs/docs-what-s-new--docs).
+
+## Fonts, icons and browsers
+
+Agenda ships as four `.woff2` files at `libs/assets/fonts/agenda` in the design-system repository. Copy that folder into your app's own assets, and add it to `angular.json` so `/assets/fonts/agenda/*.woff2` resolves.
+
+Open Sans is not bundled. Load it yourself — a font service link or a self-hosted package both work — and make sure it is available before your app renders.
+
+Install `bootstrap-icons`, then add `node_modules/bootstrap-icons/font/bootstrap-icons.css` to the `styles` array in `angular.json`.
+
+This app supports what Angular supports by default: current Chrome, Edge, Firefox and Safari, desktop and mobile. Add your own browser list only if you must support something older.
 
 ## Wire the stylesheet
 

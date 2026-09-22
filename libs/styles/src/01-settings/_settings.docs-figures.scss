@@ -48,6 +48,7 @@
   --#{$pds-prefix}-size-docs-steps-index:   1.75rem; // p-badge size="xlarge" height (Plectrum badge.xl) the step title centres on
   --#{$pds-prefix}-size-docs-card-min:      16rem;   // 224px — three cards per row on a docs page
   --#{$pds-prefix}-size-docs-card-min-wide: 24rem;   // 336px — two cards per row
+  --#{$pds-prefix}-size-docs-thumb:         4rem;    // catalogue row preview
   --#{$pds-prefix}-size-docs-stroke:        1.5px;   // node outline (SVG user units)
   --#{$pds-prefix}-size-docs-edge-stroke:   2px;     // arrows
   --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow

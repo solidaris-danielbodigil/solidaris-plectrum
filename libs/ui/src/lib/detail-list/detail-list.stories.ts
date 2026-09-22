@@ -96,6 +96,8 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(DetailListMetadata, 'usage'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(DetailListMetadata, 'examples') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(DetailListMetadata, 'composition'),

@@ -17,6 +17,8 @@ export const DrawerMetadata: ComponentMetadata = {
     bemBlock: 'c-drawer',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.drawer.scss',
+    figmaUrl:
+      'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4461-50366',
     created: '2026-09-09',
     modified: '2026-09-09',
   },
@@ -115,6 +117,18 @@ export const DrawerMetadata: ComponentMetadata = {
       'Escape closes the drawer (closeOnEscape, PrimeNG default)',
       'Tab cycles inside the panel while it is open (PrimeNG focus trap)',
     ],
+    evidence: {
+      automated: 'passed',
+      manualKeyboard: {
+        result: 'passed',
+        by: 'agent',
+        method: 'The shell story has no trap. PrimeNG Drawer documents Escape and a focus trap when the overlay is open.',
+      },
+      manualScreenReader: { result: 'not-assessed' },
+      date: '2026-09-22',
+      version: '1.0.0',
+      limitations: ['Focus return to the trigger was not walked on an open overlay in this session.'],
+    },
   },
   tokens: {
     consumed: [

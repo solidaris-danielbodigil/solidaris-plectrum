@@ -1,6 +1,7 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './typography.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta title="Foundations/Typography/Roles" />
 
@@ -21,6 +22,18 @@ Do not skip from the page title to a tiny label with nothing in between. On a na
 Type styles live in code, not as Figma variables. Base is `1rem = 14px`. Each role bundles family, size, weight, line-height and letter-spacing.
 
 Type your own copy in the playground field to check a real string — long French labels and currency amounts behave differently from lorem ipsum.
+
+## One page, all decisions
+
+The title, the section and the card title are three roles. The narrow example keeps those roles and stacks.
+
+<Unstyled>
+  <Story of={PageExample.Wide} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={PageExample.Narrow} />
+</Unstyled>
 
 ## Usage
 

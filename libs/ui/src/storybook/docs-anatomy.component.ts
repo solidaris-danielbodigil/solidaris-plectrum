@@ -106,7 +106,10 @@ const HIDDEN_PARTS_NOTE =
               [value]="item.index"
               severity="secondary"
             />
-            <span class="c-docs-anatomy__label">{{ item.role }}</span>
+            <span class="c-docs-anatomy__label">
+              <code class="c-docs-anatomy__part">{{ item.part }}</code>
+              {{ item.role }}
+            </span>
           </li>
         }
       </ol>

@@ -1,0 +1,82 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './feedback.stories';
+
+<Meta of={Stories} />
+
+# Message and Toast
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Show feedback after something happens. Keep Message in the page. Let Toast appear and leave.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use Message for an error or warning tied to a place on the page. Keep that message until you fix the problem. Use Toast for a short success confirmation such as Enregistré.
+
+- Never use a toast as the only place where you explain an error.
+- Use Form Field's error slot for a field error.
+- Do not replace a field error with Message.
+
+Message belongs to the [Forms](?path=/docs/primeng-forms--docs) family. Toast belongs to the [Overlays](?path=/docs/primeng-overlays--docs) family.
+
+## Variants
+
+**Message severities.** Use error, warn, info and success with the default treatment.
+
+<Canvas of={Stories.MessageSeverities} />
+
+**Field message.** Use `size="small"` with `variant="simple"` only inside Form Field. Let Form Field render that treatment for you.
+
+<Canvas of={Stories.FieldMessage} />
+
+**Closable message.** Add a close button only when you may dismiss the notice safely.
+
+<Canvas of={Stories.ClosableMessage} />
+
+**Toast severities.** Use success for a completed action. Use info for a short update. Keep the position at top-right. Keep the default lifetime.
+
+<Canvas of={Stories.ToastSeverities} />
+
+**Sticky toast.** Keep a toast open only when you must act on it.
+
+<Canvas of={Stories.StickyToast} />
+
+PrimeNG also offers secondary and contrast severities. Do not use those severities for application feedback.
+
+## Content
+
+Say what happened in the first sentence. Say what to do in the second sentence: Le paiement n'a pas pu être enregistré. Vérifiez le numéro de compte et réessayez. Keep a Toast summary to one or two words. Keep its detail to one sentence. Use the language of the screen.
+
+## Behavior
+
+- Place one Toast near the application root.
+- Share one `MessageService`.
+- Do not mount one Toast per feature.
+- Keep focus where it is when a Message appears.
+- Repeat a blocking error in an inline Message near the action.
+- Let Toast disappear on its own.
+- Do not put an action only in a Toast.
+
+## Accessibility
+
+PrimeNG gives an error Message the alert role. PrimeNG gives Toast a live region. Keep the wording short. Do not rely on colour alone. Keep the icon and text meaningful. Repeat a blocking error inline.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+Use the snippet under the Default canvas. Import Message from `primeng/message`. Import Toast from `primeng/toast`. Keep the same file compiling in the packaging smoke test.
+
+## Related
+
+- [Forms](?path=/docs/primeng-forms--docs) · [Overlays](?path=/docs/primeng-overlays--docs) · [Form Field](?path=/docs/custom-components-form-field--docs) · [Dialog](?path=/docs/primeng-dialog--docs)
+- Figma: [Message](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=393-39252) · [Toast](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=393-42317) · API: [Message](https://primeng.org/message) · [Toast](https://primeng.org/toast)

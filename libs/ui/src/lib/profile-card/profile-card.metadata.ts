@@ -13,7 +13,7 @@ export const ProfileCardMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.profile-card.scss',
     figmaUrl:
-      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
+      'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587',
     created: '2026-09-08',
     modified: '2026-09-09',
   },

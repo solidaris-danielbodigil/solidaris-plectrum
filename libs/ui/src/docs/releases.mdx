@@ -5,7 +5,7 @@ import { DocsTable } from '../../.storybook/docs-table';
 
 # Releases and versioning
 
-Changesets versions the three packages together. Applications never track `main`. They install the current packed tarballs until npm publish is on, then they install from the registry and receive bumps as pull requests.
+Changesets is the release tool. It bumps the three `@solidaris` packages together. Applications never track `main`: they install the current packed tarballs until npm publish is on, then they install from the registry and receive bumps as pull requests.
 
 Related pages:
 
@@ -28,6 +28,7 @@ Related pages:
   rows={[
     ['Fixed version group', '@solidaris/ui, @solidaris/plectrum and @solidaris/styles always version together (.changeset/config.json → fixed)'],
     ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
+    ['Commit gate', 'npm run check:commit runs before the commit is created. git commit --no-verify skips it. The pull request into main still runs the full CI gates'],
     ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
     ['Registry via config', 'publishConfig + .npmrc.example abstract the registry — no registry URLs in code'],
     ['Consumer proof', 'pack:smoke installs the packed tarballs into a throwaway app without path aliases and builds it; storybook-packed builds this catalogue against the same tarballs'],

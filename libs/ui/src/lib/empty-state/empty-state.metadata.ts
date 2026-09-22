@@ -12,7 +12,8 @@ export const EmptyStateMetadata: ComponentMetadata = {
     bemBlock: 'c-empty-state',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.empty-state.scss',
-    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=441-7641',
+    figmaUrl:
+      'https://www.figma.com/design/947lOBHnx8VJUPLuKhLqby/PLECTRUM-%C2%B7-Icons---illustrations?node-id=1995-1296',
     created: '2026-06-05',
     modified: '2026-09-09',
   },
@@ -77,6 +78,18 @@ export const EmptyStateMetadata: ComponentMetadata = {
       'The title renders as an <h3>; place the block where a level-3 heading fits the page outline',
     ],
     keyboardSupport: ['No interactive parts — the block never takes focus'],
+    evidence: {
+      automated: 'passed',
+      manualKeyboard: {
+        result: 'passed',
+        by: 'agent',
+        method: 'Tab skips the illustration and the text. A recovery button beside it is the next stop.',
+      },
+      manualScreenReader: { result: 'not-assessed' },
+      date: '2026-09-22',
+      version: '1.0.0',
+      limitations: ['The illustration is decorative. A screen reader pass has not confirmed the title is the heading.'],
+    },
   },
   tokens: {
     consumed: [

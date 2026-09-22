@@ -6,7 +6,7 @@ import * as Stories from './scroll-shadow.stories';
 
 # Scroll shadow
 
-Scroll-driven edge fades for scroll containers — a visual cue that more content exists beyond the visible area. **Pure CSS** via [`scroll-timeline`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline); no JavaScript.
+The edges fade as you scroll, so the reader can see there is more content. No JavaScript — it is [`scroll-timeline`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-timeline) in CSS. Chrome and Edge today; other browsers show a normal scroll.
 
 ## Usage
 
@@ -97,7 +97,7 @@ Start/end fades on an **inline-axis** scroller (left/right in LTR):
 
 ## Browser support
 
-Scroll-driven animations are **Chromium-only** today. Elsewhere it degrades gracefully to **no shadow**.
+Chrome and Edge today. Other browsers show a normal scroll with no fade.
 
 Styles: `libs/styles/src/05-objects/_objects.scroll-shadow.scss` · Mixins: `libs/styles/src/02-tools/_tools.scroll-shadow.scss` · Tokens: `libs/styles/src/01-settings/_settings.scroll-shadow.scss`
 

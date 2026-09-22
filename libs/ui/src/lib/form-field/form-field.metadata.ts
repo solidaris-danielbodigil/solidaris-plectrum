@@ -13,7 +13,7 @@ export const FormFieldMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.form-field.scss',
     figmaUrl:
-      'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
+      'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=23-835',
     created: '2026-06-07',
     modified: '2026-09-09',
   },
@@ -139,6 +139,18 @@ export const FormFieldMetadata: ComponentMetadata = {
     keyboardSupport: [
       'The shell adds no focusable parts — Tab order is that of the projected control',
     ],
+    evidence: {
+      automated: 'passed',
+      manualKeyboard: {
+        result: 'passed',
+        by: 'agent',
+        method: 'Tab reaches the input. The label is its accessible name.',
+      },
+      manualScreenReader: { result: 'not-assessed' },
+      date: '2026-09-22',
+      version: '1.0.0',
+      limitations: ['Screen reader announcement of the hint and error is not verified.'],
+    },
   },
   tokens: {
     consumed: [

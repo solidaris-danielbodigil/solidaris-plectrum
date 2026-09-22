@@ -18,6 +18,8 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
     bemBlock: 'c-skeleton-slot',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.skeleton-slot.scss',
+    figmaUrl:
+      'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=373-13726',
     created: '2026-09-09',
     modified: '2026-09-09',
   },

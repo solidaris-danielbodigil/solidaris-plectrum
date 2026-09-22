@@ -18,6 +18,7 @@ if (version !== plectrum || version !== styles) {
 }
 
 const consume = read('libs/ui/src/docs/get-started-consume.mdx');
+const releaseState = read('libs/ui/src/storybook/release-state.ts');
 const introduction = read('libs/ui/src/docs/introduction.mdx');
 const introductionStories = read('libs/ui/src/docs/introduction.stories.ts');
 const contribute = read('libs/ui/src/docs/get-started-contribute.mdx');
@@ -34,6 +35,26 @@ if (!consume.includes(version)) {
 }
 if (!introductionStories.includes('RELEASE_SUMMARY')) {
   fail('introduction.stories.ts does not render RELEASE_SUMMARY');
+}
+
+if (!consume.includes('Agenda')) {
+  fail('get-started-consume.mdx does not mention Agenda');
+}
+if (!consume.includes('bootstrap-icons')) {
+  fail('get-started-consume.mdx does not mention bootstrap-icons');
+}
+
+const releaseDateMatch = /RELEASE_DATE\s*=\s*'([^']+)'/.exec(releaseState);
+if (!releaseDateMatch) {
+  fail('release-state.ts does not define RELEASE_DATE');
+} else {
+  const releaseDate = releaseDateMatch[1];
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(releaseDate)) {
+    fail(`release-state.ts RELEASE_DATE is not a YYYY-MM-DD string: ${releaseDate}`);
+  }
+  if (!consume.includes(releaseDate)) {
+    fail(`get-started-consume.mdx does not mention the release date ${releaseDate}`);
+  }
 }
 
 if (contribute.includes('solidaris-nx')) {

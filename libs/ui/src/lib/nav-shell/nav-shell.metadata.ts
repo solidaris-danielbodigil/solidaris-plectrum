@@ -11,7 +11,7 @@ export const NavShellMetadata: ComponentMetadata = {
     bemBlock: 'c-nav-shell',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.nav-shell.scss',
-    figmaUrl: 'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=1-1433',
+    figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1433',
     created: '2025-01-01',
     modified: '2026-09-14',
   },

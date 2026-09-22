@@ -31,6 +31,8 @@ type Story = StoryObj;
 // content comes from skeleton-slot.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(SkeletonSlotMetadata.governance, SkeletonSlotMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'examples') };
 export const Composition = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(SkeletonSlotMetadata, 'accessibility') };

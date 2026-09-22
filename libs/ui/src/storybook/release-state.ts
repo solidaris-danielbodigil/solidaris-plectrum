@@ -23,6 +23,13 @@ if (RELEASE_PACKAGES.some((pkg) => pkg.version !== PACKAGE_VERSION)) {
 /** npm publish is parked in release.yml. Consumers install packed tarballs. */
 export const REGISTRY_PUBLISHED = false;
 
+/**
+ * The date `libs/ui/package.json` last changed — a proxy for when 1.0.0 shipped,
+ * since the three packages version together. Refresh it after every version bump:
+ *   git log -1 --format=%ad --date=short -- libs/ui/package.json
+ */
+export const RELEASE_DATE = '2026-09-14';
+
 /** Theme preset in the Storybook toolbar. Not the package version. */
 export const PRESET_VERSION = 'v1';
 
@@ -47,4 +54,4 @@ export const TARBALL_INSTALL = `npm install \\
   ./path/to/${tarballName('@solidaris/styles')} \\
   primeng @primeuix/themes`;
 
-export const RELEASE_SUMMARY = `The three packages are at ${PACKAGE_VERSION}. What's new lists that version under Released. npm publish is not switched on yet, so install packed tarballs of ${PACKAGE_VERSION}. The Preset toolbar (${PRESET_VERSION}) is the theme, not the package version.`;
+export const RELEASE_SUMMARY = `The three packages are at ${PACKAGE_VERSION}, released ${RELEASE_DATE}. What's new lists that version under Released. npm publish is not switched on yet, so install packed tarballs of ${PACKAGE_VERSION}. The Preset toolbar (${PRESET_VERSION}) is the theme, not the package version.`;

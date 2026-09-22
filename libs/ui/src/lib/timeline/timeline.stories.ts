@@ -87,6 +87,8 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(TimelineMetadata, 'usage'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(TimelineMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(TimelineMetadata, 'examples') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(TimelineMetadata, 'composition'),

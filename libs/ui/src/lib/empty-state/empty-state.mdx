@@ -11,7 +11,7 @@ import * as Stories from './empty-state.stories';
 
 ## Default
 
-The default illustration is a random catalog SVG so this page can show the set. On a production screen, pin one. A no-results search can use a lighter illustration than a problem that blocks a payment or a care decision. Use **Autre illustration**, or set the `illustration` input to the catalog id.
+The default illustration is a random catalog SVG so this page can show the set. On a production screen, pin one. Provisional, until design signs it off: `people-search` or `search-doctor-stethoscoop` for no results, `person-box` or `hand-coffee` for a first empty screen, `person-zero` for a blocked task. The two window illustrations are the lighter tone.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
@@ -20,6 +20,12 @@ The default illustration is a random catalog SVG so this page can show the set. 
 
 <Unstyled>
   <Story of={Stories.Usage} />
+</Unstyled>
+
+## Patterns
+
+<Unstyled>
+  <Story of={Stories.Patterns} />
 </Unstyled>
 
 ## Anatomy
@@ -44,4 +50,8 @@ Every catalog SVG, each pinned with its id.
 
 <Unstyled>
   <Story of={Stories.Accessibility} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
 </Unstyled>

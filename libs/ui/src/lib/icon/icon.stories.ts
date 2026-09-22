@@ -39,6 +39,8 @@ type Story = StoryObj<IconComponent>;
 export const Status = { tags: ['!dev'], ...statusStory(IconMetadata.governance, IconMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(IconMetadata, 'usage') };
 export const Variants = { tags: ['!dev'], ...contractStory(IconMetadata, 'variants') };
+export const Patterns = { tags: ['!dev'], ...contractStory(IconMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(IconMetadata, 'examples') };
 export const Behavior = { tags: ['!dev'], ...contractStory(IconMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(IconMetadata, 'accessibility') };
 

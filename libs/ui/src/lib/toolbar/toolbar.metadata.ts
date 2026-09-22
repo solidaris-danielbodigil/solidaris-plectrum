@@ -13,7 +13,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.toolbar.scss',
     figmaUrl:
-      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=324-5772',
+      'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=322-13288',
     created: '2026-09-05',
     modified: '2026-09-14',
   },

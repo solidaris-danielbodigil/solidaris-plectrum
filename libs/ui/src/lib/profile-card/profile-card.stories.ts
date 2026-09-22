@@ -184,6 +184,7 @@ type Story = StoryObj<ProfileCardCardStoryArgs>;
 export const Status = { tags: ['!dev'], ...statusStory(ProfileCardMetadata.governance, ProfileCardMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'usage') };
 export const Variants = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'variants') };
+export const Patterns = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'patterns') };
 export const Composition = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(ProfileCardMetadata, 'accessibility') };

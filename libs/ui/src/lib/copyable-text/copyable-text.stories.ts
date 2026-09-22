@@ -130,6 +130,7 @@ type Story = StoryObj<CopyableTextComponent>;
 // content comes from copyable-text.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(CopyableTextMetadata.governance, CopyableTextMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'patterns') };
 export const Anatomy = { tags: ['!dev'], ...anatomyStory(CopyableTextMetadata) };
 export const Composition = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(CopyableTextMetadata, 'behavior') };

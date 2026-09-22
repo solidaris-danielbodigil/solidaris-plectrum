@@ -45,6 +45,8 @@ export const Status = { tags: ['!dev'], ...statusStory(
   DelayPredictionCardMetadata.component,
 ) };
 export const Usage = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'examples') };
 export const Composition = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'accessibility') };

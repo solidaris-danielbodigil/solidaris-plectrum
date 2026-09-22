@@ -12,8 +12,8 @@ export const InputClearMetadata: ComponentMetadata = {
     bemBlock: 'c-input-clear',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.input-clear.scss',
-    figmaUrl:
-      'https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-',
+    // no Figma component yet
+    figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components',
     created: '2026-06-07',
     modified: '2026-09-09',
   },

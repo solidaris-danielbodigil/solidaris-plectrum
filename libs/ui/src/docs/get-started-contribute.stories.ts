@@ -141,12 +141,11 @@ export const Roles: StoryObj = cardsStory(
 
 export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
-  title:
-    'While a component is app-owned, drift stays contained by tooling — not by trust',
+  title: 'While your team owns it, the lint and token checks still apply',
   items: [
-    'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose lists them; apply selected names on proposals/{app} via agent + Figma MCP when a session is running, or the Plectrum tokens plugin otherwise (see Token pipeline → Figma sync).',
-    'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
-    'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
+    'Build it from PrimeNG and @solidaris/ui, and use --pds-* tokens. CI fails hex, px and unknown token names.',
+    'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
+    'Put the layout classes in the template.',
+    'The Storybook page lives under Patterns/{App}, and the metadata says your team owns it.',
   ],
 });

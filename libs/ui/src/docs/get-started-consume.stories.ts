@@ -25,7 +25,10 @@ export const InstallFlow: StoryObj = stepsStory([
     title: 'Wire the stylesheet',
     detail:
       'Add `node_modules/@solidaris/styles/src` to `stylePreprocessorOptions.includePaths` and `@use \'main\'` in `styles.scss`.',
-    links: [{ label: 'Wire the stylesheet', href: '#wire-the-stylesheet' }],
+    links: [
+      { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
+      { label: 'Fonts, icons and browsers', href: '#fonts-icons-and-browsers' },
+    ],
   },
   {
     who: 'Dev',

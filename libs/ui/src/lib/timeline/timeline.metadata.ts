@@ -17,6 +17,8 @@ export const TimelineMetadata: ComponentMetadata = {
     bemBlock: 'c-timeline',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.timeline.scss',
+    figmaUrl:
+      'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=442-29308',
     created: '2026-09-09',
     modified: '2026-09-09',
   },

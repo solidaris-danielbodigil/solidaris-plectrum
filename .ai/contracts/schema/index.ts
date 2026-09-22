@@ -9,5 +9,9 @@ export type {
   SlotDefinition,
   PropDefinition,
   ComponentExample,
+  AccessibilityEvidence,
+  EvidenceActor,
+  EvidenceResult,
+  ManualEvidence,
 } from './component.metadata';
 export type { TokenContract, TokenCollection } from './token.contract';

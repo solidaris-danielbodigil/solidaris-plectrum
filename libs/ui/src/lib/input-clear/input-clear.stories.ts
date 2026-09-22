@@ -29,6 +29,7 @@ type Story = StoryObj<InputClearComponent>;
 // content comes from input-clear.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(InputClearMetadata.governance, InputClearMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'patterns') };
 export const Composition = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(InputClearMetadata, 'accessibility') };

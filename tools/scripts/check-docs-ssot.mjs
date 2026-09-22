@@ -11,13 +11,31 @@
 //   ## Figma section / bare Figma URL     → statusStory(governance, component)
 //
 // It also requires every component page to embed the Status figure and, when
-// a colocated .metadata.ts exists, the Usage figure.
+// a colocated .metadata.ts exists, the Usage figure. A component whose
+// metadata carries non-empty usage.commonPatterns / examples / variants must
+// embed the matching Patterns / Examples / Variants figure too — metadata
+// that is written but never shown is drift the same way hand-written prose is.
 //
-// Run: npm run docs:check   (wired into CI next to generate-index)
+// Run: npm run docs:check   (tsx — needs TS import of ALL_COMPONENT_METADATA;
+// wired into CI next to generate-index)
 // =============================================================================
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
+import { ALL_COMPONENT_METADATA } from '../../libs/ui/src/storybook/component-metadata.ts';
+
+/** `libs/ui/src/lib/{folder}/…` → the folder name each metadata file lives in. */
+function libFolderOf(path) {
+  const match = /^libs\/ui\/src\/lib\/([^/]+)\//.exec(path);
+  return match ? match[1] : null;
+}
+
+const METADATA_BY_FOLDER = new Map(
+  ALL_COMPONENT_METADATA.map((metadata) => [
+    libFolderOf(metadata.component.path),
+    metadata,
+  ]).filter(([folder]) => folder !== null),
+);
 
 const ROOT = resolve('libs/ui/src/lib');
 const problems = [];
@@ -88,6 +106,21 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true })) {
     const usage = sectionBody(mdx, '## Usage');
     if (!usage || !embeds(usage, 'Usage')) {
       fail('component has a .metadata.ts but the page does not embed <Story of={Stories.Usage} /> under "## Usage"');
+    }
+
+    const metadata = METADATA_BY_FOLDER.get(dir.name);
+    if (metadata) {
+      const requiredFigures = [
+        ['commonPatterns', metadata.usage?.commonPatterns, 'Patterns'],
+        ['examples', metadata.examples, 'Examples'],
+        ['variants', metadata.variants && Object.keys(metadata.variants), 'Variants'],
+      ];
+      for (const [field, collection, story] of requiredFigures) {
+        if (!collection || collection.length === 0) continue;
+        if (!new RegExp(`<Story\\s+of=\\{Stories\\.${story}\\}`).test(mdx)) {
+          fail(`metadata.${field === 'commonPatterns' ? 'usage.commonPatterns' : field} is non-empty but the page does not embed <Story of={Stories.${story}} />`);
+        }
+      }
     }
   }
 

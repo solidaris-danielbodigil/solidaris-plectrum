@@ -1,0 +1,84 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './autocomplete.stories';
+
+<Meta of={Stories} />
+
+# AutoComplete
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Type toward a value from a long list. Keep `forceSelection` on when the value must come from that list.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use AutoComplete when the list is long and you know the start of the value. Choose it for communes, prestataires and codes.
+
+- Use [Select](?path=/docs/primeng-select--docs) for a short known list.
+- Use [InputText](?path=/docs/primeng-inputtext--docs) for free text with no list.
+- Place it inside Form Field with a matching `inputId`.
+- Set `appendTo="body"` on the suggestions panel.
+
+AutoComplete belongs to the [Forms](?path=/docs/primeng-forms--docs) family.
+
+## Variants
+
+**Dropdown.** Add the button when you may need to browse before typing.
+
+<Canvas of={Stories.Dropdown} />
+
+**Minimum length.** Wait for two characters when a broad search would return too many results.
+
+<Canvas of={Stories.MinimumLength} />
+
+**Invalid.** Put the error in Form Field and keep it next to the value.
+
+<Canvas of={Stories.Invalid} />
+
+**Disabled.** Use the disabled state only when the value cannot be changed.
+
+<Canvas of={Stories.Disabled} />
+
+**Fluid.** Fill the available field width.
+
+<Canvas of={Stories.Fluid} />
+
+PrimeNG also offers multiple selection with chips. Plectrum restyles the chip sizing in [PrimeNG customizations](?path=/docs/docs-primeng-customizations--docs). Do not use multiple selection until a screen needs it.
+
+## Content
+
+Write the hint as the next action: Tapez les premières lettres. Write the placeholder as an action, not as an example value. Show `emptyMessage` in the language of the screen.
+
+## Behavior
+
+- Start the search after you type.
+- Use the arrow keys to move through the panel.
+- Press Enter to choose the focused result.
+- Press Escape to close the panel and keep focus in the input.
+- Expect an unmatched typed value to clear on blur when `forceSelection` is on.
+- Warn about that clearing behavior in the hint when it may surprise you.
+- Keep the last query when a request fails.
+- Show the request error under the field.
+
+## Accessibility
+
+Plectrum provides Form Field wiring and the theme. PrimeNG announces the number of results. You provide the label, hint, empty message and error text.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+Use the snippet under the Default canvas. Import AutoComplete from `primeng/autocomplete`. Keep the same file compiling in the packaging smoke test.
+
+## Related
+
+- [Forms](?path=/docs/primeng-forms--docs) · [Select](?path=/docs/primeng-select--docs) · [InputText](?path=/docs/primeng-inputtext--docs) · [Form Field](?path=/docs/custom-components-form-field--docs)
+- Figma: [AutoComplete](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=6047-9515) · API: [primeng.org/autocomplete](https://primeng.org/autocomplete)

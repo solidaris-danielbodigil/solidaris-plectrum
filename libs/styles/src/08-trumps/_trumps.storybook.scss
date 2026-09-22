@@ -128,3 +128,10 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+
+// addon-docs always renders the TOC title. tocbot leaves .toc-wrapper empty
+// when headingSelector matches nothing, so hide "On this page" on those pages.
+// The empty aside stays so the docs column width does not jump.
+.sbdocs-toc--custom:not(:has(.toc-list)) h2 {
+  display: none;
+}

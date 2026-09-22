@@ -1,6 +1,7 @@
 import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './colors.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta title="Foundations/Colors/Semantic Common" />
 
@@ -10,7 +11,7 @@ import * as Stories from './colors.stories';
 
 Pick a named role for the job. Text on a page uses `text` on `surface`. Text on a card uses `text` on `content`. A primary action uses `primary`. Do not pick a ramp step such as `gray-900` in an application.
 
-The swatches below mix reusable roles with component and feature tokens. Start with the groups Text, Surface, Content, Form, Navigation and Primary. Feature tokens are for the component that owns them.
+The swatches start with the reusable roles: text, surface, content, form, navigation and primary. Use the group filter to show component and feature tokens.
 
 Application teams do not add a colour. If none of these roles fits, [propose](?path=/docs/get-started-contribute--docs) it. Only the design-system team adds a role in `01-settings`.
 
@@ -19,6 +20,20 @@ Named roles from Figma **Colors / Semantic Common**. Mapped colors emit as `var(
 Every swatch is resolved with `getComputedStyle`, so what you see is what the running app renders — including the live `--p-*` value behind a mapped token. Click any token to copy it. Use **Copy as** (var() / Name / Value) to copy `var(--pds-…)` for SCSS, the bare name for a review comment, or the resolved value for Figma.
 
 Figma: [Plectrum DS — PrimeNG v21 / Colors](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=4-2)
+
+## One page, all decisions
+
+The card uses text on content. The page behind it uses text on surface.
+
+<Unstyled>
+  <Story of={PageExample.Wide} />
+</Unstyled>
+
+## Recommended pairs (provisional)
+
+<Unstyled>
+  <Story of={Stories.RecommendedPairs} />
+</Unstyled>
 
 ## Usage
 

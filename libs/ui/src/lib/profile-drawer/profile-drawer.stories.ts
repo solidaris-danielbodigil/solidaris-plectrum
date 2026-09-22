@@ -188,6 +188,7 @@ type Story = StoryObj<ProfileDrawerStoryArgs>;
 // content comes from profile-drawer.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(ProfileDrawerMetadata.governance, ProfileDrawerMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'patterns') };
 export const Composition = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(ProfileDrawerMetadata, 'accessibility') };

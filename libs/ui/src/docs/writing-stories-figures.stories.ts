@@ -44,8 +44,7 @@ export const DocsSource: StoryObj = doDontStory({
   donts: [
     {
       title: 'Write a bullet under ## When to use',
-      detail:
-        'Two copies of the same fact drift — the audit measured 20 of 39 use cases and 6 of 32 anti-patterns still matching.',
+      detail: 'Two copies of the same fact drift.',
       alternative:
         'usage.useCases / usage.antiPatterns, then <Story of={Stories.Usage} />. npm run docs:check fails the page otherwise.',
     },

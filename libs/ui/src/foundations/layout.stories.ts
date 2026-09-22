@@ -6,6 +6,7 @@
 
 import { componentWrapperDecorator, type Meta } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
+import { LAYOUT, summary } from './object-class-lists';
 
 export default {
   title: 'Foundations/Layout',
@@ -23,64 +24,53 @@ export default {
         'Layout object initializer — required on any element that uses an o-layout modifier',
       table: { category: 'Block' },
     },
-    'o-layout--full-height': {
-      name: '.o-layout--full-height',
-      description:
-        'Sets height: 100% — must be added to all ancestors up to a container with a height',
-      table: { category: 'Dimensions' },
-    },
-    'o-layout--full-width': {
-      name: '.o-layout--full-width',
-      description: 'Sets width: 100% — stretches to container width',
-      table: { category: 'Dimensions' },
-    },
-    'o-layout--full-dvh': {
-      name: '.o-layout--full-dvh',
-      description:
-        'Sets height: 100dvh and contain: paint — viewport box that does not expand the document scrollbar',
-      table: { category: 'Dimensions' },
-    },
-    'o-layout--min-h-0': {
-      name: '.o-layout--min-h-0',
-      description:
-        'Sets min-height: 0 — enables flex children to scroll/shrink below content size',
-      table: { category: 'Dimensions' },
-    },
-    'o-layout--min-w-0': {
-      name: '.o-layout--min-w-0',
-      description:
-        'Sets min-width: 0 — enables text truncation in flex children',
-      table: { category: 'Dimensions' },
+    'o-layout--{helper}': {
+      name: '.o-layout--{helper}',
+      description: 'Dimensional structure helper.',
+      table: {
+        category: 'Dimensions',
+        type: { summary: summary(LAYOUT['dimensions']) },
+      },
     },
     'o-layout--overflow-{value}': {
       name: '.o-layout--overflow-{value}',
-      description:
-        'Shorthand overflow. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
-      table: { category: 'Overflow' },
+      description: 'Shorthand overflow. Supports @{bp}.',
+      table: {
+        category: 'Overflow',
+        type: { summary: summary(LAYOUT['overflow']) },
+      },
     },
     'o-layout--overflow-x-{value}': {
       name: '.o-layout--overflow-x-{value}',
-      description:
-        'overflow-x. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
-      table: { category: 'Overflow' },
+      description: 'overflow-x. Supports @{bp}.',
+      table: {
+        category: 'Overflow',
+        type: { summary: summary(LAYOUT['overflowX']) },
+      },
     },
     'o-layout--overflow-y-{value}': {
       name: '.o-layout--overflow-y-{value}',
-      description:
-        'overflow-y. Values: hidden auto overlay scroll visible unset initial inherit. Supports @{bp}',
-      table: { category: 'Overflow' },
+      description: 'overflow-y. Supports @{bp}.',
+      table: {
+        category: 'Overflow',
+        type: { summary: summary(LAYOUT['overflowY']) },
+      },
     },
     'o-layout--{display}': {
       name: '.o-layout--{display}',
-      description:
-        'Display. Values: block inline-block inline hidden grid inline-flex contents. Supports @{bp}',
-      table: { category: 'Display' },
+      description: 'Display. Supports @{bp}.',
+      table: {
+        category: 'Display',
+        type: { summary: summary(LAYOUT['display']) },
+      },
     },
     'o-layout--{position}': {
       name: '.o-layout--{position}',
-      description:
-        'Position. Values: relative absolute fixed sticky static. Supports @{bp}',
-      table: { category: 'Position' },
+      description: 'Position. Supports @{bp}.',
+      table: {
+        category: 'Position',
+        type: { summary: summary(LAYOUT['position']) },
+      },
     },
     'o-layout--sticky-top': {
       name: '.o-layout--sticky-top',

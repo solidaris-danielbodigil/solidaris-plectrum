@@ -24,6 +24,7 @@
 - Use the imperative mood: `Add NavShell component`, not `Added NavShell`
 - Reference the relevant component or token area in the message
 - Do not commit commented-out code, debug statements, or `console.log`
+- `npm install` installs a pre-commit hook (`npm run check:commit`): docs, contracts, token prefix, token usage, style lint, and a clean diff on the generated index, changelog and token files. Builds, unit tests, pack smoke and Storybook stay on CI.
 
 ---
 

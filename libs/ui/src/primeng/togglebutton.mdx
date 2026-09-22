@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './togglebutton.stories';
+
+<Meta of={Stories} />
+
+# ToggleButton
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+The label names the current state. Icons are Bootstrap Icons.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use a ToggleButton for one setting the person switches and sees at once: notifications, filters shown, a panel open.
+
+- Two or three named options: [SelectButton](?path=/docs/primeng-selectbutton--docs).
+- A choice that waits for Enregistrer: a checkbox inside [Form Field](?path=/docs/custom-components-form-field--docs).
+- An action that runs once: [Button](?path=/docs/primeng-button--docs).
+
+ToggleButton belongs to the [Actions](?path=/docs/primeng-actions--docs) family.
+
+## Variants
+
+**State labels.** `onLabel` and `offLabel` name the state, not the verb. Keep both labels about the same length so the control does not jump.
+
+<Canvas of={Stories.Labels} />
+
+**Toolbar and disabled.** `size="small"` in a toolbar. Disabled only when the setting cannot change. PrimeNG also offers an invalid state; do not use it. A setting is never invalid.
+
+<Canvas of={Stories.Small} />
+
+## Content
+
+Write both labels in the language of the screen. Notifications activées / Notifications désactivées. Check the Dutch pair before you fix a width. If only icons show, set `ariaLabel`.
+
+## Behavior
+
+The change applies immediately. There is no Save. Space and Enter toggle it. PrimeNG sets `aria-pressed`.
+
+## Accessibility
+
+Plectrum provides the focus ring and the pressed styling. The application provides labels that make sense in both states, and `ariaLabel` when the control shows only icons.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+The snippet under Default imports `ToggleButton` from `primeng/togglebutton` and `FormsModule`. The same file compiles in the packaging smoke test.
+
+## Related
+
+- [Actions](?path=/docs/primeng-actions--docs) · [SelectButton](?path=/docs/primeng-selectbutton--docs) · [Button](?path=/docs/primeng-button--docs)
+- Figma: [ToggleButton](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=187-6103) · API: [primeng.org/togglebutton](https://primeng.org/togglebutton)

@@ -14,7 +14,7 @@ A **12-cell mobile-first grid** based on Flex display.
 
 The syntax is BEMIT: `.o-` prefix, `__` for elements, `--` for modifiers, `@{breakpoint}` for media queries. Use these classes in templates so you do not invent page-scoped layout SCSS.
 
-> Gap and spacing are forbidden on `.o-flex` / `.o-flex__item` directly. Use `.o-layout.o-layout--gap-{scale}` as a BEM mix on the same element — the block and the modifier together.
+Add these classes in the HTML, next to `o-flex`. Do not write spacing in the component stylesheet. For gap, put `o-layout o-layout--gap-{scale}` on the same element.
 
 Styles: `libs/styles/src/05-objects/_objects.flex-grid.scss`.
 
@@ -65,7 +65,7 @@ Grids can be nested infinitely. Each `.o-flex` restarts the 12-column context.
 
 ## Flex-flow
 
-Shorthand for `flex-direction` + `flex-wrap`. Default is `row nowrap`. Options: `.o-flex--wrap` `.o-flex--nowrap` `.o-flex--wrap-reverse` `.o-flex--row` `.o-flex--row-reverse` `.o-flex--y` `.o-flex--col` `.o-flex--col-reverse` `.o-flex--col-wrap` `.o-flex--col-nowrap`. Direction also accepts `@{breakpoint}` suffixes.
+Shorthand for `flex-direction` + `flex-wrap`. Default is `row nowrap`. Direction also accepts `@{breakpoint}` suffixes. The API table below lists every option.
 
 <Canvas of={Stories.FlexFlow} />
 
@@ -95,13 +95,13 @@ Add `.o-flex--y` to set flex-direction to column.
 
 ## Justify-content
 
-Defines alignment along the main axis. Options: `flex-start` `center` `flex-end` `space-between` `space-around` `space-evenly`. Add `.o-flex--wrap` if columns would overflow. Breakpoint suffixes apply.
+Defines alignment along the main axis. Add `.o-flex--wrap` if columns would overflow. Breakpoint suffixes apply.
 
 <Canvas of={Stories.JustifyContent} />
 
 ## Align-items
 
-Controls the alignment of items on the cross axis. Options: `flex-start` `center` `flex-end` `stretch` `baseline`. Breakpoint suffixes apply.
+Controls the alignment of items on the cross axis. Breakpoint suffixes apply.
 
 <Canvas of={Stories.AlignItems} />
 
@@ -113,7 +113,7 @@ Aligns a flex container's lines when there is extra space in the cross-axis. Req
 
 ## Align-self
 
-Controls the alignment of an individual flex-item along the cross axis, overriding the container's `align-items` value. Options: `flex-start` `center` `flex-end` `baseline` `stretch`. Breakpoint suffixes apply.
+Controls the alignment of an individual flex item along the cross axis, overriding the container's `align-items` value. Breakpoint suffixes apply.
 
 <Canvas of={Stories.AlignSelf} />
 

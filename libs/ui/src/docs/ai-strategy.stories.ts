@@ -74,9 +74,9 @@ export const Roles: StoryObj = cardsStory([
     tone: 'neutral',
     title: 'Owns schema and protocols',
     items: [
-      'Changes ComponentMetadata only in .ai/contracts/schema/',
-      'Updates protocols when the workflow changes',
-      'Keeps token scripts, docs:check, contracts:check and CI as the contract gates',
+      'Keeps one catalogue, and puts styles in the right folder',
+      'Changes the metadata schema in one place, and updates the protocols when the workflow changes',
+      'Keeps the token scripts and the CI checks as the gates',
     ],
   },
 ]);

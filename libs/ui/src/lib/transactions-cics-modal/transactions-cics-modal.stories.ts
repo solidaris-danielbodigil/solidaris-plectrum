@@ -60,6 +60,8 @@ export const Status = { tags: ['!dev'], ...statusStory(
   TransactionsCicsModalMetadata.component,
 ) };
 export const Usage = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'examples') };
 export const Composition = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'accessibility') };

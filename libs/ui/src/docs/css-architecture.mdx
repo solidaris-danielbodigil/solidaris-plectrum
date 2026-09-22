@@ -94,11 +94,7 @@ Each layer has a barrel `_{layer}.core.scss` that `@forward`s its files. Files a
   <Story of={Figures.Prefixes} />
 </Unstyled>
 
-SSOT order when a control is painted:
-
-1. PrimeNG defaults
-2. Plectrum theme (`providePlectrum()`)
-3. `libs/styles` ITCSS — objects, then the scoped `c-` block, then utilities
+A control is painted in this order: PrimeNG defaults, then the Plectrum theme, then the object classes, the scoped `c-` block and the utilities.
 
 Figma is the design reference. It is not a second stylesheet.
 
@@ -138,7 +134,7 @@ Hard stops:
 - Never write gap, padding, margin or overflow in `06-components` when an `o-layout` modifier exists for that value.
 - Never put a new `--pds-*` value inline. Add it in `01-settings` first.
 - Never `@extend` or mixin an object class into a BEM file. The mix must be visible in the template.
-- Never create a nested feature block (`c-profile-drawer__name`). Prefix the **element** on the shared block (`c-drawer__profile-name`).
+- Do not nest blocks. Use `c-drawer__profile-name`, not `c-profile-drawer__name`.
 
 ---
 

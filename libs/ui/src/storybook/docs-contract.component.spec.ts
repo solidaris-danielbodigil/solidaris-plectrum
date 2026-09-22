@@ -147,7 +147,7 @@ describe('docs contract figures (metadata is the docs SSOT)', () => {
       );
     });
 
-    it('says so instead of vanishing when a block is empty', () => {
+    it('renders nothing when a block is empty', () => {
       const empty: ComponentMetadata = {
         ...TopNavMetadata,
         anatomy: undefined,
@@ -155,19 +155,10 @@ describe('docs contract figures (metadata is the docs SSOT)', () => {
       };
 
       expect(
-        text(
-          renderContract(empty, 'anatomy').querySelector(
-            '.c-docs-contract__empty',
-          ),
-        ),
-      ).toBe('No anatomy recorded in TopNav.metadata.ts yet.');
-      expect(
-        text(
-          renderContract(empty, 'variants').querySelector(
-            '.c-docs-contract__empty',
-          ),
-        ),
-      ).toContain('No variants recorded');
+        renderContract(empty, 'anatomy').querySelector('pds-docs-anatomy'),
+      ).toBeNull();
+      expect(text(renderContract(empty, 'anatomy'))).toBe('');
+      expect(text(renderContract(empty, 'variants'))).toBe('');
     });
   });
 

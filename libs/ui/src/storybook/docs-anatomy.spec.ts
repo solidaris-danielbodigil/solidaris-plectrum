@@ -171,11 +171,17 @@ describe('pds-docs-anatomy', () => {
 
     const items = host.querySelectorAll('.c-docs-anatomy__legend-item');
     expect(items.length).toBe(2);
+    expect(text(items[0].querySelector('.c-docs-anatomy__part'))).toBe(
+      'c-copyable-text',
+    );
     expect(text(items[0].querySelector('.c-docs-anatomy__label'))).toBe(
-      'Host button',
+      'c-copyable-text Host button',
+    );
+    expect(text(items[1].querySelector('.c-docs-anatomy__part'))).toBe(
+      'c-copyable-text__label',
     );
     expect(text(items[1].querySelector('.c-docs-anatomy__label'))).toBe(
-      'Visible field name',
+      'c-copyable-text__label Visible field name',
     );
 
     expect(host.querySelectorAll('.c-docs-anatomy__marker').length).toBe(2);

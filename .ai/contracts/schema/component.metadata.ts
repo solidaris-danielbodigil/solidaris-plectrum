@@ -122,8 +122,15 @@ export interface ComponentMetadata {
     role?: string;
     ariaAttributes?: string[];
     keyboardSupport?: string[];
+    /** The target. It is not a certificate — see `evidence`. */
     wcagLevel: 'A' | 'AA' | 'AAA';
     contrastRequirements?: string[];
+    /**
+     * What was actually checked, by whom, and when. Absent means every
+     * manual check is "Not assessed". Docs render this next to the target so
+     * a reader can tell a goal from a result.
+     */
+    evidence?: AccessibilityEvidence;
   };
 
   /** Design token dependencies */
@@ -150,6 +157,33 @@ export interface ComponentPattern {
   name: string;
   description: string;
   composition: string; // code snippet
+}
+
+/** Outcome of one accessibility check. `not-assessed` is the honest default. */
+export type EvidenceResult = 'passed' | 'failed' | 'not-assessed';
+
+/** Who ran a manual check. Agent-run walkthroughs are labelled as such in the docs. */
+export type EvidenceActor = 'person' | 'agent';
+
+export interface ManualEvidence {
+  result: EvidenceResult;
+  /** Required when `result` is not `not-assessed`. */
+  by?: EvidenceActor;
+  /** One line: tool or method, e.g. "VoiceOver on Safari" or "Tab / Shift+Tab / Enter / Escape". */
+  method?: string;
+}
+
+export interface AccessibilityEvidence {
+  /** Storybook addon-a11y (axe, WCAG 2.1 A/AA tags) on the catalogue stories. */
+  automated: EvidenceResult;
+  manualKeyboard: ManualEvidence;
+  manualScreenReader: ManualEvidence;
+  /** YYYY-MM-DD of the most recent check recorded here. */
+  date: string;
+  /** Package version the checks ran against, e.g. "1.0.0". */
+  version: string;
+  /** Known gaps. Shipping the page does not close them. */
+  limitations: string[];
 }
 
 export interface AntiPattern {

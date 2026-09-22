@@ -1,5 +1,6 @@
-import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Figures from './design-with-plectrum.stories';
+import * as FormFieldStories from '../lib/form-field/form-field.stories';
 
 <Meta title="Start here/Design with Plectrum" />
 
@@ -13,18 +14,27 @@ You do not need the repository to design a screen. Enable these four libraries. 
   <Story of={Figures.Libraries} />
 </Unstyled>
 
-Fonts are Agenda for headings and Open Sans for text. They ship with the libraries. Do not substitute another family.
+Agenda is only for display titles. Open Sans is for headings, body, labels and buttons. Both ship with the libraries — do not substitute another family.
 
 Zeroheight was an earlier site. Start here.
 
 ## Build a simple form
 
-1. Open [Find a component](?path=/docs/start-here-catalogue--docs) and choose Form Field, not a new input.
-2. In the PrimeNG kit, place InputText inside the Form Field component from the custom-components library.
-3. Use the variants this Storybook documents: label, hint, required, invalid. Open the component page and the Figma component, not the whole file.
-4. Check the narrow layout. Stack the label above the control. Do not shrink the type below the body role.
-5. Write the error in the same language as the label, and say how to fix it.
-6. Hand off the frame link plus the Storybook page. A developer should not have to guess which variant you meant.
+<Unstyled>
+  <Story of={Figures.BuildForm} />
+</Unstyled>
+
+Show the field asking for a required value.
+
+<Canvas of={FormFieldStories.Vertical} />
+
+Show the field failing validation, with the error message visible.
+
+<Canvas of={FormFieldStories.VerticalInvalid} />
+
+Show the field at the narrow width, label stacked above the control.
+
+<Canvas of={FormFieldStories.Narrow} />
 
 <Unstyled>
   <Story of={Figures.Handoff} />

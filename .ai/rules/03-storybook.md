@@ -55,7 +55,7 @@ CSF owns the Angular stories. Attached MDX owns all prose.
 - Catalogue stories stay **visible in the sidebar** so the Interactions and Accessibility panels can target them. Docs figures write a **literal** `tags: ['!dev']` on the export (`export const Usage = { tags: ['!dev'], ...contractStory(...) }`). A tag only on the factory return is runtime-only — the CSF indexer never sees it, so the figure stays in the sidebar. Do not put a fullscreen / `100dvh` wrapper on `meta.decorators`; it would swallow the docs figures. Keep that frame on the catalogue stories.
 - Do **not** put usage guidance in `parameters.docs.description.component` / `.story`
 
-**The `.metadata.ts` is the single source of truth for the documentation.** The MDX embeds figures that render it; it never restates a metadata block as prose. `npm run docs:check` (CI) fails on a hand-written When to use / When not to use / Anatomy / Accessibility / Figma section. CSS-only blocks (Accordion, Timeline, Drawer, Detail List, Skeleton Slot) have a `.metadata.ts` too — it is not indexed, it exists for the page and for agents.
+**The `.metadata.ts` is the single source of truth for the documentation.** The MDX embeds figures that render it; it never restates a metadata block as prose. `npm run docs:check` (pre-commit and CI) fails on a hand-written When to use / When not to use / Anatomy / Accessibility / Figma section. CSS-only blocks (Accordion, Timeline, Drawer, Detail List, Skeleton Slot) have a `.metadata.ts` too — it is not indexed, it exists for the page and for agents.
 
 | Metadata block                                                            | Figure                                                                                       | CSF export                                                                                                               |
 | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -76,6 +76,20 @@ Each MDX page must include, in this order:
 - Optional `## Composition` / `## Behavior` figures
 - `## Accessibility` → `<Unstyled><Story of={Stories.Accessibility} /></Unstyled>`
 - Do **not** add `## API` + `<ArgTypes>` on a page that already has Controls — they are the same table. `<ArgTypes of={Stories} />` is only for pages with no Controls (foundations class catalogues)
+
+**PrimeNG control pages** (`libs/ui/src/primeng/{control}.mdx`, title `PrimeNG/{Control}`) document a stock PrimeNG control the way Form Field documents a wrapper. There is no `.metadata.ts`; the page's own `*.stories.ts` holds the figures. Required order, each as an `h2`, checked by `npm run docs:check`:
+
+1. `# Control`, then `Status` (`statusStory({ status: 'core', owner: 'design-system' })`) and one lead sentence: what it is, and the PrimeNG page it wraps
+2. `## Default` — primary canvas with `<Controls>`
+3. `## When to use` — the recommended default, what to use instead, and the family it belongs to (link the gallery page)
+4. `## Variants` — one canvas per variant the design system endorses, each with a sentence on why it exists; variants PrimeNG offers but Plectrum does not endorse are named once with the alternative
+5. `## Content` — label wording, FR/NL notes, length
+6. `## Behavior` — states, focus, what happens on submit / open / close
+7. `## Accessibility` — target, what Plectrum guarantees, what the application provides, and the evidence figure (`evidenceStory`) with automated / manual keyboard / manual screen reader status, `Not assessed` when no session exists
+8. `## Use in an application` — the snippet from `libs/ui/src/primeng/primeng.examples.ts` rendered as the Default story's `parameters.docs.source.code`; the same file lives in `tools/packaging/consumer-app/src/app/controls/` so `pack:smoke` compiles it
+9. `## Related` — sibling controls, patterns, Figma node (`PRIMENG_KIT` in `plectrum-figma.ts`) and the PrimeNG API link
+
+The family galleries (`actions.mdx`, `forms.mdx`, `data.mdx`, `content.mdx`, `overlays.mdx`) stay as theme proof and link down to the control pages. `PRIMENG_KIT[...].storybook` points at the control page, so Find a component and the UI kit table follow without edits.
 
 Headings stay in the MDX (the TOC reads `h2` / `h3`); figures render content only. A new fact about the component — a use case, an ARIA attribute, a part — goes into the metadata, and the page shows it on the next render. Do not use `<DocsTable>` for anything the schema has a field for.
 

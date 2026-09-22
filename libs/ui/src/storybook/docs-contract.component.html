@@ -1,8 +1,4 @@
-@if (empty()) {
-  <p class="c-docs-contract__empty o-layout o-layout--margin-0">
-    No {{ section() }} recorded in {{ name() }}.metadata.ts yet.
-  </p>
-} @else {
+@if (!empty()) {
   @switch (section()) {
     @case ('usage') {
       <pds-docs-do-dont [dos]="doDont().dos" [donts]="doDont().donts" />
@@ -68,16 +64,24 @@
         @if (composition().companions.length) {
           <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-1">
             <span class="c-docs-contract__label">Used alongside</span>
-            @for (companion of composition().companions; track companion) {
-              <p-tag [value]="companion" severity="secondary" />
+            @for (companion of composition().companions; track companion.name) {
+              @if (companion.docsPath) {
+                <pds-docs-link [label]="companion.name" [path]="companion.docsPath" />
+              } @else {
+                <p-tag [value]="companion.name" severity="secondary" />
+              }
             }
           </div>
         }
         @if (composition().nested.length) {
           <div class="o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-1">
             <span class="c-docs-contract__label">Built from</span>
-            @for (nested of composition().nested; track nested) {
-              <p-tag [value]="nested" severity="secondary" />
+            @for (nested of composition().nested; track nested.name) {
+              @if (nested.docsPath) {
+                <pds-docs-link [label]="nested.name" [path]="nested.docsPath" />
+              } @else {
+                <p-tag [value]="nested.name" severity="secondary" />
+              }
             }
           </div>
         }

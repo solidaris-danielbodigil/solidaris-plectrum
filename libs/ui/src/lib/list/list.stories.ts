@@ -154,6 +154,7 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(ListMetadata, 'usage'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(ListMetadata, 'patterns') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(ListMetadata, 'composition'),

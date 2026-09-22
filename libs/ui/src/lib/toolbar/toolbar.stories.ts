@@ -29,6 +29,9 @@ type Story = StoryObj<ToolbarComponent>;
 // content comes from toolbar.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(ToolbarMetadata.governance, ToolbarMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'usage') };
+export const Variants = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'variants') };
+export const Patterns = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'examples') };
 export const Composition = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'composition') };
 export const Behavior = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(ToolbarMetadata, 'accessibility') };

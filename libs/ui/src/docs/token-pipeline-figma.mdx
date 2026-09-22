@@ -7,12 +7,9 @@ import * as Figures from './token-pipeline-figma.stories';
 
 # Figma sync
 
-Two one-way transports connect the Plectrum UI Kit and the repository.
+Two one-way transports connect the Plectrum UI Kit and the repository. Figma sends variables to the repository through a staging branch, and the repository sends proposed tokens back to a Figma branch. Neither transport writes the main Figma file on its own.
 
-- **Figma → repository** — live. The PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
-- **Repository → Figma** — live on the Organization plan via the Plugin API: agent + Figma MCP when a session is running, Plectrum tokens plugin when it is not. The Variables REST API (`tokens:apply`) stays parked as the Enterprise alternative. See [Status](#status).
-
-Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
+Start at the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the whole architecture and the [Commands](?path=/docs/docs-token-pipeline--docs#commands) for the script flags.
 
 <Diagram
   title="Figma sync transports"
@@ -49,7 +46,7 @@ Top row: Figma → repository, automated up to the pull request. Bottom row: rep
   <Story of={Figures.OutboundStatus} />
 </Unstyled>
 
-The Organization-plan write is the Plugin API: agent + Figma MCP by default, Plectrum tokens plugin when no agent is available. The REST path stays parked for Enterprise. Decisions: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`, `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
+Writes to Figma go through an agent with Figma MCP. When no agent is running, a designer runs the Plectrum tokens plugin instead.
 
 <Unstyled>
   <Story of={Figures.OutboundOptions} />
@@ -138,7 +135,9 @@ Figma remains the source of truth for primitives and semantics. Component tokens
 
 ## Repository → Figma
 
-Tokens that originate in code — a surface step the UI Kit lacks, a feature-specific colour — are proposed to Figma. `tokens:propose` writes `proposed.dtcg.json`. Selected tokens are applied on the branch `proposals/{app}` by an agent (Figma MCP) when a session is running, or by the Plectrum tokens plugin when it is not. After a candidate is promoted to core, the Figma component is designed from the repo on that branch — an agent or a designer; both are valid. Bind variables; do not paint hex from a screenshot.
+Propose a token to Figma when it starts in code — a surface step the UI Kit lacks, or a feature-specific colour. Run `tokens:propose` to write `proposed.dtcg.json`. Apply the tokens you select on the branch `proposals/{app}`.
+
+After a candidate is promoted to core, design the Figma component from the repo on that branch. An agent or a designer may do it. Bind variables; do not paint hex from a screenshot.
 
 ### Process
 

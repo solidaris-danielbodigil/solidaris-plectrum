@@ -19,6 +19,8 @@ isProject: false
 
 # Storybook docs audit
 
+> **Status, 22 September 2026.** Folded into [storybook_10_10_programme](../storybook_10_10_programme_e768e37b.plan.md). Done here: `solidaris-nx` fix, versions read from `package.json`, Figma map page (`PrimeNG/UI kit` from `plectrum-figma.ts`), Introduction Hero/FirstHour (replaced by the Designers/Developers figure). Superseded by owner decisions: the component MDX order is now Status → primary canvas → Usage → Variants → Anatomy (see `.ai/rules/03-storybook.md`), and Overview does carry a short "Words we use" glossary. Everything else in sections 1 and 2 is carried by W0 and W1 of the programme.
+
 Full-catalogue read of 14 process pages, 17 foundations pages, 20 component pages, and 5 PrimeNG galleries. Storybook MCP was down, so this plan is source-based. After implementation, verify in a running Storybook (`npm run storybook`) — a screenshot is not enough.
 
 ## Voice — match today’s Contribute rewrite

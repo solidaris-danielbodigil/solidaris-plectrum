@@ -7,7 +7,7 @@ import * as Figures from './ai-strategy.stories';
 
 # AI strategy
 
-Agents work against **contracts**, not against a full-repo read. Contract-Driven Development (CDD) gives a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
+Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
 Related pages:
 
@@ -101,7 +101,11 @@ How an agent is expected to work. Same order as `.ai/contracts/protocols/query-p
   <Story of={Figures.QueryOrder} />
 </Unstyled>
 
-The agent is the **default operator** for this flow: it scaffolds, fills the metadata, and runs the token scripts itself. Nothing here is a manual chore — `pds:component` regenerates the index when it finishes, a Cursor hook (`.cursor/hooks/regenerate-contracts-index.mjs`) re-runs `generate-index` after edits under `libs/ui`, and CI fails when the committed index is stale or when a docs page restates a metadata block (`npm run docs:check`). Doing a step by hand stays possible; it is a choice, not a requirement.
+The agent is the **default operator** for this flow. It scaffolds the component, fills the metadata, and runs the token scripts itself.
+
+The index keeps itself current: `pds:component` regenerates it when it finishes, and a Cursor hook re-runs it after edits under `libs/ui`. The commit hook and CI both fail a stale index. `npm run docs:check` fails a docs page that restates a metadata block.
+
+You can still do any of these steps by hand. It is a choice, not a requirement.
 
 ---
 
@@ -152,7 +156,7 @@ Component work is delegated to specialist subagents. Ask **Plectrum** for a comp
     ['Frontend Dev', 'Angular implementation: class, template, accessibility, PrimeNG wiring'],
     ['Tester', 'Unit tests, story coverage, WCAG 2.1 AA'],
     ['Token Auditor', 'Prefix compliance, semantic coverage, PrimeNG sync, Figma drift — read-only'],
-    ['Architect', 'SSOT enforcement, ITCSS placement, naming, dependency boundaries — read-only'],
+    ['Architect', 'Keeps one catalogue, puts styles in the right folder, owns naming and dependency boundaries — read-only'],
   ]}
 />
 
@@ -179,13 +183,13 @@ Component work is delegated to specialist subagents. Ask **Plectrum** for a comp
     ['ComponentMetadata', 'TypeScript interface every .metadata.ts must satisfy.'],
     ['index.json', 'Offline map of libs/ui: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner. Kept; MCP does not replace it.'],
     ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Foundations / Token contracts play test fails undeclared names in CI.'],
-    ['contracts:check', 'CI gate. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
+    ['contracts:check', 'Commit hook and CI. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
     ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp (docs-list, docs-show, stories-preview, test-run). Needs npm run storybook. CI still uses the test-runner.'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
     ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],
     ['generate-index', 'Scans libs/ui and overwrites .ai/contracts/index.json.'],
-    ['docs:check', 'CI gate. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
+    ['docs:check', 'Commit hook and CI. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
     ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
   ]}

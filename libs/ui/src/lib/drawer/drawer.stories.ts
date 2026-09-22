@@ -4,6 +4,7 @@
 // inspectable without an overlay.
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { metadataEvidenceStory } from '../../storybook/evidence-story';
 import {
   argTypesFromProps,
   classArgTypes,
@@ -79,6 +80,8 @@ export const Usage = {
   tags: ['!dev'],
   ...contractStory(DrawerMetadata, 'usage'),
 };
+export const Patterns = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(DrawerMetadata, 'examples') };
 export const Composition = {
   tags: ['!dev'],
   ...contractStory(DrawerMetadata, 'composition'),
@@ -91,6 +94,7 @@ export const Accessibility = {
   tags: ['!dev'],
   ...contractStory(DrawerMetadata, 'accessibility'),
 };
+export const Evidence = { tags: ['!dev'], ...metadataEvidenceStory(DrawerMetadata) };
 
 export const Shell: Story = {
   play: async ({ canvasElement }) => {

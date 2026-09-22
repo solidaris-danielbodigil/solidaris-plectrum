@@ -101,9 +101,9 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
     ['2', 'tokens.json → CSS', 'tokens:build (Style Dictionary) writes *.generated.scss and the Storybook manifest tokens.generated.ts.'],
     ['3', 'Repository → packages', 'Changesets version and publish @solidaris/ui, @solidaris/styles and @solidaris/plectrum together.'],
     ['4', 'Packages → applications', 'Renovate or Dependabot opens a bump pull request in each application repository.'],
-    ['5', 'Applications → code-owned tokens', 'An application team opens a pull request in this repository that adds --pds-* aliases in 01-settings/_settings.{feature}.scss. Token values stay out of the application repository. The owning app is later visible as proposals/{app}.'],
-    ['6', 'Code → Figma branch', 'tokens:propose writes a committed, typed proposed.dtcg.json. An agent applies selected tokens via Figma MCP when a session is running; otherwise a designer runs the Plectrum tokens plugin. Both write proposals/{app} through the Plugin API. tokens:apply (Variables REST API) stays parked for Enterprise.'],
-    ['7', 'Figma branch → main file', 'A designer reviews, merges and publishes the library. The LIBRARY_PUBLISH re-pull (tokens:pull-figma) is behind the same Enterprise gate.'],
+    ['5', 'Applications → code-owned tokens', 'An application team opens a pull request in this repository. It adds --pds-* aliases in 01-settings. Token values stay out of the application repository.'],
+    ['6', 'Code → Figma branch', 'tokens:propose writes proposed.dtcg.json and you commit it. An agent then applies the tokens you select through Figma MCP. When no agent is running, a designer runs the Plectrum tokens plugin instead. Both write to proposals/{app}.'],
+    ['7', 'Figma branch → main file', 'A designer reviews the branch, merges it and publishes the library.'],
   ]}
 />
 
@@ -268,7 +268,7 @@ npm run tokens:pull-figma         # Variables API safety net (FIGMA_TOKEN, Enter
 npm run pack:smoke                # pack tarballs and build a throwaway app
 ```
 
-CI (`.github/workflows/ci.yml`) runs audit, prefix guard, `tokens:build` plus a **scoped** `git diff --exit-code` on `*.generated.scss` and `tokens.generated.ts`, rebuilds `proposed.dtcg.json` the same way, then lint. A separate `figma-plugin` job typechecks, tests and builds the Plectrum tokens plugin. A `pack-smoke` job runs `pack:smoke`. `storybook-packed` builds Storybook against the packed tarballs. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path. The build diff does not fail on unrelated lockfile or workspace noise.
+Before a commit, `npm run check:commit` already checks the token prefix, token usage, and that `tokens:build` and the changelog feed match what is saved. CI (`.github/workflows/ci.yml`) runs those again, plus audit, `tokens:build` with a **scoped** `git diff --exit-code` on `*.generated.scss` and `tokens.generated.ts`, and a rebuild of `proposed.dtcg.json` the same way, then lint. A separate `figma-plugin` job typechecks, tests and builds the Plectrum tokens plugin. A `pack-smoke` job runs `pack:smoke`. `storybook-packed` builds Storybook against the packed tarballs. `tokens:validate-preset` is `continue-on-error` until `tokens.json` covers every PrimeNG path. The build diff does not fail on unrelated lockfile or workspace noise.
 
 ### Delivery status
 

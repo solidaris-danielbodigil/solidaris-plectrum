@@ -9,9 +9,11 @@ import * as ContractStories from '../foundations/token-contracts.stories';
 
 # CSS-first surface
 
-Component authors use **`var(--pds-*)`** and BEMIT classes (`o-*`, `c-*`, `u-*`). No other token API is available to them. The PrimeNG preset TypeScript is generated and validated, not edited; it emits custom properties only and owns no class names outside `.p-*`. ITCSS layering is unchanged.
+In a component, use `var(--pds-*)` and the layout classes. Do not call the PrimeNG theme helpers from component code — the preset is generated, and it emits custom properties for you.
 
-This page is the developer view of the [pipeline overview](?path=/docs/docs-token-pipeline--docs). Figma transport is documented on [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs). ITCSS layers and BEMIT mixes: [CSS architecture](?path=/docs/docs-css-architecture--docs). Agents and component contracts: [AI strategy](?path=/docs/docs-ai-strategy--docs). Live swatches are Angular stories under **Foundations**, because `--p-*` exists only after `providePlectrum()` boots.
+This page is the developer view of the [pipeline overview](?path=/docs/docs-token-pipeline--docs). For the transport see [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs), for the layers and class mixes see [CSS architecture](?path=/docs/docs-css-architecture--docs), and for the component contracts see [AI strategy](?path=/docs/docs-ai-strategy--docs).
+
+The live swatches are stories under **Foundations**, because `--p-*` only exists once `providePlectrum()` has booted.
 
 ---
 

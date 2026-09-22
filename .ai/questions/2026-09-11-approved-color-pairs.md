@@ -1,7 +1,9 @@
 # Approved text and background colour pairs
 
 **Raised by:** Foundations / Colors playground (C02)
-**Status:** open — blocks publishing a recommended pairing list in Storybook
+**Status:** proposed — awaiting design sign-off
+
+The Semantic Common page now shows a provisional table, measured in the browser from the live tokens (`pds-docs-recommended-pairs`). A pair appears only when it passes WCAG 2.1 AA for normal text. Sign off or replace that list. Do not treat a passing ratio as the design decision by itself.
 
 ## Context
 

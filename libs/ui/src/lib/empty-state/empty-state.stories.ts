@@ -1,7 +1,9 @@
 import { Component, input, signal } from '@angular/core';
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { metadataEvidenceStory } from '../../storybook/evidence-story';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
 import {
@@ -86,8 +88,10 @@ type Story = StoryObj<EmptyStateComponent>;
 // content comes from empty-state.metadata.ts, the documentation SSOT.
 export const Status = { tags: ['!dev'], ...statusStory(EmptyStateMetadata.governance, EmptyStateMetadata.component) };
 export const Usage = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'patterns') };
 export const Behavior = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'behavior') };
 export const Accessibility = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'accessibility') };
+export const Evidence = { tags: ['!dev'], ...metadataEvidenceStory(EmptyStateMetadata) };
 
 export const Default: Story = {
   render: (args) => ({

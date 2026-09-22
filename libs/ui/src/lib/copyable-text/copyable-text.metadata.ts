@@ -12,8 +12,8 @@ export const CopyableTextMetadata: ComponentMetadata = {
     bemBlock: 'c-copyable-text',
     itcssLayer: '06-components',
     scssPath: 'libs/styles/src/06-components/_components.copyable-text.scss',
-    figmaUrl:
-      'https://www.figma.com/design/9HlAudLC1oesvT8IkrmR6I/iSHARE-Audit?node-id=507-8227',
+    // no Figma component yet
+    figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components',
     created: '2026-06-08',
     modified: '2026-09-09',
   },

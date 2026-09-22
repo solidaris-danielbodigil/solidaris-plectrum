@@ -1,0 +1,89 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './button.stories';
+
+<Meta of={Stories} />
+
+# Button
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Change the label, severity and treatment here. The source under the canvas is the application snippet.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use a button when the click does something: saves, sends, opens, deletes. One primary button per view, named with the verb the person came to do: Enregistrer, Envoyer, Rechercher.
+
+- If it takes the person to another page and changes nothing, it is a [link](#variants), not a button.
+- If it turns one setting on or off, use [ToggleButton](?path=/docs/primeng-togglebutton--docs).
+- If it picks one option out of two or three, use [SelectButton](?path=/docs/primeng-selectbutton--docs).
+- If the choice is a longer list, use [Select](?path=/docs/primeng-select--docs).
+
+Button belongs to the [Actions](?path=/docs/primeng-actions--docs) family.
+
+## Variants
+
+**Hierarchy.** The filled primary is the action you expect. Secondary is a safe choice: Annuler, Retour. Destructive removes something and asks first through a [Dialog](?path=/docs/primeng-dialog--docs).
+
+<Canvas of={Stories.Hierarchy} />
+
+**Secondary.** Outlined next to a primary. Text when the action is minor and the row is already busy, such as Retour in a header.
+
+<Canvas of={Stories.Secondary} />
+
+**Destructive.** Danger severity with the object in the label: Supprimer le document, not Supprimer. It never stands alone; a dialog confirms it.
+
+<Canvas of={Stories.Destructive} />
+
+**Link.** Looks like a link, behaves like a button. Use it only when the action sits in running text. Navigation uses a real `<a>`.
+
+<Canvas of={Stories.LinkStyle} />
+
+**Icon.** Icon-only needs `ariaLabel`. A labelled button may carry a Bootstrap icon in front of the text. Do not use PrimeIcons.
+
+<Canvas of={Stories.IconOnly} />
+
+**Sizes.** Default on page actions. `size="small"` in toolbars and table rows. Large is not endorsed.
+
+<Canvas of={Stories.Sizes} />
+
+Severities `success`, `info`, `warn` and `contrast` exist in PrimeNG. Plectrum does not use them for actions; meaning comes from the label and the hierarchy. Raised and rounded stay off.
+
+## Content
+
+Start with the verb, then the object when it matters: Enregistrer les modifications, Supprimer le document. Keep Annuler and Retour as they are. Write the label in the language of the screen, and check the longest translation, usually Dutch, before fixing a width.
+
+<Canvas of={Stories.LongLabels} />
+
+## Behavior
+
+- One primary per view. If two actions compete, one of them is secondary.
+- A form submits with the primary and with Enter. Set `type="submit"` on that button and leave the others `type="button"`.
+- While a request runs, set `loading`. The label stays; the person can see what is happening.
+- Disabled explains nothing. Prefer an enabled button whose click shows the error, unless the action truly cannot run yet.
+- Focus is visible on every button. Do not remove the ring.
+
+<Canvas of={Stories.States} />
+
+## Accessibility
+
+Plectrum provides the focus ring, the themed disabled state, and the button's name from `label` or `ariaLabel`. The application provides the label text, the confirmation dialog for destructive actions, and focus return when a dialog closes.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+The snippet under the Default canvas imports from `primeng/button` only. The same file compiles in the packaging smoke test.
+
+## Related
+
+- [Actions](?path=/docs/primeng-actions--docs) theme gallery · [ToggleButton](?path=/docs/primeng-togglebutton--docs) · [SelectButton](?path=/docs/primeng-selectbutton--docs) · [Dialog](?path=/docs/primeng-dialog--docs)
+- Figma: [Button](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=10-125) · API: [primeng.org/button](https://primeng.org/button)

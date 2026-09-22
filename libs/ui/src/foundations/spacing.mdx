@@ -1,5 +1,6 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './spacing.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta of={Stories} />
 
@@ -19,6 +20,14 @@ The live bars show the size. The root type size is 14px. A missing step is a pro
 Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit. Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two. Each bar below is the live token width.
 
 In templates write `o-layout o-layout--gap-2` or `o-layout o-layout--padding-3`. Use `var(--pds-spacing-*)` only when the design-system team defines a component token. See [Layout](?path=/docs/foundations-layout--docs#spacing) for the class surface.
+
+## One page, all decisions
+
+Related lines inside the card use gap-2. The title and the card use gap-4. Padding grows at md.
+
+<Unstyled>
+  <Story of={PageExample.Wide} />
+</Unstyled>
 
 ## Usage
 

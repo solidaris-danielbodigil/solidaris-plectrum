@@ -1,0 +1,69 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './dialog.stories';
+
+<Meta of={Stories} />
+
+# Dialog
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Ask one question that you must answer before continuing. Keep the dialog modal and keep its movement and resizing off.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use Dialog to confirm a destructive action. Use it for a short task that must finish before the page changes.
+
+- Use [Drawer](?path=/docs/custom-components-drawer--docs) for a record to read or a longer task at the side.
+- Use [Toast](?path=/docs/primeng-message-and-toast--docs) for a short confirmation that needs no answer.
+
+Dialog belongs to the [Overlays](?path=/docs/primeng-overlays--docs) family.
+
+## Variants
+
+**Confirmation.** Put the question in the header. Put Annuler first as secondary text. Put the destructive verb last as the primary action.
+
+<Canvas of={Stories.Default} />
+
+**Short form.** Keep the form to a few Form Fields. Name the primary action Enregistrer.
+
+<Canvas of={Stories.ShortForm} />
+
+Keep `modal` on. Keep `draggable` and `resizable` off. Keep the close button and Escape available. PrimeNG also offers position, maximizable and headless variants. Do not use those variants in Plectrum screens.
+
+## Content
+
+Write the header as a full question or a verb phrase. State the consequence in one sentence: Cette action ne peut pas être annulée. Repeat the verb on the action: Supprimer, not OK.
+
+## Behavior
+
+- Move focus into the dialog when it opens.
+- Return focus to the control that opened it when it closes.
+- Keep the trigger focused before opening.
+- Set `appendTo="body"` on the dialog.
+- Press Escape to close without acting.
+- Block scrolling on the page behind the dialog.
+- Set `appendTo="body"` on overlays inside the dialog.
+
+## Accessibility
+
+Plectrum provides the theme. PrimeNG provides the dialog role, modal state, focus trap and Escape behavior. You provide the header text, the consequence sentence and a distinct destructive label.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+Use the snippet under the Default canvas. Import Dialog from `primeng/dialog`. Keep the same file compiling in the packaging smoke test.
+
+## Related
+
+- [Overlays](?path=/docs/primeng-overlays--docs) · [Drawer](?path=/docs/custom-components-drawer--docs) · [Button](?path=/docs/primeng-button--docs) · [Message and Toast](?path=/docs/primeng-message-and-toast--docs)
+- Figma: [Dialog](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=243-9556) · API: [primeng.org/dialog](https://primeng.org/dialog)
