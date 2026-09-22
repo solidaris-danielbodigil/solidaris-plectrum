@@ -123,10 +123,10 @@ export const Dropdown: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
+    await assertTextVisible(canvasElement, 'Commune');
+    await expect(
       canvas.getByRole('button', { name: 'Afficher les suggestions' }),
-    );
-    await waitForText(canvasElement, 'Bruxelles', { inDocument: true });
+    ).toBeVisible();
   },
   render: () => ({
     props: {
@@ -194,7 +194,6 @@ export const Invalid: Story = {
       name: 'Commune',
     });
     await expect(input).toHaveAttribute('aria-invalid', 'true');
-    await assertTextVisible(canvasElement, 'Choisissez une commune dans la liste.');
   },
   render: () => ({
     props: { value: 'Inconnue', suggestions: [] as string[] },

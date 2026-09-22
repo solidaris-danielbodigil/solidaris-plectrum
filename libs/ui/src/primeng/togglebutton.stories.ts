@@ -88,7 +88,7 @@ export const Labels: Story = {
 export const Small: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
-    await assertTextVisible(canvasElement, 'Filtres affichés');
+    await assertTextVisible(canvasElement, 'Filtres masqués');
   },
   render: () => ({
     props: { checked: false },
@@ -96,7 +96,6 @@ export const Small: Story = {
     template: `
       <div class="${ROW}">
         <p-togglebutton [(ngModel)]="checked" onLabel="Filtres affichés" offLabel="Filtres masqués" size="small" />
-        <p-togglebutton [(ngModel)]="checked" onLabel="Activé" offLabel="Désactivé" [disabled]="true" />
       </div>
     `,
   }),

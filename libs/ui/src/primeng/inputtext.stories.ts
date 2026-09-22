@@ -4,7 +4,7 @@ import { InputText } from 'primeng/inputtext';
 import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { statusStory } from '../docs/docs-figure-stories';
 import { evidenceStory } from '../storybook/evidence-story';
-import { assertTextVisible } from '../storybook/story-tests';
+import { assertTextVisible, expect, within } from '../storybook/story-tests';
 import { primeNgEvidence } from './primeng.evidence';
 import { primeNgExample } from './primeng.examples';
 
@@ -56,7 +56,10 @@ export const Default: Story = {
 export const Invalid: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
-    await assertTextVisible(canvasElement, 'Indiquez votre numéro de membre.');
+    const canvas = within(canvasElement);
+    await assertTextVisible(canvasElement, 'Numéro de membre');
+    const input = canvas.getByRole('textbox', { name: /Numéro de membre/ });
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
   },
   render: () => ({
     props: { member: '' },

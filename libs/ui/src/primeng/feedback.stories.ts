@@ -142,9 +142,7 @@ export const Default: Story = {
     props: args,
     moduleMetadata: { imports: [Message] },
     template: `
-      <p-message [severity]="severity" [closable]="closable">
-        {{ content }}
-      </p-message>
+      <p-message [severity]="severity" [closable]="closable">${args.content}</p-message>
     `,
   }),
 };
