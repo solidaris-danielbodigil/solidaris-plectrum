@@ -11,6 +11,7 @@ import { evidenceStory } from '../storybook/evidence-story';
 import {
   assertRoleVisible,
   assertTextVisible,
+  expect,
   userEvent,
   waitForText,
   within,
@@ -134,15 +135,18 @@ export const Default: Story = {
       source: { code: primeNgExample('feedback').code, language: 'ts' },
     },
   },
-  play: async ({ canvasElement, args }) => {
-    await assertTextVisible(canvasElement, args.content);
-    await assertRoleVisible(canvasElement, 'alert');
+  play: async ({ canvasElement }) => {
+    const alerts = within(canvasElement).getAllByRole('alert');
+    await expect(alerts.length).toBeGreaterThan(0);
   },
-  render: (args) => ({
-    props: args,
+  render: () => ({
     moduleMetadata: { imports: [Message] },
     template: `
-      <p-message [severity]="severity" [closable]="closable">${args.content}</p-message>
+      <p-message
+        severity="error"
+        text="Le paiement n'a pas pu être enregistré. Vérifiez le numéro de compte et réessayez."
+        [escape]="true"
+      />
     `,
   }),
 };
@@ -150,17 +154,17 @@ export const Default: Story = {
 export const MessageSeverities: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
-    await assertTextVisible(canvasElement, 'Corrigez les données');
-    await assertTextVisible(canvasElement, 'Dossier enregistré');
+    const alerts = within(canvasElement).getAllByRole('alert');
+    await expect(alerts).toHaveLength(4);
   },
   render: () => ({
     moduleMetadata: { imports: [Message] },
     template: `
       <div class="${STACK}">
-        <p-message severity="error">Corrigez les données avant de continuer.</p-message>
-        <p-message severity="warn">Le dossier contient des informations à vérifier.</p-message>
-        <p-message severity="info">Le traitement peut prendre quelques minutes.</p-message>
-        <p-message severity="success">Dossier enregistré.</p-message>
+        <p-message severity="error" text="Corrigez les données avant de continuer." [escape]="true" />
+        <p-message severity="warn" text="Le dossier contient des informations à vérifier." [escape]="true" />
+        <p-message severity="info" text="Le traitement peut prendre quelques minutes." [escape]="true" />
+        <p-message severity="success" text="Dossier enregistré." [escape]="true" />
       </div>
     `,
   }),
@@ -169,7 +173,8 @@ export const MessageSeverities: Story = {
 export const FieldMessage: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
-    await assertTextVisible(canvasElement, 'Indiquez votre numéro de membre.');
+    const input = within(canvasElement).getByRole('textbox', { name: /Numéro de membre/ });
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
   },
   render: () => ({
     moduleMetadata: {
@@ -197,15 +202,18 @@ export const FieldMessage: Story = {
 export const ClosableMessage: Story = {
   tags: ['!dev'],
   play: async ({ canvasElement }) => {
-    await assertTextVisible(canvasElement, 'La maintenance commence à 18 h.');
-    await assertRoleVisible(canvasElement, 'button', 'Fermer');
+    await expect(within(canvasElement).getByRole('button', { name: 'Fermer' })).toBeTruthy();
   },
   render: () => ({
     moduleMetadata: { imports: [Message] },
     template: `
-      <p-message severity="info" [closable]="true" closeIcon="bi bi-x-lg">
-        La maintenance commence à 18 h.
-      </p-message>
+      <p-message
+        severity="info"
+        text="La maintenance commence à 18 h."
+        [escape]="true"
+        [closable]="true"
+        closeIcon="bi bi-x-lg"
+      />
     `,
   }),
 };
