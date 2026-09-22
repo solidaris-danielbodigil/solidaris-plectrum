@@ -20,8 +20,6 @@ describe('catalogue generation', () => {
     );
     expect(names).toContain('Button');
     expect(names).toContain('InputText');
-    const button = entries.find((entry) => entry.name === 'Button');
-    expect(button?.thumbnail).toContain('assets/catalogue/wjMnb8GsK8bVKA7UreOJ4L-10-125.svg');
   });
 
   it('links a component from the folder name in the Storybook index', () => {

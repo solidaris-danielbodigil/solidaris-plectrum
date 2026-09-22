@@ -537,13 +537,6 @@ $docs-tones: design, system, app, neutral;
   color: var(--#{$pds-prefix}-color-text-muted);
 }
 
-.c-docs-catalogue__thumb {
-  display: block;
-  max-block-size: var(--#{$pds-prefix}-size-docs-thumb);
-  inline-size: auto;
-  object-fit: contain;
-}
-
 .c-docs-page-example__sheet {
   background: var(--#{$pds-prefix}-color-surface);
   color: var(--#{$pds-prefix}-color-text);

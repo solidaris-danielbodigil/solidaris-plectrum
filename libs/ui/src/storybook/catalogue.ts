@@ -1,6 +1,5 @@
 import type { ComponentMetadata } from '@solidaris/contracts';
 import { PRIMENG_KIT } from '../primeng/plectrum-figma';
-import { CATALOGUE_THUMBNAILS } from './catalogue-thumbnails.generated';
 
 export type CataloguePurpose =
   | 'Actions'
@@ -23,21 +22,6 @@ export interface CatalogueEntry {
   keywords: readonly string[];
   /** Storybook docs path. Empty until the Storybook index resolves a page. */
   path: string;
-  /** Preview from the Figma node, or a named chip until a PNG export exists. */
-  thumbnail: string | null;
-}
-
-export function catalogueThumbnail(fileKey: string, nodeId: string | null): string | null {
-  if (!nodeId) return null;
-  return CATALOGUE_THUMBNAILS[`${fileKey}:${nodeId}`] ?? null;
-}
-
-function thumbnailFromUrl(url: string | undefined): string | null {
-  if (!url) return null;
-  const file = url.match(/\/design\/([^/]+)/);
-  const node = url.match(/node-id=(\d+)-(\d+)/);
-  if (!file || !node) return null;
-  return catalogueThumbnail(file[1], `${node[1]}:${node[2]}`);
 }
 
 const TYPE_PURPOSE: Record<ComponentMetadata['component']['type'], CataloguePurpose> = {
@@ -109,7 +93,6 @@ export function metadataCatalogue(
       summary,
       keywords,
       path: docsId ? `/docs/${docsId}` : '',
-      thumbnail: thumbnailFromUrl(meta.component.figmaUrl),
     };
   });
 }
@@ -129,7 +112,6 @@ export function primengCatalogue(): CatalogueEntry[] {
         : `PrimeNG ${name}, themed by providePlectrum().`,
       keywords: [component.figma, name, component.code],
       path: component.storybook ?? '',
-      thumbnail: catalogueThumbnail('wjMnb8GsK8bVKA7UreOJ4L', component.nodeId),
     };
   });
 }

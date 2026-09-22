@@ -51,7 +51,6 @@
 <p-table [value]="visible()" dataKey="name" size="small" sortField="name" [sortOrder]="1">
   <ng-template #header>
     <tr>
-      <th scope="col"><span class="u-visually-hidden">Preview</span></th>
       <th scope="col" pSortableColumn="name">Component <p-sortIcon field="name" /></th>
       <th scope="col" pSortableColumn="purpose">Purpose <p-sortIcon field="purpose" /></th>
       <th scope="col">Built with</th>
@@ -61,11 +60,6 @@
   </ng-template>
   <ng-template #body let-row>
     <tr>
-      <td>
-        @if (row.thumbnail) {
-          <img class="c-docs-catalogue__thumb" [src]="row.thumbnail" alt="" />
-        }
-      </td>
       <td>
         @if (row.path) {
           <pds-docs-link [label]="row.name" [path]="row.path" />
@@ -83,7 +77,7 @@
   </ng-template>
   <ng-template #emptymessage>
     <tr>
-      <td colspan="6" class="c-docs-component-index__empty">
+      <td colspan="5" class="c-docs-component-index__empty">
         Nothing matches. Try error, validation, side panel or no results.
       </td>
     </tr>

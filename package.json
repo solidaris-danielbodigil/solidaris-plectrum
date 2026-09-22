@@ -43,7 +43,6 @@
     "prepare": "node tools/scripts/install-git-hooks.mjs",
     "check:commit": "node tools/scripts/check-commit.mjs",
     "docs:check": "tsx tools/scripts/check-docs-ssot.mjs && node tools/scripts/check-docs-release.mjs",
-    "docs:thumbnails": "node tools/scripts/catalogue-thumbnails.mjs",
     "contracts:check": "tsx tools/scripts/check-metadata-props.ts",
     "pds:component": "tsx tools/generators/sds-component/index.ts",
     "tokens:resolve": "node tools/tokens/resolve-dtcg.mjs",
