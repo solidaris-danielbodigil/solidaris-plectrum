@@ -1,71 +1,82 @@
 <pds-toolbar class="o-flex__item o-flex__item--shrink-0 o-layout o-layout--margin-block-end-2">
   <ng-container slot="start">
-    <p-iconfield class="c-docs-control">
-      <p-inputicon styleClass="bi bi-search" />
-      <input
-        pInputText
-        type="search"
-        role="searchbox"
-        autocomplete="off"
-        placeholder="Try error, validation, side panel, no results"
-        aria-label="Search the catalogue by name or task"
-        [value]="search()"
-        (input)="onSearch($any($event.target).value)"
+    <pds-form-field label="Search" inputId="pds-catalogue-search">
+      <p-iconfield class="c-docs-control">
+        <p-inputicon styleClass="bi bi-search" />
+        <input
+          id="pds-catalogue-search"
+          pInputText
+          type="search"
+          role="searchbox"
+          autocomplete="off"
+          placeholder="Try error, validation, side panel, no results"
+          [value]="search()"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </p-iconfield>
+    </pds-form-field>
+
+    <pds-form-field label="Purpose" inputId="pds-catalogue-purpose">
+      <p-select
+        inputId="pds-catalogue-purpose"
+        [options]="purposeOptions"
+        [ngModel]="purpose()"
+        (ngModelChange)="onFilter(purpose, $event)"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+        [filter]="true"
+        filterPlaceholder="Filter purposes"
       />
-    </p-iconfield>
+    </pds-form-field>
 
-    <p-select
-      [options]="purposeOptions"
-      [ngModel]="purpose()"
-      (ngModelChange)="onFilter(purpose, $event)"
-      optionLabel="label"
-      optionValue="value"
-      appendTo="body"
-      aria-label="Filter by purpose"
-      [filter]="true"
-      filterPlaceholder="Filter purposes"
-    />
+    <pds-form-field label="Built with" inputId="pds-catalogue-build">
+      <p-select
+        inputId="pds-catalogue-build"
+        [options]="implementationOptions"
+        [ngModel]="implementation()"
+        (ngModelChange)="onFilter(implementation, $event)"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+      />
+    </pds-form-field>
 
-    <p-select
-      [options]="implementationOptions"
-      [ngModel]="implementation()"
-      (ngModelChange)="onFilter(implementation, $event)"
-      optionLabel="label"
-      optionValue="value"
-      appendTo="body"
-      aria-label="Filter by how it is built"
-    />
+    <pds-form-field label="Scope" inputId="pds-catalogue-scope">
+      <p-select
+        inputId="pds-catalogue-scope"
+        [options]="scopeOptions"
+        [ngModel]="scope()"
+        (ngModelChange)="onFilter(scope, $event)"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+      />
+    </pds-form-field>
 
-    <p-select
-      [options]="scopeOptions"
-      [ngModel]="scope()"
-      (ngModelChange)="onFilter(scope, $event)"
-      optionLabel="label"
-      optionValue="value"
-      appendTo="body"
-      aria-label="Filter by reuse scope"
-    />
+    <pds-form-field label="Used in" inputId="pds-catalogue-used-in">
+      <p-select
+        inputId="pds-catalogue-used-in"
+        [options]="usedInOptions()"
+        [ngModel]="usedIn()"
+        (ngModelChange)="onFilter(usedIn, $event)"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+        [filter]="true"
+        filterPlaceholder="Filter teams"
+      />
+    </pds-form-field>
+  </ng-container>
 
-    <p-select
-      [options]="usedInOptions()"
-      [ngModel]="usedIn()"
-      (ngModelChange)="onFilter(usedIn, $event)"
-      optionLabel="label"
-      optionValue="value"
-      appendTo="body"
-      aria-label="Filter by team"
-      [filter]="true"
-      filterPlaceholder="Filter teams"
+  <ng-container slot="end">
+    <p-badge
+      severity="secondary"
+      aria-live="polite"
+      [value]="visible().length + ' / ' + entries().length + ' components'"
     />
   </ng-container>
 </pds-toolbar>
-
-<p-badge
-  class="o-flex__item o-flex__item--shrink-0 o-layout o-layout--margin-block-end-2"
-  severity="secondary"
-  aria-live="polite"
-  [value]="visible().length + ' / ' + entries().length + ' components'"
-/>
 
 <p-table
   class="c-datatable o-flex__item o-flex__item--grow-1 o-layout--min-h-0 o-layout--full-height"

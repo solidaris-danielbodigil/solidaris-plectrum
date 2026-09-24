@@ -17,14 +17,16 @@ const JUSTIFY = FLEX['justifyContent'].values;
 const ALIGN_SELF = FLEX['alignSelf'].values;
 const BREAKPOINTS = BREAKPOINT_SUFFIXES;
 
+/** Numbered tinted cells for the grid demos. Not for the Do / Don't figure — it uses o-flex itself. */
+const demoDecorators = [
+  componentWrapperDecorator(
+    (story) => `<div class="sb-demo-wrapper">${story}</div>`,
+  ),
+];
+
 export default {
   title: 'Foundations/Flex Grid',
   tags: ['!dev'],
-  decorators: [
-    componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper">${story}</div>`,
-    ),
-  ],
   parameters: { layout: 'padded' },
   argTypes: {
     'o-flex': {
@@ -206,6 +208,7 @@ export const Usage = {
 // ── Responsive Layout ─────────────────────────────────────────────────────────
 export const ResponsiveLayout = {
   name: 'Responsive Layout',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -228,6 +231,7 @@ export const ResponsiveLayout = {
 
 export const ResponsiveLayoutY = {
   name: 'Responsive Layout in Y Axis',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--y">
@@ -245,6 +249,7 @@ export const ResponsiveLayoutY = {
 
 export const AutoCols = {
   name: 'Auto Columns',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -269,6 +274,7 @@ export const AutoCols = {
 
 export const AutoColsY = {
   name: 'Auto Columns in Y Axis',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--y">
@@ -287,6 +293,7 @@ export const AutoColsY = {
 
 export const NestedGrids = {
   name: 'Nested Grids',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -311,6 +318,7 @@ export const NestedGrids = {
 
 export const FlexFlow = {
   name: 'Flex-Flow',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -342,6 +350,7 @@ export const FlexFlow = {
 
 export const FlexGrowShrink = {
   name: 'Flex-Shrink and Flex-Grow',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -361,6 +370,7 @@ export const FlexGrowShrink = {
 
 export const Ordering = {
   name: 'Ordering',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -376,6 +386,7 @@ export const Ordering = {
 
 export const Offsets = {
   name: 'Offsets',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex">
@@ -388,6 +399,7 @@ export const Offsets = {
 
 export const OffsetsY = {
   name: 'Offsets in Y Axis',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--y">
@@ -400,6 +412,7 @@ export const OffsetsY = {
 
 export const JustifyContent = {
   name: 'Justify-Content',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--justify-content-flex-start">
@@ -437,6 +450,7 @@ export const JustifyContent = {
 
 export const AlignItems = {
   name: 'Align-Items',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--align-items-flex-start">
@@ -469,6 +483,7 @@ export const AlignItems = {
 
 export const AlignContent = {
   name: 'Align-Content',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--wrap o-flex--big o-flex--align-content-flex-start">
@@ -497,6 +512,7 @@ export const AlignContent = {
 
 export const AlignSelf = {
   name: 'Align-Self',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--align-items-flex-start">

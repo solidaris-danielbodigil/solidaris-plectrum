@@ -5,7 +5,7 @@ import * as Stories from './iconography.stories';
 
 # Iconography
 
-Size tokens and the Bootstrap Icons catalog, on the same token blocks as Colors and Typography. Search, filter, and click a card to copy.
+The Bootstrap Icons catalog. Search, filter, and click a card to copy.
 
 This page is the **inventory**. The Angular primitive that renders one icon is [`pds-icon`](?path=/docs/custom-components-icon--docs) under **Custom components / Icon**. Keep both: this page answers “which icon and which size?”, that page answers “how do I render it?”.
 
@@ -41,14 +41,6 @@ Figma: [Foundations — Iconography](https://www.figma.com/design/YNZ1DlSjDNUXrv
 3. In SCSS, size through `var(--pds-icon-size-md)` (or a component token that aliases it). Never hardcode `font-size` on an icon.
 
 Declared in `_settings.globals.scss`. Component: [`pds-icon`](?path=/docs/custom-components-icon--docs).
-
-## Size tokens
-
-Each card is a `--pds-icon-size-*` token. The house glyph is drawn at the real token size. Click to copy `var()`, the name, or the computed value.
-
-<Unstyled>
-  <Story of={Stories.Sizes} />
-</Unstyled>
 
 ## Icon browser
 

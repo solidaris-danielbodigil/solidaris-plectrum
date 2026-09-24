@@ -1,11 +1,11 @@
 <div class="c-docs-page-example__sheet o-flex o-flex--col o-layout o-layout--gap-4 o-layout--padding-3 o-layout--padding-4@md">
-  <h1 class="u-text-display-md o-layout o-layout--margin-0">Mes remboursements</h1>
-  <section class="o-flex o-flex--col o-layout o-layout--gap-2">
-    <h2 class="u-text-heading-md o-layout o-layout--margin-0">Derniers remboursements</h2>
-    <p-card>
-      <div class="o-flex o-flex--col o-layout o-layout--gap-2">
-        <h3 class="u-text-heading-sm o-layout o-layout--margin-0">Consultation du 12 septembre</h3>
-        <p class="u-text-body-md o-layout o-layout--margin-0">
+  <h1 class="c-docs-page-example__title u-text-display-md o-layout o-layout--margin-0">Mes remboursements</h1>
+  <section class="c-docs-page-example__section o-flex o-flex--col o-layout o-layout--gap-2">
+    <h2 class="c-docs-page-example__section-title u-text-heading-md o-layout o-layout--margin-0">Derniers remboursements</h2>
+    <p-card class="c-docs-page-example__card">
+      <div class="c-docs-page-example__card-body o-flex o-flex--col o-layout o-layout--gap-2">
+        <h3 class="c-docs-page-example__card-title u-text-heading-sm o-layout o-layout--margin-0">Consultation du 12 septembre</h3>
+        <p class="c-docs-page-example__body u-text-body-md o-layout o-layout--margin-0">
           Le remboursement est versé sur le compte enregistré.
         </p>
         <p class="o-layout o-layout--margin-0">
@@ -20,20 +20,3 @@
     </p-card>
   </section>
 </div>
-
-<p-table [value]="decisions" dataKey="element" size="small" class="o-layout o-layout--margin-block-start-3">
-  <ng-template #header>
-    <tr>
-      <th scope="col">Element</th>
-      <th scope="col">Class or token</th>
-      <th scope="col">Figma variable</th>
-    </tr>
-  </ng-template>
-  <ng-template #body let-row>
-    <tr>
-      <td>{{ row.element }}</td>
-      <td><code>{{ row.usage }}</code></td>
-      <td>{{ row.figma }}</td>
-    </tr>
-  </ng-template>
-</p-table>

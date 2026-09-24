@@ -13,6 +13,7 @@ import { Badge } from 'primeng/badge';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
+import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import contracts from '../../../../.ai/contracts/index.json';
 import { ALL_COMPONENT_METADATA } from './component-metadata';
@@ -41,6 +42,7 @@ type ScopeFilter = CatalogueScope | 'all';
     Select,
     TableModule,
     Tag,
+    FormFieldComponent,
     ToolbarComponent,
     DocsLinkComponent,
   ],

@@ -1,7 +1,6 @@
 // =============================================================================
 // libs/ui/src/foundations/iconography.stories.ts
-// Iconography foundation — size tokens via <pds-token-explorer>, plus the
-// Bootstrap Icons catalog using the same token-block chrome.
+// Iconography foundation — Bootstrap Icons catalog.
 // =============================================================================
 
 import type { Meta, StoryObj } from '@storybook/angular-vite';
@@ -18,7 +17,7 @@ import { SelectButton } from 'primeng/selectbutton';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { InputClearComponent } from '../lib/input-clear';
 import { type IconSize } from '../lib/icon/icon.types';
-import { TokenExplorerComponent } from '../storybook/token-explorer.component';
+import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { showStorybookToast } from '../storybook/storybook-toast';
 import { assertRoleVisible, assertTextVisible } from '../storybook/story-tests';
 import icons from 'bootstrap-icons/font/bootstrap-icons.json';
@@ -53,6 +52,7 @@ const SIZE_OPTIONS: { label: string; value: IconSize }[] = [
     IconField,
     InputIcon,
     InputText,
+    FormFieldComponent,
     InputClearComponent,
     SelectButton,
   ],
@@ -91,7 +91,11 @@ class IconographyPageComponent {
 
   readonly visibleIcons = computed(() => {
     const list = this.filteredIcons();
-    if (this.showAll() || this.searchQuery().trim() || this.variantFilter() !== 'all') {
+    if (
+      this.showAll() ||
+      this.searchQuery().trim() ||
+      this.variantFilter() !== 'all'
+    ) {
       return list;
     }
     return list.slice(0, CATALOG_PREVIEW);
@@ -124,9 +128,7 @@ const meta: Meta<IconographyPageComponent> = {
   title: 'Foundations/Iconography',
   component: IconographyPageComponent,
   tags: ['!dev'],
-  decorators: [
-    moduleMetadata({ imports: [IconographyPageComponent, TokenExplorerComponent] }),
-  ],
+  decorators: [moduleMetadata({ imports: [IconographyPageComponent] })],
   parameters: { layout: 'fullscreen' },
 };
 
@@ -146,28 +148,24 @@ export const Usage = {
     donts: [
       {
         title: 'A raw <i class="bi …"> in an app template',
-        detail: 'pds-icon owns size, decorative hiding and custom SVG registration.',
-        alternative: '<pds-icon icon="bi bi-house" />. See Custom components / Icon.',
+        detail:
+          'pds-icon owns size, decorative hiding and custom SVG registration.',
+        alternative:
+          '<pds-icon icon="bi bi-house" />. See Custom components / Icon.',
       },
       {
         title: 'A sixth size or a hardcoded font-size on the glyph',
         detail: 'The five stops are the contract.',
-        alternative: 'size="md" or var(--pds-icon-size-md) (or a component token that aliases it).',
+        alternative:
+          'size="md" or var(--pds-icon-size-md) (or a component token that aliases it).',
       },
     ],
   }),
 };
 
-export const Sizes: Story = {
-  render: () => ({
-    template: `<pds-token-explorer category="icon" />`,
-    moduleMetadata: { imports: [TokenExplorerComponent] },
-  }),
-};
-
 export const AllIcons: Story = {
   play: async ({ canvasElement }) => {
-    await assertRoleVisible(canvasElement, 'searchbox', 'Search icons');
+    await assertRoleVisible(canvasElement, 'searchbox', 'Search');
     await assertTextVisible(canvasElement, 'Catalog');
   },
 };

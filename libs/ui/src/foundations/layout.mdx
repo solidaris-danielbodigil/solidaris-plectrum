@@ -15,10 +15,10 @@ Start from the narrow screen. The column is the default.
 - A two-column form becomes one column by stacking. Do not keep two columns if the labels no longer fit.
 - A data table scrolls inside its region (`o-layout--overflow-x-auto`). Do not shrink the type to make the columns fit.
 
-Add these classes in the HTML, next to `o-flex`. Do not write spacing in the component stylesheet.
+Add these classes in the HTML, next to `o-flex`. Do not write spacing in the component stylesheet. The anatomy figure marks the layout parts on this page.
 
 <Unstyled>
-  <Story of={PageExample.Narrow} />
+  <Story of={PageExample.LayoutAnatomy} />
 </Unstyled>
 
 Breakpoints are mobile-first: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem). In a media query, `rem` uses the browser’s initial 16px root, so `sm` is 768px wide. Spacing inside the page still uses the 14px type root.

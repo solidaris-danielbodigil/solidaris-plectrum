@@ -1,21 +1,23 @@
 // =============================================================================
 // libs/ui/src/foundations/layout.stories.ts
 // Foundations / Layout — o-layout utility class docs.
-// Each export is a self-contained live demo wrapped in .sb-demo-wrapper.
+// Live demos are wrapped in .sb-demo-wrapper. Usage is not — that wrapper
+// numbers every .o-flex__item and would paint the Do / Don't cards as cells.
 // =============================================================================
 
 import { componentWrapperDecorator, type Meta } from '@storybook/angular-vite';
 import { doDontStory } from '../docs/docs-figure-stories';
 import { LAYOUT, summary } from './object-class-lists';
 
+const demoDecorators = [
+  componentWrapperDecorator(
+    (story) => `<div class="sb-demo-wrapper">${story}</div>`,
+  ),
+];
+
 export default {
   title: 'Foundations/Layout',
   tags: ['!dev'],
-  decorators: [
-    componentWrapperDecorator(
-      (story) => `<div class="sb-demo-wrapper">${story}</div>`,
-    ),
-  ],
   parameters: { layout: 'padded' },
   argTypes: {
     'o-layout': {
@@ -129,6 +131,7 @@ export const Usage = {
 // ── Dimensions ────────────────────────────────────────────────────────────────
 export const Dimensions = {
   name: 'Dimensions',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col" style="height: 200px;">
@@ -144,6 +147,7 @@ export const Dimensions = {
 // ── Full Height ───────────────────────────────────────────────────────────────
 export const FullHeight = {
   name: 'Full Height',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--full-height" style="height: 300px">
@@ -157,6 +161,7 @@ export const FullHeight = {
 // ── Overflow ──────────────────────────────────────────────────────────────────
 export const Overflow = {
   name: 'Overflow',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 150px;">
@@ -170,6 +175,7 @@ export const Overflow = {
 // ── Display ───────────────────────────────────────────────────────────────────
 export const Display = {
   name: 'Display',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col">
@@ -186,6 +192,7 @@ export const Display = {
 // ── Position ──────────────────────────────────────────────────────────────────
 export const Position = {
   name: 'Position',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--overflow-y-auto" style="height: 200px;">
@@ -200,6 +207,7 @@ export const Position = {
 // ── Spacing ───────────────────────────────────────────────────────────────────
 export const Spacing = {
   name: 'Spacing',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--col o-layout o-layout--gap-2">
@@ -223,6 +231,7 @@ export const Spacing = {
 // ── Responsive ────────────────────────────────────────────────────────────────
 export const Responsive = {
   name: 'Responsive',
+  decorators: demoDecorators,
   render: () => ({
     template: `
     <div class="o-flex o-flex--wrap o-layout o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">
