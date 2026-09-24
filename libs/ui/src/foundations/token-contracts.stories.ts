@@ -23,6 +23,7 @@ import { SelectButton } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { showStorybookToast } from '../storybook/storybook-toast';
+import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { InputClearComponent } from '../lib/input-clear';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import { ALL_COMPONENT_METADATA } from '../storybook/component-metadata';
@@ -50,6 +51,7 @@ interface TokenContractGroup {
     IconField,
     InputIcon,
     InputText,
+    FormFieldComponent,
     InputClearComponent,
     Badge,
     Button,
@@ -63,36 +65,40 @@ interface TokenContractGroup {
     >
       <pds-toolbar [sticky]="true">
         <ng-container slot="start">
-          <p-iconField class="c-token-explorer__search">
-            <p-inputIcon styleClass="bi bi-search" />
-            <input
-              pInputText
-              type="text"
-              role="searchbox"
-              autocomplete="off"
-              placeholder="Search component or token…"
-              aria-label="Search token contracts"
-              class="c-token-explorer__search-input"
-              [value]="search()"
-              (input)="onSearch($any($event.target).value)"
-            />
-            <p-inputicon>
-              <pds-input-clear
-                [visible]="!!search()"
-                ariaLabel="Clear search"
-                (clear)="onSearch('')"
+          <pds-form-field label="Search" inputId="pds-token-contracts-search">
+            <p-iconField class="c-token-explorer__search">
+              <p-inputIcon styleClass="bi bi-search" />
+              <input
+                id="pds-token-contracts-search"
+                pInputText
+                type="text"
+                role="searchbox"
+                autocomplete="off"
+                placeholder="Search component or token…"
+                class="c-token-explorer__search-input"
+                [value]="search()"
+                (input)="onSearch($any($event.target).value)"
               />
-            </p-inputicon>
-          </p-iconField>
-          <p-selectButton
-            [options]="originOptions"
-            [ngModel]="origin()"
-            (ngModelChange)="origin.set($event)"
-            optionLabel="label"
-            optionValue="value"
-            [allowEmpty]="false"
-            aria-label="Filter by token origin"
-          />
+              <p-inputicon>
+                <pds-input-clear
+                  [visible]="!!search()"
+                  ariaLabel="Clear search"
+                  (clear)="onSearch('')"
+                />
+              </p-inputicon>
+            </p-iconField>
+          </pds-form-field>
+          <pds-form-field label="Origin">
+            <p-selectButton
+              [options]="originOptions"
+              [ngModel]="origin()"
+              (ngModelChange)="origin.set($event)"
+              optionLabel="label"
+              optionValue="value"
+              [allowEmpty]="false"
+              aria-label="Origin"
+            />
+          </pds-form-field>
         </ng-container>
         <ng-container slot="end">
           <p-badge
