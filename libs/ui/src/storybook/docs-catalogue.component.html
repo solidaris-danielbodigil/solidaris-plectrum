@@ -60,6 +60,13 @@
   </ng-container>
 </pds-toolbar>
 
+<p-badge
+  class="o-flex__item o-flex__item--shrink-0 o-layout o-layout--margin-block-end-2"
+  severity="secondary"
+  aria-live="polite"
+  [value]="visible().length + ' / ' + entries().length + ' components'"
+/>
+
 <p-table
   class="c-datatable o-flex__item o-flex__item--grow-1 o-layout--min-h-0 o-layout--full-height"
   [value]="visible()"

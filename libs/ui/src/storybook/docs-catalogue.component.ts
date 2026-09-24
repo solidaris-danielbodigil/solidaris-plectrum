@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
+import { Badge } from 'primeng/badge';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
@@ -36,6 +37,7 @@ type ScopeFilter = CatalogueScope | 'all';
     IconField,
     InputIcon,
     InputText,
+    Badge,
     Select,
     TableModule,
     Tag,
@@ -104,7 +106,7 @@ export class DocsCatalogueComponent {
     ];
   });
 
-  private readonly entries = computed(() =>
+  protected readonly entries = computed(() =>
     buildCatalogue(ALL_COMPONENT_METADATA, this.docsIds(), contracts.usedIn),
   );
 
