@@ -4,6 +4,9 @@
     @if (text()) {
       <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
         {{ text() }}
+        @if (linkLabel() && linkPath()) {
+          <pds-docs-link [label]="linkLabel()!" [path]="linkPath()!" />
+        }
       </p>
     }
     @if (items()?.length) {

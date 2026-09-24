@@ -17,14 +17,41 @@ export const InstallFlow: StoryObj = stepsStory([
     title: 'Install the packages',
     detail:
       'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus `primeng` and `@primeuix/themes`. Until npm publish is on, use the packed tarballs from `npm run pack:libs`.',
-    links: [{ label: 'Packages and how to get them', href: '#packages-and-how-to-get-them' }],
+    links: [
+      {
+        label: 'Packages and how to get them',
+        href: '#packages-and-how-to-get-them',
+      },
+    ],
+  },
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Download the agent files',
+    detail:
+      'Place `.ai` at the repository root, `.cursor/agents` for Cursor, and `.github/agents` for VS Code. The packages do not install these folders.',
+    links: [
+      { label: 'Agent files', href: '#agent-files' },
+      {
+        label: '.ai',
+        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.ai',
+      },
+      {
+        label: 'Cursor agents',
+        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.cursor/agents',
+      },
+      {
+        label: 'VS Code agents',
+        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.github/agents',
+      },
+    ],
   },
   {
     who: 'Dev',
     tone: 'app',
     title: 'Wire the stylesheet',
     detail:
-      'Add `node_modules/@solidaris/styles/src` to `stylePreprocessorOptions.includePaths` and `@use \'main\'` in `styles.scss`.',
+      "Add `node_modules/@solidaris/styles/src` to `stylePreprocessorOptions.includePaths` and `@use 'main'` in `styles.scss`.",
     links: [
       { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
       { label: 'Fonts, icons and browsers', href: '#fonts-icons-and-browsers' },
@@ -81,9 +108,9 @@ export const BeforeYouInvent: StoryObj = stepsStory([
     tone: 'app',
     title: 'Use a Core pds-* component',
     detail:
-      'If PrimeNG is not enough, import a Core component from @solidaris/ui. Component status lists each one and who may use it.',
+      'If PrimeNG is not enough, import a Core component from @solidaris/ui. Find a component lists each one and which teams already use it.',
     links: [
-      { label: 'Component status', path: '/docs/docs-component-status--docs' },
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
   },
   {

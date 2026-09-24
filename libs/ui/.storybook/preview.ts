@@ -16,7 +16,11 @@ import {
   writeStoredPresetVersion,
   type PlectrumPresetVersion,
 } from '@solidaris/plectrum';
-import { PdsLocaleService, providePdsLocale, type PdsLocale } from '../src/lib/i18n';
+import {
+  PdsLocaleService,
+  providePdsLocale,
+  type PdsLocale,
+} from '../src/lib/i18n';
 import { IconRegistry, registerPlectrumIcons } from '../src/lib/icon';
 import { installStorybookToastListener } from '../src/storybook/storybook-toast';
 import { PlectrumDocsContainer } from './docs-container';
@@ -137,7 +141,6 @@ const preview: Preview = {
             "What's new",
             'Accessibility overview',
             'Releases and versioning',
-            'Component status',
             'Writing stories',
             'CSS architecture',
             'Token pipeline',

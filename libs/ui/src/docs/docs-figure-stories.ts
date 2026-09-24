@@ -22,10 +22,6 @@ import type {
 import { DocsCalloutComponent } from '../storybook/docs-callout.component';
 import { DocsCardsComponent } from '../storybook/docs-cards.component';
 import { DocsChangesetsComponent } from '../storybook/docs-changesets.component';
-import {
-  type ContractsIndex,
-  DocsComponentIndexComponent,
-} from '../storybook/docs-component-index.component';
 import { DocsAnatomyComponent } from '../storybook/docs-anatomy.component';
 import { DocsContractComponent } from '../storybook/docs-contract.component';
 import { DocsDoDontComponent } from '../storybook/docs-do-dont.component';
@@ -113,6 +109,8 @@ export interface CalloutContent {
   title: string;
   text?: string;
   items?: readonly string[];
+  linkLabel?: string;
+  linkPath?: string;
 }
 
 export function calloutStory({
@@ -120,13 +118,15 @@ export function calloutStory({
   title,
   text,
   items,
+  linkLabel,
+  linkPath,
 }: CalloutContent): StoryObj {
   return {
     parameters: DOCS_FIGURE_PARAMETERS,
     render: () => ({
       moduleMetadata: { imports: [DocsCalloutComponent] },
-      props: { tone, title, text, items },
-      template: `<pds-docs-callout [tone]="tone" [title]="title" [text]="text" [items]="items" />`,
+      props: { tone, title, text, items, linkLabel, linkPath },
+      template: `<pds-docs-callout [tone]="tone" [title]="title" [text]="text" [items]="items" [linkLabel]="linkLabel" [linkPath]="linkPath" />`,
     }),
   };
 }
@@ -305,18 +305,6 @@ export function releasesStory(releases: readonly ChangelogRelease[]): StoryObj {
       moduleMetadata: { imports: [DocsReleasesComponent] },
       props: { releases },
       template: `<pds-docs-releases [releases]="releases" />`,
-    }),
-  };
-}
-
-/** Searchable, filterable component table from .ai/contracts/index.json (Docs/Component status). */
-export function componentIndexStory(index: ContractsIndex): StoryObj {
-  return {
-    parameters: DOCS_FIGURE_PARAMETERS,
-    render: () => ({
-      moduleMetadata: { imports: [DocsComponentIndexComponent] },
-      props: { index },
-      template: `<pds-docs-component-index [index]="index" />`,
     }),
   };
 }

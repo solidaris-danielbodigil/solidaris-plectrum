@@ -20,6 +20,14 @@ export const ProposeEarly: StoryObj = calloutStory({
   ],
 });
 
+export const PlectrumAgent: StoryObj = calloutStory({
+  tone: 'info',
+  title: 'Invoke /plectrum',
+  text: 'By default the agents do this work. It runs research, tokens, implementation and QA end to end. After promotion they can also write the Figma variables and component from the repo. Every command stays runnable by hand, and a designer may still draw the Figma component instead of the agent. The Plectrum tokens plugin is the fallback when no agent is available. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.',
+  linkLabel: 'AI strategy → Subagents',
+  linkPath: '/docs/docs-ai-strategy--docs#subagents',
+});
+
 export const AlreadyBuilt: StoryObj = calloutStory({
   tone: 'info',
   title: 'Already built it without asking?',
@@ -36,10 +44,10 @@ export const DevLoop: StoryObj = stepsStory([
     tone: 'design',
     title: 'Check the catalogue',
     detail:
-      'Look in the theme gallery first (PrimeNG with the Plectrum theme), then at Core components on Component status. If something already does the job, use it. If the docs were just hard to find, add an example on that page instead of inventing a new component.',
+      'Look in the theme gallery first (PrimeNG with the Plectrum theme), then at Core components on Find a component. If something already does the job, use it. If the docs were just hard to find, add an example on that page instead of inventing a new component.',
     links: [
       { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
-      { label: 'Component status', path: '/docs/docs-component-status--docs' },
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
   },
   {

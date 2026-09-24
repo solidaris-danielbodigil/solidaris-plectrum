@@ -22,7 +22,7 @@ body:
     id: checked
     attributes:
       label: What we already checked
-      description: PrimeNG (theme gallery) and Core pds-* (Component status). Name the closest matches and why they fall short.
+      description: PrimeNG (theme gallery) and Core pds-* (Find a component). Name the closest matches and why they fall short.
       placeholder: |
         PrimeNG Select — no multi-select with chips in our layout.
         pds-form-field — wraps one control, not a filter bar.

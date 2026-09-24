@@ -20,11 +20,16 @@ export interface CatalogueEntry {
   scope: CatalogueScope;
   summary: string;
   keywords: readonly string[];
+  /** Teams whose application source renders this component. Empty for PrimeNG. */
+  usedIn: readonly string[];
   /** Storybook docs path. Empty until the Storybook index resolves a page. */
   path: string;
 }
 
-const TYPE_PURPOSE: Record<ComponentMetadata['component']['type'], CataloguePurpose> = {
+const TYPE_PURPOSE: Record<
+  ComponentMetadata['component']['type'],
+  CataloguePurpose
+> = {
   input: 'Forms',
   navigation: 'Navigation',
   feedback: 'Feedback',
@@ -71,6 +76,7 @@ function taskWords(text: string): string[] {
 export function metadataCatalogue(
   metadata: readonly ComponentMetadata[],
   docsIdByFolder: ReadonlyMap<string, string>,
+  usedIn: Readonly<Record<string, readonly string[]>>,
 ): CatalogueEntry[] {
   return metadata.map((meta) => {
     const folder = meta.component.name
@@ -92,35 +98,43 @@ export function metadataCatalogue(
       scope: meta.governance.status === 'app' ? 'App example' : 'Core',
       summary,
       keywords,
+      usedIn: usedIn[meta.component.name] ?? [],
       path: docsId ? `/docs/${docsId}` : '',
     };
   });
 }
 
 export function primengCatalogue(): CatalogueEntry[] {
-  return PRIMENG_KIT.filter((component) => component.storybook).map((component) => {
-    const name =
-      PRIMENG_LABEL[component.figma] ??
-      component.figma.charAt(0).toUpperCase() + component.figma.slice(1);
-    return {
-      name,
-      purpose: component.purpose,
-      implementation: 'PrimeNG' as const,
-      scope: 'Core' as const,
-      summary: component.plectrum
-        ? `PrimeNG ${name}. Plectrum uses ${component.plectrum}.`
-        : `PrimeNG ${name}, themed by providePlectrum().`,
-      keywords: [component.figma, name, component.code],
-      path: component.storybook ?? '',
-    };
-  });
+  return PRIMENG_KIT.filter((component) => component.storybook).map(
+    (component) => {
+      const name =
+        PRIMENG_LABEL[component.figma] ??
+        component.figma.charAt(0).toUpperCase() + component.figma.slice(1);
+      return {
+        name,
+        purpose: component.purpose,
+        implementation: 'PrimeNG' as const,
+        scope: 'Core' as const,
+        summary: component.plectrum
+          ? `PrimeNG ${name}. Plectrum uses ${component.plectrum}.`
+          : `PrimeNG ${name}, themed by providePlectrum().`,
+        keywords: [component.figma, name, component.code],
+        usedIn: [],
+        path: component.storybook ?? '',
+      };
+    },
+  );
 }
 
 export function buildCatalogue(
   metadata: readonly ComponentMetadata[],
   docsIdByFolder: ReadonlyMap<string, string>,
+  usedIn: Readonly<Record<string, readonly string[]>> = {},
 ): CatalogueEntry[] {
-  return [...metadataCatalogue(metadata, docsIdByFolder), ...primengCatalogue()];
+  return [
+    ...metadataCatalogue(metadata, docsIdByFolder, usedIn),
+    ...primengCatalogue(),
+  ];
 }
 
 export function matchesCatalogue(
@@ -129,10 +143,16 @@ export function matchesCatalogue(
   purpose: CataloguePurpose | 'all',
   implementation: CatalogueImplementation | 'all',
   scope: CatalogueScope | 'all',
+  usedIn: string | 'all' = 'all',
 ): boolean {
   if (purpose !== 'all' && entry.purpose !== purpose) return false;
-  if (implementation !== 'all' && entry.implementation !== implementation) return false;
+  if (implementation !== 'all' && entry.implementation !== implementation)
+    return false;
   if (scope !== 'all' && entry.scope !== scope) return false;
+  if (usedIn === 'none' && entry.usedIn.length > 0) return false;
+  if (usedIn !== 'all' && usedIn !== 'none' && !entry.usedIn.includes(usedIn)) {
+    return false;
+  }
   const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   if (words.length === 0) return true;
   const haystack = [
@@ -141,6 +161,7 @@ export function matchesCatalogue(
     entry.purpose,
     entry.implementation,
     entry.scope,
+    ...entry.usedIn,
     ...entry.keywords,
   ]
     .join(' ')

@@ -47,6 +47,16 @@ npm install @solidaris/ui @solidaris/plectrum @solidaris/styles primeng @primeui
 
 Supported peers: Angular `^21`, PrimeNG `^21`, `@primeuix/themes` `^2`. The three `@solidaris/*` packages version together — always upgrade them as a set.
 
+## Agent files
+
+Download these folders from the design-system repository into the application repository. Place `.ai` at the root. Place the agent folders at the same paths the editors expect.
+
+- [`.ai`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.ai) — rules, skills and contracts. How to address Plectrum: [AI strategy → Subagents](?path=/docs/docs-ai-strategy--docs#subagents).
+- [`.cursor/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.cursor/agents) — Cursor subagents. Start with Plectrum.
+- [`.github/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.github/agents) — the same roles for VS Code.
+
+How a team keeps them current: [AI strategy → Team repositories](?path=/docs/docs-ai-strategy--docs#team-repositories).
+
 The Storybook **Preset** control (`v1` / `v0.6`) switches the theme inside this catalogue. It is not the package version. `providePlectrum()` with no argument uses preset v1.
 
 Moved from a 0.x preset? Find every renamed input on [What's new](?path=/docs/docs-what-s-new--docs).
@@ -128,7 +138,7 @@ export class App {}
 
 ## Build screens
 
-PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris/ui` — [Component status](?path=/docs/docs-component-status--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
+PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris/ui` — [Find a component](?path=/docs/start-here-catalogue--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
 
 ## Before you invent
 

@@ -33,7 +33,7 @@ const ROUTE = [
   '/story/shell-navigation-navshell--collapsed',
   '/story/shell-navigation-subnavshell--processen',
   '/story/shell-navigation-topnav--default',
-  '/docs/docs-component-status--docs',
+  '/docs/start-here-catalogue--docs',
   '/docs/get-started-contribute--docs',
   '/story/shell-navigation-navshell--expanded',
   '/docs/custom-components-form-field--docs',

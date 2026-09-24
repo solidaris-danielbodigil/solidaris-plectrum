@@ -16,55 +16,57 @@
 
 :root {
   // ── Tones ──────────────────────────────────────────────────────────────────
-  --#{$pds-prefix}-color-docs-design-bg:      var(--#{$pds-prefix}-color-orange-50);
-  --#{$pds-prefix}-color-docs-design-border:  var(--#{$pds-prefix}-color-orange-500);
-  --#{$pds-prefix}-color-docs-design-text:    var(--#{$pds-prefix}-color-orange-900);
+  --#{$pds-prefix}-color-docs-design-bg: var(--#{$pds-prefix}-color-orange-50);
+  --#{$pds-prefix}-color-docs-design-border: var(--#{$pds-prefix}-color-orange-500);
+  --#{$pds-prefix}-color-docs-design-text: var(--#{$pds-prefix}-color-orange-900);
 
-  --#{$pds-prefix}-color-docs-system-bg:      var(--#{$pds-prefix}-color-primary-50);
-  --#{$pds-prefix}-color-docs-system-border:  var(--#{$pds-prefix}-color-primary-600);
-  --#{$pds-prefix}-color-docs-system-text:    var(--#{$pds-prefix}-color-primary-900);
+  --#{$pds-prefix}-color-docs-system-bg: var(--#{$pds-prefix}-color-primary-50);
+  --#{$pds-prefix}-color-docs-system-border: var(--#{$pds-prefix}-color-primary-600);
+  --#{$pds-prefix}-color-docs-system-text: var(--#{$pds-prefix}-color-primary-900);
 
-  --#{$pds-prefix}-color-docs-app-bg:         var(--#{$pds-prefix}-color-green-50);
-  --#{$pds-prefix}-color-docs-app-border:     var(--#{$pds-prefix}-color-green-600);
-  --#{$pds-prefix}-color-docs-app-text:       var(--#{$pds-prefix}-color-green-900);
+  --#{$pds-prefix}-color-docs-app-bg: var(--#{$pds-prefix}-color-green-50);
+  --#{$pds-prefix}-color-docs-app-border: var(--#{$pds-prefix}-color-green-600);
+  --#{$pds-prefix}-color-docs-app-text: var(--#{$pds-prefix}-color-green-900);
 
-  --#{$pds-prefix}-color-docs-neutral-bg:     var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-docs-neutral-bg: var(--#{$pds-prefix}-color-surface-0);
   --#{$pds-prefix}-color-docs-neutral-border: var(--#{$pds-prefix}-color-content-border);
-  --#{$pds-prefix}-color-docs-neutral-text:   var(--#{$pds-prefix}-color-text);
+  --#{$pds-prefix}-color-docs-neutral-text: var(--#{$pds-prefix}-color-text);
 
   // ── Do / Don't and contract blocks (pds-docs-do-dont, pds-docs-contract) ──
-  --#{$pds-prefix}-color-docs-do:      var(--#{$pds-prefix}-color-success);
-  --#{$pds-prefix}-color-docs-dont:    var(--#{$pds-prefix}-color-danger);
+  --#{$pds-prefix}-color-docs-do: var(--#{$pds-prefix}-color-success);
+  --#{$pds-prefix}-color-docs-dont: var(--#{$pds-prefix}-color-danger);
   --#{$pds-prefix}-color-docs-code-bg: var(--#{$pds-prefix}-color-surface-50);
 
   // ── Diagram chrome ─────────────────────────────────────────────────────────
-  --#{$pds-prefix}-color-docs-lane-bg:        var(--#{$pds-prefix}-color-surface-50);
-  --#{$pds-prefix}-color-docs-lane-text:      var(--#{$pds-prefix}-color-text-muted);
-  --#{$pds-prefix}-color-docs-edge:           var(--#{$pds-prefix}-color-text-muted);
-  --#{$pds-prefix}-color-docs-edge-halo:      var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-color-docs-lane-bg: var(--#{$pds-prefix}-color-surface-50);
+  --#{$pds-prefix}-color-docs-lane-text: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-docs-edge: var(--#{$pds-prefix}-color-text-muted);
+  --#{$pds-prefix}-color-docs-edge-halo: var(--#{$pds-prefix}-color-surface-0);
 
   // ── Structural ─────────────────────────────────────────────────────────────
-  --#{$pds-prefix}-size-docs-diagram-min:   40rem;   // 560px — narrower viewports scroll the figure sideways
-  --#{$pds-prefix}-size-docs-steps-index:   1.75rem; // p-badge size="xlarge" height (Plectrum badge.xl) the step title centres on
-  --#{$pds-prefix}-size-docs-card-min:      16rem;   // 224px — three cards per row on a docs page
-  --#{$pds-prefix}-size-docs-card-min-wide: 24rem;   // 336px — two cards per row
-  --#{$pds-prefix}-size-docs-stroke:        1.5px;   // node outline (SVG user units)
-  --#{$pds-prefix}-size-docs-edge-stroke:   2px;     // arrows
-  --#{$pds-prefix}-size-docs-edge-halo:     6px;     // label halo where text crosses an arrow
-  --#{$pds-prefix}-size-docs-swatch:        0.875rem; // 12px colour chip beside a before/after value (sync status)
-  --#{$pds-prefix}-size-docs-releases-head: 1.75rem;  // rounded p-tag height the release dot marker centres on (What's new)
+  --#{$pds-prefix}-size-docs-diagram-min: 40rem; // 560px — narrower viewports scroll the figure sideways
+  --#{$pds-prefix}-size-docs-steps-index: 1.75rem; // p-badge size="xlarge" height (Plectrum badge.xl) the step title centres on
+  --#{$pds-prefix}-size-docs-card-min: 16rem; // 224px — three cards per row on a docs page
+  --#{$pds-prefix}-size-docs-card-min-wide: 24rem; // 336px — two cards per row
+  --#{$pds-prefix}-size-docs-catalogue-summary: 28rem; // description column wraps instead of stretching the table
+  --#{$pds-prefix}-size-docs-catalogue-offset: 28rem; // docs prose above the table, so the table fills the rest of the viewport
+  --#{$pds-prefix}-size-docs-stroke: 1.5px; // node outline (SVG user units)
+  --#{$pds-prefix}-size-docs-edge-stroke: 2px; // arrows
+  --#{$pds-prefix}-size-docs-edge-halo: 6px; // label halo where text crosses an arrow
+  --#{$pds-prefix}-size-docs-swatch: 0.875rem; // 12px colour chip beside a before/after value (sync status)
+  --#{$pds-prefix}-size-docs-releases-head: 1.75rem; // rounded p-tag height the release dot marker centres on (What's new)
   --#{$pds-prefix}-size-docs-anatomy-marker: 1.5rem; // p-badge circle on the specimen and in the legend
   --#{$pds-prefix}-size-docs-anatomy-clearance: var(--#{$pds-prefix}-spacing-3); // min gap between stacked badges
   --#{$pds-prefix}-size-docs-anatomy-anchor: 0.375rem; // open circle where a leader meets the part
   --#{$pds-prefix}-space-docs-anatomy-gutter: var(--#{$pds-prefix}-spacing-4); // badge centre to the part edge
   // Instance slot: each sync-status row binds this to the before/after colour.
-  --#{$pds-prefix}-docs-sync-swatch:        transparent;
+  --#{$pds-prefix}-docs-sync-swatch: transparent;
 }
 
 // ── PrimeNG Button token bridge — link button inside a table cell ─────────────
-// The component name of a Component status row is a pds-docs-link; without the
-// button padding the row keeps the table's own cell height.
-.c-docs-component-index__name {
+// The component name is a pds-docs-link; without the button padding the row
+// keeps the table's own cell height.
+.c-docs-catalogue__name {
   --p-button-padding-x: 0;
   --p-button-padding-y: 0;
 }

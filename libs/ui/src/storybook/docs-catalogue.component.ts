@@ -13,6 +13,7 @@ import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
+import contracts from '../../../../.ai/contracts/index.json';
 import { ALL_COMPONENT_METADATA } from './component-metadata';
 import {
   buildCatalogue,
@@ -44,28 +45,34 @@ type ScopeFilter = CatalogueScope | 'all';
   templateUrl: './docs-catalogue.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-catalogue o-layout o-layout--block' },
+  host: {
+    class: 'c-docs-catalogue o-flex o-flex--y o-layout--min-h-0',
+  },
 })
 export class DocsCatalogueComponent {
+  protected readonly pageSize = 25;
   protected readonly search = signal('');
   protected readonly purpose = signal<PurposeFilter>('all');
   protected readonly implementation = signal<ImplementationFilter>('all');
   protected readonly scope = signal<ScopeFilter>('all');
+  protected readonly usedIn = signal<string>('all');
+  protected readonly first = signal(0);
   private readonly docsIds = signal<ReadonlyMap<string, string>>(new Map());
 
   constructor() {
     void this.loadDocsIds();
   }
 
-  protected readonly purposeOptions: { label: string; value: PurposeFilter }[] = [
-    { label: 'All purposes', value: 'all' },
-    { label: 'Actions', value: 'Actions' },
-    { label: 'Forms', value: 'Forms' },
-    { label: 'Navigation', value: 'Navigation' },
-    { label: 'Data', value: 'Data' },
-    { label: 'Feedback', value: 'Feedback' },
-    { label: 'Overlays', value: 'Overlays' },
-  ];
+  protected readonly purposeOptions: { label: string; value: PurposeFilter }[] =
+    [
+      { label: 'All purposes', value: 'all' },
+      { label: 'Actions', value: 'Actions' },
+      { label: 'Forms', value: 'Forms' },
+      { label: 'Navigation', value: 'Navigation' },
+      { label: 'Data', value: 'Data' },
+      { label: 'Feedback', value: 'Feedback' },
+      { label: 'Overlays', value: 'Overlays' },
+    ];
 
   protected readonly implementationOptions: {
     label: string;
@@ -83,8 +90,22 @@ export class DocsCatalogueComponent {
     { label: 'App examples', value: 'App example' },
   ];
 
+  protected readonly usedInOptions = computed(() => {
+    const teams = new Set<string>();
+    for (const entry of this.entries()) {
+      for (const team of entry.usedIn) teams.add(team);
+    }
+    return [
+      { label: 'All teams', value: 'all' },
+      ...[...teams]
+        .sort((a, b) => a.localeCompare(b))
+        .map((team) => ({ label: team, value: team })),
+      { label: 'Not used', value: 'none' },
+    ];
+  });
+
   private readonly entries = computed(() =>
-    buildCatalogue(ALL_COMPONENT_METADATA, this.docsIds()),
+    buildCatalogue(ALL_COMPONENT_METADATA, this.docsIds(), contracts.usedIn),
   );
 
   protected readonly visible = computed(() =>
@@ -95,12 +116,19 @@ export class DocsCatalogueComponent {
         this.purpose(),
         this.implementation(),
         this.scope(),
+        this.usedIn(),
       ),
     ),
   );
 
   protected onSearch(value: string): void {
     this.search.set(value);
+    this.first.set(0);
+  }
+
+  protected onFilter<T>(target: { set(value: T): void }, value: T): void {
+    target.set(value);
+    this.first.set(0);
   }
 
   private async loadDocsIds(): Promise<void> {
@@ -109,7 +137,10 @@ export class DocsCatalogueComponent {
       const response = await fetch('./index.json');
       if (!response.ok) return;
       const storybook = (await response.json()) as {
-        entries?: Record<string, { id: string; type: string; importPath: string }>;
+        entries?: Record<
+          string,
+          { id: string; type: string; importPath: string }
+        >;
       };
       const byFolder = new Map<string, string>();
       for (const entry of Object.values(storybook.entries ?? {})) {

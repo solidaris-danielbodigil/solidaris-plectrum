@@ -138,7 +138,9 @@ The scaffolder asks for name, category, type and optional PrimeNG wrap, then cre
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
 4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Agents use `docs-show` and `get-storybook-story-instructions` before writing CSF. Application-owned pages are titled `Patterns/{App}/…`.
 
-By default the **agents do this work** — ask the Plectrum coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). After promotion they can also write the Figma variables and component from the repo. Every command stays runnable by hand, and a designer may still draw the Figma component instead of the agent. The Plectrum tokens plugin is the fallback when no agent is available. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
+<Unstyled>
+  <Story of={Figures.PlectrumAgent} />
+</Unstyled>
 
 ## Language
 

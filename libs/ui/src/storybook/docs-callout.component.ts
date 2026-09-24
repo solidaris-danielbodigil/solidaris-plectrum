@@ -22,20 +22,25 @@ import {
   calloutSeverity,
   type DocsCalloutTone,
 } from './docs-figures.types';
+import { DocsLinkComponent } from './docs-link.component';
 
 @Component({
   selector: 'pds-docs-callout',
-  imports: [Message],
+  imports: [Message, DocsLinkComponent],
   templateUrl: './docs-callout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-callout o-layout o-layout--block o-layout--margin-block-3' },
+  host: {
+    class: 'c-docs-callout o-layout o-layout--block o-layout--margin-block-3',
+  },
 })
 export class DocsCalloutComponent {
   readonly tone = input<DocsCalloutTone>('info');
   readonly title = input.required<string>();
   readonly text = input<string>();
   readonly items = input<readonly string[]>();
+  readonly linkLabel = input<string>();
+  readonly linkPath = input<string>();
 
   protected readonly severity = computed(() => calloutSeverity(this.tone()));
   protected readonly icon = computed(() => calloutIcon(this.tone()));

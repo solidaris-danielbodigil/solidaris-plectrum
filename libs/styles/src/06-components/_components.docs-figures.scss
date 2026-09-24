@@ -18,7 +18,7 @@
 //   c-docs-sync-changes  pds-docs-sync-changes → pds-toolbar + p-table + p-selectButton + p-tag
 //   c-docs-changesets    pds-docs-changesets   → p-card + p-tag + p-badge (+ pds-empty-state)
 //   c-docs-releases      pds-docs-releases     → p-timeline + p-tag + p-badge (+ pds-empty-state)
-//   c-docs-component-index pds-docs-component-index → pds-toolbar + p-table + p-selectButton + p-tag
+//   c-docs-catalogue pds-docs-catalogue → pds-toolbar + p-table + p-select + p-tag
 //
 // PrimeNG owns the chrome of steps, cards and callouts. Rules here are
 // structural only: grid columns, list bullets the reset removed, text rhythm
@@ -502,36 +502,21 @@ $docs-tones: design, system, app, neutral;
   white-space: pre-line;
 }
 
-// ── Component status: index (p-table) ────────────────────────────────────────
-.c-docs-component-index__label {
-  @include text-label-md;
-  color: var(--#{$pds-prefix}-color-text);
+.c-docs-catalogue {
+  block-size: calc(100dvh - var(--#{$pds-prefix}-size-docs-catalogue-offset));
 }
 
-// A badge reads as one word — the cell does not wrap it at a hyphen or space.
-.c-docs-component-index__tag {
-  white-space: nowrap;
-}
-
-// BEM block and PrimeNG base stay on one line; the table scrolls.
-.c-docs-component-index__code {
-  @include text-body-xs;
-  font-family: monospace;
-  white-space: nowrap;
-  color: var(--#{$pds-prefix}-color-text-muted);
-}
-
-.c-docs-component-index__cell {
+.c-docs-catalogue__cell {
   @include text-body-sm;
 }
 
-.c-docs-component-index__none,
-.c-docs-component-index__empty,
-.c-docs-component-index__meta {
-  @include text-body-sm;
-  color: var(--#{$pds-prefix}-color-text-muted);
+.c-datatable td.c-docs-catalogue__summary {
+  white-space: normal;
+  max-inline-size: var(--#{$pds-prefix}-size-docs-catalogue-summary);
 }
 
+.c-docs-catalogue__none,
+.c-docs-catalogue__empty,
 .c-docs-catalogue__summary {
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text-muted);

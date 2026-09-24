@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-09-14T12:06:11.317Z",
+    "generated": "2026-09-24T08:30:53.588Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
@@ -38,6 +38,62 @@
         "path": "libs/plectrum",
         "purpose": "PrimeNG theme preset integration"
       }
+    ]
+  },
+  "usedIn": {
+    "Accordion": [
+      "iSHARE"
+    ],
+    "DelayPredictionCard": [
+      "iSHARE"
+    ],
+    "Drawer": [
+      "iSHARE"
+    ],
+    "EmptyState": [
+      "iGED",
+      "iSHARE"
+    ],
+    "FormField": [
+      "iGED",
+      "iSHARE"
+    ],
+    "InputClear": [
+      "iGED",
+      "iSHARE"
+    ],
+    "List": [
+      "iSHARE"
+    ],
+    "NavShell": [
+      "iGED",
+      "iSHARE"
+    ],
+    "ProfileCard": [
+      "iSHARE"
+    ],
+    "ProfileDrawer": [
+      "iSHARE"
+    ],
+    "SkeletonSlot": [
+      "iSHARE"
+    ],
+    "SubNavShell": [
+      "iGED"
+    ],
+    "Timeline": [
+      "iSHARE"
+    ],
+    "Toolbar": [
+      "iGED",
+      "iSHARE"
+    ],
+    "TopNav": [
+      "iGED",
+      "iSHARE"
+    ],
+    "TransactionsCicsModal": [
+      "iSHARE"
     ]
   },
   "tokenArchitecture": {
@@ -88,7 +144,8 @@
       "usedBy": [
         "ProfileCard",
         "ProfileDrawer"
-      ]
+      ],
+      "usedIn": []
     },
     "DelayPredictionCard": {
       "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts",
@@ -100,7 +157,10 @@
       "primeNg": "Button",
       "scssPath": "libs/styles/src/06-components/_components.delay-prediction-card.scss",
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iSHARE"
+      ]
     },
     "EmptyState": {
       "path": "libs/ui/src/lib/empty-state/empty-state.component.ts",
@@ -112,7 +172,11 @@
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.empty-state.scss",
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
+      ]
     },
     "FormField": {
       "path": "libs/ui/src/lib/form-field/form-field.component.ts",
@@ -124,7 +188,11 @@
       "primeNg": "Message",
       "scssPath": "libs/styles/src/06-components/_components.form-field.scss",
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
+      ]
     },
     "Icon": {
       "path": "libs/ui/src/lib/icon/icon.component.ts",
@@ -139,7 +207,8 @@
       "usedBy": [
         "CopyableText",
         "NavShell"
-      ]
+      ],
+      "usedIn": []
     },
     "InputClear": {
       "path": "libs/ui/src/lib/input-clear/input-clear.component.ts",
@@ -154,6 +223,10 @@
       "usedBy": [
         "SubNavShell",
         "TopNav"
+      ],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
       ]
     },
     "List": {
@@ -166,7 +239,10 @@
       "primeNg": "Api",
       "scssPath": "libs/styles/src/06-components/_components.list.scss",
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iSHARE"
+      ]
     },
     "NavShell": {
       "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts",
@@ -180,7 +256,11 @@
       "uses": [
         "Icon"
       ],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
+      ]
     },
     "PlectrumAvatar": {
       "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts",
@@ -196,7 +276,8 @@
         "ProfileCard",
         "ProfileDrawer",
         "TopNav"
-      ]
+      ],
+      "usedIn": []
     },
     "ProfileCard": {
       "path": "libs/ui/src/lib/profile-card/profile-card.component.ts",
@@ -211,7 +292,10 @@
         "PlectrumAvatar",
         "CopyableText"
       ],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iSHARE"
+      ]
     },
     "ProfileDrawer": {
       "path": "libs/ui/src/lib/profile-drawer/profile-drawer.component.ts",
@@ -226,7 +310,10 @@
         "PlectrumAvatar",
         "CopyableText"
       ],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iSHARE"
+      ]
     },
     "SubNavShell": {
       "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts",
@@ -240,7 +327,10 @@
       "uses": [
         "InputClear"
       ],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED"
+      ]
     },
     "Toolbar": {
       "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
@@ -252,7 +342,11 @@
       "primeNg": "Card",
       "scssPath": "libs/styles/src/06-components/_components.toolbar.scss",
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
+      ]
     },
     "TopNav": {
       "path": "libs/ui/src/lib/top-nav/top-nav.component.ts",
@@ -267,7 +361,11 @@
         "InputClear",
         "PlectrumAvatar"
       ],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iGED",
+        "iSHARE"
+      ]
     },
     "TransactionsCicsModal": {
       "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts",
@@ -279,7 +377,10 @@
       "primeNg": "Button",
       "scssPath": null,
       "uses": [],
-      "usedBy": []
+      "usedBy": [],
+      "usedIn": [
+        "iSHARE"
+      ]
     }
   },
   "relationships": {

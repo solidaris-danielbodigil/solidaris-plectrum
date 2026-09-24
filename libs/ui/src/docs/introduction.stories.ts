@@ -61,7 +61,9 @@ const DESIGN_STEPS: readonly DocsStep[] = [
     title: 'Pick an approved component',
     detail:
       'Start from Find a component. Use the component that already does the job, including its documented variants, error state and narrow layout.',
-    links: [{ label: 'Find a component', path: '/docs/start-here-catalogue--docs' }],
+    links: [
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+    ],
   },
   {
     who: 'Design',
@@ -78,7 +80,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`.',
+      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Download `.ai`, `.cursor/agents` and `.github/agents` from the design-system repository into this repository so agents can load them.',
     links: [
       {
         label: 'Build with Plectrum',

@@ -4,8 +4,6 @@
 // Storybook's own ./index.json (never hand-copied — rule 10).
 //
 // Consumers:
-//   - docs-component-index.component.ts — .ai/contracts/index.json rows link
-//     to their docs page.
 //   - docs-contract.component.ts — composition().companions / .nested render
 //     as pds-docs-link when the name resolves to a libs/ui component with a
 //     docs page, falling back to p-tag (PrimeNG names, e.g. "Tag", "Card").

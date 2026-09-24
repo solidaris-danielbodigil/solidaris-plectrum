@@ -34,6 +34,8 @@ interface ComponentEntry {
   scssPath: string | null;
   uses: string[];
   usedBy: string[];
+  /** App teams whose source renders this component. Generated, never authored. */
+  usedIn: string[];
 }
 
 interface IndexFile {
@@ -51,6 +53,11 @@ interface IndexFile {
   };
   tokenArchitecture: unknown;
   components: Record<string, ComponentEntry>;
+  /**
+   * Component name → team labels (iSHARE, iCRM, iGED). Includes CSS-only
+   * blocks that have metadata but no Angular class. Scanned from apps/.
+   */
+  usedIn: Record<string, string[]>;
   relationships: Record<string, { uses: string[]; usedBy: string[] }>;
   summary: {
     totalComponents: number;
@@ -76,20 +83,27 @@ function findComponents(dir: string): Map<string, string> {
   for (const entry of entries) {
     if (entry.isDirectory()) {
       const componentDir = path.join(dir, entry.name);
-      const componentFile = fs.readdirSync(componentDir).find(
-        (f: string) => f.endsWith('.component.ts') && !f.endsWith('.spec.ts')
-      );
+      const componentFile = fs
+        .readdirSync(componentDir)
+        .find(
+          (f: string) => f.endsWith('.component.ts') && !f.endsWith('.spec.ts'),
+        );
       if (componentFile) {
         const name = toPascalCase(entry.name.replace('.component', ''));
         components.set(name, path.join(componentDir, componentFile));
       }
       // Recurse one level deeper
-      const subDirs = fs.readdirSync(componentDir, { withFileTypes: true }).filter((d: { isDirectory: () => boolean }) => d.isDirectory());
+      const subDirs = fs
+        .readdirSync(componentDir, { withFileTypes: true })
+        .filter((d: { isDirectory: () => boolean }) => d.isDirectory());
       for (const sub of subDirs) {
         const subPath = path.join(componentDir, sub.name);
-        const subFile = fs.readdirSync(subPath).find(
-          (f: string) => f.endsWith('.component.ts') && !f.endsWith('.spec.ts')
-        );
+        const subFile = fs
+          .readdirSync(subPath)
+          .find(
+            (f: string) =>
+              f.endsWith('.component.ts') && !f.endsWith('.spec.ts'),
+          );
         if (subFile) {
           const name = toPascalCase(sub.name.replace('.component', ''));
           components.set(name, path.join(subPath, subFile));
@@ -148,9 +162,14 @@ function hasMetadata(componentPath: string): boolean {
  * Read a field from the colocated .metadata.ts file using a simple regex.
  * Avoids a full TS parse — sufficient for string literal values.
  */
-function readMetadataField(componentPath: string, field: string): string | null {
+function readMetadataField(
+  componentPath: string,
+  field: string,
+): string | null {
   const dir = path.dirname(componentPath);
-  const metaFile = fs.readdirSync(dir).find((f: string) => f.endsWith('.metadata.ts'));
+  const metaFile = fs
+    .readdirSync(dir)
+    .find((f: string) => f.endsWith('.metadata.ts'));
   if (!metaFile) return null;
   const content = fs.readFileSync(path.join(dir, metaFile), 'utf-8');
   const match = content.match(new RegExp(`${field}:\\s*['"]([^'"]+)['"]`));
@@ -161,9 +180,14 @@ function readMetadataField(componentPath: string, field: string): string | null 
  * Read `status` / `owner` from the `governance: { … }` block only, so a prop
  * named "status" elsewhere in the file cannot be mistaken for it.
  */
-function readGovernanceField(componentPath: string, field: 'status' | 'owner'): string | null {
+function readGovernanceField(
+  componentPath: string,
+  field: 'status' | 'owner',
+): string | null {
   const dir = path.dirname(componentPath);
-  const metaFile = fs.readdirSync(dir).find((f: string) => f.endsWith('.metadata.ts'));
+  const metaFile = fs
+    .readdirSync(dir)
+    .find((f: string) => f.endsWith('.metadata.ts'));
   if (!metaFile) return null;
   const content = fs.readFileSync(path.join(dir, metaFile), 'utf-8');
   const block = content.match(/governance:\s*\{([^}]*)\}/);
@@ -181,7 +205,7 @@ function detectBemBlock(componentPath: string): string | null {
   const componentName = path.basename(path.dirname(componentPath));
   const scssFile = path.join(
     WORKSPACE_ROOT,
-    `libs/styles/src/06-components/_components.${componentName}.scss`
+    `libs/styles/src/06-components/_components.${componentName}.scss`,
   );
   if (!fs.existsSync(scssFile)) return null;
   const content = fs.readFileSync(scssFile, 'utf-8');
@@ -203,10 +227,14 @@ function getCategory(componentPath: string): string {
 
   // Fallback: infer from folder structure.
   const relativePath = path.relative(UI_LIB_PATH, componentPath);
-  if (relativePath.includes('atoms/') || relativePath.includes('atom/')) return 'atoms';
-  if (relativePath.includes('molecules/') || relativePath.includes('molecule/')) return 'molecules';
-  if (relativePath.includes('organisms/') || relativePath.includes('organism/')) return 'organisms';
-  if (relativePath.includes('templates/') || relativePath.includes('template/')) return 'templates';
+  if (relativePath.includes('atoms/') || relativePath.includes('atom/'))
+    return 'atoms';
+  if (relativePath.includes('molecules/') || relativePath.includes('molecule/'))
+    return 'molecules';
+  if (relativePath.includes('organisms/') || relativePath.includes('organism/'))
+    return 'organisms';
+  if (relativePath.includes('templates/') || relativePath.includes('template/'))
+    return 'templates';
   return 'uncategorized';
 }
 
@@ -221,12 +249,137 @@ function findScssPath(componentPath: string): string | null {
   return fs.existsSync(path.join(WORKSPACE_ROOT, itcssFile)) ? itcssFile : null;
 }
 
+const TEAM_LABEL: Record<string, string> = {
+  ishare: 'iSHARE',
+  icrm: 'iCRM',
+  iged: 'iGED',
+};
+
+interface UsageNeedle {
+  name: string;
+  className: string | null;
+  selector: string | null;
+  bem: string | null;
+}
+
+function listAppSources(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  const files: string[] = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name === 'dist') continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listAppSources(full));
+    } else if (
+      /\.(html|ts)$/.test(entry.name) &&
+      !entry.name.endsWith('.spec.ts')
+    ) {
+      files.push(full);
+    }
+  }
+  return files;
+}
+
+function readSelector(componentPath: string): string | null {
+  if (!fs.existsSync(componentPath)) return null;
+  const content = fs.readFileSync(componentPath, 'utf-8');
+  const match = content.match(/selector:\s*['"]([^'"]+)['"]/);
+  return match ? match[1].split(',')[0].trim() : null;
+}
+
+function readClassName(componentPath: string): string | null {
+  if (!fs.existsSync(componentPath)) return null;
+  const content = fs.readFileSync(componentPath, 'utf-8');
+  const match = content.match(/export class (\w+)/);
+  return match ? match[1] : null;
+}
+
+/** Angular components plus CSS-only blocks that only exist as metadata. */
+function usageNeedles(components: Map<string, string>): UsageNeedle[] {
+  const needles = new Map<string, UsageNeedle>();
+  for (const [name, filePath] of components) {
+    needles.set(name, {
+      name,
+      className: readClassName(filePath),
+      selector: readSelector(filePath),
+      bem: detectBemBlock(filePath),
+    });
+  }
+
+  const walk = (dir: string): void => {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (!entry.name.endsWith('.metadata.ts')) continue;
+      const content = fs.readFileSync(full, 'utf-8');
+      const name = content.match(/\bname:\s*['"](\w+)['"]/)?.[1];
+      if (!name || needles.has(name)) continue;
+      const bem = content.match(/\bbemBlock:\s*['"]([^'"]+)['"]/)?.[1] ?? null;
+      needles.set(name, { name, className: null, selector: null, bem });
+    }
+  };
+  walk(UI_LIB_PATH);
+  return [...needles.values()];
+}
+
+function mentioned(source: string, needle: UsageNeedle): boolean {
+  if (needle.className && new RegExp(`\\b${needle.className}\\b`).test(source))
+    return true;
+  if (needle.selector && source.includes(`<${needle.selector}`)) return true;
+  if (
+    needle.bem &&
+    new RegExp(`(?:^|[^a-z0-9-])${needle.bem}(?:$|[^a-z0-9-])`).test(source)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Which application teams render each component. Read from apps/, not from
+ * .metadata.ts — ownership in metadata is who is accountable, not who imports it.
+ */
+function scanUsedIn(
+  components: Map<string, string>,
+  apps: { name: string; path: string }[],
+): Record<string, string[]> {
+  const needles = usageNeedles(components);
+  const used = new Map<string, Set<string>>();
+  for (const app of apps) {
+    const label = TEAM_LABEL[app.name] ?? app.name;
+    const sources = listAppSources(path.join(WORKSPACE_ROOT, app.path));
+    const blob = sources
+      .map((file) => fs.readFileSync(file, 'utf-8'))
+      .join('\n');
+    for (const needle of needles) {
+      if (!mentioned(blob, needle)) continue;
+      const teams = used.get(needle.name) ?? new Set<string>();
+      teams.add(label);
+      used.set(needle.name, teams);
+    }
+  }
+  return Object.fromEntries(
+    [...used.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([name, teams]) => [
+        name,
+        [...teams].sort((a, b) => a.localeCompare(b)),
+      ]),
+  );
+}
+
 const IGED_WORKSPACE_APP = { name: 'iged', path: 'apps/iged' } as const;
 
 function withIgedWorkspaceApp(
   workspace: IndexFile['workspace'],
 ): IndexFile['workspace'] {
-  const hasIged = workspace.apps.some((app) => app.name === IGED_WORKSPACE_APP.name);
+  const hasIged = workspace.apps.some(
+    (app) => app.name === IGED_WORKSPACE_APP.name,
+  );
   return hasIged
     ? workspace
     : {
@@ -248,13 +401,17 @@ function generate(): void {
   }
 
   const componentEntries: Record<string, ComponentEntry> = {};
-  const relationships: Record<string, { uses: string[]; usedBy: string[] }> = {};
+  const relationships: Record<string, { uses: string[]; usedBy: string[] }> =
+    {};
 
   // First pass: register all components
   for (const [name, filePath] of components) {
     // Forward slashes regardless of OS — the committed index must not depend
     // on whether it was generated on Windows or in CI.
-    const relativePath = path.relative(WORKSPACE_ROOT, filePath).split(path.sep).join('/');
+    const relativePath = path
+      .relative(WORKSPACE_ROOT, filePath)
+      .split(path.sep)
+      .join('/');
     componentEntries[name] = {
       path: relativePath,
       category: getCategory(filePath),
@@ -266,6 +423,7 @@ function generate(): void {
       scssPath: findScssPath(filePath),
       uses: [],
       usedBy: [],
+      usedIn: [],
     };
     relationships[name] = { uses: [], usedBy: [] };
   }
@@ -285,6 +443,37 @@ function generate(): void {
     }
   }
 
+  const workspace = withIgedWorkspaceApp(
+    existingIndex?.workspace ?? {
+      apps: [
+        { name: 'ishare', path: 'apps/ishare' },
+        { name: 'icrm', path: 'apps/icrm' },
+        { name: 'iged', path: 'apps/iged' },
+      ],
+      libs: [
+        {
+          name: 'ui',
+          path: 'libs/ui',
+          purpose: 'Shared Angular components (SSOT)',
+        },
+        {
+          name: 'styles',
+          path: 'libs/styles',
+          purpose: 'SCSS/ITCSS tokens and utilities (SSOT)',
+        },
+        {
+          name: 'plectrum',
+          path: 'libs/plectrum',
+          purpose: 'PrimeNG theme preset integration',
+        },
+      ],
+    },
+  );
+  const usedIn = scanUsedIn(components, workspace.apps);
+  for (const [name, entry] of Object.entries(componentEntries)) {
+    entry.usedIn = usedIn[name] ?? [];
+  }
+
   // Count relationships
   let totalRelationships = 0;
   for (const rel of Object.values(relationships)) {
@@ -292,7 +481,9 @@ function generate(): void {
   }
 
   // Count PrimeNG mappings
-  const primeNgMappings = Object.values(componentEntries).filter((c) => c.primeNg).length;
+  const primeNgMappings = Object.values(componentEntries).filter(
+    (c) => c.primeNg,
+  ).length;
 
   // Governance status distribution — sorted keys keep the output stable.
   const byStatus: Record<string, number> = {};
@@ -314,20 +505,8 @@ function generate(): void {
       prefix: 'pds',
       baseRemPx: 14,
     },
-    workspace: withIgedWorkspaceApp(
-      existingIndex?.workspace ?? {
-        apps: [
-          { name: 'ishare', path: 'apps/ishare' },
-          { name: 'icrm', path: 'apps/icrm' },
-          { name: 'iged', path: 'apps/iged' },
-        ],
-        libs: [
-          { name: 'ui', path: 'libs/ui', purpose: 'Shared Angular components (SSOT)' },
-          { name: 'styles', path: 'libs/styles', purpose: 'SCSS/ITCSS tokens and utilities (SSOT)' },
-          { name: 'plectrum', path: 'libs/plectrum', purpose: 'PrimeNG theme preset integration' },
-        ],
-      },
-    ),
+    workspace,
+    usedIn,
     tokenArchitecture: existingIndex?.tokenArchitecture ?? {
       prefix: '--pds-*',
       prefixConfig: 'libs/styles/src/01-settings/_settings.prefix.scss',
@@ -362,7 +541,9 @@ function generate(): void {
     relationships,
     summary: {
       totalComponents: components.size,
-      componentsWithMetadata: Object.values(componentEntries).filter((c) => c.metadata).length,
+      componentsWithMetadata: Object.values(componentEntries).filter(
+        (c) => c.metadata,
+      ).length,
       relationshipsMapped: totalRelationships,
       tokenFiles: 11,
       primeNgMappings,

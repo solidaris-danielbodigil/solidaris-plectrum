@@ -41,7 +41,7 @@ export interface StatusPresentation {
   hint: string;
 }
 
-/** Shared with the Component status index so both paint a status the same way. */
+/** Shared status labels for the badge on each component page. */
 export const STATUS_PRESENTATION: Readonly<
   Record<ComponentStatus, StatusPresentation>
 > = {

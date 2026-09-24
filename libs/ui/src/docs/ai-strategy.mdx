@@ -9,6 +9,22 @@ import * as Figures from './ai-strategy.stories';
 
 Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
+Each application team works in its own repository. That repository needs `.ai` and the subagents, or the agent there has nothing to load.
+
+## Team repositories
+
+Application teams install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`. Those packages ship components, the theme and the stylesheet. They leave the agent files out.
+
+Download these three folders from the design-system repository and place them at the same paths in the team repository:
+
+- [`.ai`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.ai) — rules, skills, contracts. Agents start at `.ai/README.md`. How to address Plectrum is [below](#subagents).
+- [`.cursor/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.cursor/agents) — Cursor subagents. The user-facing one is Plectrum. It delegates to UX Researcher, UX Engineer, Frontend Dev, Tester, Token Auditor and Architect.
+- [`.github/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.github/agents) — the same seven roles for VS Code.
+
+When a folder changes in the design-system repository, download it again and replace the copy in the team repository. Keep team notes outside these folders, so the next download does not erase them.
+
+An `npm install` script is able to write files into the team repository. These folders are not installed that way. Many builds skip install scripts, and a later install would overwrite the copy the team already has.
+
 Related pages:
 
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX + Storybook MCP
@@ -145,12 +161,22 @@ MCP does not scaffold. Pre-flight is still PrimeNG MCP → Figma MCP → `index.
 
 ### Subagents
 
-Component work is delegated to specialist subagents. Ask **Plectrum** for a component and it runs the pipeline end to end. Definitions live in `.cursor/agents/*.md` (Cursor) and `.github/agents/*.agent.md` (VS Code / Copilot) — keep both in sync.
+Component work is delegated to specialist subagents. Invoke it with `/plectrum`, then describe the component. It runs research, tokens, implementation and QA. You do not address the six specialists yourself. Definitions live in `.cursor/agents/*.md` (Cursor) and `.github/agents/*.agent.md` (VS Code / Copilot) — keep both in sync.
+
+```
+/plectrum Add a Core status banner.
+Owner: design-system.
+Figma: [UI Kit link].
+Proposal: [issue link].
+Use PrimeNG Message if it already covers this.
+```
+
+Plectrum asks for the owner and the proposal when either is missing, then scaffolds with `pds:component`. Token review, Figma-to-token translation and story-writing templates stay in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
 
 <DocsTable
   headers={['Agent', 'Role']}
   rows={[
-    ['Plectrum', 'Coordinator. Spawns the specialists below; the only user-facing agent'],
+    ['Plectrum', 'Coordinator, invoked with /plectrum. Spawns the specialists below; the only user-facing agent'],
     ['UX Researcher', 'Figma inspection, token extraction, design brief — read-only'],
     ['UX Engineer', 'SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories; Figma writes via MCP when designing from the repo'],
     ['Frontend Dev', 'Angular implementation: class, template, accessibility, PrimeNG wiring'],
@@ -192,6 +218,8 @@ Component work is delegated to specialist subagents. Ask **Plectrum** for a comp
     ['docs:check', 'Commit hook and CI. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
     ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
+    ['Team repository', 'One repository per application team. Download .ai, .cursor/agents and .github/agents from the design-system repository. The packages do not install them.'],
+    ['ai-prompts.md', 'Four paste-ready prompts in .ai/contracts/protocols/: token review, Figma-to-tokens, general agent rules, Storybook MCP.'],
   ]}
 />
 
