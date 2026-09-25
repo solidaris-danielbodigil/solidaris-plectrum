@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "id": "ishare-temporary-probe",
   "proposalId": "ishare-temporary-probe",
-  "operation": "submit",
+  "operation": "revise",
   "componentId": "ishare:temporary-probe",
   "team": "ishare",
   "application": "ishare",
   "origin": {
     "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
-    "revision": "2afcaa17100d5afe52d3bfbcf5699c970953a78c",
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e",
     "path": "src/plectrum-candidates/temporary-probe/temporary-probe.metadata.json"
   },
   "metadata": {
@@ -16,7 +16,7 @@
       "id": "ishare:temporary-probe",
       "name": "Temporary probe",
       "category": "atoms",
-      "description": "Temporary intake probe. There is no component implementation; withdraw this record after the catalogue listing is verified.",
+      "description": "Revised temporary intake probe. There is still no component implementation; the next step is withdrawal.",
       "type": "display",
       "path": "src/plectrum-candidates/temporary-probe/temporary-probe.component.ts",
       "bemBlock": "c-temporary-probe",
@@ -28,10 +28,10 @@
     "governance": {
       "status": "candidate",
       "owner": "ishare",
-      "note": "Temporary intake probe. Not a real component."
+      "note": "Revised temporary intake probe. Not a real component."
     },
     "usage": {
-      "useCases": ["Verify that an approved submission appears in Find a component."],
+      "useCases": ["Verify that a revision stays on the same candidate id."],
       "commonPatterns": [],
       "antiPatterns": []
     },
@@ -54,11 +54,11 @@
   ],
   "preview": {
     "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/12",
-    "revision": "2afcaa17100d5afe52d3bfbcf5699c970953a78c"
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e"
   },
   "checks": {
-    "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36113123305",
-    "revision": "2afcaa17100d5afe52d3bfbcf5699c970953a78c"
+    "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36116593867",
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e"
   },
-  "submittedAt": "2026-09-25T08:36:00.000Z"
+  "submittedAt": "2026-09-25T09:20:00.000Z"
 }
