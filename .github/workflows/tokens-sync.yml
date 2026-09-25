@@ -157,8 +157,13 @@ jobs:
           git add -- libs/plectrum/src/tokens.json libs/plectrum/sync-release-intent.json libs/ui/src/storybook/tokens.generated.ts libs/ui/src/storybook/sync-report.generated.ts libs/styles/src/01-settings tools/tokens/proposed.dtcg.json
           if [ -f .changeset/figma-sync.md ]; then git add -- .changeset/figma-sync.md; fi
           if [ -d libs/plectrum/src/Plectrum_v1 ]; then git add -- libs/plectrum/src/Plectrum_v1; fi
-          git commit -m 'chore(tokens): promote pinned Figma staging' \
-            || echo 'Nothing generated beyond the staging commit.'
+          npm run changelog:build
+          git add -- libs/ui/src/storybook/changelog.generated.ts
+          if git diff --cached --quiet; then
+            echo 'Nothing to promote.'
+            exit 1
+          fi
+          git commit -m 'chore(tokens): promote pinned Figma staging'
           git push --force origin tokens/promote-staging
           url="$(gh pr list --head tokens/promote-staging --base main --state open --json url --jq '.[0].url')"
           if [ -z "$url" ]; then
