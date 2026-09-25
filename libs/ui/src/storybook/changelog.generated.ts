@@ -2,7 +2,26 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "figma-sync",
+    "bumps": [
+      {
+        "packageName": "@solidaris/ui",
+        "bump": "patch"
+      },
+      {
+        "packageName": "@solidaris/plectrum",
+        "bump": "patch"
+      },
+      {
+        "packageName": "@solidaris/styles",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Figma token sync 8baef65.\n\n0 values changed, 172 added, 0 removed.\nReview the sync report before merging. Adjust the bump if the change is not a patch."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
