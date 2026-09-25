@@ -11,7 +11,7 @@ function adapters() {
   const result = {
     '.cursor/rules/plectrum.mdc': `---\ndescription: Plectrum application workflow\nalwaysApply: true\n---\n\n${baseline}`,
     '.github/instructions/plectrum.instructions.md': `---\napplyTo: '**/*'\n---\n\n${baseline}`,
-    '.github/workflows/plectrum-checks.yml': `name: Plectrum checks\non:\n  pull_request:\n  push:\n    branches: [main]\njobs:\n  plectrum:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: actions/setup-node@v5\n        with:\n          node-version: '24'\n          cache: npm\n      - run: npm ci\n      - run: npx --no-install plectrum check --profile ci\n`,
+    '.github/workflows/plectrum-checks.yml': `name: Plectrum checks\non:\n  pull_request:\n  push:\n    branches: [main]\njobs:\n  plectrum:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: actions/setup-node@v5\n        with:\n          node-version: '24'\n          cache: npm\n      - run: npm ci\n      - run: npx --no-install plectrum check --profile ci\n      - name: Submit adoption report\n        if: github.event_name == 'push' && github.ref == 'refs/heads/main'\n        env:\n          GH_TOKEN: \${{ secrets.PLECTRUM_ADOPTION_TOKEN }}\n        run: npx --no-install plectrum adoption-submit\n`,
   };
   for (const [name, body] of Object.entries(roles)) {
     const file = slug(name);

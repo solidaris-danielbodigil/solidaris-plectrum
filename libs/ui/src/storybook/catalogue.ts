@@ -3,6 +3,7 @@ import { resolveComponentDocsPath } from './docs-storybook-index';
 import { STATUS_PRESENTATION } from './governance';
 import { PRIMENG_KIT } from '../primeng/plectrum-figma';
 import { CENTRAL_CANDIDATES } from './candidate-data.generated';
+import { CENTRAL_ADOPTION } from './adoption-data.generated';
 
 export type CataloguePurpose =
   | 'Actions'
@@ -25,6 +26,8 @@ export interface CatalogueEntry {
   keywords: readonly string[];
   /** Teams whose application source renders this component. Empty for PrimeNG. */
   usedIn: readonly string[];
+  /** local-demo, current, or stale. A missing report is not a usage mark. */
+  usageMarks?: Readonly<Record<string, 'current' | 'stale' | 'local-demo'>>;
   /** Storybook docs path. Empty until the Storybook index resolves a page. */
   path: string;
   /** Versioned preview in the contributing application's repository. */
@@ -57,6 +60,14 @@ const PRIMENG_LABEL: Record<string, string> = {
 
 export function displayName(name: string): string {
   return name.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
+
+function usageOf(id: string, localLabels: readonly string[]): Pick<CatalogueEntry, 'usedIn' | 'usageMarks'> {
+  const reported = new Set(CENTRAL_ADOPTION.reported.map((report) => report.label));
+  const marks: Record<string, 'current' | 'stale' | 'local-demo'> = {};
+  for (const label of localLabels) if (!reported.has(label)) marks[label] = 'local-demo';
+  for (const sighting of CENTRAL_ADOPTION.usedIn[id] ?? []) marks[sighting.label] = sighting.freshness;
+  return { usedIn: Object.keys(marks).sort((a, b) => a.localeCompare(b)), usageMarks: marks };
 }
 
 function purposeOf(meta: ComponentMetadata): CataloguePurpose {
@@ -102,7 +113,7 @@ export function metadataCatalogue(
       scope: STATUS_PRESENTATION[meta.governance.status].label as CatalogueScope,
       summary,
       keywords,
-      usedIn: usedIn[meta.component.id] ?? [],
+      ...usageOf(meta.component.id, usedIn[meta.component.id] ?? []),
       path: docsPath ?? '',
     };
   });

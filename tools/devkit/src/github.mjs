@@ -94,4 +94,52 @@ export class GitHubClient {
     const created = await this.request('POST', `/repos/${upstream.fullName}/pulls`, { title: `candidate(${submission.id}): ${submission.operation}`, head: `${me}:${branch}`, base, body, draft: false }, [201]);
     return created.data.html_url;
   }
+
+  async submitAdoptionPullRequest(repositoryUrl, report) {
+    if (!this.token) throw new Error('Set GH_TOKEN or GITHUB_TOKEN to open a reviewed adoption pull request.');
+    const upstream = githubRepository(repositoryUrl);
+    const me = (await this.request('GET', '/user')).data.login;
+    if (!/^[A-Za-z0-9-]+$/.test(me)) throw new Error('Could not determine authenticated GitHub login.');
+    const forkName = `${me}/${upstream.name}`;
+    if (forkName.toLowerCase() !== upstream.fullName.toLowerCase()) {
+      const existing = await this.request('GET', `/repos/${forkName}`, undefined, [200, 404]);
+      if (existing.status === 404) await this.request('POST', `/repos/${upstream.fullName}/forks`, {}, [201, 202]);
+      let fork;
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const result = await this.request('GET', `/repos/${forkName}`, undefined, [200, 404]);
+        if (result.status === 200) { fork = result.data; break; }
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      if (!fork || fork.parent?.full_name?.toLowerCase() !== upstream.fullName.toLowerCase()) throw new Error(`Fork ${forkName} unavailable or not a fork of ${upstream.fullName}.`);
+    }
+    const branch = `plectrum/adoption/${report.application}/${hash(format(report)).slice(0, 12)}`;
+    const query = encodeURIComponent(`${me}:${branch}`);
+    const pulls = (await this.request('GET', `/repos/${upstream.fullName}/pulls?state=all&head=${query}`)).data;
+    const previous = pulls.find((pull) => pull.head?.ref === branch);
+    if (previous?.merged_at) return previous.html_url;
+    const existingBranch = await this.request('GET', `/repos/${forkName}/git/ref/heads/${branch}`, undefined, [200, 404]);
+    if (existingBranch.status === 404) {
+      const ref = (await this.request('GET', `/repos/${upstream.fullName}/git/ref/heads/main`)).data;
+      await this.request('POST', `/repos/${forkName}/git/refs`, { ref: `refs/heads/${branch}`, sha: ref.object.sha });
+    }
+    const relative = `.ai/adoption/${report.application}.json`;
+    const existingContent = await this.content(forkName, relative, branch);
+    if (JSON.stringify(existingContent?.value) !== JSON.stringify(report)) {
+      await this.request('PUT', `/repos/${forkName}/contents/${relative}`, {
+        message: `adoption(${report.application}): report ${report.observedAt}`,
+        branch,
+        content: Buffer.from(format(report), 'utf8').toString('base64'),
+        ...(existingContent ? { sha: existingContent.sha } : {}),
+      }, [200, 201]);
+    }
+    if (previous?.state === 'open') return previous.html_url;
+    if (previous?.state === 'closed') return (await this.request('PATCH', `/repos/${upstream.fullName}/pulls/${previous.number}`, { state: 'open' })).data.html_url;
+    const created = await this.request('POST', `/repos/${upstream.fullName}/pulls`, {
+      title: `adoption(${report.application}): ${report.observedAt}`,
+      head: `${me}:${branch}`,
+      base: 'main',
+      body: `Adoption report for ${report.application}\n\nSource: ${report.source.repository}/commit/${report.source.revision}\nObserved: ${report.observedAt}\nInstalled packages are listed separately from detected component usage.\n\nThis pull request changes only the adoption JSON. It does not publish a package.`,
+    }, [201]);
+    return created.data.html_url;
+  }
 }

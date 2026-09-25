@@ -78,6 +78,10 @@
   </ng-container>
 </pds-toolbar>
 
+@if (adoptionNote) {
+  <p class="c-docs-catalogue__summary o-layout o-layout--margin-block-end-2">{{ adoptionNote }}</p>
+}
+
 <p-table
   class="c-datatable o-flex__item o-flex__item--grow-1 o-layout--min-h-0 o-layout--full-height"
   [value]="visible()"
@@ -132,6 +136,11 @@
           <div class="o-flex o-flex--wrap o-layout o-layout--gap-1">
             @for (team of row.usedIn; track team) {
               <p-tag [value]="team" severity="secondary" [rounded]="true" />
+              @if (row.usageMarks?.[team] === 'stale') {
+                <p-tag value="stale" severity="warn" [rounded]="true" />
+              } @else if (row.usageMarks?.[team] === 'local-demo') {
+                <p-tag value="demo" severity="secondary" [rounded]="true" />
+              }
             }
           </div>
         } @else {

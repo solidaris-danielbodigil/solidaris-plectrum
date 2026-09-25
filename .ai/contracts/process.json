@@ -89,6 +89,12 @@
       "available": true,
       "scope": "local-draft"
     },
+    "adoptionSubmit": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum adoption-submit",
+      "available": true,
+      "scope": "reviewed-pull-request"
+    },
     "tokensBuild": {
       "context": "plectrum",
       "command": "npm run tokens:build",
@@ -330,7 +336,8 @@
         "validated adoption JSON"
       ],
       "commands": [
-        "adoptionReport"
+        "adoptionReport",
+        "adoptionSubmit"
       ]
     }
   ],

@@ -30,8 +30,8 @@
     "lint:styles": "stylelint \"libs/styles/src/**/*.scss\"",
     "lint:styles:test": "node --test tools/stylelint/*.spec.mjs",
     "changelog:build": "node tools/scripts/changelog-to-ts.mjs",
-    "storybook": "npm run changelog:build && npm run candidate:generate && ng run ui:storybook",
-    "build-storybook": "npm run changelog:build && npm run candidate:generate && ng run ui:build-storybook",
+    "storybook": "npm run changelog:build && npm run candidate:generate && npm run adoption:generate && ng run ui:storybook",
+    "build-storybook": "npm run changelog:build && npm run candidate:generate && npm run adoption:generate && ng run ui:build-storybook",
     "build-storybook:coverage": "STORYBOOK_COVERAGE=1 npm run build-storybook",
     "test-storybook": "test-storybook --config-dir libs/ui/.storybook --url http://localhost:6006",
     "test-storybook:vitest": "vitest --project=storybook --run",
@@ -76,9 +76,11 @@
     "devkit:test": "node --test tools/devkit/src/*.spec.mjs",
     "contracts:docs-check": "node tools/contracts/check-doc-routes.mjs",
     "contracts:validate": "tsx tools/contracts/validate.ts",
-    "test:pipelines": "node --import tsx --test tools/contracts/*.spec.ts tools/candidates/*.spec.ts",
+    "test:pipelines": "node --import tsx --test tools/contracts/*.spec.ts tools/candidates/*.spec.ts tools/adoption/*.spec.ts",
     "candidate:check": "tsx tools/candidates/check.ts",
     "candidate:generate": "tsx tools/candidates/generate.ts",
+    "adoption:check": "tsx tools/adoption/check.ts",
+    "adoption:generate": "tsx tools/adoption/generate.ts",
     "candidate:record": "tsx tools/candidates/record.ts"
   },
   "dependencies": {

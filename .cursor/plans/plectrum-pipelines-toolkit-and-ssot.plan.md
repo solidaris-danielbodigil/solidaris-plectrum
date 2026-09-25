@@ -16,7 +16,7 @@ todos:
     status: in_progress
   - id: p4-adoption
     content: "P4: collect application adoption reports and generate catalogue usage with freshness and provenance"
-    status: pending
+    status: in_progress
   - id: p5-figma-inbound
     content: "P5: validate and promote the final Figma token/theme state with all generated artifacts and release intent"
     status: pending
@@ -37,7 +37,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 implementation is on `main` via PR #8; its live external candidate and promotion are still unproven, so P3 stays open. PR #9 is merged. Its follow-up on `main` passed CI and Pages, and Release opened the version PR #10. Publishing stays disabled. P4–P9 remain pending.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 implementation is on `main` via PR #8; its live external candidate and promotion are still unproven, so P3 stays open. PR #9 is merged. Its follow-up on `main` passed CI and Pages, and Release opened the version PR #10. Publishing stays disabled. P4 intake is implemented and still needs a live external report. P5–P9 remain pending.
 
 ## Outcome
 
@@ -351,6 +351,13 @@ External dependencies remain explicit in `registry.json`: reviewer identity, con
 - Storybook's Find a component table includes active central submissions, current review state and the team's preview link. CI and the GitHub Pages deployment regenerate this listing from validated central records. Withdrawn/promoted candidates leave the candidate list; a promoted Core entry is generated from central metadata and the stable ID is retained in the promotion record. A team's local `index.json` is never ingested.
 - `CODEOWNERS` is generated from the registry's Core reviewers: `@solidaris-danielbodigil` and `@danielbodi`. The latter received explicitly authorized write access. With explicit user approval, GitHub `main` protection was activated: one required Code Owner approval, stale approval dismissal, strict passing checks for `intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed`, `figma-plugin`, and admin enforcement. PR #8 was approved and merged on 2026-09-25; these rules now govern future candidate PRs.
 - Local verification passed: schema/tools and Storybook typecheck, `contracts:check`, `docs:check`, `candidate:check`, devkit tests, pipeline tests, 402 UI tests, packed toolkit/consumer smoke with submit/withdraw drafts, Storybook build and 20 built docs-route checks. GitHub PR transport was exercised with a fake API; no real candidate PR, promotion or package release exists yet. Complete the live acceptance scenario with the first registered external application.
+
+## P4 implementation — 2026-09-25
+
+- `plectrum adoption-report` still writes a local draft. `plectrum adoption-submit` opens a reviewed pull request containing only `.ai/adoption/<application>.json`, and only when `reporting.enabled` is true. The generated consumer workflow calls it on `main` with `PLECTRUM_ADOPTION_TOKEN`; a disabled flag does not send telemetry.
+- Central checks reject an older or conflicting report, an unknown component, or a report whose repository does not match the registry. A newer report that omits a component removes that usage. A report older than 14 days stays visible as stale. Registered applications without a report stay listed as missing, which is not non-adoption.
+- Find a component reads the generated listing. Local demo scans remain labeled `demo` until that application submits a report. PrimeNG controls are not counted. Storybook and Pages regenerate the listing on build, so a report does not need a package version bump.
+- Pipeline tests cover appearance, removal, and staleness. A live report from a registered external repository is still required before P4 is complete.
 
 ## Post-merge verification — 2026-09-25
 

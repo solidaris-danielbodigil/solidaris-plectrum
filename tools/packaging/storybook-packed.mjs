@@ -12,6 +12,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 execSync('npm run build:libs', { cwd: ROOT, stdio: 'inherit' });
 execSync('npm run candidate:generate', { cwd: ROOT, stdio: 'inherit' });
+execSync('npm run adoption:generate', { cwd: ROOT, stdio: 'inherit' });
 
 const files = ['tsconfig.json', 'tsconfig.base.json'];
 const backups = files.map((file) => {
