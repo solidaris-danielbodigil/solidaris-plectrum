@@ -18,7 +18,7 @@ async function probe(name, url) {
 }
 
 function help() {
-  console.log(`Plectrum toolkit ${packageJson.version}\n\nCommands:\n  init --team ID --application ID --repository URL\n  update\n  catalogue [--id plectrum:form-field]\n  doctor [--live]\n  scaffold --name slug --proposal application-slug\n  validate --schema metadata|proposal|submission|candidateReview|candidatePromotion|candidate|adoption --file relative.json\n  tokens check [--strict]\n  check --profile ci\n  candidate-export --name slug [--output path]\n  candidate-submit --name slug --proposal application-slug --preview URL --checks URL [--dry-run]\n  candidate-withdraw --id application-slug --reason TEXT [--dry-run]\n  adoption-report [--output path]\n  adoption-submit [--dry-run]\n\nAll commands accept --root path. Candidate and adoption PR operations need GH_TOKEN or GITHUB_TOKEN. adoption-submit does nothing until reporting.enabled is true.\n`);
+  console.log(`Plectrum toolkit ${packageJson.version}\n\nCommands:\n  init --team ID --application ID --repository URL\n  update\n  catalogue [--id plectrum:form-field]\n  doctor [--live]\n  scaffold --name slug --proposal application-slug\n  validate --schema metadata|proposal|submission|candidateReview|candidatePromotion|candidateFigmaReturn|candidate|adoption --file relative.json\n  tokens check [--strict]\n  check --profile ci\n  candidate-export --name slug [--output path]\n  candidate-submit --name slug --proposal application-slug --preview URL --checks URL [--dry-run]\n  candidate-withdraw --id application-slug --reason TEXT [--dry-run]\n  adoption-report [--output path]\n  adoption-submit [--dry-run]\n\nAll commands accept --root path. Candidate and adoption PR operations need GH_TOKEN or GITHUB_TOKEN. adoption-submit does nothing until reporting.enabled is true.\n`);
 }
 
 async function main() {
@@ -26,7 +26,7 @@ async function main() {
   if (command === 'init') return initialize(root, args);
   if (command === 'update') return update(root);
   if (command === 'self-check') {
-    for (const schema of ['compatibility', 'registry', 'metadata', 'candidate', 'proposal', 'submission', 'candidateReview', 'candidatePromotion', 'adoption', 'contracts', 'release']) readJson(path.join(packageRoot, 'assets/schema', `${schema}.v1.schema.json`));
+    for (const schema of ['compatibility', 'registry', 'metadata', 'candidate', 'proposal', 'submission', 'candidateReview', 'candidatePromotion', 'candidateFigmaReturn', 'adoption', 'contracts', 'release']) readJson(path.join(packageRoot, 'assets/schema', `${schema}.v1.schema.json`));
     validateSchema('compatibility', asset('compatibility.json'));
     validateSchema('registry', asset('registry.json'));
     for (const entry of asset('catalogue.json').components) {
@@ -64,7 +64,7 @@ async function main() {
   if (command === 'scaffold') return scaffold(root, args);
   if (command === 'validate') {
     const schema = requiredFlag(args, 'schema');
-    if (!['metadata', 'proposal', 'submission', 'candidateReview', 'candidatePromotion', 'candidate', 'adoption'].includes(schema)) throw new Error('Unknown exchange schema. Run plectrum help.');
+    if (!['metadata', 'proposal', 'submission', 'candidateReview', 'candidatePromotion', 'candidateFigmaReturn', 'candidate', 'adoption'].includes(schema)) throw new Error('Unknown exchange schema. Run plectrum help.');
     const file = projectPath(root, requiredFlag(args, 'file'));
     validateSchema(schema, readJson(file));
     console.log(`${schema} valid: ${path.relative(root, file)}`);

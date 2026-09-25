@@ -12,10 +12,6 @@ on:
         description: 'Figma branch suffix — proposals/{app}'
         required: true
         default: 'scratch'
-      write:
-        description: 'Set true to POST (default is dry-run)'
-        required: false
-        default: 'false'
       only:
         description: 'Figma variable names to apply (comma-separated), e.g. color/surface/75. Required.'
         required: true
@@ -36,17 +32,12 @@ jobs:
           cache: 'npm'
       - run: npm install
       - run: npm run tokens:propose
-      - name: Apply (dry-run unless write=true)
+      - name: Preview REST payload (Enterprise alternative remains disabled)
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          FIGMA_MAIN_FILE_KEY: YNZ1DlSjDNUXrvkxlSp10D
         run: |
           FLAGS=(--app "${{ inputs.app }}" --only "${{ inputs.only }}")
           if [ -n "${{ inputs.branch_key }}" ]; then
             FLAGS+=(--branch-key "${{ inputs.branch_key }}")
           fi
-          if [ "${{ inputs.write }}" = "true" ]; then
-            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --write
-          else
-            node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --dry-run
-          fi
+          node tools/tokens/apply-to-figma.mjs "${FLAGS[@]}" --dry-run

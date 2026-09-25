@@ -6,7 +6,7 @@ import { readRegistry } from '../contracts/validate';
 import { checkCandidates } from './check';
 import { readCandidateRecords } from './records';
 
-const kinds = { proposal: ['proposals', exchangeSchemas.proposal], review: ['reviews', exchangeSchemas.candidateReview], promotion: ['promotions', exchangeSchemas.candidatePromotion] } as const;
+const kinds = { proposal: ['proposals', exchangeSchemas.proposal], review: ['reviews', exchangeSchemas.candidateReview], promotion: ['promotions', exchangeSchemas.candidatePromotion], 'figma-return': ['figma-returns', exchangeSchemas.candidateFigmaReturn] } as const;
 
 function option(args: string[], key: string): string {
   const index = args.indexOf(`--${key}`);
@@ -16,6 +16,7 @@ function option(args: string[], key: string): string {
 }
 
 export function candidateRecordFromFlags(root: string, kind: keyof typeof kinds, args: string[]): unknown {
+  if (kind === 'figma-return') throw new Error('Figma return evidence contains reviewed URLs and mappings; pass --file record.json.');
   const registry = readRegistry(root);
   if (!registry.teams.find((team) => team.id === 'design-system')?.reviewer) throw new Error('Configure the Core reviewer first.');
   const now = new Date().toISOString();
@@ -50,7 +51,7 @@ export async function recordCandidate(root: string, kind: keyof typeof kinds, in
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const kind = process.argv[2] as keyof typeof kinds;
-  if (!Object.hasOwn(kinds, kind)) throw new Error('Usage: npm run candidate:record -- <proposal|review|promotion> [--file record.json | flags]');
+  if (!Object.hasOwn(kinds, kind)) throw new Error('Usage: npm run candidate:record -- <proposal|review|promotion|figma-return> [--file record.json | flags]');
   const args = process.argv.slice(3);
   const input = args.includes('--file') ? option(args, 'file') : candidateRecordFromFlags(process.cwd(), kind, args);
   recordCandidate(process.cwd(), kind, input).then((target) => console.log(`Recorded ${target}; commit with the review or integration PR.`)).catch((error) => { console.error(error); process.exitCode = 1; });
