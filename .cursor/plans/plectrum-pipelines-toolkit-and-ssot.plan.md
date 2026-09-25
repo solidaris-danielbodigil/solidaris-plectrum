@@ -37,7 +37,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 implemented and verified locally; P3 code, local tests and GitHub protection implemented, merge and a live candidate PR pending; P4–P9 remain pending.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged; P3 implementation merged in PR #8 with six required CI checks green and `main` protection active. A live external candidate PR and promotion still need acceptance testing; P4–P9 remain pending.
 
 ## Outcome
 
@@ -349,7 +349,7 @@ External dependencies remain explicit in `registry.json`: reviewer identity, con
 - `@solidaris/plectrum-devkit@0.2.0` opens a reviewed GitHub intake PR from a fork when necessary. Submit/revise/withdraw keep one stable ID and pin source, preview and checks to a commit. `--dry-run` validates and writes a local draft. Intake PRs are limited to one JSON file before other CI jobs run.
 - Core `candidate:record` commands capture decisions, reviews and integration evidence. `candidate:check` verifies registry/provenance/version compatibility, immutable identity across PR revisions, accepted current review, package-eligible integrated Core source, colocated stories/tests and a promotion changeset. Submitted JSON is parsed, never imported as executable code.
 - Storybook's Find a component table includes active central submissions, current review state and the team's preview link. CI and the GitHub Pages deployment regenerate this listing from validated central records. Withdrawn/promoted candidates leave the candidate list; a promoted Core entry is generated from central metadata and the stable ID is retained in the promotion record. A team's local `index.json` is never ingested.
-- `CODEOWNERS` is generated from the registry's Core reviewers: `@solidaris-danielbodigil` and `@danielbodi`. The latter received an explicitly authorized write-access invitation and now has write access. With explicit user approval, GitHub `main` protection was activated and read back: one required Code Owner approval, stale approval dismissal, strict passing checks for `intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed`, `figma-plugin`, and admin enforcement. The CODEOWNERS file and new jobs still need to reach `main` through a reviewed PR before they govern future candidate PRs.
+- `CODEOWNERS` is generated from the registry's Core reviewers: `@solidaris-danielbodigil` and `@danielbodi`. The latter received explicitly authorized write access. With explicit user approval, GitHub `main` protection was activated: one required Code Owner approval, stale approval dismissal, strict passing checks for `intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed`, `figma-plugin`, and admin enforcement. PR #8 was approved and merged on 2026-09-25; these rules now govern future candidate PRs.
 - Local verification passed: schema/tools and Storybook typecheck, `contracts:check`, `docs:check`, `candidate:check`, devkit tests, pipeline tests, 402 UI tests, packed toolkit/consumer smoke with submit/withdraw drafts, Storybook build and 20 built docs-route checks. GitHub PR transport was exercised with a fake API; no real candidate PR, promotion or package release exists yet. Complete the live acceptance scenario with the first registered external application.
 
 ## References
