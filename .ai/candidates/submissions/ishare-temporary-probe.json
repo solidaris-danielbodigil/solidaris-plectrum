@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "ishare-temporary-probe",
   "proposalId": "ishare-temporary-probe",
-  "operation": "revise",
+  "operation": "withdraw",
   "componentId": "ishare:temporary-probe",
   "team": "ishare",
   "application": "ishare",
@@ -16,7 +16,7 @@
       "id": "ishare:temporary-probe",
       "name": "Temporary probe",
       "category": "atoms",
-      "description": "Revised temporary intake probe. There is still no component implementation; the next step is withdrawal.",
+      "description": "Withdrawn temporary intake probe. It must leave the candidate list.",
       "type": "display",
       "path": "src/plectrum-candidates/temporary-probe/temporary-probe.component.ts",
       "bemBlock": "c-temporary-probe",
@@ -60,5 +60,6 @@
     "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36116593867",
     "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e"
   },
-  "submittedAt": "2026-09-25T09:20:00.000Z"
+  "submittedAt": "2026-09-25T09:30:00.000Z",
+  "withdrawalReason": "Catalogue listing of the revision was verified. This probe is not a component."
 }
