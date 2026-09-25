@@ -173,7 +173,7 @@
       },
       "package": {
         "name": "@solidaris/styles",
-        "version": "2.0.0"
+        "version": "2.0.1"
       },
       "usedIn": [
         "iSHARE"
@@ -207,7 +207,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "CopyableTextComponent"
       },
@@ -241,7 +241,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui/patterns/ishare",
         "exportName": "DelayPredictionCardComponent"
       },
@@ -275,7 +275,7 @@
       },
       "package": {
         "name": "@solidaris/styles",
-        "version": "2.0.0"
+        "version": "2.0.1"
       },
       "usedIn": []
     },
@@ -305,7 +305,7 @@
       },
       "package": {
         "name": "@solidaris/styles",
-        "version": "2.0.0"
+        "version": "2.0.1"
       },
       "usedIn": [
         "iSHARE"
@@ -339,7 +339,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "EmptyStateComponent"
       },
@@ -376,7 +376,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "FormFieldComponent"
       },
@@ -413,7 +413,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "IconComponent"
       },
@@ -447,7 +447,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "InputClearComponent"
       },
@@ -484,7 +484,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "ListComponent"
       },
@@ -520,7 +520,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "NavShellComponent"
       },
@@ -557,7 +557,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "PlectrumAvatarComponent"
       },
@@ -591,7 +591,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "ProfileCardComponent"
       },
@@ -627,7 +627,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "ProfileDrawerComponent"
       },
@@ -661,7 +661,7 @@
       },
       "package": {
         "name": "@solidaris/styles",
-        "version": "2.0.0"
+        "version": "2.0.1"
       },
       "usedIn": [
         "iSHARE"
@@ -695,7 +695,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "SubNavShellComponent"
       },
@@ -729,7 +729,7 @@
       },
       "package": {
         "name": "@solidaris/styles",
-        "version": "2.0.0"
+        "version": "2.0.1"
       },
       "usedIn": [
         "iSHARE"
@@ -763,7 +763,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "ToolbarComponent"
       },
@@ -800,7 +800,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui",
         "exportName": "TopNavComponent"
       },
@@ -837,7 +837,7 @@
       },
       "package": {
         "name": "@solidaris/ui",
-        "version": "2.0.0",
+        "version": "2.0.1",
         "importPath": "@solidaris/ui/patterns/ishare",
         "exportName": "TransactionsCicsModalComponent"
       },

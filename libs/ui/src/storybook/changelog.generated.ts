@@ -2,28 +2,20 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "figma-sync",
-    "bumps": [
-      {
-        "packageName": "@solidaris/ui",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris/plectrum",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris/styles",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Figma token sync 8baef65.\n\n0 values changed, 172 added, 0 removed.\nReview the sync report before merging. Adjust the bump if the change is not a patch."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris/ui",
+    "version": "2.0.1",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "6094cfa: Figma token sync 8baef65. 0 values changed, 172 added, 0 removed. Review the sync report before merging. Adjust the bump if the change is not a patch."
+      }
+    ],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris/ui",
     "version": "2.0.0",
@@ -60,6 +52,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   },
   {
     "packageName": "@solidaris/plectrum",
+    "version": "2.0.1",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "6094cfa: Figma token sync 8baef65. 0 values changed, 172 added, 0 removed. Review the sync report before merging. Adjust the bump if the change is not a patch."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris/plectrum",
     "version": "2.0.0",
     "changes": [],
     "notes": ""
@@ -83,6 +86,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
       {
         "bump": "patch",
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris/styles",
+    "version": "2.0.1",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "6094cfa: Figma token sync 8baef65. 0 values changed, 172 added, 0 removed. Review the sync report before merging. Adjust the bump if the change is not a patch."
       }
     ],
     "notes": ""

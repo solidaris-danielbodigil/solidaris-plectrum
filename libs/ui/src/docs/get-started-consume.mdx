@@ -27,7 +27,7 @@ An application installs versioned packages and consumes CSS custom properties. N
   ]}
 />
 
-**Current install.** Registry publication is not enabled yet. Build and pack the packages from the Plectrum checkout, then install the tarballs in an application. The runtime packages currently declare 2.0.0; the toolkit declares 0.2.0. Those manifest versions are not evidence of a registry release or versioned documentation.
+**Current install.** Registry publication is not enabled yet. Build and pack the packages from the Plectrum checkout, then install the tarballs in an application. The runtime packages currently declare 2.0.1; the toolkit declares 0.2.0. Those manifest versions are not evidence of a registry release or versioned documentation.
 
 ```bash
 # in the design-system repository
@@ -36,7 +36,7 @@ npm run pack:libs       # builds plectrum + ui, npm-packs all packages into tool
 
 ```bash
 # in the application — use paths to the four tarballs produced above
-npm install ./path/to/solidaris-ui-2.0.0.tgz ./path/to/solidaris-plectrum-2.0.0.tgz ./path/to/solidaris-styles-2.0.0.tgz primeng @primeuix/themes
+npm install ./path/to/solidaris-ui-2.0.1.tgz ./path/to/solidaris-plectrum-2.0.1.tgz ./path/to/solidaris-styles-2.0.1.tgz primeng @primeuix/themes
 npm install --save-dev ./path/to/solidaris-plectrum-devkit-0.2.0.tgz
 ```
 
