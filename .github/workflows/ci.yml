@@ -25,12 +25,20 @@ jobs:
         run: |
           mapfile -t changed < <(git diff --name-only "$BASE_SHA" HEAD)
           intake=0
+          adoption=0
           for file in "${changed[@]}"; do
             if [[ "$file" == .ai/candidates/submissions/* ]]; then intake=1; fi
+            if [[ "$file" == .ai/adoption/* ]]; then adoption=1; fi
           done
           if [[ "$intake" == 1 ]]; then
             if [[ "${#changed[@]}" != 1 || ! "${changed[0]}" =~ ^\.ai/candidates/submissions/[a-z][a-z0-9-]*\.json$ ]]; then
               echo 'Candidate intake PRs may change exactly one submission JSON file.' >&2
+              exit 1
+            fi
+          fi
+          if [[ "$adoption" == 1 ]]; then
+            if [[ "${#changed[@]}" != 1 || ! "${changed[0]}" =~ ^\.ai/adoption/[a-z][a-z0-9-]*\.json$ ]]; then
+              echo 'Adoption report PRs may change exactly one application JSON file.' >&2
               exit 1
             fi
           fi
@@ -83,7 +91,11 @@ jobs:
         run: npm run contracts:generate -- --check && npm run devkit:check && npm run devkit:test && npm run test:pipelines
 
       - name: Validate central candidate intake and promotion
-        run: npm run candidate:check
+        run: npm run candidate:check && npm run adoption:check
+
+      - name: Validate adoption reports against the PR base
+        if: github.event_name == 'pull_request'
+        run: npm run adoption:check -- --base ${{ github.event.pull_request.base.sha }}
 
       - name: Validate candidate lifecycle against the PR base
         if: github.event_name == 'pull_request'

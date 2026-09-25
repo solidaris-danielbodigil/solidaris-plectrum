@@ -189,10 +189,27 @@ export function adoptionReport(root, args) {
     });
     if (matches.length) observations.push({ componentId: component.id, kind: 'source-reference', count: matches.length, files: matches.map((m) => m.file) });
   }
-  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering and styling-only usage are not measured.', 'Report is a local draft until central ingestion is enabled.'] };
+  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.'] };
   validateSchema('adoption', report);
   const output = projectPath(root, flag(args, 'output') ?? config.reporting.output);
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, format(report));
-  console.log(`Wrote local adoption report ${slash(path.relative(root, output))}: ${observations.length} component references. Central ingestion is not enabled.`);
+  console.log(`Wrote local adoption report ${slash(path.relative(root, output))}: ${observations.length} component references.`);
+  return report;
+}
+
+export async function adoptionSubmit(root, args, client = new GitHubClient(process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN)) {
+  const config = configAt(root);
+  if (!config.reporting.enabled) {
+    console.log('Adoption submission is off. Set reporting.enabled in .plectrum/config.json to open a reviewed report PR. Installing the toolkit does not send telemetry.');
+    return;
+  }
+  const report = adoptionReport(root, args);
+  const central = asset('registry.json').repository;
+  const current = await client.content(githubRepository(central).fullName, `.ai/adoption/${report.application}.json`);
+  if (current?.value?.observedAt > report.observedAt) throw new Error('The central report is newer than this observation.');
+  if (args.includes('--dry-run')) { console.log('Validated adoption submission; no PR opened.'); return report; }
+  const url = await client.submitAdoptionPullRequest(central, report);
+  console.log(`Adoption report PR: ${url}`);
+  return url;
 }

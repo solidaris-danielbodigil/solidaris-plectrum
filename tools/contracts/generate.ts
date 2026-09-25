@@ -46,7 +46,7 @@ export async function generateContracts(
   const coreReviewers = registry.teams.find((team) => team.id === 'design-system');
   const codeOwners = [coreReviewers?.reviewer, ...(coreReviewers?.alternateReviewers ?? [])].filter((owner): owner is string => !!owner);
   if (!codeOwners.length) throw new Error('A Core CODEOWNER must be configured in the team registry.');
-  outputs.set('.github/CODEOWNERS', `# Generated from .ai/contracts/registry.json by contracts:generate.\n${['.ai/candidates/', '.ai/contracts/', 'libs/ui/src/lib/', 'libs/styles/src/01-settings/', 'libs/plectrum/src/tokens.json', 'tools/candidates/'].map((area) => `${area.padEnd(38)} ${codeOwners.join(' ')}`).join('\n')}\n`);
+  outputs.set('.github/CODEOWNERS', `# Generated from .ai/contracts/registry.json by contracts:generate.\n${['.ai/adoption/', '.ai/candidates/', '.ai/contracts/', 'libs/ui/src/lib/', 'libs/styles/src/01-settings/', 'libs/plectrum/src/tokens.json', 'tools/adoption/', 'tools/candidates/'].map((area) => `${area.padEnd(38)} ${codeOwners.join(' ')}`).join('\n')}\n`);
   const sourceLocations = Object.fromEntries(
     items.map((item) => [
       item.metadata.component.id,
@@ -282,7 +282,7 @@ export async function generateContracts(
         applications: [...sourceBlobs.keys()],
         limitations: [
           'Source references may include unused imports or comments.',
-          'External applications are not yet collected; an empty list does not prove non-adoption.',
+          'External applications are collected from reviewed adoption reports. A missing report does not prove non-adoption.',
         ],
       },
       usedIn,

@@ -27,6 +27,7 @@ import {
 } from './catalogue';
 import { DocsLinkComponent } from './docs-link.component';
 
+import { CENTRAL_ADOPTION } from './adoption-data.generated';
 import { loadDocsIdsBySource } from './docs-storybook-index';
 import { STATUS_PRESENTATION } from './governance';
 
@@ -109,6 +110,10 @@ export class DocsCatalogueComponent {
       { label: 'No local usage detected', value: 'none' },
     ];
   });
+
+  protected readonly adoptionNote = CENTRAL_ADOPTION.missing.length
+    ? `No adoption report for ${CENTRAL_ADOPTION.missing.map((app) => app.label).join(', ')}. A missing report is not proof that a team does not use a component.`
+    : '';
 
   protected readonly entries = computed(() =>
     buildCatalogue(ALL_COMPONENT_METADATA, this.docsIds(), contracts.usedIn),

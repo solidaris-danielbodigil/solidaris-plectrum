@@ -4,7 +4,7 @@ import path from 'node:path';
 import { asset, configAt, flag, packageJson, packageRoot, projectPath, readJson, requiredFlag } from '../src/common.mjs';
 import { initialize, update } from '../src/managed.mjs';
 import { candidateCheck, check, compatibility, tokenCheck, validateSchema } from '../src/checks.mjs';
-import { adoptionReport, candidateExport, candidateSubmit, candidateWithdraw, scaffold } from '../src/workflows.mjs';
+import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold } from '../src/workflows.mjs';
 import { probeMcp } from '../src/mcp.mjs';
 
 const args = process.argv.slice(2);
@@ -18,7 +18,7 @@ async function probe(name, url) {
 }
 
 function help() {
-  console.log(`Plectrum toolkit ${packageJson.version}\n\nCommands:\n  init --team ID --application ID --repository URL\n  update\n  catalogue [--id plectrum:form-field]\n  doctor [--live]\n  scaffold --name slug --proposal application-slug\n  validate --schema metadata|proposal|submission|candidateReview|candidatePromotion|candidate|adoption --file relative.json\n  tokens check [--strict]\n  check --profile ci\n  candidate-export --name slug [--output path]\n  candidate-submit --name slug --proposal application-slug --preview URL --checks URL [--dry-run]\n  candidate-withdraw --id application-slug --reason TEXT [--dry-run]\n  adoption-report [--output path]\n\nAll commands accept --root path. Candidate PR operations need GH_TOKEN or GITHUB_TOKEN.\n`);
+  console.log(`Plectrum toolkit ${packageJson.version}\n\nCommands:\n  init --team ID --application ID --repository URL\n  update\n  catalogue [--id plectrum:form-field]\n  doctor [--live]\n  scaffold --name slug --proposal application-slug\n  validate --schema metadata|proposal|submission|candidateReview|candidatePromotion|candidate|adoption --file relative.json\n  tokens check [--strict]\n  check --profile ci\n  candidate-export --name slug [--output path]\n  candidate-submit --name slug --proposal application-slug --preview URL --checks URL [--dry-run]\n  candidate-withdraw --id application-slug --reason TEXT [--dry-run]\n  adoption-report [--output path]\n  adoption-submit [--dry-run]\n\nAll commands accept --root path. Candidate and adoption PR operations need GH_TOKEN or GITHUB_TOKEN. adoption-submit does nothing until reporting.enabled is true.\n`);
 }
 
 async function main() {
@@ -82,6 +82,7 @@ async function main() {
   if (command === 'candidate-submit') return candidateSubmit(root, args);
   if (command === 'candidate-withdraw') return candidateWithdraw(root, args);
   if (command === 'adoption-report') return adoptionReport(root, args);
+  if (command === 'adoption-submit') return adoptionSubmit(root, args);
   throw new Error(`Unknown command: ${args.slice(0, 2).join(' ')}. Run plectrum help.`);
 }
 

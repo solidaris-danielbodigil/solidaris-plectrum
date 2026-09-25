@@ -51,7 +51,7 @@
     ],
     "limitations": [
       "Source references may include unused imports or comments.",
-      "External applications are not yet collected; an empty list does not prove non-adoption."
+      "External applications are collected from reviewed adoption reports. A missing report does not prove non-adoption."
     ]
   },
   "usedIn": {

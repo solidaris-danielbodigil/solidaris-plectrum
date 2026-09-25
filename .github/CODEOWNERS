@@ -1,7 +1,9 @@
 # Generated from .ai/contracts/registry.json by contracts:generate.
+.ai/adoption/                          @solidaris-danielbodigil @danielbodi
 .ai/candidates/                        @solidaris-danielbodigil @danielbodi
 .ai/contracts/                         @solidaris-danielbodigil @danielbodi
 libs/ui/src/lib/                       @solidaris-danielbodigil @danielbodi
 libs/styles/src/01-settings/           @solidaris-danielbodigil @danielbodi
 libs/plectrum/src/tokens.json          @solidaris-danielbodigil @danielbodi
+tools/adoption/                        @solidaris-danielbodigil @danielbodi
 tools/candidates/                      @solidaris-danielbodigil @danielbodi
