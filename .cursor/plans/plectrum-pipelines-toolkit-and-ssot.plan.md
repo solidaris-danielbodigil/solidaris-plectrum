@@ -32,6 +32,9 @@ todos:
   - id: p9-proof
     content: "P9: prove both complete journeys in an external consumer, migrate existing content and document recovery"
     status: pending
+  - id: restore-main-review
+    content: "After the plan build: restore main review — one Code Owner approval, stale-review dismissal, admin enforcement"
+    status: pending
 isProject: false
 ---
 
@@ -388,3 +391,14 @@ PR #10 does not publish packages. GitHub held its CI for approval because `githu
 - Existing review enforcement question: `.ai/questions/2026-09-06-core-team-intake-and-codeowners.md`.
 - Existing generated-file gates: `tools/scripts/check-commit.mjs` and `.github/workflows/ci.yml`.
 - GitHub automation event behavior: https://docs.github.com/en/enterprise-cloud%40latest/actions/concepts/security/github_token — verify when implementing bot-created PRs and deployment sequencing.
+
+## Restore main review
+
+Suspended 2026-09-25 so plan pull requests can merge without a second account. Required approvals are 0 and Code Owner review is off. These settings stay in force: a pull request, strict passing checks for `intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed` and `figma-plugin`, conversation resolution, no force-push, and admin enforcement.
+
+Restore before calling the plan finished:
+
+- One required approving review.
+- Code Owner review from `@solidaris-danielbodigil` or `@danielbodi`.
+- Stale review dismissal.
+- The same six required checks, strict, with admin enforcement left on.
