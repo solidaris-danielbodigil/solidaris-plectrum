@@ -1,0 +1,6 @@
+{
+  "classification": "changeset",
+  "reason": "Figma token sync 8baef65.\n\n0 values changed, 172 added, 0 removed.\nReview the sync report before merging. Adjust the bump if the change is not a patch.",
+  "provenance": null,
+  "source": "primeui-figma-plugin-v4"
+}

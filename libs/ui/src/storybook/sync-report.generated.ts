@@ -6,13 +6,13 @@
 import type { SyncReport } from './sync-report.types';
 
 export const SYNC_REPORT: SyncReport = {
-  "generatedAt": "2026-09-07T13:04:27.670Z",
+  "generatedAt": "2026-09-25T12:20:37.183Z",
   "source": "primeui-figma-plugin-v4",
   "branch": "design-tokens/sync",
-  "sha": "2ba5dac",
+  "sha": "8baef65",
   "actor": "solidaris-danielbodigil",
-  "runNumber": "12",
-  "runUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34125284033",
+  "runNumber": "16",
+  "runUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36134312949",
   "sets": [
     "aura/component/light",
     "aura/primitive",
@@ -21,10 +21,12 @@ export const SYNC_REPORT: SyncReport = {
     "aura/custom",
     "aura/semantic/common",
     "aura/component/common",
-    "aura/effects"
+    "aura/proposals/scratch",
+    "aura/effects",
+    "provenance"
   ],
-  "leafCount": 2677,
-  "resolvedCount": 2677,
+  "leafCount": 2849,
+  "resolvedCount": 2849,
   "unresolved": 0,
   "outcomes": {
     "build": "success",
@@ -39,7 +41,868 @@ export const SYNC_REPORT: SyncReport = {
     },
     "changed": [],
     "reordered": [],
-    "added": [],
+    "added": [
+      {
+        "path": "base.unit",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "border.width.default",
+        "after": "1",
+        "alias": null
+      },
+      {
+        "path": "border.width.list",
+        "after": "1",
+        "alias": null
+      },
+      {
+        "path": "border.width.none",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "border.width.thick",
+        "after": "2",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.100",
+        "after": "rgba(0, 0, 0, 0.1)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.200",
+        "after": "rgba(0, 0, 0, 0.2)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.300",
+        "after": "rgba(0, 0, 0, 0.3)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.400",
+        "after": "rgba(0, 0, 0, 0.4)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.50",
+        "after": "rgba(0, 0, 0, 0.05)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.500",
+        "after": "rgba(0, 0, 0, 0.5)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.600",
+        "after": "rgba(0, 0, 0, 0.6)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.700",
+        "after": "rgba(0, 0, 0, 0.7)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.800",
+        "after": "rgba(0, 0, 0, 0.8)",
+        "alias": null
+      },
+      {
+        "path": "color.black.alpha.900",
+        "after": "rgba(0, 0, 0, 0.9)",
+        "alias": null
+      },
+      {
+        "path": "color.green.75",
+        "after": "#dcfce7",
+        "alias": null
+      },
+      {
+        "path": "color.orange.75",
+        "after": "#ffedd5",
+        "alias": null
+      },
+      {
+        "path": "color.primary.75",
+        "after": "#edf1f4",
+        "alias": null
+      },
+      {
+        "path": "color.red.75",
+        "after": "#fee2e2",
+        "alias": null
+      },
+      {
+        "path": "color.surface.75",
+        "after": "#ededed",
+        "alias": null
+      },
+      {
+        "path": "color.surface.border.drawer",
+        "after": "#e7e7e7",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.black.10",
+        "after": "rgba(0, 0, 0, 0.1)",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.black.20",
+        "after": "rgba(0, 0, 0, 0.2)",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.black.5",
+        "after": "rgba(0, 0, 0, 0.05)",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.white.10",
+        "after": "rgba(255, 255, 255, 0.1)",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.white.20",
+        "after": "rgba(255, 255, 255, 0.2)",
+        "alias": null
+      },
+      {
+        "path": "color.transparent.white.80",
+        "after": "rgba(255, 255, 255, 0.8)",
+        "alias": null
+      },
+      {
+        "path": "docs.sync.swatch",
+        "after": "rgba(0, 0, 0, 0)",
+        "alias": null
+      },
+      {
+        "path": "font.family.body",
+        "after": "Open Sans, sans-serif",
+        "alias": null
+      },
+      {
+        "path": "font.family.display",
+        "after": "Agenda, sans-serif",
+        "alias": null
+      },
+      {
+        "path": "font.family.heading",
+        "after": "Open Sans, sans-serif",
+        "alias": null
+      },
+      {
+        "path": "font.family.label",
+        "after": "Open Sans, sans-serif",
+        "alias": null
+      },
+      {
+        "path": "font.size.2xl",
+        "after": "23.996",
+        "alias": null
+      },
+      {
+        "path": "font.size.3xl",
+        "after": "28",
+        "alias": null
+      },
+      {
+        "path": "font.size.4xl",
+        "after": "32.004",
+        "alias": null
+      },
+      {
+        "path": "font.size.5xl",
+        "after": "39.998",
+        "alias": null
+      },
+      {
+        "path": "font.size.base",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "font.size.lg",
+        "after": "18.004",
+        "alias": null
+      },
+      {
+        "path": "font.size.md",
+        "after": "16.002",
+        "alias": null
+      },
+      {
+        "path": "font.size.s",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "font.size.xl",
+        "after": "20.006",
+        "alias": null
+      },
+      {
+        "path": "font.size.xs",
+        "after": "11.998",
+        "alias": null
+      },
+      {
+        "path": "font.weight.bold",
+        "after": "700",
+        "alias": null
+      },
+      {
+        "path": "font.weight.regular",
+        "after": "400",
+        "alias": null
+      },
+      {
+        "path": "font.weight.semibold",
+        "after": "600",
+        "alias": null
+      },
+      {
+        "path": "icon.size.lg",
+        "after": "17.5",
+        "alias": null
+      },
+      {
+        "path": "icon.size.md",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "icon.size.sm",
+        "after": "12.25",
+        "alias": null
+      },
+      {
+        "path": "icon.size.xl",
+        "after": "21",
+        "alias": null
+      },
+      {
+        "path": "icon.size.xs",
+        "after": "10.5",
+        "alias": null
+      },
+      {
+        "path": "letter.spacing.0",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "line.height.16",
+        "after": "16.002",
+        "alias": null
+      },
+      {
+        "path": "line.height.18",
+        "after": "18.004",
+        "alias": null
+      },
+      {
+        "path": "line.height.20",
+        "after": "20.006",
+        "alias": null
+      },
+      {
+        "path": "line.height.22",
+        "after": "21.994",
+        "alias": null
+      },
+      {
+        "path": "line.height.24",
+        "after": "23.996",
+        "alias": null
+      },
+      {
+        "path": "line.height.28",
+        "after": "28",
+        "alias": null
+      },
+      {
+        "path": "line.height.36",
+        "after": "35.994",
+        "alias": null
+      },
+      {
+        "path": "line.height.40",
+        "after": "39.998",
+        "alias": null
+      },
+      {
+        "path": "line.height.48",
+        "after": "48.006",
+        "alias": null
+      },
+      {
+        "path": "opacity.divider",
+        "after": "0.5",
+        "alias": null
+      },
+      {
+        "path": "paragraph.spacing.0",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "radius.2xl",
+        "after": "16",
+        "alias": null
+      },
+      {
+        "path": "radius.nav.shell.item",
+        "after": "10",
+        "alias": null
+      },
+      {
+        "path": "radius.pill",
+        "after": "9999",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.details.category.label.min",
+        "after": "60",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.details.detail.column.min",
+        "after": "360",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.details.documents.column.min",
+        "after": "320",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.details.documents.header.actions.min",
+        "after": "280",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.details.documents.search.max",
+        "after": "220",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.detail.label.width",
+        "after": "124",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.message.pulse.spread",
+        "after": "8",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.action.h",
+        "after": "27",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.action.lg.w",
+        "after": "147",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.action.sm.w",
+        "after": "57",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.btn.md.h",
+        "after": "32",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.btn.md.w",
+        "after": "171",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.btn.sm.w",
+        "after": "143",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.cert.title.h",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.cert.title.w",
+        "after": "86",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.detail.row.h",
+        "after": "26",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.heading.h",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.heading.w",
+        "after": "72",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.step.h",
+        "after": "32",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.step.w",
+        "after": "148",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.tag.h",
+        "after": "23",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.tag.w",
+        "after": "89",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.title.h",
+        "after": "32",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.document.detail.skeleton.title.w",
+        "after": "604",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.documents.filter.control",
+        "after": "31",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.documents.filter.date.field",
+        "after": "280",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.documents.filter.field",
+        "after": "250",
+        "alias": null
+      },
+      {
+        "path": "size.affiliate.search.panel.max",
+        "after": "385",
+        "alias": null
+      },
+      {
+        "path": "size.avatar",
+        "after": "32",
+        "alias": null
+      },
+      {
+        "path": "size.delay.prediction.menu.button",
+        "after": "39.998",
+        "alias": null
+      },
+      {
+        "path": "size.detail.list.label.width",
+        "after": "160",
+        "alias": null
+      },
+      {
+        "path": "size.docs.card.min",
+        "after": "224",
+        "alias": null
+      },
+      {
+        "path": "size.docs.diagram.min",
+        "after": "560",
+        "alias": null
+      },
+      {
+        "path": "size.docs.edge.halo",
+        "after": "6",
+        "alias": null
+      },
+      {
+        "path": "size.docs.edge.stroke",
+        "after": "2",
+        "alias": null
+      },
+      {
+        "path": "size.docs.hero.lead.max",
+        "after": "560",
+        "alias": null
+      },
+      {
+        "path": "size.docs.hero.logo.h",
+        "after": "35",
+        "alias": null
+      },
+      {
+        "path": "size.docs.releases.head",
+        "after": "24.5",
+        "alias": null
+      },
+      {
+        "path": "size.docs.steps.index",
+        "after": "24.5",
+        "alias": null
+      },
+      {
+        "path": "size.docs.stroke",
+        "after": "1.5",
+        "alias": null
+      },
+      {
+        "path": "size.docs.swatch",
+        "after": "12.25",
+        "alias": null
+      },
+      {
+        "path": "size.drawer.min.width",
+        "after": "280",
+        "alias": null
+      },
+      {
+        "path": "size.empty.state.art.h",
+        "after": "224",
+        "alias": null
+      },
+      {
+        "path": "size.empty.state.art.w",
+        "after": "238",
+        "alias": null
+      },
+      {
+        "path": "size.form.field.label.min.width",
+        "after": "112",
+        "alias": null
+      },
+      {
+        "path": "size.list.count.badge.min",
+        "after": "24",
+        "alias": null
+      },
+      {
+        "path": "size.list.icon",
+        "after": "24",
+        "alias": null
+      },
+      {
+        "path": "size.list.timeline.cap.arrow",
+        "after": "4.5",
+        "alias": null
+      },
+      {
+        "path": "size.list.timeline.cap.marker",
+        "after": "4",
+        "alias": null
+      },
+      {
+        "path": "size.list.timeline.gutter",
+        "after": "64",
+        "alias": null
+      },
+      {
+        "path": "size.list.timeline.width",
+        "after": "6",
+        "alias": null
+      },
+      {
+        "path": "size.nav.shell.icon",
+        "after": "20",
+        "alias": null
+      },
+      {
+        "path": "size.nav.shell.label.max",
+        "after": "168",
+        "alias": null
+      },
+      {
+        "path": "size.nav.shell.logomark",
+        "after": "24",
+        "alias": null
+      },
+      {
+        "path": "size.nav.shell.trailing.icon",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.padding",
+        "after": "17.5",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.action.h",
+        "after": "27",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.identifier.h",
+        "after": "35",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.identifier.w.1",
+        "after": "126",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.identifier.w.2",
+        "after": "127",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.identifier.w.3",
+        "after": "263",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.identifier.w.4",
+        "after": "161",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.info.tags.h",
+        "after": "30",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.info.tags.min.w",
+        "after": "185",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.status.w",
+        "after": "171",
+        "alias": null
+      },
+      {
+        "path": "size.profile.card.skeleton.title.w",
+        "after": "180",
+        "alias": null
+      },
+      {
+        "path": "size.sub.nav.shell.item.icon",
+        "after": "20",
+        "alias": null
+      },
+      {
+        "path": "size.sub.nav.shell.width",
+        "after": "248",
+        "alias": null
+      },
+      {
+        "path": "size.token.explorer.filter.min",
+        "after": "196",
+        "alias": null
+      },
+      {
+        "path": "size.token.explorer.focus.travel",
+        "after": "35",
+        "alias": null
+      },
+      {
+        "path": "size.token.explorer.preview",
+        "after": "42",
+        "alias": null
+      },
+      {
+        "path": "size.token.explorer.search.max",
+        "after": "364",
+        "alias": null
+      },
+      {
+        "path": "size.top.nav.action.button",
+        "after": "40",
+        "alias": null
+      },
+      {
+        "path": "size.top.nav.action.icon",
+        "after": "20",
+        "alias": null
+      },
+      {
+        "path": "size.top.nav.height",
+        "after": "52",
+        "alias": null
+      },
+      {
+        "path": "size.top.nav.search.width",
+        "after": "240",
+        "alias": null
+      },
+      {
+        "path": "space.accordion.bordered.padding",
+        "after": "17",
+        "alias": null
+      },
+      {
+        "path": "space.affiliate.details.card.header.padding",
+        "after": "20",
+        "alias": null
+      },
+      {
+        "path": "space.affiliate.documents.toolbar.inner.padding",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "space.datatable.actions.col.padding",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "space.form.field.gap.xs",
+        "after": "7",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.item.gap.inner",
+        "after": "10",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.item.px",
+        "after": "10",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.item.py",
+        "after": "9",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.list.gap",
+        "after": "16",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.list.px",
+        "after": "6",
+        "alias": null
+      },
+      {
+        "path": "space.nav.shell.section.gap",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "space.profile.card.header.inner.gap",
+        "after": "8.75",
+        "alias": null
+      },
+      {
+        "path": "space.sub.nav.shell.header.h",
+        "after": "52",
+        "alias": null
+      },
+      {
+        "path": "space.sub.nav.shell.section.px",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "space.tab.padding.inline",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "space.top.nav.action.padding",
+        "after": "10",
+        "alias": null
+      },
+      {
+        "path": "space.top.nav.inline",
+        "after": "20",
+        "alias": null
+      },
+      {
+        "path": "spacing.0",
+        "after": "0",
+        "alias": null
+      },
+      {
+        "path": "spacing.1.5",
+        "after": "10.5",
+        "alias": null
+      },
+      {
+        "path": "spacing.2",
+        "after": "14",
+        "alias": null
+      },
+      {
+        "path": "spacing.3",
+        "after": "21",
+        "alias": null
+      },
+      {
+        "path": "spacing.4",
+        "after": "28",
+        "alias": null
+      },
+      {
+        "path": "spacing.5",
+        "after": "35",
+        "alias": null
+      },
+      {
+        "path": "spacing.6",
+        "after": "42",
+        "alias": null
+      },
+      {
+        "path": "spacing.7",
+        "after": "49",
+        "alias": null
+      },
+      {
+        "path": "spacing.unit",
+        "after": "7",
+        "alias": null
+      },
+      {
+        "path": "text.delay.prediction.metric.line.height",
+        "after": "32.004",
+        "alias": null
+      },
+      {
+        "path": "text.delay.prediction.metric.size",
+        "after": "25.998",
+        "alias": null
+      },
+      {
+        "path": "text.profile.card.shortcut.badge.line.height",
+        "after": "1",
+        "alias": null
+      },
+      {
+        "path": "text.profile.card.shortcut.badge.size",
+        "after": "10",
+        "alias": null
+      },
+      {
+        "path": "z.sticky",
+        "after": "10",
+        "alias": null
+      }
+    ],
     "removed": []
   },
   "checks": [
@@ -93,6 +956,7 @@ export const SYNC_REPORT: SyncReport = {
       "items": []
     }
   ],
+  "stage": "proposed",
   "result": "promote",
   "resultText": "A promotion pull request is opened for developer review. Nothing changes in the published packages until it is merged."
 };
