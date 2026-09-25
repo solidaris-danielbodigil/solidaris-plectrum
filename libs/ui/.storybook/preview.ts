@@ -16,7 +16,7 @@ import {
   readStoredPresetVersion,
   writeStoredPresetVersion,
   type PlectrumPresetVersion,
-} from '@solidaris/plectrum';
+} from '@solidaris-danielbodigil/plectrum';
 import {
   PdsLocaleService,
   providePdsLocale,

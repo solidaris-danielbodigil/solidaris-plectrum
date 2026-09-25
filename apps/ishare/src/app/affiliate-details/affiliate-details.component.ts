@@ -42,8 +42,8 @@ import {
   type ProfileDrawerData,
   type ProfileDrawerRelatedMember,
   type ProfileDrawerView,
-} from '@solidaris/ui';
-import { TransactionsCicsModalComponent } from '@solidaris/ui/patterns/ishare';
+} from '@solidaris-danielbodigil/ui';
+import { TransactionsCicsModalComponent } from '@solidaris-danielbodigil/ui/patterns/ishare';
 import type {
   ProfileCardIdentifier,
   ProfileCardInfoTag,
@@ -54,7 +54,7 @@ import type {
   ListEntryTag,
   ListEntryTagTarget,
   ListGroup,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { isSimulatedAffiliateLoadingEnabled } from '../layout/is-simulated-affiliate-loading-enabled';
 import { BreadcrumbService } from '../layout/breadcrumb.service';

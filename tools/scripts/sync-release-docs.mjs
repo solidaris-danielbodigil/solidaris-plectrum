@@ -28,8 +28,8 @@ const updates = [
     `${name.replace(/^@/, '').replace('/', '-')}-${version}.tgz`,
   ]),
   [
-    /solidaris-plectrum-devkit-[^\s/]+\.tgz/,
-    `solidaris-plectrum-devkit-${toolkit.version}.tgz`,
+    /solidaris(?:-danielbodigil)?-plectrum-devkit-[^\s/]+\.tgz/,
+    `${toolkit.name.replace(/^@/, '').replace('/', '-')}-${toolkit.version}.tgz`,
   ],
 ];
 

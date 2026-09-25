@@ -6,7 +6,7 @@ export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
-    "packageName": "@solidaris/ui",
+    "packageName": "@solidaris-danielbodigil/ui",
     "version": "2.0.1",
     "changes": [
       {
@@ -17,7 +17,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/ui",
+    "packageName": "@solidaris-danielbodigil/ui",
     "version": "2.0.0",
     "changes": [
       {
@@ -28,7 +28,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/ui",
+    "packageName": "@solidaris-danielbodigil/ui",
     "version": "1.0.0",
     "changes": [
       {
@@ -51,7 +51,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/plectrum",
+    "packageName": "@solidaris-danielbodigil/plectrum",
     "version": "2.0.1",
     "changes": [
       {
@@ -62,13 +62,13 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/plectrum",
+    "packageName": "@solidaris-danielbodigil/plectrum",
     "version": "2.0.0",
     "changes": [],
     "notes": ""
   },
   {
-    "packageName": "@solidaris/plectrum",
+    "packageName": "@solidaris-danielbodigil/plectrum",
     "version": "1.0.0",
     "changes": [
       {
@@ -91,7 +91,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/styles",
+    "packageName": "@solidaris-danielbodigil/styles",
     "version": "2.0.1",
     "changes": [
       {
@@ -102,13 +102,13 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris/styles",
+    "packageName": "@solidaris-danielbodigil/styles",
     "version": "2.0.0",
     "changes": [],
     "notes": ""
   },
   {
-    "packageName": "@solidaris/styles",
+    "packageName": "@solidaris-danielbodigil/styles",
     "version": "1.0.0",
     "changes": [
       {

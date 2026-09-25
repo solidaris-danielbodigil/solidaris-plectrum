@@ -105,7 +105,7 @@ describe('docs figures', () => {
       expect(
         docsHeroVersionLine([
           {
-            packageName: '@solidaris/ui',
+            packageName: '@solidaris-danielbodigil/ui',
             version: '0.1.0',
             changes: [],
             notes: '',

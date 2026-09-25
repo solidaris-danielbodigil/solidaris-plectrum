@@ -1,7 +1,7 @@
 import type {
   ListEntryTag,
   ListEntryTagTarget,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { EVA_MARTINEZ_DOCUMENT_DETAILS } from './affiliate-document-detail.mock';
 import {
   COMMENT_ICONS,

@@ -1,9 +1,10 @@
 {
-  "name": "@solidaris/plectrum-devkit",
+  "name": "@solidaris-danielbodigil/plectrum-devkit",
   "version": "0.2.0",
   "type": "module",
   "private": false,
   "description": "Portable Plectrum contracts and contributor CLI for application teams",
+  "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "bin": { "plectrum": "./bin/plectrum.mjs" },
   "exports": {
     "./catalogue": "./assets/catalogue.json",
@@ -17,5 +18,5 @@
   "engines": { "node": "^20.19.0 || ^22.12.0 || ^24.0.0" },
   "dependencies": { "ajv": "^8.18.0", "semver": "^7.8.5" },
   "peerDependencies": { "typescript": ">=5.8 <6" },
-  "publishConfig": { "access": "restricted" }
+  "publishConfig": { "registry": "https://npm.pkg.github.com", "access": "restricted" }
 }

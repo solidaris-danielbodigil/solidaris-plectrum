@@ -6,7 +6,7 @@ import { readRegistry } from '../contracts/validate';
 import { inventory } from '../contracts/inventory';
 
 export const STALE_AFTER_DAYS = 14;
-const requiredPackages = ['@solidaris/ui', '@solidaris/plectrum', '@solidaris/styles'];
+const requiredPackages = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
 
 export type AdoptionReport = ReturnType<typeof adoptionReportSchema.parse>;
 
