@@ -30,6 +30,7 @@ jobs:
             echo "has_tokens=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          node tools/tokens/staging-gate.mjs --intent libs/plectrum/sync-release-intent.json libs/plectrum/sync/tokens.json
           cp libs/plectrum/sync/tokens.json libs/plectrum/src/tokens.json
           echo "has_tokens=true" >> "$GITHUB_OUTPUT"
 
@@ -61,7 +62,7 @@ jobs:
             exit 0
           fi
           mkdir -p libs/plectrum/src/Plectrum_v1
-          rsync -a --exclude .gitkeep libs/plectrum/sync/theme/ libs/plectrum/src/Plectrum_v1/
+          rsync -a --exclude .gitkeep --exclude ts/extend.ts libs/plectrum/sync/theme/ libs/plectrum/src/Plectrum_v1/
           echo "Theme promoted. Hand-fixes remain in Plectrum_v1/ts/extend.ts."
 
       # Human-readable summary: what changed, which checks passed, what happens next.
@@ -98,9 +99,27 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git checkout -B tokens/promote-staging
-          git add -A
-          git commit -m 'chore(tokens): promote plugin staging into tokens.json' \
+          snap="$RUNNER_TEMP/promote"
+          rm -rf "$snap"
+          mkdir -p "$snap"
+          copy() { if [ -e "$1" ]; then mkdir -p "$snap/$(dirname "$1")"; cp -a "$1" "$snap/$1"; fi; }
+          copy libs/plectrum/src/tokens.json
+          copy libs/plectrum/sync-release-intent.json
+          copy libs/ui/src/storybook/tokens.generated.ts
+          copy libs/ui/src/storybook/sync-report.generated.ts
+          for file in libs/styles/src/01-settings/_settings.*.generated.scss; do copy "$file"; done
+          if [ "${{ steps.theme.outcome }}" = "success" ]; then
+            while IFS= read -r -d '' file; do
+              rel="libs/plectrum/src/Plectrum_v1/${file#libs/plectrum/sync/theme/}"
+              copy "$rel"
+            done < <(find libs/plectrum/sync/theme -type f ! -name .gitkeep ! -path '*/ts/extend.ts' -print0)
+          fi
+          git fetch --no-tags origin main
+          git checkout -B tokens/promote-staging origin/main
+          cp -a "$snap/." .
+          git add -- libs/plectrum/src/tokens.json libs/plectrum/sync-release-intent.json libs/ui/src/storybook/tokens.generated.ts libs/ui/src/storybook/sync-report.generated.ts libs/styles/src/01-settings
+          if [ -d libs/plectrum/src/Plectrum_v1 ]; then git add -- libs/plectrum/src/Plectrum_v1; fi
+          git commit -m 'chore(tokens): promote pinned Figma staging' \
             || echo 'Nothing generated beyond the staging commit.'
           git push --force origin tokens/promote-staging
           url="$(gh pr list --head tokens/promote-staging --base main --state open --json url --jq '.[0].url')"
