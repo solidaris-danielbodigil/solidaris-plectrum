@@ -2,20 +2,20 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "clear-pattern-boundaries",
-    "bumps": [
-      {
-        "packageName": "@solidaris/ui",
-        "bump": "major"
-      }
-    ],
-    "summary": "Move iSHARE-specific components out of the core entry point. Import `DelayPredictionCardComponent` and `TransactionsCicsModalComponent` from `@solidaris/ui/patterns/ishare` instead of `@solidaris/ui`.\n\nGenerate runtime exports from component governance and distribution metadata. Candidates remain local. Workspace metadata imports move to the generated Storybook registry or the colocated metadata source; they are not part of the Angular runtime API."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris/ui",
+    "version": "2.0.0",
+    "changes": [
+      {
+        "bump": "major",
+        "text": "4020736: Move iSHARE-specific components out of the core entry point. Import `DelayPredictionCardComponent` and `TransactionsCicsModalComponent` from `@solidaris/ui/patterns/ishare` instead of `@solidaris/ui`. Generate runtime exports from component governance and distribution metadata. Candidates remain local. Workspace metadata imports move to the generated Storybook registry or the colocated metadata source; they are not part of the Angular runtime API."
+      }
+    ],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris/ui",
     "version": "1.0.0",
@@ -41,6 +41,12 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   },
   {
     "packageName": "@solidaris/plectrum",
+    "version": "2.0.0",
+    "changes": [],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris/plectrum",
     "version": "1.0.0",
     "changes": [
       {
@@ -60,6 +66,12 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
       }
     ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris/styles",
+    "version": "2.0.0",
+    "changes": [],
     "notes": ""
   },
   {
