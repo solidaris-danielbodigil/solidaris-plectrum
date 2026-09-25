@@ -143,6 +143,29 @@ export const candidatePromotionSchema = z.strictObject({
     figma: reference,
   }),
 });
+export const candidateFigmaReturnSchema = z.strictObject({
+  schemaVersion,
+  id: text,
+  sourceRevision: revision,
+  proposalRevision: revision,
+  branch: z.strictObject({
+    mainFileKey: text,
+    branchFileKey: text,
+    name: text,
+    collectionId: text,
+  }),
+  tokenMappings: z.array(z.strictObject({
+    cssVar: z.string().regex(/^--pds-[a-z0-9-]+$/),
+    figmaName: text,
+    variableId: text,
+  })),
+  componentNodeUrl: z.url(),
+  designReviewUrl: z.url(),
+  branchMergeUrl: z.url(),
+  publicationUrl: z.url(),
+  returnExport: reference,
+  recordedAt: z.iso.datetime(),
+});
 export const adoptionReportSchema = z.strictObject({
   schemaVersion,
   application: text,
@@ -216,6 +239,7 @@ export const exchangeSchemas = {
   submission: candidateSubmissionSchema,
   candidateReview: candidateReviewSchema,
   candidatePromotion: candidatePromotionSchema,
+  candidateFigmaReturn: candidateFigmaReturnSchema,
   adoption: adoptionReportSchema,
   compatibility: compatibilitySchema,
   contracts: publishedContractSchema,

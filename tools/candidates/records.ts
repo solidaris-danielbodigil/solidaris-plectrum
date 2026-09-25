@@ -7,6 +7,7 @@ import {
   candidateSubmissionSchema,
   candidateReviewSchema,
   candidatePromotionSchema,
+  candidateFigmaReturnSchema,
   type Registry,
 } from '../../.ai/contracts/schema/exchange.schema';
 import { readRegistry, validateMetadata } from '../contracts/validate';
@@ -15,6 +16,7 @@ export type Proposal = z.infer<typeof proposalSchema>;
 export type Submission = z.infer<typeof candidateSubmissionSchema>;
 export type CandidateReview = z.infer<typeof candidateReviewSchema>;
 export type CandidatePromotion = z.infer<typeof candidatePromotionSchema>;
+export type CandidateFigmaReturn = z.infer<typeof candidateFigmaReturnSchema>;
 
 function records<T>(root: string, folder: string, schema: z.ZodType<T>): Map<string, T> {
   const directory = path.join(root, '.ai/candidates', folder);
@@ -71,6 +73,7 @@ export function readCandidateRecords(root: string) {
   const submissions = records(root, 'submissions', candidateSubmissionSchema);
   const reviews = records(root, 'reviews', candidateReviewSchema);
   const promotions = records(root, 'promotions', candidatePromotionSchema);
+  const figmaReturns = records(root, 'figma-returns', candidateFigmaReturnSchema);
   for (const proposal of proposals.values()) validateProposal(proposal, registry);
   for (const submission of submissions.values()) {
     const proposal = proposals.get(submission.proposalId);
@@ -89,5 +92,19 @@ export function readCandidateRecords(root: string) {
     const review = reviews.get(promotion.id);
     if (!submission || !review || review.decision !== 'accepted' || submission.operation === 'withdraw' || review.sourceRevision !== submission.origin.revision || promotion.sourceRevision !== submission.origin.revision || promotion.sourceComponentId !== submission.componentId || promotion.coreComponentId !== submission.componentId || !promotion.integrationPullRequestUrl.startsWith(`${registry.repository}/pull/`)) throw new Error(`${promotion.id}: promotion does not match accepted submission or stable component ID`);
   }
-  return { proposals, submissions, reviews, promotions, registry };
+  for (const handoff of figmaReturns.values()) {
+    const promotion = promotions.get(handoff.id);
+    if (!promotion || handoff.sourceRevision !== promotion.sourceRevision) throw new Error(`${handoff.id}: Figma return does not match a promotion and its source revision`);
+    if (handoff.branch.mainFileKey !== registry.operations.figma.tokenLibrary || [registry.operations.figma.tokenLibrary, registry.operations.figma.componentLibrary].includes(handoff.branch.branchFileKey) || !handoff.branch.name.startsWith(registry.operations.figma.proposalCollectionPrefix)) throw new Error(`${handoff.id}: Figma return must target a verified proposal branch, not a main library`);
+    const componentUrl = new URL(handoff.componentNodeUrl);
+    if (!['figma.com', 'www.figma.com'].includes(componentUrl.hostname) || !componentUrl.pathname.includes(`/branch/${handoff.branch.branchFileKey}/`) || !componentUrl.searchParams.has('node-id')) throw new Error(`${handoff.id}: component URL must identify a node in the proposal branch`);
+    for (const url of [handoff.designReviewUrl, handoff.branchMergeUrl, handoff.publicationUrl]) {
+      if (!['figma.com', 'www.figma.com'].includes(new URL(url).hostname)) throw new Error(`${handoff.id}: design review, merge and publication evidence must be Figma URLs`);
+    }
+    if (!handoff.returnExport.url.startsWith(`${registry.repository}/pull/`)) throw new Error(`${handoff.id}: return export must link a central sync PR`);
+    const cssVars = handoff.tokenMappings.map((entry) => entry.cssVar);
+    const variableIds = handoff.tokenMappings.map((entry) => entry.variableId);
+    if (new Set(cssVars).size !== cssVars.length || new Set(variableIds).size !== variableIds.length) throw new Error(`${handoff.id}: duplicate token mapping`);
+  }
+  return { proposals, submissions, reviews, promotions, figmaReturns, registry };
 }

@@ -1,4 +1,5 @@
 export const MAIN_FILE_KEY: string;
+export const COMPONENT_LIBRARY_FILE_KEY: string;
 export const REM_IN_PX: number;
 
 export interface FigmaRgba {

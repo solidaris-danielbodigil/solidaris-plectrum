@@ -33,14 +33,14 @@ todos:
     content: "P9: prove both complete journeys in an external consumer, migrate existing content and document recovery"
     status: pending
   - id: restore-main-review
-    content: "After the plan build: restore main review — one Code Owner approval, stale-review dismissal, admin enforcement"
-    status: pending
+    content: "Restore main review — one Code Owner approval, stale-review dismissal, admin enforcement"
+    status: completed
 isProject: false
 ---
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); promotion and an external application are not planned. P4 catalogue labelling is on `main`; an external adoption report is not planned. P5 has one live Figma plugin promotion on `main` at package version 2.0.1; packages are not published. P6–P9 remain pending. Main review is suspended until the plan build finishes.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1; packages are not published. P6–P9 remain pending. Required Code Owner review on `main` has been restored.
 
 ## Outcome
 
@@ -394,21 +394,16 @@ PR #10 does not publish packages. GitHub held its CI for approval because `githu
 
 ## Progress — 2026-09-25
 
-P3. `ishare-temporary-probe` was submitted (PR #14), revised (PR #16) and withdrawn (PR #18). Find a component listed it, then dropped it after withdrawal. The id stays reserved. No external application and no Core promotion are planned.
+P3. `ishare-temporary-probe` was submitted (PR #14), revised (PR #16) and withdrawn (PR #18). Find a component listed it, then dropped it after withdrawal. The id stays reserved. A registered external application's candidate and a reviewed Core promotion remain required to complete P3 and the full P9 journey.
 
-P4. Adoption reports are collected by a reviewed pull request, and only when `reporting.enabled` is true. Find a component shows local iSHARE and iGED usage as `demo` and names applications without a report. An external report is not planned.
+P4. Adoption reports are collected by a reviewed pull request, and only when `reporting.enabled` is true. Find a component shows local iSHARE and iGED usage as `demo` and names applications without a report. A newer, complete report from a registered external application must still prove appearance, removal and freshness in the live catalogue.
 
 P5. The PrimeUI plugin push on 2026-09-25 reached `design-tokens/sync`. The promotion was rebuilt from `main`, kept `extend.ts`, pinned provenance from the export commit, passed audit and preset validation, and merged as PR #25 (`6094cfa`). A patch changeset shipped in PR #26: `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles` are **2.0.1**. Publishing stayed off, so this sync is merged, not released. An empty promotion push must fail instead of force-pushing `main`, and the changelog feed is rebuilt before that commit. `design-tokens/sync` has to contain current `main` or the next plugin push runs an old workflow. The Figma branch `proposals/plectrum` is open for P6 and is not the inbound path.
 
-Still open: P6 on `proposals/plectrum` (repo to Figma, no write done yet), P7 registry credentials, P8 shared-source docs, P9, and restoring main review.
+Still open: P6 on `proposals/plectrum` (repo to Figma, no write done yet), P7 registry credentials, P8 shared-source docs and P9. Read-only Figma inspection confirmed that the configured token file `YNZ1DlSjDNUXrvkxlSp10D` and component library `wjMnb8GsK8bVKA7UreOJ4L` are distinct files with local variable collections. Their design-owner and publication roles, and the proposal branch key, still need confirmation before a write.
 
-## Restore main review
+P6 preparation now uses the registry's Figma file identities in the plugin and parked REST workflow instead of a repeated main-file literal. The plugin refuses writes to either configured main library. The process contract separates preliminary design feasibility from final approval and identifies the branch, mapping, publication and return-export evidence. A versioned `candidateFigmaReturn` record is validated against a Core promotion and its source revision; its component link must address the proposal branch, and its return export must link a central sync PR. No record is created until a real attended design review and return export exist.
 
-Suspended 2026-09-25 so plan pull requests can merge without a second account. Required approvals are 0 and Code Owner review is off. These settings stay in force: a pull request, strict passing checks for `intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed` and `figma-plugin`, conversation resolution, no force-push, and admin enforcement.
+## Main review protection
 
-Restore before calling the plan finished:
-
-- One required approving review.
-- Code Owner review from `@solidaris-danielbodigil` or `@danielbodi`.
-- Stale review dismissal.
-- The same six required checks, strict, with admin enforcement left on.
+Review was temporarily suspended on 2026-09-25 while the plan PRs merged. It was restored before P6 work: one required approving Code Owner review, stale-review dismissal, the six strict required checks (`intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed`, `figma-plugin`) and admin enforcement. GitHub's protection API confirmed these settings after the change.

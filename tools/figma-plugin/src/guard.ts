@@ -1,4 +1,4 @@
-import { MAIN_FILE_KEY } from '../../tokens/figma-values.mjs';
+import { COMPONENT_LIBRARY_FILE_KEY, MAIN_FILE_KEY } from '../../tokens/figma-values.mjs';
 
 export function refuseWrite(
   fileKey: string | null | undefined,
@@ -17,10 +17,10 @@ export function refuseWrite(
         'figma.fileKey is unavailable. Import or publish this plugin privately (enablePrivatePluginApi) and open a Figma branch — never the main UI Kit.',
     };
   }
-  if (fileKey === MAIN_FILE_KEY) {
+  if (fileKey === MAIN_FILE_KEY || fileKey === COMPONENT_LIBRARY_FILE_KEY) {
     return {
       blocked: true,
-      reason: `Resolved key is the main file (${MAIN_FILE_KEY}). Refusing to write to main. Open the Figma branch proposals/{app}.`,
+      reason: `Resolved key is a configured main file (${fileKey}). Refusing to write to main. Open the Figma branch proposals/{app}.`,
     };
   }
   return { blocked: false, reason: null };

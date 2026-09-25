@@ -32,6 +32,17 @@ test('external candidate records retain identity, revision and ownership across 
     const review = candidateRecordFromFlags(root, 'review', ['--id', 'app-card', '--decision', 'accepted', '--pull-request', `${registry.repository}/pull/1`, '--reviewed-by', '@danielbodi', '--note', 'Source and preview reviewed']) as { sourceRevision: string; reviewedBy: string };
     assert.equal(review.sourceRevision, sha);
     assert.equal(review.reviewedBy, '@danielbodi');
+    write('.ai/candidates/reviews/app-card.json', review);
+    const evidence = { url: `${registry.repository}/pull/2`, revision: sha };
+    write('.ai/candidates/promotions/app-card.json', { schemaVersion: 1, id: 'app-card', sourceComponentId: 'team:card', coreComponentId: 'team:card', integrationPullRequestUrl: `${registry.repository}/pull/2`, sourceRevision: sha, review: Object.fromEntries(['api', 'tokens', 'dependencies', 'i18n', 'accessibility', 'figma'].map((name) => [name, evidence])) });
+    const figmaReturn = { schemaVersion: 1, id: 'app-card', sourceRevision: sha, proposalRevision: 'b'.repeat(40), branch: { mainFileKey: registry.operations.figma.tokenLibrary, branchFileKey: 'BranchKey', name: 'proposals/plectrum', collectionId: 'VariableCollectionId:1:2' }, tokenMappings: [{ cssVar: '--pds-color-example', figmaName: 'color/example', variableId: 'VariableID:1:2' }], componentNodeUrl: `https://www.figma.com/design/${registry.operations.figma.tokenLibrary}/branch/BranchKey/Proposal?node-id=1-2`, designReviewUrl: 'https://www.figma.com/design/main/review', branchMergeUrl: 'https://www.figma.com/design/main/merge', publicationUrl: 'https://www.figma.com/design/main/published', returnExport: { url: `${registry.repository}/pull/3`, revision: 'c'.repeat(40) }, recordedAt: '2026-09-25T00:00:00.000Z' };
+    write('.ai/candidates/figma-returns/app-card.json', figmaReturn);
+    assert.equal(readCandidateRecords(root).figmaReturns.size, 1);
+    write('.ai/candidates/figma-returns/app-card.json', { ...figmaReturn, branch: { ...figmaReturn.branch, branchFileKey: registry.operations.figma.tokenLibrary } });
+    assert.throws(() => readCandidateRecords(root), /verified proposal branch/);
+    fs.rmSync(path.join(root, '.ai/candidates/figma-returns/app-card.json'));
+    fs.rmSync(path.join(root, '.ai/candidates/promotions/app-card.json'));
+    fs.rmSync(path.join(root, '.ai/candidates/reviews/app-card.json'));
     fs.mkdirSync(path.join(root, 'libs/ui/src/storybook'), { recursive: true });
     generateCandidateListing(root);
     assert.match(fs.readFileSync(path.join(root, 'libs/ui/src/storybook/candidate-data.generated.ts'), 'utf8'), /"reviewState": "submitted"/);

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "contexts": {
     "plectrum": {
       "root": "Plectrum checkout",
@@ -247,16 +247,19 @@
       "owner": "designer",
       "repository": "plectrum",
       "prerequisites": [
-        "accepted implementation"
+        "accepted implementation",
+        "reviewed token proposal"
       ],
       "inputs": [
         "source revision",
-        "token proposal"
+        "pinned token proposal revision",
+        "verified proposal branch and collection"
       ],
       "outputs": [
-        "Figma review",
+        "token mapping and component node URL",
+        "design approval and branch merge",
         "library publication",
-        "return export"
+        "validated return export"
       ],
       "commands": [
         "tokensPropose"
@@ -374,7 +377,7 @@
       "role": "core",
       "evidence": [
         "code-review",
-        "design-review"
+        "design-feasibility-review"
       ]
     },
     {
@@ -382,6 +385,10 @@
       "to": "figma-reviewed",
       "role": "designer",
       "evidence": [
+        "token-mapping",
+        "component-node",
+        "design-approval",
+        "branch-merge",
         "figma-publication",
         "return-export"
       ]

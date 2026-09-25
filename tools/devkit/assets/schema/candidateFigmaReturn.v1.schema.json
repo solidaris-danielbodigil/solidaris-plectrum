@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRevision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "proposalRevision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "branch": {
+      "type": "object",
+      "properties": {
+        "mainFileKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branchFileKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "collectionId": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "mainFileKey",
+        "branchFileKey",
+        "name",
+        "collectionId"
+      ],
+      "additionalProperties": false
+    },
+    "tokenMappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cssVar": {
+            "type": "string",
+            "pattern": "^--pds-[a-z0-9-]+$"
+          },
+          "figmaName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "variableId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "cssVar",
+          "figmaName",
+          "variableId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "componentNodeUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "designReviewUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "branchMergeUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "publicationUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "returnExport": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "url",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "sourceRevision",
+    "proposalRevision",
+    "branch",
+    "tokenMappings",
+    "componentNodeUrl",
+    "designReviewUrl",
+    "branchMergeUrl",
+    "publicationUrl",
+    "returnExport",
+    "recordedAt"
+  ],
+  "additionalProperties": false,
+  "$id": "urn:plectrum:schema:candidateFigmaReturn:1"
+}

@@ -8,7 +8,7 @@
 
 On the Organization plan, repository → Figma uses the Plugin API (`figma.variables` and the rest of the Plugin API). Two attended front doors share that API:
 
-1. **Agent + Figma MCP** (`use_figma`) — default when an agent session is running. Upsert selected tokens from `proposed.dtcg.json`. After a candidate is promoted to `core`, the same session may build the Figma component from the repo (variables first, then frames bound to those variables).
+1. **Agent + Figma MCP** (`use_figma`) — default when an agent session is running. Upsert selected tokens from a pinned, reviewed proposal. After the candidate's implementation is integrated into Core, the same session may build the Figma component from the repo (variables first, then frames bound to those variables). Code integration alone does not assert final design approval or library publication; record those facts and the validated return export in `.ai/candidates/figma-returns/<id>.json`.
 2. **Plectrum tokens plugin** — fallback when no agent is available. Tokens only: fetch, select, apply on `proposals/{app}`.
 3. **A human** may still draw the Figma component by hand instead of the agent. Both are valid.
 

@@ -75,9 +75,9 @@
       "identitiesVerifiedForPublication": false
     },
     "pending": [
-      "Merge generated CODEOWNERS and P3 CI jobs to main; verify a reviewed candidate PR",
+      "Prove candidate promotion and adoption from a registered external application",
       "Verify token/component Figma library identities with design owners",
-      "Configure authenticated external reporting in P4",
+      "Confirm external reporting after a registered application's reviewed report",
       "Migrate package scopes and verify publication in P7"
     ]
   }

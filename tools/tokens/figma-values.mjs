@@ -3,7 +3,10 @@
  * Used by the parked REST apply path and the Plectrum tokens plugin.
  */
 
-export const MAIN_FILE_KEY = 'YNZ1DlSjDNUXrvkxlSp10D';
+import registry from '../../.ai/contracts/registry.json' with { type: 'json' };
+
+export const MAIN_FILE_KEY = registry.operations.figma.tokenLibrary;
+export const COMPONENT_LIBRARY_FILE_KEY = registry.operations.figma.componentLibrary;
 export const REM_IN_PX = 14;
 
 /**
