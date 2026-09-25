@@ -80,7 +80,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Download `.ai`, `.cursor/agents` and `.github/agents` from the design-system repository into this repository so agents can load them.',
+      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
     links: [
       {
         label: 'Build with Plectrum',
