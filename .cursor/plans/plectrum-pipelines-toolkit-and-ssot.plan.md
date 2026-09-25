@@ -37,7 +37,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 implementation is on `main` via PR #8; its live external candidate and promotion are still unproven, so P3 stays open. After that merge, CI and Pages succeeded and Release failed. The version-PR fix is PR #9: required checks are green, merge is waiting on a fresh code-owner approval. P4–P9 remain pending. Publishing stays disabled.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 implementation is on `main` via PR #8; its live external candidate and promotion are still unproven, so P3 stays open. PR #9 is merged. Its follow-up on `main` passed CI and Pages, and Release opened the version PR #10. Publishing stays disabled. P4–P9 remain pending.
 
 ## Outcome
 
@@ -362,7 +362,17 @@ PR #8 merge commit `00f9552` on `main` triggered three workflows:
 | Deploy GitHub Pages | [36108738139](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36108738139) | Success. |
 | Release | [36108738042](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36108738042) | Failed while creating the version PR. Changesets moved the runtime manifests to 2.0.0; `get-started-consume.mdx` still named 1.0.0, so `docs:check` blocked the commit. No version PR was opened. `publish` remains commented out in `.github/workflows/release.yml`. |
 
-[PR #9](https://github.com/solidaris-danielbodigil/solidaris-plectrum/pull/9) makes `changeset:version` refresh the lockfile, changelog, consumer install examples, contracts and catalogue before that commit. CI run [36109817384](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36109817384) is green on the same six required checks. `@danielbodi` approved commit `f10f0e1`; later commits dismissed that review. Merge stays blocked until a code owner approves the current head. After that merge, Release can retry the version PR. That retry is still not a package publication, and it does not complete the P3 live-candidate acceptance.
+[PR #9](https://github.com/solidaris-danielbodigil/solidaris-plectrum/pull/9) makes `changeset:version` refresh the lockfile, changelog, consumer install examples, contracts and catalogue before that commit. It merged as `46b738c` on 2026-09-25. CI run [36109817384](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36109817384) was green before merge.
+
+That merge triggered:
+
+| Workflow | Run | Result |
+| --- | --- | --- |
+| CI | [36111283442](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36111283442) | Success. The same six required jobs passed. `visual-tests` skipped. |
+| Deploy GitHub Pages | [36111283241](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36111283241) | Success. |
+| Release | [36111283323](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36111283323) | Success. It committed `Version Packages` (`4a06aa5`) and opened [PR #10](https://github.com/solidaris-danielbodigil/solidaris-plectrum/pull/10). The commit hook passed, including the docs check that blocked the previous attempt. |
+
+PR #10 does not publish packages. GitHub held its CI for approval because `github-actions[bot]` opened it; that run was approved and is the remaining check. Merging PR #10 would bump the manifests to 2.0.0 without publishing. It does not complete the P3 live-candidate acceptance.
 
 ## References
 
