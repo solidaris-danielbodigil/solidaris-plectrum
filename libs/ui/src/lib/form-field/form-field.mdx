@@ -1,4 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './form-field.stories';
 
 <Meta of={Stories} />
@@ -9,13 +9,39 @@ import * as Stories from './form-field.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Optional field shell with a custom static label (not PrimeNG FloatLabel), optional helper text, required asterisk, invalid label colour, and a built-in `p-message` error slot.
+## Use in an application
 
-Parent forms should pass `[invalid]="isFieldInvalid(form, 'controlName')"` where `isFieldInvalid` checks `control.invalid && (control.touched || control.dirty || form.submitted)` — SelectButton and similar controls set `dirty` but not `touched` on click.
+Copy this into the application. It imports `FormFieldComponent` from `@solidaris/ui` and `InputText` from PrimeNG. The canvas below is the same component running inside Storybook; its Show code panel is this snippet, not the story file.
+
+```ts
+import { Component } from '@angular/core';
+import { InputText } from 'primeng/inputtext';
+import { FormFieldComponent } from '@solidaris/ui';
+
+@Component({
+  selector: 'app-root',
+  imports: [FormFieldComponent, InputText],
+  template: `
+    <pds-form-field
+      label="Member number"
+      inputId="member"
+      hint="Ten digits, no spaces"
+      requiredLabel="obligatoire"
+    >
+      <input pInputText id="member" type="text" autocomplete="off" />
+    </pds-form-field>
+  `,
+})
+export class App {}
+```
+
+`requiredLabel` is the word a screen reader hears after the asterisk. Use `obligatoire` in French examples and `verplicht` in Dutch examples. Pass the same language as the label and the error.
+
+The sample app at `tools/packaging/consumer-app` builds this snippet in CI (`npm run pack:smoke`).
 
 ## Vertical
 
-Default stacked label + control.
+Default stacked label + control. The stories derive `inputId` from the story id so the embedded examples never share an `id`.
 
 <Canvas of={Stories.Vertical} />
 <Controls of={Stories.Vertical} />
@@ -25,6 +51,24 @@ Default stacked label + control.
 Required field with error message.
 
 <Canvas of={Stories.VerticalInvalid} />
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Patterns
+
+<Unstyled>
+  <Story of={Stories.Patterns} />
+</Unstyled>
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
 
 ## Horizontal
 
@@ -38,6 +82,26 @@ Horizontal layout with invalid state.
 
 <Canvas of={Stories.HorizontalInvalid} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>
+
+WCAG 2.1 AA is the target. The narrow example is the check at a phone width and at 200% zoom: the label stacks above the control.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>

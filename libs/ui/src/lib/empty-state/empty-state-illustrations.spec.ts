@@ -6,11 +6,11 @@ import {
 
 describe('empty-state-illustrations', () => {
   afterEach(() => {
-    jasmine.getEnv().allowRespy(true);
+    vi.restoreAllMocks();
   });
 
   it('should pick from the known illustration catalog', () => {
-    spyOn(Math, 'random').and.returnValue(0);
+    vi.spyOn(Math, 'random').mockReturnValue(0);
 
     expect(pickRandomEmptyStateIllustration()).toBe(
       EMPTY_STATE_ILLUSTRATIONS[0],
@@ -18,7 +18,7 @@ describe('empty-state-illustrations', () => {
   });
 
   it('should wrap around the last illustration index', () => {
-    spyOn(Math, 'random').and.returnValue(0.999);
+    vi.spyOn(Math, 'random').mockReturnValue(0.999);
 
     expect(pickRandomEmptyStateIllustration()).toBe(
       EMPTY_STATE_ILLUSTRATIONS[EMPTY_STATE_ILLUSTRATIONS.length - 1],

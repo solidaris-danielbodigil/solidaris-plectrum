@@ -7,7 +7,6 @@
 // Variants (apply on <p-accordion>):
 //   c-accordion--bordered   — stacked bordered panels (certificate / audit flows)
 //   c-accordion--nav        — transparent sub-nav sections
-//   c-accordion--chromeless — hidden toggler (list journey groups)
 // =============================================================================
 
 :root {
@@ -39,26 +38,6 @@
   --p-accordion-toggle-icon-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
   --p-accordion-toggle-icon-hover-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
   --p-accordion-toggle-icon-active-color: var(--#{$pds-prefix}-color-sub-nav-shell-section-text);
-}
-
-// ── Chromeless — list journey group headers ──────────────────────────────────
-// Design ref: Figma iSHARE-Audit node 324:5827
-.c-accordion--chromeless {
-  --p-accordion-panel-border-width: 0;
-  --p-accordion-panel-border-color: transparent;
-  --p-accordion-header-background: transparent;
-  --p-accordion-header-hover-background: transparent;
-  --p-accordion-header-active-background: transparent;
-  --p-accordion-header-padding: 0;
-  --p-accordion-header-color: inherit;
-  --p-accordion-header-hover-color: inherit;
-  --p-accordion-header-active-color: inherit;
-  --p-accordion-content-background: transparent;
-  --p-accordion-content-padding: 0;
-  --p-accordion-content-border-width: 0;
-  --p-accordion-toggle-icon-color: transparent;
-  --p-accordion-toggle-icon-hover-color: transparent;
-  --p-accordion-toggle-icon-active-color: transparent;
 }
 
 // ── Bordered — certificate panels + drawer timeline events ───────────────────

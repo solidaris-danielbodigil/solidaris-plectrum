@@ -1,4 +1,5 @@
 {
+  "stylelint.validate": ["css", "scss"],
   "git.ignoreLimitWarning": true,
   "typescript.tsdk": "node_modules/typescript/lib",
 

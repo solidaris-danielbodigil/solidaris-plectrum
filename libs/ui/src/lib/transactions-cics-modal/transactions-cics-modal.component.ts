@@ -16,7 +16,8 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
-import { pdsOverlayAppendTo } from '../drawer';
+import { pdsOverlayAppendTo, injectPdsMessages } from '@solidaris/ui';
+import { TransactionsCicsModalMessages } from './transactions-cics-modal.i18n';
 import type { TransactionsCicsRow } from './transactions-cics-modal.types';
 
 /** Default mock rows — legacy iShare Transactions CICS modal (Scenario 4). */
@@ -81,6 +82,7 @@ export const DEFAULT_TRANSACTIONS_CICS_ROWS: TransactionsCicsRow[] = [
   host: { class: 'c-transactions-cics-modal' },
 })
 export class TransactionsCicsModalComponent {
+  protected readonly messages = injectPdsMessages(TransactionsCicsModalMessages);
   protected readonly dialogAppendTo = pdsOverlayAppendTo();
 
   readonly visible = model(false);

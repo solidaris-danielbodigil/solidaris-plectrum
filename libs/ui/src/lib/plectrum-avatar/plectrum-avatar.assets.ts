@@ -29,5 +29,7 @@ export function getPlectrumAvatarIllustrationSrc(
   const resolvedVariant = resolvePlectrumAvatarVariant(gender, variant);
   const filename = `Gender=${GENDER_LABELS[gender]}, Variant=${resolvedVariant}.svg`;
 
-  return `assets/${encodeURIComponent(filename)}`;
+  // encodeURI keeps `=` and `,` (the real filenames). encodeURIComponent
+  // turns them into %3D / %2C, which Vite/Storybook 404s.
+  return encodeURI(`assets/${filename}`);
 }

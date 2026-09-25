@@ -3,20 +3,32 @@
     <p-badge [value]="event.index" size="xlarge" />
   </ng-template>
   <ng-template #content let-event>
-    <div class="c-docs-steps__head o-flex o-flex--align-items-center o-flex--wrap o-layout--gap-1">
+    <div class="c-docs-steps__head o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-1">
       <strong class="c-docs-steps__title">{{ event.title }}</strong>
       @if (event.who) {
         <p-tag [value]="event.who" [severity]="event.severity" [rounded]="true" />
       }
     </div>
     @if (event.detail) {
-      <p class="c-docs-steps__detail">{{ event.detail }}</p>
+      <p
+        class="c-docs-steps__detail o-layout o-layout--margin-0 o-layout--margin-block-start-0-5"
+      >
+        @for (part of detailParts(event.detail); track $index) {
+          @if (part.code) {
+            <code>{{ part.text }}</code>
+          } @else {
+            {{ part.text }}
+          }
+        }
+      </p>
     }
     @if (event.links?.length) {
-      <ul class="c-docs-steps__links">
-        @for (link of event.links; track link.path) {
+      <ul
+        class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0"
+      >
+        @for (link of event.links; track link.label) {
           <li>
-            <pds-docs-link [path]="link.path" [label]="link.label" />
+            <pds-docs-link [path]="link.path" [href]="link.href" [label]="link.label" />
           </li>
         }
       </ul>

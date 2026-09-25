@@ -8,16 +8,17 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   promote:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - run: npm install
@@ -30,13 +31,32 @@ jobs:
             echo "has_tokens=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          cp libs/plectrum/sync/tokens.json libs/plectrum/src/tokens.json
+          file_key="$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('.ai/contracts/registry.json','utf8')).operations.figma.componentLibrary)")"
+          node tools/tokens/staging-gate.mjs --stamp --revision "$GITHUB_SHA" --file-key "$file_key" --write libs/plectrum/src/tokens.json --intent libs/plectrum/sync-release-intent.json libs/plectrum/sync/tokens.json
           echo "has_tokens=true" >> "$GITHUB_OUTPUT"
+
+      - name: Assemble the incoming theme before validation
+        id: theme
+        if: steps.staging.outputs.has_tokens == 'true'
+        run: |
+          if [ -z "$(find libs/plectrum/sync/theme -type f ! -name .gitkeep 2>/dev/null | head -n 1)" ]; then
+            echo "incoming=false" >> "$GITHUB_OUTPUT"
+            echo "No incoming theme — the previous preset stays in place."
+            exit 0
+          fi
+          mkdir -p libs/plectrum/src/Plectrum_v1
+          rsync -a --exclude .gitkeep --exclude ts/extend.ts libs/plectrum/sync/theme/ libs/plectrum/src/Plectrum_v1/
+          echo "incoming=true" >> "$GITHUB_OUTPUT"
+          echo "Incoming theme assembled. extend.ts was left untouched."
 
       - name: Build generated SCSS and the Storybook manifest
         id: build
         if: steps.staging.outputs.has_tokens == 'true'
-        run: npm run tokens:build
+        run: |
+          npm run tokens:build
+          npm run tokens:propose
+          npm run tokens:build
+          git diff --exit-code -- libs/styles/src/01-settings libs/ui/src/storybook/tokens.generated.ts tools/tokens/proposed.dtcg.json
 
       # Blocks the promotion PR. Compares the new dump with the preset and the SCSS just rebuilt.
       - name: Drift audit
@@ -44,25 +64,13 @@ jobs:
         if: steps.staging.outputs.has_tokens == 'true'
         run: npm run tokens:audit -- --json "$RUNNER_TEMP/audit.json"
 
-      # Never blocks the tokens PR; only decides whether theme files may be promoted.
-      # Runs even when the audit failed so the report is complete.
+      # Runs against the assembled theme. An incoming theme that fails here blocks promotion
+      # even when the previous preset was valid. The report step still runs.
       - name: Preset coverage
         id: validate
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         continue-on-error: true
         run: npm run tokens:validate-preset -- --json "$RUNNER_TEMP/validate.json"
-
-      - name: Promote theme when preset coverage passed
-        id: theme
-        if: steps.validate.outcome == 'success'
-        run: |
-          if [ -z "$(find libs/plectrum/sync/theme -type f ! -name .gitkeep 2>/dev/null | head -n 1)" ]; then
-            echo "No theme files in this sync — Plectrum_v1/ untouched."
-            exit 0
-          fi
-          mkdir -p libs/plectrum/src/Plectrum_v1
-          rsync -a --exclude .gitkeep libs/plectrum/sync/theme/ libs/plectrum/src/Plectrum_v1/
-          echo "Theme promoted. Hand-fixes remain in Plectrum_v1/ts/extend.ts."
 
       # Human-readable summary: what changed, which checks passed, what happens next.
       # Lands in the job summary, becomes the promotion PR body, and — via the
@@ -73,7 +81,12 @@ jobs:
         if: ${{ !cancelled() && steps.staging.outputs.has_tokens == 'true' }}
         run: |
           git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          stage=proposed
+          if [ "${{ steps.audit.outcome }}" != "success" ] || { [ "${{ steps.theme.outputs.incoming }}" = "true" ] && [ "${{ steps.validate.outcome }}" != "success" ]; }; then
+            stage=blocked
+          fi
           node tools/tokens/report.mjs \
+            --stage "$stage" \
             --base git:origin/main \
             --outcome "build=${{ steps.build.outcome }}" \
             --outcome "audit=${{ steps.audit.outcome }}" \
@@ -85,22 +98,57 @@ jobs:
             --json "$RUNNER_TEMP/sync-report.json" \
             --ts libs/ui/src/storybook/sync-report.generated.ts
           cat "$RUNNER_TEMP/sync-report.md" >> "$GITHUB_STEP_SUMMARY"
+          node tools/tokens/sync-release.mjs --report "$RUNNER_TEMP/sync-report.json" --intent libs/plectrum/sync-release-intent.json --changeset .changeset/figma-sync.md
 
-      # The promotion PR targets main and carries this whole staging branch plus
-      # the files generated above, as one commit on tokens/promote-staging. The
-      # branch is rebuilt on every push so the open PR always shows the latest
-      # sync; its body is replaced with the new report.
+      - name: Keep the sync report
+        if: always() && steps.staging.outputs.has_tokens == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: token-sync-report
+          path: |
+            ${{ runner.temp }}/sync-report.md
+            ${{ runner.temp }}/sync-report.json
+          if-no-files-found: ignore
+
+      - name: Reject an invalid incoming theme
+        if: steps.theme.outputs.incoming == 'true' && steps.validate.outcome == 'failure'
+        run: |
+          echo "Incoming theme failed preset validation. The previous preset is not used as a substitute."
+          exit 1
+
+      # The promotion PR is rebuilt from main plus the assembled files. An invalid incoming theme never reaches it.
       - name: Open promotion PR
         id: pr
-        if: steps.audit.outcome == 'success'
+        if: steps.audit.outcome == 'success' && (steps.theme.outputs.incoming != 'true' || steps.validate.outcome == 'success')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git checkout -B tokens/promote-staging
-          git add -A
-          git commit -m 'chore(tokens): promote plugin staging into tokens.json' \
+          snap="$RUNNER_TEMP/promote"
+          rm -rf "$snap"
+          mkdir -p "$snap"
+          copy() { if [ -e "$1" ]; then mkdir -p "$snap/$(dirname "$1")"; cp -a "$1" "$snap/$1"; fi; }
+          copy libs/plectrum/src/tokens.json
+          copy libs/plectrum/sync-release-intent.json
+          copy .changeset/figma-sync.md
+          copy libs/ui/src/storybook/tokens.generated.ts
+          copy libs/ui/src/storybook/sync-report.generated.ts
+          copy tools/tokens/proposed.dtcg.json
+          for file in libs/styles/src/01-settings/_settings.*.generated.scss; do copy "$file"; done
+          if [ "${{ steps.theme.outputs.incoming }}" = "true" ] && [ "${{ steps.validate.outcome }}" = "success" ]; then
+            while IFS= read -r -d '' file; do
+              rel="libs/plectrum/src/Plectrum_v1/${file#libs/plectrum/sync/theme/}"
+              copy "$rel"
+            done < <(find libs/plectrum/sync/theme -type f ! -name .gitkeep ! -path '*/ts/extend.ts' -print0)
+          fi
+          git fetch --no-tags origin main
+          git checkout -B tokens/promote-staging origin/main
+          cp -a "$snap/." .
+          git add -- libs/plectrum/src/tokens.json libs/plectrum/sync-release-intent.json libs/ui/src/storybook/tokens.generated.ts libs/ui/src/storybook/sync-report.generated.ts libs/styles/src/01-settings tools/tokens/proposed.dtcg.json
+          if [ -f .changeset/figma-sync.md ]; then git add -- .changeset/figma-sync.md; fi
+          if [ -d libs/plectrum/src/Plectrum_v1 ]; then git add -- libs/plectrum/src/Plectrum_v1; fi
+          git commit -m 'chore(tokens): promote pinned Figma staging' \
             || echo 'Nothing generated beyond the staging commit.'
           git push --force origin tokens/promote-staging
           url="$(gh pr list --head tokens/promote-staging --base main --state open --json url --jq '.[0].url')"
@@ -112,6 +160,7 @@ jobs:
             gh pr edit "$url" --body-file "$RUNNER_TEMP/sync-report.md"
           fi
           echo "pull-request-url=$url" >> "$GITHUB_OUTPUT"
+          gh workflow run ci.yml --ref tokens/promote-staging
 
       - name: Link the promotion PR in the summary
         if: steps.pr.outputs.pull-request-url != ''

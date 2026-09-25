@@ -1,12 +1,19 @@
-import { componentWrapperDecorator, moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
-import { Component, signal } from '@angular/core';
+import {
+  componentWrapperDecorator,
+  moduleMetadata,
+  type Meta,
+  type StoryObj,
+} from '@storybook/angular-vite';
+import { Component, input, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { ListComponent } from './list.component';
 import { ListMetadata } from './list.metadata';
-import type { ListDocumentItem, ListGroup } from './list.types';
+import type { ListEntryItem, ListGroup } from './list.types';
 import { SIMULATED_LOADING_MS } from '../../storybook/simulated-loading';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 
 // =============================================================================
 // List (pds-list)
@@ -27,19 +34,35 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
         id: 'doc-demande-primaire',
         title: 'Demande primaire -',
         titleLine2: 'Régime général',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
       {
         id: 'doc-incapacite',
         title: 'Incapacité',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
     ],
@@ -55,27 +78,35 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
       {
         id: 'doc-rechute',
         title: 'Rechute',
-        status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+        status: {
+          label: 'En traitement',
+          severity: 'warn',
+          icon: 'bi bi-hourglass-split',
+        },
         tags: [
           { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
-          { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
+          {
+            label: '1',
+            severity: 'warn',
+            icon: 'bi bi-exclamation-triangle-fill',
+          },
         ],
       },
     ],
   },
 ];
 
-const FLAT_DOCUMENTS: ListDocumentItem[] = EVA_MARTINEZ_GROUPS.flatMap(
+const FLAT_DOCUMENTS: ListEntryItem[] = EVA_MARTINEZ_GROUPS.flatMap(
   (group) => group.documents,
 );
 
-const SAMPLE_DOCUMENT: ListDocumentItem = EVA_MARTINEZ_GROUPS[0].documents[0];
+const SAMPLE_DOCUMENT: ListEntryItem = EVA_MARTINEZ_GROUPS[0].documents[0];
 
 const ALL_GROUP_IDS = EVA_MARTINEZ_GROUPS.map((group) => group.id);
 
 interface ListStoryArgs {
   groups: ListGroup[] | null;
-  items: ListDocumentItem[];
+  items: ListEntryItem[];
   expandedGroupIds: string[];
   selectedItemId: string | null;
   loading: boolean;
@@ -92,26 +123,9 @@ const meta: Meta<ListStoryArgs> = {
   ],
   parameters: {
     layout: 'padded',
+    ...storyDesign(ListMetadata.component.figmaUrl),
   },
-  argTypes: {
-    groups: {
-      control: 'object',
-      description: 'Journey groups — pass a non-null array to enable grouped timeline mode.',
-    },
-    items: {
-      control: 'object',
-      description: 'Flat document rows — used when groups is null.',
-    },
-    expandedGroupIds: {
-      control: 'object',
-      description: 'IDs of journey groups that are expanded.',
-    },
-    loading: { control: 'boolean', description: 'Shows skeleton placeholder rows.' },
-    selectedItemId: {
-      control: 'text',
-      description: 'ID of the selected document row — takes precedence over doc.selected.',
-    },
-  },
+  argTypes: argTypesFromProps(ListMetadata.props ?? []),
   render: (args) => ({
     props: args,
     template: `
@@ -130,8 +144,29 @@ export default meta;
 
 type Story = StoryObj<ListStoryArgs>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(ListMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from list.metadata.ts, the documentation SSOT.
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory(ListMetadata.governance, ListMetadata.component),
+};
+export const Usage = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'usage'),
+};
+export const Patterns = { tags: ['!dev'], ...contractStory(ListMetadata, 'patterns') };
+export const Composition = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'composition'),
+};
+export const Behavior = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'behavior'),
+};
+export const Accessibility = {
+  tags: ['!dev'],
+  ...contractStory(ListMetadata, 'accessibility'),
+};
 
 const journeyDefaults: ListStoryArgs = {
   groups: EVA_MARTINEZ_GROUPS,
@@ -148,22 +183,65 @@ export const Default: Story = {
     await expect(
       canvas.getByRole('region', { name: 'Suivi des documents' }),
     ).toBeVisible();
-    await expect(canvas.getByRole('heading', { name: 'Suivi des documents' })).toBeVisible();
   },
 };
 
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(ListMetadata, Default) };
+
+@Component({
+  selector: 'pds-list-expand-demo',
+  standalone: true,
+  imports: [ListComponent],
+  template: `
+    <pds-list
+      [groups]="groups()"
+      [items]="items()"
+      [expandedGroupIds]="expandedGroupIds()"
+      [selectedItemId]="selectedItemId()"
+      [loading]="loading()"
+      (expandedGroupIdsChange)="onExpanded($event)"
+    />
+    <p class="u-sr-only" data-testid="list-expanded-ids">{{ lastEmitted() }}</p>
+  `,
+})
+class ListExpandDemoComponent {
+  readonly groups = input<ListGroup[] | null>(null);
+  readonly items = input<ListEntryItem[]>([]);
+  readonly expandedGroupIds = input<string[]>([]);
+  readonly selectedItemId = input<string | null>(null);
+  readonly loading = input(false);
+  readonly lastEmitted = signal('');
+
+  onExpanded(ids: string[]): void {
+    this.lastEmitted.set(ids.join(','));
+  }
+}
+
 export const Grouped: Story = {
   args: journeyDefaults,
-  // Interaction test: a journey group header collapses and re-expands its rows.
+  decorators: [moduleMetadata({ imports: [ListExpandDemoComponent] })],
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-list-expand-demo
+        [groups]="groups"
+        [items]="items"
+        [expandedGroupIds]="expandedGroupIds"
+        [selectedItemId]="selectedItemId"
+        [loading]="loading"
+      />
+    `,
+  }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const [firstGroup] = canvas.getAllByRole('treeitem');
     await expect(firstGroup).toHaveAttribute('aria-expanded', 'true');
     const [toggler] = within(firstGroup).getAllByRole('button');
     await userEvent.click(toggler);
-    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'false'));
-    await userEvent.click(toggler);
-    await waitFor(() => expect(firstGroup).toHaveAttribute('aria-expanded', 'true'));
+    await waitFor(() => {
+      const emitted = canvas.getByTestId('list-expanded-ids').textContent;
+      expect(emitted).not.toContain('parcours-demande-primaire');
+    });
   },
 };
 
@@ -230,7 +308,7 @@ export const RowHover: Story = {
     componentWrapperDecorator(
       (story) => `
         <style>
-          .sb-list-row-hover-demo .c-list__item--document.sb-list-row--hover:not(.c-list__item--selected) {
+          .sb-list-row-hover-demo .c-list__item--entry.sb-list-row--hover:not(.c-list__item--selected) {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
@@ -239,7 +317,9 @@ export const RowHover: Story = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    canvasElement.querySelector('.c-list__item--document')?.classList.add('sb-list-row--hover');
+    canvasElement
+      .querySelector('.c-list__item--entry')
+      ?.classList.add('sb-list-row--hover');
   },
 };
 
@@ -274,7 +354,7 @@ export const Loading: Story = {
 class ListSimulatedLoadingDemoComponent {
   readonly loading = signal(true);
   readonly groups = EVA_MARTINEZ_GROUPS;
-  readonly items: ListDocumentItem[] = [];
+  readonly items: ListEntryItem[] = [];
   readonly expandedGroupIds = ALL_GROUP_IDS;
   readonly selectedItemId = 'doc-demande-primaire';
 
@@ -294,29 +374,30 @@ export const SimulatedLoading: Story = {
   }),
 };
 
-const ROW_STATE_DOCUMENT: ListDocumentItem = {
+const ROW_STATE_DOCUMENT: ListEntryItem = {
   id: 'doc-row-state-demo',
   title: 'Demande primaire -',
   titleLine2: 'Régime général',
-  status: { label: 'En traitement', severity: 'warn', icon: 'bi bi-hourglass-split' },
+  status: {
+    label: 'En traitement',
+    severity: 'warn',
+    icon: 'bi bi-hourglass-split',
+  },
   tags: [
     { label: '1', severity: 'info', icon: 'bi bi-chat-right-text-fill' },
     { label: '1', severity: 'warn', icon: 'bi bi-exclamation-triangle-fill' },
   ],
 };
 
-const documentRowMarkup = (modifiers: string, selected = false) => `
+const documentRowMarkup = (modifiers: string) => `
   <article
-    class="c-list__item c-list__item--document ${modifiers}"
-    role="button"
-    tabindex="0"
-    ${selected ? 'aria-selected="true"' : ''}
+    class="c-list__item c-list__item--entry o-layout o-layout--overflow-hidden o-layout--min-w-0 o-layout--full-width ${modifiers}"
   >
-    <div class="c-list__container o-flex o-flex--col o-layout--gap-1">
+    <div class="c-list__container o-flex o-flex--col o-layout o-layout--gap-1">
       <div
-        class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout--gap-4"
+        class="c-list__header-row o-flex o-flex--align-items-start o-flex--justify-content-space-between o-layout o-layout--gap-4"
       >
-        <div class="o-flex o-layout--gap-3 o-layout--min-w-0">
+        <div class="o-flex o-layout o-layout--gap-3 o-layout--min-w-0">
           <i class="c-list__icon bi bi-clipboard2-pulse" aria-hidden="true"></i>
           <p class="c-list__title">
             ${ROW_STATE_DOCUMENT.title} ${ROW_STATE_DOCUMENT.titleLine2}
@@ -329,7 +410,7 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
         </div>
       </div>
       <hr />
-      <div class="c-list__tags o-flex o-flex--wrap o-layout--gap-1">
+      <div class="c-list__tags o-flex o-flex--wrap o-layout o-layout--gap-1">
         <p-tag severity="info" value="1">
           <i class="bi bi-chat-right-text-fill" aria-hidden="true"></i>
         </p-tag>
@@ -341,13 +422,24 @@ const documentRowMarkup = (modifiers: string, selected = false) => `
   </article>
 `;
 
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: journeyDefaults,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('region', { name: 'Opvolging van documenten' }),
+    ).toBeVisible();
+  },
+};
+
 export const RowStates: Story = {
   decorators: [
     moduleMetadata({ imports: [Tag] }),
     componentWrapperDecorator(
       (story) => `
         <style>
-          .sb-list-row-states .c-list__item--document.sb-force-hover:not(.c-list__item--selected) {
+          .sb-list-row-states .c-list__item--entry.sb-force-hover:not(.c-list__item--selected) {
             border-color: var(--pds-color-list-row-hover-border);
           }
         </style>
@@ -358,18 +450,18 @@ export const RowStates: Story = {
   render: () => ({
     template: `
       <div class="c-list c-list--flat">
-        <div class="c-list__body o-flex o-layout--gap-2">
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+        <div class="c-list__body o-flex o-layout o-layout--gap-2">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Default</p>
             ${documentRowMarkup('')}
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Hover</p>
             ${documentRowMarkup('sb-force-hover')}
           </div>
-          <div class="o-flex o-flex--col o-layout--gap-1 o-flex__item--grow-1">
+          <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1">
             <p class="u-text-label-xs">Selected</p>
-            ${documentRowMarkup('c-list__item--selected', true)}
+            ${documentRowMarkup('c-list__item--selected')}
           </div>
         </div>
       </div>

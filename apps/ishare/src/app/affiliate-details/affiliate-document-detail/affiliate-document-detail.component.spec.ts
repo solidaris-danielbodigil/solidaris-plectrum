@@ -8,13 +8,13 @@ import {
 import { By } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import type { DocumentCrossReference } from './affiliate-document-detail.types';
-import type { ListDocumentItem } from '@solidaris/ui';
+import type { ListEntryItem } from '@solidaris/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
 import { DocumentMoreDetailsDrawerComponent } from './document-more-details-drawer/document-more-details-drawer.component';
-import { TransactionsCicsModalComponent } from '@solidaris/ui';
+import { TransactionsCicsModalComponent } from '@solidaris/ui/patterns/ishare';
 
-const VISIBLE_DOCUMENTS: ListDocumentItem[] = [
+const VISIBLE_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-demande-primaire',
     title: 'Demande primaire -',
@@ -65,7 +65,9 @@ function findButtonByLabel(
       [stepperView]="stepperView()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
-      (delayPredictionMenuClick)="delayPredictionMenuClickCount = delayPredictionMenuClickCount + 1"
+      (delayPredictionMenuClick)="
+        delayPredictionMenuClickCount = delayPredictionMenuClickCount + 1
+      "
     />
     <app-document-more-details-drawer
       [(visible)]="moreDetailsDrawerVisible"
@@ -81,10 +83,11 @@ function findButtonByLabel(
 })
 class DocumentDetailDrawerTestHostComponent {
   readonly selectedDocumentId = signal('doc-demande-primaire');
-  navigableDocuments: ListDocumentItem[] = VISIBLE_DOCUMENTS;
-  readonly focusTarget = signal<{ stepValue: number; panelId: string } | null>(
-    null,
-  );
+  navigableDocuments: ListEntryItem[] = VISIBLE_DOCUMENTS;
+  readonly focusTarget = signal<{
+    stepValue: number;
+    panelId: string;
+  } | null>(null);
   readonly stepperView = signal<'horizontal' | 'vertical'>('horizontal');
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
@@ -191,10 +194,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.componentInstance.stepperView.set('vertical');
     fixture.detectChanges();
 
-    const nextButton = findButtonByLabel(
-      fixture.nativeElement,
-      'Suivant',
-    );
+    const nextButton = findButtonByLabel(fixture.nativeElement, 'Suivant');
 
     nextButton?.click();
     fixture.detectChanges();
@@ -222,7 +222,7 @@ describe('AffiliateDocumentDetailComponent', () => {
   });
 
   it('should emit selectedDocumentIdChange when navigating to the next document', () => {
-    const emitSpy = spyOn(component.selectedDocumentIdChange, 'emit');
+    const emitSpy = vi.spyOn(component.selectedDocumentIdChange, 'emit');
 
     component.goToNextDocument();
     fixture.detectChanges();
@@ -234,7 +234,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    const emitSpy = spyOn(component.selectedDocumentIdChange, 'emit');
+    const emitSpy = vi.spyOn(component.selectedDocumentIdChange, 'emit');
 
     component.goToPreviousDocument();
     fixture.detectChanges();
@@ -317,7 +317,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
   it('should show toast when Iris action is clicked', () => {
     const messageService = TestBed.inject(MessageService);
-    const addSpy = spyOn(messageService, 'add').and.callThrough();
+    const addSpy = vi.spyOn(messageService, 'add');
 
     const irisButton = fixture.nativeElement.querySelector(
       'button[aria-label="Iris"]',
@@ -460,7 +460,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.componentInstance.selectedDocumentId.set('doc-incapacite');
     fixture.detectChanges();
 
-    const emitSpy = spyOn(component.crossReferenceNavigate, 'emit');
+    const emitSpy = vi.spyOn(component.crossReferenceNavigate, 'emit');
     const reference: DocumentCrossReference = {
       label: 'Calcul primaire bloqué — C4 manquant',
       documentId: 'doc-demande-primaire',
@@ -511,9 +511,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(
       findButtonByLabel(fixture.nativeElement, 'Voir plus de détails'),
     ).toBeTruthy();
-    expect(
-      findButtonByLabel(fixture.nativeElement, 'Précédent'),
-    ).toBeFalsy();
+    expect(findButtonByLabel(fixture.nativeElement, 'Précédent')).toBeFalsy();
     expect(
       fixture.nativeElement.querySelector(
         'button[aria-label="Transactions CICS"]',
@@ -564,9 +562,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       'c4-isolated',
     );
 
-    const drawerTitle = document.body.querySelector(
-      '.p-drawer h2',
-    );
+    const drawerTitle = document.body.querySelector('.p-drawer h2');
     expect(drawerTitle?.textContent?.trim()).toBe('Details - C4');
 
     expect(
@@ -628,7 +624,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       ),
     ] as HTMLElement[];
 
-    expect(stepMetas).toHaveSize(3);
+    expect(stepMetas).toHaveLength(3);
 
     const stepOneTag = stepMetas[0].querySelector('p-tag');
     const stepTwoTag = stepMetas[1].querySelector('p-tag');
@@ -786,7 +782,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(warnCommentTag?.classList.contains('p-tag-info')).toBe(false);
   });
 
-  it('should open Calcul more-details with Reçu and En traitement from Gestion des CALC\'s', async () => {
+  it("should open Calcul more-details with Reçu and En traitement from Gestion des CALC's", async () => {
     component.activeStep.set(3);
     component.certPanelValue.set('calcul');
     fixture.detectChanges();
@@ -794,10 +790,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     const panel = fixture.nativeElement.querySelector(
       '[data-panel-id="calcul"]',
     ) as HTMLElement;
-    const moreDetailsButton = findButtonByLabel(
-      panel,
-      'Voir plus de détails',
-    );
+    const moreDetailsButton = findButtonByLabel(panel, 'Voir plus de détails');
 
     moreDetailsButton?.click();
     fixture.detectChanges();
@@ -805,8 +798,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe('calcul');
-    const drawerText =
-      document.querySelector('.p-drawer')?.textContent ?? '';
+    const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
     expect(drawerText).toContain('Reçu');
     expect(drawerText).toContain('En traitement');
     expect(drawerText).toContain("Gestion des CALC's");
@@ -847,10 +839,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       fixture.nativeElement,
       'Précédent',
     );
-    const nextStepButton = findButtonByLabel(
-      fixture.nativeElement,
-      'Suivant',
-    );
+    const nextStepButton = findButtonByLabel(fixture.nativeElement, 'Suivant');
 
     expect(previousStepButton).toBeTruthy();
     expect(nextStepButton).toBeTruthy();
@@ -887,19 +876,13 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(component.nextDisabled()).toBe(true);
 
-    const nextStepButton = findButtonByLabel(
-      fixture.nativeElement,
-      'Suivant',
-    );
+    const nextStepButton = findButtonByLabel(fixture.nativeElement, 'Suivant');
 
     expect(nextStepButton?.disabled).toBe(true);
   });
 
   it('should advance to the next step when Etape suivante is clicked', () => {
-    const nextStepButton = findButtonByLabel(
-      fixture.nativeElement,
-      'Suivant',
-    );
+    const nextStepButton = findButtonByLabel(fixture.nativeElement, 'Suivant');
 
     nextStepButton?.click();
     fixture.detectChanges();
@@ -1006,9 +989,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       document.body.querySelector('.p-drawer-mask.p-overlay-mask'),
     ).toBeTruthy();
 
-    const drawerTitle = document.body.querySelector(
-      '.p-drawer h2',
-    );
+    const drawerTitle = document.body.querySelector('.p-drawer h2');
     expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
 
     expect(document.body.querySelector('.p-timeline')).toBeTruthy();
@@ -1019,13 +1000,11 @@ describe('AffiliateDocumentDetailComponent', () => {
     ).toBe(3);
 
     const tableHeaders = [
-      ...document.body.querySelectorAll(
-        '.p-drawer .p-datatable th',
-      ),
+      ...document.body.querySelectorAll('.p-drawer .p-datatable th'),
     ].map((cell) => cell.textContent?.trim());
 
     expect(tableHeaders).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         'Date',
         'Description',
         'Applications',
@@ -1075,8 +1054,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'fdr-employeur',
     );
-    const drawerText =
-      document.querySelector('.p-drawer')?.textContent ?? '';
+    const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.body.querySelector('.p-timeline')).toBeTruthy();
     expect(drawerText).toContain('Reçu');
     expect(drawerText).not.toContain('Reçu flux');
@@ -1106,9 +1084,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       'certificat-itt',
     );
 
-    const drawerTitle = document.querySelector(
-      '.p-drawer h2',
-    );
+    const drawerTitle = document.querySelector('.p-drawer h2');
     expect(drawerTitle?.textContent?.trim()).toBe('Details - Certificat ITT');
 
     expect(document.querySelector('.p-timeline')).toBeTruthy();
@@ -1166,8 +1142,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'fdr-employeur',
     );
-    const drawerText =
-      document.querySelector('.p-drawer')?.textContent ?? '';
+    const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.querySelector('.p-timeline')).toBeTruthy();
     expect(drawerText).toContain('Reçu');
     expect(drawerText).not.toContain('Reçu flux');
@@ -1200,8 +1175,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'fdr-affilie-incapacite',
     );
-    const drawerText =
-      document.querySelector('.p-drawer')?.textContent ?? '';
+    const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.querySelector('.p-timeline')).toBeTruthy();
     expect(drawerText).toContain('Reçu');
     expect(drawerText).toContain('En traitement');
@@ -1235,8 +1209,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
       'compte-financier-liasse',
     );
-    const drawerText =
-      document.querySelector('.p-drawer')?.textContent ?? '';
+    const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
     expect(document.querySelector('.p-timeline')).toBeTruthy();
     expect(drawerText).toContain('Reçu');
     expect(drawerText).toContain('En traitement');
@@ -1395,8 +1368,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       expect(fixture.componentInstance.moreDetailsPanel()?.id).toBe(
         'fdr-employeur-rechute',
       );
-      const drawerText =
-        document.querySelector('.p-drawer')?.textContent ?? '';
+      const drawerText = document.querySelector('.p-drawer')?.textContent ?? '';
       expect(drawerText).toContain('Reçu');
       expect(drawerText).not.toContain('Reçu flux');
       expect(drawerText).not.toContain('En traitement');
@@ -1434,7 +1406,9 @@ describe('AffiliateDocumentDetailComponent', () => {
       );
       expect(document.body.textContent).toContain('Reçu');
       expect(document.body.textContent).not.toContain('Reçu flux');
-      expect(document.body.textContent).not.toContain('En attente du flux employeur');
+      expect(document.body.textContent).not.toContain(
+        'En attente du flux employeur',
+      );
       expect(document.body.textContent).toContain('IGED');
       expect(document.body.textContent).toContain(
         'Gestion des feuilles de renseignement',
@@ -1506,18 +1480,13 @@ describe('AffiliateDocumentDetailComponent', () => {
         ),
       ] as HTMLElement[];
 
-      expect(disabledPanels).toHaveSize(3);
+      expect(disabledPanels).toHaveLength(3);
 
       const statusLabels = disabledPanels.map(
-        (panel) =>
-          panel.querySelector('.p-tag')?.textContent?.trim() ?? '',
+        (panel) => panel.querySelector('.p-tag')?.textContent?.trim() ?? '',
       );
 
-      expect(statusLabels).toEqual([
-        'Non reçu',
-        'Non reçu',
-        'Non reçu',
-      ]);
+      expect(statusLabels).toEqual(['Non reçu', 'Non reçu', 'Non reçu']);
 
       const titles = disabledPanels.map(
         (panel) =>
@@ -1549,7 +1518,9 @@ describe('AffiliateDocumentDetailComponent', () => {
         ) as HTMLElement;
 
         expect(panel.querySelector('p-message')).toBeNull();
-        expect(panel.querySelector('.c-affiliate-document-detail__actions')).toBeNull();
+        expect(
+          panel.querySelector('.c-affiliate-document-detail__actions'),
+        ).toBeNull();
       }
 
       expect(fixture.nativeElement.textContent).not.toContain('Clôturé');
@@ -1593,7 +1564,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should open the more-details drawer with full audit timeline for changement d\'adresse', async () => {
+    it("should open the more-details drawer with full audit timeline for changement d'adresse", async () => {
       const moreDetailsButton = findButtonByLabel(
         fixture.nativeElement,
         'Voir plus de détails',

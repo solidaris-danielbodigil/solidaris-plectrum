@@ -1,5 +1,5 @@
 // Figures for Get started/Contribute (get-started-contribute.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {
@@ -10,58 +10,94 @@ const meta: Meta = {
 
 export default meta;
 
+export const ProposeEarly: StoryObj = calloutStory({
+  tone: 'warning',
+  title: 'Propose before code — a Candidate is not a core-team ticket',
+  items: [
+    'Look at themed PrimeNG, then Core components. If neither fits, open a proposal. Do not start a new component on a guess.',
+    'Talking first is cheaper than two teams building the same thing, and cheaper than the core team inheriting work they never agreed to.',
+    'If you build a Candidate, your team owns it. Another app that needs it opens a new proposal — they do not import yours.',
+  ],
+});
+
+export const PlectrumAgent: StoryObj = calloutStory({
+  tone: 'info',
+  title: 'Invoke /plectrum',
+  text: 'By default the agents do this work. It runs research, tokens, implementation and QA end to end. After promotion they can also write the Figma variables and component from the repo. Every command stays runnable by hand, and a designer may still draw the Figma component instead of the agent. The Plectrum tokens plugin is the fallback when no agent is available. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.',
+  linkLabel: 'AI strategy → Subagents',
+  linkPath: '/docs/docs-ai-strategy--docs#subagents',
+});
+
+export const AlreadyBuilt: StoryObj = calloutStory({
+  tone: 'info',
+  title: 'Already built it without asking?',
+  items: [
+    'Open the same proposal and attach what you already have — a screen, a local component, or a Figma frame.',
+    'The core team still decides: switch to what already exists, keep it as yours, or promote it later.',
+    'It does not become Core automatically, and it does not land on the core team’s backlog.',
+  ],
+});
+
 export const DevLoop: StoryObj = stepsStory([
+  {
+    who: 'Anyone',
+    tone: 'design',
+    title: 'Check the catalogue',
+    detail:
+      'Look in the theme gallery first (PrimeNG with the Plectrum theme), then at Core components on Find a component. If something already does the job, use it. If the docs were just hard to find, add an example on that page instead of inventing a new component.',
+    links: [
+      { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+    ],
+  },
   {
     who: 'Anyone',
     tone: 'neutral',
     title: 'Propose',
     detail:
-      'Before any code: the screen or need, the Figma node or mock, and whether it is specific to your application. Send it to the core design-system team.',
+      'If nothing in the catalogue covers the need, open a GitHub proposal. Write what the screen must do, which PrimeNG or Core components you already tried, and attach a Figma link or mock. Do not start building until the core team answers.',
   },
   {
     who: 'Core team',
     tone: 'design',
     title: 'Decide',
     detail:
-      'Three possible answers, none of them a waiting list: it already exists (use it), it is system-level (the core team takes it, pairing with you if needed), or it is app-specific (you build it in your application layer as a candidate).',
+      'The core team answers in one of three ways: it already exists (use that), it belongs in the design system (they build it, with you if needed), or it is only for your app (you build it and you own it).',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Set up',
-    detail: 'git clone, npm install, npm run storybook — the catalogue runs at localhost:6006 with live reload. Nothing on your machine reaches anyone until it is on a branch.',
+    detail:
+      'Clone the repo, run npm install and npm run storybook. The catalogue is at localhost:6006. Local work stays on your machine until you open a pull request.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Scaffold',
     detail:
-      'npm run pds:component -- --owner=<team> creates the component, stories, metadata contract with its governance block, the 06-components partial with its @forward, and regenerates the index. An application owner scaffolds a candidate, the core team scaffolds core.',
-  },
-  {
-    who: 'Dev',
-    tone: 'design',
-    title: 'Check the sources first',
-    detail: 'PrimeNG MCP: does a component exist? Figma MCP: exact specs from the UI Kit. Custom code only when neither covers the need.',
+      'Only after the decision. Run npm run pds:component -- --owner=<team>. That creates the files, stories and metadata. Use --owner=design-system for Core, or your app name (ishare, icrm) for a Candidate your team will own.',
   },
   {
     who: 'Dev',
     tone: 'system',
     title: 'Implement in Storybook',
-    detail: 'Tokens in 01-settings, BEMIT SCSS in 06-components, layout classes in the template, one story per state. Validate here before any app uses it.',
+    detail:
+      'Build it here first: tokens, then styles, layout classes in the template, one story per state. An application should not use it until it looks right in Storybook.',
   },
   {
     who: 'Core team',
     tone: 'design',
     title: 'Review',
     detail:
-      'One developer review plus the design-system review for anything under libs/ (rule 07 §3). Medium and high-risk token changes need design and technical review. Code-owned tokens are proposed to Figma and accepted before the merge, not after.',
+      'Every pull request needs a developer review. Changes under libs/ also need a design-system review. New tokens go to Figma and get accepted before merge, not after.',
   },
   {
     who: 'CI',
     tone: 'neutral',
     title: 'Ship through the gates',
-    detail: 'Token audits, generated-file diffs, contracts-index freshness, build, tests. Changesets version and publish the packages; applications receive bump pull requests.',
+    detail:
+      'CI checks tokens, generated files, tests and Storybook. A changeset records the version bump. After release, applications get an upgrade pull request.',
   },
 ]);
 
@@ -82,8 +118,8 @@ export const Roles: StoryObj = cardsStory(
       tone: 'app',
       title: 'Owns its screens',
       items: [
-        'Proposes first — a Storybook page is never the first move',
-        'Builds app-specific components in its own layer, as candidates',
+        'Use themed PrimeNG and Core first; propose a gap — do not hand the core team a finished candidate',
+        'Builds app-specific work in its own layer, as a Candidate it owns',
         'Never adds primitives or semantic tokens; a missing token is a proposal',
       ],
     },
@@ -92,7 +128,7 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Designs against the source',
       items: [
-        'Core designers edit the UI Kit main file and run the plugin sync',
+        'Core designers edit the UI Kit main file and run the plugin sync; they may also draw a core component from the repo by hand',
         'Application designers work in proposals/{app} and never touch Primitive or Semantic collections',
         'Both review stories against the UI Kit; proposals reach the core designers, not the main file',
       ],
@@ -100,9 +136,9 @@ export const Roles: StoryObj = cardsStory(
     {
       eyebrow: 'Consumer',
       tone: 'system',
-      title: 'Uses what is published',
+      title: 'Uses what is packaged',
       items: [
-        'Installs the versioned @solidaris/* packages',
+        'Installs the versioned @solidaris/* packages — never source paths',
         'Imports Core components; asks before importing a Candidate',
         'Never imports an App-specific component from another team',
       ],
@@ -113,11 +149,11 @@ export const Roles: StoryObj = cardsStory(
 
 export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'While a component is app-owned, drift stays contained by tooling — not by trust',
+  title: 'While your team owns it, the lint and token checks still apply',
   items: [
-    'Compose from PrimeNG and @solidaris/ui; consume --pds-* tokens only. tokens:lint fails on hex, px and unknown --pds-* names.',
-    'Feature tokens are component tokens in 01-settings/_settings.{feature}.scss that alias semantic roles. tokens:propose registers them in the proposals/{app} Figma collection.',
-    'Domain BEM blocks (c-affiliate-*) never reuse a core block name; feature children on a shared block prefix the element (rule 09 §9). Layout is o-flex / o-layout in the template.',
-    'The Storybook page lives under Patterns/{App}; metadata governance says owner: <app> and status: candidate or app.',
+    'Build it from PrimeNG and @solidaris/ui, and use --pds-* tokens. CI fails hex, px and unknown token names.',
+    'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
+    'Put the layout classes in the template.',
+    'The Storybook page lives under Patterns/{App}, and the metadata says your team owns it.',
   ],
 });

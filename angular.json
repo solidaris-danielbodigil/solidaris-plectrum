@@ -9,7 +9,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/apps/ishare",
             "index": "apps/ishare/src/index.html",
@@ -54,6 +54,12 @@
                   "with": "apps/ishare/src/environments/environment.development.ts"
                 }
               ]
+            },
+            "testing": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "polyfills": ["zone.js"]
             }
           },
           "defaultConfiguration": "production"
@@ -71,31 +77,81 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "apps/ishare/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "styles": [
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "libs/styles/src/main.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/styles/src"
-              ]
-            },
+            "buildTarget": "ishare:build:testing",
+            "setupFiles": ["tools/testing/vitest-zone-patch.ts"],
+            "browsers": ["chromium"],
+            "headless": true,
+            "browserViewport": "1440x900",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
+            "coverageReporters": ["html", "text-summary", "lcovonly"]
+          }
+        }
+      }
+    },
+    "iged": {
+      "projectType": "application",
+      "root": "apps/iged",
+      "sourceRoot": "apps/iged/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/apps/iged",
+            "index": "apps/iged/src/index.html",
+            "browser": "apps/iged/src/main.ts",
+            "tsConfig": "apps/iged/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "libs/assets",
                 "output": "assets"
               }
-            ]
-          }
+            ],
+            "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "libs/styles/src/main.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "iged:build:production"
+            },
+            "development": {
+              "buildTarget": "iged:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     },
@@ -160,17 +216,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "tsConfig": "apps/icrm/tsconfig.app.json",
-            "karmaConfig": "karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
         }
       }
     },
@@ -261,12 +306,11 @@
           "defaultConfiguration": "production"
         },
         "storybook": {
-          "builder": "@storybook/angular:start-storybook",
+          "builder": "@storybook/angular-vite:start-storybook",
           "options": {
             "configDir": "libs/ui/.storybook",
-            "browserTarget": "ishare:build:development",
             "port": 6006,
-            "compodoc": false,
+            "zoneless": false,
             "assets": [
               {
                 "glob": "**/*",
@@ -286,12 +330,11 @@
           }
         },
         "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
+          "builder": "@storybook/angular-vite:build-storybook",
           "options": {
             "configDir": "libs/ui/.storybook",
-            "browserTarget": "ishare:build:development",
             "outputDir": "dist/storybook/ui",
-            "compodoc": false,
+            "zoneless": false,
             "assets": [
               {
                 "glob": "**/*",
@@ -310,23 +353,20 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "unit-test-app": {
+          "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/test/ui",
+            "index": "libs/ui/testing/index.html",
+            "browser": "libs/ui/testing/main.ts",
             "tsConfig": "libs/ui/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js"],
             "styles": [
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "libs/styles/src/main.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "libs/styles/src"
-              ]
+              "includePaths": ["libs/styles/src"]
             },
             "assets": [
               {
@@ -335,6 +375,19 @@
                 "output": "assets"
               }
             ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "libs/ui/tsconfig.spec.json",
+            "buildTarget": "ui:unit-test-app",
+            "setupFiles": ["tools/testing/vitest-zone-patch.ts"],
+            "browsers": ["chromium"],
+            "headless": true,
+            "browserViewport": "1440x900",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
+            "coverageReporters": ["html", "text-summary", "lcovonly"]
           }
         }
       }
@@ -346,7 +399,7 @@
       "prefix": "pds",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "project": "libs/plectrum/ng-package.json"
           },
@@ -359,6 +412,15 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "libs/plectrum/tsconfig.spec.json",
+            "buildTarget": "plectrum:build:development",
+            "runnerConfig": "tools/testing/vitest.unit.config.mts",
+            "coverageReporters": ["html", "text-summary", "lcovonly"]
+          }
         }
       }
     },

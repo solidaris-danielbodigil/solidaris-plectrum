@@ -9,7 +9,7 @@ import {
   docsLinkAttrs,
   toneSeverity,
 } from './docs-figures.types';
-import { DocsHeroComponent } from './docs-hero.component';
+import { DocsHeroComponent, docsHeroVersionLine } from './docs-hero.component';
 import { DocsLinkComponent } from './docs-link.component';
 import { DocsStepsComponent } from './docs-steps.component';
 
@@ -43,13 +43,13 @@ describe('docs figures', () => {
       fixture.detectChanges();
       const host: HTMLElement = fixture.nativeElement;
 
-      expect(host.classList.contains('c-docs-hero')).toBeTrue();
+      expect(host.classList.contains('c-docs-hero')).toBe(true);
       expect(
         host.querySelector('h1.c-docs-hero__title')?.textContent?.trim(),
       ).toBe('Plectrum Design System');
       expect(
         host.querySelector('.c-docs-hero__eyebrow')?.textContent?.trim(),
-      ).toBe(docsHeroEyebrow());
+      ).toBe(docsHeroVersionLine());
       expect(
         host.querySelector('.c-docs-hero__lead')?.textContent?.trim(),
       ).toBe('Welcome');
@@ -57,9 +57,7 @@ describe('docs figures', () => {
       const shapes = host.querySelectorAll<HTMLImageElement>(
         '.c-docs-hero__shape',
       );
-      expect(shapes.length)
-        .withContext('three overlapping plectrum copies')
-        .toBe(3);
+      expect(shapes.length, 'three overlapping plectrum copies').toBe(3);
       shapes.forEach((img) =>
         expect(img.getAttribute('src')).toBe('assets/plectrum-shape.svg'),
       );
@@ -79,13 +77,14 @@ describe('docs figures', () => {
       );
       expect(links.length).toBe(2);
       expect(links[0].getAttribute('href')).toBe('./?path=/docs/intro--docs');
-      expect(links[0].getAttribute('target'))
-        .withContext('escape the docs iframe')
-        .toBe('_top');
+      expect(links[0].getAttribute('target'), 'escape the docs iframe').toBe(
+        '_top',
+      );
       expect(links[0].textContent?.trim()).toBe('Start');
-      expect(links[1].classList.contains('p-button-outlined'))
-        .withContext('secondary → outlined')
-        .toBeTrue();
+      expect(
+        links[1].classList.contains('p-button-outlined'),
+        'secondary → outlined',
+      ).toBe(true);
     });
 
     it('always shows the stack versions; omits lead and actions when not provided', () => {
@@ -96,9 +95,23 @@ describe('docs figures', () => {
 
       expect(
         host.querySelector('.c-docs-hero__eyebrow')?.textContent?.trim(),
-      ).toBe(docsHeroEyebrow());
+      ).toBe(docsHeroVersionLine());
       expect(host.querySelector('.c-docs-hero__lead')).toBeNull();
       expect(host.querySelector('.c-docs-hero__actions')).toBeNull();
+    });
+
+    it('flags the stack line as unreleased until a version is in the changelog', () => {
+      expect(docsHeroVersionLine([])).toBe(`${docsHeroEyebrow()} · unreleased`);
+      expect(
+        docsHeroVersionLine([
+          {
+            packageName: '@solidaris/ui',
+            version: '0.1.0',
+            changes: [],
+            notes: '',
+          },
+        ]),
+      ).toBe(docsHeroEyebrow());
     });
   });
 
@@ -153,7 +166,7 @@ describe('docs figures', () => {
       ) as HTMLAnchorElement;
 
       expect(link).not.toBeNull();
-      expect(link.classList.contains('p-button-link')).toBeTrue();
+      expect(link.classList.contains('p-button-link')).toBe(true);
       expect(link.getAttribute('href')).toBe(
         './?path=/docs/foundations-spacing--docs',
       );
@@ -180,9 +193,10 @@ describe('docs figures', () => {
       fixture.detectChanges();
       const host: HTMLElement = fixture.nativeElement;
 
-      expect(host.querySelector('p-timeline'))
-        .withContext('p-timeline host')
-        .not.toBeNull();
+      expect(
+        host.querySelector('p-timeline'),
+        'p-timeline host',
+      ).not.toBeNull();
       const badges = Array.from(host.querySelectorAll('p-badge')).map((el) =>
         el.textContent?.trim(),
       );
@@ -193,27 +207,29 @@ describe('docs figures', () => {
       const links = host.querySelectorAll<HTMLAnchorElement>(
         '.c-docs-steps__links a[pButton]',
       );
-      expect(links.length).withContext('only the first step has links').toBe(1);
+      expect(links.length, 'only the first step has links').toBe(1);
       expect(links[0].textContent?.trim()).toBe('Spacing');
       expect(links[0].getAttribute('href')).toBe(
         './?path=/docs/foundations-spacing--docs',
       );
-      expect(links[0].getAttribute('target'))
-        .withContext('escape the docs iframe')
-        .toBe('_top');
-      expect(links[0].classList.contains('p-button-link'))
-        .withContext('Button link variant')
-        .toBeTrue();
+      expect(links[0].getAttribute('target'), 'escape the docs iframe').toBe(
+        '_top',
+      );
+      expect(
+        links[0].classList.contains('p-button-link'),
+        'Button link variant',
+      ).toBe(true);
 
       const tags = host.querySelectorAll('p-tag');
       expect(tags.length).toBe(2);
       expect(tags[0].textContent?.trim()).toBe('Designer');
-      expect(tags[0].classList.contains('p-tag-warn'))
-        .withContext('design → warn')
-        .toBeTrue();
-      expect(tags[1].classList.contains('p-tag-secondary'))
-        .withContext('default → secondary')
-        .toBeTrue();
+      expect(tags[0].classList.contains('p-tag-warn'), 'design → warn').toBe(
+        true,
+      );
+      expect(
+        tags[1].classList.contains('p-tag-secondary'),
+        'default → secondary',
+      ).toBe(true);
     });
   });
 
@@ -233,7 +249,7 @@ describe('docs figures', () => {
       fixture.detectChanges();
       const host: HTMLElement = fixture.nativeElement;
 
-      expect(host.classList.contains('c-docs-cards--2-up')).toBeTrue();
+      expect(host.classList.contains('c-docs-cards--2-up')).toBe(true);
       expect(host.querySelectorAll('p-card').length).toBe(2);
       expect(host.querySelectorAll('p-tag').length).toBe(1);
       expect(host.querySelectorAll('.c-docs-cards__list > li').length).toBe(2);
@@ -255,9 +271,10 @@ describe('docs figures', () => {
 
       const message = host.querySelector('p-message');
       expect(message).not.toBeNull();
-      expect(message?.classList.contains('p-message-warn'))
-        .withContext('warning → warn')
-        .toBeTrue();
+      expect(
+        message?.classList.contains('p-message-warn'),
+        'warning → warn',
+      ).toBe(true);
       expect(
         host.querySelector('.c-docs-callout__title')?.textContent?.trim(),
       ).toBe('Guardrail');

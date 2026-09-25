@@ -1,37 +1,13 @@
-# Promoting an app component into the design system
+# Promoting an application candidate
 
-Every component carries `governance: { status, owner }` in its `.metadata.ts`
-(`.ai/contracts/schema/component.metadata.ts`). Promotion is the move from
-`candidate` (owned by an application team) to `core` (owned by `design-system`).
-It is a core-team decision, taken when a proposal comes back with the
-*system-level* answer — see Storybook → Get started / Contribute.
+The stable identity is `<team>:<component>` and the candidate record ID is `<application>-<component>`. A team candidate stays in the application repository until a reviewed Core integration actually adds its implementation to Plectrum. See the [central record contract](../.ai/candidates/README.md) and Storybook → Start here / Contribute.
 
-## Before promotion
+1. The team opens a proposal issue. Core records the decision and owner in `.ai/candidates/proposals/<id>.json` via `npm run candidate:record -- proposal --team TEAM --application APP --component SLUG --issue URL --decision approved-candidate --decided-by @REVIEWER --decision-url URL --note TEXT` and merges it. The team scaffolds only after `approved-candidate` is merged.
+2. The team builds the candidate locally, fills metadata, stories and evidence, and runs the installed toolkit's `plectrum check --profile ci`. It commits the source and publishes preview and CI URLs for the same commit.
+3. `plectrum candidate-submit` sends the metadata and provenance as a JSON pull request to this repository. Subsequent commits use `revise`; `candidate-withdraw` reserves the ID and removes the listing. The team's `index.json` is not submitted.
+4. Core reviews the pinned source commit, preview, metadata, package versions and accessibility evidence, then records acceptance/rejection through `npm run candidate:record -- review --id APP-SLUG --decision accepted --pull-request URL --reviewed-by @REVIEWER --note TEXT` in a reviewed PR. The reviewer record references the current source revision.
+5. For promotion, Core imports and adapts the **actual implementation**: generic naming/API, dependencies, FR/NL i18n, tests, stories, styles and approved tokens. The Figma design and token references are reconciled. The central `.metadata.ts` uses the same component ID with `status: 'core'`, `owner: 'design-system'` and a package-eligible distribution. A changeset records the release impact.
+6. Core records `.ai/candidates/promotions/<id>.json` with `npm run candidate:record -- promotion --id APP-SLUG --integration-pr URL --api URL --tokens URL --dependencies URL --i18n URL --accessibility URL --figma URL`, then runs `npm run contracts:generate`, `npm run candidate:check`, `npm run contracts:check`, `npm run docs:check` and the relevant builds/tests. Generated `index.json` and exports come from central source. The promotion record preserves the link from application candidate to Core ID.
+7. After a verified package release, the application upgrades its packages, deletes its local candidate and imports the Core component. Publication is part of P7; a merged integration PR alone is not a released package.
 
-1. **Propose first.** The application team asks the core team before building;
-   the answer is *exists*, *system-level* or *app-specific*.
-2. **Author in the application layer** while the API is still moving:
-   `npm run pds:component -- --owner=<app>` scaffolds `status: 'candidate'`,
-   the Storybook title is `Patterns/{App}/…`, feature tokens live in
-   `01-settings/_settings.{feature}.scss` and alias semantic roles only.
-3. Nothing under `Custom components/…` or `Shell/…` may carry another owner.
-
-## The move (core team)
-
-1. **Generic API and naming** — application vocabulary leaves the inputs, the
-   BEM block and the docs copy.
-2. **Tokens** — from the `proposals/{app}` Figma collection into Component or
-   Semantic; from `_settings.{feature}.scss` into the shared settings files.
-3. **Storybook** — title from `Patterns/{App}/…` to `Custom components/…` or
-   `Shell/…`; `governance` becomes `status: 'core'`, `owner: 'design-system'`;
-   `npm run generate-index` refreshes `.ai/contracts/index.json`.
-4. **Pull request** with design-system review (`.ai/rules/07-version-control.md` §3)
-   and a changeset. `@solidaris/ui` (and styles / plectrum if needed) publish on merge.
-5. **In the application**, bump the DS packages (Renovate / Dependabot template in
-   `tools/consumers/`), delete the local copy, import from `@solidaris/ui`.
-
-Until step 3 the component belongs to the application team, whatever `libs/`
-folder it sits in.
-
-There is no cross-repo Storybook aggregation — Storybook stays in this repository
-(`libs/ui/.storybook/main.ts`).
+Core review is assigned to `@solidaris-danielbodigil` and `@danielbodi` in the current personal repository. Both accounts have write access. GitHub `main` protection requires one Code Owner approval and the six P3 CI jobs; merge this branch's generated `CODEOWNERS` and CI workflow to make the rule effective for new candidate PRs.

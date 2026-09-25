@@ -7,6 +7,7 @@
     "resolveJsonModule": true
   },
   "include": ["**/*.ts"],
+  "exclude": ["**/*.figma.ts"],
   "references": [
     {
       "path": "./.storybook/tsconfig.json"

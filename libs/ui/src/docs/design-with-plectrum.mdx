@@ -1,0 +1,47 @@
+import { Canvas, Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Figures from './design-with-plectrum.stories';
+import * as FormFieldStories from '../lib/form-field/form-field.stories';
+
+<Meta title="Start here/Design with Plectrum" />
+
+# Design with Plectrum
+
+This Storybook is the published guidance: when to use a component, which variant to pick, and how it behaves. Figma is the authoring library. If the two disagree, follow this Storybook and open a proposal.
+
+You do not need the repository to design a screen. Enable these four libraries. Do not draw new components on the main kit.
+
+<Unstyled>
+  <Story of={Figures.Libraries} />
+</Unstyled>
+
+Agenda is only for display titles. Open Sans is for headings, body, labels and buttons. Both ship with the libraries — do not substitute another family.
+
+Zeroheight was an earlier site. Start here.
+
+## Build a simple form
+
+<Unstyled>
+  <Story of={Figures.BuildForm} />
+</Unstyled>
+
+Show the field asking for a required value.
+
+<Canvas of={FormFieldStories.Vertical} />
+
+Show the field failing validation, with the error message visible.
+
+<Canvas of={FormFieldStories.VerticalInvalid} />
+
+Show the field at the narrow width, label stacked above the control.
+
+<Canvas of={FormFieldStories.Narrow} />
+
+<Unstyled>
+  <Story of={Figures.Handoff} />
+</Unstyled>
+
+## When nothing fits
+
+Open a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Attach the frame, say which components you tried, and what the screen must do. Application designers work on a `proposals/{app}` branch. They do not edit the Primitive or Semantic collections, and they do not add a component to the main kit.
+
+Next: [Find a component](?path=/docs/start-here-catalogue--docs) · [Accessibility](?path=/docs/foundations-accessibility-overview--docs)

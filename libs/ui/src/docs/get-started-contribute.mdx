@@ -2,13 +2,30 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-contribute.stories';
 
-<Meta title="Get started/Contribute" />
+<Meta title="Start here/Contribute" id="get-started-contribute" />
 
 # Contribute
 
-Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first; applications only ever install published versions.
+Core tokens, stylesheets, components and this Storybook ship through this repository. Application teams build approved candidates in their own repositories and submit metadata, commit provenance and preview evidence through a reviewed central PR. Applications install versioned packages — packed tarballs of the current version until npm publish is on — never source paths.
 
-Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: a **proposal to the core design-system team**, not a scaffold. The core team answers within the triage below; nobody waits for the core team to build.
+Related pages:
+
+- [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF, attached MDX, Storybook MCP
+- [Pipelines and contracts](?path=/docs/docs-pipeline-contracts--docs) — shared steps, available commands, team registry and handoff configuration
+- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP tools
+- [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
+
+## A small correction
+
+A typo, a broken example or a wrong link is a pull request on this repository. You do not open a proposal for that.
+
+A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Say what the screen must do, which components you tried, and attach a Figma link. The core team answers within two working days: use what exists, they will build it, or your team builds it and owns it. That response time is provisional until the team confirms it.
+
+Anyone can contribute — developers and designers, in the core team or in an application team. Every change starts the same way: check the catalogue, then a **proposal to the core design-system team**, not a scaffold. Open a [proposal issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). The core team answers within the triage below; nobody waits for the core team to build.
+
+<Unstyled>
+  <Story of={Figures.ProposeEarly} />
+</Unstyled>
 
 <Unstyled>
   <Story of={Figures.DevLoop} />
@@ -31,11 +48,19 @@ Application teams migrating to Plectrum need variants the system does not have y
   rows={[
     ['It already exists — PrimeNG, a Core component, a token', 'Nowhere new. Use it; the docs page gets the missing example if that is why you missed it', 'Design-system team', 'Core'],
     ['System-level — a second application will need it, or it is a variant of a Core component', 'libs/ui / libs/styles / the UI Kit Component collection, through the normal pull request and design-system review', 'Design-system team', 'Core'],
-    ['App-specific — only your screens need it', 'Your application layer: Patterns/{App} in Storybook, owner: <app> in the metadata, tokens in 01-settings/_settings.{feature}.scss', 'Application team', 'Candidate or App-specific'],
+    ['App-specific — only your screens need it', 'The application team builds and owns it in its repository, with local stories and approved token aliases. A submitted Candidate gets a central listing linked to that team’s preview; promotion is a separate Core decision', 'Application team', 'Candidate or App-specific'],
   ]}
 />
 
 Running Storybook locally is never the drift risk — nothing leaves a branch without a pull request and the CI gates. The risk is building before the decision, or a code-owned token teaching Figma after the fact. Both are what the Propose and Review steps exist for.
+
+## Already built it?
+
+If an application team already designed or coded something without a proposal, open the [same issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml) and attach what exists. The core team still decides — rewrite onto PrimeNG or Core, keep it App-specific, or promote later. It does not land as Core and it is not added to a core backlog by default.
+
+<Unstyled>
+  <Story of={Figures.AlreadyBuilt} />
+</Unstyled>
 
 ## Application layer
 
@@ -51,13 +76,13 @@ Every component docs page opens with two badges from its `.metadata.ts` `governa
   headers={['Status', 'Meaning', 'Who may import it', 'What changes it']}
   rows={[
     ['Core', 'Generic, owned by the design-system team. Filed under Custom components or Shell', 'Every application', 'Deprecation, by the core team'],
-    ['Candidate', 'Built for one application and flagged for promotion. Filed under Patterns/{App}', 'The owning application; others ask the core team first', 'Promotion to Core, or settling as App-specific'],
+    ['Candidate', 'Built for one application. Filed under Patterns/{App}. The owning team keeps it — a Candidate badge is not a core-team ticket', 'The owning application; others ask the core team first', 'Promotion to Core only if the core team chooses, or settling as App-specific'],
     ['App-specific', 'Owned by one application for its own screens. Documented here, not part of the design-system contract', 'The owning application only', 'A second application needing it — which reopens the proposal'],
     ['Deprecated', 'Scheduled for removal; the note names the replacement or the reason', 'Nobody new', 'Removal in a later release, after usages migrated'],
   ]}
 />
 
-The **owner** badge names the accountable team: `design-system`, `ishare` or `icrm`. Ownership and status travel together — a Core component is always design-system owned; a Candidate or App-specific component never is.
+The **owner** badge names a team from the shared registry. Core components require a registered core owner. See [Pipelines and contracts](?path=/docs/docs-pipeline-contracts--docs#teams-and-operational-configuration) for the current teams and configuration.
 
 ## Promotion
 
@@ -65,50 +90,28 @@ Promotion is a move, done by the core team when a proposal comes back with the s
 
 1. Generic name and API — application vocabulary leaves the inputs and the BEM block.
 2. Tokens move from the `proposals/{app}` Figma collection into Component or Semantic, and from `_settings.{feature}.scss` into the shared settings files.
-3. The Storybook title moves from `Patterns/{App}` to `Custom components` or `Shell`; `governance` becomes `status: 'core'`, `owner: 'design-system'`.
-4. A changeset publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
+3. The integrated stories appear under `Custom components` or `Shell` in central Storybook; `governance` becomes `status: 'core'`, `owner: 'design-system'` while the stable component ID is retained.
+4. The Figma component is designed from the repo on the branch — an agent via Figma MCP, or a designer by hand. Bind variables; do not paint hex from a screenshot. Merge and publish stay human.
+5. A changeset records the bump. After the publication pipeline is enabled and a verified release exists, the application upgrades, deletes its local copy and imports from `@solidaris/ui`.
 
-Until step 3 the component stays the application's, whatever `libs/` folder it sits in.
-
-## Audit outcome
-
-The catalogue was audited in September 2026 against the statuses above. The badge on each page is authoritative; this table records the decisions.
-
-<DocsTable
-  headers={['Component', 'Status', 'Owner', 'Section', 'Decision']}
-  rows={[
-    ['Accordion', 'Core', 'design-system', 'Custom components', 'A variant of p-accordion (c-accordion--bordered)'],
-    ['Affiliate Detail Drawer', 'Core', 'design-system', 'Shell', 'Reused everywhere — moved next to the navigation shells'],
-    ['Affiliate Overview Card', 'Core', 'design-system', 'Custom components', 'Reused everywhere'],
-    ['Copyable Text', 'Core', 'design-system', 'Custom components', 'Generic pattern; part of the overview card'],
-    ['Delay Prediction Card', 'App-specific', 'ishare', 'Patterns / iSHARE', 'iSHARE dossier follow-up only'],
-    ['Detail List', 'Core', 'design-system', 'Custom components', 'Generic label / value pattern'],
-    ['Drawer', 'Core', 'design-system', 'Custom components', 'Headless p-drawer shell — stock p-drawer, see its page for what is custom'],
-    ['Empty State', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Form Field', 'Core', 'design-system', 'Custom components', 'Generic pattern'],
-    ['Icon', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Input Clear', 'Core', 'design-system', 'Custom components', 'Generic pattern'],
-    ['List', 'Core', 'design-system', 'Custom components', 'p-tree variant; generic input naming is the open follow-up'],
-    ['Plectrum Avatar', 'Core', 'design-system', 'Custom components', 'Generic'],
-    ['Skeleton Slot', 'Core', 'design-system', 'Custom components', 'Generic slots; the card story is a composition example'],
-    ['Timeline', 'Core', 'design-system', 'Custom components', 'A variant of p-timeline (c-timeline--content-only)'],
-    ['Toolbar', 'Candidate', 'ishare', 'Patterns / iSHARE', 'Built for iSHARE; the Foundations pages already embed it'],
-    ['Transactions CICS Modal', 'App-specific', 'ishare', 'Patterns / iSHARE', 'Stock p-dialog with iSHARE content'],
-    ['NavShell · SubNavShell · TopNav', 'Core', 'design-system', 'Shell', 'Navigation chrome'],
-  ]}
-/>
+Until step 3 the component stays the application's, whatever `libs/` folder it sits in. Token writes use the Plugin API: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise ([Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs)).
 
 ---
 
 ## Set up
 
+In an **application repository**, install the runtime packages and `@solidaris/plectrum-devkit` as described in [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit). Run `plectrum init` once, then `plectrum catalogue` and `plectrum doctor`. Open a proposal issue; the Core team records its decision in `.ai/candidates/proposals/<application>-<slug>.json`. After that record is merged with `approved-candidate`, run `plectrum scaffold --name <slug> --proposal <application>-<slug>`. Complete the metadata JSON, story, style and evidence, then run `plectrum check --profile ci` and commit. Publish an HTTPS preview and CI result for the exact commit. With `GH_TOKEN` or `GITHUB_TOKEN`, run `plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url>` to open a central intake PR. Repeating this after a new commit revises the stable ID; `plectrum candidate-withdraw --id <application>-<slug> --reason <text>` opens a withdrawal PR. The central JSON submission appears in Find a component with a link to the team's preview after review and merge. `plectrum update` refreshes editor adapters when the installed toolkit changes. Local `index.json` files are never submitted.
+
+The commands below apply to contributors working **inside the Plectrum repository**:
+
 ```bash
-git clone <repo> && cd solidaris-nx
+git clone https://github.com/solidaris-danielbodigil/solidaris-plectrum.git
+cd solidaris-plectrum
 npm install
 npm run storybook     # http://localhost:6006
 ```
 
-Node 18.19+, 20.11+ or 22. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
+Node **20.19+, 22.12+ or 24** — the configured range. CI (`ci.yml`) currently runs on Node 24. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
 
 ## Where things live
 
@@ -126,21 +129,29 @@ Node 18.19+, 20.11+ or 22. The apps run with `npm start` (iSHARE) and `npm run s
 
 ## Create a component
 
-Only after the core team's decision. Then:
+Only after the core team's decision on a [proposal issue](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Then:
 
 ```bash
 npm run pds:component -- --owner=design-system   # core team: status core
-npm run pds:component -- --owner=ishare          # application team: status candidate
+npm run pds:component -- --owner=ishare          # local demo candidate in Plectrum
 ```
 
 The scaffolder asks for name, category, type and optional PrimeNG wrap, then creates the Angular files, the `.metadata.ts` contract with its `governance` block, a stories stub, the `_components.{name}.scss` partial (forwarded from the core barrel), and regenerates `.ai/contracts/index.json`. Then:
 
-1. Check **PrimeNG MCP** and **Figma MCP** — reuse before inventing ([CSS architecture](?path=/docs/docs-css-architecture--docs) has the authoring order).
+1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** (`docs-list`) when `npm run storybook` is up — reuse before inventing ([CSS architecture](?path=/docs/docs-css-architecture--docs) has the authoring order; [AI strategy](?path=/docs/docs-ai-strategy--docs#storybook-mcp) has the MCP tools).
 2. Missing tokens go to `01-settings` first, cited with their Figma variable. Application teams alias semantic roles only.
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
-4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Application-owned pages are titled `Patterns/{App}/…`.
+4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Agents use `docs-show` and `get-storybook-story-instructions` before writing CSF. Application-owned pages are titled `Patterns/{App}/…`.
 
-By default the **agents do this work** — ask the Solidaris coordinator for a component and it runs research, tokens, implementation and QA end to end ([AI strategy](?path=/docs/docs-ai-strategy--docs)). Every command stays runnable by hand. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.
+<Unstyled>
+  <Story of={Figures.PlectrumAgent} />
+</Unstyled>
+
+## Language
+
+User-facing copy in `libs/ui` lives in a colocated `{name}.i18n.ts` (`fr` + `nl`). Components resolve it with `injectPdsMessages()` from the `PDS_LOCALE` token. The token factory reads Angular `LOCALE_ID` (`nl*` → `nl`, otherwise `fr`); apps can also call `providePdsLocale('nl')`. String inputs still win when the host passes them.
+
+This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story per migrated component pins `globals: { locale: 'nl' }` and asserts a Dutch string. Terminology decisions live in `.ai/questions/nl-copy-review.md`.
 
 ## Testing
 
@@ -149,31 +160,49 @@ Stories are the test suite: every story is executed headless in CI, so covering 
 <DocsTable
   headers={['Layer', 'Command', 'What it checks']}
   rows={[
-    ['Unit (Karma / Jasmine)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons'],
+    ['Unit (Vitest)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons'],
     ['Unit coverage', 'npm run test:coverage', 'Istanbul / lcov under coverage/ — CI runs this instead of npm test'],
-    ['Story smoke + interaction', 'npm run test-storybook', 'Every story renders; play functions run (storybook/test). Debug in the Interactions panel'],
-    ['Story coverage', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
-    ['Accessibility', 'same run + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y on every story — currently a non-blocking report (parameters.a11y.test = 'todo'); flip to 'error' to gate CI"],
+    ['Story widget (local)', 'Testing widget → Run tests', 'Component tests, Interactions, a11y, coverage, story statuses — @storybook/addon-vitest. Sign in for Visual tests'],
+    ['Story CLI (Vitest)', 'npm run test-storybook:vitest', 'Same Vitest browser project the widget uses'],
+    ['Story smoke + interaction (CI)', 'npm run test-storybook', 'test-runner: every story renders; play functions run. Debug in the Interactions panel'],
+    ['Story coverage (CI)', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
+    ['Accessibility', 'widget + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y — parameters.a11y.test = 'error' fails the story when a violation is found"],
     ['Visual tests', 'npm run chromatic', 'Pixel diffs against Chromatic baselines. Sign in via the Visual tests panel, then set CHROMATIC_PROJECT_TOKEN and repo variable CHROMATIC_ENABLED=true for CI'],
     ['Manual / agent QA', 'Tester subagent', 'Story coverage, missing states, contrast — fixes what it finds'],
   ]}
 />
 
+## Before you commit
+
+`npm install` installs a git hook. It runs `npm run check:commit` before the commit is created. That run checks docs, contracts, token prefix, token usage, style lint, and that the generated index, changelog and token files are already saved. Fix the failure, stage any regenerated file, and commit again.
+
+`git commit --no-verify` skips this hook. A pull request into `main` still runs the full CI gates below. A push of a feature branch by itself does not.
+
 ## CI gates
 
+What `.github/workflows/ci.yml` runs on every push and pull request to `main`, in order. Each row is a required step unless marked otherwise. The application build, unit tests, pack smoke and Storybook run here, not in the commit hook.
+
 <DocsTable
-  headers={['Gate', 'Fails when']}
+  headers={['Job', 'Gate', 'Fails when']}
   rows={[
-    ['tokens:audit', 'Figma, preset and SCSS disagree on a token value'],
-    ['tokens:check-prefix', 'A new bare --spacing-/--text-/--font- declaration appears'],
-    ['tokens:build + diff', 'Generated SCSS or the token manifest is stale'],
-    ['generate-index + diff', '.ai/contracts/index.json is stale — including a component whose governance changed'],
-    ['tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
-    ['test-storybook:ci', 'A story fails to render, an interaction (play) test fails, or story coverage collection errors'],
-    ['chromatic (optional)', 'A visual baseline changes and is not accepted — only when CHROMATIC_ENABLED=true'],
-    ['build · test · pack:smoke', 'Apps break, unit tests fail, or packed tarballs cannot build a consumer app'],
+    ['build', 'tokens:audit', 'Figma, preset and SCSS disagree on a token value'],
+    ['build', 'tokens:validate-preset (advisory)', 'A preset token reference does not resolve — reported, continue-on-error'],
+    ['build', 'tokens:check-prefix', 'A new bare --spacing-/--text-/--font- declaration appears'],
+    ['build', 'tokens:build + diff', 'Generated SCSS (*.generated.scss) or tokens.generated.ts is stale'],
+    ['build', 'changelog:build + diff', 'changelog.generated.ts no longer matches .changeset/*.md and libs/*/CHANGELOG.md'],
+    ['build', 'tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
+    ['build', 'contracts:generate -- --check', 'Generated contracts, index, package exports, schemas, toolkit snapshots or CODEOWNERS are stale'],
+    ['build', 'candidate:check', 'A proposal, submission, review or promotion breaks identity, provenance, ownership or integration requirements'],
+    ['intake-guard', 'data-only candidate PR', 'A submission PR changes anything other than one central submission JSON'],
+    ['build', 'build · test:coverage', 'The iSHARE build breaks, or a ui / ishare / plectrum unit test fails'],
+    ['pack-smoke', 'pack:smoke', 'The packed tarballs cannot install into and build the throwaway consumer app'],
+    ['storybook-tests', 'build-storybook · test-storybook:ci', 'A story fails to render, an interaction (play) test fails, an a11y assertion fails, or story coverage collection errors'],
+    ['storybook-packed', 'pack:libs · build-storybook:packed', 'Storybook does not build against the packed dist/ libraries'],
+    ['visual-tests (optional)', 'chromatic', 'A visual baseline changes and is not accepted — only when CHROMATIC_ENABLED=true'],
   ]}
 />
+
+**Not a gate yet:** `npm run lint` (`ng lint`) has no architect target and no ESLint configuration, so no lint step runs in CI. Style and token hygiene are enforced by `tokens:lint` and `tokens:check-prefix` above.
 
 Review rules the gates do not encode — one developer review, the design-system review under `libs/`, the token risk levels — live in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`.
 

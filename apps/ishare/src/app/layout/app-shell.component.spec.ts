@@ -30,11 +30,14 @@ describe('AppShellComponent', () => {
   });
 
   it('should navigate back in browser history when history exists', () => {
-    spyOn(component as unknown as { canNavigateBack: () => boolean }, 'canNavigateBack').and.returnValue(
-      true,
-    );
-    const backSpy = spyOn(location, 'back');
-    const navigateSpy = spyOn(router, 'navigate');
+    vi.spyOn(
+      component as unknown as {
+        canNavigateBack: () => boolean;
+      },
+      'canNavigateBack',
+    ).mockReturnValue(true);
+    const backSpy = vi.spyOn(location, 'back').mockImplementation(() => undefined);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     component.onBackClick();
 
@@ -43,15 +46,19 @@ describe('AppShellComponent', () => {
   });
 
   it('should fall back to /home when there is no browser history', () => {
-    spyOn(component as unknown as { canNavigateBack: () => boolean }, 'canNavigateBack').and.returnValue(
-      false,
-    );
-    const backSpy = spyOn(location, 'back');
-    const navigateSpy = spyOn(router, 'navigate').and.resolveTo(true);
+    vi.spyOn(
+      component as unknown as {
+        canNavigateBack: () => boolean;
+      },
+      'canNavigateBack',
+    ).mockReturnValue(false);
+    const backSpy = vi.spyOn(location, 'back').mockImplementation(() => undefined);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     component.onBackClick();
 
     expect(backSpy).not.toHaveBeenCalled();
-    expect(navigateSpy).toHaveBeenCalledOnceWith(['/home']);
+    expect(navigateSpy).toHaveBeenCalledTimes(1);
+    expect(navigateSpy).toHaveBeenCalledWith(['/home']);
   });
 });

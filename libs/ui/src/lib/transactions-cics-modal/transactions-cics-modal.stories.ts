@@ -4,9 +4,11 @@ import {
   moduleMetadata,
   type Meta,
   type StoryObj,
-} from '@storybook/angular';
+} from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TransactionsCicsModalComponent } from './transactions-cics-modal.component';
 import { TransactionsCicsModalMetadata } from './transactions-cics-modal.metadata';
@@ -31,8 +33,12 @@ class TransactionsCicsModalStoryHostComponent {
 
 // App-owned (governance.status 'app', owner 'ishare') — filed under Patterns/iSHARE.
 const meta: Meta<TransactionsCicsModalStoryHostComponent> = {
+  parameters: {
+    ...storyDesign(TransactionsCicsModalMetadata.component.figmaUrl),
+  },
   title: 'Patterns/iSHARE/Transactions CICS Modal',
   component: TransactionsCicsModalStoryHostComponent,
+  argTypes: argTypesFromProps(TransactionsCicsModalMetadata.props ?? []),
   decorators: [
     moduleMetadata({
       imports: [TransactionsCicsModalStoryHostComponent],
@@ -47,8 +53,32 @@ export default meta;
 
 type Story = StoryObj<TransactionsCicsModalStoryHostComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(TransactionsCicsModalMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from transactions-cics-modal.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(
+  TransactionsCicsModalMetadata.governance,
+  TransactionsCicsModalMetadata.component,
+) };
+export const Usage = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'examples') };
+export const Composition = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(TransactionsCicsModalMetadata, 'accessibility') };
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Transactions CICS' }),
+    );
+    await waitFor(() => {
+      const page = within(canvasElement.ownerDocument.body);
+      expect(page.getByRole('dialog', { name: /CICS-transacties/ })).toBeVisible();
+    });
+  },
+};
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {
@@ -61,4 +91,9 @@ export const Default: Story = {
       expect(page.getByRole('dialog', { name: /Transactions CICS/ })).toBeVisible();
     });
   },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(TransactionsCicsModalMetadata, Default),
 };

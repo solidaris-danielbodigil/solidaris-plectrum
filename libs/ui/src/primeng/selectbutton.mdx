@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './selectbutton.stories';
+
+<Meta of={Stories} />
+
+# SelectButton
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+One option stays selected. The group has a name: Période.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use a SelectButton for two or three short options that fit on one line: Semaine / Mois / Année, Liste / Grille.
+
+- Four or more options, or long labels: [Select](?path=/docs/primeng-select--docs).
+- On or off: [ToggleButton](?path=/docs/primeng-togglebutton--docs).
+- Several values at once: checkboxes. PrimeNG allows multiple selection here; do not use it.
+
+SelectButton belongs to the [Actions](?path=/docs/primeng-actions--docs) family.
+
+## Variants
+
+**Always one choice.** Set `[allowEmpty]="false"` so the person cannot clear the group.
+
+<Canvas of={Stories.Default} />
+
+**View switch.** Options can carry a Bootstrap icon. Keep the words. `size="small"` belongs in a toolbar.
+
+<Canvas of={Stories.Views} />
+
+## Content
+
+One or two words per option, the same grammatical form. Set `ariaLabel` on the group to name what is chosen: Période, Affichage. Write the options in the language of the screen.
+
+## Behavior
+
+Arrow keys move between options. Space or Enter selects. The result applies at once. Keep the last choice when it changes what the person sees.
+
+## Accessibility
+
+Plectrum provides the focus ring and the selected styling. The application provides the group name and the option labels.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+The snippet under Default imports `SelectButton` from `primeng/selectbutton`. The same file compiles in the packaging smoke test.
+
+## Related
+
+- [Actions](?path=/docs/primeng-actions--docs) · [ToggleButton](?path=/docs/primeng-togglebutton--docs) · [Select](?path=/docs/primeng-select--docs)
+- Figma: [SelectButton](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=191-6703) · API: [primeng.org/selectbutton](https://primeng.org/selectbutton)

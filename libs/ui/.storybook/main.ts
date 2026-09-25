@@ -1,13 +1,11 @@
-import type { StorybookConfig } from '@storybook/angular';
+import type { StorybookConfig } from '@storybook/angular-vite';
 import remarkGfm from 'remark-gfm';
+import { mergeConfig } from 'vite';
 
 // SCSS includePaths and global styles are configured in angular.json under
 // the ui:storybook target — stylePreprocessorOptions.includePaths and styles.
-// Static GitHub Pages builds set STORYBOOK_PUBLIC_PATH=./ so iframe
-// module imports stay relative (an absolute /repo/storybook/ path
-// becomes .//repo/storybook/... and 404s).
-
-const pagesPublicPath = process.env['STORYBOOK_PUBLIC_PATH'];
+// Vite production `base` is already `./`, so Pages sub-path chunk URLs stay
+// relative without STORYBOOK_PUBLIC_PATH.
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))'],
@@ -23,37 +21,49 @@ const config: StorybookConfig = {
       },
     },
     '@storybook/addon-a11y',
-    {
-      name: '@storybook/addon-coverage',
-      options: {
-        istanbul: {
-          include: ['**/libs/ui/src/lib/**'],
-          exclude: [
-            '**/*.stories.ts',
-            '**/*.mdx',
-            '**/*.spec.ts',
-            '**/*.metadata.ts',
-          ],
-        },
-      },
-    },
+    '@storybook/addon-designs',
+    // Istanbul instrumentation of the whole Angular preview is expensive. Only
+    // enable it when the test-runner needs coverage (`STORYBOOK_COVERAGE=1` on
+    // `build-storybook` / `storybook`). Local `npm run storybook` stays lean.
+    ...(process.env['STORYBOOK_COVERAGE']
+      ? [
+          {
+            name: '@storybook/addon-coverage',
+            options: {
+              istanbul: {
+                include: ['**/libs/ui/src/lib/**'],
+                exclude: [
+                  '**/*.stories.ts',
+                  '**/*.mdx',
+                  '**/*.spec.ts',
+                  '**/*.metadata.ts',
+                ],
+              },
+            },
+          },
+        ]
+      : []),
     '@chromatic-com/storybook',
+    '@storybook/addon-vitest',
+    '@storybook/addon-mcp',
   ],
   framework: {
-    name: '@storybook/angular',
-    options: {},
+    name: '@storybook/angular-vite',
+    options: {
+      tsconfig: 'libs/ui/.storybook/tsconfig.json',
+      propsTable: 'inputs',
+    },
   },
-  ...(pagesPublicPath
-    ? {
-        webpackFinal: async (webpackConfig) => {
-          webpackConfig.output = {
-            ...webpackConfig.output,
-            publicPath: pagesPublicPath,
-          };
-          return webpackConfig;
-        },
-      }
-    : {}),
+  features: {
+    componentsManifest: true,
+  },
+  // Manager chrome (brand + favicon) cannot read Angular preview assets.
+  // Serve libs/assets at /assets for both the manager and the static build.
+  staticDirs: [{ from: '../../assets', to: 'assets' }],
+  viteFinal: async (viteConfig) =>
+    mergeConfig(viteConfig, {
+      resolve: { tsconfigPaths: true },
+    }),
 };
 
 export default config;

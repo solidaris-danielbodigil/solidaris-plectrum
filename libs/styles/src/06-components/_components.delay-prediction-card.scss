@@ -7,7 +7,6 @@
 // =============================================================================
 
 .c-delay-prediction-card-host {
-  display: block;
   inline-size: fit-content;
   max-inline-size: 100%;
 }
@@ -30,7 +29,6 @@
 }
 
 .c-delay-prediction-card__value {
-  display: block;
   font-family: var(--#{$pds-prefix}-font-family-display);
   font-size: var(--#{$pds-prefix}-text-delay-prediction-metric-size);
   font-weight: var(--#{$pds-prefix}-font-weight-bold);
@@ -40,17 +38,10 @@
 
 .c-delay-prediction-card__label {
   @include text-body-sm;
-  display: block;
   color: var(--#{$pds-prefix}-color-delay-prediction-subtitle);
 }
 
-.c-delay-prediction-card__divider {
-  align-self: stretch;
-  margin-inline: var(--#{$pds-prefix}-spacing-1);
-}
-
 .c-delay-prediction-card__menu {
-  flex-shrink: 0;
   inline-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
   block-size: var(--#{$pds-prefix}-size-delay-prediction-menu-button);
 }
@@ -60,7 +51,6 @@
 }
 
 .c-delay-prediction-card__unavailable-icon {
-  flex-shrink: 0;
   color: var(--#{$pds-prefix}-color-delay-prediction-unavailable-icon);
   font-size: 1.15rem;
   line-height: 1;

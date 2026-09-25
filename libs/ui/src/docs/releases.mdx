@@ -5,7 +5,7 @@ import { DocsTable } from '../../.storybook/docs-table';
 
 # Releases and versioning
 
-Changesets version and publish the three packages together. Applications never track `main` — they install published versions and receive bumps as pull requests.
+Changesets is the release tool. It bumps the three `@solidaris` packages together. Applications never track `main`: they install the current packed tarballs until npm publish is on, then they install from the registry and receive bumps as pull requests.
 
 Related pages:
 
@@ -18,7 +18,7 @@ Related pages:
 
 1. A change lands with a **changeset** (`npm run changeset`) describing the bump (patch / minor / major) and the affected packages.
 2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR** — `chore(release): version packages` — accumulating pending changesets into version bumps and changelogs.
-3. Merging the version PR publishes with `npm run release` (`changeset publish`) using the `NPM_TOKEN` secret.
+3. npm publish stays off until `NPM_TOKEN` and registry access exist. The workflow comment in `release.yml` is the switch. Do not treat a version in What's new as proof the package is on a registry.
 4. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
 
 ## Rules
@@ -27,7 +27,10 @@ Related pages:
   headers={['Rule', 'Detail']}
   rows={[
     ['Fixed version group', '@solidaris/ui, @solidaris/plectrum and @solidaris/styles always version together (.changeset/config.json → fixed)'],
+    ['Toolkit version', '@solidaris/plectrum-devkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
+    ['Internal token scripts', '@solidaris/tokens-cli is a private workspace maintenance package; consumer token checks ship in the devkit'],
     ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
+    ['Commit gate', 'npm run check:commit runs before the commit is created. git commit --no-verify skips it. The pull request into main still runs the full CI gates'],
     ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
     ['Registry via config', 'publishConfig + .npmrc.example abstract the registry — no registry URLs in code'],
     ['Consumer proof', 'pack:smoke installs the packed tarballs into a throwaway app without path aliases and builds it; storybook-packed builds this catalogue against the same tarballs'],
@@ -42,8 +45,8 @@ Related pages:
     ['@solidaris/ui', 'Angular components (Angular Package Format)'],
     ['@solidaris/plectrum', 'providePlectrum(), presets, tokens.json'],
     ['@solidaris/styles', 'ITCSS SCSS source (apps add it to includePaths)'],
-    ['@solidaris/tokens-cli', 'pds-tokens-lint and pipeline commands for consumer repos'],
+    ['@solidaris/plectrum-devkit', 'Versioned metadata, schemas, process, token inventory and team checks'],
   ]}
 />
 
-This Storybook is not versioned per release — it documents `main`. The packed-Storybook CI job proves the published packages can back it.
+This Storybook currently documents a development preview of `main`; package versions in its tables do not prove registry publication. The packed-Storybook CI job verifies local tarballs. An immutable Storybook per published version belongs to the release pipeline.

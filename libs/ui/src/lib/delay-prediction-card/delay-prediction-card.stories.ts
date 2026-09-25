@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 import { DelayPredictionCardMetadata } from './delay-prediction-card.metadata';
@@ -27,20 +29,27 @@ const meta: Meta<DelayPredictionCardComponent> = {
   ],
   parameters: {
     layout: 'padded',
+    ...storyDesign(DelayPredictionCardMetadata.component.figmaUrl),
   },
-  argTypes: {
-    unavailable: { control: 'boolean' },
-    daysRemaining: { control: 'number' },
-    predictedCloseDate: { control: 'text' },
-  },
+  argTypes: argTypesFromProps(DelayPredictionCardMetadata.props ?? []),
 };
 
 export default meta;
 
 type Story = StoryObj<DelayPredictionCardComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(DelayPredictionCardMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from delay-prediction-card.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(
+  DelayPredictionCardMetadata.governance,
+  DelayPredictionCardMetadata.component,
+) };
+export const Usage = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'examples') };
+export const Composition = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(DelayPredictionCardMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {
@@ -50,6 +59,23 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     await assertRoleVisible(canvasElement, 'article', /Prédiction du délai/);
     await assertTextVisible(canvasElement, 'Jours restants');
+  },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(DelayPredictionCardMetadata, Default),
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    daysRemaining: 11,
+    predictedCloseDate: '19/06/2026',
+  },
+  play: async ({ canvasElement }) => {
+    await assertRoleVisible(canvasElement, 'article', /Termijnvoorspelling/);
+    await assertTextVisible(canvasElement, 'Resterende dagen');
   },
 };
 

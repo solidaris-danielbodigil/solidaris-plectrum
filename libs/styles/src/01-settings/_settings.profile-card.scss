@@ -1,0 +1,198 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+
+// 01-settings/_settings.profile-card.scss
+
+// Affiliate overview card component tokens.
+
+//
+
+// Design ref: Figma node 507:7910 (Dossier Affilié) — iSHARE-Audit
+
+//             Section 507:8227 (card variants)
+
+// Theme defaults: libs/plectrum/src/Plectrum_v0.6/card.ts, tag.ts
+
+// =============================================================================
+
+:root {
+  // ── Variant accent borders (left accent for in-order only) ─────────────────
+
+  --#{$pds-prefix}-color-profile-card-accent-success: var(--#{$pds-prefix}-color-success);
+
+  --#{$pds-prefix}-color-profile-card-accent-warning: var(--#{$pds-prefix}-color-warning);
+
+  --#{$pds-prefix}-color-profile-card-accent-danger: var(--#{$pds-prefix}-color-danger);
+
+  // ── Variant backgrounds ─────────────────────────────────────────────────────
+  // Shared gradient geometry — Figma 507:8227 (88deg, 0% → 23.21%)
+
+  --#{$pds-prefix}-profile-card-bg-gradient-angle: 88deg;
+
+  --#{$pds-prefix}-profile-card-bg-gradient-stop: 23.21%;
+
+  --#{$pds-prefix}-color-profile-card-bg-default: var(--#{$pds-prefix}-color-content-bg);
+
+  --#{$pds-prefix}-color-profile-card-bg-warning-gradient-start: var(--#{$pds-prefix}-color-orange-50);
+
+  --#{$pds-prefix}-color-profile-card-bg-danger-gradient-start: var(--#{$pds-prefix}-color-danger-subtle);
+
+  --#{$pds-prefix}-color-profile-card-bg-in-order-gradient-start: var(--#{$pds-prefix}-color-success-subtle);
+
+  --#{$pds-prefix}-color-profile-card-bg-warning: linear-gradient(var(--#{$pds-prefix}-profile-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-card-bg-warning-gradient-start) 0%,
+
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-profile-card-bg-gradient-stop));
+
+  --#{$pds-prefix}-color-profile-card-bg-danger: linear-gradient(var(--#{$pds-prefix}-profile-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-card-bg-danger-gradient-start) 0%,
+
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-profile-card-bg-gradient-stop));
+
+  --#{$pds-prefix}-color-profile-card-bg-in-order: linear-gradient(var(--#{$pds-prefix}-profile-card-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-card-bg-in-order-gradient-start) 0%,
+
+    var(--#{$pds-prefix}-color-surface-0) var(--#{$pds-prefix}-profile-card-bg-gradient-stop));
+
+  // ── Info tags & metadata chips ──────────────────────────────────────────────
+
+  --#{$pds-prefix}-color-profile-card-info-tag-bg: var(--#{$pds-prefix}-color-surface-50);
+
+  --#{$pds-prefix}-color-profile-card-info-tag-text: var(--#{$pds-prefix}-color-info-tag-text);
+
+  --#{$pds-prefix}-color-profile-card-metadata-text: var(--#{$pds-prefix}-color-metadata-chip-text);
+
+  --#{$pds-prefix}-color-profile-card-metadata-separator: var(--#{$pds-prefix}-color-text-muted);
+
+  // ── Shortcut badge (splitbutton keyboard hint) ───────────────────────────────
+
+  --#{$pds-prefix}-color-profile-card-shortcut-badge-bg: color-mix(in srgb,
+
+    var(--#{$pds-prefix}-color-primary-75) 80%,
+
+    transparent);
+
+  --#{$pds-prefix}-color-profile-card-shortcut-badge-text: var(--#{$pds-prefix}-color-text-muted);
+
+  --#{$pds-prefix}-text-profile-card-shortcut-badge-size: calc(10 / 14 * var(--#{$pds-prefix}-base-unit));
+
+  --#{$pds-prefix}-text-profile-card-shortcut-badge-weight: var(--#{$pds-prefix}-font-weight-bold);
+
+  // Unitless — must fit inside p-button-sm without stretching the button row.
+  --#{$pds-prefix}-text-profile-card-shortcut-badge-line-height: 1;
+
+  // ── Loading skeleton ────────────────────────────────────────────────────────
+
+  --#{$pds-prefix}-color-profile-card-skeleton-bg: var(--#{$pds-prefix}-color-surface-muted);
+
+  // ── Structural ──────────────────────────────────────────────────────────────
+
+  --#{$pds-prefix}-size-profile-card-accent-width: var(--#{$pds-prefix}-spacing-0-5);
+
+  --#{$pds-prefix}-size-profile-card-padding: calc(var(--#{$pds-prefix}-spacing-2) + var(--#{$pds-prefix}-spacing-0-5));
+
+  --#{$pds-prefix}-space-profile-card-avatar-gap: var(--#{$pds-prefix}-spacing-1-5);
+
+  --#{$pds-prefix}-space-profile-card-header-gap: var(--#{$pds-prefix}-spacing-1-5);
+
+  --#{$pds-prefix}-space-profile-card-header-inner-gap: calc(var(--#{$pds-prefix}-spacing-1) + var(--#{$pds-prefix}-spacing-0-25));
+
+  --#{$pds-prefix}-space-profile-card-metadata-gap: var(--#{$pds-prefix}-spacing-1);
+
+  --#{$pds-prefix}-space-profile-card-info-tag-padding-inline: var(--#{$pds-prefix}-spacing-1);
+
+  --#{$pds-prefix}-space-profile-card-info-tag-padding-block: var(--#{$pds-prefix}-spacing-0-25);
+
+  --#{$pds-prefix}-space-profile-card-shortcut-badge-padding-inline: var(--#{$pds-prefix}-spacing-0-5);
+
+  --#{$pds-prefix}-space-profile-card-shortcut-badge-padding-block: var(--#{$pds-prefix}-spacing-0-25);
+
+  // Figma: copy-content-LEGACY icon at 10.5px (0.75rem @ 14px base)
+  --#{$pds-prefix}-size-profile-card-metadata-icon: var(--#{$pds-prefix}-icon-size-xs);
+
+  // Title action — eye icon beside display-lg affiliate name (Figma display-lg + 1rem icon)
+  --#{$pds-prefix}-size-profile-card-title-action-icon: var(--#{$pds-prefix}-base-unit);
+  --#{$pds-prefix}-color-profile-card-title-action-hover-bg: var(--#{$pds-prefix}-color-surface-50);
+
+  // Header row — locked to display-lg line box so loading/loaded share the same block size
+  --#{$pds-prefix}-size-profile-card-header-row-h: var(--#{$pds-prefix}-text-display-lg-line-height);
+
+  // Skeleton blocks — mirror loaded chrome (iSHARE Eva Martinez reference layout)
+  --#{$pds-prefix}-size-profile-card-skeleton-title-w: calc(180 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-title-h: var(--#{$pds-prefix}-text-display-lg-size);
+  --#{$pds-prefix}-size-profile-card-skeleton-status-w: calc(171 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-action-h: calc(27 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-info-tags-min-w: calc(185 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-info-tags-h: calc(30 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-identifier-h: calc(35 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-identifier-w-1: calc(126 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-identifier-w-2: calc(127 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-identifier-w-3: calc(263 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-card-skeleton-identifier-w-4: calc(161 / 14 * var(--#{$pds-prefix}-base-unit));
+}
+
+// ── PrimeNG Card token bridge — scoped to affiliate overview card wrapper ─────
+
+.c-profile-card {
+  --p-card-body-padding: var(--#{$pds-prefix}-size-profile-card-padding);
+
+  --p-card-border-color: var(--#{$pds-prefix}-color-panel-border);
+
+  --p-card-background: var(--#{$pds-prefix}-color-profile-card-bg-default);
+
+  --p-card-border-radius: var(--#{$pds-prefix}-radius-none);
+
+  --p-card-shadow: none;
+}
+
+.c-profile-card--in-order {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-card-bg-in-order);
+}
+
+.c-profile-card--warning {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-card-bg-warning);
+}
+
+.c-profile-card--danger {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-card-bg-danger);
+}
+
+// ── Title action — PrimeNG text button + display-lg label ────────────────────
+
+.c-profile-card__title-action.p-button.p-button-text {
+  --p-button-text-secondary-color: var(--#{$pds-prefix}-color-text);
+  --p-button-text-secondary-hover-color: var(--#{$pds-prefix}-color-text);
+  --p-button-text-secondary-hover-background: var(
+    --#{$pds-prefix}-color-profile-card-title-action-hover-bg
+  );
+  --p-button-text-secondary-active-background: var(
+    --#{$pds-prefix}-color-profile-card-title-action-hover-bg
+  );
+
+  align-self: center;
+  align-items: center;
+  gap: var(--#{$pds-prefix}-spacing-1-5);
+  min-block-size: var(--#{$pds-prefix}-text-display-lg-line-height);
+  block-size: auto;
+  padding-inline: var(--#{$pds-prefix}-spacing-1);
+  padding-block: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  border: 0;
+  box-shadow: none;
+
+  &:enabled:hover {
+    background: var(--#{$pds-prefix}-color-profile-card-title-action-hover-bg);
+  }
+
+  &:disabled {
+    opacity: var(--#{$pds-prefix}-disabled-opacity);
+  }
+
+  .c-profile-card__shortcut-badge {
+    flex-shrink: 0;
+  }
+}

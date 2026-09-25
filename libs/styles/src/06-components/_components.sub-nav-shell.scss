@@ -79,10 +79,20 @@
 
 // Single nav link/button row
 .c-sub-nav-shell__item {
+  appearance: none;
+  font: inherit;
+  border: 0;
+  background-color: transparent;
   border-radius: var(--#{$pds-prefix}-radius-lg);
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: start;
   text-decoration: none;
   color: var(--#{$pds-prefix}-color-sub-nav-shell-item-text);
+  justify-content: var(--#{$pds-prefix}-sub-nav-shell-item-justify);
 
   &:hover,
   &:focus-visible {
@@ -102,8 +112,8 @@
 
   &.is-disabled {
     opacity: var(--#{$pds-prefix}-disabled-opacity);
-    cursor: not-allowed;
-    pointer-events: none;
+    // Cursor: SSOT in 08-trumps/_trumps.disabled.scss (`--pds-cursor-disabled`).
+    // Do not set pointer-events: none — that hides the not-allowed cursor.
   }
 }
 

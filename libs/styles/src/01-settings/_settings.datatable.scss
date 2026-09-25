@@ -1,0 +1,33 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.datatable.scss
+// PrimeNG DataTable token bridge.
+//
+// `{datatable.border.color}` in the Plectrum preset is circular unless
+// `root.borderColor` exists. These fallbacks keep cell chrome defined even
+// when the theme reference does not resolve.
+// =============================================================================
+
+.c-datatable {
+  --p-datatable-border-color: var(--#{$pds-prefix}-color-content-border);
+  --p-datatable-header-border-color: var(--p-datatable-border-color);
+  --p-datatable-footer-border-color: var(--p-datatable-border-color);
+  --p-datatable-header-cell-border-color: var(--p-datatable-border-color);
+  --p-datatable-body-cell-border-color: var(--p-datatable-border-color);
+  --p-datatable-footer-cell-border-color: var(--p-datatable-border-color);
+  --p-datatable-paginator-top-border-color: var(--p-datatable-border-color);
+  --p-datatable-paginator-bottom-border-color: var(--p-datatable-border-color);
+
+  --#{$pds-prefix}-color-datatable-row-actions-bg: var(--#{$pds-prefix}-color-surface-0);
+  --#{$pds-prefix}-shadow-datatable-row-actions: var(--#{$pds-prefix}-shadow-sm);
+  --#{$pds-prefix}-radius-datatable-row-actions: var(--#{$pds-prefix}-radius-xl);
+  --#{$pds-prefix}-space-datatable-row-actions-inset: var(--#{$pds-prefix}-spacing-1);
+  --#{$pds-prefix}-space-datatable-actions-col-padding: 0;
+}
+
+// Nom / Type stay PrimeNG link buttons; density matches neighbouring text cells.
+.c-datatable__cell-link {
+  --p-button-padding-x: 0;
+  --p-button-padding-y: 0;
+}

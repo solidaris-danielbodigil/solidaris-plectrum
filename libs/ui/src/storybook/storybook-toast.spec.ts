@@ -2,6 +2,7 @@ import { readClassNames } from './cssom';
 import { pdsOverlayAppendTo } from './storybook-preview-frame';
 import {
   clearStorybookToasts,
+  copyStorybookText,
   renderStorybookToast,
   resolveStorybookPreviewDocument,
   resolveStorybookToastDocument,
@@ -22,7 +23,7 @@ describe('storybook-toast', () => {
 
   it('registers preview-toast classes in the CSSOM', () => {
     expect(readClassNames(/^sb-preview-toast/)).toEqual(
-      jasmine.arrayContaining([
+      expect.arrayContaining([
         'sb-preview-toast-host',
         'sb-preview-toast',
         'sb-preview-toast__summary',
@@ -47,7 +48,7 @@ describe('storybook-toast', () => {
   });
 
   it('replaces the previous toast and removes it after life', () => {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     try {
       renderStorybookToast(document, { summary: 'First', life: 2000 });
@@ -61,18 +62,38 @@ describe('storybook-toast', () => {
       expect(host?.textContent).toBe('Second');
       expect(host?.querySelector('.sb-preview-toast--error')).toBeTruthy();
 
-      jasmine.clock().tick(2000);
+      vi.advanceTimersByTime(2000);
       expect(document.getElementById(STORYBOOK_TOAST_HOST_ID)).toBeNull();
     } finally {
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     }
   });
 
   it('showStorybookToast writes to the current document in unit tests', () => {
     showStorybookToast({ summary: 'Copied', detail: '--pds-radius-md' });
 
-    expect(document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent).toContain(
-      '--pds-radius-md',
-    );
+    expect(
+      document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent,
+    ).toContain('--pds-radius-md');
+  });
+
+  it('copyStorybookText writes the clipboard and confirms with a toast', async () => {
+    const written: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: (text: string) => {
+          written.push(text);
+          return Promise.resolve();
+        },
+      },
+    });
+
+    await copyStorybookText('u-border-all');
+
+    expect(written).toEqual(['u-border-all']);
+    expect(
+      document.getElementById(STORYBOOK_TOAST_HOST_ID)?.textContent,
+    ).toContain('u-border-all');
   });
 });

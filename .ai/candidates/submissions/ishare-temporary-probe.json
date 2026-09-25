@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "ishare-temporary-probe",
+  "proposalId": "ishare-temporary-probe",
+  "operation": "withdraw",
+  "componentId": "ishare:temporary-probe",
+  "team": "ishare",
+  "application": "ishare",
+  "origin": {
+    "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e",
+    "path": "src/plectrum-candidates/temporary-probe/temporary-probe.metadata.json"
+  },
+  "metadata": {
+    "component": {
+      "id": "ishare:temporary-probe",
+      "name": "Temporary probe",
+      "category": "atoms",
+      "description": "Withdrawn temporary intake probe. It must leave the candidate list.",
+      "type": "display",
+      "path": "src/plectrum-candidates/temporary-probe/temporary-probe.component.ts",
+      "bemBlock": "c-temporary-probe",
+      "itcssLayer": "06-components",
+      "created": "2026-09-25",
+      "modified": "2026-09-25"
+    },
+    "distribution": { "kind": "local" },
+    "governance": {
+      "status": "candidate",
+      "owner": "ishare",
+      "note": "Revised temporary intake probe. Not a real component."
+    },
+    "usage": {
+      "useCases": ["Verify that a revision stays on the same candidate id."],
+      "commonPatterns": [],
+      "antiPatterns": []
+    },
+    "accessibility": { "wcagLevel": "AA" },
+    "tokens": { "consumed": [] },
+    "aiHints": {
+      "priority": "low",
+      "context": "Temporary catalogue probe with no implementation.",
+      "selectionCriteria": { "use": "Do not select this for a product screen." },
+      "keywords": ["temporary", "probe"]
+    },
+    "examples": []
+  },
+  "toolkitVersion": "0.2.0",
+  "processVersion": "1.1.0",
+  "packages": [
+    { "name": "@solidaris/ui", "version": "2.0.0" },
+    { "name": "@solidaris/plectrum", "version": "2.0.0" },
+    { "name": "@solidaris/styles", "version": "2.0.0" }
+  ],
+  "preview": {
+    "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/12",
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e"
+  },
+  "checks": {
+    "url": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36116593867",
+    "revision": "37ecfc56ca1e3d15444df925689dfa6549bd4e9e"
+  },
+  "submittedAt": "2026-09-25T09:30:00.000Z",
+  "withdrawalReason": "Catalogue listing of the revision was verified. This probe is not a component."
+}

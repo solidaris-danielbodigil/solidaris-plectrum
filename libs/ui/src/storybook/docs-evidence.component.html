@@ -1,0 +1,49 @@
+<p class="c-docs-contract__text o-layout o-layout--margin-0">
+  Target: <strong>{{ target() }}</strong>. The rows below are results, not the target. A missing session
+  reads Not assessed.
+</p>
+
+<p-table [value]="rows()" dataKey="check" size="small">
+  <ng-template #header>
+    <tr>
+      <th scope="col" class="c-docs-contract__label">Check</th>
+      <th scope="col" class="c-docs-contract__label">Result</th>
+      <th scope="col" class="c-docs-contract__label">Who and how</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-item>
+    <tr>
+      <td class="c-docs-contract__cell">{{ item.check }}</td>
+      <td class="c-docs-contract__cell">
+        <p-tag [value]="item.resultLabel" [severity]="item.severity" [rounded]="true" />
+      </td>
+      <td class="c-docs-contract__cell">
+        @if (item.by) {
+          <span class="o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-1">
+            <p-tag [value]="item.by" severity="secondary" [rounded]="true" />
+            @if (item.method) {
+              <span>{{ item.method }}</span>
+            }
+          </span>
+        } @else {
+          <span class="c-docs-contract__empty">—</span>
+        }
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+@if (checkedOn()) {
+  <p class="c-docs-contract__text o-layout o-layout--margin-0">{{ checkedOn() }}</p>
+}
+
+@if (limitations().length) {
+  <p-message severity="warn" variant="outlined">
+    <span class="c-docs-callout__title">Known limitations</span>
+    <ul class="c-docs-contract__list o-layout o-layout--margin-0">
+      @for (item of limitations(); track item) {
+        <li>{{ item }}</li>
+      }
+    </ul>
+  </p-message>
+}

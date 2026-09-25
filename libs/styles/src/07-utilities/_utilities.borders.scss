@@ -15,13 +15,32 @@
 @use '../01-settings/settings.prefix' as *;
 @use '../02-tools/tools.borders' as border;
 
-$sides: (all, top, bottom, inline-start, inline-end, block, inline);
-$statuses: (success, warning, danger, info);
+$sides: (
+  all,
+  top,
+  bottom,
+  inline-start,
+  inline-end,
+  block,
+  inline
+);
+$statuses: (
+  success,
+  warning,
+  danger,
+  info
+);
 
 @each $side in $sides {
   .u-border-#{$side} {
     @include border.border($side);
   }
+}
+
+// Button / control reset — no stroke. Pair with u-radius-* when the control
+// still needs a radius (hover/focus rings sit on the box, not a border).
+.u-border-none {
+  border: 0;
 }
 
 // Orthogonal modifiers — combine freely with any side class.

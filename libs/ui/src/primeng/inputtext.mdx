@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './inputtext.stories';
+
+<Meta of={Stories} />
+
+# InputText
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Put every labelled input inside Form Field. Match `inputId` to the input `id`.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use InputText for a short value the person types: a name, a member number, a reference.
+
+- Several lines: [textarea](https://primeng.org/textarea).
+- A value from a list: [Select](?path=/docs/primeng-select--docs) or [AutoComplete](?path=/docs/primeng-autocomplete--docs).
+- Do not use FloatLabel. The label stays above the field.
+
+InputText belongs to the [Forms](?path=/docs/primeng-forms--docs) family. The shell is [Form Field](?path=/docs/custom-components-form-field--docs).
+
+## Variants
+
+**Required, hint, invalid.** `requiredLabel` is the word in the screen language: obligatoire, verplicht. The hint says the format. The error says how to fix it, in the same language, after the person leaves the field or tries to continue.
+
+<Canvas of={Stories.Invalid} />
+
+**Not endorsed.** The filled variant and a floating label. `size="small"` is for a toolbar, not the only field on a page. An icon goes through `p-iconfield` and a Bootstrap icon.
+
+## Content
+
+The label is a noun. The hint is the expected format. The error is the fix. Set `autocomplete` for a name, an email or an address. Check a long French or Dutch label before you fix a width.
+
+<Canvas of={Stories.LongLabel} />
+
+## Behavior
+
+Show the error after submit or blur, not on the first keystroke. Keep what the person typed. Form Field sets `aria-invalid`, `aria-required` and `aria-describedby` on the input.
+
+## Accessibility
+
+Form Field provides the label, the hint, the error link, and the required wiring. The application provides the words and the validation rule.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+The snippet under Default imports `InputText` from `primeng/inputtext` and `FormFieldComponent` from `@solidaris/ui`. The same file compiles in the packaging smoke test.
+
+## Related
+
+- [Form Field](?path=/docs/custom-components-form-field--docs) · [Forms](?path=/docs/primeng-forms--docs) · [Select](?path=/docs/primeng-select--docs)
+- Figma: [InputText](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=23-835) · API: [primeng.org/inputtext](https://primeng.org/inputtext)

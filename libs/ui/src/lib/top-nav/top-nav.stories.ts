@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
-import { statusStory } from '../../docs/docs-figure-stories';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TopNavComponent } from './top-nav.component';
 import { TopNavMetadata } from './top-nav.metadata';
@@ -18,20 +20,23 @@ const meta: Meta<TopNavComponent> = {
   decorators: [moduleMetadata({ imports: [TopNavComponent] })],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(TopNavMetadata.component.figmaUrl),
   },
-  argTypes: {
-    subNavExpanded: { control: 'boolean' },
-    searchExpanded: { control: 'boolean' },
-    searchQuery: { control: 'text' },
-    avatarInitials: { control: 'text' },
-  },
+  argTypes: argTypesFromProps(TopNavMetadata.props ?? []),
 };
 
 export default meta;
 type Story = StoryObj<TopNavComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(TopNavMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from top-nav.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(TopNavMetadata.governance, TopNavMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'examples') };
+export const Composition = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(TopNavMetadata, 'accessibility') };
 
 export const Default: Story = {
   args: {
@@ -48,6 +53,8 @@ export const Default: Story = {
   },
 };
 
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(TopNavMetadata, Default) };
+
 export const SubNavExpanded: Story = {
   args: {
     breadcrumbs: breadcrumbItems,
@@ -55,6 +62,53 @@ export const SubNavExpanded: Story = {
     subNavExpanded: true,
     searchExpanded: false,
     searchQuery: '',
+  },
+};
+
+export const Dutch: Story = {
+  globals: { locale: 'nl' },
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'LV',
+    showAvatarMenu: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('button', { name: 'Gebruikersmenu' }),
+    ).toBeVisible();
+  },
+};
+
+export const AvatarMenu: Story = {
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'LV',
+    showAvatarMenu: true,
+    avatarMenuItems: [{ label: 'Export', icon: 'bi bi-download' }],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button', { name: 'Menu utilisateur' });
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await userEvent.click(trigger);
+    await waitFor(() =>
+      expect(trigger).toHaveAttribute('aria-expanded', 'true'),
+    );
+  },
+};
+
+export const LocaleSwitcher: Story = {
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'IG',
+    showLocaleSwitcher: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText('Langue')).toBeVisible();
+    await expect(canvas.getByText('FR')).toBeVisible();
+    await expect(canvas.getByText('NL')).toBeVisible();
   },
 };
 

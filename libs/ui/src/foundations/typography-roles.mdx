@@ -1,29 +1,43 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './typography.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta title="Foundations/Typography/Roles" />
 
 # Typography roles
 
-Type is code-owned: the Foundations file exposes it as text styles, not Figma variables. Base is `1rem = 14px`. Semantic roles bundle five properties — family, size, weight, line-height and letter-spacing.
+## Choose a hierarchy
+
+One page, top to bottom:
+
+1. **Display** or **heading lg** — the page title, once.
+2. **Heading md** — a section.
+3. **Heading sm** — a card or a group inside that section.
+4. **Body** — sentences and values.
+5. **Label** — control names and table headers. Do not set a whole paragraph in a label role.
+
+Do not skip from the page title to a tiny label with nothing in between. On a narrow screen, keep the same roles — do not invent a smaller size. Long French labels belong in the body or label role you already chose; check them in the playground below.
+
+Type styles live in code, not as Figma variables. Base is `1rem = 14px`. Each role bundles family, size, weight, line-height and letter-spacing.
 
 Type your own copy in the playground field to check a real string — long French labels and currency amounts behave differently from lorem ipsum.
 
-## How to use
+## One page, all decisions
 
-1. In `06-components`, include a mixin: `@use "../02-tools/tools.typography" as *; .c-x__title { @include text-heading-sm; }`.
-2. Use a raw `--pds-text-{role}-{size}-{prop}` var only when you need one property in isolation.
-3. Take the whole role. Mixing a size from one role with a line-height from another is how vertical rhythm drifts.
+The title, the section and the card title are three roles. The anatomy figure marks those parts on the page.
 
-Copy gives you `@include text-body-md;` for component SCSS, `.u-text-body-md` for a template, or the resolved `font` shorthand.
+<Unstyled>
+  <Story of={PageExample.TypeAnatomy} />
+</Unstyled>
 
-## When to reach for it
+## Usage
 
-- A semantic role that matches the content: display for hero numbers, heading for titles, label for form and UI chrome, body for prose.
-- The `u-text-*` utilities for one-off documentation text.
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-Do not hardcode `font-size` or `font-family`. Do not mix a primitive size with a semantic line-height.
+## Examples
 
 ```scss
 // 06-components/_components.card.scss
@@ -32,6 +46,14 @@ Do not hardcode `font-size` or `font-family`. Do not mix a primitive size with a
 .c-card__title { @include text-heading-sm; }
 .c-card__meta  { @include text-body-xs; }
 ```
+
+## How to use
+
+1. In `06-components`, include a mixin: `@use "../02-tools/tools.typography" as *; .c-x__title { @include text-heading-sm; }`.
+2. Use a raw `--pds-text-{role}-{size}-{prop}` var only when you need one property in isolation.
+3. Take the whole role. Mixing a size from one role with a line-height from another is how vertical rhythm drifts.
+
+Copy gives you `@include text-body-md;` for component SCSS, `.u-text-body-md` for a template, or the resolved `font` shorthand.
 
 Declared in `_settings.typography-primitive.scss` and `_settings.typography-semantic.scss`. Classes: `.u-text-{role}-{size}`. Primitives live on [Foundations / Typography / Primitives](?path=/docs/foundations-typography-primitives--docs).
 
@@ -48,5 +70,5 @@ Declared in `_settings.typography-primitive.scss` and `_settings.typography-sema
 />
 
 <Unstyled>
-  <Canvas of={Stories.Roles} sourceState="none" />
+  <Story of={Stories.Roles} />
 </Unstyled>

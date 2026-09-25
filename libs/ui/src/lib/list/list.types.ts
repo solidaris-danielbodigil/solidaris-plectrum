@@ -1,34 +1,34 @@
-/** Status tag shown on document row headers (Figma: warn "En traitement"). */
-export interface ListDocumentStatus {
+/** Status tag shown on entry row headers. */
+export interface ListEntryStatus {
   label: string;
   severity: 'warn' | 'info' | 'success' | 'danger' | 'secondary';
   icon?: string;
 }
 
 /** Opaque deep-link target a count tag can jump to (consumer-resolved). */
-export interface ListDocumentTagTarget {
+export interface ListEntryTagTarget {
   id: string;
   label: string;
 }
 
 /** Footer count tag on document rows (comments, warnings, …). */
-export interface ListDocumentTag {
+export interface ListEntryTag {
   label: string;
   severity: 'info' | 'warn' | 'success' | 'danger' | 'secondary';
   icon?: string;
   ariaLabel?: string;
-  targets?: ListDocumentTagTarget[];
+  targets?: ListEntryTagTarget[];
 }
 
-/** Single document row in flat or journey mode. */
-export interface ListDocumentItem {
+/** Single entry row in flat or journey mode. */
+export interface ListEntryItem {
   id: string;
   title: string;
   titleLine2?: string;
   /** Bootstrap Icons class(es) for the row header icon (e.g. `bi bi-bandaid`). */
   icon?: string;
-  status?: ListDocumentStatus;
-  tags?: ListDocumentTag[];
+  status?: ListEntryStatus;
+  tags?: ListEntryTag[];
   selected?: boolean;
 }
 
@@ -40,11 +40,11 @@ export interface ListGroup {
   startDate?: string;
   endDate?: string;
   expanded?: boolean;
-  documents: ListDocumentItem[];
+  documents: ListEntryItem[];
 }
 
 /** Union of row types rendered by pds-list. */
-export type ListItem = ListGroup | ListDocumentItem;
+export type ListItem = ListGroup | ListEntryItem;
 
 export function isListGroup(item: ListItem): item is ListGroup {
   return 'documents' in item;

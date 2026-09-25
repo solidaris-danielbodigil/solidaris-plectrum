@@ -10,9 +10,7 @@ and every component carries `status` / `owner`. Two things the docs cannot decid
 
 ## 1. Who is the core team, and where do proposals go?
 
-- GitHub team handle (needed for `CODEOWNERS`, see below) and the people behind it
-- Intake channel for proposals: GitHub issue template in this repo, a Teams channel, or both
-- Once answered: name the channel on the Contribute page (Propose step) and in the Introduction cards
+- Intake is now the GitHub issue template `.github/ISSUE_TEMPLATE/proposal.yml` (Contribute + Introduction link it). Still open: GitHub team handle (needed for `CODEOWNERS`) and the people behind it.
 
 ## 2. CODEOWNERS — turn rule 07 §3 into a required review
 

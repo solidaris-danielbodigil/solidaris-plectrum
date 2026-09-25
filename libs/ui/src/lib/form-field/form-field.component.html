@@ -1,5 +1,5 @@
 <div
-  class="c-form-field o-flex o-layout--min-w-0"
+  class="c-form-field o-flex o-layout o-layout--min-w-0"
   [class.o-flex--y]="layout() === 'vertical'"
   [class.o-layout--gap-1]="layout() === 'vertical'"
   [class.o-flex--align-items-flex-start]="layout() === 'horizontal'"
@@ -9,32 +9,37 @@
   [class.is-invalid]="invalid()"
 >
   <label
-    class="c-form-field__label"
+    class="c-form-field__label o-flex__item"
+    [class.o-flex__item--shrink-0]="layout() === 'horizontal'"
     [attr.for]="inputId() ?? null"
     [id]="labelId"
   >
     <span class="c-form-field__label-text">{{ label() }}</span>
     @if (required()) {
-      <span class="c-form-field__required o-layout--margin-inline-start-0-25" aria-hidden="true">*</span>
-      <span class="u-sr-only">({{ requiredLabel() }})</span>
+      <span class="c-form-field__required o-layout o-layout--margin-inline-start-0-25" aria-hidden="true">*</span>
+      @if (requiredLabel(); as srLabel) {
+        <span class="u-sr-only">({{ srLabel }})</span>
+      }
     }
   </label>
 
-  <div class="c-form-field__content o-flex o-flex--y o-layout--gap-1 o-flex__item--grow-1 o-layout--min-w-0">
-    <div class="c-form-field__control">
+  <div class="c-form-field__content o-flex o-flex--y o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
+    <div class="c-form-field__control o-layout o-layout--min-w-0">
       <ng-content />
     </div>
 
     @if (hint() && !invalid()) {
-      <p class="c-form-field__hint">{{ hint() }}</p>
+      <p class="c-form-field__hint o-layout o-layout--margin-0" [id]="hintId">{{ hint() }}</p>
     }
 
     @if (invalid()) {
-      @if (errorMessage()) {
-        <p-message severity="error" size="small" variant="simple">{{ errorMessage() }}</p-message>
-      } @else {
-        <ng-content select="[pdsFormFieldError]" />
-      }
+      <div [id]="errorId">
+        @if (errorMessage()) {
+          <p-message severity="error" size="small" variant="simple">{{ errorMessage() }}</p-message>
+        } @else {
+          <ng-content select="[pdsFormFieldError]" />
+        }
+      </div>
     }
   </div>
 </div>

@@ -1,8 +1,17 @@
 import { Component, input, signal } from '@angular/core';
-import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { moduleMetadata } from '@storybook/angular-vite';
 import { ButtonModule } from 'primeng/button';
-import { statusStory } from '../../docs/docs-figure-stories';
-import { assertTextVisible } from '../../storybook/story-tests';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { metadataEvidenceStory } from '../../storybook/evidence-story';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
+import {
+  assertTextVisible,
+  expect,
+  userEvent,
+  within,
+} from '../../storybook/story-tests';
 import { EmptyStateComponent } from './empty-state.component';
 import { EmptyStateMetadata } from './empty-state.metadata';
 import {
@@ -16,7 +25,7 @@ import {
   standalone: true,
   imports: [EmptyStateComponent, ButtonModule],
   template: `
-    <div class="o-flex o-flex--y o-flex--align-items-center o-layout--gap-4">
+    <div class="o-flex o-flex--y o-flex--align-items-center o-layout o-layout--gap-4">
       @for (generation of [generation()]; track generation) {
         <pds-empty-state
           [title]="title()"
@@ -50,6 +59,9 @@ class EmptyStateRandomDemoComponent {
 }
 
 const meta: Meta<EmptyStateComponent> = {
+  parameters: {
+    ...storyDesign(EmptyStateMetadata.component.figmaUrl),
+  },
   title: 'Custom components/Empty State',
   component: EmptyStateComponent,
   decorators: [
@@ -57,16 +69,12 @@ const meta: Meta<EmptyStateComponent> = {
       imports: [EmptyStateRandomDemoComponent],
     }),
   ],
-  argTypes: {
-    title: { control: 'text' },
-    description: { control: 'text' },
+  argTypes: argTypesFromProps(EmptyStateMetadata.props ?? [], {
     illustration: {
       control: 'select',
       options: [...EMPTY_STATE_ILLUSTRATION_CHOICES],
-      description:
-        'Decorative hero. `random` (default) picks one catalog SVG per instance. Pass an id to pin a specific illustration.',
     },
-  },
+  }),
   args: {
     illustration: 'random',
   },
@@ -76,8 +84,14 @@ export default meta;
 
 type Story = StoryObj<EmptyStateComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(EmptyStateMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from empty-state.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(EmptyStateMetadata.governance, EmptyStateMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'patterns') };
+export const Behavior = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(EmptyStateMetadata, 'accessibility') };
+export const Evidence = { tags: ['!dev'], ...metadataEvidenceStory(EmptyStateMetadata) };
 
 export const Default: Story = {
   render: (args) => ({
@@ -97,16 +111,39 @@ export const Default: Story = {
     illustration: 'random',
   },
   play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     await assertTextVisible(canvasElement, 'Aucune recherche pour le moment');
+
+    const illustration = () =>
+      canvasElement.querySelector(
+        '.c-empty-state__illustration',
+      ) as HTMLImageElement | null;
+
+    const reroll = canvas.getByRole('button', { name: 'Autre illustration' });
+    const initialId = illustration()?.getAttribute('data-illustration');
+
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      await userEvent.click(reroll);
+      const nextId = illustration()?.getAttribute('data-illustration');
+      if (nextId && nextId !== initialId) {
+        return;
+      }
+    }
+
+    await expect(illustration()?.getAttribute('data-illustration')).not.toBe(
+      initialId,
+    );
   },
 };
+
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(EmptyStateMetadata, Default) };
 
 export const AllIllustrations: Story = {
   render: () => ({
     props: { ids: EMPTY_STATE_ILLUSTRATION_IDS },
     moduleMetadata: { imports: [EmptyStateComponent] },
     template: `
-      <div class="o-flex o-flex--wrap o-layout--gap-6">
+      <div class="o-flex o-flex--wrap o-layout o-layout--gap-6">
         @for (id of ids; track id) {
           <div class="o-flex__item o-flex__item--4">
             <pds-empty-state

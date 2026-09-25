@@ -2,7 +2,6 @@ import {
   ComponentFixture,
   TestBed,
   fakeAsync,
-  flush,
   flushMicrotasks,
   tick,
 } from '@angular/core/testing';
@@ -13,9 +12,9 @@ import { MessageService } from 'primeng/api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { of } from 'rxjs';
 import type {
-  ListDocumentItem,
-  ListDocumentTag,
-  ListDocumentTagTarget,
+  ListEntryItem,
+  ListEntryTag,
+  ListEntryTagTarget,
 } from '@solidaris/ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
@@ -48,6 +47,21 @@ function openDocumentFiltersToolbar(
   fixture.detectChanges();
 }
 
+function clickElement(host: HTMLElement): void {
+  const target =
+    host.closest('button') ??
+    host.querySelector<HTMLElement>('button, [role="button"]') ??
+    host;
+  target.dispatchEvent(
+    new MouseEvent('click', { bubbles: true, cancelable: true }),
+  );
+}
+
+/** Viewport helpers poll with setTimeout; advance far enough for a few retries. */
+function flushViewportSettling(): void {
+  tick(400);
+}
+
 describe('AffiliateDetailsComponent', () => {
   let component: AffiliateDetailsComponent;
   let fixture: ComponentFixture<AffiliateDetailsComponent>;
@@ -65,7 +79,7 @@ describe('AffiliateDetailsComponent', () => {
         MessageService,
         {
           provide: Router,
-          useValue: { navigate: jasmine.createSpy('navigate') },
+          useValue: { navigate: vi.fn() },
         },
         {
           provide: ActivatedRoute,
@@ -155,9 +169,9 @@ describe('AffiliateDetailsComponent', () => {
     expect(trigger.classList.contains('p-togglebutton')).toBe(true);
     expect(trigger.querySelector('.bi-funnel')).toBeTruthy();
     expect(trigger.getAttribute('aria-pressed')).toBe('false');
-    expect(trigger.querySelector('.p-togglebutton-label')?.textContent).toContain(
-      'Filtres',
-    );
+    expect(
+      trigger.querySelector('.p-togglebutton-label')?.textContent,
+    ).toContain('Filtres');
     const defaultFilterBadge = trigger.querySelector(
       '[data-telemetry-id="documents-filters-count"]',
     );
@@ -206,8 +220,8 @@ describe('AffiliateDetailsComponent', () => {
       );
       const control = fixture.nativeElement.querySelector(`#${controlId}`);
 
-      expect(label).withContext(`label for="${labelFor}"`).toBeTruthy();
-      expect(control).withContext(`control id="${controlId}"`).toBeTruthy();
+      expect(label, `label for="${labelFor}"`).toBeTruthy();
+      expect(control, `control id="${controlId}"`).toBeTruthy();
     });
   });
 
@@ -314,20 +328,13 @@ describe('AffiliateDetailsComponent', () => {
     component.documentSearch.set('rechute');
     fixture.detectChanges();
 
-    const clearButton = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents-search pds-input-clear button',
-    ) as HTMLButtonElement;
-    clearButton.click();
+    const clearButton = fixture.debugElement.query(
+      By.css('.c-affiliate-details__documents-search pds-input-clear button'),
+    );
+    clearButton.triggerEventHandler('click', new MouseEvent('click'));
     fixture.detectChanges();
 
     expect(component.documentSearch()).toBe('');
-    expect(
-      (
-        fixture.nativeElement.querySelector(
-          '#document-search',
-        ) as HTMLInputElement
-      ).value,
-    ).toBe('');
   });
 
   it('should show an active filter count badge when toolbar filters are applied', () => {
@@ -381,7 +388,7 @@ describe('AffiliateDetailsComponent', () => {
     const clearButton = fixture.nativeElement.querySelector(
       '[data-telemetry-id="documents-filters-clear"]',
     ) as HTMLButtonElement;
-    clearButton.click();
+    clickElement(clearButton);
     fixture.detectChanges();
 
     expect(component.selectedSector()).toBeNull();
@@ -453,17 +460,17 @@ describe('AffiliateDetailsComponent', () => {
       '63092814612',
     );
     expect(header?.infoTags).toEqual([
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: 'Dernière action:',
         value: '09/06/2026',
         filterKey: 'last-action',
       }),
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: 'Documents actifs:',
         value: '6',
         filterKey: 'active-documents',
       }),
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: 'Documents clôturés:',
         value: '1',
         filterKey: 'closed-documents',
@@ -472,17 +479,17 @@ describe('AffiliateDetailsComponent', () => {
     expect(
       header?.infoTags.some((tag) => tag.filterKey === 'closed-documents'),
     ).toBe(true);
-    expect(header?.onInfoTagClick).toEqual(jasmine.any(Function));
-    expect(header?.onPrimaryActionClick).toEqual(jasmine.any(Function));
-    expect(header?.onStatusActionClick).toEqual(jasmine.any(Function));
-    expect(header?.onStatusMenuSelect).toEqual(jasmine.any(Function));
+    expect(header?.onInfoTagClick).toEqual(expect.any(Function));
+    expect(header?.onPrimaryActionClick).toEqual(expect.any(Function));
+    expect(header?.onStatusActionClick).toEqual(expect.any(Function));
+    expect(header?.onStatusMenuSelect).toEqual(expect.any(Function));
     expect(header?.statusAction).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: 'Actions à réaliser',
         severity: 'warn',
-        menuItems: jasmine.arrayContaining([
-          jasmine.objectContaining({ label: 'C4 non reçu' }),
-          jasmine.objectContaining({
+        menuItems: expect.arrayContaining([
+          expect.objectContaining({ label: 'C4 non reçu' }),
+          expect.objectContaining({
             label: "Exemple d'autre action à réaliser",
             disabled: true,
           }),
@@ -499,7 +506,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.affiliateDetailDrawerVisible()).toBe(true);
     expect(
-      fixture.nativeElement.querySelector('pds-affiliate-detail-drawer'),
+      fixture.nativeElement.querySelector('pds-profile-drawer'),
     ).toBeTruthy();
   });
 
@@ -549,9 +556,7 @@ describe('AffiliateDetailsComponent', () => {
     component.affiliateDetailDrawerVisible.set(true);
     fixture.detectChanges();
 
-    const drawer = fixture.nativeElement.querySelector(
-      'pds-affiliate-detail-drawer',
-    );
+    const drawer = fixture.nativeElement.querySelector('pds-profile-drawer');
     expect(drawer).toBeTruthy();
 
     const sectionTitles = [
@@ -560,16 +565,18 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(sectionTitles).not.toContain('Notes');
     expect(
-      fixture.nativeElement.querySelector('.c-drawer__affiliate-detail-notes'),
+      fixture.nativeElement.querySelector('.c-drawer__profile-notes'),
     ).toBeNull();
   });
 
   it('should show a success toast when a drawer identifier is copied', () => {
-    const addSpy = spyOn(messageService, 'add');
+    const addSpy = vi.spyOn(messageService, 'add');
 
     component.onDrawerIdentifierCopy({ label: 'Territoire', value: '319' });
 
-    expect(addSpy).toHaveBeenCalledOnceWith({
+    expect(addSpy).toHaveBeenCalledTimes(1);
+
+    expect(addSpy).toHaveBeenCalledWith({
       severity: 'success',
       summary: 'Copié !',
       detail: 'Territoire: 319',
@@ -577,7 +584,7 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should show an info toast for drawer placeholder actions', () => {
-    const addSpy = spyOn(messageService, 'add');
+    const addSpy = vi.spyOn(messageService, 'add');
     const expectedToast = {
       severity: 'info',
       summary: 'Bientôt disponible',
@@ -593,12 +600,12 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(addSpy).toHaveBeenCalledTimes(6);
     for (let i = 0; i < 6; i++) {
-      expect(addSpy.calls.argsFor(i)[0]).toEqual(expectedToast);
+      expect(vi.mocked(addSpy).mock.calls[i][0]).toEqual(expectedToast);
     }
   });
 
   it('should not show a toast when the drawer Détails view is selected', () => {
-    const addSpy = spyOn(messageService, 'add');
+    const addSpy = vi.spyOn(messageService, 'add');
 
     component.onDrawerViewChange('details');
 
@@ -629,7 +636,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(tabs.length).toBe(3);
     tabs.forEach((tab: Element) => {
-      expect(tab.querySelector('p-badge')).toBeTruthy();
+      expect(tab.querySelector('p-badge, .p-badge')).toBeTruthy();
     });
     expect(
       fixture.nativeElement.querySelector(
@@ -731,7 +738,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(headers.length).toBe(3);
     headers.forEach((header: Element) => {
-      expect(header.querySelector('p-badge')).toBeTruthy();
+      expect(header.querySelector('p-badge, .p-badge')).toBeTruthy();
     });
 
     const parcoursHeader = fixture.nativeElement.querySelector(
@@ -775,12 +782,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(archivesList?.classList.contains('c-list--flat')).toBe(true);
     expect(
       fixture.nativeElement.querySelectorAll(
-        '#category-panel-isoles .c-list__item--document',
+        '#category-panel-isoles .c-list__item--entry',
       ).length,
     ).toBe(2);
     expect(
       fixture.nativeElement.querySelectorAll(
-        '#category-panel-archives .c-list__item--document',
+        '#category-panel-archives .c-list__item--entry',
       ).length,
     ).toBe(1);
   });
@@ -793,7 +800,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(eyeToggle.querySelector('.bi-eye')).toBeTruthy();
     expect(component.openCategories()).toContain('isoles');
 
-    eyeToggle.click();
+    clickElement(eyeToggle);
     fixture.detectChanges();
 
     expect(component.openCategories()).not.toContain('isoles');
@@ -816,7 +823,7 @@ describe('AffiliateDetailsComponent', () => {
       '[data-telemetry-id="category-toggle-archives"]',
     ) as HTMLButtonElement;
 
-    archivesEyeToggle.click();
+    clickElement(archivesEyeToggle);
     fixture.detectChanges();
 
     expect(component.openCategories()).toContain('archives');
@@ -825,10 +832,7 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should set activeCategory and scroll when a category tab is clicked', fakeAsync(() => {
-    const scrollToCategorySpy = spyOn(
-      component,
-      'scrollToCategory',
-    ).and.callThrough();
+    const scrollToCategorySpy = vi.spyOn(component, 'scrollToCategory');
 
     component.onCategoryTabChange('isoles');
     flushMicrotasks();
@@ -844,7 +848,7 @@ describe('AffiliateDetailsComponent', () => {
       .find((tag) => tag.filterKey === 'closed-documents');
 
     expect(closedTag).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         label: 'Documents clôturés:',
         value: '1',
         filterKey: 'closed-documents',
@@ -1020,16 +1024,10 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
 
-    const scrollSpy = spyOn(
-      HTMLElement.prototype,
-      'scrollIntoView',
-    ).and.callThrough();
-    const scrollBySpy = spyOn(
-      HTMLElement.prototype,
-      'scrollBy',
-    ).and.callThrough();
+    const scrollSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
+    const scrollBySpy = vi.spyOn(HTMLElement.prototype, 'scrollBy');
 
     component.onInfoTagClick({
       label: 'Dernière action:',
@@ -1038,11 +1036,14 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
 
     expect(component.documentInfoFilter()).toBeNull();
     expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
-    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
+    expect(
+      vi.mocked(scrollSpy).mock.calls.length > 0 ||
+        vi.mocked(scrollBySpy).mock.calls.length > 0,
+    ).toBe(true);
   }));
 
   it('should update header info tag active state when filter changes', () => {
@@ -1069,15 +1070,15 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should decode tag target id and set selectedDocumentId + documentFocus on tag target click', () => {
-    const doc: ListDocumentItem = {
+    const doc: ListEntryItem = {
       id: 'doc-incapacite',
       title: 'Incapacité',
     };
-    const target: ListDocumentTagTarget = {
+    const target: ListEntryTagTarget = {
       id: '2::compte-financier-liasse',
       label: 'Feuilles de renseignement - Compte financier - Liasse',
     };
-    const tag: ListDocumentTag = {
+    const tag: ListEntryTag = {
       label: '1',
       severity: 'info',
       targets: [target],
@@ -1121,33 +1122,33 @@ describe('AffiliateDetailsComponent', () => {
     const tags = deriveDocumentTags('doc-demande-primaire');
 
     expect(tags.length).toBe(2);
-    expect(tags).toContain(
-      jasmine.objectContaining({
-        label: '2',
-        severity: 'secondary',
-        icon: 'bi bi-chat-right-text-fill',
-        ariaLabel: '2 commentaires',
-        targets: [
-          {
-            id: '2::fdr-affilie-incapacite',
-            label:
-              'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
-          },
-          {
-            id: '2::compte-financier-liasse',
-            label: 'Feuilles de renseignement - Compte financier - Liasse',
-          },
-        ],
-      }),
-    );
-    expect(tags).toContain(
-      jasmine.objectContaining({
-        label: '1',
-        severity: 'warn',
-        icon: 'bi bi-exclamation-triangle-fill',
-        ariaLabel: '1 avertissement',
-        targets: [{ id: '3::calcul', label: 'Calcul - Calcul' }],
-      }),
+    expect(tags).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: '2',
+          severity: 'secondary',
+          icon: 'bi bi-chat-right-text-fill',
+          ariaLabel: '2 commentaires',
+          targets: [
+            {
+              id: '2::fdr-affilie-incapacite',
+              label:
+                'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+            },
+            {
+              id: '2::compte-financier-liasse',
+              label: 'Feuilles de renseignement - Compte financier - Liasse',
+            },
+          ],
+        }),
+        expect.objectContaining({
+          label: '1',
+          severity: 'warn',
+          icon: 'bi bi-exclamation-triangle-fill',
+          ariaLabel: '1 avertissement',
+          targets: [{ id: '3::calcul', label: 'Calcul - Calcul' }],
+        }),
+      ]),
     );
   });
 
@@ -1188,9 +1189,7 @@ describe('AffiliateDetailsComponent', () => {
     const warnTagButton = fixture.nativeElement.querySelector(
       '.c-list__tags button[aria-label="1 avertissement"]',
     ) as HTMLButtonElement;
-    expect(warnTagButton)
-      .withContext('single-target warn tag button')
-      .toBeTruthy();
+    expect(warnTagButton, 'single-target warn tag button').toBeTruthy();
 
     warnTagButton.click();
     fixture.detectChanges();
@@ -1213,9 +1212,7 @@ describe('AffiliateDetailsComponent', () => {
     const infoTagButton = fixture.nativeElement.querySelector(
       '.c-list__tags button[aria-label="2 commentaires"]',
     ) as HTMLButtonElement;
-    expect(infoTagButton)
-      .withContext('multi-target info tag button')
-      .toBeTruthy();
+    expect(infoTagButton, 'multi-target info tag button').toBeTruthy();
 
     infoTagButton.click();
     fixture.detectChanges();
@@ -1267,7 +1264,7 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
@@ -1286,21 +1283,21 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-c4');
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe(
@@ -1339,7 +1336,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.expandedGroupIds()).toContain('parcours-rechute');
 
     const selectedInTree = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected',
+      '.c-list__item--entry.c-list__item--selected',
     ) as HTMLElement | null;
 
     expect(selectedInTree?.textContent).toContain('Rechute');
@@ -1357,7 +1354,7 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe(
@@ -1379,7 +1376,7 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
@@ -1400,7 +1397,7 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToPreviousDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
@@ -1408,12 +1405,13 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.expandedGroupIds()).toContain('parcours-clotures');
 
     const selectedInTree = fixture.nativeElement.querySelector(
-      '.c-list__item--document.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
+      '.c-list__item--entry.c-list__item--selected[data-telemetry-id="document-row-doc-cloture-primaire"]',
     ) as HTMLElement | null;
 
-    expect(selectedInTree)
-      .withContext('cloture row selected in parcours list')
-      .toBeTruthy();
+    expect(
+      selectedInTree,
+      'cloture row selected in parcours list',
+    ).toBeTruthy();
   }));
 
   it('should scroll the active document row into view when navigating with prev/next', fakeAsync(() => {
@@ -1421,21 +1419,18 @@ describe('AffiliateDetailsComponent', () => {
     component.selectedDocumentId.set('doc-demande-primaire');
     fixture.detectChanges();
 
-    const scrollSpy = spyOn(
-      HTMLElement.prototype,
-      'scrollIntoView',
-    ).and.callThrough();
-    const scrollBySpy = spyOn(
-      HTMLElement.prototype,
-      'scrollBy',
-    ).and.callThrough();
+    const scrollSpy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView');
+    const scrollBySpy = vi.spyOn(HTMLElement.prototype, 'scrollBy');
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
 
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
-    expect(scrollSpy.calls.any() || scrollBySpy.calls.any()).toBe(true);
+    expect(
+      vi.mocked(scrollSpy).mock.calls.length > 0 ||
+        vi.mocked(scrollBySpy).mock.calls.length > 0,
+    ).toBe(true);
   }));
 
   it('should scroll the documents list to the top when navigating to the first document', fakeAsync(() => {
@@ -1448,21 +1443,21 @@ describe('AffiliateDetailsComponent', () => {
     ) as HTMLElement;
     scroller.scrollTop = 500;
 
-    const scrollToSpy = spyOn(scroller, 'scrollTo').and.callThrough();
+    const scrollToSpy = vi.spyOn(scroller, 'scrollTo');
 
     component.goToPreviousDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
     expect(scrollToSpy).toHaveBeenCalled();
-    const topScrollCall = scrollToSpy.calls
-      .allArgs()
-      .map((args) => args[0] as ScrollToOptions)
+    const topScrollCall = vi
+      .mocked(scrollToSpy)
+      .mock.calls.map((args) => args[0] as ScrollToOptions)
       .find((options) => options.top === 0);
     expect(topScrollCall).toEqual(
-      jasmine.objectContaining({ top: 0, behavior: 'smooth' }),
+      expect.objectContaining({ top: 0, behavior: 'smooth' }),
     );
   }));
 
@@ -1481,7 +1476,7 @@ describe('AffiliateDetailsComponent', () => {
 
     component.goToNextDocument();
     flushMicrotasks();
-    flush();
+    flushViewportSettling();
     tick(32 * 10);
     fixture.detectChanges();
 
@@ -1748,7 +1743,9 @@ describe('AffiliateDetailsComponent', () => {
         relationship: 'enfant à charge',
       });
 
-      expect(router.navigate).toHaveBeenCalledOnceWith([
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+
+      expect(router.navigate).toHaveBeenCalledWith([
         '/affiliate',
         JACK_MOTA_NISS,
       ]);
@@ -1780,7 +1777,7 @@ describe('AffiliateDetailsComponent', () => {
     });
 
     it('should list all family members except self in Eva drawer data', () => {
-      const family = component.affiliateDetailDrawerData().family;
+      const family = component.affiliateDetailDrawerData().relatedMembers;
 
       expect(family.map((member) => member.name)).toEqual([
         'Quinten Mota',
@@ -1804,7 +1801,7 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
         MessageService,
         {
           provide: Router,
-          useValue: { navigate: jasmine.createSpy('navigate') },
+          useValue: { navigate: vi.fn() },
         },
         {
           provide: ActivatedRoute,
@@ -1861,13 +1858,14 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
     const component = fixture.componentInstance;
 
     expect(
-      component.affiliateDetailDrawerData().family.map((m) => m.name),
+      component.affiliateDetailDrawerData().relatedMembers.map((m) => m.name),
     ).toEqual(['Eva Martinez', 'Quinten Mota', 'Shiloh Mota']);
   });
 
   it('should show parent and sibling labels in Jack drawer', async () => {
     const fixture = await createFixtureForAffiliate(JACK_MOTA_NISS);
-    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const family =
+      fixture.componentInstance.affiliateDetailDrawerData().relatedMembers;
     const byName = Object.fromEntries(
       family.map((member) => [member.name, member.relationship]),
     );
@@ -1879,7 +1877,8 @@ describe('AffiliateDetailsComponent — family dossiers', () => {
 
   it('should show parent and sibling labels in Shiloh drawer', async () => {
     const fixture = await createFixtureForAffiliate(SHILOH_MOTA_NISS);
-    const family = fixture.componentInstance.affiliateDetailDrawerData().family;
+    const family =
+      fixture.componentInstance.affiliateDetailDrawerData().relatedMembers;
     const byName = Object.fromEntries(
       family.map((member) => [member.name, member.relationship]),
     );

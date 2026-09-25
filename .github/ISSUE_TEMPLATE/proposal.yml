@@ -1,0 +1,65 @@
+name: Component or token proposal
+description: Ask the core design-system team before scaffolding or inventing. Use this if you already built something too.
+title: '[Proposal]: '
+labels: ['proposal']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check **Plectrum-themed PrimeNG**, then **Core** `pds-*` components, then open this issue.
+        Do not scaffold, do not draw a new UI Kit component, and do not start a local one until the core team answers.
+
+        Storybook: [Use Plectrum in an app](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/libs/ui/src/docs/get-started-consume.mdx) · [Contribute](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/libs/ui/src/docs/get-started-contribute.mdx)
+  - type: textarea
+    id: need
+    attributes:
+      label: Need
+      description: The screen or job the user is trying to do.
+      placeholder: e.g. Filter a member list by status and date on the iSHARE search page.
+    validations:
+      required: true
+  - type: textarea
+    id: checked
+    attributes:
+      label: What we already checked
+      description: PrimeNG (theme gallery) and Core pds-* (Find a component). Name the closest matches and why they fall short.
+      placeholder: |
+        PrimeNG Select — no multi-select with chips in our layout.
+        pds-form-field — wraps one control, not a filter bar.
+    validations:
+      required: true
+  - type: textarea
+    id: artefact
+    attributes:
+      label: Figma, mock, or existing work
+      description: Link a Figma node or mock. If this was already built without a proposal, attach the screen, local component, or frame.
+      placeholder: https://www.figma.com/design/…
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: How it looks from here
+      options:
+        - Only this application (likely app-specific)
+        - A second application will need it (maybe system-level)
+        - Unsure
+    validations:
+      required: true
+  - type: dropdown
+    id: already-built
+    attributes:
+      label: Already built without asking?
+      options:
+        - 'No — proposing before any code'
+        - 'Yes — we have a local component or Figma frame'
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: Application
+      description: ishare, icrm, or another Solidaris app.
+      placeholder: ishare
+    validations:
+      required: true

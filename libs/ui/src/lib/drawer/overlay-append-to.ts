@@ -14,7 +14,7 @@ export function resolveStorybookPreviewDocument(): Document {
       return preview.contentDocument;
     }
   } catch {
-    // Manager is cross-origin, or this is Karma / a non-Storybook host.
+    // Manager is cross-origin, or this is a unit-test / non-Storybook host.
   }
 
   return document;

@@ -9,7 +9,7 @@
 // =============================================================================
 
 import { readClassRules } from '../storybook/cssom';
-import { FLEX, RESPONSIVE, type ClassList } from './object-class-lists';
+import { FLEX, LAYOUT, RESPONSIVE, type ClassList } from './object-class-lists';
 
 /** Variants the stylesheet emits for a list's pattern (base classes only). */
 function generatedValues(list: ClassList): string[] {
@@ -32,7 +32,7 @@ describe('object class lists match the stylesheet', () => {
     expect(generatedValues(FLEX['span']).length).toBeGreaterThan(0);
   });
 
-  for (const [group, lists] of Object.entries({ FLEX })) {
+  for (const [group, lists] of Object.entries({ FLEX, LAYOUT })) {
     for (const [name, list] of Object.entries(lists)) {
       it(`${group}.${name} — ${list.label}`, () => {
         expect(documentedValues(list)).toEqual(generatedValues(list));

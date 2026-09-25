@@ -14,15 +14,16 @@ import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@a
 import { Card } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { type DocsCard, type FigureTone, toneSeverity } from './docs-figures.types';
+import { DocsLinkComponent } from './docs-link.component';
 
 @Component({
   selector: 'pds-docs-cards',
-  imports: [Card, Tag],
+  imports: [Card, Tag, DocsLinkComponent],
   templateUrl: './docs-cards.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'c-docs-cards',
+    class: 'c-docs-cards o-layout o-layout--block o-layout--margin-block-3',
     '[class.c-docs-cards--2-up]': 'columns() === 2',
   },
 })

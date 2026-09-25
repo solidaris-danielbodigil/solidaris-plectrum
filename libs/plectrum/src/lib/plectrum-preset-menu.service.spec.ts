@@ -49,7 +49,7 @@ describe('PlectrumPresetMenuService', () => {
 
     expect(merged.length).toBe(3);
     expect(merged[0]?.id).toBe('plectrum-preset-toggle');
-    expect(merged[1]?.separator).toBeTrue();
+    expect(merged[1]?.separator).toBe(true);
     expect(merged[2]?.id).toBe('session-start');
   });
 

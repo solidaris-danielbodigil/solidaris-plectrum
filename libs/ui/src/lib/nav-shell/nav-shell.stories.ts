@@ -1,8 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig, componentWrapperDecorator } from '@storybook/angular';
-import { provideRouter } from '@angular/router';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import {
+  applicationConfig,
+  componentWrapperDecorator,
+} from '@storybook/angular-vite';
 import { inject, provideAppInitializer } from '@angular/core';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { provideStoryRouter } from '../../storybook/story-router';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { NavShellComponent } from './nav-shell.component';
 import { NavShellMetadata } from './nav-shell.metadata';
@@ -50,53 +55,123 @@ const SVG_ISHARE = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" 
 </defs>
 </svg>`;
 
+const SVG_IGED = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="logo/solidaris/iged">
+<path id="sheet-back" d="M6.4 1H16.5C17.605 1 18.5 1.895 18.5 3V14.7C18.5 15.805 17.605 16.7 16.5 16.7H6.4V1Z" fill="url(#paint1_iged)"/>
+<path id="sheet-front" d="M1.5 3.8C1.5 2.695 2.395 1.8 3.5 1.8H10.2L15.6 7.2V16.7C15.6 17.805 14.705 18.7 13.6 18.7H3.5C2.395 18.7 1.5 17.805 1.5 16.7V3.8Z" fill="url(#paint0_iged)"/>
+<path id="dog-ear" d="M10.2 1.8V6.35C10.2 6.82 10.58 7.2 11.05 7.2H15.6L10.2 1.8Z" fill="url(#paint2_iged)"/>
+<rect id="line-1" x="3.85" y="10.15" width="8.3" height="1.75" rx="0.7" fill="url(#paint2_iged)"/>
+<rect id="line-2" x="3.85" y="13.3" width="6.1" height="1.75" rx="0.7" fill="url(#paint2_iged)"/>
+</g>
+<defs>
+<linearGradient id="paint0_iged" x1="1.2" y1="1.4" x2="16.6" y2="18.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF1D25"/>
+<stop offset="1" stop-color="#D4145A"/>
+</linearGradient>
+<linearGradient id="paint1_iged" x1="6.2" y1="0.9" x2="18.6" y2="16.4" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF1568"/>
+<stop offset="1" stop-color="#D04521"/>
+</linearGradient>
+<linearGradient id="paint2_iged" x1="10" y1="1.8" x2="15.8" y2="14.8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E005D"/>
+<stop offset="1" stop-color="#ED1E79"/>
+</linearGradient>
+</defs>
+</svg>`;
+
 // ---------------------------------------------------------------------------
 // Sample items — exactly two, mirroring Figma node 18:6419
 // ---------------------------------------------------------------------------
 // routerLink is set so the rendered <a> elements are keyboard-focusable, which
 // lets the Expanded story trigger the CSS :focus-within reveal via .focus().
 const SAMPLE_ITEMS: NavItem[] = [
-  { id: 'icrm',   label: 'iCRM',   icon: 'logo-icrm',   iconSource: 'svg', routerLink: '/icrm' },
-  { id: 'ishare', label: 'iShare', icon: 'logo-ishare', iconSource: 'svg', routerLink: '/ishare' },
+  {
+    id: 'icrm',
+    label: 'iCRM',
+    icon: 'logo-icrm',
+    iconSource: 'svg',
+    routerLink: '/icrm',
+  },
+  {
+    id: 'ishare',
+    label: 'iShare',
+    icon: 'logo-ishare',
+    iconSource: 'svg',
+    routerLink: '/ishare',
+  },
+  {
+    id: 'iged',
+    label: 'iGED',
+    icon: 'logo-iged',
+    iconSource: 'svg',
+    routerLink: '/iged',
+  },
 ];
+
+/** App-shell frame — only the catalogue stories. Docs figures must not inherit this. */
+const shellFrame = componentWrapperDecorator(
+  (story) =>
+    `<div class="o-layout o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
+);
 
 const meta: Meta<NavShellComponent> = {
   title: 'Shell/Navigation/NavShell',
   component: NavShellComponent,
   decorators: [
-    // Match app shell layout — nav-shell stretches via height: 100% inside a full-viewport flex row.
-    componentWrapperDecorator(
-      (story) =>
-        `<div class="o-layout--full-dvh o-flex o-layout--overflow-hidden">${story}</div>`,
-    ),
     applicationConfig({
       providers: [
-        provideRouter([]),
+        // Virtual URL — a real Location would move the iframe to the host root.
+        provideStoryRouter(),
         // Register brand-mark SVGs before the first render.
         provideAppInitializer(() => {
           const registry = inject(IconRegistry);
           registry.register('logo-icrm', SVG_ICRM);
           registry.register('logo-ishare', SVG_ISHARE);
+          registry.register('logo-iged', SVG_IGED);
         }),
       ],
     }),
   ],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(NavShellMetadata.component.figmaUrl),
   },
-  argTypes: {
+  argTypes: argTypesFromProps(NavShellMetadata.props ?? [], {
     activeItemId: {
       control: 'select',
       options: [null, ...SAMPLE_ITEMS.map((i) => i.id)],
     },
-  },
+  }),
 };
 
 export default meta;
 type Story = StoryObj<NavShellComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(NavShellMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from nav-shell.metadata.ts, the documentation SSOT.
+// `tags` must be a CSF literal: the indexer does not see factory returns.
+export const Status = {
+  tags: ['!dev'],
+  ...statusStory(NavShellMetadata.governance, NavShellMetadata.component),
+};
+export const Usage = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'usage'),
+};
+export const Patterns = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'patterns') };
+export const Examples = { tags: ['!dev'], ...contractStory(NavShellMetadata, 'examples') };
+export const Composition = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'composition'),
+};
+export const Behavior = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'behavior'),
+};
+export const Accessibility = {
+  tags: ['!dev'],
+  ...contractStory(NavShellMetadata, 'accessibility'),
+};
 
 // ---------------------------------------------------------------------------
 // Stories
@@ -104,6 +179,7 @@ export const Status = statusStory(NavShellMetadata.governance);
 
 /** Default collapsed state — icon-only sidebar at rest. */
 export const Collapsed: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
@@ -115,8 +191,11 @@ export const Collapsed: Story = {
   },
 };
 
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(NavShellMetadata, Collapsed) };
+
 /** Expanded state — focusing an item triggers the CSS :focus-within reveal. */
 export const Expanded: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: null,
@@ -124,13 +203,16 @@ export const Expanded: Story = {
   // Expansion is pure CSS (:hover / :focus-within). Focus the first link so the
   // static story renders the expanded state without needing a real pointer hover.
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-    const link = canvasElement.querySelector('.c-nav-shell__link') as HTMLElement | null;
+    const link = canvasElement.querySelector(
+      '.c-nav-shell__link',
+    ) as HTMLElement | null;
     link?.focus();
   },
 };
 
 /** Active item highlighted — grey rounded background (icon keeps its brand colour). */
 export const WithActiveItem: Story = {
+  decorators: [shellFrame],
   args: {
     items: SAMPLE_ITEMS,
     activeItemId: 'icrm',
@@ -146,6 +228,7 @@ export const WithActiveItem: Story = {
 
 /** Empty state — no items. */
 export const Empty: Story = {
+  decorators: [shellFrame],
   args: {
     items: [],
     activeItemId: null,

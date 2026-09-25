@@ -14,20 +14,21 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - run: npm install
 
-      - name: Create version PR or publish
+      # Publish is parked until NPM_TOKEN + registry access exist.
+      # Restore `publish: npm run release` and `NPM_TOKEN` to go live.
+      - name: Create version PR
         uses: changesets/action@v1
         with:
-          publish: npm run release
+          version: npm run changeset:version
           title: 'chore(release): version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

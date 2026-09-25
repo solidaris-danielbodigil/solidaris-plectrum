@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "baseUrl": "../..",
+    "types": [],
+    "paths": {
+      "@solidaris/contracts": [".ai/contracts/schema/index.ts"],
+      "@solidaris/plectrum": ["libs/plectrum/src/index.ts"],
+      "@solidaris/styles": ["libs/styles/src/main.scss"],
+      "@solidaris/ui": ["libs/ui/src/index.ts"]
+    }
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}

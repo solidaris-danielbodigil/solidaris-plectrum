@@ -129,28 +129,38 @@ describe('TestingTelemetryService', () => {
   it('should manage session lifecycle events', () => {
     service.newSession();
     expect(service.getSessionId()).toBeTruthy();
-    expect(service.getEvents().some((e) => e.event === 'session_new')).toBeTrue();
+    expect(service.getEvents().some((e) => e.event === 'session_new')).toBe(
+      true,
+    );
 
     service.startCapture();
-    expect(service.isCapturing()).toBeTrue();
-    expect(service.capturing()).toBeTrue();
+    expect(service.isCapturing()).toBe(true);
+    expect(service.capturing()).toBe(true);
     expect(service.captureStartedAt()).toBeTruthy();
-    expect(service.getEvents().some((e) => e.event === 'session_start')).toBeTrue();
+    expect(service.getEvents().some((e) => e.event === 'session_start')).toBe(
+      true,
+    );
 
     service.stopCapture();
-    expect(service.isCapturing()).toBeFalse();
-    expect(service.capturing()).toBeFalse();
+    expect(service.isCapturing()).toBe(false);
+    expect(service.capturing()).toBe(false);
     expect(service.captureStartedAt()).toBeNull();
-    expect(service.getEvents().some((e) => e.event === 'session_stop')).toBeTrue();
+    expect(service.getEvents().some((e) => e.event === 'session_stop')).toBe(
+      true,
+    );
   });
 
   it('should auto-create a session when capture starts without an existing session id', () => {
     service.startCapture();
 
     expect(service.getSessionId()).toBeTruthy();
-    expect(service.getEvents().some((e) => e.event === 'session_new')).toBeTrue();
-    expect(service.getEvents().some((e) => e.event === 'session_start')).toBeTrue();
-    expect(service.isCapturing()).toBeTrue();
+    expect(service.getEvents().some((e) => e.event === 'session_new')).toBe(
+      true,
+    );
+    expect(service.getEvents().some((e) => e.event === 'session_start')).toBe(
+      true,
+    );
+    expect(service.isCapturing()).toBe(true);
   });
 
   it('should resume the same session when restarting capture after stop without export', () => {
@@ -162,8 +172,12 @@ describe('TestingTelemetryService', () => {
     service.startCapture();
 
     expect(service.getSessionId()).toBe(sessionId);
-    expect(service.getEvents().filter((e) => e.event === 'session_new').length).toBe(1);
-    expect(service.getEvents().filter((e) => e.event === 'session_start').length).toBe(2);
+    expect(
+      service.getEvents().filter((e) => e.event === 'session_new').length,
+    ).toBe(1);
+    expect(
+      service.getEvents().filter((e) => e.event === 'session_start').length,
+    ).toBe(2);
   });
 
   it('should start a fresh session when capture begins after export', () => {
@@ -181,8 +195,11 @@ describe('TestingTelemetryService', () => {
     service.startCapture();
 
     const events = service.getEvents();
-    expect(events.map((entry) => entry.event)).toEqual(['session_new', 'session_start']);
-    expect(service.isCapturing()).toBeTrue();
+    expect(events.map((entry) => entry.event)).toEqual([
+      'session_new',
+      'session_start',
+    ]);
+    expect(service.isCapturing()).toBe(true);
   });
 
   it('should export a session envelope', () => {
@@ -198,7 +215,7 @@ describe('TestingTelemetryService', () => {
 
     expect(session.schemaVersion).toBe(1);
     expect(session.app).toBe('ishare');
-    expect(session.build.telemetryEnabled).toBeTrue();
+    expect(session.build.telemetryEnabled).toBe(true);
     expect(session.events.length).toBeGreaterThan(0);
     expect(session.sessionId).toBe(service.getSessionId() ?? undefined);
   });
@@ -211,7 +228,9 @@ describe('TestingTelemetryService', () => {
     });
 
     expect(filename).toMatch(/^\d{4}-\d{2}-\d{2}_.+_telemetry\.json$/);
-    expect(service.getEvents().some((e) => e.event === 'session_export')).toBeTrue();
+    expect(service.getEvents().some((e) => e.event === 'session_export')).toBe(
+      true,
+    );
   });
 
   it('should persist session id in sessionStorage when starting a new session', () => {

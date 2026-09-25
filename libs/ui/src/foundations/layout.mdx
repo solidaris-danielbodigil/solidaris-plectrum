@@ -1,57 +1,53 @@
-import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../.storybook/docs-table';
+import { Meta, Canvas, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './layout.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta of={Stories} />
 
 # Layout
 
-The layout object `.o-layout` provides utility modifier classes for **spacing**, **overflow**, **dimensions**, **display**, and **position**.
+## How a page adapts
 
-Apply these classes as **BEM mixes** directly in HTML templates alongside `.o-flex` — never write raw spacing values in component SCSS.
+Start from the narrow screen. The column is the default.
 
-All modifiers support **responsive variants** via the `@{breakpoint}` suffix: `o-layout--hidden@md`, `o-layout--gap-4@lg`, `o-layout--overflow-y-auto@sm`.
+- A side navigation hides until `md`, then becomes a column beside the content (`o-layout--hidden` and `o-layout--block@md`).
+- Page padding grows with the screen: `o-layout--padding-3` then `o-layout--padding-4@md`.
+- A two-column form becomes one column by stacking. Do not keep two columns if the labels no longer fit.
+- A data table scrolls inside its region (`o-layout--overflow-x-auto`). Do not shrink the type to make the columns fit.
 
-Breakpoints: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem)
+Add these classes in the HTML, next to `o-flex`. Do not write spacing in the component stylesheet. The anatomy figure marks the layout parts on this page.
 
-<DocsTable
-  headers={['Category', 'Modifier pattern', 'Purpose']}
-  rows={[
-    ['Dimensions', 'o-layout--full-height, --full-width, --full-dvh, --min-h-0, --min-w-0', 'Structural size helpers'],
-    ['Overflow', 'o-layout--overflow[-x|-y]-{value}', 'Controls overflow (responsive)'],
-    ['Display', 'o-layout--{block|inline-block|hidden|grid|…}', 'Sets display (responsive)'],
-    ['Position', 'o-layout--{relative|absolute|fixed|sticky|static}', 'Sets position (responsive)'],
-    ['Sticky', 'o-layout--sticky-top', 'Shorthand for position: sticky; top: 0'],
-    ['Spacing', 'o-layout--{property}-{scale}', 'Gap / padding / margin from spacing scale (responsive)'],
-  ]}
-/>
+<Unstyled>
+  <Story of={PageExample.LayoutAnatomy} />
+</Unstyled>
+
+Breakpoints are mobile-first: `sm` (48rem) · `md` (62rem) · `lg` (75rem) · `xl` (87.5rem). In a media query, `rem` uses the browser’s initial 16px root, so `sm` is 768px wide. Spacing inside the page still uses the 14px type root.
+
+Six categories: Dimensions, Overflow, Display, Position, Sticky, Spacing — one section each below, full class list in [API](#api).
 
 Styles: `libs/styles/src/05-objects/layout/_objects.layout.scss`. Rule: `.ai/rules/08-object-classes.md`.
 
-## Dimensions
+## Usage
 
-Dimensional helper classes for common structural sizing needs.
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-<DocsTable
-  headers={['Class', 'CSS', 'Use case']}
-  rows={[
-    ['.o-layout--full-height', 'height: 100%', 'Fill parent height (add to all flex ancestors)'],
-    ['.o-layout--full-width', 'width: 100%', 'Stretch to container width'],
-    ['.o-layout--full-dvh', 'height: 100dvh', 'Full viewport height (mobile-safe)'],
-    ['.o-layout--min-h-0', 'min-height: 0', 'Enable scroll within flex children'],
-    ['.o-layout--min-w-0', 'min-width: 0', 'Enable text truncation within flex children'],
-  ]}
-/>
+## Examples
 
 ```html
 <!-- Scrollable flex child -->
-<div class="o-flex o-flex--col o-layout--full-dvh">
-  <header class="o-flex__item--shrink-0">Header</header>
-  <main class="o-layout--min-h-0 o-layout--overflow-y-auto">
+<div class="o-flex o-flex--col o-layout o-layout--full-dvh">
+  <header class="o-flex__item o-flex__item--shrink-0">Header</header>
+  <main class="o-layout o-layout--min-h-0 o-layout--overflow-y-auto">
     Scrollable content...
   </main>
 </div>
 ```
+
+## Dimensions
+
+Dimensional helper classes for common structural sizing needs — full list in [API](#api).
 
 <Canvas of={Stories.Dimensions} />
 
@@ -81,63 +77,36 @@ Overflow syntax: `.o-layout--overflow-[axis?]-[value]`
 
 **Axes:** shorthand (`overflow-{value}`), `overflow-x-{value}`, `overflow-y-{value}`
 
-**Values:** `hidden` `auto` `overlay` `scroll` `visible` `unset` `initial` `inherit`
-
-**Responsive:** All overflow classes support `@{breakpoint}` variants.
+Every overflow class takes a `@{breakpoint}` variant. The API table below lists every value.
 
 ```html
-<div class="o-layout--overflow-hidden o-layout--overflow-auto@md">...</div>
-<div class="o-layout--overflow-x-hidden o-layout--overflow-y-auto">...</div>
+<div class="o-layout o-layout--overflow-hidden o-layout--overflow-auto@md">...</div>
+<div class="o-layout o-layout--overflow-x-hidden o-layout--overflow-y-auto">...</div>
 ```
 
 <Canvas of={Stories.Overflow} />
 
 ## Display
 
-Display classes control the `display` property with responsive support.
-
-<DocsTable
-  headers={['Class', 'CSS']}
-  rows={[
-    ['.o-layout--block', 'display: block'],
-    ['.o-layout--inline-block', 'display: inline-block'],
-    ['.o-layout--inline', 'display: inline'],
-    ['.o-layout--hidden', 'display: none'],
-    ['.o-layout--grid', 'display: grid'],
-    ['.o-layout--inline-flex', 'display: inline-flex'],
-    ['.o-layout--contents', 'display: contents'],
-  ]}
-/>
+Display classes control the `display` property with responsive support — full list in [API](#api).
 
 `.o-layout--grid` only sets `display: grid`. For a column system (equal cols, span, alignment), use **`.o-flex`** — see [Foundations / Flex Grid](?path=/docs/foundations-flex-grid--flex-grid).
 
 ```html
-<aside class="o-layout--hidden o-layout--block@md">Sidebar</aside>
-<div class="o-layout--block o-layout--grid@lg">...</div>
+<aside class="o-layout o-layout--hidden o-layout--block@md">Sidebar</aside>
+<div class="o-layout o-layout--block o-layout--grid@lg">...</div>
 ```
 
 <Canvas of={Stories.Display} />
 
 ## Position
 
-Position classes set the `position` property with responsive support.
-
-<DocsTable
-  headers={['Class', 'CSS']}
-  rows={[
-    ['.o-layout--relative', 'position: relative'],
-    ['.o-layout--absolute', 'position: absolute'],
-    ['.o-layout--fixed', 'position: fixed'],
-    ['.o-layout--sticky', 'position: sticky'],
-    ['.o-layout--static', 'position: static'],
-    ['.o-layout--sticky-top', 'position: sticky; top: 0'],
-  ]}
-/>
+Position classes set the `position` property with responsive support — full list in [API](#api).
 
 ```html
-<header class="o-layout--sticky-top">Sticks to top on scroll</header>
-<div class="o-layout--relative">
-  <span class="o-layout--absolute" style="top: 0; right: 0;">Badge</span>
+<header class="o-layout o-layout--sticky-top">Sticks to top on scroll</header>
+<div class="o-layout o-layout--relative">
+  <span class="o-layout o-layout--absolute" style="top: 0; right: 0;">Badge</span>
 </div>
 ```
 
@@ -153,11 +122,11 @@ Spacing classes apply gap, padding, or margin from the [spacing scale](?path=/do
 
 **Properties:** `gap` `row-gap` `column-gap` `padding` `padding-top` `padding-right` `padding-bottom` `padding-left` `padding-inline` `padding-block` `margin` `margin-top` `margin-right` `margin-bottom` `margin-left` `margin-inline` `margin-block`
 
-**Scale:** `0` `0-25` `0-5` `0-75` `1` `1-5` `2` `3` `4` `5` `6` `7` `auto`
+The API table below lists the scale.
 
 ```html
-<div class="o-flex o-layout--gap-2 o-layout--gap-4@md">...</div>
-<div class="o-layout--padding-2 o-layout--padding-4@lg">...</div>
+<div class="o-flex o-layout o-layout--gap-2 o-layout--gap-4@md">...</div>
+<div class="o-layout o-layout--padding-2 o-layout--padding-4@lg">...</div>
 ```
 
 Or reuse the variables in SCSS:
@@ -172,17 +141,15 @@ padding: var(--pds-spacing-2) var(--pds-spacing-1-5) var(--pds-spacing-0) var(--
 
 All layout modifiers support responsive variants using the `@{breakpoint}` suffix.
 
-**Breakpoints:** `sm` (768px) · `md` (992px) · `lg` (1200px) · `xl` (1400px)
-
 Pattern: `.o-layout--{modifier}@{breakpoint}`
 
 The responsive class applies from that breakpoint **upward** (mobile-first, `min-width`). Resize the viewport to see the demo change.
 
 ```html
-<div class="o-flex o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">...</div>
-<aside class="o-layout--hidden o-layout--block@md">Sidebar</aside>
-<div class="o-layout--overflow-y-auto o-layout--overflow-y-visible@lg">...</div>
-<header class="o-layout--static o-layout--sticky@md" style="top: 0;">Nav</header>
+<div class="o-flex o-layout o-layout--gap-1 o-layout--gap-2@sm o-layout--gap-4@lg">...</div>
+<aside class="o-layout o-layout--hidden o-layout--block@md">Sidebar</aside>
+<div class="o-layout o-layout--overflow-y-auto o-layout--overflow-y-visible@lg">...</div>
+<header class="o-layout o-layout--static o-layout--sticky@md" style="top: 0;">Nav</header>
 ```
 
 <Canvas of={Stories.Responsive} />

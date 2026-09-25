@@ -1,4 +1,4 @@
-import { Meta, Canvas, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './timeline.stories';
 
 <Meta of={Stories} />
@@ -9,14 +9,55 @@ import * as Stories from './timeline.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-`c-timeline--content-only` is a PrimeNG Timeline restyle for single-column journeys: it removes the empty opposite column so content starts at the marker. There is no Angular wrapper — apply the class to `p-timeline` directly.
-
-- **PrimeNG**: `p-timeline` (never reimplemented)
-- **Styles**: `libs/styles/src/06-components/_components.timeline.scss`
-- **Used by**: iSHARE document more-details drawer
+## Content only
 
 <Canvas of={Stories.ContentOnly} />
+<Controls of={Stories.ContentOnly} />
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Patterns
+
+<Unstyled>
+  <Story of={Stories.Patterns} />
+</Unstyled>
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
+
+## Stock
 
 Stock PrimeNG reserves a full column for the `#opposite` template even when only dates live there:
 
 <Canvas of={Stories.Stock} />
+
+## Examples
+
+<Unstyled>
+  <Story of={Stories.Examples} />
+</Unstyled>
+
+## Composition
+
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>

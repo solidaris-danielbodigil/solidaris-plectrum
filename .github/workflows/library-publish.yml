@@ -3,6 +3,10 @@ name: Figma library publish
 # Receives a LIBRARY_PUBLISH webhook (Figma library published after designer merge)
 # and re-runs pull-figma as a safety net. Rate-limit / 4MB / atomic 400 constraints
 # are documented in `node tools/tokens/pull-figma.mjs --help`.
+#
+# Parked: pull-figma reads the Variables REST API (file_variables:read), which
+# Figma offers on the Enterprise plan only. Live repo → Figma path is the
+# Plectrum tokens plugin. See .ai/decisions/2026-09-10-repo-to-figma-plugin.md.
 
 on:
   repository_dispatch:
@@ -14,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: figma-read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       - run: npm install
       - name: Flag unpublished Figma variable changes

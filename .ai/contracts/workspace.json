@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "workspace": {
+    "libs": [
+      {
+        "name": "ui",
+        "path": "libs/ui",
+        "purpose": "Shared Angular components (SSOT)"
+      },
+      {
+        "name": "styles",
+        "path": "libs/styles",
+        "purpose": "SCSS/ITCSS tokens and utilities (SSOT)"
+      },
+      {
+        "name": "plectrum",
+        "path": "libs/plectrum",
+        "purpose": "PrimeNG theme preset integration"
+      }
+    ]
+  },
+  "tokenArchitecture": {
+    "prefix": "--pds-*",
+    "prefixConfig": "libs/styles/src/01-settings/_settings.prefix.scss",
+    "layers": {
+      "primitive": {
+        "files": [
+          "libs/styles/src/01-settings/_settings.colors-primitive.scss",
+          "libs/styles/src/01-settings/_settings.typography-primitive.scss"
+        ],
+        "pattern": "--pds-{category}-{palette}-{shade}"
+      },
+      "semantic": {
+        "files": [
+          "libs/styles/src/01-settings/_settings.colors-semantic.scss",
+          "libs/styles/src/01-settings/_settings.typography-semantic.scss",
+          "libs/styles/src/01-settings/_settings.spacing.scss",
+          "libs/styles/src/01-settings/_settings.radius.scss",
+          "libs/styles/src/01-settings/_settings.shadows.scss",
+          "libs/styles/src/01-settings/_settings.transitions.scss",
+          "libs/styles/src/01-settings/_settings.focus.scss",
+          "libs/styles/src/01-settings/_settings.globals.scss"
+        ],
+        "pattern": "--pds-{category}-{role}"
+      },
+      "component": {
+        "files": [
+          "libs/styles/src/06-components/_components.*.scss"
+        ],
+        "pattern": "--p-{component}-{property} mapped from --pds-*"
+      }
+    }
+  },
+  "helperExports": [
+    "drawer",
+    "i18n",
+    "loading/simulated-loading",
+    "testing-telemetry"
+  ]
+}

@@ -6,13 +6,13 @@
 import type { SyncReport } from './sync-report.types';
 
 export const SYNC_REPORT: SyncReport = {
-  "generatedAt": "2026-09-07T12:11:44.317Z",
+  "generatedAt": "2026-09-07T13:04:27.670Z",
   "source": "primeui-figma-plugin-v4",
   "branch": "design-tokens/sync",
-  "sha": "c4ad0c9",
+  "sha": "2ba5dac",
   "actor": "solidaris-danielbodigil",
-  "runNumber": "11",
-  "runUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34120499910",
+  "runNumber": "12",
+  "runUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/34125284033",
   "sets": [
     "aura/component/light",
     "aura/primitive",

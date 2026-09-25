@@ -7,12 +7,9 @@ import * as Figures from './token-pipeline-figma.stories';
 
 # Figma sync
 
-Two one-way transports connect the Plectrum UI Kit and the repository.
+Two one-way transports connect the Plectrum UI Kit and the repository. Figma sends variables to the repository through a staging branch, and the repository sends proposed tokens back to a Figma branch. Neither transport writes the main Figma file on its own.
 
-- **Figma → repository**: the PrimeUI theme generator plugin syncs variables to a staging branch. A workflow promotes them through a pull request.
-- **Repository → Figma**: code-owned tokens are written to a Figma branch. A designer merges and publishes.
-
-Neither transport writes the main Figma file automatically. See the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the full architecture, [Commands](?path=/docs/docs-token-pipeline--docs#commands) for script flags, and the [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) for how applications consume the output.
+Start at the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the whole architecture and the [Commands](?path=/docs/docs-token-pipeline--docs#commands) for the script flags.
 
 <Diagram
   title="Figma sync transports"
@@ -34,12 +31,30 @@ Neither transport writes the main Figma file automatically. See the [pipeline ov
     { from: 'main', to: 'staging', label: 'plugin sync' },
     { from: 'staging', to: 'json', label: 'pull request' },
     { from: 'code', to: 'proposal', label: 'tokens:propose' },
-    { from: 'proposal', to: 'branch', label: 'tokens:apply' },
+    { from: 'proposal', to: 'branch', label: 'agent or plugin', dashed: true },
     { from: 'branch', to: 'main', label: 'merge + publish', dashed: true },
   ]}
 />
 
-Top row: Figma → repository. Bottom row: repository → Figma. Both transports end in a manual merge.
+Top row: Figma → repository, automated up to the pull request. Bottom row: repository → Figma. `tokens:propose` writes a committed proposal; an agent or the Plectrum tokens plugin writes the branch `proposals/{app}`. Both transports end in a manual merge.
+
+---
+
+## Status
+
+<Unstyled>
+  <Story of={Figures.OutboundStatus} />
+</Unstyled>
+
+Writes to Figma go through an agent with Figma MCP. When no agent is running, a designer runs the Plectrum tokens plugin instead.
+
+<Unstyled>
+  <Story of={Figures.OutboundOptions} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={Figures.OutboundInterim} />
+</Unstyled>
 
 ---
 
@@ -120,7 +135,9 @@ Figma remains the source of truth for primitives and semantics. Component tokens
 
 ## Repository → Figma
 
-Tokens that originate in code — a surface step the UI Kit lacks, a feature-specific colour — are proposed to Figma. They are not entered in the UI Kit by hand.
+Propose a token to Figma when it starts in code — a surface step the UI Kit lacks, or a feature-specific colour. Run `tokens:propose` to write `proposed.dtcg.json`. Apply the tokens you select on the branch `proposals/{app}`.
+
+After a candidate is promoted to core, design the Figma component from the repo on that branch. An agent or a designer may do it. Bind variables; do not paint hex from a screenshot.
 
 ### Process
 
@@ -192,6 +209,7 @@ Flags, inputs and CI wiring for every token script: [Token pipeline → Commands
 
 ```bash
 npm run tokens:propose
-npm run tokens:apply -- --app scratch --dry-run
-npm run tokens:pull-figma
+npm run figma-plugin:build                                                 # Organization plan (live)
+npm run tokens:apply -- --app scratch --only color/surface/75 --dry-run   # Enterprise only
+npm run tokens:pull-figma                                                  # Enterprise only
 ```

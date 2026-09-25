@@ -8,7 +8,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
   host: {
-    class: 'o-flex o-flex--y o-layout--full-dvh',
+    class: 'o-flex o-flex--y o-layout o-layout--full-dvh',
   },
 })
 export class ShellComponent {}

@@ -1,7 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
-import { provideRouter } from '@angular/router';
-import { statusStory } from '../../docs/docs-figure-stories';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import { applicationConfig } from '@storybook/angular-vite';
+import { provideStoryRouter } from '../../storybook/story-router';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
+import { argTypesFromProps } from '../../storybook/arg-types-from-props';
+import { storyDesign } from '../../storybook/story-design';
 import { expect, within } from '../../storybook/story-tests';
 import { SubNavShellComponent } from './sub-nav-shell.component';
 import { SubNavShellMetadata } from './sub-nav-shell.metadata';
@@ -166,25 +168,27 @@ const meta: Meta<SubNavShellComponent> = {
   title: 'Shell/Navigation/SubNavShell',
   component: SubNavShellComponent,
   decorators: [
-    applicationConfig({ providers: [provideRouter([])] }),
+    // Virtual URL — a real Location would move the iframe to the host root.
+    applicationConfig({ providers: [provideStoryRouter()] }),
   ],
   parameters: {
     layout: 'fullscreen',
+    ...storyDesign(SubNavShellMetadata.component.figmaUrl),
   },
-  argTypes: {
-    title: { control: 'text', description: 'Module/app title in the header' },
-    version: { control: 'text', description: 'Version string in the footer' },
-    changelogUrl: { control: 'text', description: 'URL for the changelog link' },
-    activeItemId: { control: 'text', description: 'ID of the currently active nav item' },
-    sections: { control: 'object', description: 'Array of SubNavShellSection[]' },
-  },
+  argTypes: argTypesFromProps(SubNavShellMetadata.props ?? []),
 };
 
 export default meta;
 type Story = StoryObj<SubNavShellComponent>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
-export const Status = statusStory(SubNavShellMetadata.governance);
+// Docs figures — hidden from the sidebar. The MDX page embeds these; the
+// content comes from sub-nav-shell.metadata.ts, the documentation SSOT.
+export const Status = { tags: ['!dev'], ...statusStory(SubNavShellMetadata.governance, SubNavShellMetadata.component) };
+export const Usage = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'usage') };
+export const Patterns = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'patterns') };
+export const Composition = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'composition') };
+export const Behavior = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'behavior') };
+export const Accessibility = { tags: ['!dev'], ...contractStory(SubNavShellMetadata, 'accessibility') };
 
 // ---------------------------------------------------------------------------
 // Stories
@@ -203,6 +207,11 @@ export const MaatschappelijkWerk: Story = {
     await expect(canvas.getByText('Maatschappelijk Werk')).toBeVisible();
     await expect(canvas.getByText('Openstaand dossier')).toBeVisible();
   },
+};
+
+export const Anatomy = {
+  tags: ['!dev'],
+  ...anatomyStory(SubNavShellMetadata, MaatschappelijkWerk),
 };
 
 export const Processen: Story = {
@@ -272,6 +281,25 @@ export const NoFooter: Story = {
     activeItemId: null,
     version: '',
     changelogUrl: '#',
+  },
+};
+
+export const WithSearch: Story = {
+  args: {
+    title: 'iGED',
+    showSearch: true,
+    searchPlaceholder: 'Filtrer le menu',
+    searchAriaLabel: 'Rechercher',
+    searchClearLabel: 'Effacer la recherche',
+    searchEmptyLabel: 'Aucun résultat trouvé.',
+    sections: maatschappelijkWerkSections,
+    activeItemId: 'lopend',
+    version: '0.1.001',
+    changelogUrl: '#',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('button', { name: 'Rechercher' })).toBeVisible();
   },
 };
 

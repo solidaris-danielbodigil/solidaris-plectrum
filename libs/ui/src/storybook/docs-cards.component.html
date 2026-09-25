@@ -1,9 +1,9 @@
-<ul class="c-docs-cards__grid">
+<ul class="c-docs-cards__grid o-layout o-layout--gap-2 o-layout--margin-0 o-layout--padding-0">
   @for (card of cards(); track card.title) {
     <li class="c-docs-cards__item">
-      <p-card class="o-layout--full-height">
+      <p-card class="o-layout o-layout--full-height">
         <ng-template #title>
-          <div class="o-flex o-flex--y o-flex--align-items-flex-start o-layout--gap-1">
+          <div class="o-flex o-flex--y o-flex--align-items-flex-start o-layout o-layout--gap-1">
             @if (card.eyebrow) {
               <p-tag [value]="card.eyebrow" [severity]="severity(card.tone)" />
             }
@@ -11,12 +11,23 @@
           </div>
         </ng-template>
         @if (card.lead) {
-          <p class="c-docs-cards__lead">{{ card.lead }}</p>
+          <p class="c-docs-cards__lead o-layout o-layout--margin-0">{{ card.lead }}</p>
         }
         @if (card.items?.length) {
-          <ul class="c-docs-cards__list">
+          <ul class="c-docs-cards__list o-layout o-layout--margin-0 o-layout--padding-inline-start-2">
             @for (item of card.items; track item) {
               <li>{{ item }}</li>
+            }
+          </ul>
+        }
+        @if (card.links?.length) {
+          <ul
+            class="o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-0"
+          >
+            @for (link of card.links; track link.label) {
+              <li>
+                <pds-docs-link [path]="link.path" [href]="link.href" [label]="link.label" />
+              </li>
             }
           </ul>
         }

@@ -13,6 +13,7 @@ find — you do not just report them.
 ### 1 — Story coverage audit
 
 For every component under review, verify these story exports exist:
+
 - `Default` — always required
 - `Expanded` / `Open` — if component has an open state
 - `WithActiveItem` / `Selected` — if component has selection
@@ -22,19 +23,29 @@ For every component under review, verify these story exports exist:
 - `Error` — if component has error state
 
 Each story must have:
-- `parameters.docs.description.story`
+
+- A `play` from `libs/ui/src/storybook/story-tests.ts` on every required canvas (skip `Status` / `!dev` docs figures)
 - Correct `args` (no hardcoded template hacks)
-- `argTypes` for every configurable prop
+- `argTypes` from `.metadata.ts` `props` (`argTypesFromProps`) — no Control missing from that list
+- Docs in the metadata + attached MDX embeds — not `parameters.docs.description`
+
+Run the testing widget in Storybook (Component tests + a11y) or `npm run test-storybook:vitest`. Coverage: `npm run test-storybook:vitest:coverage` (own process). Visuals: `npm run chromatic` with Storybook quit, or `npm run build-storybook && npm run chromatic:from-build`. Do not tick Coverage + Visual tests on a live catalogue. CI gate is still `npm run test-storybook`. Storybook MCP `test-run` is available while the catalogue is up. `docs-show` / `stories-preview` may inspect canvases; they do not replace a test run.
 
 ### 2 — Unit test checklist
+
+Run `npm test` (Vitest via `@angular/build:unit-test`, one worker). `ui` and
+`ishare` use headless Chromium; `plectrum` uses jsdom. Specs use Vitest
+globals (`vi`, `expect`, `it.todo`) — not Jasmine. Use `npm run test:coverage`
+only when you need a report — do not enable coverage on a laptop already
+running Storybook.
 
 For each `{name}.component.spec.ts`, verify coverage:
 
 ```typescript
 describe('{Name}Component', () => {
-  it('should create');                          // renders without error
+  it('should create'); // renders without error
   it('should render correct semantic element'); // e.g. <nav>, <button>
-  it('should apply BEM host class');            // class binding on host
+  it('should apply BEM host class'); // class binding on host
   it('should apply modifier class when input set');
   it('should emit output event when triggered');
   it('should project slot content correctly');
@@ -44,6 +55,7 @@ describe('{Name}Component', () => {
 ### 3 — Accessibility audit
 
 Check every interactive element:
+
 - Focus ring: `--pds-focus-ring-*` tokens, never removed without replacement
 - ARIA: `aria-label` on landmarks, `aria-current="page"` on active nav items,
   `aria-expanded` on toggleable containers, `aria-hidden="true"` on decorative icons
@@ -54,6 +66,7 @@ Check every interactive element:
 ### 4 — Output
 
 Produce a test report:
+
 ```
 TESTER REPORT — {component} — {date}
 Story coverage: PASS / FAIL (list missing stories)

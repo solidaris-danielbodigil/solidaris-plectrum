@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './select.stories';
+
+<Meta of={Stories} />
+
+# Select
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+The placeholder is the action. Nothing is selected until the person chooses.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## When to use
+
+Use Select for one value from a known list of four or more: a mutualité, a country, a status.
+
+- Two or three short options: [SelectButton](?path=/docs/primeng-selectbutton--docs).
+- The person types toward a long list: [AutoComplete](?path=/docs/primeng-autocomplete--docs).
+- Several values: [MultiSelect](https://primeng.org/multiselect). That control is not documented here yet.
+
+Select belongs to the [Forms](?path=/docs/primeng-forms--docs) family and sits inside [Form Field](?path=/docs/custom-components-form-field--docs).
+
+## Variants
+
+**Placeholder.** Do not pre-select a value the person did not choose, unless there is only one sensible default.
+
+<Canvas of={Stories.Default} />
+
+**Filter.** Turn the filter on when the list has more than about ten entries. Always set `appendTo="body"` so the panel is not clipped. `fluid` fills the column. `size="small"` is for a toolbar.
+
+<Canvas of={Stories.Filtered} />
+
+## Content
+
+The placeholder is the action: Choisissez une mutualité. Options are nouns in the language of the screen, in the order the person expects.
+
+## Behavior
+
+Enter or Space opens the list. Arrows move. Enter chooses. Escape closes and returns focus to the field. Typing while the list is open jumps to a match.
+
+## Accessibility
+
+Form Field links the label through `inputId`. The application provides the label, the option text and the placeholder.
+
+<Unstyled>
+  <Story of={Stories.Evidence} />
+</Unstyled>
+
+## Use in an application
+
+The snippet under Default imports `Select` from `primeng/select` and `FormFieldComponent` from `@solidaris/ui`. The same file compiles in the packaging smoke test.
+
+## Related
+
+- [Forms](?path=/docs/primeng-forms--docs) · [InputText](?path=/docs/primeng-inputtext--docs) · [AutoComplete](?path=/docs/primeng-autocomplete--docs) · [Form Field](?path=/docs/custom-components-form-field--docs)
+- Figma: [Select](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=156-5882) · API: [primeng.org/select](https://primeng.org/select)

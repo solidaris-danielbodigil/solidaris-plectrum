@@ -1,6 +1,9 @@
 // Figures for the Introduction landing page (introduction.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
-import { cardsStory, heroStory, stepsStory } from './docs-figure-stories';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
+import type { DocsStep } from '../storybook/docs-figures.types';
+import { DocsAudienceComponent } from '../storybook/docs-audience.component';
+import { calloutStory, heroStory } from './docs-figure-stories';
+import { RELEASE_SUMMARY } from '../storybook/release-state';
 
 const meta: Meta = {
   title: 'Introduction/Figures',
@@ -12,125 +15,111 @@ export default meta;
 
 export const Hero: StoryObj = heroStory({
   title: 'Plectrum Design System',
-  lead: 'The Solidaris design system — one source of truth for every application.',
+  lead: 'Shared components, tokens and layout for every Solidaris application.',
   actions: [
     {
-      label: 'Use Plectrum in an app',
-      path: '/docs/get-started-use-plectrum-in-an-app--docs',
+      label: 'Design with Plectrum',
+      path: '/docs/start-here-design-with-plectrum--docs',
       variant: 'primary',
     },
     {
-      label: 'Contribute',
-      path: '/docs/get-started-contribute--docs',
+      label: 'Build with Plectrum',
+      path: '/docs/get-started-use-plectrum-in-an-app--docs',
       variant: 'secondary',
     },
     {
-      label: 'Browse components',
-      path: '/docs/custom-components-accordion--docs',
+      label: 'Find a component',
+      path: '/docs/start-here-catalogue--docs',
       variant: 'secondary',
     },
   ],
 });
 
-export const Audiences: StoryObj = cardsStory(
-  [
-    {
-      eyebrow: 'Developer',
-      tone: 'app',
-      title: 'Use Plectrum in an application',
-      items: [
-        'Install the published @solidaris/* packages',
-        'Boot the theme with providePlectrum()',
-        'Build screens from PrimeNG + the Core components here',
-      ],
-    },
-    {
-      eyebrow: 'Application team',
-      tone: 'app',
-      title: 'Migrate an application to Plectrum',
-      items: [
-        'Need a variant the system lacks? Propose it to the core team first',
-        'App-specific answers are built in your layer as Candidates, under Patterns/{App}',
-        'Consume --pds-* tokens only; the core team promotes what proves reusable',
-      ],
-    },
-    {
-      eyebrow: 'Contributor',
-      tone: 'system',
-      title: 'Change the design system',
-      items: [
-        'Propose, get the core team’s decision, then scaffold with pds:component',
-        'Tokens in 01-settings, layout via o-flex / o-layout, BEMIT names',
-        'A component ships through a pull request with design-system review and stories for every state',
-      ],
-    },
-    {
-      eyebrow: 'Designer',
-      tone: 'design',
-      title: 'Design against the source',
-      items: [
-        'The Figma UI Kit is the SSOT for visual decisions',
-        'Core designers edit the UI Kit and run the sync; application designers propose through proposals/{app}',
-        'Token changes travel through the reviewed pipeline, never by hand',
-      ],
-    },
-  ],
-  2,
-);
+export const Release: StoryObj = calloutStory({
+  tone: 'info',
+  title: 'Current version',
+  text: RELEASE_SUMMARY,
+});
 
-export const FirstHour: StoryObj = stepsStory([
+const DESIGN_STEPS: readonly DocsStep[] = [
   {
-    who: 'You',
-    tone: 'neutral',
-    title: 'Skim the Foundations',
+    who: 'Design',
+    tone: 'design',
+    title: 'Open the libraries',
     detail:
-      'Colors, Typography, Spacing, Layout — every value on those pages is read live from the compiled stylesheet.',
+      'Enable the Plectrum libraries in Figma: the PrimeNG kit, Foundations, Custom components, and Icons and illustrations.',
     links: [
       {
-        label: 'Colors',
-        path: '/docs/foundations-colors-semantic-common--docs',
-      },
-      { label: 'Typography', path: '/docs/foundations-typography-roles--docs' },
-      { label: 'Spacing', path: '/docs/foundations-spacing--docs' },
-      { label: 'Layout', path: '/docs/foundations-layout--docs' },
-    ],
-  },
-  {
-    who: 'You',
-    tone: 'neutral',
-    title: 'Open a component story',
-    detail:
-      'Each state is a story; the attached Docs page explains usage and links the Figma node. Show code reveals the template.',
-    links: [
-      {
-        label: 'Accordion — a typical component page',
-        path: '/docs/custom-components-accordion--docs',
+        label: 'Design with Plectrum',
+        path: '/docs/start-here-design-with-plectrum--docs',
       },
     ],
   },
   {
-    who: 'You',
+    who: 'Design',
+    tone: 'design',
+    title: 'Pick an approved component',
+    detail:
+      'Start from Find a component. Use the component that already does the job, including its documented variants, error state and narrow layout.',
+    links: [
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+    ],
+  },
+  {
+    who: 'Design',
+    tone: 'design',
+    title: 'Hand off the decision',
+    detail:
+      'Link the Figma frame and the Storybook page. If nothing covers the need, open a proposal. Do not draw a new component on the main kit.',
+  },
+];
+
+const DEV_STEPS: readonly DocsStep[] = [
+  {
+    who: 'Dev',
     tone: 'app',
-    title: 'Follow your path',
+    title: 'Install the packages',
     detail:
-      'Use Plectrum in an app (install and consume) or Contribute (propose, decide, build, ship). Both pages are in Get started.',
+      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
     links: [
       {
-        label: 'Use Plectrum in an app',
+        label: 'Build with Plectrum',
         path: '/docs/get-started-use-plectrum-in-an-app--docs',
       },
-      { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
     ],
   },
   {
-    who: 'You',
-    tone: 'system',
-    title: 'Learn the two contracts',
+    who: 'Dev',
+    tone: 'app',
+    title: 'Render the first field',
     detail:
-      'CSS architecture explains where styles live; Token pipeline explains where values come from.',
+      'Copy the Form Field example. It imports from `@solidaris/ui` and includes the PrimeNG input directive.',
     links: [
-      { label: 'CSS architecture', path: '/docs/docs-css-architecture--docs' },
-      { label: 'Token pipeline', path: '/docs/docs-token-pipeline--docs' },
+      {
+        label: 'Form Field',
+        path: '/docs/custom-components-form-field--docs',
+      },
     ],
   },
-]);
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Find the next piece',
+    detail:
+      'Search by task — error, side panel, no results — then open that page. Find a Token is for colour, type and spacing.',
+    links: [
+      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+      { label: 'Find a Token', path: '/docs/foundations-token-finder--docs' },
+    ],
+  },
+];
+
+export const Audience: StoryObj = {
+  parameters: { chromatic: { disableSnapshot: true }, layout: 'padded' },
+  render: () => ({
+    moduleMetadata: { imports: [DocsAudienceComponent] },
+    props: { designSteps: DESIGN_STEPS, devSteps: DEV_STEPS },
+    template:
+      '<pds-docs-audience [designSteps]="designSteps" [devSteps]="devSteps" />',
+  }),
+};

@@ -1,6 +1,6 @@
-<div class="o-flex o-flex--y o-flex--row@lg o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
-  <p-card class="c-affiliate-search-panel o-flex o-flex__item--shrink-0 o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
-    <form class="o-flex o-flex--y o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
+<div class="o-flex o-flex--y o-flex--row@lg o-layout o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
+  <p-card class="c-affiliate-search-panel o-flex o-flex__item o-flex__item--shrink-0 o-layout o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
+    <form class="o-flex o-flex--y o-layout o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
       <pds-form-field
         label="O.A."
         [required]="true"
@@ -51,8 +51,8 @@
         [invalid]="isFieldInvalid(searchForm, 'identifier')"
         errorMessage="Ce champ est obligatoire."
       >
-        <p-inputgroup class="c-affiliate-search-panel__query o-layout--full-width">
-          <p-iconfield class="c-affiliate-search-panel__query-field o-flex__item--grow-1 o-layout--min-w-0">
+        <p-inputgroup class="c-affiliate-search-panel__query o-layout o-layout--full-width">
+          <p-iconfield class="c-affiliate-search-panel__query-field o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
             <input
               #identifier="ngModel"
               pInputText
@@ -73,7 +73,7 @@
           <button
             pButton
             type="submit"
-            class="c-affiliate-search-panel__query-submit o-flex__item--shrink-0"
+            class="c-affiliate-search-panel__query-submit o-flex__item o-flex__item--shrink-0"
             label="Chercher"
             icon="bi bi-search"
             [disabled]="!searchIdentifier.trim()"
@@ -83,9 +83,9 @@
     </form>
   </p-card>
 
-  <p-card class="o-flex o-flex__item--grow-1 o-layout--full-height o-layout--min-w-0" header="Détails du document">
+  <p-card class="o-flex o-flex__item o-flex__item--grow-1 o-layout o-layout--full-height o-layout--min-w-0" header="Détails du document">
     <pds-empty-state
-      class="o-flex o-flex--col o-flex__item--grow-1"
+      class="o-flex o-flex--col o-flex__item o-flex__item--grow-1"
       title="Aucun résultat pour l'instant"
       description="Lancez une recherche pour afficher le détail du document et les actions disponibles."
     ></pds-empty-state>

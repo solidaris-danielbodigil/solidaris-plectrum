@@ -1,6 +1,6 @@
 // =============================================================================
 // libs/ui/src/foundations/object-class-lists.ts
-// Variant lists for the Flex Grid ArgTypes table.
+// Variant lists for the Flex Grid and Layout ArgTypes tables.
 //
 // Storybook reads `meta.argTypes` at module-evaluation time, before the CSSOM is
 // guaranteed to be parsed, so these lists cannot be derived at render time the
@@ -140,6 +140,53 @@ export const FLEX: Record<string, ClassList> = {
     label: '.o-flex__item--order-{0–12}',
     pattern: /^o-flex__item--order-(\d+)$/,
     values: COLS_0_12,
+  },
+};
+
+export const LAYOUT: Record<string, ClassList> = {
+  dimensions: {
+    label: '.o-layout--{helper}',
+    pattern: /^o-layout--(full-height|full-width|full-dvh|contain-paint|min-h-0|min-w-0)$/,
+    values: [
+      'full-height',
+      'full-width',
+      'full-dvh',
+      'contain-paint',
+      'min-h-0',
+      'min-w-0',
+    ],
+  },
+  display: {
+    label: '.o-layout--{display}',
+    pattern: /^o-layout--(block|inline-block|inline|hidden|grid|inline-flex|contents)$/,
+    declares: ['display'],
+    values: ['block', 'inline-block', 'inline', 'hidden', 'grid', 'inline-flex', 'contents'],
+  },
+  position: {
+    label: '.o-layout--{position}',
+    pattern: /^o-layout--(relative|absolute|fixed|sticky|static)$/,
+    declares: ['position'],
+    values: ['relative', 'absolute', 'fixed', 'sticky', 'static'],
+  },
+  overflow: {
+    label: '.o-layout--overflow-{value}',
+    pattern: /^o-layout--overflow-(hidden|auto|overlay|scroll|unset|visible|initial|inherit)$/,
+    // The `overflow` shorthand enumerates as its `overflow-x` / `overflow-y`
+    // longhands on the CSSOM (rule 10 §5) — same gotcha as `flex-flow`.
+    declares: ['overflow-x', 'overflow-y'],
+    values: ['hidden', 'auto', 'overlay', 'scroll', 'unset', 'visible', 'initial', 'inherit'],
+  },
+  overflowX: {
+    label: '.o-layout--overflow-x-{value}',
+    pattern: /^o-layout--overflow-x-(hidden|auto|overlay|scroll|unset|visible|initial|inherit)$/,
+    declares: ['overflow-x'],
+    values: ['hidden', 'auto', 'overlay', 'scroll', 'unset', 'visible', 'initial', 'inherit'],
+  },
+  overflowY: {
+    label: '.o-layout--overflow-y-{value}',
+    pattern: /^o-layout--overflow-y-(hidden|auto|overlay|scroll|unset|visible|initial|inherit)$/,
+    declares: ['overflow-y'],
+    values: ['hidden', 'auto', 'overlay', 'scroll', 'unset', 'visible', 'initial', 'inherit'],
   },
 };
 

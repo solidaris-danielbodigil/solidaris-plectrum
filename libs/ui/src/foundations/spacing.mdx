@@ -1,36 +1,53 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './spacing.stories';
+import * as PageExample from './page-example.stories';
 
 <Meta of={Stories} />
 
 # Spacing
 
-Code-owned 8-point scale derived from `--pds-base-unit` (`1rem = 14px`). Each step is a multiple of half the base unit. Each bar below is drawn at the real token width, so the steps are comparable at a glance.
+## Choose a space
 
-In templates you almost never write `var(--pds-spacing-2)` — you write `o-layout--gap-2` or `o-layout--padding-3`. The variable is for component tokens in `01-settings`. See [Foundations / Layout](?path=/docs/foundations-layout--docs#spacing) for the object-class surface.
+Use the classes, not a custom margin.
 
-## How to use
+- Inside a control (icon and label): a half step, `o-layout--gap-0-5` or `o-layout--gap-1`.
+- Related items in one group (fields in a form, actions in a toolbar): `o-layout--gap-2`.
+- Unrelated blocks on a page (a filter and the results): `o-layout--gap-4` or `o-layout--gap-5`.
+- Page gutter: `o-layout--padding-3` on small screens, `o-layout--padding-4` from `md` up.
 
-1. Express layout and spacing as object-class BEM mixes in the template: `o-layout--gap-2`, `o-layout--padding-3`.
-2. Reach for `var(--pds-spacing-…)` in SCSS only when the value belongs to a component token in `01-settings`.
-3. Never invent an intermediate step. `0-75` is the one non-8pt exception, for icon + label gaps.
+The live bars show the size. The root type size is 14px. A missing step is a proposal — application teams do not add spacing tokens.
 
-## When to reach for it
+Scale from `--pds-base-unit` (`1rem = 14px`). The step unit is `--pds-spacing-unit` — half the base unit. Whole-number stops are that many units: `spacing-1` is one unit, `spacing-2` is two. Each bar below is the live token width.
 
-- Gaps, padding and margins on the global scale — via `o-layout--*` in the template.
-- A component token in `01-settings` that composes the scale, e.g. `calc(var(--pds-spacing-2) + var(--pds-spacing-0-5))`.
+In templates write `o-layout o-layout--gap-2` or `o-layout o-layout--padding-3`. Use `var(--pds-spacing-*)` only when the design-system team defines a component token. See [Layout](?path=/docs/foundations-layout--docs#spacing) for the class surface.
 
-Do not write raw `px` or `rem` padding in `06-components`. Do not declare `display: flex; gap: …` in component SCSS when `o-flex` + `o-layout--gap-*` does it.
+## One page, all decisions
+
+Related lines inside the card use gap-2. The title and the card use gap-4. Padding grows at md. The anatomy figure marks those parts.
+
+<Unstyled>
+  <Story of={PageExample.SpacingAnatomy} />
+</Unstyled>
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Examples
 
 ```html
 <!-- template — spacing lives on object classes, not in component SCSS -->
-<div class="c-card o-flex o-flex--col o-layout--gap-2 o-layout--padding-3">
+<div class="c-card o-flex o-flex--col o-layout o-layout--gap-2 o-layout--padding-3">
   …
 </div>
 ```
 
-Declared in `_settings.spacing.scss`. Classes: `.o-layout--{gap|padding|margin}-{step}`. Click a step to copy it. `auto` is for margin centring.
+Below one unit the scale has three fractional stops — `0-25`, `0-5` and `0-75` (0.25, 0.5 and 0.75 of a unit) — and `1-5` between one and two. A class suffix writes the decimal as a dash: `1-5` is 1.5 units. `0-75` exists for icon + label gaps; the others for hairline offsets and control padding. `auto` is for margin centring only — `gap` and `padding` do not accept it, so the [Playground](?path=/story/foundations-spacing--playground) never offers it there.
+
+Declared in `_settings.spacing.scss`. Classes: `.o-layout--{gap|padding|margin}-{step}`. Click a step to copy it.
 
 <Unstyled>
-  <Canvas of={Stories.Scale} sourceState="none" />
+  <Story of={Stories.Scale} />
 </Unstyled>

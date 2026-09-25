@@ -1,12 +1,12 @@
+import type { Mock } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { CopyableTextComponent } from './copyable-text.component';
 
 function mockClipboard(
-  writeText: jasmine.Spy = jasmine
-    .createSpy('writeText')
-    .and.returnValue(Promise.resolve()),
-): jasmine.Spy {
+  writeText: Mock = vi.fn().mockReturnValue(Promise.resolve()),
+): Mock {
   Object.defineProperty(navigator, 'clipboard', {
     configurable: true,
     value: { writeText },
@@ -19,6 +19,7 @@ describe('CopyableTextComponent', () => {
   let component: CopyableTextComponent;
 
   beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
     await TestBed.configureTestingModule({
       imports: [CopyableTextComponent],
     }).compileComponents();
@@ -37,7 +38,7 @@ describe('CopyableTextComponent', () => {
       '.c-copyable-text__icon .c-icon__svg',
     );
 
-    expect(icon).withContext('copy-content-LEGACY SVG').not.toBeNull();
+    expect(icon, 'copy-content-LEGACY SVG').not.toBeNull();
   });
 
   it('should render label and value', () => {
@@ -70,7 +71,7 @@ describe('CopyableTextComponent', () => {
 
   it('should copy the value and emit copied on click', async () => {
     const writeText = mockClipboard();
-    const onCopied = jasmine.createSpy('copied');
+    const onCopied = vi.fn();
     component.copied.subscribe(onCopied);
 
     const button = fixture.nativeElement.querySelector(
@@ -79,15 +80,16 @@ describe('CopyableTextComponent', () => {
     button.click();
     await fixture.whenStable();
 
-    expect(writeText).toHaveBeenCalledOnceWith('319');
-    expect(onCopied).toHaveBeenCalledOnceWith('319');
+    expect(writeText).toHaveBeenCalledTimes(1);
+
+    expect(writeText).toHaveBeenCalledWith('319');
+    expect(onCopied).toHaveBeenCalledTimes(1);
+    expect(onCopied).toHaveBeenCalledWith('319');
   });
 
   it('should not emit copied when clipboard write fails', async () => {
-    mockClipboard(
-      jasmine.createSpy('writeText').and.returnValue(Promise.reject(new Error('denied'))),
-    );
-    const onCopied = jasmine.createSpy('copied');
+    mockClipboard(vi.fn().mockReturnValue(Promise.reject(new Error('denied'))));
+    const onCopied = vi.fn();
     component.copied.subscribe(onCopied);
 
     const button = fixture.nativeElement.querySelector(
@@ -101,7 +103,7 @@ describe('CopyableTextComponent', () => {
 
   it('should not copy when disabled', async () => {
     const writeText = mockClipboard();
-    const onCopied = jasmine.createSpy('copied');
+    const onCopied = vi.fn();
     component.copied.subscribe(onCopied);
     fixture.componentRef.setInput('disabled', true);
     fixture.detectChanges();
@@ -114,5 +116,31 @@ describe('CopyableTextComponent', () => {
 
     expect(writeText).not.toHaveBeenCalled();
     expect(onCopied).not.toHaveBeenCalled();
+  });
+});
+
+describe('CopyableTextComponent (nl)', () => {
+  let fixture: ComponentFixture<CopyableTextComponent>;
+
+  beforeEach(async () => {
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
+    await TestBed.configureTestingModule({
+      imports: [CopyableTextComponent],
+      providers: providePdsLocale('nl'),
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CopyableTextComponent);
+    fixture.componentRef.setInput('label', 'Territoire');
+    fixture.componentRef.setInput('value', '319');
+    registerPlectrumIcons(TestBed.inject(IconRegistry));
+    fixture.detectChanges();
+  });
+
+  it('should set the Dutch copy aria-label', () => {
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-label')).toBe('Territoire kopiëren');
   });
 });

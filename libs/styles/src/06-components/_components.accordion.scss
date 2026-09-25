@@ -21,7 +21,6 @@
       color: var(--#{$pds-prefix}-color-text-muted);
     }
   }
-
   // Panel radii adapt to sibling-count() — stacked bordered accordion.
   .p-accordionpanel {
     overflow: hidden;

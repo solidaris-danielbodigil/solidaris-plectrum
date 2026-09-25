@@ -7,19 +7,57 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
+  intake-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Keep external candidate intake data-only
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          mapfile -t changed < <(git diff --name-only "$BASE_SHA" HEAD)
+          intake=0
+          adoption=0
+          for file in "${changed[@]}"; do
+            if [[ "$file" == .ai/candidates/submissions/* ]]; then intake=1; fi
+            if [[ "$file" == .ai/adoption/* ]]; then adoption=1; fi
+          done
+          if [[ "$intake" == 1 ]]; then
+            if [[ "${#changed[@]}" != 1 || ! "${changed[0]}" =~ ^\.ai/candidates/submissions/[a-z][a-z0-9-]*\.json$ ]]; then
+              echo 'Candidate intake PRs may change exactly one submission JSON file.' >&2
+              exit 1
+            fi
+          fi
+          if [[ "$adoption" == 1 ]]; then
+            if [[ "${#changed[@]}" != 1 || ! "${changed[0]}" =~ ^\.ai/adoption/[a-z][a-z0-9-]*\.json$ ]]; then
+              echo 'Adoption report PRs may change exactly one application JSON file.' >&2
+              exit 1
+            fi
+          fi
+
   build:
+    needs: intake-guard
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -38,14 +76,46 @@ jobs:
       - name: Rebuild generated tokens (must be committed)
         run: npm run tokens:build && git diff --exit-code -- libs/styles/src/01-settings/*.generated.scss libs/ui/src/storybook/tokens.generated.ts
 
+      - name: Rebuild token proposal (must be committed)
+        run: npm run tokens:propose:test && npm run tokens:propose && git diff --exit-code -- tools/tokens/proposed.dtcg.json
+
+      - name: Rebuild changelog feed (must be committed)
+        run: npm run changelog:build && git diff --exit-code -- libs/ui/src/storybook/changelog.generated.ts
+
       - name: Lint token usage
         run: npm run tokens:lint
 
+      - name: Lint layout properties in component SCSS
+        run: npm run lint:styles:test && npm run lint:styles
+
       - name: Rebuild contracts index (must be committed)
-        run: npm run generate-index && git diff --exit-code -- .ai/contracts/index.json
+        run: npm run contracts:generate -- --check && npm run devkit:check && npm run devkit:test && npm run test:pipelines
+
+      - name: Validate central candidate intake and promotion
+        run: npm run candidate:check && npm run adoption:check
+
+      - name: Validate adoption reports against the PR base
+        if: github.event_name == 'pull_request'
+        run: npm run adoption:check -- --base ${{ github.event.pull_request.base.sha }}
+
+      - name: Validate candidate lifecycle against the PR base
+        if: github.event_name == 'pull_request'
+        run: npm run candidate:check -- --base ${{ github.event.pull_request.base.sha }}
+
+      - name: Component docs read their metadata (no hand-written copies)
+        run: npm run docs:check
+
+      - name: Metadata props match Angular inputs
+        run: npm run contracts:check
 
       - name: Build applications
         run: npm run build
+
+      - name: Build iGED
+        run: npx ng build iged --configuration=production
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Run tests
         run: npm run test:coverage
@@ -54,16 +124,17 @@ jobs:
       # Storybook is built and smoke-tested in the storybook-tests job.
 
   pack-smoke:
+    needs: intake-guard
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -73,15 +144,16 @@ jobs:
         run: npm run pack:smoke
 
   storybook-tests:
+    needs: intake-guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -91,26 +163,33 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: npm run build-storybook:coverage
+
+      - name: Verify toolkit catalogue documentation routes
+        run: npm run contracts:docs-check
 
       - name: Run story smoke, interaction, a11y and coverage tests
         run: npm run test-storybook:ci
 
+      - name: Cross-page navigation under the Pages sub-path
+        run: npm run test-storybook:nav
+
   chromatic:
+    needs: intake-guard
     name: visual-tests
     runs-on: ubuntu-latest
     # Requires CHROMATIC_PROJECT_TOKEN (Chromatic project → Manage → Project token).
     if: ${{ vars.CHROMATIC_ENABLED == 'true' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -121,19 +200,20 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: build-storybook
-          exitZeroOnChanges: true
+          exitZeroOnChanges: false
           zip: true
 
   storybook-packed:
+    needs: intake-guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -144,3 +224,26 @@ jobs:
 
       - name: Build Storybook against packed tarballs
         run: npm run build-storybook:packed
+
+  figma-plugin:
+    needs: intake-guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - name: Typecheck, test and build
+        run: |
+          npm run figma-plugin:typecheck
+          npm run figma-plugin:test
+          npm run figma-plugin:build
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plectrum-figma-plugin
+          path: |
+            tools/figma-plugin/manifest.json
+            tools/figma-plugin/dist/

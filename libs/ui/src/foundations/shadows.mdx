@@ -1,4 +1,4 @@
-import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Stories from './shadows.stories';
 
@@ -8,19 +8,17 @@ import * as Stories from './shadows.stories';
 
 Elevation only. Focus rings and status outlines are a separate category. Overlay shadows are generated from the Figma overlay tokens.
 
-Pick by the role of the surface, not by how strong the shadow looks — that keeps a popover and a select panel consistent across every app. Resting card elevation utilities live on [Foundations / Elevation](?path=/docs/foundations-elevation--docs).
+Shadows is the token list. [Elevation](?path=/docs/foundations-elevation--docs) is the class.
 
-## How to use
+Pick the shadow for the surface (card, panel, drawer), not the one that looks darkest. That keeps a popover and a select panel consistent across every app.
 
-1. Match the shadow to the surface role: select panels, popovers, modals and navigation each have one.
-2. Use `u-shadow-*` for demos; point a component token at the stop in `01-settings` for real components.
+## Usage
 
-## When to reach for it
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
 
-- An overlay token for anything that floats above the page.
-- `--pds-shadow-sm` / `md` for resting card and panel chrome.
-
-Do not compose your own `box-shadow` offsets in `06-components`. Do not use elevation to signal focus — use the [Focus](?path=/docs/foundations-focus--docs) tokens.
+## Examples
 
 ```scss
 // 01-settings/_settings.drawer.scss
@@ -28,6 +26,11 @@ Do not compose your own `box-shadow` offsets in `06-components`. Do not use elev
   --pds-shadow-drawer: var(--pds-shadow-overlay-navigation);
 }
 ```
+
+## How to use
+
+1. Match the shadow to the surface role: select panels, popovers, modals and navigation each have one.
+2. Use `u-shadow-*` for demos; point a component token at the stop in `01-settings` for real components.
 
 Declared in `_settings.shadows.generated.scss` and `_settings.shadows.scss`. Classes: `.u-shadow-{stop}`.
 
@@ -41,5 +44,5 @@ Declared in `_settings.shadows.generated.scss` and `_settings.shadows.scss`. Cla
 />
 
 <Unstyled>
-  <Canvas of={Stories.Overlay} sourceState="none" />
+  <Story of={Stories.Overlay} />
 </Unstyled>

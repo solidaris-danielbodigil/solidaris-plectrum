@@ -21,6 +21,8 @@ export type SyncCheckStatus =
 
 export type SyncResult = 'promote' | 'blocked' | 'preview';
 
+export type SyncStage = 'proposed' | 'blocked' | 'merged' | 'released';
+
 export interface SyncCheck {
   id: string;
   name: string;
@@ -65,6 +67,8 @@ export interface SyncReport {
   outcomes: Readonly<Record<string, string>>;
   diff: SyncDiff;
   checks: readonly SyncCheck[];
+  /** proposed while the promotion PR is open; blocked when no PR is opened; merged on main; released only after package publication. */
+  stage?: SyncStage;
   result: SyncResult;
   resultText: string;
 }
@@ -128,8 +132,36 @@ export interface SyncOutcome {
 
 /** Message the page shows for the recorded result, phrased for `main`. */
 export function syncOutcome(
-  report: Pick<SyncReport, 'result' | 'generatedAt'>,
+  report: Pick<SyncReport, 'result' | 'generatedAt' | 'stage'>,
 ): SyncOutcome {
+  if (report.stage === 'blocked') {
+    return {
+      tone: 'error',
+      title: 'Blocked',
+      text: 'A check failed, so this sync was not promoted. The Actions artifact token-sync-report keeps the report when no pull request is opened.',
+    };
+  }
+  if (report.stage === 'proposed') {
+    return {
+      tone: 'info',
+      title: 'Proposed',
+      text: `Recorded ${formatSyncDate(report.generatedAt)}. This is the promotion pull request. Merging it updates main and does not publish packages.`,
+    };
+  }
+  if (report.stage === 'merged') {
+    return {
+      tone: 'success',
+      title: 'Merged',
+      text: `Synced ${formatSyncDate(report.generatedAt)}. The tokens are on main. Packages are not published.`,
+    };
+  }
+  if (report.stage === 'released') {
+    return {
+      tone: 'success',
+      title: 'Released',
+      text: `Synced ${formatSyncDate(report.generatedAt)}. The packages that contain these tokens were published.`,
+    };
+  }
   switch (report.result) {
     case 'promote':
       return {

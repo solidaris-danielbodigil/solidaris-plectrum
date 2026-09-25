@@ -1,4 +1,4 @@
-import { Meta, Canvas, Controls, ArgTypes, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './copyable-text.stories';
 
 <Meta of={Stories} />
@@ -9,36 +9,34 @@ import * as Stories from './copyable-text.stories';
   <Story of={Stories.Status} />
 </Unstyled>
 
-Reusable copy-to-clipboard chip for identifier buttons and similar metadata.
-
-## When to use
-
-- Stable identifiers users copy often (Territoire, NISS, NSI, dossier numbers)
-- Any `label + value` pair where the value must land on the clipboard in one click
-
-## Clipboard behaviour
-
-- Writes `value` via the async Clipboard API when available
-- Falls back to a temporary textarea + `document.execCommand('copy')` in older or non-secure contexts
-- Emits `(copied)` with the copied string after a successful write — use for toasts or analytics only
-- These canvases listen to `(copied)` and show a confirmation toast on the Storybook preview frame (`Copié !`) — the chip itself does not own toast UI
-
-## Accessibility
-
-- Renders a PrimeNG text button with `aria-label` defaulting to `Copier {label}`
-- Override with `ariaLabel` when the visible label is insufficient
-- Bullet separators between chips must use `aria-hidden="true"`
-
 ## Default
 
-Single identifier chip. Click it to copy the value — a confirmation toast appears after a successful write.
+Single identifier chip. These canvases listen to `(copied)` for the preview toast.
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
 
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Patterns
+
+<Unstyled>
+  <Story of={Stories.Patterns} />
+</Unstyled>
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
+
 ## Identifier row
 
-Multiple identifiers in a row with bullet separators — same layout as the affiliate overview card. Each chip shows the copy toast.
+Multiple identifiers in a row with bullet separators — same layout as the profile overview card. Each chip shows the copy toast.
 
 <Canvas of={Stories.IdentifierRow} />
 
@@ -54,6 +52,20 @@ Chip is not interactive and does not write to the clipboard.
 
 <Canvas of={Stories.Disabled} />
 
-## API
+## Composition
 
-<ArgTypes of={Stories} />
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>

@@ -3,11 +3,10 @@
 // Barrel — forwards all trump-layer styles.
 //
 // Trumps sit at the top of the ITCSS cascade.
-// Only context-scoped overrides belong here — nothing that belongs to a
-// lower layer, and nothing that affects production app styles directly.
+// Use this layer for global overrides that must win over components / PrimeNG
+// (e.g. disabled cursor). Storybook-only files stay here too.
 // =============================================================================
 
-// Storybook-only demo wrapper (`.sb-demo-wrapper`) — safe to forward here
-// because the class is never used in app templates.
+@forward 'trumps.disabled';
 @forward 'trumps.storybook';
 @forward 'trumps.storybook-toast';

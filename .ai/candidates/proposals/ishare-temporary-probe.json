@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "ishare-temporary-probe",
+  "componentId": "ishare:temporary-probe",
+  "team": "ishare",
+  "application": "ishare",
+  "issueUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/12",
+  "decision": "approved-candidate",
+  "owner": "ishare",
+  "decidedBy": "@solidaris-danielbodigil",
+  "decidedAt": "2026-09-25T08:28:11.403Z",
+  "decisionUrl": "https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/12",
+  "note": "Temporary intake probe. Not a real component. Withdraw after the catalogue listing is verified."
+}

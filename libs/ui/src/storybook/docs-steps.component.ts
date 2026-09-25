@@ -39,7 +39,7 @@ interface StepEvent extends DocsStep {
   templateUrl: './docs-steps.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-steps' },
+  host: { class: 'c-docs-steps o-layout o-layout--block o-layout--margin-block-3' },
 })
 export class DocsStepsComponent {
   readonly steps = input.required<readonly DocsStep[]>();
@@ -51,4 +51,13 @@ export class DocsStepsComponent {
       severity: toneSeverity(step.tone),
     })),
   );
+
+  /** Backticks in `detail` render as code. The rest stays text. */
+  protected detailParts(detail: string): readonly { text: string; code: boolean }[] {
+    return detail.split(/(`[^`]+`)/g).filter(Boolean).map((part) =>
+      part.startsWith('`') && part.endsWith('`')
+        ? { text: part.slice(1, -1), code: true }
+        : { text: part, code: false },
+    );
+  }
 }

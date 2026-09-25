@@ -1,5 +1,5 @@
 // Figures for Docs/Token pipeline/CSS-first surface (token-pipeline-css-first.mdx). Hidden from the sidebar.
-import type { Meta, StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 
 const meta: Meta = {
@@ -35,5 +35,5 @@ export const AddingAToken: StoryObj = stepsStory([
 export const DarkMode: StoryObj = calloutStory({
   tone: 'warning',
   title: 'Dark mode is out of scope',
-  text: 'v1 defines colorScheme.light only. With a dark scheme, aliased --p-* would switch and generated literals would not. Either keep dark mode out of scope or emit a .dark block next to the generated colours. Hybrid colours are not theme-aware.',
+  text: 'The theme defines a light colour scheme only. Some colours stay on the Figma fallback, so they will not change in dark mode. Adding dark mode means emitting a dark block next to the generated colours first.',
 });

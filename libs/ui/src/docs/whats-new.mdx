@@ -1,0 +1,26 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Figures from './whats-new.stories';
+
+<Meta title="Docs/What's new" />
+
+# What's new
+
+What changed in each package version. **Released** is the version in the repository. It is not the same thing as “available from npm” — publish stays off until registry access exists. Install steps: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
+
+Generated from the pending changesets and the package changelogs by `npm run changelog:build`. Do not edit the generated file by hand. Major is breaking, minor is a feature, patch is a fix. Process: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs).
+
+## Unreleased
+
+Pending changesets on `main`. The three packages version together, so the header shows the bump the next version PR applies to each of them.
+
+<Unstyled>
+  <Story of={Figures.Unreleased} />
+</Unstyled>
+
+## Released
+
+Published versions, newest first. A change shared by several packages appears once.
+
+<Unstyled>
+  <Story of={Figures.Released} />
+</Unstyled>
