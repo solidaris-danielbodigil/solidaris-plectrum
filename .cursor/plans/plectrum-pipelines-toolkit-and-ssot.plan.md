@@ -19,7 +19,7 @@ todos:
     status: in_progress
   - id: p5-figma-inbound
     content: "P5: validate and promote the final Figma token/theme state with all generated artifacts and release intent"
-    status: pending
+    status: in_progress
   - id: p6-figma-outbound
     content: "P6: complete attended candidate/token promotion into Figma and record the return export"
     status: pending
@@ -391,6 +391,10 @@ PR #10 does not publish packages. GitHub held its CI for approval because `githu
 - Existing review enforcement question: `.ai/questions/2026-09-06-core-team-intake-and-codeowners.md`.
 - Existing generated-file gates: `tools/scripts/check-commit.mjs` and `.github/workflows/ci.yml`.
 - GitHub automation event behavior: https://docs.github.com/en/enterprise-cloud%40latest/actions/concepts/security/github_token — verify when implementing bot-created PRs and deployment sequencing.
+
+## P5 progress — 2026-09-25
+
+Staging must carry exporter source and provenance before promotion. The promotion commit is rebuilt from `main` and keeps `extend.ts`. The incoming theme is assembled before preset validation, so a bad new theme fails even when the previous preset was valid. Generated SCSS, the token manifest and `proposed.dtcg.json` are rebuilt and checked for a clean second run. A live Figma export with provenance is still required. P6 still needs a designer session, and P7 still needs registry credentials.
 
 ## Restore main review
 
