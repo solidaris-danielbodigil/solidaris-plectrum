@@ -102,6 +102,7 @@
     "@angular/build": "^21.2.14",
     "@angular/cli": "^21.2.14",
     "@angular/compiler-cli": "^21.2.16",
+    "@emnapi/runtime": "1.11.3",
     "@changesets/cli": "^2.29.8",
     "@chromatic-com/storybook": "^5.3.1",
     "@figma/plugin-typings": "^1.138.0",
