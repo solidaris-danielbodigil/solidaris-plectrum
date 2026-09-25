@@ -55,8 +55,17 @@ jobs:
         run: |
           npm run tokens:build
           npm run tokens:propose
+          snap="$RUNNER_TEMP/token-build"
+          rm -rf "$snap"
+          mkdir -p "$snap/libs/styles/src/01-settings" "$snap/libs/ui/src/storybook" "$snap/tools/tokens"
+          cp -a libs/styles/src/01-settings/. "$snap/libs/styles/src/01-settings/"
+          cp -a libs/ui/src/storybook/tokens.generated.ts "$snap/libs/ui/src/storybook/tokens.generated.ts"
+          cp -a tools/tokens/proposed.dtcg.json "$snap/tools/tokens/proposed.dtcg.json"
           npm run tokens:build
-          git diff --exit-code -- libs/styles/src/01-settings libs/ui/src/storybook/tokens.generated.ts tools/tokens/proposed.dtcg.json
+          npm run tokens:propose
+          git diff --no-index --exit-code "$snap/libs/styles/src/01-settings" libs/styles/src/01-settings
+          git diff --no-index --exit-code "$snap/libs/ui/src/storybook/tokens.generated.ts" libs/ui/src/storybook/tokens.generated.ts
+          git diff --no-index --exit-code "$snap/tools/tokens/proposed.dtcg.json" tools/tokens/proposed.dtcg.json
 
       # Blocks the promotion PR. Compares the new dump with the preset and the SCSS just rebuilt.
       - name: Drift audit
