@@ -1,6 +1,6 @@
 {
   "name": "@solidaris/plectrum",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Plectrum PrimeNG presets and providePlectrum()",
   "peerDependencies": {
     "@angular/core": "^21.0.0",
