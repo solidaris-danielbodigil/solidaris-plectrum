@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const IconMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:icon',
     name: 'Icon',
     category: 'atoms',
     description:
@@ -17,6 +18,7 @@ export const IconMetadata: ComponentMetadata = {
     created: '2026-05-20',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'IconComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "contexts": {
+    "plectrum": {
+      "root": "Plectrum checkout",
+      "componentRoot": "libs/ui/src/lib",
+      "stylesRoot": "libs/styles/src/06-components",
+      "contracts": ".ai/contracts"
+    },
+    "consumer": {
+      "root": "Application checkout",
+      "componentRoot": "src/plectrum-candidates",
+      "stylesRoot": "src/styles/plectrum-candidates",
+      "contracts": ".plectrum",
+      "rule": "Never edit node_modules or assume libs/ui exists."
+    }
+  },
+  "commands": {
+    "scaffold": {
+      "context": "plectrum",
+      "command": "npm run pds:component -- --name=<name> --owner=<team>",
+      "available": true
+    },
+    "generate": {
+      "context": "plectrum",
+      "command": "npm run contracts:generate",
+      "available": true
+    },
+    "check": {
+      "context": "plectrum",
+      "command": "npm run contracts:check",
+      "available": true
+    },
+    "docs": {
+      "context": "plectrum",
+      "command": "npm run docs:check",
+      "available": true
+    },
+    "test": {
+      "context": "plectrum",
+      "command": "npm run test:pipelines",
+      "available": true
+    },
+    "pack": {
+      "context": "plectrum",
+      "command": "npm run pack:smoke",
+      "available": true
+    },
+    "consumerInit": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum init --team <id> --application <id> --repository <url>",
+      "available": true
+    },
+    "consumerUpdate": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum update",
+      "available": true
+    },
+    "consumerCheck": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum check --profile ci",
+      "available": true
+    },
+    "consumerScaffold": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum scaffold --name <slug> --proposal <application>-<slug>",
+      "available": true
+    },
+    "candidateExport": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum candidate-export --name <slug>",
+      "available": true,
+      "scope": "local-draft"
+    },
+    "candidateSubmit": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url>",
+      "available": true
+    },
+    "candidateWithdraw": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum candidate-withdraw --id <application>-<slug> --reason <text>",
+      "available": true
+    },
+    "adoptionReport": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum adoption-report",
+      "available": true,
+      "scope": "local-draft"
+    },
+    "tokensBuild": {
+      "context": "plectrum",
+      "command": "npm run tokens:build",
+      "available": true
+    },
+    "tokensAudit": {
+      "context": "plectrum",
+      "command": "npm run tokens:audit",
+      "available": true
+    },
+    "tokensPropose": {
+      "context": "plectrum",
+      "command": "npm run tokens:propose",
+      "available": true
+    }
+  },
+  "checkProfiles": {
+    "component": [
+      "generate",
+      "check",
+      "docs",
+      "test"
+    ],
+    "release": [
+      "generate",
+      "check",
+      "docs",
+      "test",
+      "pack"
+    ],
+    "tokens": [
+      "tokensBuild",
+      "tokensAudit",
+      "tokensPropose"
+    ],
+    "consumerCi": {
+      "commands": ["consumerCheck"],
+      "strictTokens": true,
+      "requireSourceScan": true,
+      "requireInstalledPackages": true,
+      "requireManagedAdapters": true,
+      "requireCandidateStoriesAndEvidence": true
+    }
+  },
+  "steps": [
+    {
+      "id": "discover",
+      "journey": "contribution",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "installed-version"
+      ],
+      "inputs": [
+        "installed contract snapshot",
+        "PrimeNG catalogue",
+        "Figma design"
+      ],
+      "outputs": [
+        "gap proposal"
+      ],
+      "commands": []
+    },
+    {
+      "id": "approve",
+      "journey": "contribution",
+      "owner": "core",
+      "repository": "plectrum",
+      "prerequisites": [
+        "gap proposal"
+      ],
+      "inputs": [
+        "proposal"
+      ],
+      "outputs": [
+        "recorded decision and owner"
+      ],
+      "commands": []
+    },
+    {
+      "id": "implement",
+      "journey": "contribution",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "approved proposal",
+        "compatible toolkit"
+      ],
+      "inputs": [
+        "process contract"
+      ],
+      "outputs": [
+        "local candidate",
+        "stories",
+        "metadata",
+        "evidence"
+      ],
+      "commands": [
+        "consumerInit",
+        "consumerScaffold",
+        "consumerCheck"
+      ]
+    },
+    {
+      "id": "submit",
+      "journey": "contribution",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "checks passed"
+      ],
+      "inputs": [
+        "candidate JSON",
+        "source revision"
+      ],
+      "outputs": [
+        "reviewed intake PR"
+      ],
+      "commands": [
+        "candidateSubmit",
+        "candidateWithdraw"
+      ]
+    },
+    {
+      "id": "integrate",
+      "journey": "contribution",
+      "owner": "core",
+      "repository": "plectrum",
+      "prerequisites": [
+        "accepted candidate"
+      ],
+      "inputs": [
+        "reviewed source"
+      ],
+      "outputs": [
+        "core metadata",
+        "package exports",
+        "changeset"
+      ],
+      "commands": [
+        "generate",
+        "check",
+        "docs",
+        "test"
+      ]
+    },
+    {
+      "id": "design-return",
+      "journey": "contribution",
+      "owner": "designer",
+      "repository": "plectrum",
+      "prerequisites": [
+        "accepted implementation"
+      ],
+      "inputs": [
+        "source revision",
+        "token proposal"
+      ],
+      "outputs": [
+        "Figma review",
+        "library publication",
+        "return export"
+      ],
+      "commands": [
+        "tokensPropose"
+      ]
+    },
+    {
+      "id": "export-design",
+      "journey": "design",
+      "owner": "designer",
+      "repository": "plectrum",
+      "prerequisites": [
+        "approved design"
+      ],
+      "inputs": [
+        "Figma revision"
+      ],
+      "outputs": [
+        "staging export"
+      ],
+      "commands": []
+    },
+    {
+      "id": "validate-design",
+      "journey": "design",
+      "owner": "core",
+      "repository": "plectrum",
+      "prerequisites": [
+        "staging export"
+      ],
+      "inputs": [
+        "complete token/theme state"
+      ],
+      "outputs": [
+        "reviewed promotion PR",
+        "changeset"
+      ],
+      "commands": [
+        "tokensBuild",
+        "tokensAudit",
+        "tokensPropose"
+      ]
+    },
+    {
+      "id": "release",
+      "journey": "both",
+      "owner": "release",
+      "repository": "plectrum",
+      "prerequisites": [
+        "CI passed",
+        "review approved"
+      ],
+      "inputs": [
+        "exact source revision"
+      ],
+      "outputs": [
+        "packages",
+        "contract snapshot",
+        "versioned docs",
+        "release manifest"
+      ],
+      "commands": [
+        "pack"
+      ]
+    },
+    {
+      "id": "adopt",
+      "journey": "both",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "published release"
+      ],
+      "inputs": [
+        "compatible packages and toolkit"
+      ],
+      "outputs": [
+        "validated adoption JSON"
+      ],
+      "commands": [
+        "adoptionReport"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "from": "proposed",
+      "to": "approved",
+      "role": "core",
+      "evidence": [
+        "proposal-review"
+      ]
+    },
+    {
+      "from": "approved",
+      "to": "implemented",
+      "role": "team",
+      "evidence": [
+        "source",
+        "preview",
+        "checks"
+      ]
+    },
+    {
+      "from": "implemented",
+      "to": "submitted",
+      "role": "team",
+      "evidence": [
+        "submission"
+      ]
+    },
+    {
+      "from": "submitted",
+      "to": "accepted",
+      "role": "core",
+      "evidence": [
+        "code-review",
+        "design-review"
+      ]
+    },
+    {
+      "from": "accepted",
+      "to": "figma-reviewed",
+      "role": "designer",
+      "evidence": [
+        "figma-publication",
+        "return-export"
+      ]
+    },
+    {
+      "from": "figma-reviewed",
+      "to": "released",
+      "role": "release",
+      "evidence": [
+        "release-manifest",
+        "return-checks"
+      ]
+    },
+    {
+      "from": "proposed",
+      "to": "rejected",
+      "role": "core",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "from": "submitted",
+      "to": "rejected",
+      "role": "core",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "from": "proposed",
+      "to": "withdrawn",
+      "role": "team",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "from": "approved",
+      "to": "withdrawn",
+      "role": "team",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "from": "implemented",
+      "to": "withdrawn",
+      "role": "team",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "from": "submitted",
+      "to": "withdrawn",
+      "role": "team",
+      "evidence": [
+        "decision"
+      ]
+    }
+  ]
+}

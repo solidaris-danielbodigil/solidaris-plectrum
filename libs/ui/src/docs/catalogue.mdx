@@ -7,9 +7,16 @@ import * as Figures from './catalogue.stories';
 
 One list for PrimeNG controls, Angular components and CSS shells. Search by the task, not by which folder the code lives in. `error` finds Form Field. `side panel` finds Drawer.
 
-Scope is who may reuse it. Core is for every application. App example is one product’s screen — read it, do not import it into another app.
+Scope is who may reuse it. Core is for every application. Candidate belongs to one team and links to that team's preview; App-specific is one product's component — read it, do not import it into another app.
 
-The list is generated. Plectrum rows come from each component’s `.metadata.ts` (the description is the summary). PrimeNG rows come from `plectrum-figma.ts`. **Used in** is scanned from the application source when the index is regenerated — it is not written into `.metadata.ts`. A new component appears when its metadata file is added. A new PrimeNG control appears when its Figma key is added. Status and owner stay on each component page.
+The row count comes from current sources; it is not a copy of `.ai/contracts/index.json` or a count of controls every app already uses.
+
+- A central Plectrum row comes from a colocated `.metadata.ts` — Angular components, shells and CSS blocks. `npm run contracts:generate` discovers the metadata and creates `component-metadata.ts`. The summary is the metadata description. Its name links to the component's `.mdx` page when that page exists.
+- A PrimeNG row comes from a `plectrum-figma.ts` mapping with a Storybook page. The kit has more controls than this list; a new mapping appears when it gains a `storybook` link.
+- A submitted team Candidate comes from reviewed JSON in `.ai/candidates/submissions/`, validated by CI and regenerated before Storybook builds. Its name links to the team's versioned preview. A withdrawal removes it; promotion gives it a Core row generated from central metadata. The team's local `index.json` is not part of this catalogue.
+- **Used in** comes from the central generated `index.json` local source scan of registered demo apps. A dash means no detected reference in that scan, not that no team uses it. External application usage arrives in P4; PrimeNG rows are not scanned.
+
+The same control can appear twice when it has both Plectrum metadata and a PrimeNG kit entry. Status and owner for central Plectrum components stay on their metadata-backed docs pages.
 
 <Unstyled>
   <Story of={Figures.Index} />

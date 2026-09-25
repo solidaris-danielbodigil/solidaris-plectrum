@@ -9,7 +9,7 @@
     "lib": ["ES2022", "dom"]
   },
   "files": ["src/public-api.ts"],
-  "include": ["src/lib/**/*.ts"],
+  "include": [],
   "exclude": [
     "src/test-setup.ts",
     "**/*.spec.ts",

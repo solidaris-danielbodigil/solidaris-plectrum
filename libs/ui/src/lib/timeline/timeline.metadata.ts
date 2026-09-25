@@ -7,6 +7,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
  */
 export const TimelineMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:timeline',
     name: 'Timeline',
     category: 'molecules',
     description:
@@ -22,6 +23,7 @@ export const TimelineMetadata: ComponentMetadata = {
     created: '2026-09-09',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'styles' },
   governance: {
     status: 'core',
     owner: 'design-system',

@@ -19,7 +19,7 @@ const steps = [
   ['tokens:check-prefix', 'npm', ['run', 'tokens:check-prefix']],
   ['tokens:lint', 'npm', ['run', 'tokens:lint']],
   ['lint:styles', 'npm', ['run', 'lint:styles']],
-  ['generate-index', 'npm', ['run', 'generate-index']],
+  ['generated contracts and exports', 'npm', ['run', 'contracts:generate', '--', '--check']],
   [
     'contracts index is committed',
     'git',
@@ -40,7 +40,7 @@ const steps = [
 ];
 
 for (const [name, command, args] of steps) {
-  const result = spawnSync(command, args, { cwd: root, stdio: 'inherit' });
+  const result = spawnSync(command, args, { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' && command === 'npm' });
   if (result.status !== 0) {
     console.error(`\nCommit blocked: ${name} failed.`);
     if (name.endsWith('committed')) {

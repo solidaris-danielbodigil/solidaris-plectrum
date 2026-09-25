@@ -38,7 +38,7 @@ jobs:
         run: npx ng build iged --configuration=production --base-href=/solidaris-plectrum/iged/
 
       - name: Build Storybook
-        run: npx ng run ui:build-storybook
+        run: npm run candidate:check && npm run build-storybook
         env:
           NODE_OPTIONS: --max-old-space-size=6144
 

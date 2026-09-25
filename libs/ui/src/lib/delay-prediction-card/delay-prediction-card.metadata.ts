@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const DelayPredictionCardMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:delay-prediction-card',
     name: 'DelayPredictionCard',
     category: 'molecules',
     description:
@@ -16,6 +17,7 @@ export const DelayPredictionCardMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: './patterns/ishare', exportName: 'DelayPredictionCardComponent' },
   governance: {
     status: 'app',
     owner: 'ishare',

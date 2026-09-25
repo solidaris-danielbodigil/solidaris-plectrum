@@ -31,8 +31,8 @@ import type {
 } from '@solidaris/ui';
 import {
   PdsTelemetryLabelDirective,
-  DelayPredictionCardComponent,
 } from '@solidaris/ui';
+import { DelayPredictionCardComponent } from '@solidaris/ui/patterns/ishare';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   summarizeDocumentStep,

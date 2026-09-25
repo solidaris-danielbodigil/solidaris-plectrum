@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const EmptyStateMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:empty-state',
     name: 'EmptyState',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const EmptyStateMetadata: ComponentMetadata = {
     created: '2026-06-05',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'EmptyStateComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

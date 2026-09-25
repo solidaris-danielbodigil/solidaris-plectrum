@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const FormFieldMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:form-field',
     name: 'FormField',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const FormFieldMetadata: ComponentMetadata = {
     created: '2026-06-07',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'FormFieldComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

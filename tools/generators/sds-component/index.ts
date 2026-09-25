@@ -1,449 +1,286 @@
-import { execSync } from 'child_process';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as readline from 'readline';
+import fs from 'node:fs';
+import path from 'node:path';
+import readline from 'node:readline/promises';
+import { z } from 'zod';
+import {
+  componentIdSchema,
+  componentMetadataSchema,
+} from '../../../.ai/contracts/schema/component.schema';
+import { readRegistry } from '../../contracts/validate';
+import { inventory } from '../../contracts/inventory';
+import { generateContracts } from '../../contracts/generate';
 
-interface Schema {
-  name: string;
-  category: 'atoms' | 'molecules' | 'organisms' | 'templates';
-  type:
-    | 'interactive'
-    | 'display'
-    | 'container'
-    | 'input'
-    | 'navigation'
-    | 'feedback';
-  primeNg?: string;
-  /** Team accountable for the component — decides the initial governance status. */
-  owner: 'design-system' | 'ishare' | 'icrm';
-}
+const optionsSchema = z.strictObject({
+  name: z.string().regex(/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/),
+  id: componentIdSchema.optional(),
+  owner: z.string().min(1),
+  category:
+    componentMetadataSchema.shape.component.shape.category.default('atoms'),
+  type: componentMetadataSchema.shape.component.shape.type.default('display'),
+  primeNg: z.string().optional(),
+});
+export type Options = z.input<typeof optionsSchema>;
 
-const OWNERS = ['design-system', 'ishare', 'icrm'] as const;
-
-/**
- * Core-team work is `core` from day one. Anything an application team
- * scaffolds starts as a `candidate`: the core team promotes it later or
- * settles it as `app` (docs/component-promotion.md).
- */
-function initialStatus(owner: Schema['owner']): 'core' | 'candidate' {
-  return owner === 'design-system' ? 'core' : 'candidate';
-}
-
-function storyTitle(owner: Schema['owner'], className: string): string {
-  if (owner === 'design-system') {
-    return `Custom components/${className}`;
-  }
-
-  const app = owner === 'ishare' ? 'iSHARE' : 'iCRM';
-  return `Patterns/${app}/${className}`;
-}
-
-function toFileName(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-function toClassName(str: string): string {
-  return str
-    .split(/[-_\s]+/)
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+/** Central-repository scaffold. Consumer toolkit initialization is implemented in P2. */
+export async function generate(
+  options: Options,
+  root = process.cwd(),
+): Promise<string> {
+  const schema = optionsSchema.parse(options);
+  const registry = readRegistry(root);
+  const team = registry.teams.find((t) => t.id === schema.owner);
+  if (!team)
+    throw new Error(
+      `Unknown owner ${schema.owner}. Registered teams: ${registry.teams.map((t) => t.id).join(', ')}`,
+    );
+  const name = schema.name;
+  const className = name
+    .split('-')
+    .map((p) => p[0].toUpperCase() + p.slice(1))
     .join('');
-}
-
-function writeFile(filePath: string, content: string): void {
-  const dir = path.dirname(filePath);
-  fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, content, 'utf-8');
-    console.log(`  created  ${filePath}`);
-  } else {
-    console.log(`  skipped  ${filePath} (already exists)`);
-  }
-}
-
-function generate(schema: Schema): void {
-  const fileName = toFileName(schema.name);
-  const className = toClassName(fileName);
-  const today = new Date().toISOString().split('T')[0];
-  const root = path.resolve(__dirname, '../../..');
-
-  const componentDir = path.join(root, 'libs/ui/src/lib', fileName);
-  // ITCSS naming: _components.{name}.scss, forwarded from _components.core.scss.
-  const scssPath = path.join(
+  const id =
+    schema.id ?? `${team.kind === 'core' ? 'plectrum' : team.id}:${name}`;
+  const existing = await inventory(root);
+  if (
+    existing.some(
+      (i) =>
+        i.metadata.component.id === id ||
+        i.metadata.component.name === className,
+    )
+  )
+    throw new Error('Component ID or name already exists');
+  const folder = `libs/ui/src/lib/${name}`;
+  const core = team.kind === 'core';
+  const scss = `libs/styles/${core ? 'src' : 'candidates'}/06-components/_components.${name}.scss`;
+  const scssBarrel = path.join(
     root,
-    'libs/styles/src/06-components',
-    `_components.${fileName}.scss`,
+    'libs/styles/src/06-components/_components.core.scss',
   );
-  const coreScssPath = path.join(
-    root,
-    'libs/styles/src/06-components',
-    '_components.core.scss',
-  );
-  const libBarrelPath = path.join(root, 'libs/ui/src/lib/index.ts');
-
-  // Component TS — no styleUrl: styles live in libs/styles (ITCSS 06-components).
-  writeFile(
-    path.join(componentDir, `${fileName}.component.ts`),
+  if (
+    fs.existsSync(path.join(root, folder)) ||
+    fs.existsSync(path.join(root, scss))
+  )
+    throw new Error(
+      'Scaffold would overwrite existing component or stylesheet',
+    );
+  if (!fs.existsSync(scssBarrel))
+    throw new Error('Run this central scaffold in a Plectrum checkout');
+  const date = new Date().toISOString().slice(0, 10);
+  const metadata = {
+    component: {
+      id,
+      name: className,
+      category: schema.category,
+      description: `TODO: Describe ${className}`,
+      type: schema.type,
+      path: `${folder}/${name}.component.ts`,
+      primeNgComponent: schema.primeNg,
+      bemBlock: `c-${name}`,
+      itcssLayer: '06-components',
+      scssPath: scss,
+      created: date,
+      modified: date,
+    },
+    distribution: core
+      ? {
+          kind: 'angular',
+          entryPoint: '.',
+          exportName: `${className}Component`,
+        }
+      : { kind: 'local' },
+    governance: {
+      status: core ? 'core' : 'candidate',
+      owner: team.id,
+      ...(core
+        ? {}
+        : {
+            note: 'TODO: Record the approved proposal and promotion conditions.',
+          }),
+    },
+    usage: {
+      useCases: ['TODO: Describe the need this component covers.'],
+      commonPatterns: [],
+      antiPatterns: [],
+    },
+    anatomy: [
+      { part: `c-${name}`, role: 'Host containing the projected content.' },
+    ],
+    props: [],
+    accessibility: { wcagLevel: 'AA' },
+    tokens: { consumed: [] },
+    aiHints: {
+      priority: 'medium',
+      context: 'TODO: State when to select this component.',
+      selectionCriteria: {},
+      keywords: [name],
+    },
+    examples: [
+      {
+        name: 'Default',
+        description: 'Projected content.',
+        code: `<pds-${name}>Content</pds-${name}>`,
+      },
+    ],
+  };
+  componentMetadataSchema.parse(metadata);
+  const files: Record<string, string> = {};
+  files[`${folder}/${name}.component.ts`] =
     `import { Component } from '@angular/core';
 
-@Component({
-  selector: 'pds-${fileName}',
-  standalone: true,
-  templateUrl: './${fileName}.component.html',
-})
+@Component({ selector: 'pds-${name}', standalone: true, templateUrl: './${name}.component.html' })
 export class ${className}Component {}
-`,
-  );
-
-  // Component HTML
-  writeFile(
-    path.join(componentDir, `${fileName}.component.html`),
-    `<div class="c-${fileName}">
-  <!-- ${className} component -->
-  <ng-content></ng-content>
-</div>
-`,
-  );
-
-  // No colocated component SCSS — all styles live in the ITCSS layer
-  // (libs/styles/src/06-components). The only allowed exception is a :host
-  // display rule under ViewEncapsulation, added by hand with a comment.
-
-  // Component Spec — Tester-agent checklist as skeletons (fill or delete the
-  // it.todo cases; a bare "should create" is not enough for review).
-  writeFile(
-    path.join(componentDir, `${fileName}.component.spec.ts`),
-    `import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ${className}Component } from './${fileName}.component';
+`;
+  files[`${folder}/${name}.component.html`] =
+    `<div class="c-${name}"><ng-content /></div>\n`;
+  files[`${folder}/index.ts`] = `export * from './${name}.component';\n`;
+  files[`${folder}/${name}.metadata.ts`] =
+    `import type { ComponentMetadata } from '@solidaris/contracts';\n\nexport const ${className}Metadata: ComponentMetadata = ${JSON.stringify(metadata, null, 2)};\n`;
+  files[`${folder}/${name}.component.spec.ts`] =
+    `import { TestBed } from '@angular/core/testing';
+import { ${className}Component } from './${name}.component';
 
 describe('${className}Component', () => {
-  let component: ${className}Component;
-  let fixture: ComponentFixture<${className}Component>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [${className}Component],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(${className}Component);
-    component = fixture.componentInstance;
+  it('renders the documented host', async () => {
+    await TestBed.configureTestingModule({ imports: [${className}Component] }).compileComponents();
+    const fixture = TestBed.createComponent(${className}Component);
     fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.c-${name}')).not.toBeNull();
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  // Tester checklist (.cursor/agents/tester.md) — implement what applies:
-
-  it.todo('should render the correct semantic element');
-  it.todo('should apply the BEM host class');
-  it.todo('should apply modifier classes from inputs');
-  it.todo('should emit outputs when triggered');
-  it.todo('should project slot content');
+  it.todo('Verify the component-specific behavior before review');
 });
-`,
-  );
-
-  // Storybook Story (colocated) — CSF owns canvases; attached MDX owns prose.
-  writeFile(
-    path.join(componentDir, `${fileName}.stories.ts`),
+`;
+  files[`${folder}/${name}.stories.ts`] =
     `import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { statusStory } from '../../docs/docs-figure-stories';
+import { expect } from 'storybook/test';
+import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { expect } from '../../storybook/story-tests';
-import { ${className}Component } from './${fileName}.component';
-import { ${className}Metadata } from './${fileName}.metadata';
+import { ${className}Component } from './${name}.component';
+import { ${className}Metadata } from './${name}.metadata';
 
 const meta: Meta<${className}Component> = {
-  title: '${storyTitle(schema.owner, className)}',
+  title: ${JSON.stringify(core ? `Custom components/${className}` : `Patterns/${team.label}/${className}`)},
   component: ${className}Component,
-  parameters: {
-    ...storyDesign(${className}Metadata.component.figmaUrl),
-  },
+  parameters: { ...storyDesign(${className}Metadata.component.figmaUrl) },
   argTypes: argTypesFromProps(${className}Metadata.props ?? []),
 };
-
 export default meta;
 type Story = StoryObj<${className}Component>;
 
-/** Ownership badge for the docs page — hidden from the sidebar. */
 export const Status = { tags: ['!dev'], ...statusStory(${className}Metadata.governance, ${className}Metadata.component) };
-
 export const Default: Story = {
+  render: () => ({ template: '<pds-${name}>Content</pds-${name}>', moduleMetadata: { imports: [${className}Component] } }),
   play: async ({ canvasElement }) => {
-    await expect(canvasElement.firstElementChild).toBeTruthy();
+    await expect(canvasElement.querySelector('.c-${name}')).toHaveTextContent('Content');
   },
 };
-
-// TODO: Add stories for all applicable states:
-// export const Disabled: Story = {};
-// export const Loading: Story = {};
-// export const Error: Story = {};
-// export const Empty: Story = {};
-`,
-  );
-
-  writeFile(
-    path.join(componentDir, `${fileName}.mdx`),
+export const Anatomy = { tags: ['!dev'], ...anatomyStory(${className}Metadata, Default) };
+${['usage', 'patterns', 'examples', 'variants', 'composition', 'behavior', 'accessibility'].map((section) => `export const ${section[0].toUpperCase() + section.slice(1)} = { tags: ['!dev'], ...contractStory(${className}Metadata, '${section}') };`).join('\n')}
+`;
+  files[`${folder}/${name}.mdx`] =
     `import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
-import { DocsTable } from '../../../.storybook/docs-table';
-import * as Stories from './${fileName}.stories';
-import { ${className}Metadata } from './${fileName}.metadata';
+import * as Stories from './${name}.stories';
+import { ${className}Metadata as metadata } from './${name}.metadata';
 
 <Meta of={Stories} />
 
 # ${className}
 
-<Unstyled>
-  <Story of={Stories.Status} />
-</Unstyled>
-
-TODO: one sentence on what this component does.
-
-## When to use
-
-- TODO
-
-## When not to use
-
-- TODO
-
-## Anatomy
-
-<DocsTable
-  headers={['Part', 'Role']}
-  rows={[
-    ['Host', 'c-${fileName}'],
-    ['TODO', 'TODO'],
-  ]}
-/>
-
-## Accessibility
-
-- TODO: label association, keyboard, ARIA
-
-Figma: [${className}Metadata.component.figmaUrl ? 'Open in Figma' : 'TODO add Figma node URL'](${className}Metadata.component.figmaUrl ?? 'https://www.figma.com/design/')
+<Unstyled><Story of={Stories.Status} /></Unstyled>
 
 ## Default
 
 <Canvas of={Stories.Default} />
 <Controls of={Stories.Default} />
-`,
-  );
 
-  writeFile(
-    path.join(componentDir, 'index.ts'),
-    `export * from './${fileName}.component';
-`,
-  );
+## Usage
 
-  // Metadata Contract
-  writeFile(
-    path.join(componentDir, `${fileName}.metadata.ts`),
-    `import { ComponentMetadata } from '@solidaris/contracts';
+<Unstyled><Story of={Stories.Usage} /></Unstyled>
 
-export const ${className}Metadata: ComponentMetadata = {
-  component: {
-    name: '${className}',
-    category: '${schema.category}',
-    description: 'TODO: Describe ${className}',
-    type: '${schema.type}',
-    path: 'libs/ui/src/lib/${fileName}/${fileName}.component.ts',
-    ${schema.primeNg ? `primeNgComponent: '${schema.primeNg}',` : `primeNgComponent: undefined,`}
-    bemBlock: 'c-${fileName}',
-    itcssLayer: '06-components',
-    scssPath: 'libs/styles/src/06-components/_components.${fileName}.scss',
-    created: '${today}',
-    modified: '${today}',
-    figmaUrl: undefined,
-  },
-  governance: {
-    status: '${initialStatus(schema.owner)}',
-    owner: '${schema.owner}',${
-      schema.owner === 'design-system'
-        ? ''
-        : `
-    note: 'TODO: what the core team needs before promoting this to core.',`
+## Anatomy
+
+<Unstyled><Story of={Stories.Anatomy} /></Unstyled>
+
+{metadata.usage.commonPatterns.length > 0 && <><h2>Patterns</h2><Unstyled><Story of={Stories.Patterns} /></Unstyled></>}
+
+{metadata.examples.length > 0 && <><h2>Examples</h2><Unstyled><Story of={Stories.Examples} /></Unstyled></>}
+
+{metadata.variants && Object.keys(metadata.variants).length > 0 && <><h2>Variants</h2><Unstyled><Story of={Stories.Variants} /></Unstyled></>}
+
+{metadata.composition && <><h2>Composition</h2><Unstyled><Story of={Stories.Composition} /></Unstyled></>}
+
+{metadata.behavior && <><h2>Behavior</h2><Unstyled><Story of={Stories.Behavior} /></Unstyled></>}
+
+## Accessibility
+
+<Unstyled><Story of={Stories.Accessibility} /></Unstyled>
+`;
+  files[scss] =
+    `@use '${core ? '../01-settings' : '../../src/01-settings'}/settings.prefix' as *;
+
+// TODO: Apply the approved design using var(--#{$pds-prefix}-*) tokens.
+// Layout belongs in o-flex / o-layout classes on the template.
+.c-${name} {
+  // Add only the component's own visual rules.
+}
+`;
+  // All inputs and collisions are validated before the first write.
+  const originalBarrel = fs.readFileSync(scssBarrel, 'utf8');
+  try {
+    for (const [file, content] of Object.entries(files)) {
+      fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      fs.writeFileSync(path.join(root, file), content, { flag: 'wx' });
     }
-  },
-  usage: {
-    useCases: [],
-    commonPatterns: [],
-    antiPatterns: [],
-  },
-  accessibility: {
-    wcagLevel: 'AA',
-  },
-  props: [],
-  tokens: {
-    consumed: [],
-  },
-  aiHints: {
-    priority: 'medium',
-    context: 'TODO: When should an agent use this component?',
-    selectionCriteria: {},
-    keywords: ['${fileName}'],
-  },
-  examples: [
-    {
-      name: 'default',
-      description: 'Default ${className}',
-      code: \`<(pds|app|lib)-${fileName}></pds-${fileName}>\`,
-    },
-  ],
-};
-`,
-  );
-
-  // BEM SCSS in styles lib (ITCSS 06-components layer)
-  writeFile(
-    scssPath,
-    `@use '../01-settings/settings.prefix' as *;
-
-// =============================================================================
-// 06-components/_components.${fileName}.scss
-// c-${fileName} — TODO: one-line purpose.
-//
-// Design ref:   TODO add Figma node URL
-// Token source: libs/styles/src/01-settings/ (add component tokens there first)
-// =============================================================================
-
-.c-${fileName} {
-  // TODO: var(--#{$pds-prefix}-*) tokens only.
-  // Layout (flex, gap, padding, overflow) is o-flex / o-layout in the template.
-
-  // &__element {}
-  // &--modifier {}
-  // &.is-active {}
-}
-`,
-  );
-
-  // Forward the new partial from the layer barrel so it actually compiles.
-  const forwardLine = `@forward 'components.${fileName}';\n`;
-  const currentCore = fs.existsSync(coreScssPath)
-    ? fs.readFileSync(coreScssPath, 'utf-8')
-    : '';
-  if (!currentCore.includes(forwardLine.trim())) {
-    fs.appendFileSync(coreScssPath, forwardLine, 'utf-8');
-    console.log(
-      `  updated  libs/styles/src/06-components/_components.core.scss`,
-    );
+    if (core)
+      fs.writeFileSync(
+        scssBarrel,
+        originalBarrel.trimEnd() + `\n@forward 'components.${name}';\n`,
+      );
+    await generateContracts(root);
+  } catch (error) {
+    for (const file of Object.keys(files))
+      fs.rmSync(path.join(root, file), { force: true });
+    fs.writeFileSync(scssBarrel, originalBarrel);
+    if (fs.existsSync(path.join(root, folder)))
+      fs.rmdirSync(path.join(root, folder));
+    throw error;
   }
+  return id;
+}
 
-  const exportLines = `export * from './${fileName}';\nexport * from './${fileName}/${fileName}.metadata';\n`;
-  const currentLibIndex = fs.existsSync(libBarrelPath)
-    ? fs.readFileSync(libBarrelPath, 'utf-8')
-    : '';
-  if (!currentLibIndex.includes(`export * from './${fileName}'`)) {
-    fs.appendFileSync(libBarrelPath, exportLines, 'utf-8');
-    console.log(`  updated  libs/ui/src/lib/index.ts`);
+async function main(): Promise<void> {
+  const flags: Record<string, string> = {};
+  for (const arg of process.argv.slice(2)) {
+    const match = /^--([a-zA-Z]+)=(.+)$/.exec(arg);
+    if (
+      !match ||
+      !['name', 'id', 'category', 'type', 'owner', 'primeNg'].includes(match[1])
+    )
+      throw new Error(`Unknown argument ${arg}. Use --name=value syntax.`);
+    flags[match[1]] = match[2];
   }
-
-  // Keep the contracts index in sync — no manual step, no stale index.
-  console.log('\n🔄 Regenerating .ai/contracts/index.json …');
-  execSync('npm run generate-index', { cwd: root, stdio: 'inherit' });
-
-  console.log(`
-✅ Component scaffolded: ${className}
-
-Files created:
-  libs/ui/src/lib/${fileName}/${fileName}.component.ts          (no styleUrl — styles live in ITCSS)
-  libs/ui/src/lib/${fileName}/${fileName}.component.html
-  libs/ui/src/lib/${fileName}/${fileName}.component.spec.ts
-  libs/ui/src/lib/${fileName}/${fileName}.stories.ts            ← STORYBOOK (colocated)
-  libs/ui/src/lib/${fileName}/${fileName}.mdx                   ← ATTACHED DOCS
-  libs/ui/src/lib/${fileName}/index.ts
-  libs/ui/src/lib/${fileName}/${fileName}.metadata.ts           ← CONTRACT
-  libs/styles/src/06-components/_components.${fileName}.scss    ← BEM STYLES (ITCSS)
-
-_components.core.scss forwards the new partial; libs/ui/src/lib/index.ts exports the component; .ai/contracts/index.json regenerated.
-Commit both with the component.
-
-Governance: status '${initialStatus(schema.owner)}', owner '${schema.owner}'.
-${
-  schema.owner === 'design-system'
-    ? ''
-    : `A candidate stays with the ${schema.owner} team until the core team promotes it — file the Storybook page under Patterns/{App}.
-`
+  if (!flags['name']) {
+    if (!process.stdin.isTTY) throw new Error('--name is required');
+    const prompt = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    try {
+      flags['name'] = (
+        await prompt.question('Component name (kebab-case): ')
+      ).trim();
+    } finally {
+      prompt.close();
+    }
+  }
+  flags['owner'] ??= 'design-system';
+  const id = await generate(flags as Options);
+  console.log(
+    `Created ${id}. Complete metadata TODOs, design and tests; npm run contracts:check rejects unfinished metadata.`,
+  );
 }
-Next steps:
-  1. Fill in the .metadata.ts TODOs
-  2. Add BEM styles using var(--pds-*) tokens
-  3. Complete all Storybook story states
-  `);
-}
-
-// CLI entry point
-async function prompt(question: string): Promise<string> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
+if (require.main === module)
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
   });
-  return new Promise((resolve) =>
-    rl.question(question, (ans) => {
-      rl.close();
-      resolve(ans.trim());
-    }),
-  );
-}
-
-async function main() {
-  const args = process.argv.slice(2);
-  const argMap: Record<string, string> = {};
-  for (const arg of args) {
-    const [k, v] = arg.replace(/^--/, '').split('=');
-    if (k && v) argMap[k] = v;
-  }
-
-  const name =
-    argMap['name'] ||
-    (await prompt('Component name (kebab-case, e.g. data-card): '));
-  const categoryRaw =
-    argMap['category'] ||
-    (await prompt(
-      'Category [atoms/molecules/organisms/templates] (default: atoms): ',
-    ));
-  const typeRaw =
-    argMap['type'] ||
-    (await prompt(
-      'Type [interactive/display/container/input/navigation/feedback] (default: display): ',
-    ));
-  const primeNg = argMap['primeNg'] || '';
-  const ownerRaw =
-    argMap['owner'] ||
-    (await prompt(
-      'Owner [design-system/ishare/icrm] (default: design-system): ',
-    ));
-
-  const category = (
-    ['atoms', 'molecules', 'organisms', 'templates'].includes(categoryRaw)
-      ? categoryRaw
-      : 'atoms'
-  ) as Schema['category'];
-  const type = (
-    [
-      'interactive',
-      'display',
-      'container',
-      'input',
-      'navigation',
-      'feedback',
-    ].includes(typeRaw)
-      ? typeRaw
-      : 'display'
-  ) as Schema['type'];
-  const owner = (
-    (OWNERS as readonly string[]).includes(ownerRaw)
-      ? ownerRaw
-      : 'design-system'
-  ) as Schema['owner'];
-
-  generate({ name, category, type, primeNg: primeNg || undefined, owner });
-}
-
-main().catch(console.error);

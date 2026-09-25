@@ -3,13 +3,7 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "baseUrl": "../..",
-    "types": ["vitest/globals"],
-    "paths": {
-      "@solidaris/contracts": [".ai/contracts/schema/index.ts"],
-      "@solidaris/plectrum": ["libs/plectrum/src/index.ts"],
-      "@solidaris/styles": ["libs/styles/src/main.scss"],
-      "@solidaris/ui": ["libs/ui/src/index.ts"]
-    }
+    "types": ["vitest/globals"]
   },
   "include": [
     "src/**/*.spec.ts",

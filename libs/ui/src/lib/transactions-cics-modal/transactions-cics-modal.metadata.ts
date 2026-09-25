@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const TransactionsCicsModalMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:transactions-cics-modal',
     name: 'TransactionsCicsModal',
     category: 'organisms',
     description:
@@ -16,6 +17,7 @@ export const TransactionsCicsModalMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: './patterns/ishare', exportName: 'TransactionsCicsModalComponent' },
   governance: {
     status: 'app',
     owner: 'ishare',

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "toolkitVersion": "0.2.0",
+  "dsVersionRange": ">=1.0.0 <3.0.0",
+  "contractSchemaRange": "^1.0.0",
+  "processVersionRange": "^1.0.0",
+  "editors": [
+    "cursor",
+    "vscode-copilot"
+  ],
+  "status": "verified"
+}

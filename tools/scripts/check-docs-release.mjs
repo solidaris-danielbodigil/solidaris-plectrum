@@ -9,6 +9,7 @@ const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const version = JSON.parse(read('libs/ui/package.json')).version;
 const plectrum = JSON.parse(read('libs/plectrum/package.json')).version;
 const styles = JSON.parse(read('libs/styles/package.json')).version;
+const toolkit = JSON.parse(read('tools/devkit/package.json')).version;
 
 const problems = [];
 const fail = (message) => problems.push(message);
@@ -27,9 +28,8 @@ const example = read('libs/ui/src/lib/form-field/form-field.example.ts');
 const consumer = read('tools/packaging/consumer-app/src/app/app.ts');
 const releases = read('libs/ui/src/docs/releases.mdx');
 
-if (consume.includes('0.1.0') || introduction.includes('0.1.0')) {
-  fail('consumer docs still say 0.1.0');
-}
+if (!consume.includes(toolkit)) fail(`get-started-consume.mdx does not mention toolkit version ${toolkit}`);
+if (introduction.includes('0.1.0')) fail('introduction.mdx still uses the old runtime version');
 if (!consume.includes(version)) {
   fail(`get-started-consume.mdx does not mention package version ${version}`);
 }
@@ -52,9 +52,7 @@ if (!releaseDateMatch) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(releaseDate)) {
     fail(`release-state.ts RELEASE_DATE is not a YYYY-MM-DD string: ${releaseDate}`);
   }
-  if (!consume.includes(releaseDate)) {
-    fail(`get-started-consume.mdx does not mention the release date ${releaseDate}`);
-  }
+  // A manifest bump date is not a registry publication date.
 }
 
 if (contribute.includes('solidaris-nx')) {

@@ -27,6 +27,8 @@ Related pages:
   headers={['Rule', 'Detail']}
   rows={[
     ['Fixed version group', '@solidaris/ui, @solidaris/plectrum and @solidaris/styles always version together (.changeset/config.json → fixed)'],
+    ['Toolkit version', '@solidaris/plectrum-devkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
+    ['Internal token scripts', '@solidaris/tokens-cli is a private workspace maintenance package; consumer token checks ship in the devkit'],
     ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
     ['Commit gate', 'npm run check:commit runs before the commit is created. git commit --no-verify skips it. The pull request into main still runs the full CI gates'],
     ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
@@ -43,8 +45,8 @@ Related pages:
     ['@solidaris/ui', 'Angular components (Angular Package Format)'],
     ['@solidaris/plectrum', 'providePlectrum(), presets, tokens.json'],
     ['@solidaris/styles', 'ITCSS SCSS source (apps add it to includePaths)'],
-    ['@solidaris/tokens-cli', 'pds-tokens-lint and pipeline commands for consumer repos'],
+    ['@solidaris/plectrum-devkit', 'Versioned metadata, schemas, process, token inventory and team checks'],
   ]}
 />
 
-This Storybook is not versioned per release — it documents `main`. The packed-Storybook CI job proves the published packages can back it.
+This Storybook currently documents a development preview of `main`; package versions in its tables do not prove registry publication. The packed-Storybook CI job verifies local tarballs. An immutable Storybook per published version belongs to the release pipeline.

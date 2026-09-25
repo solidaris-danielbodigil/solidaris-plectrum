@@ -77,18 +77,12 @@ Template rules:
 
 ### 4 — Export
 
-Add to `libs/ui/src/lib/index.ts` (the lib barrel):
-
-```typescript
-export * from './{name}';
-```
-
-and ensure the component + its public types are exported from the component's own `index.ts`.
+Export the component and public types from its own `index.ts`. Set metadata `distribution` and run `npm run contracts:generate`. It owns public and secondary entries, the metadata registry and the source barrel. Candidates remain local; app patterns use an explicit team entry. Never edit generated barrels.
 
 ### 5 — Post-creation
 
 `pds:component` and the afterFileEdit hook regenerate `.ai/contracts/index.json`.
-Verify it changed. Run `npm run generate-index` only after a hand-delete.
+Run `npm run contracts:generate` after metadata changes, including renames and deletes. Preserve `component.id` and commit every changed generated artifact.
 
 When Storybook is up: `stories-preview` the new canvases. Gate with
 `npm run contracts:check` and `npm run docs:check`. Play and a11y stay on

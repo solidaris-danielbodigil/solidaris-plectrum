@@ -54,4 +54,4 @@ export const TARBALL_INSTALL = `npm install \\
   ./path/to/${tarballName('@solidaris/styles')} \\
   primeng @primeuix/themes`;
 
-export const RELEASE_SUMMARY = `The three packages are at ${PACKAGE_VERSION}, released ${RELEASE_DATE}. What's new lists that version under Released. npm publish is not switched on yet, so install packed tarballs of ${PACKAGE_VERSION}. The Preset toolbar (${PRESET_VERSION}) is the theme, not the package version.`;
+export const RELEASE_SUMMARY = `The three runtime manifests declare ${PACKAGE_VERSION}; registry publishing is not enabled. Install packed tarballs until a verified release exists. The Preset toolbar (${PRESET_VERSION}) selects the theme, not the package version.`;

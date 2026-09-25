@@ -16,8 +16,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TableModule } from 'primeng/table';
-import { pdsOverlayAppendTo } from '../drawer';
-import { injectPdsMessages } from '../i18n';
+import { pdsOverlayAppendTo, injectPdsMessages } from '@solidaris/ui';
 import { TransactionsCicsModalMessages } from './transactions-cics-modal.i18n';
 import type { TransactionsCicsRow } from './transactions-cics-modal.types';
 

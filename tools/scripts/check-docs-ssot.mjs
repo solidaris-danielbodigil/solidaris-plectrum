@@ -22,19 +22,13 @@
 
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { ALL_COMPONENT_METADATA } from '../../libs/ui/src/storybook/component-metadata.ts';
+import { ALL_COMPONENT_METADATA, COMPONENT_SOURCES } from '../../libs/ui/src/storybook/component-metadata.ts';
 
-/** `libs/ui/src/lib/{folder}/…` → the folder name each metadata file lives in. */
-function libFolderOf(path) {
-  const match = /^libs\/ui\/src\/lib\/([^/]+)\//.exec(path);
-  return match ? match[1] : null;
-}
-
-const METADATA_BY_FOLDER = new Map(
+const METADATA_BY_DOCS = new Map(
   ALL_COMPONENT_METADATA.map((metadata) => [
-    libFolderOf(metadata.component.path),
+    resolve(COMPONENT_SOURCES[metadata.component.id].docs),
     metadata,
-  ]).filter(([folder]) => folder !== null),
+  ]),
 );
 
 const ROOT = resolve('libs/ui/src/lib');
@@ -58,14 +52,13 @@ const hasDocsTable = (body) => body.some((line) => /<DocsTable\b/.test(line));
 const embeds = (body, story) =>
   body.some((line) => new RegExp(`<Story\\s+of=\\{Stories\\.${story}\\}`).test(line));
 
-for (const dir of readdirSync(ROOT, { withFileTypes: true })) {
-  if (!dir.isDirectory()) continue;
-  const mdxPath = join(ROOT, dir.name, `${dir.name}.mdx`);
-  if (!existsSync(mdxPath)) continue;
+for (const entry of readdirSync(ROOT, { withFileTypes: true, recursive: true })) {
+  if (!entry.isFile() || !entry.name.endsWith('.mdx')) continue;
+  const mdxPath = join(entry.parentPath, entry.name);
 
   const file = relative(process.cwd(), mdxPath).replaceAll('\\', '/');
   const mdx = readFileSync(mdxPath, 'utf8');
-  const hasMetadata = existsSync(join(ROOT, dir.name, `${dir.name}.metadata.ts`));
+  const hasMetadata = existsSync(mdxPath.replace(/\.mdx$/, '.metadata.ts'));
   const fail = (message) => problems.push(`${file}: ${message}`);
 
   for (const legacy of ['## When to use', '## When not to use']) {
@@ -108,7 +101,7 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true })) {
       fail('component has a .metadata.ts but the page does not embed <Story of={Stories.Usage} /> under "## Usage"');
     }
 
-    const metadata = METADATA_BY_FOLDER.get(dir.name);
+    const metadata = METADATA_BY_DOCS.get(mdxPath);
     if (metadata) {
       const requiredFigures = [
         ['commonPatterns', metadata.usage?.commonPatterns, 'Patterns'],
@@ -124,7 +117,7 @@ for (const dir of readdirSync(ROOT, { withFileTypes: true })) {
     }
   }
 
-  const storiesPath = join(ROOT, dir.name, `${dir.name}.stories.ts`);
+  const storiesPath = mdxPath.replace(/\.mdx$/, '.stories.ts');
   if (existsSync(storiesPath)) {
     const stories = readFileSync(storiesPath, 'utf8');
     const storiesFile = relative(process.cwd(), storiesPath).replaceAll('\\', '/');

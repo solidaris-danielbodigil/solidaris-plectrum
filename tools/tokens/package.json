@@ -1,17 +1,9 @@
 {
   "name": "@solidaris/tokens-cli",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "type": "module",
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "bin": {
-    "pds-tokens-propose": "./propose-to-figma.mjs",
-    "pds-tokens-apply": "./apply-to-figma.mjs",
-    "pds-tokens-lint": "./lint-usage.mjs",
-    "pds-tokens-pull": "./pull-figma.mjs"
-  },
+  "description": "Plectrum-repository-only Figma and token maintenance scripts; consumer checks ship in @solidaris/plectrum-devkit",
   "files": [
     "*.mjs",
     "alias-map.json",

@@ -84,7 +84,7 @@ Task → **Frontend Dev**:
 > "The SCSS and stories are ready at [paths]. Scaffold the Angular component in
 > `libs/ui/src/lib/[name]/`: TypeScript class, HTML template with BEM + o-flex mixes,
 > ViewEncapsulation.None, OnPush, signal inputs/outputs, ARIA attributes. Create a
-> barrel index.ts and export from `libs/ui/src/lib/index.ts`. Scaffold with
+> barrel index.ts, declare metadata distribution and run `npm run contracts:generate`. Scaffold with
 > `npm run pds:component` (MCP does not scaffold). Pre-flight: index, then
 > `docs-list` when Storybook is up. The scaffolder and the afterFileEdit hook
 > regenerate `.ai/contracts/index.json` — verify it changed."

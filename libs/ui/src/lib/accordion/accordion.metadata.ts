@@ -7,6 +7,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
  */
 export const AccordionMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:accordion',
     name: 'Accordion',
     category: 'molecules',
     description:
@@ -22,6 +23,7 @@ export const AccordionMetadata: ComponentMetadata = {
     created: '2026-09-09',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'styles' },
   governance: {
     status: 'core',
     owner: 'design-system',

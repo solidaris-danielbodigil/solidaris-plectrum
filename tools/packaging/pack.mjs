@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build APF libs (unless already built) and npm-pack all three packages
+ * Build APF libs (unless already built) and npm-pack runtime packages and toolkit
  * into tools/packaging/.tarballs/.
  */
 import { execSync } from 'node:child_process';
@@ -46,7 +46,7 @@ const packs = [
   { dir: plectrumDist, label: '@solidaris/plectrum' },
   { dir: uiDist, label: '@solidaris/ui' },
   { dir: join(root, 'libs/styles'), label: '@solidaris/styles' },
-  { dir: join(root, 'tools/tokens'), label: '@solidaris/tokens-cli' },
+  { dir: join(root, 'tools/devkit'), label: '@solidaris/plectrum-devkit' },
 ];
 
 for (const { dir, label } of packs) {

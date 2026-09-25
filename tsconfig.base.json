@@ -7,12 +7,30 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@solidaris/contracts": [".ai/contracts/schema/index.ts"],
-      "@solidaris/plectrum": ["libs/plectrum/src/index.ts"],
-      "@solidaris/styles": ["libs/styles/src/main.scss"],
-      "@solidaris/ui": ["libs/ui/src/index.ts"]
+      "@solidaris/contracts": [
+        ".ai/contracts/schema/index.ts"
+      ],
+      "@solidaris/plectrum": [
+        "libs/plectrum/src/index.ts"
+      ],
+      "@solidaris/styles": [
+        "libs/styles/src/main.scss"
+      ],
+      "@solidaris/ui": [
+        "libs/ui/src/index.ts"
+      ],
+      "@solidaris/ui/patterns/ishare": [
+        "libs/ui/src/patterns-ishare-api.ts"
+      ]
     }
   },
-  "include": ["apps/**/*", "libs/**/*", ".ai/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "apps/**/*",
+    "libs/**/*",
+    ".ai/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

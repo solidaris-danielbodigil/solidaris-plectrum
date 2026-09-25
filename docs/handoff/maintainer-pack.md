@@ -32,7 +32,7 @@ Steps:
 
 1. `npm install`
 2. `npm run storybook` → http://localhost:6006 (runs `changelog:build` first)
-3. Scaffold: `npm run pds:component -- --owner=<design-system|ishare|icrm>` — creates component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + `@forward`, regenerates `index.json`.
+3. Scaffold: `npm run pds:component -- --name=<name> --owner=<registered-team>` — creates component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + `@forward`, regenerates registry, inventory and eligible package exports. Team choices come from `.ai/contracts/registry.json`; candidate styles remain Storybook-only.
 4. Implement per `.ai/contracts/protocols/component-creation.md`; every state has a story; tokens via `var(--pds-*)`.
 5. Unit tests: `npm test` (Vitest — ui, ishare, plectrum).
 6. Story tests against the dev server: `npm run test-storybook` (play + a11y `error` level).
@@ -159,3 +159,10 @@ To be run by a receiving maintainer, not narrated by the outgoing one:
 - [ ] An application developer follows Get started → Use Plectrum in an app and renders one component; record every point that needed undocumented help.
 
 Result, gaps found, date, participants: unresolved.
+
+
+## P0/P1 handoff
+
+See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Pipelines and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`.
+
+The iSHARE components now import from `@solidaris/ui/patterns/ishare`; a major changeset records the root API removal. Private GitHub Packages settings are prepared in `registry.json`, but scope migration/publication and the portable toolkit remain later phases. The registry lists the reviewer/Figma configuration still to confirm.

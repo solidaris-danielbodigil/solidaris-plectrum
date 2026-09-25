@@ -1,5 +1,8 @@
 import type { ComponentMetadata } from '@solidaris/contracts';
+import { resolveComponentDocsPath } from './docs-storybook-index';
+import { STATUS_PRESENTATION } from './governance';
 import { PRIMENG_KIT } from '../primeng/plectrum-figma';
+import { CENTRAL_CANDIDATES } from './candidate-data.generated';
 
 export type CataloguePurpose =
   | 'Actions'
@@ -11,7 +14,7 @@ export type CataloguePurpose =
 
 export type CatalogueImplementation = 'PrimeNG' | 'Angular' | 'CSS';
 
-export type CatalogueScope = 'Core' | 'App example';
+export type CatalogueScope = 'Core' | 'Candidate' | 'App-specific' | 'Deprecated';
 
 export interface CatalogueEntry {
   name: string;
@@ -24,6 +27,9 @@ export interface CatalogueEntry {
   usedIn: readonly string[];
   /** Storybook docs path. Empty until the Storybook index resolves a page. */
   path: string;
+  /** Versioned preview in the contributing application's repository. */
+  externalUrl?: string;
+  candidateState?: 'Submitted' | 'Accepted for integration' | 'Rejected';
 }
 
 const TYPE_PURPOSE: Record<
@@ -75,14 +81,11 @@ function taskWords(text: string): string[] {
 
 export function metadataCatalogue(
   metadata: readonly ComponentMetadata[],
-  docsIdByFolder: ReadonlyMap<string, string>,
+  docsIdBySource: ReadonlyMap<string, string>,
   usedIn: Readonly<Record<string, readonly string[]>>,
 ): CatalogueEntry[] {
   return metadata.map((meta) => {
-    const folder = meta.component.name
-      .replace(/([a-z])([A-Z])/g, '$1-$2')
-      .toLowerCase();
-    const docsId = docsIdByFolder.get(folder);
+    const docsPath = resolveComponentDocsPath(meta.component.id, docsIdBySource);
     const summary = meta.component.description;
     const keywords = [
       meta.component.name,
@@ -92,14 +95,15 @@ export function metadataCatalogue(
       ...taskWords(`${summary} ${meta.usage.useCases.join(' ')}`),
     ];
     return {
+      id: meta.component.id,
       name: displayName(meta.component.name),
       purpose: purposeOf(meta),
       implementation: implementationOf(meta),
-      scope: meta.governance.status === 'app' ? 'App example' : 'Core',
+      scope: STATUS_PRESENTATION[meta.governance.status].label as CatalogueScope,
       summary,
       keywords,
-      usedIn: usedIn[meta.component.name] ?? [],
-      path: docsId ? `/docs/${docsId}` : '',
+      usedIn: usedIn[meta.component.id] ?? [],
+      path: docsPath ?? '',
     };
   });
 }
@@ -128,13 +132,40 @@ export function primengCatalogue(): CatalogueEntry[] {
 
 export function buildCatalogue(
   metadata: readonly ComponentMetadata[],
-  docsIdByFolder: ReadonlyMap<string, string>,
+  docsIdBySource: ReadonlyMap<string, string>,
   usedIn: Readonly<Record<string, readonly string[]>> = {},
 ): CatalogueEntry[] {
   return [
-    ...metadataCatalogue(metadata, docsIdByFolder, usedIn),
+    ...metadataCatalogue(metadata, docsIdBySource, usedIn),
     ...primengCatalogue(),
+    ...candidateCatalogue(CENTRAL_CANDIDATES, new Set(metadata.map((item) => item.component.id))),
   ];
+}
+
+export interface CandidateListing {
+  id: string;
+  operation: 'submit' | 'revise' | 'withdraw';
+  componentId: string;
+  team: string;
+  application: string;
+  metadata: { component: { name: string; description: string; type: string; path: string; bemBlock: string }; usage: { useCases: readonly string[] } };
+  preview: { url: string; revision: string };
+  reviewState?: 'submitted' | 'accepted' | 'rejected';
+}
+
+export function candidateCatalogue(candidates: readonly CandidateListing[], coreIds: ReadonlySet<string>): CatalogueEntry[] {
+  return candidates.filter((record) => record.operation !== 'withdraw' && !coreIds.has(record.componentId)).map((record) => ({
+    name: displayName(record.metadata.component.name),
+    purpose: TYPE_PURPOSE[record.metadata.component.type as ComponentMetadata['component']['type']] ?? 'Data',
+    implementation: record.metadata.component.path.endsWith('.scss') ? 'CSS' : 'Angular',
+    scope: 'Candidate',
+    summary: record.metadata.component.description,
+    keywords: [record.id, record.componentId, record.application, record.team, record.metadata.component.bemBlock, ...record.metadata.usage.useCases],
+    usedIn: [],
+    path: '',
+    externalUrl: record.preview.url,
+    candidateState: record.reviewState === 'accepted' ? 'Accepted for integration' : record.reviewState === 'rejected' ? 'Rejected' : 'Submitted',
+  }));
 }
 
 export function matchesCatalogue(

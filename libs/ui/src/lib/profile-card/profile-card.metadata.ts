@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const ProfileCardMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:profile-card',
     name: 'ProfileCard',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const ProfileCardMetadata: ComponentMetadata = {
     created: '2026-09-08',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'ProfileCardComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

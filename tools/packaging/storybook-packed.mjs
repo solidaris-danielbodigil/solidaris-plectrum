@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 execSync('npm run build:libs', { cwd: ROOT, stdio: 'inherit' });
+execSync('npm run candidate:generate', { cwd: ROOT, stdio: 'inherit' });
 
 const files = ['tsconfig.json', 'tsconfig.base.json'];
 const backups = files.map((file) => {
@@ -18,6 +19,7 @@ const backups = files.map((file) => {
   const original = readFileSync(abs, 'utf8');
   const json = JSON.parse(original);
   json.compilerOptions.paths['@solidaris/ui'] = ['dist/libs/ui'];
+  json.compilerOptions.paths['@solidaris/ui/patterns/ishare'] = ['dist/libs/ui/patterns/ishare'];
   json.compilerOptions.paths['@solidaris/plectrum'] = ['dist/libs/plectrum'];
   writeFileSync(abs, `${JSON.stringify(json, null, 2)}\n`);
   return { abs, original };

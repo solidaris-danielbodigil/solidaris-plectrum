@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "toolkitVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "dsVersionRange": {
+      "type": "string",
+      "minLength": 1
+    },
+    "contractSchemaRange": {
+      "type": "string",
+      "minLength": 1
+    },
+    "processVersionRange": {
+      "type": "string",
+      "minLength": 1
+    },
+    "editors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "verified"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "toolkitVersion",
+    "dsVersionRange",
+    "contractSchemaRange",
+    "processVersionRange",
+    "editors",
+    "status"
+  ],
+  "additionalProperties": false,
+  "$id": "urn:plectrum:schema:compatibility:1"
+}

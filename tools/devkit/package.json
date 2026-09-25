@@ -1,0 +1,21 @@
+{
+  "name": "@solidaris/plectrum-devkit",
+  "version": "0.2.0",
+  "type": "module",
+  "private": false,
+  "description": "Portable Plectrum contracts and contributor CLI for application teams",
+  "bin": { "plectrum": "./bin/plectrum.mjs" },
+  "exports": {
+    "./catalogue": "./assets/catalogue.json",
+    "./tokens": "./assets/tokens.json",
+    "./process": "./assets/process.json",
+    "./compatibility": "./assets/compatibility.json",
+    "./registry": "./assets/registry.json",
+    "./schema/*": "./assets/schema/*.schema.json"
+  },
+  "files": ["bin", "src", "assets", "rules", "roles.json", "README.md"],
+  "engines": { "node": "^20.19.0 || ^22.12.0 || ^24.0.0" },
+  "dependencies": { "ajv": "^8.18.0", "semver": "^7.8.5" },
+  "peerDependencies": { "typescript": ">=5.8 <6" },
+  "publishConfig": { "access": "restricted" }
+}

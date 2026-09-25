@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const TopNavMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:top-nav',
     name: 'TopNav',
     category: 'organisms',
     description:
@@ -17,6 +18,7 @@ export const TopNavMetadata: ComponentMetadata = {
     created: '2026-06-05',
     modified: '2026-09-14',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'TopNavComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

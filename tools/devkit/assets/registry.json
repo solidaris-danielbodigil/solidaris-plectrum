@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+  "teams": [
+    {
+      "id": "design-system",
+      "label": "Design-system",
+      "kind": "core",
+      "reviewer": "@solidaris-danielbodigil",
+      "alternateReviewers": [
+        "@danielbodi"
+      ]
+    },
+    {
+      "id": "ishare",
+      "label": "iSHARE",
+      "kind": "application",
+      "reviewer": null
+    },
+    {
+      "id": "icrm",
+      "label": "iCRM",
+      "kind": "application",
+      "reviewer": null
+    },
+    {
+      "id": "iged",
+      "label": "iGED",
+      "kind": "application",
+      "reviewer": null
+    }
+  ],
+  "applications": [
+    {
+      "id": "ishare",
+      "team": "ishare",
+      "label": "iSHARE",
+      "path": "apps/ishare",
+      "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+      "kind": "local-demo"
+    },
+    {
+      "id": "icrm",
+      "team": "icrm",
+      "label": "iCRM",
+      "path": "apps/icrm",
+      "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+      "kind": "local-demo"
+    },
+    {
+      "id": "iged",
+      "team": "iged",
+      "label": "iGED",
+      "path": "apps/iged",
+      "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+      "kind": "local-demo"
+    }
+  ],
+  "operations": {
+    "registry": "https://npm.pkg.github.com",
+    "publicationScope": "@solidaris-danielbodigil",
+    "visibility": "private",
+    "publicationEnabled": false,
+    "reportTransport": "reviewed-pull-request",
+    "reportIngestionEnabled": false,
+    "editors": [
+      "cursor",
+      "vscode-copilot"
+    ],
+    "storybook": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+    "figma": {
+      "componentLibrary": "wjMnb8GsK8bVKA7UreOJ4L",
+      "tokenLibrary": "YNZ1DlSjDNUXrvkxlSp10D",
+      "proposalCollectionPrefix": "proposals/",
+      "identitiesVerifiedForPublication": false
+    },
+    "pending": [
+      "Merge generated CODEOWNERS and P3 CI jobs to main; verify a reviewed candidate PR",
+      "Verify token/component Figma library identities with design owners",
+      "Configure authenticated external reporting in P4",
+      "Migrate package scopes and verify publication in P7"
+    ]
+  }
+}
