@@ -40,7 +40,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 implementation is on `main` via PR #8; its live external candidate and promotion are still unproven, so P3 stays open. PR #9 is merged. Its follow-up on `main` passed CI and Pages, and Release opened the version PR #10. Publishing stays disabled. P4 intake is implemented and still needs a live external report. P5–P9 remain pending.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); promotion and an external application are not planned. P4 catalogue labelling is on `main`; an external adoption report is not planned. P5 has one live Figma plugin promotion on `main` at package version 2.0.1; packages are not published. P6–P9 remain pending. Main review is suspended until the plan build finishes.
 
 ## Outcome
 
@@ -392,9 +392,15 @@ PR #10 does not publish packages. GitHub held its CI for approval because `githu
 - Existing generated-file gates: `tools/scripts/check-commit.mjs` and `.github/workflows/ci.yml`.
 - GitHub automation event behavior: https://docs.github.com/en/enterprise-cloud%40latest/actions/concepts/security/github_token — verify when implementing bot-created PRs and deployment sequencing.
 
-## P5 progress — 2026-09-25
+## Progress — 2026-09-25
 
-Staging is pinned from the plugin commit and the configured Figma file when the plugin omits provenance. The promotion commit is rebuilt from `main`, keeps `extend.ts`, and carries a patch changeset when token values change or a no-release record when they do not. An invalid incoming theme blocks promotion. CI on the bot pull request is dispatched because `GITHUB_TOKEN` does not start checks. Failed syncs are kept in the `token-sync-report` artifact. Storybook shows proposed, blocked, merged and released. A live plugin push is still the end-to-end proof. P6 needs a designer session, and P7 needs registry credentials.
+P3. `ishare-temporary-probe` was submitted (PR #14), revised (PR #16) and withdrawn (PR #18). Find a component listed it, then dropped it after withdrawal. The id stays reserved. No external application and no Core promotion are planned.
+
+P4. Adoption reports are collected by a reviewed pull request, and only when `reporting.enabled` is true. Find a component shows local iSHARE and iGED usage as `demo` and names applications without a report. An external report is not planned.
+
+P5. The PrimeUI plugin push on 2026-09-25 reached `design-tokens/sync`. The promotion was rebuilt from `main`, kept `extend.ts`, pinned provenance from the export commit, passed audit and preset validation, and merged as PR #25 (`6094cfa`). A patch changeset shipped in PR #26: `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles` are **2.0.1**. Publishing stayed off, so this sync is merged, not released. An empty promotion push must fail instead of force-pushing `main`, and the changelog feed is rebuilt before that commit. `design-tokens/sync` has to contain current `main` or the next plugin push runs an old workflow. The Figma branch `proposals/plectrum` is open for P6 and is not the inbound path.
+
+Still open: P6 on `proposals/plectrum` (repo to Figma, no write done yet), P7 registry credentials, P8 shared-source docs, P9, and restoring main review.
 
 ## Restore main review
 
