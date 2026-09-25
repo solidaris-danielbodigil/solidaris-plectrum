@@ -64,6 +64,7 @@ function parseArgs(argv) {
     mdPath: null,
     jsonPath: null,
     tsPath: null,
+    stage: 'proposed',
     help: false,
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -90,6 +91,9 @@ function parseArgs(argv) {
         if (key) out.outcomes[key] = value ?? '';
         break;
       }
+      case '--stage':
+        out.stage = next();
+        break;
       case '--md':
         out.mdPath = next();
         break;
@@ -579,6 +583,7 @@ module the Storybook page Docs/Token pipeline/Sync status renders.`);
     outcomes: args.outcomes,
     diff,
     checks,
+    stage: args.stage,
     result: outcome.result,
     resultText: outcome.text,
   };

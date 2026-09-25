@@ -16,7 +16,7 @@ Recorded so engineers can audit what the plugin is allowed to touch.
 
 ## Promotion
 
-Every push to `design-tokens/sync` rebuilds `tokens/promote-staging` = the staging branch + the generated files (`src/tokens.json`, `--pds-*` SCSS, token manifest, `sync-report.generated.ts`) and opens or updates **one PR against `main`**. Changes in the report are measured against `main`'s `tokens.json`, so the PR always reads as "what merging this changes for the apps".
+Every push to `design-tokens/sync` pins the export to that commit and the configured Figma file when the plugin omits provenance, then rebuilds `tokens/promote-staging` from `main` plus the generated files and opens or updates **one PR**. The workflow then dispatches CI, because a pull request opened with `GITHUB_TOKEN` does not start checks by itself. A value change adds a patch changeset; an unchanged sync records `no-release`. Failed syncs stay in the `token-sync-report` artifact.
 
 After merging a promotion PR, merge `main` back into `design-tokens/sync` so the next plugin push runs the current workflow and scripts. The plugin only ever writes `libs/plectrum/sync/tokens.json`, so that merge is conflict-free.
 

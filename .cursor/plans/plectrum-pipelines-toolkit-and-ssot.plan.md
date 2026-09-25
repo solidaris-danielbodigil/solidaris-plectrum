@@ -394,7 +394,7 @@ PR #10 does not publish packages. GitHub held its CI for approval because `githu
 
 ## P5 progress — 2026-09-25
 
-Staging must carry exporter source and provenance before promotion. The promotion commit is rebuilt from `main` and keeps `extend.ts`. The incoming theme is assembled before preset validation, so a bad new theme fails even when the previous preset was valid. Generated SCSS, the token manifest and `proposed.dtcg.json` are rebuilt and checked for a clean second run. A live Figma export with provenance is still required. P6 still needs a designer session, and P7 still needs registry credentials.
+Staging is pinned from the plugin commit and the configured Figma file when the plugin omits provenance. The promotion commit is rebuilt from `main`, keeps `extend.ts`, and carries a patch changeset when token values change or a no-release record when they do not. An invalid incoming theme blocks promotion. CI on the bot pull request is dispatched because `GITHUB_TOKEN` does not start checks. Failed syncs are kept in the `token-sync-report` artifact. Storybook shows proposed, blocked, merged and released. A live plugin push is still the end-to-end proof. P6 needs a designer session, and P7 needs registry credentials.
 
 ## Restore main review
 
