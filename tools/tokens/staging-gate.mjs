@@ -21,6 +21,22 @@ export function assessStaging(doc) {
   return errors;
 }
 
+export function stampProvenance(doc, input) {
+  const next = structuredClone(doc);
+  const current = next.provenance && typeof next.provenance === 'object' && !Array.isArray(next.provenance) ? { ...next.provenance } : {};
+  const filled = [];
+  for (const key of ['fileKey', 'revision', 'schemaVersion']) {
+    if (typeof current[key] !== 'string' || !current[key].trim()) {
+      if (typeof input[key] !== 'string' || !input[key].trim()) throw new Error(`Cannot pin provenance.${key}.`);
+      current[key] = input[key];
+      filled.push(key);
+    }
+  }
+  current.recordedBy = filled.length ? 'ingestion' : 'exporter';
+  next.provenance = current;
+  return next;
+}
+
 export function releaseIntent(doc) {
   return {
     classification: 'no-release',
@@ -31,9 +47,14 @@ export function releaseIntent(doc) {
 }
 
 function readArgs(argv) {
-  const out = { file: '', intent: '' };
+  const out = { file: '', intent: '', write: '', stamp: false, revision: '', fileKey: '', schemaVersion: '1' };
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === '--intent') out.intent = argv[++i];
+    else if (argv[i] === '--write') out.write = argv[++i];
+    else if (argv[i] === '--stamp') out.stamp = true;
+    else if (argv[i] === '--revision') out.revision = argv[++i];
+    else if (argv[i] === '--file-key') out.fileKey = argv[++i];
+    else if (argv[i] === '--schema-version') out.schemaVersion = argv[++i];
     else out.file = argv[i];
   }
   return out;
@@ -51,12 +72,21 @@ if (import.meta.url === `file://${process.argv[1].replaceAll('\\', '/')}` || pro
     console.error(`Incomplete staging: ${args.file} is not JSON (${error.message}).`);
     process.exit(1);
   }
+  if (args.stamp) {
+    try {
+      doc = stampProvenance(doc, { fileKey: args.fileKey, revision: args.revision, schemaVersion: args.schemaVersion });
+    } catch (error) {
+      console.error(`Incomplete staging: ${error.message}`);
+      process.exit(1);
+    }
+  }
   const errors = assessStaging(doc);
   if (errors.length) {
     console.error(`Incomplete staging: ${args.file}`);
     for (const error of errors) console.error(`- ${error}`);
     process.exit(1);
   }
+  if (args.write) writeFileSync(args.write, `${JSON.stringify(doc, null, 2)}\n`);
   if (args.intent) writeFileSync(args.intent, `${JSON.stringify(releaseIntent(doc), null, 2)}\n`);
   console.log(`Staging pinned: ${doc.source} ${doc.provenance.fileKey} @ ${doc.provenance.revision}`);
 }
