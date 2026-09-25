@@ -110,7 +110,8 @@ for (const lib of LIBS) {
       continue;
     }
 
-    released.push(parseRelease(`@solidaris/${lib}`, version, rest.join('\n').trim()));
+    const packageName = JSON.parse(read(join(root, 'libs', lib, 'package.json'))).name;
+    released.push(parseRelease(packageName, version, rest.join('\n').trim()));
   }
 }
 
@@ -134,7 +135,7 @@ if (existsSync(changesetDir)) {
     /** @type {PackageBump[]} */
     const bumps = [];
     for (const line of (match?.[1] ?? '').split('\n')) {
-      // '@solidaris/ui': major  |  "@solidaris/ui": patch
+      // '@solidaris-danielbodigil/ui': major  |  "@solidaris-danielbodigil/ui": patch
       const entry = line.match(/^\s*['"]?([^'":\s]+)['"]?\s*:\s*(major|minor|patch)\s*$/);
       if (entry) bumps.push({ packageName: entry[1], bump: entry[2] });
     }

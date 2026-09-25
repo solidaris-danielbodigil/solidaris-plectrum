@@ -9,11 +9,11 @@ import * as Figures from './ai-strategy.stories';
 
 Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
-Each application team works in its own repository. The installed `@solidaris/plectrum-devkit` gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
+Each application team works in its own repository. The installed `@solidaris-danielbodigil/plectrum-devkit` gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
 
 ## Team repositories
 
-Application teams install `@solidaris/ui`, `@solidaris/plectrum`, `@solidaris/styles` and `@solidaris/plectrum-devkit`. The first three provide runtime code and styles. The toolkit carries the contributor contract and CLI. From the application root, run `npx --no-install plectrum init --team <id> --application <id> --repository <url>`; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content. After upgrading it, run `npx --no-install plectrum update`; managed-file checksums detect conflicts while unrelated editor configuration remains in place. See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
+Application teams install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum`, `@solidaris-danielbodigil/styles` and `@solidaris-danielbodigil/plectrum-devkit`. The first three provide runtime code and styles. The toolkit carries the contributor contract and CLI. From the application root, run `npx --no-install plectrum init --team <id> --application <id> --repository <url>`; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content. After upgrading it, run `npx --no-install plectrum update`; managed-file checksums detect conflicts while unrelated editor configuration remains in place. See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
 
 Related pages:
 
@@ -208,7 +208,7 @@ In an application repository, Plectrum uses `plectrum scaffold --name <slug> --p
     ['docs:check', 'Commit hook and CI. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
     ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
-    ['Team repository', 'Install @solidaris/plectrum-devkit and run plectrum init; editor adapters are generated from its versioned process and roles.'],
+    ['Team repository', 'Install @solidaris-danielbodigil/plectrum-devkit and run plectrum init; editor adapters are generated from its versioned process and roles.'],
     ['ai-prompts.md', 'Four paste-ready prompts in .ai/contracts/protocols/: token review, Figma-to-tokens, general agent rules, Storybook MCP.'],
   ]}
 />

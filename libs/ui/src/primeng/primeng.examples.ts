@@ -102,7 +102,7 @@ export class DemoSelectButton {
     code: `import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 
 @Component({
   selector: 'demo-input-text',
@@ -133,7 +133,7 @@ export class DemoInputText {
     code: `import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 
 @Component({
   selector: 'demo-select',
@@ -169,7 +169,7 @@ export class DemoSelect {
     code: `import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AutoComplete, type AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 
 @Component({
   selector: 'demo-auto-complete',

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs/operators';
-import { EmptyStateComponent } from '@solidaris/ui';
+import { EmptyStateComponent } from '@solidaris-danielbodigil/ui';
 import { injectIgedMessages } from '../i18n';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import {

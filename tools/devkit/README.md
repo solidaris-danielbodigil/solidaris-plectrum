@@ -1,6 +1,6 @@
 # Plectrum team toolkit
 
-`@solidaris/plectrum-devkit` contains a versioned offline catalogue with complete component metadata, token inventory, JSON schemas, process contract, rules and the `plectrum` CLI. This package is locally packable; registry publication remains disabled until the release pipeline is completed.
+`@solidaris-danielbodigil/plectrum-devkit` contains a versioned offline catalogue with complete component metadata, token inventory, JSON schemas, process contract, rules and the `plectrum` CLI. This package is locally packable; registry publication remains disabled until the release pipeline is completed.
 
 ```sh
 npx --no-install plectrum init --team my-team --application my-app --repository https://github.com/owner/my-app

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
-import { TestingTelemetryService } from '@solidaris/ui';
+import { TestingTelemetryService } from '@solidaris-danielbodigil/ui';
 import { TestingSessionMenuService } from './testing-session-menu.service';
 
 describe('TestingSessionMenuService', () => {

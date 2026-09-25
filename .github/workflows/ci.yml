@@ -143,6 +143,9 @@ jobs:
       - name: Pack libraries and build a throwaway consumer app
         run: npm run pack:smoke
 
+      - name: Verify package ownership, registry target and release artifacts
+        run: npm run release:check
+
   storybook-tests:
     needs: intake-guard
     runs-on: ubuntu-latest

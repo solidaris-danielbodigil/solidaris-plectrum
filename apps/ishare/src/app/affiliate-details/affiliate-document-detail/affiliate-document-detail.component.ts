@@ -28,11 +28,11 @@ import type {
   ListEntryItem,
   ListEntryTag,
   ListEntryTagTarget,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import {
   PdsTelemetryLabelDirective,
-} from '@solidaris/ui';
-import { DelayPredictionCardComponent } from '@solidaris/ui/patterns/ishare';
+} from '@solidaris-danielbodigil/ui';
+import { DelayPredictionCardComponent } from '@solidaris-danielbodigil/ui/patterns/ishare';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
 import {
   summarizeDocumentStep,

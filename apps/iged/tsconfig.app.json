@@ -6,9 +6,9 @@
     "types": [],
     "paths": {
       "@solidaris/contracts": [".ai/contracts/schema/index.ts"],
-      "@solidaris/plectrum": ["libs/plectrum/src/index.ts"],
-      "@solidaris/styles": ["libs/styles/src/main.scss"],
-      "@solidaris/ui": ["libs/ui/src/index.ts"]
+      "@solidaris-danielbodigil/plectrum": ["libs/plectrum/src/index.ts"],
+      "@solidaris-danielbodigil/styles": ["libs/styles/src/main.scss"],
+      "@solidaris-danielbodigil/ui": ["libs/ui/src/index.ts"]
     }
   },
   "files": [

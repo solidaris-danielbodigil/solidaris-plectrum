@@ -23,8 +23,9 @@ jobs:
 
       - run: npm install
 
-      # Publish is parked until NPM_TOKEN + registry access exist.
-      # Restore `publish: npm run release` and `NPM_TOKEN` to go live.
+      # This workflow only prepares version PRs. A verified registry release,
+      # manifest and versioned Storybook are still pending P7; do not turn on
+      # changeset publish here independently of those outputs.
       - name: Create version PR
         uses: changesets/action@v1
         with:

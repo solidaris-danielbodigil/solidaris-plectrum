@@ -6,7 +6,7 @@ import figma from 'figma'
 export default {
   example: figma.code`<pds-skeleton-slot />`,
   imports: ["import { Skeleton } from 'primeng/skeleton'",
-  "import { SkeletonSlotComponent } from '@solidaris/ui'"],
+  "import { SkeletonSlotComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'skeleton',
   metadata: { nestable: true },
 }

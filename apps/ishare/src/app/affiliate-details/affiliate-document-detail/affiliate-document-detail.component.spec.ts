@@ -8,11 +8,11 @@ import {
 import { By } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import type { DocumentCrossReference } from './affiliate-document-detail.types';
-import type { ListEntryItem } from '@solidaris/ui';
+import type { ListEntryItem } from '@solidaris-danielbodigil/ui';
 import { AffiliateDocumentDetailComponent } from './affiliate-document-detail.component';
 import type { DocumentCertificatPanel } from './affiliate-document-detail.types';
 import { DocumentMoreDetailsDrawerComponent } from './document-more-details-drawer/document-more-details-drawer.component';
-import { TransactionsCicsModalComponent } from '@solidaris/ui/patterns/ishare';
+import { TransactionsCicsModalComponent } from '@solidaris-danielbodigil/ui/patterns/ishare';
 
 const VISIBLE_DOCUMENTS: ListEntryItem[] = [
   {

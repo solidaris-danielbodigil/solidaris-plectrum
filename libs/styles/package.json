@@ -1,7 +1,8 @@
 {
-  "name": "@solidaris/styles",
+  "name": "@solidaris-danielbodigil/styles",
   "version": "2.0.1",
   "description": "Plectrum ITCSS source — consume via stylePreprocessorOptions.includePaths",
+  "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "files": [
     "src/**/*.scss",
     "README.md"
@@ -11,6 +12,7 @@
     "./src/*": "./src/*"
   },
   "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
     "access": "restricted"
   }
 }

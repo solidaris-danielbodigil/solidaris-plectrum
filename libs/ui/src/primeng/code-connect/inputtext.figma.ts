@@ -22,7 +22,7 @@ export default {
   />
 </pds-form-field>`,
   imports: [
-    "import { FormFieldComponent } from '@solidaris/ui'",
+    "import { FormFieldComponent } from '@solidaris-danielbodigil/ui'",
     "import { InputText } from 'primeng/inputtext'",
   ],
   id: 'inputtext',

@@ -5,7 +5,7 @@ import figma from 'figma'
 
 export default {
   example: figma.code`<pds-icon icon="bi bi-check-lg" />`,
-  imports: ["import { IconComponent } from '@solidaris/ui'"],
+  imports: ["import { IconComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'check-lg',
   metadata: { nestable: true },
 }

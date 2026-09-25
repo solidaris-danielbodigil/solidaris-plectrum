@@ -107,7 +107,7 @@ test('a newly registered external team can exchange candidate, release and adopt
     source: candidate.origin,
     observedAt: '2026-09-24T12:00:00Z',
     reporterVersion: '0.1.0',
-    packages: [{ name: '@solidaris/ui', version: '2.0.0' }],
+    packages: [{ name: '@solidaris-danielbodigil/ui', version: '2.0.0' }],
     observations: [
       {
         componentId: 'plectrum:form-field',
@@ -146,9 +146,9 @@ test('a newly registered external team can exchange candidate, release and adopt
           path: released.component.path,
         },
         package: {
-          name: '@solidaris/ui',
+          name: '@solidaris-danielbodigil/ui',
           version: '2.0.0',
-          importPath: '@solidaris/ui',
+          importPath: '@solidaris-danielbodigil/ui',
           exportName: 'FormFieldComponent',
         },
         docs: {
@@ -181,7 +181,7 @@ test('a newly registered external team can exchange candidate, release and adopt
     publishedAt: '2026-09-24T12:00:00Z',
     registry: registry.operations.registry,
     packages: [
-      { name: '@solidaris/ui', version: '2.0.0', integrity: 'sha512-fixture' },
+      { name: '@solidaris-danielbodigil/ui', version: '2.0.0', integrity: 'sha512-fixture' },
     ],
     contracts: {
       url: 'https://example.com/contracts/2.0.0.json',

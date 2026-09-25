@@ -1,4 +1,4 @@
-import type { PdsMessages } from '@solidaris/ui';
+import type { PdsMessages } from '@solidaris-danielbodigil/ui';
 
 export const TransactionsCicsModalMessages = {
   fr: {

@@ -73,7 +73,7 @@ const meta: Meta<DetailListStoryArgs> = {
       {
         name: 'DetailListRow',
         description:
-          'Exported type { label: string; value: string } from @solidaris/ui (libs/ui/src/lib/drawer).',
+          'Exported type { label: string; value: string } from @solidaris-danielbodigil/ui (libs/ui/src/lib/drawer).',
       },
     ]),
   },

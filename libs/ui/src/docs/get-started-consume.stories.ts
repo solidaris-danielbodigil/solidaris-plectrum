@@ -16,7 +16,7 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus `primeng` and `@primeuix/themes`. Until npm publish is on, use the packed tarballs from `npm run pack:libs`.',
+      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus `primeng` and `@primeuix/themes`. Until npm publish is on, use the packed tarballs from `npm run pack:libs`.',
     links: [
       {
         label: 'Packages and how to get them',
@@ -51,7 +51,7 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Wire the stylesheet',
     detail:
-      "Add `node_modules/@solidaris/styles/src` to `stylePreprocessorOptions.includePaths` and `@use 'main'` in `styles.scss`.",
+      "Add `node_modules/@solidaris-danielbodigil/styles/src` to `stylePreprocessorOptions.includePaths` and `@use 'main'` in `styles.scss`.",
     links: [
       { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
       { label: 'Fonts, icons and browsers', href: '#fonts-icons-and-browsers' },
@@ -70,7 +70,7 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Render the first component',
     detail:
-      '`pds-form-field` from `@solidaris/ui` around a `pInputText` — the same component the sample application builds in CI.',
+      '`pds-form-field` from `@solidaris-danielbodigil/ui` around a `pInputText` — the same component the sample application builds in CI.',
     links: [
       { label: 'First component', href: '#first-component' },
       {
@@ -108,7 +108,7 @@ export const BeforeYouInvent: StoryObj = stepsStory([
     tone: 'app',
     title: 'Use a Core pds-* component',
     detail:
-      'If PrimeNG is not enough, import a Core component from @solidaris/ui. Find a component lists each one and which teams already use it.',
+      'If PrimeNG is not enough, import a Core component from @solidaris-danielbodigil/ui. Find a component lists each one and which teams already use it.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
