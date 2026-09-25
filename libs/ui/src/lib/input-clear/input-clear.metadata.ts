@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const InputClearMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:input-clear',
     name: 'InputClear',
     category: 'atoms',
     description:
@@ -17,6 +18,7 @@ export const InputClearMetadata: ComponentMetadata = {
     created: '2026-06-07',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'InputClearComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

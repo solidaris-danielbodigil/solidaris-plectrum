@@ -197,10 +197,10 @@ export function contractStory(
  *   export const Default = { args: { … }, play: … };
  *   export const Anatomy = { tags: ['!dev'], ...anatomyStory(XMetadata, Default) };
  */
-export function anatomyStory(
+export function anatomyStory<T = Record<string, unknown>>(
   metadata: ComponentMetadata,
-  specimen: StoryObj = {},
-): StoryObj {
+  specimen: StoryObj<T> = {},
+): StoryObj<T> {
   const {
     play: _play,
     tags: _tags,
@@ -217,7 +217,7 @@ export function anatomyStory(
       ...DOCS_FIGURE_PARAMETERS,
     },
     decorators: [
-      ...(decorators ?? []),
+      ...(decorators ? (Array.isArray(decorators) ? decorators : [decorators]) : []),
       moduleMetadata({ imports: [DocsAnatomyComponent] }),
       componentWrapperDecorator(
         (story) =>

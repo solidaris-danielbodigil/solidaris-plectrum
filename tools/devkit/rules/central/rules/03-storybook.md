@@ -1,0 +1,153 @@
+# Rules — 03 Storybook
+
+> ⛔ = hard stop — a component without a story **and Storybook tests** is not done
+>
+> Foundation and token pages must derive their content from the CSSOM rather than
+> hardcoded arrays — see [10-css-ssot.md](./10-css-ssot.md).
+
+---
+
+## Table of Contents
+
+1. [Mandatory Story Rule](#1-mandatory-story-rule-)
+2. [Required Story Exports](#2-required-story-exports)
+3. [Story Documentation Standard](#3-story-documentation-standard)
+4. [File Location](#4-file-location)
+5. [Testing](#5-testing-)
+
+---
+
+## 1. Mandatory Story Rule ⛔
+
+Every component in `libs/ui` **must** have a `.stories.ts` file **colocated with its component** in `libs/ui/src/lib/{component-name}/`.
+
+**A component is not complete without a Storybook story and the tests in §5.**
+
+- Develop and validate in Storybook **before** integrating into any app
+- Stories are the living documentation **and** the executable test suite — keep them up to date with the component
+- When `npm run storybook` is up, author against **Storybook MCP** (`http://localhost:6006/mcp`): `docs-show` a sibling, then `get-storybook-story-instructions`, then write CSF per this rule. `stories-preview` the canvases. Do not add a Control missing from `.metadata.ts` `props`. MCP does not replace `index.json` or `pds:component`.
+
+---
+
+## 2. Required Story Exports
+
+| Export name                   | When required                               |
+| ----------------------------- | ------------------------------------------- |
+| `Default` or primary state    | Always                                      |
+| `Expanded` / `Open`           | When component has an open/expanded state   |
+| `WithActiveItem` / `Selected` | When component has an active/selected state |
+| `Disabled`                    | When component has a disabled state         |
+| `Empty`                       | When component can render with no data      |
+| `Loading`                     | When component has a loading state          |
+| `Error`                       | When component has an error state           |
+
+---
+
+## 3. Story Documentation Standard
+
+CSF owns the Angular stories. Attached MDX owns all prose.
+
+- Colocate `{name}.mdx` next to `{name}.stories.ts`
+- Attach with `<Meta of={Stories} />` and pull canvases with `<Canvas of={Stories.X} />`
+- Import blocks from `@storybook/addon-docs/blocks`
+- Default Storybook `layout` is **`padded`**. Opt into `fullscreen` only for app chrome (Nav Shell, Sub-nav, Top Nav) and full-page token catalogues that apply their own `o-layout--padding-*`. A trigger-and-overlay story (Profile Drawer, a modal) stays padded — the overlay still covers the preview frame.
+- Token catalogues with a sticky `pds-toolbar` embed with `<Unstyled><Story of={…} /></Unstyled>`, not `<Canvas>`. Canvas iframes size to their content, so `position: sticky` never pins. Inline `Story` lives in the docs document and can stick against that scroll.
+- Catalogue stories stay **visible in the sidebar** so the Interactions and Accessibility panels can target them. Docs figures write a **literal** `tags: ['!dev']` on the export (`export const Usage = { tags: ['!dev'], ...contractStory(...) }`). A tag only on the factory return is runtime-only — the CSF indexer never sees it, so the figure stays in the sidebar. Do not put a fullscreen / `100dvh` wrapper on `meta.decorators`; it would swallow the docs figures. Keep that frame on the catalogue stories.
+- Do **not** put usage guidance in `parameters.docs.description.component` / `.story`
+
+**The `.metadata.ts` is the single source of truth for the documentation.** The MDX embeds figures that render it; it never restates a metadata block as prose. `npm run docs:check` (pre-commit and CI) fails on a hand-written When to use / When not to use / Anatomy / Accessibility / Figma section. CSS-only blocks (Accordion, Timeline, Drawer, Detail List, Skeleton Slot) have a `.metadata.ts` too — it is not indexed, it exists for the page and for agents.
+
+| Metadata block                                                            | Figure                                                                                       | CSF export                                                                                                               |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `governance` + `component.description` + `component.figmaUrl`             | `pds-docs-status` — badge, lead paragraph, Figma link                                        | `Status = { tags: ['!dev'], ...statusStory(XMetadata.governance, XMetadata.component) }`                                 |
+| `usage.useCases` / `usage.antiPatterns`                                   | `pds-docs-contract` → `pds-docs-do-dont` — Do / Don't cards with icons, reason and _Instead_ | `Usage = { tags: ['!dev'], ...contractStory(XMetadata, 'usage') }`                                                       |
+| `anatomy`                                                                 | `pds-docs-anatomy` — live specimen, numbered leader-line callouts, legend of found parts     | `Anatomy = { tags: ['!dev'], ...anatomyStory(XMetadata, Default) }` (specimen first)                                     |
+| `accessibility`                                                           | `pds-docs-contract` — WCAG tag, role, ARIA / keyboard / contrast lists                       | `Accessibility = { tags: ['!dev'], ...contractStory(XMetadata, 'accessibility') }`                                       |
+| `composition`, `behavior`, `variants`, `usage.commonPatterns`, `examples` | `pds-docs-contract` — embed only when the block has content                                  | `{ tags: ['!dev'], ...contractStory(XMetadata, 'composition' \| 'behavior' \| 'variants' \| 'patterns' \| 'examples') }` |
+| `props`                                                                   | Storybook `<ArgTypes>` via `argTypesFromProps`                                               | `argTypes` in `meta`                                                                                                     |
+
+Each MDX page must include, in this order:
+
+- `# Name`, then the Status figure: `<Unstyled><Story of={Stories.Status} /></Unstyled>` — no description paragraph in the MDX, it comes from `component.description`
+- The primary canvas first (usually `## Default`) with `<Controls of={Stories.X} />` immediately under it. State prose about the examples is the MDX's own content. `argTypesFromProps` (and `classArgTypes` for CSS-only blocks) fill those Controls — every row needs a description, `table.type`, and `table.defaultValue`
+- `## Usage` → `<Unstyled><Story of={Stories.Usage} /></Unstyled>` **after** that primary canvas. Visuals for a Do / Don't may be added in the MDX **under the figure** — the text stays in metadata
+- `## Variants` when the metadata has a variants block, after Usage
+- `## Anatomy` → `<Unstyled><Story of={Stories.Anatomy} /></Unstyled>` after Usage and Variants. The figure numbers only the parts in the specimen; a `p-message` notes that other variants may add parts
+- Optional `## Composition` / `## Behavior` figures
+- `## Accessibility` → `<Unstyled><Story of={Stories.Accessibility} /></Unstyled>`
+- Do **not** add `## API` + `<ArgTypes>` on a page that already has Controls — they are the same table. `<ArgTypes of={Stories} />` is only for pages with no Controls (foundations class catalogues)
+
+**PrimeNG control pages** (`libs/ui/src/primeng/{control}.mdx`, title `PrimeNG/{Control}`) document a stock PrimeNG control the way Form Field documents a wrapper. There is no `.metadata.ts`; the page's own `*.stories.ts` holds the figures. Required order, each as an `h2`, checked by `npm run docs:check`:
+
+1. `# Control`, then `Status` (`statusStory({ status: 'core', owner: 'design-system' })`) and one lead sentence: what it is, and the PrimeNG page it wraps
+2. `## Default` — primary canvas with `<Controls>`
+3. `## When to use` — the recommended default, what to use instead, and the family it belongs to (link the gallery page)
+4. `## Variants` — one canvas per variant the design system endorses, each with a sentence on why it exists; variants PrimeNG offers but Plectrum does not endorse are named once with the alternative
+5. `## Content` — label wording, FR/NL notes, length
+6. `## Behavior` — states, focus, what happens on submit / open / close
+7. `## Accessibility` — target, what Plectrum guarantees, what the application provides, and the evidence figure (`evidenceStory`) with automated / manual keyboard / manual screen reader status, `Not assessed` when no session exists
+8. `## Use in an application` — the snippet from `libs/ui/src/primeng/primeng.examples.ts` rendered as the Default story's `parameters.docs.source.code`; the same file lives in `tools/packaging/consumer-app/src/app/controls/` so `pack:smoke` compiles it
+9. `## Related` — sibling controls, patterns, Figma node (`PRIMENG_KIT` in `plectrum-figma.ts`) and the PrimeNG API link
+
+The family galleries (`actions.mdx`, `forms.mdx`, `data.mdx`, `content.mdx`, `overlays.mdx`) stay as theme proof and link down to the control pages. `PRIMENG_KIT[...].storybook` points at the control page, so Find a component and the UI kit table follow without edits.
+
+Headings stay in the MDX (the TOC reads `h2` / `h3`); figures render content only. A new fact about the component — a use case, an ARIA attribute, a part — goes into the metadata, and the page shows it on the next render. Do not use `<DocsTable>` for anything the schema has a field for.
+
+Docs tables use `<DocsTable>` from `libs/ui/.storybook/docs-table.ts` (Storybook ArgTypes chrome, no JSX — Angular's Babel loader cannot parse `.jsx`). Do **not** use Markdown pipe tables — Storybook 10 MDX leaves them as a single unreadable line. Do **not** put a PrimeNG `p-table` in a Canvas iframe; it is clipped. Custom components and UI pages put `<Controls of={Stories.X} />` under the primary canvas so designers can edit args there.
+
+Process and architecture pages (`libs/ui/src/docs/*.mdx`) are read by designers and architects as well as developers. Write them as reference documentation: noun headings (`Definition`, `Architecture`, `Process`, `Roles`, `Rules`, `Glossary`, `Reference`), short declarative sentences, terms defined on first use, engineering detail in a closing **Reference** section. No narrative framing ("the journey of…", "one picture", "roads"), no rhetorical questions.
+
+Section placement follows ownership (`governance` in `.metadata.ts`): `Custom components/…` and `Shell/…` are `core` / `design-system` only; application-owned work (`candidate`, `app`) is titled `Patterns/{App}/…` so it never reads as a design-system contract.
+
+**Docs figures are PrimeNG components, not custom markup** (see `04-primeng.md` §6). Steps, cards, callouts and the ownership badge are Angular components in `libs/ui/src/storybook/` built on PrimeNG — `pds-docs-steps` (`p-timeline` + `p-badge` + `p-tag`), `pds-docs-cards` (`p-card` + `p-tag`), `pds-docs-callout` (`p-message`), `pds-docs-status` (`p-tag` × 2 + `pds-docs-link`), `pds-docs-do-dont` (`p-card` × 2 + `p-tag` + `pds-icon`), `pds-docs-contract` (one metadata block per embed — `pds-docs-do-dont`, `pds-docs-anatomy`, `p-table`, `p-card`, `p-tag`), `pds-docs-anatomy` (`p-badge` callouts + SVG leader lines on a live specimen; `p-message` when metadata lists parts this example does not show). MDX cannot pass props to Angular, so each page keeps its figure content in a sibling `*.stories.ts` tagged `['!dev']` (hidden from the sidebar) using the factories in `libs/ui/src/docs/docs-figure-stories.ts`, and embeds it with `<Unstyled><Story of={Figures.X} /></Unstyled>`. The one exception is `<Diagram>` in `libs/ui/.storybook/docs-figures.ts` — an SVG boxes-and-arrows figure with no PrimeNG equivalent. Never draw diagrams in ASCII code blocks; never hand-roll a stepper, badge, card or notice in React or HTML when PrimeNG has one. Tones are fixed across all pages and map to PrimeNG severities: `design` = Figma (`warn`, orange), `system` = this repo (`info`, blue), `app` = products (`success`, green), `neutral` = process (`secondary`); dashed diagram arrows are manual steps. Styles live in `libs/styles/src/06-components/_components.docs-figures.scss`, read `--pds-*` only, and stay structural for the PrimeNG figures (grid, list bullets, text rhythm) — PrimeNG owns their chrome. The SVG carries `fill="none"` / `currentColor` presentation attributes so an unstyled render degrades to a wireframe, never to SVG's default black fill.
+
+---
+
+## 4. File Location
+
+Stories are **colocated** with their component inside `libs/ui`:
+
+```
+libs/ui/src/lib/
+└── {component-name}/
+    ├── {component-name}.component.ts
+    ├── {component-name}.component.html
+    ├── {component-name}.stories.ts   ← CSF (interactive stories)
+    └── {component-name}.mdx          ← attached docs page
+```
+
+Storybook discovers them via the glob in `libs/ui/.storybook/main.ts`.
+Import the component using its local relative path — **not** `@solidaris/ui` — to avoid circular resolution issues inside the monorepo stories.
+
+---
+
+## 5. Testing ⛔
+
+**A component is not complete without Storybook tests.** A canvas that only mounts is a smoke check; that is not enough for the required story exports in §2.
+
+Stories are the executable test suite. In the catalogue, run them from the **testing widget** (bottom of the sidebar) via `@storybook/addon-vitest` — that paints story statuses, Interactions, and a11y. CLI: `npm run test-storybook:vitest`. CI still uses `npm run test-storybook` (`@storybook/test-runner`). Storybook MCP `test-run` is wired. See [Storybook writing tests](https://storybook.js.org/docs/writing-tests). Import play helpers from `libs/ui/src/storybook/story-tests.ts` (re-exports `expect`, `userEvent`, `waitFor`, `within` plus `assertTextVisible`, `assertRoleVisible`, `waitForText`).
+
+The widget **Coverage** and **Visual tests** checkboxes share Storybook’s Node heap. Coverage-v8 stringifies the whole map in-process; Chromatic’s addon runs `build-storybook` in that same process. Together they OOM a laptop. Use them from a **separate process** instead (scripts below) — do not tick both on a live `npm run storybook`.
+
+| Kind               | Required on every `libs/ui` component                                                                                                                                                                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Render             | Every exported story must render without error (`npm run test-storybook`)                                                                                                                                                                                             |
+| Interaction / play | Every required canvas story in §2 has a `play` function. Interactive states use `userEvent` and assert the outcome. Display / CSS-only stories assert a render contract (visible text, role, or host class). Exception: `Status` and other `!dev` docs-figure stories |
+| Accessibility      | Global `parameters.a11y` in `.storybook/preview.ts` (WCAG 2.1 AA). Do **not** set `a11y.test: 'off'` on a component story without a comment. Do not ship a new component that adds unreviewed violations                                                              |
+| Visual             | Chromatic (`npm run chromatic`). Docs-figure / Status stories set `chromatic.disableSnapshot`. Do not disable snapshots on a catalogue story without a comment                                                                                                        |
+| Coverage           | `npm run test-storybook:vitest:coverage` (separate Vitest process; Storybook may stay up). Unit: `npm run test:coverage`. Test-runner Istanbul: `STORYBOOK_COVERAGE=1 npm run storybook` then `npm run test-storybook:coverage`. Widget Coverage toggle is the same runner **in** the Storybook process — skip it locally |
+
+Do **not** add a `test-runner.(js|ts)` hooks file under `libs/ui/.storybook/` — Jest 30 rejects `module.register()` inside workers. Visual diffs go through Chromatic, not Playwright image snapshots.
+
+```bash
+# In Storybook: testing widget → Run tests (Component tests + a11y)
+npm run test-storybook:vitest              # same runner, own process
+npm run test-storybook:vitest:coverage     # coverage without sharing Storybook’s heap
+npm run test-storybook                     # test-runner (CI; Storybook on localhost:6006)
+STORYBOOK_COVERAGE=1 npm run storybook     # then test-storybook:coverage
+npm run test-storybook:coverage            # test-runner + Istanbul under coverage/storybook
+npm run chromatic                          # visual baselines (builds Storybook — quit the dev server first)
+npm run build-storybook && npm run chromatic:from-build  # reuse a build, no second compile
+```
+
+A component that fails `test-storybook`, or whose required stories have no `play`, is not done.

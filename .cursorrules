@@ -45,7 +45,7 @@ Short form — full detail and examples in `.ai/rules/`:
 
 ## Workflow
 
-- **Scaffold**: `npm run pds:component` — creates the component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + its `@forward`, and regenerates `.ai/contracts/index.json`. Never edit `index.json` by hand; a Cursor hook and a CI diff gate keep it fresh.
+- **Scaffold**: `npm run pds:component -- --name=<name> --owner=<registered-team>` — creates metadata, CSF/MDX figures and ITCSS styles. Core styles join the main stylesheet; candidate styles stay Storybook-only outside the published styles tree. `contracts:generate` owns the metadata registry, index and eligible package exports; never edit those generated files. Teams, commands and contexts come from `.ai/contracts/{registry,process}.json`.
 - **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when `npm run storybook` is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `npm run contracts:check` fails props drift. Storybook MCP `test-run` and the testing widget use `@storybook/addon-vitest`; CI still uses `npm run test-storybook`.
 - **Token pipeline**: run `tokens:audit | build | lint | check-prefix | propose | apply` as tools — never edit `*.generated.scss` or `tokens.generated.ts` by hand. Reference: Storybook → Docs → Token pipeline → Commands.
 - **Orchestration**: for full component builds, delegate to the **Plectrum** subagent (spawns UX Researcher, Architect, UX Engineer, Frontend Dev, Tester, Token Auditor).

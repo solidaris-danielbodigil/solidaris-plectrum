@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const NavShellMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:nav-shell',
     name: 'NavShell',
     category: 'organisms',
     description:
@@ -15,6 +16,7 @@ export const NavShellMetadata: ComponentMetadata = {
     created: '2025-01-01',
     modified: '2026-09-14',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'NavShellComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

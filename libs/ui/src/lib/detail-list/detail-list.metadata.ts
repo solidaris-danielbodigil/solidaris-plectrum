@@ -7,6 +7,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
  */
 export const DetailListMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:detail-list',
     name: 'DetailList',
     category: 'molecules',
     description:
@@ -21,6 +22,7 @@ export const DetailListMetadata: ComponentMetadata = {
     created: '2026-09-09',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'styles' },
   governance: {
     status: 'core',
     owner: 'design-system',

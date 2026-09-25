@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const PlectrumAvatarMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:plectrum-avatar',
     name: 'PlectrumAvatar',
     category: 'atoms',
     description:
@@ -16,6 +17,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     created: '2026-06-04',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'PlectrumAvatarComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

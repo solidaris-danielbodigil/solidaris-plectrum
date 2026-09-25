@@ -1,27 +1,15 @@
 {
+  "schemaVersion": 1,
+  "kind": "source-inventory",
   "meta": {
-    "generated": "2026-09-24T08:30:53.588Z",
     "framework": "angular",
     "componentLibrary": "primeng",
     "designSystem": "plectrum",
     "prefix": "pds",
-    "baseRemPx": 14
+    "baseRemPx": 14,
+    "generator": "tools/contracts/generate.ts"
   },
   "workspace": {
-    "apps": [
-      {
-        "name": "ishare",
-        "path": "apps/ishare"
-      },
-      {
-        "name": "icrm",
-        "path": "apps/icrm"
-      },
-      {
-        "name": "iged",
-        "path": "apps/iged"
-      }
-    ],
     "libs": [
       {
         "name": "ui",
@@ -38,61 +26,91 @@
         "path": "libs/plectrum",
         "purpose": "PrimeNG theme preset integration"
       }
+    ],
+    "apps": [
+      {
+        "name": "ishare",
+        "path": "apps/ishare"
+      },
+      {
+        "name": "icrm",
+        "path": "apps/icrm"
+      },
+      {
+        "name": "iged",
+        "path": "apps/iged"
+      }
+    ]
+  },
+  "usageProvenance": {
+    "kind": "local-source-scan",
+    "applications": [
+      "ishare",
+      "icrm",
+      "iged"
+    ],
+    "limitations": [
+      "Source references may include unused imports or comments.",
+      "External applications are not yet collected; an empty list does not prove non-adoption."
     ]
   },
   "usedIn": {
-    "Accordion": [
+    "plectrum:accordion": [
       "iSHARE"
     ],
-    "DelayPredictionCard": [
+    "plectrum:copyable-text": [],
+    "plectrum:delay-prediction-card": [
       "iSHARE"
     ],
-    "Drawer": [
+    "plectrum:detail-list": [],
+    "plectrum:drawer": [
       "iSHARE"
     ],
-    "EmptyState": [
+    "plectrum:empty-state": [
       "iGED",
       "iSHARE"
     ],
-    "FormField": [
+    "plectrum:form-field": [
       "iGED",
       "iSHARE"
     ],
-    "InputClear": [
+    "plectrum:icon": [],
+    "plectrum:input-clear": [
       "iGED",
       "iSHARE"
     ],
-    "List": [
+    "plectrum:list": [
       "iSHARE"
     ],
-    "NavShell": [
+    "plectrum:nav-shell": [
       "iGED",
       "iSHARE"
     ],
-    "ProfileCard": [
+    "plectrum:plectrum-avatar": [],
+    "plectrum:profile-card": [
       "iSHARE"
     ],
-    "ProfileDrawer": [
+    "plectrum:profile-drawer": [
       "iSHARE"
     ],
-    "SkeletonSlot": [
+    "plectrum:skeleton-slot": [
       "iSHARE"
     ],
-    "SubNavShell": [
+    "plectrum:sub-nav-shell": [
       "iGED"
     ],
-    "Timeline": [
+    "plectrum:timeline": [
       "iSHARE"
     ],
-    "Toolbar": [
+    "plectrum:toolbar": [
       "iGED",
       "iSHARE"
     ],
-    "TopNav": [
+    "plectrum:top-nav": [
       "iGED",
       "iSHARE"
     ],
-    "TransactionsCicsModal": [
+    "plectrum:transactions-cics-modal": [
       "iSHARE"
     ]
   },
@@ -129,359 +147,824 @@
     }
   },
   "components": {
-    "CopyableText": {
+    "plectrum:accordion": {
+      "id": "plectrum:accordion",
+      "name": "Accordion",
+      "path": "libs/styles/src/06-components/_components.accordion.scss",
+      "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/accordion/accordion.metadata.ts",
+      "bemBlock": "c-accordion",
+      "primeNg": "Accordion",
+      "scssPath": "libs/styles/src/06-components/_components.accordion.scss",
+      "implementation": "CSS",
+      "distribution": {
+        "kind": "styles"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/styles/src/06-components/_components.accordion.scss"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/accordion/accordion.mdx",
+        "componentId": "plectrum:accordion"
+      },
+      "package": {
+        "name": "@solidaris/styles",
+        "version": "1.0.0"
+      },
+      "usedIn": [
+        "iSHARE"
+      ]
+    },
+    "plectrum:copyable-text": {
+      "id": "plectrum:copyable-text",
+      "name": "CopyableText",
       "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/copyable-text/copyable-text.metadata.ts",
       "bemBlock": "c-copyable-text",
       "primeNg": "Button",
       "scssPath": "libs/styles/src/06-components/_components.copyable-text.scss",
-      "uses": [
-        "Icon"
-      ],
-      "usedBy": [
-        "ProfileCard",
-        "ProfileDrawer"
-      ],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "CopyableTextComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/copyable-text/copyable-text.mdx",
+        "componentId": "plectrum:copyable-text"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "CopyableTextComponent"
+      },
       "usedIn": []
     },
-    "DelayPredictionCard": {
+    "plectrum:delay-prediction-card": {
+      "id": "plectrum:delay-prediction-card",
+      "name": "DelayPredictionCard",
       "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts",
       "category": "molecules",
       "status": "app",
       "owner": "ishare",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.metadata.ts",
       "bemBlock": "c-delay-prediction-card",
-      "primeNg": "Button",
+      "primeNg": "Divider, Button",
       "scssPath": "libs/styles/src/06-components/_components.delay-prediction-card.scss",
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": "./patterns/ishare",
+        "exportName": "DelayPredictionCardComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.mdx",
+        "componentId": "plectrum:delay-prediction-card"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui/patterns/ishare",
+        "exportName": "DelayPredictionCardComponent"
+      },
       "usedIn": [
         "iSHARE"
       ]
     },
-    "EmptyState": {
+    "plectrum:detail-list": {
+      "id": "plectrum:detail-list",
+      "name": "DetailList",
+      "path": "libs/styles/src/06-components/_components.detail-list.scss",
+      "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/detail-list/detail-list.metadata.ts",
+      "bemBlock": "c-detail-list",
+      "primeNg": null,
+      "scssPath": "libs/styles/src/06-components/_components.detail-list.scss",
+      "implementation": "CSS",
+      "distribution": {
+        "kind": "styles"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/styles/src/06-components/_components.detail-list.scss"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/detail-list/detail-list.mdx",
+        "componentId": "plectrum:detail-list"
+      },
+      "package": {
+        "name": "@solidaris/styles",
+        "version": "1.0.0"
+      },
+      "usedIn": []
+    },
+    "plectrum:drawer": {
+      "id": "plectrum:drawer",
+      "name": "Drawer",
+      "path": "libs/styles/src/06-components/_components.drawer.scss",
+      "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/drawer/drawer.metadata.ts",
+      "bemBlock": "c-drawer",
+      "primeNg": "Drawer",
+      "scssPath": "libs/styles/src/06-components/_components.drawer.scss",
+      "implementation": "CSS",
+      "distribution": {
+        "kind": "styles"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/styles/src/06-components/_components.drawer.scss"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/drawer/drawer.mdx",
+        "componentId": "plectrum:drawer"
+      },
+      "package": {
+        "name": "@solidaris/styles",
+        "version": "1.0.0"
+      },
+      "usedIn": [
+        "iSHARE"
+      ]
+    },
+    "plectrum:empty-state": {
+      "id": "plectrum:empty-state",
+      "name": "EmptyState",
       "path": "libs/ui/src/lib/empty-state/empty-state.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/empty-state/empty-state.metadata.ts",
       "bemBlock": "c-empty-state",
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.empty-state.scss",
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "EmptyStateComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/empty-state/empty-state.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/empty-state/empty-state.mdx",
+        "componentId": "plectrum:empty-state"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "EmptyStateComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "FormField": {
+    "plectrum:form-field": {
+      "id": "plectrum:form-field",
+      "name": "FormField",
       "path": "libs/ui/src/lib/form-field/form-field.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/form-field/form-field.metadata.ts",
       "bemBlock": "c-form-field",
       "primeNg": "Message",
       "scssPath": "libs/styles/src/06-components/_components.form-field.scss",
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "FormFieldComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/form-field/form-field.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/form-field/form-field.mdx",
+        "componentId": "plectrum:form-field"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "FormFieldComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "Icon": {
+    "plectrum:icon": {
+      "id": "plectrum:icon",
+      "name": "Icon",
       "path": "libs/ui/src/lib/icon/icon.component.ts",
       "category": "atoms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/icon/icon.metadata.ts",
       "bemBlock": "c-icon",
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.icon.scss",
-      "uses": [],
-      "usedBy": [
-        "CopyableText",
-        "NavShell"
-      ],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "IconComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/icon/icon.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/icon/icon.mdx",
+        "componentId": "plectrum:icon"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "IconComponent"
+      },
       "usedIn": []
     },
-    "InputClear": {
+    "plectrum:input-clear": {
+      "id": "plectrum:input-clear",
+      "name": "InputClear",
       "path": "libs/ui/src/lib/input-clear/input-clear.component.ts",
       "category": "atoms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/input-clear/input-clear.metadata.ts",
       "bemBlock": "c-input-clear",
-      "primeNg": "Icons",
+      "primeNg": "IconField / InputIcon",
       "scssPath": "libs/styles/src/06-components/_components.input-clear.scss",
-      "uses": [],
-      "usedBy": [
-        "SubNavShell",
-        "TopNav"
-      ],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "InputClearComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/input-clear/input-clear.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/input-clear/input-clear.mdx",
+        "componentId": "plectrum:input-clear"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "InputClearComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "List": {
+    "plectrum:list": {
+      "id": "plectrum:list",
+      "name": "List",
       "path": "libs/ui/src/lib/list/list.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/list/list.metadata.ts",
       "bemBlock": "c-list",
-      "primeNg": "Api",
+      "primeNg": "Tree",
       "scssPath": "libs/styles/src/06-components/_components.list.scss",
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "ListComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/list/list.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/list/list.mdx",
+        "componentId": "plectrum:list"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "ListComponent"
+      },
       "usedIn": [
         "iSHARE"
       ]
     },
-    "NavShell": {
+    "plectrum:nav-shell": {
+      "id": "plectrum:nav-shell",
+      "name": "NavShell",
       "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts",
       "category": "organisms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/nav-shell/nav-shell.metadata.ts",
       "bemBlock": "c-nav-shell",
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.nav-shell.scss",
-      "uses": [
-        "Icon"
-      ],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "NavShellComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/nav-shell/nav-shell.mdx",
+        "componentId": "plectrum:nav-shell"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "NavShellComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "PlectrumAvatar": {
+    "plectrum:plectrum-avatar": {
+      "id": "plectrum:plectrum-avatar",
+      "name": "PlectrumAvatar",
       "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts",
       "category": "atoms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.metadata.ts",
       "bemBlock": "c-plectrum-avatar",
       "primeNg": null,
       "scssPath": "libs/styles/src/06-components/_components.plectrum-avatar.scss",
-      "uses": [],
-      "usedBy": [
-        "ProfileCard",
-        "ProfileDrawer",
-        "TopNav"
-      ],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "PlectrumAvatarComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.mdx",
+        "componentId": "plectrum:plectrum-avatar"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "PlectrumAvatarComponent"
+      },
       "usedIn": []
     },
-    "ProfileCard": {
+    "plectrum:profile-card": {
+      "id": "plectrum:profile-card",
+      "name": "ProfileCard",
       "path": "libs/ui/src/lib/profile-card/profile-card.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/profile-card/profile-card.metadata.ts",
       "bemBlock": "c-profile-card",
-      "primeNg": "Api",
+      "primeNg": "Card, Button, Badge, SelectButton, Popover, Skeleton",
       "scssPath": "libs/styles/src/06-components/_components.profile-card.scss",
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "ProfileCardComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/profile-card/profile-card.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/profile-card/profile-card.mdx",
+        "componentId": "plectrum:profile-card"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "ProfileCardComponent"
+      },
       "usedIn": [
         "iSHARE"
       ]
     },
-    "ProfileDrawer": {
+    "plectrum:profile-drawer": {
+      "id": "plectrum:profile-drawer",
+      "name": "ProfileDrawer",
       "path": "libs/ui/src/lib/profile-drawer/profile-drawer.component.ts",
       "category": "organisms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/profile-drawer/profile-drawer.metadata.ts",
       "bemBlock": "c-drawer",
-      "primeNg": "Accordion",
+      "primeNg": "Drawer, SelectButton, Accordion, Tag, Button",
       "scssPath": "libs/styles/src/06-components/_components.drawer.scss",
-      "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
-      ],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "ProfileDrawerComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/profile-drawer/profile-drawer.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/profile-drawer/profile-drawer.mdx",
+        "componentId": "plectrum:profile-drawer"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "ProfileDrawerComponent"
+      },
       "usedIn": [
         "iSHARE"
       ]
     },
-    "SubNavShell": {
+    "plectrum:skeleton-slot": {
+      "id": "plectrum:skeleton-slot",
+      "name": "SkeletonSlot",
+      "path": "libs/styles/src/06-components/_components.skeleton-slot.scss",
+      "category": "atoms",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/skeleton-slot/skeleton-slot.metadata.ts",
+      "bemBlock": "c-skeleton-slot",
+      "primeNg": "Skeleton",
+      "scssPath": "libs/styles/src/06-components/_components.skeleton-slot.scss",
+      "implementation": "CSS",
+      "distribution": {
+        "kind": "styles"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/styles/src/06-components/_components.skeleton-slot.scss"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/skeleton-slot/skeleton-slot.mdx",
+        "componentId": "plectrum:skeleton-slot"
+      },
+      "package": {
+        "name": "@solidaris/styles",
+        "version": "1.0.0"
+      },
+      "usedIn": [
+        "iSHARE"
+      ]
+    },
+    "plectrum:sub-nav-shell": {
+      "id": "plectrum:sub-nav-shell",
+      "name": "SubNavShell",
       "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts",
       "category": "organisms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.metadata.ts",
       "bemBlock": "c-sub-nav-shell",
-      "primeNg": "Accordion",
+      "primeNg": "Accordion, Badge, Tooltip",
       "scssPath": "libs/styles/src/06-components/_components.sub-nav-shell.scss",
-      "uses": [
-        "InputClear"
-      ],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "SubNavShellComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.mdx",
+        "componentId": "plectrum:sub-nav-shell"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "SubNavShellComponent"
+      },
       "usedIn": [
         "iGED"
       ]
     },
-    "Toolbar": {
+    "plectrum:timeline": {
+      "id": "plectrum:timeline",
+      "name": "Timeline",
+      "path": "libs/styles/src/06-components/_components.timeline.scss",
+      "category": "molecules",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/timeline/timeline.metadata.ts",
+      "bemBlock": "c-timeline",
+      "primeNg": "Timeline",
+      "scssPath": "libs/styles/src/06-components/_components.timeline.scss",
+      "implementation": "CSS",
+      "distribution": {
+        "kind": "styles"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/styles/src/06-components/_components.timeline.scss"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/timeline/timeline.mdx",
+        "componentId": "plectrum:timeline"
+      },
+      "package": {
+        "name": "@solidaris/styles",
+        "version": "1.0.0"
+      },
+      "usedIn": [
+        "iSHARE"
+      ]
+    },
+    "plectrum:toolbar": {
+      "id": "plectrum:toolbar",
+      "name": "Toolbar",
       "path": "libs/ui/src/lib/toolbar/toolbar.component.ts",
       "category": "molecules",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/toolbar/toolbar.metadata.ts",
       "bemBlock": "c-toolbar",
       "primeNg": "Card",
       "scssPath": "libs/styles/src/06-components/_components.toolbar.scss",
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "ToolbarComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/toolbar/toolbar.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/toolbar/toolbar.mdx",
+        "componentId": "plectrum:toolbar"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "ToolbarComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "TopNav": {
+    "plectrum:top-nav": {
+      "id": "plectrum:top-nav",
+      "name": "TopNav",
       "path": "libs/ui/src/lib/top-nav/top-nav.component.ts",
       "category": "organisms",
       "status": "core",
       "owner": "design-system",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/top-nav/top-nav.metadata.ts",
       "bemBlock": "c-top-nav",
-      "primeNg": "Api",
+      "primeNg": "Breadcrumb, Button, IconField, InputText, SelectButton",
       "scssPath": "libs/styles/src/06-components/_components.top-nav.scss",
-      "uses": [
-        "InputClear",
-        "PlectrumAvatar"
-      ],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "TopNavComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/top-nav/top-nav.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/top-nav/top-nav.mdx",
+        "componentId": "plectrum:top-nav"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui",
+        "exportName": "TopNavComponent"
+      },
       "usedIn": [
         "iGED",
         "iSHARE"
       ]
     },
-    "TransactionsCicsModal": {
+    "plectrum:transactions-cics-modal": {
+      "id": "plectrum:transactions-cics-modal",
+      "name": "TransactionsCicsModal",
       "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts",
       "category": "organisms",
       "status": "app",
       "owner": "ishare",
-      "metadata": true,
+      "metadata": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.metadata.ts",
       "bemBlock": "c-transactions-cics-modal",
-      "primeNg": "Button",
+      "primeNg": "Dialog, Message, IconField, InputText, Table, Button",
       "scssPath": null,
-      "uses": [],
-      "usedBy": [],
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": "./patterns/ishare",
+        "exportName": "TransactionsCicsModalComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.mdx",
+        "componentId": "plectrum:transactions-cics-modal"
+      },
+      "package": {
+        "name": "@solidaris/ui",
+        "version": "1.0.0",
+        "importPath": "@solidaris/ui/patterns/ishare",
+        "exportName": "TransactionsCicsModalComponent"
+      },
       "usedIn": [
         "iSHARE"
       ]
     }
   },
   "relationships": {
-    "CopyableText": {
+    "plectrum:accordion": {
+      "uses": [],
+      "usedBy": []
+    },
+    "plectrum:copyable-text": {
       "uses": [
-        "Icon"
+        "plectrum:icon"
       ],
       "usedBy": [
-        "ProfileCard",
-        "ProfileDrawer"
+        "plectrum:profile-card",
+        "plectrum:profile-drawer"
       ]
     },
-    "DelayPredictionCard": {
+    "plectrum:delay-prediction-card": {
       "uses": [],
       "usedBy": []
     },
-    "EmptyState": {
+    "plectrum:detail-list": {
       "uses": [],
       "usedBy": []
     },
-    "FormField": {
+    "plectrum:drawer": {
       "uses": [],
       "usedBy": []
     },
-    "Icon": {
+    "plectrum:empty-state": {
+      "uses": [],
+      "usedBy": []
+    },
+    "plectrum:form-field": {
+      "uses": [],
+      "usedBy": []
+    },
+    "plectrum:icon": {
       "uses": [],
       "usedBy": [
-        "CopyableText",
-        "NavShell"
+        "plectrum:copyable-text",
+        "plectrum:nav-shell"
       ]
     },
-    "InputClear": {
+    "plectrum:input-clear": {
       "uses": [],
       "usedBy": [
-        "SubNavShell",
-        "TopNav"
+        "plectrum:sub-nav-shell",
+        "plectrum:top-nav"
       ]
     },
-    "List": {
+    "plectrum:list": {
       "uses": [],
       "usedBy": []
     },
-    "NavShell": {
+    "plectrum:nav-shell": {
       "uses": [
-        "Icon"
+        "plectrum:icon"
       ],
       "usedBy": []
     },
-    "PlectrumAvatar": {
+    "plectrum:plectrum-avatar": {
       "uses": [],
       "usedBy": [
-        "ProfileCard",
-        "ProfileDrawer",
-        "TopNav"
+        "plectrum:profile-card",
+        "plectrum:profile-drawer",
+        "plectrum:top-nav"
       ]
     },
-    "ProfileCard": {
+    "plectrum:profile-card": {
       "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
+        "plectrum:copyable-text",
+        "plectrum:plectrum-avatar"
       ],
       "usedBy": []
     },
-    "ProfileDrawer": {
+    "plectrum:profile-drawer": {
       "uses": [
-        "PlectrumAvatar",
-        "CopyableText"
+        "plectrum:copyable-text",
+        "plectrum:plectrum-avatar"
       ],
       "usedBy": []
     },
-    "SubNavShell": {
-      "uses": [
-        "InputClear"
-      ],
-      "usedBy": []
-    },
-    "Toolbar": {
+    "plectrum:skeleton-slot": {
       "uses": [],
       "usedBy": []
     },
-    "TopNav": {
+    "plectrum:sub-nav-shell": {
       "uses": [
-        "InputClear",
-        "PlectrumAvatar"
+        "plectrum:input-clear"
       ],
       "usedBy": []
     },
-    "TransactionsCicsModal": {
+    "plectrum:timeline": {
+      "uses": [],
+      "usedBy": []
+    },
+    "plectrum:toolbar": {
+      "uses": [],
+      "usedBy": []
+    },
+    "plectrum:top-nav": {
+      "uses": [
+        "plectrum:input-clear",
+        "plectrum:plectrum-avatar"
+      ],
+      "usedBy": []
+    },
+    "plectrum:transactions-cics-modal": {
       "uses": [],
       "usedBy": []
     }
   },
   "summary": {
-    "totalComponents": 15,
-    "componentsWithMetadata": 15,
-    "relationshipsMapped": 18,
-    "tokenFiles": 11,
-    "primeNgMappings": 11,
+    "totalComponents": 20,
+    "componentsWithMetadata": 20,
+    "relationshipsMapped": 9,
+    "tokenFiles": 48,
+    "primeNgMappings": 15,
     "byStatus": {
-      "app": 2,
-      "core": 13
+      "core": 18,
+      "app": 2
     }
   }
 }

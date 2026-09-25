@@ -6,11 +6,12 @@ import * as Figures from './get-started-contribute.stories';
 
 # Contribute
 
-Everything ships through this repository: tokens, stylesheets, components, and this Storybook. Develop in Storybook first. Applications install versioned packages — packed tarballs of the current version until npm publish is on — never source paths.
+Core tokens, stylesheets, components and this Storybook ship through this repository. Application teams build approved candidates in their own repositories and submit metadata, commit provenance and preview evidence through a reviewed central PR. Applications install versioned packages — packed tarballs of the current version until npm publish is on — never source paths.
 
 Related pages:
 
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF, attached MDX, Storybook MCP
+- [Pipelines and contracts](?path=/docs/docs-pipeline-contracts--docs) — shared steps, available commands, team registry and handoff configuration
 - [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP tools
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 
@@ -47,7 +48,7 @@ Application teams migrating to Plectrum need variants the system does not have y
   rows={[
     ['It already exists — PrimeNG, a Core component, a token', 'Nowhere new. Use it; the docs page gets the missing example if that is why you missed it', 'Design-system team', 'Core'],
     ['System-level — a second application will need it, or it is a variant of a Core component', 'libs/ui / libs/styles / the UI Kit Component collection, through the normal pull request and design-system review', 'Design-system team', 'Core'],
-    ['App-specific — only your screens need it', 'The application team builds and owns it: Patterns/{App} in Storybook, owner: <app>, tokens in 01-settings/_settings.{feature}.scss. Promotion is optional and later — a Candidate is not a core backlog', 'Application team', 'Candidate or App-specific'],
+    ['App-specific — only your screens need it', 'The application team builds and owns it in its repository, with local stories and approved token aliases. A submitted Candidate gets a central listing linked to that team’s preview; promotion is a separate Core decision', 'Application team', 'Candidate or App-specific'],
   ]}
 />
 
@@ -81,7 +82,7 @@ Every component docs page opens with two badges from its `.metadata.ts` `governa
   ]}
 />
 
-The **owner** badge names the accountable team: `design-system`, `ishare` or `icrm`. Ownership and status travel together — a Core component is always design-system owned; a Candidate or App-specific component never is.
+The **owner** badge names a team from the shared registry. Core components require a registered core owner. See [Pipelines and contracts](?path=/docs/docs-pipeline-contracts--docs#teams-and-operational-configuration) for the current teams and configuration.
 
 ## Promotion
 
@@ -89,15 +90,19 @@ Promotion is a move, done by the core team when a proposal comes back with the s
 
 1. Generic name and API — application vocabulary leaves the inputs and the BEM block.
 2. Tokens move from the `proposals/{app}` Figma collection into Component or Semantic, and from `_settings.{feature}.scss` into the shared settings files.
-3. The Storybook title moves from `Patterns/{App}` to `Custom components` or `Shell`; `governance` becomes `status: 'core'`, `owner: 'design-system'`.
+3. The integrated stories appear under `Custom components` or `Shell` in central Storybook; `governance` becomes `status: 'core'`, `owner: 'design-system'` while the stable component ID is retained.
 4. The Figma component is designed from the repo on the branch — an agent via Figma MCP, or a designer by hand. Bind variables; do not paint hex from a screenshot. Merge and publish stay human.
-5. A changeset records the bump and the release workflow publishes the packages; the application bumps, deletes its local copy and imports from `@solidaris/ui`.
+5. A changeset records the bump. After the publication pipeline is enabled and a verified release exists, the application upgrades, deletes its local copy and imports from `@solidaris/ui`.
 
 Until step 3 the component stays the application's, whatever `libs/` folder it sits in. Token writes use the Plugin API: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise ([Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs)).
 
 ---
 
 ## Set up
+
+In an **application repository**, install the runtime packages and `@solidaris/plectrum-devkit` as described in [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit). Run `plectrum init` once, then `plectrum catalogue` and `plectrum doctor`. Open a proposal issue; the Core team records its decision in `.ai/candidates/proposals/<application>-<slug>.json`. After that record is merged with `approved-candidate`, run `plectrum scaffold --name <slug> --proposal <application>-<slug>`. Complete the metadata JSON, story, style and evidence, then run `plectrum check --profile ci` and commit. Publish an HTTPS preview and CI result for the exact commit. With `GH_TOKEN` or `GITHUB_TOKEN`, run `plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url>` to open a central intake PR. Repeating this after a new commit revises the stable ID; `plectrum candidate-withdraw --id <application>-<slug> --reason <text>` opens a withdrawal PR. The central JSON submission appears in Find a component with a link to the team's preview after review and merge. `plectrum update` refreshes editor adapters when the installed toolkit changes. Local `index.json` files are never submitted.
+
+The commands below apply to contributors working **inside the Plectrum repository**:
 
 ```bash
 git clone https://github.com/solidaris-danielbodigil/solidaris-plectrum.git
@@ -106,7 +111,7 @@ npm install
 npm run storybook     # http://localhost:6006
 ```
 
-Node **20.19+, 22.12+ or 24** — the range Angular 21 supports. CI (`ci.yml`) runs every gate on Node 20; the GitHub Pages deploy (`deploy-ishare-pages.yml`) builds on Node 24, so both ends of the range are exercised. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
+Node **20.19+, 22.12+ or 24** — the configured range. CI (`ci.yml`) currently runs on Node 24. The apps run with `npm start` (iSHARE) and `npm run start:icrm`.
 
 ## Where things live
 
@@ -128,7 +133,7 @@ Only after the core team's decision on a [proposal issue](https://github.com/sol
 
 ```bash
 npm run pds:component -- --owner=design-system   # core team: status core
-npm run pds:component -- --owner=ishare          # application team: status candidate
+npm run pds:component -- --owner=ishare          # local demo candidate in Plectrum
 ```
 
 The scaffolder asks for name, category, type and optional PrimeNG wrap, then creates the Angular files, the `.metadata.ts` contract with its `governance` block, a stories stub, the `_components.{name}.scss` partial (forwarded from the core barrel), and regenerates `.ai/contracts/index.json`. Then:
@@ -186,7 +191,9 @@ What `.github/workflows/ci.yml` runs on every push and pull request to `main`, i
     ['build', 'tokens:build + diff', 'Generated SCSS (*.generated.scss) or tokens.generated.ts is stale'],
     ['build', 'changelog:build + diff', 'changelog.generated.ts no longer matches .changeset/*.md and libs/*/CHANGELOG.md'],
     ['build', 'tokens:lint', '--p-* declared outside 01-settings, or unknown --pds-* names'],
-    ['build', 'generate-index + diff', '.ai/contracts/index.json is stale — including a component whose governance changed'],
+    ['build', 'contracts:generate -- --check', 'Generated contracts, index, package exports, schemas, toolkit snapshots or CODEOWNERS are stale'],
+    ['build', 'candidate:check', 'A proposal, submission, review or promotion breaks identity, provenance, ownership or integration requirements'],
+    ['intake-guard', 'data-only candidate PR', 'A submission PR changes anything other than one central submission JSON'],
     ['build', 'build · test:coverage', 'The iSHARE build breaks, or a ui / ishare / plectrum unit test fails'],
     ['pack-smoke', 'pack:smoke', 'The packed tarballs cannot install into and build the throwaway consumer app'],
     ['storybook-tests', 'build-storybook · test-storybook:ci', 'A story fails to render, an interaction (play) test fails, an a11y assertion fails, or story coverage collection errors'],

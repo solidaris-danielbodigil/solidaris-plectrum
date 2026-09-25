@@ -1,4 +1,4 @@
-import type { PdsMessages } from '../i18n';
+import type { PdsMessages } from '@solidaris/ui';
 
 export const DelayPredictionCardMessages = {
   fr: {

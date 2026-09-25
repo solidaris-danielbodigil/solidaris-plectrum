@@ -39,11 +39,11 @@ import {
   TestingTelemetryService,
   TESTING_TELEMETRY_ENABLED,
   ToolbarComponent,
-  TransactionsCicsModalComponent,
   type ProfileDrawerData,
   type ProfileDrawerRelatedMember,
   type ProfileDrawerView,
 } from '@solidaris/ui';
+import { TransactionsCicsModalComponent } from '@solidaris/ui/patterns/ishare';
 import type {
   ProfileCardIdentifier,
   ProfileCardInfoTag,

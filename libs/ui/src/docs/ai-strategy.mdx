@@ -9,21 +9,11 @@ import * as Figures from './ai-strategy.stories';
 
 Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
-Each application team works in its own repository. That repository needs `.ai` and the subagents, or the agent there has nothing to load.
+Each application team works in its own repository. The installed `@solidaris/plectrum-devkit` gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
 
 ## Team repositories
 
-Application teams install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`. Those packages ship components, the theme and the stylesheet. They leave the agent files out.
-
-Download these three folders from the design-system repository and place them at the same paths in the team repository:
-
-- [`.ai`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.ai) — rules, skills, contracts. Agents start at `.ai/README.md`. How to address Plectrum is [below](#subagents).
-- [`.cursor/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.cursor/agents) — Cursor subagents. The user-facing one is Plectrum. It delegates to UX Researcher, UX Engineer, Frontend Dev, Tester, Token Auditor and Architect.
-- [`.github/agents`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.github/agents) — the same seven roles for VS Code.
-
-When a folder changes in the design-system repository, download it again and replace the copy in the team repository. Keep team notes outside these folders, so the next download does not erase them.
-
-An `npm install` script is able to write files into the team repository. These folders are not installed that way. Many builds skip install scripts, and a later install would overwrite the copy the team already has.
+Application teams install `@solidaris/ui`, `@solidaris/plectrum`, `@solidaris/styles` and `@solidaris/plectrum-devkit`. The first three provide runtime code and styles. The toolkit carries the contributor contract and CLI. From the application root, run `npx --no-install plectrum init --team <id> --application <id> --repository <url>`; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content. After upgrading it, run `npx --no-install plectrum update`; managed-file checksums detect conflicts while unrelated editor configuration remains in place. See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
 
 Related pages:
 
@@ -161,7 +151,7 @@ MCP does not scaffold. Pre-flight is still PrimeNG MCP → Figma MCP → `index.
 
 ### Subagents
 
-Component work is delegated to specialist subagents. Invoke it with `/plectrum`, then describe the component. It runs research, tokens, implementation and QA. You do not address the six specialists yourself. Definitions live in `.cursor/agents/*.md` (Cursor) and `.github/agents/*.agent.md` (VS Code / Copilot) — keep both in sync.
+Component work is coordinated by the Plectrum agent. In Cursor, select the generated Plectrum agent (or invoke `/plectrum` where supported); in VS Code/Copilot, select Plectrum in the chat agent picker. The toolkit generates both editors' role files from one shared source. Describe the component, proposal and owner; the agent can involve the specialist roles.
 
 ```
 /plectrum Add a Core status banner.
@@ -171,7 +161,7 @@ Proposal: [issue link].
 Use PrimeNG Message if it already covers this.
 ```
 
-Plectrum asks for the owner and the proposal when either is missing, then scaffolds with `pds:component`. Token review, Figma-to-token translation and story-writing templates stay in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
+In an application repository, Plectrum uses `plectrum scaffold --name <slug> --proposal <application>-<slug>` after the merged proposal decision; in the design-system repository, maintainers use `npm run pds:component`. The central token, Figma and story-writing protocols remain in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
 
 <DocsTable
   headers={['Agent', 'Role']}
@@ -218,7 +208,7 @@ Plectrum asks for the owner and the proposal when either is missing, then scaffo
     ['docs:check', 'Commit hook and CI. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
     ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
-    ['Team repository', 'One repository per application team. Download .ai, .cursor/agents and .github/agents from the design-system repository. The packages do not install them.'],
+    ['Team repository', 'Install @solidaris/plectrum-devkit and run plectrum init; editor adapters are generated from its versioned process and roles.'],
     ['ai-prompts.md', 'Four paste-ready prompts in .ai/contracts/protocols/: token review, Figma-to-tokens, general agent rules, Storybook MCP.'],
   ]}
 />
@@ -252,16 +242,16 @@ Import the type from `@solidaris/contracts`. Export a const (`EmptyStateMetadata
 
 ### Index
 
-`npm run generate-index` runs `tools/scripts/generate-index.ts`. It walks `libs/ui/src/lib`, reads imports and the colocated `.metadata.ts`, and writes `.ai/contracts/index.json`. The output is content-stable — `meta.generated` only advances when the content changed — so CI regenerates the index on every push and fails when the committed file is stale, the same pattern as the generated token files. `index.json` is the offline map. Storybook MCP at `http://localhost:6006/mcp` is the live catalogue when `npm run storybook` is running.
+`npm run contracts:generate` scans colocated metadata and package exports, then generates `.ai/contracts/index.json`, Storybook registration and the toolkit's offline catalogue and schemas. CI checks those artifacts for drift. Application agents read the snapshot installed with their toolkit version. The Plectrum checkout can expose Storybook MCP while its local Storybook runs; an application does not assume `localhost:6006` points to Plectrum.
 
 <DocsTable
   headers={['Field', 'Meaning']}
   rows={[
-    ['meta', 'Generated timestamp, framework, prefix, 1rem = 14px'],
+    ['meta', 'Framework, prefix and 1rem = 14px'],
     ['workspace', 'Apps and libs with purpose'],
     ['tokenArchitecture', 'Primitive / semantic file map'],
-    ['components.{Name}', 'path, category, metadata flag, bemBlock, primeNg, scssPath, uses, usedBy'],
-    ['relationships', 'Same uses / usedBy graph, keyed by component name'],
+    ['components.{id}', 'Stable ID, source, status, package export, docs source and metadata path'],
+    ['relationships', 'Uses / usedBy graph keyed by stable component ID'],
     ['summary', 'Counts: components, metadata coverage, relationships'],
   ]}
 />
@@ -269,12 +259,11 @@ Import the type from `@solidaris/contracts`. Export a const (`EmptyStateMetadata
 ### Scaffold
 
 ```bash
-npm run pds:component     # interactive: name, category, type, optional PrimeNG wrap
-                          # regenerates .ai/contracts/index.json when it finishes
-npm run generate-index    # manual run — only needed after hand-editing or deleting
+npm run pds:component     # scaffold in the Plectrum checkout
+npm run contracts:generate # refresh inventory, registration and toolkit snapshot
 ```
 
-`pds:component` creates the Angular files (no colocated stylesheet — see [CSS architecture](?path=/docs/docs-css-architecture--docs)), the `_components.{name}.scss` partial plus its `@forward` in `_components.core.scss`, a stories stub, and a `.metadata.ts` that already imports `ComponentMetadata` — then regenerates the index itself. Fill usage, tokens and aiHints before review; by default the agent does that as part of the task.
+`pds:component` creates the Angular files, a story and colocated metadata in the Plectrum checkout; generation registers the metadata and exports. In an application, use `plectrum scaffold` under the configured candidate paths and keep the contribution local until reviewed.
 
 ### Protocols and agents
 

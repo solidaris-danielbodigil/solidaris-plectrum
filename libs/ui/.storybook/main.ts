@@ -25,7 +25,7 @@ const config: StorybookConfig = {
     // Istanbul instrumentation of the whole Angular preview is expensive. Only
     // enable it when the test-runner needs coverage (`STORYBOOK_COVERAGE=1` on
     // `build-storybook` / `storybook`). Local `npm run storybook` stays lean.
-    ...(process.env.STORYBOOK_COVERAGE
+    ...(process.env['STORYBOOK_COVERAGE']
       ? [
           {
             name: '@storybook/addon-coverage',

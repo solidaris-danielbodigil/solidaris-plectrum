@@ -9,12 +9,41 @@ on:
       - main
 
 jobs:
+  intake-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Keep external candidate intake data-only
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          mapfile -t changed < <(git diff --name-only "$BASE_SHA" HEAD)
+          intake=0
+          for file in "${changed[@]}"; do
+            if [[ "$file" == .ai/candidates/submissions/* ]]; then intake=1; fi
+          done
+          if [[ "$intake" == 1 ]]; then
+            if [[ "${#changed[@]}" != 1 || ! "${changed[0]}" =~ ^\.ai/candidates/submissions/[a-z][a-z0-9-]*\.json$ ]]; then
+              echo 'Candidate intake PRs may change exactly one submission JSON file.' >&2
+              exit 1
+            fi
+          fi
+
   build:
+    needs: intake-guard
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -51,7 +80,14 @@ jobs:
         run: npm run lint:styles:test && npm run lint:styles
 
       - name: Rebuild contracts index (must be committed)
-        run: npm run generate-index && git diff --exit-code -- .ai/contracts/index.json
+        run: npm run contracts:generate -- --check && npm run devkit:check && npm run devkit:test && npm run test:pipelines
+
+      - name: Validate central candidate intake and promotion
+        run: npm run candidate:check
+
+      - name: Validate candidate lifecycle against the PR base
+        if: github.event_name == 'pull_request'
+        run: npm run candidate:check -- --base ${{ github.event.pull_request.base.sha }}
 
       - name: Component docs read their metadata (no hand-written copies)
         run: npm run docs:check
@@ -75,6 +111,7 @@ jobs:
       # Storybook is built and smoke-tested in the storybook-tests job.
 
   pack-smoke:
+    needs: intake-guard
     runs-on: ubuntu-latest
 
     steps:
@@ -94,6 +131,7 @@ jobs:
         run: npm run pack:smoke
 
   storybook-tests:
+    needs: intake-guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -114,6 +152,9 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook:coverage
 
+      - name: Verify toolkit catalogue documentation routes
+        run: npm run contracts:docs-check
+
       - name: Run story smoke, interaction, a11y and coverage tests
         run: npm run test-storybook:ci
 
@@ -121,6 +162,7 @@ jobs:
         run: npm run test-storybook:nav
 
   chromatic:
+    needs: intake-guard
     name: visual-tests
     runs-on: ubuntu-latest
     # Requires CHROMATIC_PROJECT_TOKEN (Chromatic project → Manage → Project token).
@@ -149,6 +191,7 @@ jobs:
           zip: true
 
   storybook-packed:
+    needs: intake-guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -170,6 +213,7 @@ jobs:
         run: npm run build-storybook:packed
 
   figma-plugin:
+    needs: intake-guard
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

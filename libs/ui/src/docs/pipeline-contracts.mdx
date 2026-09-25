@@ -1,0 +1,27 @@
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './pipeline-contracts.stories';
+
+<Meta title="Docs/Pipelines and contracts" id="docs-pipeline-contracts" />
+
+# Pipelines and contracts
+
+This page reads the shared process, team registry and compatibility declarations. The commands below distinguish available central and application tooling. Candidate intake uses reviewed JSON pull requests; adoption ingestion and verified publication remain later phases.
+
+## Teams to Plectrum and Figma
+
+<Unstyled><Story of={Stories.Contribution} /></Unstyled>
+
+## Figma to packages
+
+<Unstyled><Story of={Stories.Design} /></Unstyled>
+
+## Commands and repository context
+
+Run central commands from a Plectrum checkout. Run `plectrum` commands from an initialized application repository. The installed toolkit owns the offline metadata catalogue, process, schemas and token inventory; the application keeps its candidates locally. The consumer CI profile shown below is read from the same process contract as the toolkit.
+
+<Unstyled><Story of={Stories.Commands} /></Unstyled>
+
+## Teams and operational configuration
+
+<Unstyled><Story of={Stories.Teams} /></Unstyled>
+<Unstyled><Story of={Stories.Operations} /></Unstyled>

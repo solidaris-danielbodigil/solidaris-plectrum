@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Divider } from 'primeng/divider';
-import { injectPdsMessages } from '../i18n';
+import { injectPdsMessages } from '@solidaris/ui';
 import { DelayPredictionCardMessages } from './delay-prediction-card.i18n';
 
 /**

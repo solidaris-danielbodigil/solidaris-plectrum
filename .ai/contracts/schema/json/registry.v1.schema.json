@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri"
+    },
+    "teams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "core",
+              "application"
+            ]
+          },
+          "reviewer": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "alternateReviewers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "kind",
+          "reviewer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "team": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "repository": {
+            "type": "string",
+            "format": "uri"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "local-demo",
+              "external"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "team",
+          "label",
+          "repository",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "registry": {
+          "type": "string",
+          "format": "uri"
+        },
+        "publicationScope": {
+          "type": "string",
+          "pattern": "^@[a-z0-9-]+$"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "private",
+            "public"
+          ]
+        },
+        "publicationEnabled": {
+          "type": "boolean"
+        },
+        "reportTransport": {
+          "type": "string",
+          "const": "reviewed-pull-request"
+        },
+        "reportIngestionEnabled": {
+          "type": "boolean"
+        },
+        "editors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "storybook": {
+          "type": "string",
+          "format": "uri"
+        },
+        "figma": {
+          "type": "object",
+          "properties": {
+            "componentLibrary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tokenLibrary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposalCollectionPrefix": {
+              "type": "string",
+              "minLength": 1
+            },
+            "identitiesVerifiedForPublication": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "componentLibrary",
+            "tokenLibrary",
+            "proposalCollectionPrefix",
+            "identitiesVerifiedForPublication"
+          ],
+          "additionalProperties": false
+        },
+        "pending": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "registry",
+        "publicationScope",
+        "visibility",
+        "publicationEnabled",
+        "reportTransport",
+        "reportIngestionEnabled",
+        "editors",
+        "storybook",
+        "figma",
+        "pending"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "repository",
+    "teams",
+    "applications",
+    "operations"
+  ],
+  "additionalProperties": false,
+  "$id": "urn:plectrum:schema:registry:1"
+}

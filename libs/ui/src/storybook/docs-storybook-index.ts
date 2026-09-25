@@ -1,76 +1,44 @@
-// =============================================================================
-// libs/ui/src/storybook/docs-storybook-index.ts
-// Shared "component folder → docs page id" resolver, read once at runtime from
-// Storybook's own ./index.json (never hand-copied — rule 10).
-//
-// Consumers:
-//   - docs-contract.component.ts — composition().companions / .nested render
-//     as pds-docs-link when the name resolves to a libs/ui component with a
-//     docs page, falling back to p-tag (PrimeNG names, e.g. "Tag", "Card").
-// =============================================================================
+// Stable component identity → metadata's MDX source → Storybook's runtime docs ID.
+// Names are supported only for legacy composition references in existing metadata.
+import { ALL_COMPONENT_METADATA, COMPONENT_SOURCES } from './component-metadata';
 
-import { ALL_COMPONENT_METADATA } from './component-metadata';
+export const normalizeDocsSource = (source: string) =>
+  source.replaceAll('\\', '/').replace(/^\.\//, '');
 
-/** Storybook's index.json (v5) — the part needed to find a docs page. */
-interface StorybookIndex {
-  entries: Readonly<
-    Record<string, { id: string; type: string; importPath: string }>
-  >;
+export interface StorybookIndex {
+  entries: Readonly<Record<string, { id: string; type: string; importPath: string }>>;
 }
 
-/** `libs/ui/src/lib/icon/icon.component.ts` → `libs/ui/src/lib/icon`. */
-export function folderOf(path: string): string {
-  return path.replace(/^\.\//, '').replace(/\/[^/]*$/, '');
+/** Match complete MDX source paths: two docs in one folder must stay distinct. */
+export function docsIdsFromIndex(index: StorybookIndex): ReadonlyMap<string, string> {
+  const bySource = new Map<string, string>();
+  for (const entry of Object.values(index.entries ?? {})) {
+    if (entry.type !== 'docs') continue;
+    const source = normalizeDocsSource(entry.importPath);
+    if (bySource.has(source)) throw new Error(`Ambiguous Storybook docs source: ${source}`);
+    bySource.set(source, entry.id);
+  }
+  return bySource;
 }
 
-/**
- * Component folder → docs page id, resolved once from Storybook's own
- * `./index.json` (relative to iframe.html, so it resolves in dev and in a
- * static build under a sub-path). Empty map when the index is unavailable —
- * callers fall back to plain text / a non-linked tag.
- */
-export async function loadDocsIdsByFolder(): Promise<
-  ReadonlyMap<string, string>
-> {
+export async function loadDocsIdsBySource(): Promise<ReadonlyMap<string, string>> {
   if (typeof fetch !== 'function') return new Map();
   try {
     const response = await fetch('./index.json');
-    if (!response.ok) return new Map();
-    const storybook = (await response.json()) as StorybookIndex;
-    const byFolder = new Map<string, string>();
-    for (const entry of Object.values(storybook.entries ?? {})) {
-      if (entry.type !== 'docs') continue;
-      const folder = folderOf(entry.importPath);
-      if (!byFolder.has(folder)) byFolder.set(folder, entry.id);
-    }
-    return byFolder;
+    return response.ok ? docsIdsFromIndex(await response.json() as StorybookIndex) : new Map();
   } catch {
     return new Map();
   }
 }
 
-/** `component.name` → `component.path`, for every `libs/ui` component with a `.metadata.ts`. */
-const PATH_BY_COMPONENT_NAME: ReadonlyMap<string, string> = new Map(
-  ALL_COMPONENT_METADATA.map((metadata) => [
-    metadata.component.name,
-    metadata.component.path,
-  ]),
-);
+const ID_BY_NAME = new Map(ALL_COMPONENT_METADATA.map(metadata => [metadata.component.name, metadata.component.id]));
 
-/**
- * Resolves a composition name (e.g. `"Icon"`, `"SubNavShellComponent"`) to its
- * docs page route. Strips a trailing Angular `Component` suffix, matches
- * against `ALL_COMPONENT_METADATA`, and looks the resulting folder up in
- * `docsIdsByFolder`. Returns `null` for PrimeNG names or when Storybook's
- * index has not loaded yet — callers fall back to plain text / `p-tag`.
- */
 export function resolveComponentDocsPath(
-  name: string,
-  docsIdsByFolder: ReadonlyMap<string, string>,
+  idOrName: string,
+  docsIdsBySource: ReadonlyMap<string, string>,
 ): string | null {
-  const bareName = name.replace(/Component$/, '');
-  const path = PATH_BY_COMPONENT_NAME.get(bareName);
-  if (!path) return null;
-  const docsId = docsIdsByFolder.get(folderOf(path));
+  const id = COMPONENT_SOURCES[idOrName] ? idOrName : ID_BY_NAME.get(idOrName.replace(/Component$/, ''));
+  const source = id ? COMPONENT_SOURCES[id]?.docs : undefined;
+  const docsId = source ? docsIdsBySource.get(normalizeDocsSource(source)) : undefined;
   return docsId ? `/docs/${docsId}` : null;
 }

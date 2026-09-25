@@ -113,6 +113,8 @@
       <td class="c-docs-catalogue__name" pFrozenColumn>
         @if (row.path) {
           <pds-docs-link [label]="row.name" [path]="row.path" />
+        } @else if (row.externalUrl) {
+          <a [href]="row.externalUrl" target="_blank" rel="noopener noreferrer">{{ row.name }} (team preview)</a>
         } @else {
           {{ row.name }}
         }
@@ -121,6 +123,9 @@
       <td class="c-docs-catalogue__cell">{{ row.implementation }}</td>
       <td>
         <p-tag [value]="row.scope" [severity]="scopeSeverity(row)" />
+        @if (row.candidateState) {
+          <p-tag [value]="row.candidateState" [severity]="row.candidateState === 'Rejected' ? 'danger' : row.candidateState === 'Submitted' ? 'warn' : 'success'" />
+        }
       </td>
       <td>
         @if (row.usedIn.length) {

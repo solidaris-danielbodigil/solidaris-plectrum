@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const ToolbarMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:toolbar',
     name: 'Toolbar',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const ToolbarMetadata: ComponentMetadata = {
     created: '2026-09-05',
     modified: '2026-09-14',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'ToolbarComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

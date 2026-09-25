@@ -8,6 +8,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
  */
 export const SkeletonSlotMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:skeleton-slot',
     name: 'SkeletonSlot',
     category: 'atoms',
     description:
@@ -23,6 +24,7 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
     created: '2026-09-09',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'styles' },
   governance: {
     status: 'core',
     owner: 'design-system',

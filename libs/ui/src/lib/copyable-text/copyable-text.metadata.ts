@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const CopyableTextMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:copyable-text',
     name: 'CopyableText',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
     created: '2026-06-08',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'CopyableTextComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

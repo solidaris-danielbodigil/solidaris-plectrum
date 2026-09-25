@@ -38,7 +38,7 @@ import { DocsDoDontComponent } from './docs-do-dont.component';
 import { DocsLinkComponent } from './docs-link.component';
 import type { DocsContractSection, DocsDoDontItem } from './docs-figures.types';
 import {
-  loadDocsIdsByFolder,
+  loadDocsIdsBySource,
   resolveComponentDocsPath,
 } from './docs-storybook-index';
 
@@ -101,7 +101,7 @@ export class DocsContractComponent {
   private readonly docsIds = signal<ReadonlyMap<string, string>>(new Map());
 
   constructor() {
-    void loadDocsIdsByFolder().then((ids) => this.docsIds.set(ids));
+    void loadDocsIdsBySource().then((ids) => this.docsIds.set(ids));
   }
 
   protected readonly name = computed(() => this.metadata().component.name);

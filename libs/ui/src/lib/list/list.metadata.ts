@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const ListMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:list',
     name: 'List',
     category: 'molecules',
     description:
@@ -17,6 +18,7 @@ export const ListMetadata: ComponentMetadata = {
     created: '2026-06-07',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'ListComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

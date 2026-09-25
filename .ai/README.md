@@ -109,13 +109,15 @@ How to accomplish tasks correctly.
 
 Machine-readable schemas and AI protocols.
 
+Start with [Contracts](contracts/README.md) for stable identities, generated artifacts, external JSON validation and the boundary between this checkout and consumer repositories. `registry.json`, `process.json` and `compatibility.json` also supply Storybook's Pipelines and contracts page.
+
 | File                                            | Topic                                                                 |
 | ----------------------------------------------- | --------------------------------------------------------------------- |
 | `.ai/contracts/protocols/component-creation.md` | How to create components correctly                                    |
 | `.ai/contracts/protocols/token-audit.md`        | How to validate token health                                          |
 | `.ai/contracts/protocols/query-protocol.md`     | How agents navigate the codebase (index + Storybook MCP)              |
 | `.ai/contracts/protocols/ai-prompts.md`         | Ready-to-use AI prompt templates                                      |
-| `.ai/contracts/schema/component.metadata.ts`    | TypeScript interface for component metadata                           |
+| `.ai/contracts/schema/component.schema.ts`      | Canonical metadata schema; inferred TypeScript types and generated JSON Schema |
 | `.ai/contracts/schema/token.contract.ts`        | TypeScript interface for token governance                             |
 | `.ai/contracts/index.json`                      | Offline codebase map — live catalogue is Storybook MCP at `:6006/mcp` |
 

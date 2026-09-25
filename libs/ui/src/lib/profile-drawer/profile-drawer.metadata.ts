@@ -2,6 +2,7 @@ import type { ComponentMetadata } from '@solidaris/contracts';
 
 export const ProfileDrawerMetadata: ComponentMetadata = {
   component: {
+    id: 'plectrum:profile-drawer',
     name: 'ProfileDrawer',
     category: 'organisms',
     description:
@@ -17,6 +18,7 @@ export const ProfileDrawerMetadata: ComponentMetadata = {
     created: '2026-09-08',
     modified: '2026-09-09',
   },
+  distribution: { kind: 'angular', entryPoint: '.', exportName: 'ProfileDrawerComponent' },
   governance: {
     status: 'core',
     owner: 'design-system',

@@ -27,6 +27,9 @@ import {
 } from './catalogue';
 import { DocsLinkComponent } from './docs-link.component';
 
+import { loadDocsIdsBySource } from './docs-storybook-index';
+import { STATUS_PRESENTATION } from './governance';
+
 type PurposeFilter = CataloguePurpose | 'all';
 type ImplementationFilter = CatalogueImplementation | 'all';
 type ScopeFilter = CatalogueScope | 'all';
@@ -90,8 +93,7 @@ export class DocsCatalogueComponent {
 
   protected readonly scopeOptions: { label: string; value: ScopeFilter }[] = [
     { label: 'All scopes', value: 'all' },
-    { label: 'Core', value: 'Core' },
-    { label: 'App examples', value: 'App example' },
+    ...Object.values(STATUS_PRESENTATION).map(status => ({ label: status.label, value: status.label as CatalogueScope })),
   ];
 
   protected readonly usedInOptions = computed(() => {
@@ -104,7 +106,7 @@ export class DocsCatalogueComponent {
       ...[...teams]
         .sort((a, b) => a.localeCompare(b))
         .map((team) => ({ label: team, value: team })),
-      { label: 'Not used', value: 'none' },
+      { label: 'No local usage detected', value: 'none' },
     ];
   });
 
@@ -136,29 +138,10 @@ export class DocsCatalogueComponent {
   }
 
   private async loadDocsIds(): Promise<void> {
-    if (typeof fetch !== 'function') return;
-    try {
-      const response = await fetch('./index.json');
-      if (!response.ok) return;
-      const storybook = (await response.json()) as {
-        entries?: Record<
-          string,
-          { id: string; type: string; importPath: string }
-        >;
-      };
-      const byFolder = new Map<string, string>();
-      for (const entry of Object.values(storybook.entries ?? {})) {
-        if (entry.type !== 'docs') continue;
-        const folder = entry.importPath.split('/').at(-2);
-        if (folder && !byFolder.has(folder)) byFolder.set(folder, entry.id);
-      }
-      this.docsIds.set(byFolder);
-    } catch {
-      // Index unavailable — names stay text until the next load.
-    }
+    this.docsIds.set(await loadDocsIdsBySource());
   }
 
-  protected scopeSeverity(entry: CatalogueEntry): 'success' | 'secondary' {
-    return entry.scope === 'Core' ? 'success' : 'secondary';
+  protected scopeSeverity(entry: CatalogueEntry): 'info' | 'success' | 'warn' | 'danger' {
+    return Object.values(STATUS_PRESENTATION).find(status => status.label === entry.scope)?.severity ?? 'info';
   }
 }

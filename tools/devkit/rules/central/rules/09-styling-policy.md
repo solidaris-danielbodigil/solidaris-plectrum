@@ -1,0 +1,219 @@
+# Rules — 09 Styling Policy
+
+> Operational rules for `libs/styles` — when to use template utilities vs component SCSS.
+> Layout object classes (`o-flex`, `o-layout`) are detailed in [08-object-classes.md](./08-object-classes.md).
+> Documenting these utilities is governed by [10-css-ssot.md](./10-css-ssot.md) — enumerate
+> the generated classes from the CSSOM, never retype them in a story.
+
+---
+
+## Table of Contents
+
+1. [SSOT Order](#1-ssot-order)
+2. [Layout — Templates First](#2-layout--templates-first)
+3. [Column layout — Flex Grid](#3-column-layout--flex-grid)
+4. [Visual Chrome Utilities](#4-visual-chrome-utilities)
+5. [Allowed Exceptions in Component SCSS](#5-allowed-exceptions-in-component-scss)
+6. [Semantic Border Tokens](#6-semantic-border-tokens)
+7. [DEFAULT PrimeNG](#7-default-primeng)
+8. [Custom Classes Registry](#8-custom-classes-registry)
+9. [BEMIT — Shared Blocks](#9-bemit--shared-blocks)
+10. [Specificity over PrimeNG](#10-specificity-over-primeng)
+11. [Overlays](#11-overlays)
+12. [Scroll Affordance](#12-scroll-affordance)
+13. [Global Parity](#13-global-parity)
+14. [Navigation Shell Exceptions](#14-navigation-shell-exceptions)
+15. [Disabled cursor](#15-disabled-cursor)
+
+---
+
+## 1. SSOT Order
+
+1. PrimeNG component defaults
+2. Plectrum theme (`providePlectrum()`)
+3. `libs/styles` ITCSS (objects, then scoped components)
+
+Figma is reference only — not SSOT for PrimeNG chrome.
+
+---
+
+## 2. Layout — Templates First
+
+**Rule:** flex, gap, padding, margin, overflow, and min-size on elements we own in Angular templates must use `o-flex` and `o-layout` classes — **not** `06-components/` SCSS.
+
+| Property                          | Use                                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `display: flex`                   | `o-flex`                                                                                                |
+| `flex-direction: column`          | `o-flex o-flex--y`                                                                                      |
+| `align-items` / `justify-content` | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*`                                     |
+| `flex-grow` / `flex-shrink`       | `o-flex__item o-flex__item--grow-*` / `o-flex__item o-flex__item--shrink-*`                             |
+| `gap`, `padding`, `margin`        | `o-layout o-layout--gap-*` / `--padding-*` / `--margin-*` (use `o-layout--margin-0` for heading resets) |
+| `overflow`                        | `o-layout o-layout--overflow-*`                                                                         |
+| `min-width: 0` / `min-height: 0`  | `o-layout o-layout--min-w-0` / `o-layout o-layout--min-h-0`                                             |
+| Equal columns / spans             | `o-flex` + `o-flex__item--{n}` (see below)                                                              |
+
+Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`, `layout/_objects.layout.scss`
+
+---
+
+## 3. Column layout — Flex Grid
+
+**Rule:** equal columns and responsive spans use `o-flex` / `o-flex__item--{n}` — **not** a parallel CSS Grid object.
+
+| Need                     | Use                                                                 |
+| ------------------------ | ------------------------------------------------------------------- |
+| Equal / spanning columns | `o-flex` + `o-flex__item--{1–12}` (and `@{breakpoint}` suffixes)    |
+| Alignment                | `o-flex o-flex--align-items-*` / `o-flex o-flex--justify-content-*` |
+| Gap                      | `o-layout o-layout--gap-*` on the same element (block + modifier)   |
+
+Bespoke `display: grid` / `grid-template-*` (named areas, asymmetric tracks) stay in component SCSS — document with a comment.
+
+Reference: `libs/styles/src/05-objects/_objects.flex-grid.scss`
+
+---
+
+## 4. Visual Chrome Utilities
+
+**Rule:** static borders, radii, and elevations on elements we own in templates should use utilities — not duplicate rules in component SCSS.
+
+| Need                    | Use                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------- |
+| Panel / section divider | `u-border-{side}` + `style="--pds-border-color: var(--pds-color-panel-border)"` |
+| Component-token width   | add `--pds-border-width: var(--…)` override on the same element                 |
+| Thick / dashed          | `u-border-thick`, `u-border-dashed` (orthogonal modifiers)                      |
+| Status border color     | `u-border-{success\|warning\|danger\|info}`                                     |
+| Global radius stop      | `u-radius-{stop}` / `u-radius-{side\|corner}-{stop}`                            |
+| Static elevation        | `u-shadow-{sm\|md\|xl\|overlay-*}`                                              |
+
+**Keep in component SCSS:** state-driven borders/shadows (hover, selected, expanded), PrimeNG-internal selectors, pulse/keyframe shadows, radii using `calc()` or component tokens.
+
+Reference: `libs/styles/src/07-utilities/_utilities.{borders,radius,shadows}.scss`
+
+---
+
+## 5. Allowed Exceptions in Component SCSS
+
+1. **PrimeNG / third-party internals** — `.p-card-body`, `.p-tree-node-content`, `.p-accordionheader`, etc. (no template hook)
+2. **Component-token sizing** — fixed label columns, asymmetric tile padding, bar height when value is not on `--spacing-*` scale
+3. **Bespoke CSS grid** — named areas / asymmetric tracks only; document with a comment. Prefer `o-flex` for equal columns.
+4. **Scroll affordance** — `scroll-padding-*`, `scroll-margin-*` on owned scroll wrappers
+5. **Typography resets** — `margin: 0` on headings inside components
+6. **State-driven visual chrome** — hover/selected/expanded borders, shadows, radii tied to component tokens
+7. **Absolute positioning / collapse animations** — overlay panels, discrete `display` reveals (`c-nav-shell`, `c-token-explorer__copy`)
+8. **Doc primitives** — `c-demo-cell` / `c-spacing-swatch` in Storybook inline markup; pair with `o-flex` / `o-layout` in the story template string
+
+---
+
+## 6. Semantic Border Tokens
+
+Use shared roles in component SCSS — not feature-specific border aliases (`_settings.colors-semantic.scss`):
+
+| Token                        | Role                            | Typical use                                                              |
+| ---------------------------- | ------------------------------- | ------------------------------------------------------------------------ |
+| `--pds-color-panel-border`   | Flat panel chrome (#e7e7e7)     | Section dividers, list shell, bordered accordion, flush card header rule |
+| `--pds-color-card-border`    | Elevated card outline (#d1d1d1) | `p-card` rings, selectable list rows                                     |
+| `--pds-color-content-border` | Subtle inset border             | Nav shells, tiles, notes                                                 |
+| `--pds-color-surface-border` | Light surface edge              | Iconography cards, doc demos                                             |
+
+PrimeNG bridges: `--p-card-border-color: var(--pds-color-card-border)` or `panel-border` per context.
+
+Drawer TS: `PDS_DRAWER_APPEND_TO`, `PDS_DRAWER_CONTENT_STYLE`, `PDS_PANEL_BORDER_BOTTOM_STYLE`, `DrawerPosition`, `DetailListRow`, and `normalizeAccordionPanelIds()` live in `libs/ui/src/lib/drawer/`.
+
+---
+
+## 7. DEFAULT PrimeNG
+
+No scoped `--p-*` / `.p-*` overrides for:
+
+- button, stepper, tag, inputs
+- drawer, modal/dialog, popover, menu
+
+No `styleClass` on `p-drawer` / `p-dialog` roots.
+
+---
+
+## 8. Custom Classes Registry
+
+Only add BEM blocks when PrimeNG + object/utility classes are insufficient:
+
+- `c-form-field` (label layout)
+- `c-drawer` — headless drawer shell (`__header`, `__toolbar`, `__content`, `__section`, `__section-title`); feature elements use the block prefix in the element name (e.g. `__affiliate-detail-name`, `__affiliate-detail-note`)
+- `c-detail-list` — label/value description rows (`__label`, `__value`)
+- `c-accordion--bordered` (bordered stacked accordion)
+- `c-timeline--content-only` (single-column timeline — hides empty opposite column)
+- `c-list` tree variant (`.c-list--journey` / `.c-list--flat`)
+- `p-card` surface wrappers (named panel chrome)
+
+---
+
+## 9. BEMIT — Shared Blocks
+
+Keep blocks flat; shallow modifiers only. No doubled-class specificity (`.c-foo.c-foo`).
+
+When a shared block has feature-specific children, prefix the **element** name — do not create a nested block:
+
+| Avoid                                   | Prefer                                  |
+| --------------------------------------- | --------------------------------------- |
+| `c-profile-drawer__name`                | `c-drawer__profile-name`                |
+| `c-document-more-details-drawer__title` | `c-drawer__document-more-details-title` |
+
+Standalone `libs/ui` components keep their own block (`c-profile-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
+
+---
+
+## 10. Specificity over PrimeNG
+
+1. ITCSS layer order (unlayered components after `@layer primeng`)
+2. `:is()` / `:where()` on scoped wrapper
+3. `@layer components { … }`
+
+---
+
+## 11. Overlays
+
+No `styleClass` on `p-drawer` / `p-dialog` roots. Use `appendTo="body"` for drawers/dialogs inside flex or `overflow-hidden` layouts. Content-driven width: `[style]` with `--pds-size-drawer-min-width` / `--pds-size-drawer-max-width` from `_settings.drawer.scss` (`width: max-content`).
+
+---
+
+## 12. Scroll Affordance
+
+Use the fade to **hint that more content is scrollable** past the visible edge.
+Owned scroll wrapper + scroll-shadow object on our element — not doubled `.p-card-body` selectors, not a JS listener.
+
+| Axis                | Class                     | Mixin                    | Overflow pair                                                         |
+| ------------------- | ------------------------- | ------------------------ | --------------------------------------------------------------------- |
+| Block (vertical)    | `o-scroll-shadow`         | `scroll-shadow()`        | `o-layout--overflow-y-auto` + height constraint (`o-layout--min-h-0`) |
+| Inline (horizontal) | `o-scroll-shadow--inline` | `scroll-shadow-inline()` | `o-layout--overflow-x-auto` + width constraint (`o-layout--min-w-0`)  |
+
+Storybook: **Foundations / Scroll Shadow**. Add `tabindex="0"` and an `aria-label` when the scroller has no focusable child.
+
+---
+
+## 13. Global Parity
+
+Allowed without approval:
+
+- `.p-tag-icon` line-height for icon box alignment
+
+---
+
+## 14. Navigation Shell Exceptions
+
+`c-accordion--nav` uses a transparent accordion bridge for nav chrome — not bordered panels. Use `c-accordion--bordered` where stacked bordered panels are required.
+
+---
+
+## 15. Disabled cursor
+
+Disabled interactive controls must show `cursor: not-allowed`:
+
+- native `:disabled` / `[disabled]`
+- `[aria-disabled="true"]`
+- PrimeNG `.p-disabled`
+- SubNav disabled items (`.is-disabled` buttons and links)
+
+**SSOT:** `--pds-cursor-disabled` in `01-settings/_settings.globals.scss`, applied once in `08-trumps/_trumps.disabled.scss`. Do not re-declare `cursor: not-allowed` per component.
+
+Allowed PrimeNG exception (cursor only): the trump may target `.p-disabled` and restore `pointer-events: auto` so the cursor can show — no `!important`, no other `.p-button:disabled` restyle.
+
+Do not set `pointer-events: none` on disabled SubNav items; that hides the not-allowed cursor. Clicks stay blocked by `disabled` / `aria-disabled` + the click guard.
