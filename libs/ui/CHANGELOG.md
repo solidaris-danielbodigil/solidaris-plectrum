@@ -1,5 +1,11 @@
 # @solidaris/ui
 
+## 2.0.2
+
+### Patch Changes
+
+- c335207: Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release.
+
 ## 2.0.1
 
 ### Patch Changes

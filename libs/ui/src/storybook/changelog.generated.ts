@@ -2,28 +2,20 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "private-pds-package-identity",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-ui",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris-danielbodigil/pds-plectrum",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris-danielbodigil/pds-styles",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris-danielbodigil/pds-ui",
+    "version": "2.0.2",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "c335207: Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release."
+      }
+    ],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris-danielbodigil/ui",
     "version": "2.0.1",
@@ -70,6 +62,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
+    "packageName": "@solidaris-danielbodigil/pds-plectrum",
+    "version": "2.0.2",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "c335207: Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release."
+      }
+    ],
+    "notes": ""
+  },
+  {
     "packageName": "@solidaris-danielbodigil/plectrum",
     "version": "2.0.1",
     "changes": [
@@ -105,6 +108,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
       {
         "bump": "patch",
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-styles",
+    "version": "2.0.2",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "c335207: Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release."
       }
     ],
     "notes": ""
