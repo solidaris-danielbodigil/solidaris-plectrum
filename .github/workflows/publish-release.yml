@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release_id:
-        description: 'Exact runtime and toolkit versions, for example 2.0.1-devkit-0.2.0'
+        description: 'Exact runtime and toolkit versions, for example 2.0.2-devkit-0.2.0'
         required: true
         type: string
 
@@ -21,10 +21,11 @@ jobs:
       actions: read
       checks: read
       contents: write
-      packages: write
+      packages: read
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.PLECTRUM_PACKAGE_PUBLISH_TOKEN }}
+      PLECTRUM_PACKAGE_PUBLISH_TOKEN: ${{ secrets.PLECTRUM_PACKAGE_PUBLISH_TOKEN }}
       PLECTRUM_RELEASE_ID: ${{ inputs.release_id }}
     steps:
       - uses: actions/checkout@v5
@@ -40,6 +41,9 @@ jobs:
 
       - name: Require current main and all six successful CI checks
         run: node tools/packaging/check-ci.mjs
+
+      - name: Require a classic package token for the personal account
+        run: node tools/packaging/check-package-credentials.mjs
 
       - run: npm ci
 

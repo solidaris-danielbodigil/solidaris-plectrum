@@ -18,16 +18,16 @@
       "@solidaris/contracts": [
         ".ai/contracts/schema/index.ts"
       ],
-      "@solidaris-danielbodigil/plectrum": [
+      "@solidaris-danielbodigil/pds-plectrum": [
         "libs/plectrum/src/index.ts"
       ],
-      "@solidaris-danielbodigil/styles": [
+      "@solidaris-danielbodigil/pds-styles": [
         "libs/styles/src/main.scss"
       ],
-      "@solidaris-danielbodigil/ui": [
+      "@solidaris-danielbodigil/pds-ui": [
         "libs/ui/src/index.ts"
       ],
-      "@solidaris-danielbodigil/ui/patterns/ishare": [
+      "@solidaris-danielbodigil/pds-ui/patterns/ishare": [
         "libs/ui/src/patterns-ishare-api.ts"
       ]
     }

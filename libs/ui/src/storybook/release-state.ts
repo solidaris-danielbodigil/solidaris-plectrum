@@ -34,15 +34,15 @@ export const PRIMENG_RANGE = uiPackage.peerDependencies.primeng;
 export const PRIMEUIX_RANGE =
   plectrumPackage.peerDependencies['@primeuix/themes'];
 
-/** npm pack drops the @: @solidaris-danielbodigil/ui → solidaris-danielbodigil-ui-2.0.1.tgz */
+/** npm pack drops the @: @solidaris-danielbodigil/pds-ui → solidaris-danielbodigil-pds-ui-2.0.1.tgz */
 export function tarballName(packageName: string, version = PACKAGE_VERSION): string {
   return `${packageName.replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
 }
 
 export const TARBALL_INSTALL = `npm install \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/ui')} \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/plectrum')} \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/styles')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/pds-ui')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/pds-plectrum')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/pds-styles')} \\
   primeng @primeuix/themes`;
 
 export const RELEASE_SUMMARY = REGISTRY_PUBLISHED

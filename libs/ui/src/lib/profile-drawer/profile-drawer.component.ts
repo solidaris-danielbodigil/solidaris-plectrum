@@ -42,7 +42,7 @@ import type {
   PlectrumAvatarVariant,
 } from '../plectrum-avatar/plectrum-avatar.types';
 
-/** @deprecated Use `DrawerPosition` from `@solidaris-danielbodigil/ui`. */
+/** @deprecated Use `DrawerPosition` from `@solidaris-danielbodigil/pds-ui`. */
 export type ProfileDrawerPosition = DrawerPosition;
 
 /** Segmented control selection (Détails / Documents). */
@@ -57,7 +57,7 @@ export interface ProfileDrawerIdentifier {
   value: string;
 }
 
-/** @deprecated Use `DetailListRow` from `@solidaris-danielbodigil/ui`. */
+/** @deprecated Use `DetailListRow` from `@solidaris-danielbodigil/pds-ui`. */
 export type ProfileDrawerInfoRow = DetailListRow;
 
 /** A related person rendered as a Famille tile. */

@@ -1,4 +1,4 @@
-import type { PdsMessages } from '@solidaris-danielbodigil/ui';
+import type { PdsMessages } from '@solidaris-danielbodigil/pds-ui';
 
 export const DelayPredictionCardMessages = {
   fr: {

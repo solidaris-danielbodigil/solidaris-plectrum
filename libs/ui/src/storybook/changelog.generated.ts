@@ -2,7 +2,26 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "private-pds-package-identity",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "patch"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-plectrum",
+        "bump": "patch"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-styles",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Move the distributable packages to new Plectrum names so their first GitHub Packages publication can be verified as private. The earlier package names remain a public historical release."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
@@ -17,7 +36,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/ui",
+    "packageName": "@solidaris/ui",
     "version": "2.0.0",
     "changes": [
       {
@@ -28,7 +47,7 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/ui",
+    "packageName": "@solidaris/ui",
     "version": "1.0.0",
     "changes": [
       {
@@ -62,13 +81,13 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/plectrum",
+    "packageName": "@solidaris/plectrum",
     "version": "2.0.0",
     "changes": [],
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/plectrum",
+    "packageName": "@solidaris/plectrum",
     "version": "1.0.0",
     "changes": [
       {
@@ -102,13 +121,13 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/styles",
+    "packageName": "@solidaris/styles",
     "version": "2.0.0",
     "changes": [],
     "notes": ""
   },
   {
-    "packageName": "@solidaris-danielbodigil/styles",
+    "packageName": "@solidaris/styles",
     "version": "1.0.0",
     "changes": [
       {

@@ -23,9 +23,9 @@ jobs:
 
       - run: npm install
 
-      # This workflow only prepares version PRs. A verified registry release,
-      # manifest and versioned Storybook are still pending P7; do not turn on
-      # changeset publish here independently of those outputs.
+      # This workflow only prepares version PRs. The attended
+      # publish-release.yml workflow checks private package visibility,
+      # records the manifest, and publishes matching versioned Storybook.
       - name: Create version PR
         uses: changesets/action@v1
         with:

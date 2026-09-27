@@ -3,7 +3,8 @@
 const repository = process.env.GITHUB_REPOSITORY;
 const revision = process.env.GITHUB_SHA;
 const token = process.env.GITHUB_TOKEN;
-if (process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_REF !== 'refs/heads/main' || !repository || !revision || !token) {
+const releaseId = process.env.PLECTRUM_RELEASE_ID;
+if (process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_REF !== 'refs/heads/main' || !repository || !revision || !token || !/^\d+\.\d+\.\d+-devkit-\d+\.\d+\.\d+$/.test(releaseId ?? '')) {
   throw new Error('Release CI gate requires an authenticated workflow_dispatch on main.');
 }
 const request = async (path) => {
@@ -20,5 +21,14 @@ const required = ['intake-guard', 'build', 'pack-smoke', 'storybook-tests', 'sto
 for (const name of required) {
   const matching = checks.check_runs.filter((check) => check.name === name && check.app?.slug === 'github-actions');
   if (!matching.some((check) => check.conclusion === 'success')) throw new Error(`Required CI check ${name} has not passed on ${revision}.`);
+}
+const tag = `plectrum-v${releaseId}`;
+const existing = await fetch(`https://api.github.com/repos/${repository}/git/ref/tags/${encodeURIComponent(tag)}`, {
+  headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+});
+if (existing.status !== 404) {
+  if (!existing.ok) throw new Error(`GitHub tag lookup failed: HTTP ${existing.status}.`);
+  const ref = await existing.json();
+  if (ref.object?.type !== 'commit' || ref.object.sha !== revision) throw new Error(`${tag} is already assigned to a different source revision; use a new version before publishing.`);
 }
 console.log(`Current main ${revision} passed all ${required.length} required CI jobs.`);

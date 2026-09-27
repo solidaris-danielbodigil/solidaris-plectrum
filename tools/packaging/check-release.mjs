@@ -13,17 +13,17 @@ if (registryUrl !== 'https://npm.pkg.github.com' || visibility !== 'private') {
   throw new Error('Release target differs from the reviewed private GitHub Packages configuration.');
 }
 const packages = [
-  ['libs/ui/package.json', 'dist/libs/ui/package.json'],
-  ['libs/plectrum/package.json', 'dist/libs/plectrum/package.json'],
-  ['libs/styles/package.json', 'libs/styles/package.json'],
-  ['tools/devkit/package.json', 'tools/devkit/package.json'],
+  ['libs/ui/package.json', 'dist/libs/ui/package.json', 'pds-ui'],
+  ['libs/plectrum/package.json', 'dist/libs/plectrum/package.json', 'pds-plectrum'],
+  ['libs/styles/package.json', 'libs/styles/package.json', 'pds-styles'],
+  ['tools/devkit/package.json', 'tools/devkit/package.json', 'pds-devkit'],
 ];
 const runtimeVersions = new Set();
 const artifacts = [];
-for (const [sourcePath, packedPath] of packages) {
+for (const [sourcePath, packedPath, shortName] of packages) {
   const source = readJson(sourcePath);
   const packed = readJson(packedPath);
-  if (!source.name.startsWith(`${publicationScope}/`) || packed.name !== source.name || packed.version !== source.version) {
+  if (source.name !== `${publicationScope}/${shortName}` || packed.name !== source.name || packed.version !== source.version) {
     throw new Error(`${sourcePath}: packed name/version must match the configured publication scope and source manifest.`);
   }
   if (packed.publishConfig?.registry !== registryUrl || packed.publishConfig?.access !== 'restricted' || packed.repository !== registry.repository) {

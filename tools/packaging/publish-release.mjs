@@ -5,11 +5,13 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readPackageVisibility } from './private-package-visibility.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const registry = JSON.parse(readFileSync(resolve(root, '.ai/contracts/registry.json'), 'utf8'));
 const artifacts = JSON.parse(readFileSync(resolve(root, 'dist/release/package-artifacts.json'), 'utf8'));
 const expectedRepo = new URL(registry.repository).pathname.slice(1);
+const owner = registry.operations.publicationScope.slice(1);
 
 export function publicationDecision(remote, local) {
   if (remote === null) return 'publish';
@@ -34,8 +36,8 @@ function remoteIntegrity(pkg) {
 }
 
 async function main() {
-  if (process.argv[2] !== '--publish' || process.env['GITHUB_ACTIONS'] !== 'true' || process.env['GITHUB_REF'] !== 'refs/heads/main' || process.env['GITHUB_REPOSITORY'] !== expectedRepo || !process.env['NODE_AUTH_TOKEN']) {
-    throw new Error('Publication requires --publish in the protected main GitHub Actions workflow with package authentication.');
+  if (process.argv[2] !== '--publish' || process.env['GITHUB_ACTIONS'] !== 'true' || process.env['GITHUB_REF'] !== 'refs/heads/main' || process.env['GITHUB_REPOSITORY'] !== expectedRepo || owner !== 'solidaris-danielbodigil' || registry.operations.visibility !== 'private' || !process.env['NODE_AUTH_TOKEN'] || process.env['NODE_AUTH_TOKEN'] !== process.env['PLECTRUM_PACKAGE_PUBLISH_TOKEN'] || process.env['NODE_AUTH_TOKEN'] === process.env['GITHUB_TOKEN']) {
+    throw new Error('Private publication requires --publish on protected main with the separate personal-account package PAT.');
   }
   for (const pkg of artifacts) {
     const decision = publicationDecision(remoteIntegrity(pkg), pkg.integrity);
@@ -53,6 +55,14 @@ async function main() {
       await new Promise((done) => setTimeout(done, 2000));
     }
     if (!confirmed) throw new Error(`${pkg.name}@${pkg.version}: published artifact integrity did not match the packed archive.`);
+    let visibility = null;
+    for (let attempt = 0; attempt < 8; attempt++) {
+      visibility = await readPackageVisibility(pkg.name, owner, process.env['PLECTRUM_PACKAGE_PUBLISH_TOKEN']);
+      if (visibility) break;
+      await new Promise((done) => setTimeout(done, 2000));
+    }
+    if (visibility !== 'private') throw new Error(`${pkg.name}: expected private GitHub Packages visibility, received ${visibility ?? 'no package record'}. Stopping before the next package.`);
+    console.log(`Verified ${pkg.name} is private.`);
   }
 }
 

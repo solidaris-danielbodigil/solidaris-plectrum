@@ -9,7 +9,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { TestingTelemetryService } from '@solidaris-danielbodigil/ui';
+import { TestingTelemetryService } from '@solidaris-danielbodigil/pds-ui';
 import { interval } from 'rxjs';
 import { isTestingTelemetryEnabled } from '../testing/is-testing-telemetry-enabled';
 import { environment } from '../../environments/environment';

@@ -21,11 +21,11 @@ An application installs versioned packages and consumes CSS custom properties. N
 <DocsTable
   headers={['Package', 'Contents', 'Required']}
   rows={[
-    ['@solidaris-danielbodigil/ui', 'Angular components (pds-*), Angular Package Format', 'Yes'],
-    ['@solidaris-danielbodigil/plectrum', 'providePlectrum(), PrimeNG presets, tokens.json', 'Yes'],
-    ['@solidaris-danielbodigil/styles', 'ITCSS SCSS source — objects, components, utilities', 'Yes'],
+    ['@solidaris-danielbodigil/pds-ui', 'Angular components (pds-*), Angular Package Format', 'Yes'],
+    ['@solidaris-danielbodigil/pds-plectrum', 'providePlectrum(), PrimeNG presets, tokens.json', 'Yes'],
+    ['@solidaris-danielbodigil/pds-styles', 'ITCSS SCSS source — objects, components, utilities', 'Yes'],
     ['primeng · @primeuix/themes', 'Peer dependencies — the component engine and theme runtime', 'Yes (peers)'],
-    ['@solidaris-danielbodigil/plectrum-devkit', 'Portable metadata, schemas, token inventory, editor adapters and application checks', 'Yes for contributor workflow'],
+    ['@solidaris-danielbodigil/pds-devkit', 'Portable metadata, schemas, token inventory, editor adapters and application checks', 'Yes for contributor workflow'],
   ]}
 />
 
@@ -43,7 +43,7 @@ In the application, use paths to the four tarballs produced above:
 <pre><code>{TARBALL_INSTALL}</code></pre>
 <pre><code>{`npm install --save-dev ./path/to/${tarballName(toolkitPackage.name, toolkitPackage.version)}`}</code></pre>
 
-After a verified registry release, add this scope mapping to the **application repository's** `.npmrc` (without a token):
+The first release under the former package names is public. <span>{REGISTRY_PUBLISHED ? 'This verified release uses the private pds-* package names below.' : 'The pds-* names below are being prepared as private packages; use packed tarballs until their first verified release.'}</span> For registry installation, add this scope mapping to the **application repository's** `.npmrc` (without a token):
 
 ```ini
 @solidaris-danielbodigil:registry=https://npm.pkg.github.com
@@ -52,8 +52,8 @@ After a verified registry release, add this scope mapping to the **application r
 GitHub Packages requires package read access. For a developer machine, authenticate with a classic GitHub personal access token with `read:packages` using `npm login --scope=@solidaris-danielbodigil --auth-type=legacy --registry=https://npm.pkg.github.com`; keep the token in your user configuration, not the repository. For application CI, grant that repository Actions access to all four packages and use its `GITHUB_TOKEN` with `packages: read`. Dependabot uses the same package access grant. Then install the matching package versions:
 
 ```bash
-npm install @solidaris-danielbodigil/ui @solidaris-danielbodigil/plectrum @solidaris-danielbodigil/styles primeng @primeuix/themes
-npm install --save-dev @solidaris-danielbodigil/plectrum-devkit
+npm install @solidaris-danielbodigil/pds-ui @solidaris-danielbodigil/pds-plectrum @solidaris-danielbodigil/pds-styles primeng @primeuix/themes
+npm install --save-dev @solidaris-danielbodigil/pds-devkit
 ```
 
 Supported peers: Angular `^21`, PrimeNG `^21`, `@primeuix/themes` `^2`. The three runtime packages version together — always upgrade them as a set.
@@ -71,7 +71,7 @@ npx --no-install plectrum check --profile ci
 
 `init` creates `.plectrum/config.json`, Cursor and VS Code/Copilot Plectrum roles and baseline instructions, MCP configuration and a pull-request workflow. In Cursor, invoke the generated **Plectrum** agent; in VS Code, select **Plectrum** in the chat agent picker. Its rules, process, schemas and offline catalogue live in the installed toolkit. No `.ai` folder needs copying. Set Figma or Storybook MCP URLs explicitly in `.plectrum/config.json`; a published Storybook page is not itself an MCP server. `plectrum doctor --live` verifies configured MCP capabilities. Run `plectrum update` after upgrading the toolkit; it preserves team notes outside generated files and reports edits to managed files as conflicts.
 
-Register the application in the central team registry and open a proposal issue. Once Core merges an `approved-candidate` decision for the gap, run `plectrum scaffold --name my-component --proposal <application>-my-component`, fill its metadata, story and evidence, then `plectrum check --profile ci`. Commit the candidate and link an HTTPS preview and successful CI result from that commit. `plectrum candidate-submit --name my-component --proposal <application>-my-component --preview <url> --checks <url>` opens the central intake PR using `GH_TOKEN` or `GITHUB_TOKEN`; rerun after a new commit to revise. `plectrum candidate-withdraw --id <application>-my-component --reason <text>` retires it. `plectrum adoption-report` still produces a local source-usage report until P4. The CI profile checks package/toolkit compatibility, schema and Angular input alignment, published tokens and candidate requirements. It fails on unknown `--pds-*`, hardcoded hex/px and an empty source scan.
+Register the application in the central team registry and open a proposal issue. Once Core merges an `approved-candidate` decision for the gap, run `plectrum scaffold --name my-component --proposal <application>-my-component`, fill its metadata, story and evidence, then `plectrum check --profile ci`. Commit the candidate and link an HTTPS preview and successful CI result from that commit. `plectrum candidate-submit --name my-component --proposal <application>-my-component --preview <url> --checks <url>` opens the central intake PR using `GH_TOKEN` or `GITHUB_TOKEN`; rerun after a new commit to revise. `plectrum candidate-withdraw --id <application>-my-component --reason <text>` retires it. `plectrum adoption-report` writes a local source-usage draft; after the application's reporting flag is enabled, `plectrum adoption-submit` opens a reviewed central PR. The CI profile checks package/toolkit compatibility, schema and Angular input alignment, published tokens and candidate requirements. It fails on unknown `--pds-*`, hardcoded hex/px and an empty source scan.
 
 The Storybook **Preset** control (`v1` / `v0.6`) switches the theme inside this catalogue. It is not the package version. `providePlectrum()` with no argument uses preset v1.
 
@@ -93,7 +93,7 @@ This app supports what Angular supports by default: current Chrome, Edge, Firefo
 
 ```json
 "stylePreprocessorOptions": {
-  "includePaths": ["node_modules/@solidaris-danielbodigil/styles/src"]
+  "includePaths": ["node_modules/@solidaris-danielbodigil/pds-styles/src"]
 }
 ```
 
@@ -110,7 +110,7 @@ This app supports what Angular supports by default: current Chrome, Edge, Firefo
 // src/app/app.config.ts
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '@solidaris-danielbodigil/plectrum';
+import { providePlectrum } from '@solidaris-danielbodigil/pds-plectrum';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -131,7 +131,7 @@ The sample application renders one Core component around one PrimeNG input. This
 // src/app/app.ts
 import { Component } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
-import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/pds-ui';
 
 @Component({
   selector: 'app-root',
@@ -150,11 +150,11 @@ import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 export class App {}
 ```
 
-`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every `pds-*` component is exported from the `@solidaris-danielbodigil/ui` root — the component's docs page names the class to import.
+`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every `pds-*` component is exported from the `@solidaris-danielbodigil/pds-ui` root — the component's docs page names the class to import.
 
 ## Build screens
 
-PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris-danielbodigil/ui` — [Find a component](?path=/docs/start-here-catalogue--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
+PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris-danielbodigil/pds-ui` — [Find a component](?path=/docs/start-here-catalogue--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
 
 ## Before you invent
 

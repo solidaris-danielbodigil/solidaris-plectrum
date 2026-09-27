@@ -8,7 +8,7 @@ import type {
   ProfileCardStatusAction,
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 
 export interface AffiliateHeaderData {
   title: string;

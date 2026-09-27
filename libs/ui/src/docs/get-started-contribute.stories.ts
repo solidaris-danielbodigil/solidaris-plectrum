@@ -151,7 +151,7 @@ export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
   title: 'While your team owns it, the lint and token checks still apply',
   items: [
-    'Build it from PrimeNG and @solidaris-danielbodigil/ui, and use --pds-* tokens. CI fails hex, px and unknown token names.',
+    'Build it from PrimeNG and @solidaris-danielbodigil/pds-ui, and use --pds-* tokens. CI fails hex, px and unknown token names.',
     'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
     'Put the layout classes in the template.',
     'The Storybook page lives under Patterns/{App}, and the metadata says your team owns it.',

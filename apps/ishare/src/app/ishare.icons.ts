@@ -1,1 +1,1 @@
-export { registerAppLogos as registerIshareIcons } from '@solidaris-danielbodigil/ui';
+export { registerAppLogos as registerIshareIcons } from '@solidaris-danielbodigil/pds-ui';

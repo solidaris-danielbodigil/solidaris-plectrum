@@ -22,7 +22,7 @@ const meta: Meta = {
 
 export default meta;
 
-const PACKAGES = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
+const PACKAGES = ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-plectrum', '@solidaris-danielbodigil/pds-styles'];
 
 const SAMPLE_CHANGESETS: ChangelogChangeset[] = [
   {
@@ -51,7 +51,7 @@ const SHARED_CHANGE = {
 
 const SAMPLE_RELEASES: ChangelogRelease[] = [
   {
-    packageName: '@solidaris-danielbodigil/ui',
+    packageName: '@solidaris-danielbodigil/pds-ui',
     version: '1.0.0',
     changes: [
       SHARED_CHANGE,
@@ -64,19 +64,19 @@ const SAMPLE_RELEASES: ChangelogRelease[] = [
     notes: '',
   },
   {
-    packageName: '@solidaris-danielbodigil/plectrum',
+    packageName: '@solidaris-danielbodigil/pds-plectrum',
     version: '1.0.0',
     changes: [SHARED_CHANGE],
     notes: '',
   },
   {
-    packageName: '@solidaris-danielbodigil/styles',
+    packageName: '@solidaris-danielbodigil/pds-styles',
     version: '1.0.0',
     changes: [SHARED_CHANGE],
     notes: '',
   },
   {
-    packageName: '@solidaris-danielbodigil/ui',
+    packageName: '@solidaris-danielbodigil/pds-ui',
     version: '0.9.0',
     changes: [{ bump: 'minor', text: 'a1b2c3d: First public catalogue.' }],
     notes: 'Pre-release — installed from the repository, not the registry.',
@@ -94,7 +94,7 @@ export const SampleUnreleased: StoryObj = {
     await assertTextVisible(canvasElement, 'Next release');
     // Highest pending bump per package: the three fixed-group packages are major,
     // tokens-cli only has a patch — so the header lists packages one by one.
-    await expect(canvas.getByText('@solidaris-danielbodigil/ui major')).toBeVisible();
+    await expect(canvas.getByText('@solidaris-danielbodigil/pds-ui major')).toBeVisible();
     await expect(canvas.getByText('@solidaris/tokens-cli patch')).toBeVisible();
     await expect(canvas.getByText('3 changesets')).toBeVisible();
     // Cards sort by bump: the major changeset comes first.
@@ -122,7 +122,7 @@ export const SampleReleased: StoryObj = {
     ]);
     // The change shared by the three packages collapses to one line.
     await expect(canvas.getAllByText(SHARED_CHANGE.text)).toHaveLength(1);
-    await expect(canvas.getByText('@solidaris-danielbodigil/styles')).toBeVisible();
+    await expect(canvas.getByText('@solidaris-danielbodigil/pds-styles')).toBeVisible();
     await assertTextVisible(canvasElement, /Pre-release/);
   },
 };

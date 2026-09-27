@@ -19,9 +19,9 @@ const backups = files.map((file) => {
   const abs = join(ROOT, file);
   const original = readFileSync(abs, 'utf8');
   const json = JSON.parse(original);
-  json.compilerOptions.paths['@solidaris-danielbodigil/ui'] = ['dist/libs/ui'];
-  json.compilerOptions.paths['@solidaris-danielbodigil/ui/patterns/ishare'] = ['dist/libs/ui/patterns/ishare'];
-  json.compilerOptions.paths['@solidaris-danielbodigil/plectrum'] = ['dist/libs/plectrum'];
+  json.compilerOptions.paths['@solidaris-danielbodigil/pds-ui'] = ['dist/libs/ui'];
+  json.compilerOptions.paths['@solidaris-danielbodigil/pds-ui/patterns/ishare'] = ['dist/libs/ui/patterns/ishare'];
+  json.compilerOptions.paths['@solidaris-danielbodigil/pds-plectrum'] = ['dist/libs/plectrum'];
   writeFileSync(abs, `${JSON.stringify(json, null, 2)}\n`);
   return { abs, original };
 });

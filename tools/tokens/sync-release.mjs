@@ -3,7 +3,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 
-const PACKAGES = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
+const PACKAGES = ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-plectrum', '@solidaris-danielbodigil/pds-styles'];
 
 export function releaseFromReport(report) {
   const changed = report.diff?.changed?.length ?? 0;
