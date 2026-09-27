@@ -93,6 +93,8 @@ Rollback: `npm deprecate` the bad version and publish a patch; never unpublish a
 
 Credentials: `GITHUB_TOKEN` (automatic in Actions for CI and release APIs), `PLECTRUM_PACKAGE_PUBLISH_TOKEN` (classic personal PAT with `write:packages` and `read:packages`, stored only in the protected `package-release` environment), `FIGMA_TOKEN`, `CHROMATIC_PROJECT_TOKEN` (optional, gated by `vars.CHROMATIC_ENABLED`). Private package consumers need their own read access; no secret values belong in documentation or `.npmrc` committed to the repository. The publish workflow checks PAT identity and actual private visibility after each package, before recording a release.
 
+On 2026-09-27, the owner added `PLECTRUM_PACKAGE_PUBLISH_TOKEN` to `package-release`; its name was verified with `gh secret list --env package-release`, not its value. PR #31 passed [all six required CI jobs](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36352293284) and is ready for Code Owner review. The token's actual scopes and identity are checked by the protected publication workflow, after the migration and version PRs merge.
+
 Owner: unresolved · Verified: unresolved
 
 ## 6. Quality gates and troubleshooting
