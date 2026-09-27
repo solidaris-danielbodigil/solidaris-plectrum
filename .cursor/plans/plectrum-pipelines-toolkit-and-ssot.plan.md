@@ -40,7 +40,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-27. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1; packages are not published. P6 foundation is merged, with its live Figma trial awaiting the proposal branch URL and approved candidate. P7 scope and packaging PR #29 is merged; the gated publication and documentation pipeline is prepared in a follow-up PR, but no package publication has occurred. P8–P9 remain pending. Required Code Owner review on `main` has been restored.
+Created: 2026-09-24. Updated: 2026-09-27. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1; packages are not published. P6 foundation is merged, with its live Figma trial awaiting the proposal branch URL and approved candidate. P7 PRs #29 and #30 are merged; the first gated publication has been dispatched and awaits environment review. P8–P9 remain pending. Required Code Owner review on `main` has been restored.
 
 ## Outcome
 
@@ -429,3 +429,11 @@ PR #29 merged as `e764da6` and delivered the four GitHub Packages names, private
 - Consumer and maintainer guidance explains private package access, the manual dispatch, recovery and the distinction between manifest versions and publication evidence. The Renovate template groups all four distributed packages, including the toolkit.
 
 Remaining P7 acceptance: merge this follow-up with Code Owner review; configure/confirm the `package-release` environment and package access; perform an attended first dispatch from current `main`; inspect registry visibility and four package versions; verify clean registry install, the matching versioned Storybook and `latest` on Pages. If the run fails partway, retry the same ID and revision after resolving the failure. Record the workflow run, GitHub Release tag, registry evidence and Pages URL here before marking P7 complete. Stop after P7 as requested; do not begin P8.
+
+## P7 first-release activation — 2026-09-27
+
+- PR #30 merged as `fab5e79d0903eb8817273c1f3e89bed7982a33df`. Its six required CI checks passed on that SHA; the post-merge development-preview Pages deployment [36350098769](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36350098769) succeeded.
+- Created the `package-release` environment for protected branches with required reviewers `@solidaris-danielbodigil` and `@danielbodi`; self-review is disabled. Both identities and the latter's write access were verified. No repository secret or PAT was added.
+- Dispatched [first-release workflow 36350298527](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36350298527) from the exact merged SHA with `release_id=2.0.1-devkit-0.2.0`. Its `publish` job is **waiting for the other maintainer's environment approval**. At this checkpoint no publication step has run and no GitHub Release tag exists.
+
+Once approved, inspect every step and record the actual four registry versions, package visibility/access, `plectrum-v2.0.1-devkit-0.2.0` release assets, versioned Storybook URL and `latest` URL. If approval is withheld, leave P7 in progress. Do not merge a new `main` commit during the pending run: the workflow intentionally refuses an outdated source revision. P8 remains untouched.

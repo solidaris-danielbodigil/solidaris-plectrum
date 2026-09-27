@@ -85,7 +85,7 @@ Purpose: version and publish `@solidaris-danielbodigil/plectrum`, `@solidaris-da
 
 Actual workflow: Changesets. `npm run changeset` on the feature branch. On merge to `main`, `.github/workflows/release.yml` (`changesets/action`) opens/updates the `chore(release): version packages` PR (`npm run changeset:version` also refreshes the lockfile, changelog, docs and contracts). Merging that PR updates source manifests and does not publish.
 
-State today: no release has been published. The three runtime manifests declare 2.0.1 and the toolkit 0.2.0. Private GitHub Packages under `@solidaris-danielbodigil` is the configured target; the four manifests and token-free `.npmrc` use that scope. `npm run pack:libs` writes `tools/packaging/.tarballs/*.tgz`; CI runs `pack:smoke`, `release:check` and `build-storybook:packed`. After the publication workflow merges, a receiving maintainer must perform the first release and verify registry installation, release assets and versioned Storybook. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
+State today: no release has been published. The three runtime manifests declare 2.0.1 and the toolkit 0.2.0. Private GitHub Packages under `@solidaris-danielbodigil` is the configured target; the four manifests and token-free `.npmrc` use that scope. `npm run pack:libs` writes `tools/packaging/.tarballs/*.tgz`; CI runs `pack:smoke`, `release:check` and `build-storybook:packed`. The first publication run is waiting for the `package-release` environment approval from the other maintainer. After approval, verify registry installation, release assets and versioned Storybook. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
 
 Consumer smoke after a release: install the new version in a throwaway app (the `pack:smoke` fixture in `tools/packaging` is the template), `providePlectrum()`, render one component, run the app tests.
 
@@ -135,7 +135,7 @@ Owner: unresolved · Verified: unresolved
 
 | Item                                         | State                                                         | Next action                                                   | Owner      |
 | -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ---------- |
-| First private GitHub Packages release       | gated manual workflow prepared; no publish yet     | merge its PR, protect `package-release`, dispatch it on current main and verify registry/Pages | unresolved |
+| First private GitHub Packages release       | [run 36350298527](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36350298527) waiting for environment approval; no publish yet | approve from the other maintainer, then verify four private packages, release assets and Pages | unresolved |
 | Code → Figma transport                       | live (Plugin API: agent or plugin); REST parked               | use MCP or plugin on `proposals/{app}`; Enterprise REST later | unresolved |
 | Docs migration to the knowledge base         | ledger drafted (`docs/handoff/migration-ledger.md`)           | name destination + owners, then B07 cutover                   | unresolved |
 | NL copy review                               | `.ai/questions/nl-copy-review.md`                             | native review of drafted NL strings                           | unresolved |
