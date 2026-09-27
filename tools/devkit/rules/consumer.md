@@ -1,6 +1,6 @@
 # Plectrum in an application repository
 
-The installed `@solidaris/plectrum-devkit` package owns the catalogue, schemas, process and shared role instructions. `.plectrum/config.json` owns this application's identity and paths. `plectrum update` regenerates editor adapters; keep team-specific notes in other files.
+The installed `@solidaris-danielbodigil/plectrum-devkit` package owns the catalogue, schemas, process and shared role instructions. `.plectrum/config.json` owns this application's identity and paths. `plectrum update` regenerates editor adapters; keep team-specific notes in other files.
 
 1. Run `plectrum catalogue` and inspect PrimeNG and the Figma design before proposing a gap.
 2. Open a proposal issue in the central Plectrum repository. Wait until the Core reviewer merges the `approved-candidate` proposal record naming your team as owner.

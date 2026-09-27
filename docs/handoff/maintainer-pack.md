@@ -9,9 +9,9 @@ Every runbook below states purpose, prerequisites, source-linked steps, expected
 | Part      | Path                                                                                           | Role                                                                                                                                        |
 | --------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Apps      | `apps/ishare`, `apps/icrm`                                                                     | Consumers only. No shared logic.                                                                                                            |
-| UI        | `libs/ui`                                                                                      | `@solidaris/ui` — Angular components, Storybook (`libs/ui/.storybook`), colocated `*.metadata.ts` contracts, `src/storybook/*` docs figures |
+| UI        | `libs/ui`                                                                                      | `@solidaris-danielbodigil/ui` — Angular components, Storybook (`libs/ui/.storybook`), colocated `*.metadata.ts` contracts, `src/storybook/*` docs figures |
 | Styles    | `libs/styles`                                                                                  | ITCSS SCSS `01-settings` → `08-trumps`; `*.generated.scss` come from `tokens:build`                                                         |
-| Plectrum  | `libs/plectrum`                                                                                | `@solidaris/plectrum` — `providePlectrum()`, PrimeNG presets `Plectrum_v0.6` / `Plectrum_v1`, `src/tokens.json` (design-token SSOT)         |
+| Plectrum  | `libs/plectrum`                                                                                | `@solidaris-danielbodigil/plectrum` — `providePlectrum()`, PrimeNG presets `Plectrum_v0.6` / `Plectrum_v1`, `src/tokens.json` (design-token SSOT)         |
 | Tools     | `tools/tokens/*.mjs`, `tools/scripts/*`, `tools/generators/sds-component`, `tools/packaging/*` | Token pipeline, generated indexes, scaffold, pack + smoke                                                                                   |
 | Contracts | `.ai/contracts/index.json` (generated), `.ai/contracts/schema/*.ts`, `.ai/rules/*.md`          | Machine-readable map and the rules agents and reviewers apply                                                                               |
 | Upstream  | PrimeNG (`primeng/*`), Bootstrap Icons, Figma Plectrum UI Kit                                  | PrimeNG first; Figma is the visual SSOT                                                                                                     |
@@ -81,17 +81,17 @@ Owner: unresolved · Verified: unresolved
 
 ## 5. Release and upgrade
 
-Purpose: version and publish `@solidaris/plectrum`, `@solidaris/ui`, styles.
+Purpose: version and publish `@solidaris-danielbodigil/plectrum`, `@solidaris-danielbodigil/ui`, styles.
 
-Actual workflow: Changesets. `npm run changeset` on the feature branch. On merge to `main`, `.github/workflows/release.yml` (`changesets/action`) opens/updates the `chore(release): version packages` PR (`npm run changeset:version` = `changeset version` + `changelog:build`). Merging that PR runs `npm run release` (`changeset publish`) with `NPM_TOKEN`.
+Actual workflow: Changesets. `npm run changeset` on the feature branch. On merge to `main`, `.github/workflows/release.yml` (`changesets/action`) opens/updates the `chore(release): version packages` PR (`npm run changeset:version` also refreshes the lockfile, changelog, docs and contracts). Merging that PR updates source manifests and does not publish.
 
-State today: no release has been published yet (What's new shows the pending changesets; `libs/*/package.json` at `0.1.0`). Whether `NPM_TOKEN` exists and where it points (npm registry vs internal) is **unresolved** — confirm before the first release. Until then consumers are served by packed tarballs: `npm run pack:libs` (→ `dist/packed/*.tgz`), smoke-tested by `npm run pack:smoke` and `npm run build-storybook:packed` in CI.
+State today: no release has been published. The three runtime manifests declare 2.0.1 and the toolkit 0.2.0. Private GitHub Packages under `@solidaris-danielbodigil` is the configured target; the four manifests and token-free `.npmrc` use that scope. `npm run pack:libs` writes `tools/packaging/.tarballs/*.tgz`; CI runs `pack:smoke`, `release:check` and `build-storybook:packed`. P7 still needs an attended first publication, registry install proof, a release manifest and immutable versioned Storybook before the package route replaces tarballs.
 
 Consumer smoke after a release: install the new version in a throwaway app (the `pack:smoke` fixture in `tools/packaging` is the template), `providePlectrum()`, render one component, run the app tests.
 
 Rollback: `npm deprecate` the bad version and publish a patch; never unpublish a version an app already pinned. Static Pages deploy: `deploy-ishare-pages.yml` redeploys from `main` — revert the offending commit.
 
-Credentials: `NPM_TOKEN`, `GITHUB_TOKEN` (automatic), `FIGMA_TOKEN`, `CHROMATIC_PROJECT_TOKEN` (optional, gated by `vars.CHROMATIC_ENABLED`). Owner of each: unresolved. No secret values in documentation.
+Credentials: `GITHUB_TOKEN` (automatic in Actions), `FIGMA_TOKEN`, `CHROMATIC_PROJECT_TOKEN` (optional, gated by `vars.CHROMATIC_ENABLED`). Private package consumers need their own read access; no secret values belong in documentation or `.npmrc` committed to the repository.
 
 Owner: unresolved · Verified: unresolved
 
@@ -135,7 +135,7 @@ Owner: unresolved · Verified: unresolved
 
 | Item                                         | State                                                         | Next action                                                   | Owner      |
 | -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ---------- |
-| First npm release of `@solidaris/*`          | pending changesets, no publish yet                            | confirm `NPM_TOKEN` + registry, merge version PR              | unresolved |
+| First private GitHub Packages release       | scope and packed-artifact checks prepared; no publish yet     | complete the gated P7 publication, registry install and versioned Storybook | unresolved |
 | Code → Figma transport                       | live (Plugin API: agent or plugin); REST parked               | use MCP or plugin on `proposals/{app}`; Enterprise REST later | unresolved |
 | Docs migration to the knowledge base         | ledger drafted (`docs/handoff/migration-ledger.md`)           | name destination + owners, then B07 cutover                   | unresolved |
 | NL copy review                               | `.ai/questions/nl-copy-review.md`                             | native review of drafted NL strings                           | unresolved |
@@ -165,4 +165,4 @@ Result, gaps found, date, participants: unresolved.
 
 See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Pipelines and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`.
 
-The iSHARE components now import from `@solidaris/ui/patterns/ishare`; a major changeset records the root API removal. Private GitHub Packages settings are prepared in `registry.json`, but scope migration/publication and the portable toolkit remain later phases. The registry lists the reviewer/Figma configuration still to confirm.
+The iSHARE components now import from `@solidaris-danielbodigil/ui/patterns/ishare`; a major changeset records the root API removal. Private GitHub Packages settings are prepared in `registry.json`, but scope migration/publication and the portable toolkit remain later phases. The registry lists the reviewer/Figma configuration still to confirm.

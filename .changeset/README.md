@@ -1,6 +1,6 @@
 # Changesets
 
-Version `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` together (`fixed` group in `config.json`).
+Version `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum`, and `@solidaris-danielbodigil/styles` together (`fixed` group in `config.json`).
 
 ```bash
 npx changeset

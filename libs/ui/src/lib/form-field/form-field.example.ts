@@ -1,11 +1,11 @@
 /**
  * Paste-ready application example. The docs page, the Vertical story source
  * panel, and tools/packaging/consumer-app must keep this shape: public
- * `@solidaris/ui` import, PrimeNG `pInputText`, and every binding the template uses.
+ * `@solidaris-danielbodigil/ui` import, PrimeNG `pInputText`, and every binding the template uses.
  */
 export const FORM_FIELD_CONSUMER_EXAMPLE = `import { Component } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 
 @Component({
   selector: 'app-root',

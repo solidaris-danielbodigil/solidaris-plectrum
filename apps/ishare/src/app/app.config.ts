@@ -2,8 +2,8 @@ import { ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDete
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
-import { providePlectrum } from '@solidaris/plectrum';
-import { IconRegistry, registerPlectrumIcons, TESTING_TELEMETRY_ENABLED } from '@solidaris/ui';
+import { providePlectrum } from '@solidaris-danielbodigil/plectrum';
+import { IconRegistry, registerPlectrumIcons, TESTING_TELEMETRY_ENABLED } from '@solidaris-danielbodigil/ui';
 import { routes } from './app.routes';
 import { registerIshareIcons } from './ishare.icons';
 import { isTestingTelemetryEnabled } from './testing/is-testing-telemetry-enabled';

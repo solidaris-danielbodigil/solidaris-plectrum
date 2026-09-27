@@ -10,16 +10,16 @@
       "@solidaris/contracts": [
         ".ai/contracts/schema/index.ts"
       ],
-      "@solidaris/plectrum": [
+      "@solidaris-danielbodigil/plectrum": [
         "libs/plectrum/src/index.ts"
       ],
-      "@solidaris/styles": [
+      "@solidaris-danielbodigil/styles": [
         "libs/styles/src/main.scss"
       ],
-      "@solidaris/ui": [
+      "@solidaris-danielbodigil/ui": [
         "libs/ui/src/index.ts"
       ],
-      "@solidaris/ui/patterns/ishare": [
+      "@solidaris-danielbodigil/ui/patterns/ishare": [
         "libs/ui/src/patterns-ishare-api.ts"
       ]
     }

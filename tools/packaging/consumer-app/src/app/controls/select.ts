@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 
 @Component({
   selector: 'demo-select',

@@ -9,7 +9,7 @@ import {
   SubNavShellComponent,
   TopNavComponent,
   plectrumAppsNavItems,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { injectIgedMessages } from '../i18n';
 import { BreadcrumbService } from './breadcrumb.service';
 import { activeSubNavItemIdFromUrl, buildSubNavSections } from './nav.config';

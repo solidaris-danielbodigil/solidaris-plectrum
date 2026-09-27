@@ -8,7 +8,7 @@ updates:
     groups:
       plectrum-design-system:
         patterns:
-          - "@solidaris/ui"
-          - "@solidaris/plectrum"
-          - "@solidaris/styles"
-          - "@solidaris/tokens-cli"
+          - "@solidaris-danielbodigil/ui"
+          - "@solidaris-danielbodigil/plectrum"
+          - "@solidaris-danielbodigil/styles"
+          - "@solidaris-danielbodigil/plectrum-devkit"

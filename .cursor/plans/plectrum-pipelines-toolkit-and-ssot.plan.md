@@ -25,7 +25,7 @@ todos:
     status: pending
   - id: p7-release
     content: "P7: publish verified package artifacts, toolkit and contracts with matching versioned Storybook documentation"
-    status: pending
+    status: in_progress
   - id: p8-docs
     content: "P8: render onboarding, contribution and pipeline guidance from shared process and release sources"
     status: pending
@@ -40,7 +40,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1; packages are not published. P6–P9 remain pending. Required Code Owner review on `main` has been restored.
+Created: 2026-09-24. Updated: 2026-09-25. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1; packages are not published. P6 foundation is merged, with its live Figma trial awaiting the proposal branch URL and approved candidate. P7 private GitHub Packages preparation is in progress; no package publication has occurred. P8–P9 remain pending. Required Code Owner review on `main` has been restored.
 
 ## Outcome
 
@@ -407,3 +407,14 @@ P6 preparation now uses the registry's Figma file identities in the plugin and p
 ## Main review protection
 
 Review was temporarily suspended on 2026-09-25 while the plan PRs merged. It was restored before P6 work: one required approving Code Owner review, stale-review dismissal, the six strict required checks (`intake-guard`, `build`, `pack-smoke`, `storybook-tests`, `storybook-packed`, `figma-plugin`) and admin enforcement. GitHub's protection API confirmed these settings after the change.
+
+## P7 preparation — 2026-09-25
+
+Branch: `codex/plectrum-p7-release`. Stop after P7 work; P8 is not started.
+
+- GitHub Packages remains private under the personal account `@solidaris-danielbodigil`. The four distributable manifests, package imports, fixed Changesets group, toolkit, generated contract catalogue, lockfile, consumer fixture and active documentation now use that scope. The internal `@solidaris/contracts` alias and private `@solidaris/tokens-cli` are not distributed packages and keep their names. Historical changelogs, ADRs and the withdrawn candidate preserve the names they originally recorded; the candidate validator accepts the prior scope only for withdrawn submissions.
+- Added a token-free root `.npmrc` scope mapping. Each distributable manifest names `https://npm.pkg.github.com` as its registry and the Plectrum repository as its source. GitHub's npm registry documentation requires a package scope matching the owner and supports repository linkage through the `repository` field. Access to private packages still needs to be granted to consuming accounts/repositories.
+- `release:check` validates the four packed artifacts against the configured scope, fixed runtime version, private registry, repository linkage and GitHub's npm tarball size limit. CI runs it after `pack:smoke`. Consumer docs now give the scope mapping, developer token requirements and application CI/Dependabot access. The stale manual `RELEASE_DATE` proxy and unused `REGISTRY_PUBLISHED` constant were removed; manifest versions are not presented as publication proof.
+- This is release **preparation**, not completion: the Changesets workflow still opens version PRs only. A gated publication job must publish the four exact archives with idempotent retry, confirm a clean registry install, emit a validated release manifest and contract snapshot, and publish immutable versioned Storybook before the released latest pointer moves. Do not enable automatic `changeset publish` in isolation or mark `publicationEnabled` true before those checks succeed.
+
+Local verification on this branch: `pack:smoke` succeeded with the four renamed tarballs in a throwaway Angular application; `test:pipelines` passed all eight tests; `npm test` passed 614 tests (UI 402, iSHARE 204, Plectrum 8); `build-storybook:packed`, `devkit:test`, `devkit:check`, `contracts:generate -- --check`, `contracts:check`, `candidate:check`, `adoption:check`, `docs:check`, `release:check` and Storybook/contracts TypeScript checks passed. GitHub PR CI remains the final check for this branch.

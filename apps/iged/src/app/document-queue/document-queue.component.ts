@@ -19,7 +19,7 @@ import {
   InputClearComponent,
   ToolbarComponent,
   pdsOverlayAppendTo,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { injectIgedMessages } from '../i18n';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import {

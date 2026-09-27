@@ -1,19 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Template for app repos that consume @solidaris/ui, @solidaris/plectrum, @solidaris/styles",
+  "description": "Template for app repos that consume @solidaris-danielbodigil/ui, @solidaris-danielbodigil/plectrum, @solidaris-danielbodigil/styles",
   "extends": ["config:recommended"],
   "packageRules": [
     {
       "matchPackageNames": [
-        "@solidaris/ui",
-        "@solidaris/plectrum",
-        "@solidaris/styles",
+        "@solidaris-danielbodigil/ui",
+        "@solidaris-danielbodigil/plectrum",
+        "@solidaris-danielbodigil/styles",
         "@solidaris/tokens-cli"
       ],
       "groupName": "Plectrum design system",
       "rangeStrategy": "bump",
       "prBodyNotes": [
-        "After merge, delete any local copies of promoted components and import from `@solidaris/ui`."
+        "After merge, delete any local copies of promoted components and import from `@solidaris-danielbodigil/ui`."
       ]
     }
   ]

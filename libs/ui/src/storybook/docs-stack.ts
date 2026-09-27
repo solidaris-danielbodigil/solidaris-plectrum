@@ -1,6 +1,6 @@
 // =============================================================================
 // libs/ui/src/storybook/docs-stack.ts
-// Published Plectrum version plus the PrimeNG / Angular majors this repo
+// Plectrum manifest version plus the PrimeNG / Angular majors this repo
 // actually depends on. The hero eyebrow reads this so the stack cannot drift
 // from package.json.
 // =============================================================================
@@ -20,5 +20,5 @@ export const ANGULAR_MAJOR = major(angularPackage.version);
 
 /** Uppercased by `.c-docs-hero__eyebrow`. */
 export function docsHeroEyebrow(): string {
-  return `@solidaris/* v${PLECTRUM_VERSION} · PrimeNG v${PRIMENG_MAJOR} · Angular ${ANGULAR_MAJOR}`;
+  return `${uiPackage.name.split('/')[0]}/* v${PLECTRUM_VERSION} · PrimeNG v${PRIMENG_MAJOR} · Angular ${ANGULAR_MAJOR}`;
 }

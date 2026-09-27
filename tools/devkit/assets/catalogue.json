@@ -208,7 +208,7 @@
         "path": "libs/styles/src/06-components/_components.accordion.scss"
       },
       "package": {
-        "name": "@solidaris/styles",
+        "name": "@solidaris-danielbodigil/styles",
         "version": "2.0.1"
       },
       "selector": null,
@@ -410,9 +410,9 @@
         "path": "libs/ui/src/lib/copyable-text/copyable-text.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "CopyableTextComponent"
       },
       "selector": "pds-copyable-text",
@@ -608,9 +608,9 @@
         "path": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui/patterns/ishare",
+        "importPath": "@solidaris-danielbodigil/ui/patterns/ishare",
         "exportName": "DelayPredictionCardComponent"
       },
       "selector": "pds-delay-prediction-card",
@@ -628,7 +628,7 @@
           "id": "plectrum:detail-list",
           "name": "DetailList",
           "category": "molecules",
-          "description": "c-detail-list renders label / value description rows on a semantic <dl>. The block owns the label column width and typography; layout is o-flex mixes in the template. The DetailListRow type is exported from @solidaris/ui (libs/ui/src/lib/drawer).",
+          "description": "c-detail-list renders label / value description rows on a semantic <dl>. The block owns the label column width and typography; layout is o-flex mixes in the template. The DetailListRow type is exported from @solidaris-danielbodigil/ui (libs/ui/src/lib/drawer).",
           "type": "display",
           "path": "libs/styles/src/06-components/_components.detail-list.scss",
           "bemBlock": "c-detail-list",
@@ -730,7 +730,7 @@
         },
         "aiHints": {
           "priority": "medium",
-          "context": "Read-only label / value rows on a semantic dl inside drawers, panels and cards. CSS-only block: write the markup (or map DetailListRow[] from @solidaris/ui) and compose the layout with o-flex / o-layout. Reference usage: Profile Drawer sections (iSHARE-Audit node 7:1012); there is no Plectrum UI Kit node.",
+          "context": "Read-only label / value rows on a semantic dl inside drawers, panels and cards. CSS-only block: write the markup (or map DetailListRow[] from @solidaris-danielbodigil/ui) and compose the layout with o-flex / o-layout. Reference usage: Profile Drawer sections (iSHARE-Audit node 7:1012); there is no Plectrum UI Kit node.",
           "selectionCriteria": {
             "label / value rows": "use c-detail-list on a dl",
             "editable fields": "use FormField",
@@ -758,7 +758,7 @@
         "path": "libs/styles/src/06-components/_components.detail-list.scss"
       },
       "package": {
-        "name": "@solidaris/styles",
+        "name": "@solidaris-danielbodigil/styles",
         "version": "2.0.1"
       },
       "selector": null,
@@ -969,7 +969,7 @@
         "path": "libs/styles/src/06-components/_components.drawer.scss"
       },
       "package": {
-        "name": "@solidaris/styles",
+        "name": "@solidaris-danielbodigil/styles",
         "version": "2.0.1"
       },
       "selector": null,
@@ -1149,9 +1149,9 @@
         "path": "libs/ui/src/lib/empty-state/empty-state.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "EmptyStateComponent"
       },
       "selector": "pds-empty-state",
@@ -1409,9 +1409,9 @@
         "path": "libs/ui/src/lib/form-field/form-field.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "FormFieldComponent"
       },
       "selector": "pds-form-field",
@@ -1637,9 +1637,9 @@
         "path": "libs/ui/src/lib/icon/icon.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "IconComponent"
       },
       "selector": "pds-icon",
@@ -1822,9 +1822,9 @@
         "path": "libs/ui/src/lib/input-clear/input-clear.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "InputClearComponent"
       },
       "selector": "pds-input-clear",
@@ -2113,9 +2113,9 @@
         "path": "libs/ui/src/lib/list/list.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "ListComponent"
       },
       "selector": "pds-list",
@@ -2333,9 +2333,9 @@
         "path": "libs/ui/src/lib/nav-shell/nav-shell.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "NavShellComponent"
       },
       "selector": "pds-nav-shell",
@@ -2595,9 +2595,9 @@
         "path": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "PlectrumAvatarComponent"
       },
       "selector": "pds-plectrum-avatar",
@@ -2968,9 +2968,9 @@
         "path": "libs/ui/src/lib/profile-card/profile-card.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "ProfileCardComponent"
       },
       "selector": "pds-profile-card",
@@ -3259,9 +3259,9 @@
         "path": "libs/ui/src/lib/profile-drawer/profile-drawer.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "ProfileDrawerComponent"
       },
       "selector": "pds-profile-drawer",
@@ -3406,7 +3406,7 @@
         "path": "libs/styles/src/06-components/_components.skeleton-slot.scss"
       },
       "package": {
-        "name": "@solidaris/styles",
+        "name": "@solidaris-danielbodigil/styles",
         "version": "2.0.1"
       },
       "selector": null,
@@ -3698,9 +3698,9 @@
         "path": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "SubNavShellComponent"
       },
       "selector": "pds-sub-nav-shell",
@@ -3845,7 +3845,7 @@
         "path": "libs/styles/src/06-components/_components.timeline.scss"
       },
       "package": {
-        "name": "@solidaris/styles",
+        "name": "@solidaris-danielbodigil/styles",
         "version": "2.0.1"
       },
       "selector": null,
@@ -4055,9 +4055,9 @@
         "path": "libs/ui/src/lib/toolbar/toolbar.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "ToolbarComponent"
       },
       "selector": "pds-toolbar",
@@ -4468,9 +4468,9 @@
         "path": "libs/ui/src/lib/top-nav/top-nav.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui",
+        "importPath": "@solidaris-danielbodigil/ui",
         "exportName": "TopNavComponent"
       },
       "selector": "pds-top-nav",
@@ -4642,9 +4642,9 @@
         "path": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.component.ts"
       },
       "package": {
-        "name": "@solidaris/ui",
+        "name": "@solidaris-danielbodigil/ui",
         "version": "2.0.1",
-        "importPath": "@solidaris/ui/patterns/ishare",
+        "importPath": "@solidaris-danielbodigil/ui/patterns/ishare",
         "exportName": "TransactionsCicsModalComponent"
       },
       "selector": "pds-transactions-cics-modal",

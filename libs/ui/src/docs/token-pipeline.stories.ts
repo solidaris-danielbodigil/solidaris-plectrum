@@ -51,7 +51,7 @@ export const ChangeFlow: StoryObj = stepsStory([
     tone: 'neutral',
     title: 'Version and publish',
     detail:
-      'Changesets publish @solidaris/ui, @solidaris/styles and @solidaris/plectrum with a changelog entry.',
+      'Changesets publish @solidaris-danielbodigil/ui, @solidaris-danielbodigil/styles and @solidaris-danielbodigil/plectrum with a changelog entry.',
   },
   {
     who: 'Developer',

@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '@solidaris/plectrum';
+import { providePlectrum } from '@solidaris-danielbodigil/plectrum';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {

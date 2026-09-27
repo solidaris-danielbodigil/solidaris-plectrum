@@ -1,13 +1,15 @@
 {
-  "name": "@solidaris/plectrum",
+  "name": "@solidaris-danielbodigil/plectrum",
   "version": "2.0.1",
   "description": "Plectrum PrimeNG presets and providePlectrum()",
+  "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "peerDependencies": {
     "@angular/core": "^21.0.0",
     "@primeuix/themes": "^2.0.0",
     "primeng": "^21.0.0"
   },
   "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
     "access": "restricted"
   },
   "sideEffects": false

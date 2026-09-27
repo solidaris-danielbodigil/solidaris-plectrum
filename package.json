@@ -66,6 +66,7 @@
     "figma-plugin:test": "node --import tsx --test tools/figma-plugin/src/*.spec.ts",
     "pack:libs": "node tools/packaging/pack.mjs",
     "pack:smoke": "node tools/packaging/smoke-test.mjs",
+    "release:check": "node tools/packaging/check-release.mjs",
     "storybook:packed": "node tools/packaging/storybook-packed.mjs",
     "build-storybook:packed": "node tools/packaging/storybook-packed.mjs",
     "changeset": "changeset",

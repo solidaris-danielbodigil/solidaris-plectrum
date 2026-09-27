@@ -201,7 +201,7 @@ export const ComponentPromotion: StoryObj = stepsStory([
   {
     who: 'CI',
     tone: 'neutral',
-    title: 'Publish @solidaris/ui through changesets',
+    title: 'Publish @solidaris-danielbodigil/ui through changesets',
   },
   {
     who: 'Agent or designer',
@@ -213,7 +213,7 @@ export const ComponentPromotion: StoryObj = stepsStory([
   {
     who: 'Developer',
     tone: 'app',
-    title: 'Bump the package, delete the local copy, import from @solidaris/ui',
+    title: 'Bump the package, delete the local copy, import from @solidaris-danielbodigil/ui',
   },
 ]);
 

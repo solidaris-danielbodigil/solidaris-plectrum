@@ -1,4 +1,4 @@
-import type { SubNavShellItem, SubNavShellSection } from '@solidaris/ui';
+import type { SubNavShellItem, SubNavShellSection } from '@solidaris-danielbodigil/ui';
 import type { IgedMessageSet } from '../i18n';
 
 export const IGED_DOMAIN_IDS = [

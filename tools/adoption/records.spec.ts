@@ -30,7 +30,7 @@ function report(observations: AdoptionReport['observations'], observedAt = '2026
     schemaVersion: 1, application: 'external', team: 'external',
     source: { repository: 'https://github.com/external/app', revision: sha, path: '.' },
     observedAt, reporterVersion: '0.2.0',
-    packages: ['ui', 'plectrum', 'styles'].map((name) => ({ name: `@solidaris/${name}`, version: '2.0.0' })),
+    packages: ['ui', 'plectrum', 'styles'].map((name) => ({ name: `@solidaris-danielbodigil/${name}`, version: '2.0.0' })),
     observations, limitations: ['Static source references can include unused imports.'],
   };
 }

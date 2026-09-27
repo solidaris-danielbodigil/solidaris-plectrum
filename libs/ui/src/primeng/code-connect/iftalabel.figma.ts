@@ -6,7 +6,7 @@ import figma from 'figma'
 export default {
   example: figma.code`<p-iftalabel />`,
   imports: ["import { IftaLabel } from 'primeng/iftalabel'",
-  "import { FormFieldComponent } from '@solidaris/ui'"],
+  "import { FormFieldComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'iftalabel',
   metadata: { nestable: true },
 }

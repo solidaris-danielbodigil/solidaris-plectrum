@@ -6,7 +6,7 @@ import figma from 'figma'
 export default {
   example: figma.code`<p-floatlabel />`,
   imports: ["import { FloatLabel } from 'primeng/floatlabel'",
-  "import { FormFieldComponent } from '@solidaris/ui'"],
+  "import { FormFieldComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'floatlabel',
   metadata: { nestable: true },
 }

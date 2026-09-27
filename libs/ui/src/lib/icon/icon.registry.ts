@@ -3,7 +3,7 @@
 // Injectable registry for custom SVG icons.
 //
 // Usage (in app config or a feature module):
-//   import { IconRegistry } from '@solidaris/ui';
+//   import { IconRegistry } from '@solidaris-danielbodigil/ui';
 //   import { inject } from '@angular/core';
 //
 //   const registry = inject(IconRegistry);

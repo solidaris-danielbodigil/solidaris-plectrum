@@ -1,7 +1,5 @@
-// Package version and publication state for Storybook consumer pages.
-// Versions come from the three package.json files. Publication is a fact about
-// .github/workflows/release.yml: the version PR runs; npm publish stays off
-// until NPM_TOKEN and registry access exist.
+// Package versions for Storybook consumer pages come from package manifests.
+// Source versions are never treated as evidence of registry publication.
 import plectrumPackage from '../../../plectrum/package.json';
 import stylesPackage from '../../../styles/package.json';
 import uiPackage from '../../package.json';
@@ -20,16 +18,6 @@ if (RELEASE_PACKAGES.some((pkg) => pkg.version !== PACKAGE_VERSION)) {
   );
 }
 
-/** npm publish is parked in release.yml. Consumers install packed tarballs. */
-export const REGISTRY_PUBLISHED = false;
-
-/**
- * The date `libs/ui/package.json` last changed — a proxy for when 1.0.0 shipped,
- * since the three packages version together. Refresh it after every version bump:
- *   git log -1 --format=%ad --date=short -- libs/ui/package.json
- */
-export const RELEASE_DATE = '2026-09-14';
-
 /** Theme preset in the Storybook toolbar. Not the package version. */
 export const PRESET_VERSION = 'v1';
 
@@ -43,15 +31,15 @@ export const PRIMENG_RANGE = uiPackage.peerDependencies.primeng;
 export const PRIMEUIX_RANGE =
   plectrumPackage.peerDependencies['@primeuix/themes'];
 
-/** npm pack drops the scope: @solidaris/ui → solidaris-ui-1.0.0.tgz */
+/** npm pack drops the @: @solidaris-danielbodigil/ui → solidaris-danielbodigil-ui-2.0.1.tgz */
 export function tarballName(packageName: string, version = PACKAGE_VERSION): string {
   return `${packageName.replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
 }
 
 export const TARBALL_INSTALL = `npm install \\
-  ./path/to/${tarballName('@solidaris/ui')} \\
-  ./path/to/${tarballName('@solidaris/plectrum')} \\
-  ./path/to/${tarballName('@solidaris/styles')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/ui')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/plectrum')} \\
+  ./path/to/${tarballName('@solidaris-danielbodigil/styles')} \\
   primeng @primeuix/themes`;
 
-export const RELEASE_SUMMARY = `The three runtime manifests declare ${PACKAGE_VERSION}; registry publishing is not enabled. Install packed tarballs until a verified release exists. The Preset toolbar (${PRESET_VERSION}) selects the theme, not the package version.`;
+export const RELEASE_SUMMARY = `The three runtime manifests declare ${PACKAGE_VERSION}; no verified registry release is recorded yet. Install packed tarballs until a verified release exists. The Preset toolbar (${PRESET_VERSION}) selects the theme, not the package version.`;

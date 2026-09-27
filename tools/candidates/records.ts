@@ -58,8 +58,12 @@ export function validateSubmission(submission: Submission, proposal: Proposal, r
   if (new URL(submission.preview.url).protocol !== 'https:' || new URL(submission.checks.url).protocol !== 'https:') throw new Error(`${submission.id}: preview and checks must use HTTPS`);
   if (!submission.origin.path.endsWith('.metadata.json') || submission.origin.path.includes('..')) throw new Error(`${submission.id}: unsafe metadata path`);
   if (!semver.satisfies(submission.toolkitVersion, `^${compatibility.toolkitVersion}`) || !semver.satisfies(submission.processVersion, compatibility.processVersionRange)) throw new Error(`${submission.id}: incompatible toolkit/process version`);
-  const required = ['@solidaris/ui', '@solidaris/plectrum', '@solidaris/styles'];
-  if (submission.packages.length !== required.length || new Set(submission.packages.map((pkg) => pkg.name)).size !== required.length || required.some((name) => !submission.packages.some((pkg) => pkg.name === name))) throw new Error(`${submission.id}: incomplete DS package set`);
+  const required = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
+  // Withdrawn submissions are immutable historical records. Keep the package
+  // identities they actually used before the first GitHub Packages release.
+  const legacyWithdrawn = ['@solidaris/ui', '@solidaris/plectrum', '@solidaris/styles'];
+  const expected = submission.operation === 'withdraw' && submission.packages.some((pkg) => pkg.name === '@solidaris/ui') ? legacyWithdrawn : required;
+  if (submission.packages.length !== expected.length || new Set(submission.packages.map((pkg) => pkg.name)).size !== expected.length || expected.some((name) => !submission.packages.some((pkg) => pkg.name === name))) throw new Error(`${submission.id}: incomplete DS package set`);
   const versions = new Set(submission.packages.map((pkg) => pkg.version));
   if (versions.size !== 1 || [...versions].some((version) => !semver.satisfies(version, compatibility.dsVersionRange))) throw new Error(`${submission.id}: incompatible DS package versions`);
   if (submission.operation === 'withdraw' && !submission.withdrawalReason) throw new Error(`${submission.id}: withdrawal requires a reason`);

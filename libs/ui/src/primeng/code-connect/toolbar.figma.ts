@@ -6,7 +6,7 @@ import figma from 'figma'
 export default {
   example: figma.code`<pds-toolbar />`,
   imports: ["import { Toolbar } from 'primeng/toolbar'",
-  "import { ToolbarComponent } from '@solidaris/ui'"],
+  "import { ToolbarComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'toolbar',
   metadata: { nestable: true },
 }

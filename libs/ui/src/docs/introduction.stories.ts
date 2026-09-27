@@ -80,7 +80,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris/ui`, `@solidaris/plectrum` and `@solidaris/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
+      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris-danielbodigil/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
     links: [
       {
         label: 'Build with Plectrum',
@@ -93,7 +93,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Render the first field',
     detail:
-      'Copy the Form Field example. It imports from `@solidaris/ui` and includes the PrimeNG input directive.',
+      'Copy the Form Field example. It imports from `@solidaris-danielbodigil/ui` and includes the PrimeNG input directive.',
     links: [
       {
         label: 'Form Field',

@@ -117,7 +117,7 @@ libs/ui/src/lib/
 ```
 
 Storybook discovers them via the glob in `libs/ui/.storybook/main.ts`.
-Import the component using its local relative path — **not** `@solidaris/ui` — to avoid circular resolution issues inside the monorepo stories.
+Import the component using its local relative path — **not** `@solidaris-danielbodigil/ui` — to avoid circular resolution issues inside the monorepo stories.
 
 ---
 

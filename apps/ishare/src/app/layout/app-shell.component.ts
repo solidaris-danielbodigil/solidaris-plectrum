@@ -5,14 +5,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs/operators';
 import type { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { PlectrumPresetMenuService } from '@solidaris/plectrum';
+import { PlectrumPresetMenuService } from '@solidaris-danielbodigil/plectrum';
 import {
   ProfileCardComponent,
   NavShellComponent,
   TopNavComponent,
   type ProfileCardIdentifier,
   type ProfileCardInfoTag,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { AffiliateHeaderService, type AffiliateHeaderData } from './affiliate-header.service';
 import { BreadcrumbService } from './breadcrumb.service';
 import { ISHARE_NAV_ITEMS } from './nav-items';

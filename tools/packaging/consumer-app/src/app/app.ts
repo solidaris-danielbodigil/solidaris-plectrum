@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
-import { FormFieldComponent } from '@solidaris/ui';
+import { FormFieldComponent } from '@solidaris-danielbodigil/ui';
 import { DemoAutoComplete } from './controls/auto-complete';
 import { DemoButton } from './controls/button';
 import { DemoDialog } from './controls/dialog';

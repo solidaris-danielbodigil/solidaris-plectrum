@@ -11,7 +11,7 @@ export const DetailListMetadata: ComponentMetadata = {
     name: 'DetailList',
     category: 'molecules',
     description:
-      'c-detail-list renders label / value description rows on a semantic <dl>. The block owns the label column width and typography; layout is o-flex mixes in the template. The DetailListRow type is exported from @solidaris/ui (libs/ui/src/lib/drawer).',
+      'c-detail-list renders label / value description rows on a semantic <dl>. The block owns the label column width and typography; layout is o-flex mixes in the template. The DetailListRow type is exported from @solidaris-danielbodigil/ui (libs/ui/src/lib/drawer).',
     type: 'display',
     path: 'libs/styles/src/06-components/_components.detail-list.scss',
     bemBlock: 'c-detail-list',
@@ -101,7 +101,7 @@ export const DetailListMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'medium',
     context:
-      'Read-only label / value rows on a semantic dl inside drawers, panels and cards. CSS-only block: write the markup (or map DetailListRow[] from @solidaris/ui) and compose the layout with o-flex / o-layout. Reference usage: Profile Drawer sections (iSHARE-Audit node 7:1012); there is no Plectrum UI Kit node.',
+      'Read-only label / value rows on a semantic dl inside drawers, panels and cards. CSS-only block: write the markup (or map DetailListRow[] from @solidaris-danielbodigil/ui) and compose the layout with o-flex / o-layout. Reference usage: Profile Drawer sections (iSHARE-Audit node 7:1012); there is no Plectrum UI Kit node.',
     selectionCriteria: {
       'label / value rows': 'use c-detail-list on a dl',
       'editable fields': 'use FormField',

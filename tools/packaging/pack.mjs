@@ -43,10 +43,10 @@ for (const file of readdirSync(tarballDir)) {
 }
 
 const packs = [
-  { dir: plectrumDist, label: '@solidaris/plectrum' },
-  { dir: uiDist, label: '@solidaris/ui' },
-  { dir: join(root, 'libs/styles'), label: '@solidaris/styles' },
-  { dir: join(root, 'tools/devkit'), label: '@solidaris/plectrum-devkit' },
+  { dir: plectrumDist, label: '@solidaris-danielbodigil/plectrum' },
+  { dir: uiDist, label: '@solidaris-danielbodigil/ui' },
+  { dir: join(root, 'libs/styles'), label: '@solidaris-danielbodigil/styles' },
+  { dir: join(root, 'tools/devkit'), label: '@solidaris-danielbodigil/plectrum-devkit' },
 ];
 
 for (const { dir, label } of packs) {

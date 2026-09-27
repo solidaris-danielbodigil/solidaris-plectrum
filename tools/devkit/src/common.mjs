@@ -36,7 +36,7 @@ export function configAt(root) {
   const config = readJson(file);
   if (config.schemaVersion !== 1 || !/^[a-z][a-z0-9-]*$/.test(config.team) || !/^[a-z][a-z0-9-]*$/.test(config.application)) throw new Error('Invalid .plectrum/config.json identity.');
   if (!config.paths || !Array.isArray(config.paths.source) || !config.paths.source.length || !Array.isArray(config.paths.styles) || !config.paths.candidates || !config.paths.candidateStyles || !Array.isArray(config.paths.localTokenFiles)) throw new Error('Invalid .plectrum/config.json paths.');
-  const dependencies = ['@solidaris/ui', '@solidaris/plectrum', '@solidaris/styles'];
+  const dependencies = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
   if (!Array.isArray(config.dependencies) || dependencies.some((name) => !config.dependencies.includes(name))) throw new Error(`Declare all DS dependencies in .plectrum/config.json: ${dependencies.join(', ')}.`);
   if (!config.reporting?.output || typeof config.reporting.enabled !== 'boolean') throw new Error('Configure reporting.output and reporting.enabled in .plectrum/config.json.');
   projectPath(root, config.reporting.output);

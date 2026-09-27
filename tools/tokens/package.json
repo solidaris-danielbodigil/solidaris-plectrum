@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Plectrum-repository-only Figma and token maintenance scripts; consumer checks ship in @solidaris/plectrum-devkit",
+  "description": "Plectrum-repository-only Figma and token maintenance scripts; consumer checks ship in @solidaris-danielbodigil/plectrum-devkit",
   "files": [
     "*.mjs",
     "alias-map.json",

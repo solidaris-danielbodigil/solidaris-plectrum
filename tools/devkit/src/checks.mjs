@@ -29,8 +29,8 @@ export function compatibility(root, config) {
     const version = readJson(file).version;
     installedVersions.push(version);
     if (!semver.valid(version) || !semver.satisfies(version, contract.dsVersionRange)) errors.push(`${name}@${version} is outside ${contract.dsVersionRange}`);
-    if (name === '@solidaris/styles' && version !== tokens.stylesVersion) errors.push(`Token inventory styles ${tokens.stylesVersion} differs from installed ${version}`);
-    if (name === '@solidaris/ui') {
+    if (name === '@solidaris-danielbodigil/styles' && version !== tokens.stylesVersion) errors.push(`Token inventory styles ${tokens.stylesVersion} differs from installed ${version}`);
+    if (name === '@solidaris-danielbodigil/ui') {
       for (const entry of catalogue.components.filter((c) => c.package?.name === name)) {
         if (entry.package.version !== version) { errors.push(`Catalogue ${entry.id} uses ${entry.package.version}, installed UI is ${version}`); break; }
       }

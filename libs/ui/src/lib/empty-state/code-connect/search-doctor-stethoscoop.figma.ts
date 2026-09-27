@@ -5,7 +5,7 @@ import figma from 'figma'
 
 export default {
   example: figma.code`<pds-empty-state illustration="search-doctor-stethoscoop" title="Title" description="Description" />`,
-  imports: ["import { EmptyStateComponent } from '@solidaris/ui'"],
+  imports: ["import { EmptyStateComponent } from '@solidaris-danielbodigil/ui'"],
   id: 'search-doctor-stethoscoop',
   metadata: { nestable: true },
 }

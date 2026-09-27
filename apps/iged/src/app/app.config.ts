@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 import { provideRouter, Router } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '@solidaris/plectrum';
+import { providePlectrum } from '@solidaris-danielbodigil/plectrum';
 import {
   IconRegistry,
   registerAppLogos,
   registerPlectrumIcons,
-} from '@solidaris/ui';
+} from '@solidaris-danielbodigil/ui';
 import { routes } from './app.routes';
 import { readIgedPagesRedirect } from './pages-redirect';
 

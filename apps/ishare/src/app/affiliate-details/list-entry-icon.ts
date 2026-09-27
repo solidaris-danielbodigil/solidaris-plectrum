@@ -1,4 +1,4 @@
-import type { ListEntryItem } from '@solidaris/ui';
+import type { ListEntryItem } from '@solidaris-danielbodigil/ui';
 
 const DEFAULT_ENTRY_ICON = 'bi bi-file-earmark-medical';
 

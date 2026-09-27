@@ -19,7 +19,6 @@ if (version !== plectrum || version !== styles) {
 }
 
 const consume = read('libs/ui/src/docs/get-started-consume.mdx');
-const releaseState = read('libs/ui/src/storybook/release-state.ts');
 const introduction = read('libs/ui/src/docs/introduction.mdx');
 const introductionStories = read('libs/ui/src/docs/introduction.stories.ts');
 const contribute = read('libs/ui/src/docs/get-started-contribute.mdx');
@@ -44,17 +43,6 @@ if (!consume.includes('bootstrap-icons')) {
   fail('get-started-consume.mdx does not mention bootstrap-icons');
 }
 
-const releaseDateMatch = /RELEASE_DATE\s*=\s*'([^']+)'/.exec(releaseState);
-if (!releaseDateMatch) {
-  fail('release-state.ts does not define RELEASE_DATE');
-} else {
-  const releaseDate = releaseDateMatch[1];
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(releaseDate)) {
-    fail(`release-state.ts RELEASE_DATE is not a YYYY-MM-DD string: ${releaseDate}`);
-  }
-  // A manifest bump date is not a registry publication date.
-}
-
 if (contribute.includes('solidaris-nx')) {
   fail('get-started-contribute.mdx still clones into solidaris-nx');
 }
@@ -66,7 +54,7 @@ if (releases.includes('Merging the version PR publishes with')) {
   fail('releases.mdx still says merging the version PR publishes to npm');
 }
 
-for (const needle of ['@solidaris/ui', 'pInputText', 'inputId="member"', 'requiredLabel="obligatoire"']) {
+for (const needle of ['@solidaris-danielbodigil/ui', 'pInputText', 'inputId="member"', 'requiredLabel="obligatoire"']) {
   if (!example.includes(needle)) fail(`form-field.example.ts is missing ${needle}`);
   if (!formField.includes(needle)) fail(`form-field.mdx is missing ${needle}`);
   if (!consumer.includes(needle)) fail(`consumer-app app.ts is missing ${needle}`);
