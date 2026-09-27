@@ -152,7 +152,7 @@ export function syncOutcome(
     return {
       tone: 'success',
       title: 'Merged',
-      text: `Synced ${formatSyncDate(report.generatedAt)}. The tokens are on main. Packages are not published.`,
+      text: `Synced ${formatSyncDate(report.generatedAt)}. The tokens are on main. Package publication is recorded separately in a verified release.`,
     };
   }
   if (report.stage === 'released') {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Template for app repos that consume @solidaris-danielbodigil/ui, @solidaris-danielbodigil/plectrum, @solidaris-danielbodigil/styles",
+  "description": "Template for app repos that consume the four published Plectrum packages",
   "extends": ["config:recommended"],
   "packageRules": [
     {
@@ -8,7 +8,7 @@
         "@solidaris-danielbodigil/ui",
         "@solidaris-danielbodigil/plectrum",
         "@solidaris-danielbodigil/styles",
-        "@solidaris/tokens-cli"
+        "@solidaris-danielbodigil/plectrum-devkit"
       ],
       "groupName": "Plectrum design system",
       "rangeStrategy": "bump",

@@ -16,7 +16,7 @@ export const InstallFlow: StoryObj = stepsStory([
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus `primeng` and `@primeuix/themes`. Until npm publish is on, use the packed tarballs from `npm run pack:libs`.',
+      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus `primeng` and `@primeuix/themes`. Use the verified registry release linked from Releases; for an unpublished development revision, use packed tarballs from `npm run pack:libs`.',
     links: [
       {
         label: 'Packages and how to get them',

@@ -80,7 +80,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus the PrimeNG peers. Until npm publish is on, use packed tarballs. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris-danielbodigil/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
+      'Install `@solidaris-danielbodigil/ui`, `@solidaris-danielbodigil/plectrum` and `@solidaris-danielbodigil/styles`, plus the PrimeNG peers. Use a verified registry release or packed tarballs for an unpublished revision. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris-danielbodigil/plectrum-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
     links: [
       {
         label: 'Build with Plectrum',

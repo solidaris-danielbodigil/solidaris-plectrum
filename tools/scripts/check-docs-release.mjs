@@ -9,7 +9,6 @@ const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const version = JSON.parse(read('libs/ui/package.json')).version;
 const plectrum = JSON.parse(read('libs/plectrum/package.json')).version;
 const styles = JSON.parse(read('libs/styles/package.json')).version;
-const toolkit = JSON.parse(read('tools/devkit/package.json')).version;
 
 const problems = [];
 const fail = (message) => problems.push(message);
@@ -27,11 +26,8 @@ const example = read('libs/ui/src/lib/form-field/form-field.example.ts');
 const consumer = read('tools/packaging/consumer-app/src/app/app.ts');
 const releases = read('libs/ui/src/docs/releases.mdx');
 
-if (!consume.includes(toolkit)) fail(`get-started-consume.mdx does not mention toolkit version ${toolkit}`);
+if (!consume.includes('toolkitPackage.version') || !consume.includes('TARBALL_INSTALL') || !consume.includes('tarballName(toolkitPackage.name, toolkitPackage.version)')) fail('get-started-consume.mdx must render package filenames and toolkit version from manifests');
 if (introduction.includes('0.1.0')) fail('introduction.mdx still uses the old runtime version');
-if (!consume.includes(version)) {
-  fail(`get-started-consume.mdx does not mention package version ${version}`);
-}
 if (!introductionStories.includes('RELEASE_SUMMARY')) {
   fail('introduction.stories.ts does not render RELEASE_SUMMARY');
 }
@@ -65,4 +61,4 @@ if (problems.length) {
   process.exit(1);
 }
 
-console.log(`docs release check ok (${version}, registry unpublished)`);
+console.log(`docs release check ok (source manifests ${version}; publication verified separately)`);

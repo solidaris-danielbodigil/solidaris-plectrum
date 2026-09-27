@@ -1,11 +1,14 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
+import { REGISTRY_PUBLISHED, PACKAGE_VERSION } from '../storybook/release-state';
 
 <Meta title="Docs/Releases and versioning" />
 
 # Releases and versioning
 
-Changesets versions the three runtime packages together. Applications install the current packed tarballs until a verified GitHub Packages release exists. Package manifests and What's new describe source versions, not registry publication.
+Changesets versions the three runtime packages together. Applications install a verified GitHub Packages release or the packed tarballs for an unpublished revision. Package manifests and What's new describe source versions; the release manifest proves publication.
+
+<p>{REGISTRY_PUBLISHED ? `This is the versioned Storybook for Plectrum ${PACKAGE_VERSION}. Its release.json and contracts.json sit beside index.html.` : 'This is a development preview. It does not claim that its manifest versions are available in GitHub Packages.'}</p>
 
 Related pages:
 
@@ -18,7 +21,7 @@ Related pages:
 
 1. A change lands with a **changeset** (`npm run changeset`) describing the bump (patch / minor / major) and the affected packages.
 2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR** — `chore(release): version packages` — accumulating pending changesets into version bumps and changelogs.
-3. CI packs the four artifacts, builds an isolated consumer and checks package ownership, registry target and tarball integrity with `npm run release:check`. Registry publication and immutable documentation are still pending P7.
+3. CI packs the four artifacts, builds an isolated consumer and checks package ownership, registry target and tarball integrity with `npm run release:check`. The attended release workflow checks the same commit, publishes exact archives, tests a fresh registry installation, and records the release manifest and Storybook bundle.
 4. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
 
 ## Rules
@@ -49,4 +52,4 @@ Related pages:
   ]}
 />
 
-This Storybook currently documents a development preview of `main`; package versions in its tables do not prove registry publication. The packed-Storybook CI job verifies local tarballs. An immutable Storybook per published version belongs to the release pipeline.
+The `main` Storybook is a development preview. A published version appears under `storybook/releases/<runtime-version>-devkit-<toolkit-version>/` after the registry and documentation gates pass. The `storybook/latest/` pointer advances only with that verified release.
