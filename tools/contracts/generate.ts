@@ -233,6 +233,7 @@ export async function generateContracts(
   const annotations = fs.readFileSync(path.join(root, 'libs/ui/src/storybook/tokens.generated.ts'), 'utf8');
   for (const match of annotations.matchAll(/"cssVar": "(--pds-[^"]+)"/g)) tokenNames.add(match[1]);
   outputs.set('tools/devkit/assets/tokens.json', json({ schemaVersion: 1, source: 'libs/styles/src/01-settings + libs/ui/src/storybook/tokens.generated.ts', stylesVersion: styles.version, names: [...tokenNames].sort() }));
+  const toolkitVersion = JSON.parse(fs.readFileSync(path.join(root, 'tools/devkit/package.json'), 'utf8')).version;
   const catalogue = items.map((item) => {
     const summary = components[item.metadata.component.id] as Record<string, any>;
     const mdx = fs.readFileSync(path.join(root, item.docsPath), 'utf8');
@@ -250,12 +251,12 @@ export async function generateContracts(
       docs: {
         sourcePath: item.docsPath,
         previewUrl: docsPath ? new URL(docsPath, registry.operations.storybook).href : null,
-        versionedUrlTemplate: docsPath ? `${registry.operations.storybook.replace(/\/$/, '')}/releases/{version}/${docsPath}` : null,
+        versionedUrlTemplate: docsPath ? `${registry.operations.storybook.replace(/\/$/, '')}/releases/{version}-devkit-{toolkitVersion}/${docsPath}` : null,
         availability: 'preview',
       },
     };
   });
-  outputs.set('tools/devkit/assets/catalogue.json', json({ schemaVersion: 1, kind: 'toolkit-snapshot', toolkitVersion: JSON.parse(fs.readFileSync(path.join(root, 'tools/devkit/package.json'), 'utf8')).version, sourceRepository: registry.repository, components: catalogue }));
+  outputs.set('tools/devkit/assets/catalogue.json', json({ schemaVersion: 1, kind: 'toolkit-snapshot', toolkitVersion, sourceRepository: registry.repository, components: catalogue }));
   for (const name of ['process', 'compatibility', 'registry'])
     outputs.set(`tools/devkit/assets/${name}.json`, json(JSON.parse(fs.readFileSync(path.join(root, `.ai/contracts/${name}.json`), 'utf8'))));
   outputs.set(

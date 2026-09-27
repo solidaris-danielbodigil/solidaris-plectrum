@@ -1,0 +1,72 @@
+name: Publish verified Plectrum release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_id:
+        description: 'Exact runtime and toolkit versions, for example 2.0.1-devkit-0.2.0'
+        required: true
+        type: string
+
+concurrency:
+  group: plectrum-package-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: package-release
+    permissions:
+      actions: read
+      checks: read
+      contents: write
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PLECTRUM_RELEASE_ID: ${{ inputs.release_id }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@solidaris-danielbodigil'
+
+      - name: Require current main and all six successful CI checks
+        run: node tools/packaging/check-ci.mjs
+
+      - run: npm ci
+
+      - name: Pack and prove an isolated consumer
+        run: npm run pack:smoke
+
+      - name: Verify release artifacts and generate contract snapshot
+        run: |
+          npm run release:check
+          npm run release:prepare
+          npm run release:test
+
+      - name: Publish exact archives with integrity-checked retries
+        run: npm run release:publish
+
+      - name: Install published versions in a clean application
+        run: node tools/packaging/registry-smoke.mjs
+
+      - name: Record the verified release
+        run: npm run release:finalize
+
+      - name: Build the matching versioned Storybook
+        env:
+          VITE_PLECTRUM_RELEASED: 'true'
+        run: |
+          npm run build-storybook:packed
+          tar -czf dist/release/storybook.tar.gz -C dist/storybook/ui .
+
+      - name: Publish immutable release assets and request Pages deployment
+        run: node tools/packaging/publish-release-assets.mjs

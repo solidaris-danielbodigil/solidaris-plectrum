@@ -215,7 +215,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/accordion/accordion.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-accordion--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-accordion--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-accordion--docs",
         "availability": "preview"
       }
     },
@@ -419,7 +419,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/copyable-text/copyable-text.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-copyable-text--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-copyable-text--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-copyable-text--docs",
         "availability": "preview"
       }
     },
@@ -617,7 +617,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/delay-prediction-card/delay-prediction-card.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/patterns-ishare-delay-prediction-card--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/patterns-ishare-delay-prediction-card--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/patterns-ishare-delay-prediction-card--docs",
         "availability": "preview"
       }
     },
@@ -765,7 +765,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/detail-list/detail-list.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-detail-list--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-detail-list--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-detail-list--docs",
         "availability": "preview"
       }
     },
@@ -976,7 +976,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/drawer/drawer.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-drawer--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-drawer--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-drawer--docs",
         "availability": "preview"
       }
     },
@@ -1158,7 +1158,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/empty-state/empty-state.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-empty-state--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-empty-state--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-empty-state--docs",
         "availability": "preview"
       }
     },
@@ -1418,7 +1418,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/form-field/form-field.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-form-field--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-form-field--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-form-field--docs",
         "availability": "preview"
       }
     },
@@ -1646,7 +1646,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/icon/icon.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-icon--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-icon--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-icon--docs",
         "availability": "preview"
       }
     },
@@ -1831,7 +1831,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/input-clear/input-clear.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-input-clear--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-input-clear--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-input-clear--docs",
         "availability": "preview"
       }
     },
@@ -2122,7 +2122,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/list/list.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-list--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-list--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-list--docs",
         "availability": "preview"
       }
     },
@@ -2342,7 +2342,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/nav-shell/nav-shell.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/shell-navigation-navshell--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/shell-navigation-navshell--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/shell-navigation-navshell--docs",
         "availability": "preview"
       }
     },
@@ -2604,7 +2604,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/plectrum-avatar/plectrum-avatar.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-plectrumavatar--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-plectrumavatar--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-plectrumavatar--docs",
         "availability": "preview"
       }
     },
@@ -2977,7 +2977,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/profile-card/profile-card.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-profile-card--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-profile-card--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-profile-card--docs",
         "availability": "preview"
       }
     },
@@ -3268,7 +3268,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/profile-drawer/profile-drawer.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/shell-profile-drawer--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/shell-profile-drawer--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/shell-profile-drawer--docs",
         "availability": "preview"
       }
     },
@@ -3413,7 +3413,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/skeleton-slot/skeleton-slot.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-skeleton-slot--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-skeleton-slot--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-skeleton-slot--docs",
         "availability": "preview"
       }
     },
@@ -3707,7 +3707,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/sub-nav-shell/sub-nav-shell.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/shell-navigation-subnavshell--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/shell-navigation-subnavshell--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/shell-navigation-subnavshell--docs",
         "availability": "preview"
       }
     },
@@ -3852,7 +3852,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/timeline/timeline.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-timeline--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-timeline--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-timeline--docs",
         "availability": "preview"
       }
     },
@@ -4064,7 +4064,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/toolbar/toolbar.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/custom-components-toolbar--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/custom-components-toolbar--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/custom-components-toolbar--docs",
         "availability": "preview"
       }
     },
@@ -4477,7 +4477,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/top-nav/top-nav.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/shell-navigation-topnav--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/shell-navigation-topnav--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/shell-navigation-topnav--docs",
         "availability": "preview"
       }
     },
@@ -4651,7 +4651,7 @@
       "docs": {
         "sourcePath": "libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.mdx",
         "previewUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/patterns-ishare-transactions-cics-modal--docs",
-        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}/?path=/docs/patterns-ishare-transactions-cics-modal--docs",
+        "versionedUrlTemplate": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/{version}-devkit-{toolkitVersion}/?path=/docs/patterns-ishare-transactions-cics-modal--docs",
         "availability": "preview"
       }
     }
