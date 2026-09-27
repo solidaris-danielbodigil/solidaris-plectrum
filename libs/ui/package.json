@@ -1,6 +1,6 @@
 {
   "name": "@solidaris-danielbodigil/pds-ui",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Plectrum shared Angular components",
   "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "peerDependencies": {
