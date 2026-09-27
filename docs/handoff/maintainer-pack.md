@@ -81,17 +81,19 @@ Owner: unresolved · Verified: unresolved
 
 ## 5. Release and upgrade
 
-Purpose: version and publish `@solidaris-danielbodigil/plectrum`, `@solidaris-danielbodigil/ui`, styles.
+Purpose: version and publish the new `@solidaris-danielbodigil/pds-plectrum`, `pds-ui`, `pds-styles` and `pds-devkit` packages.
 
 Actual workflow: Changesets. `npm run changeset` on the feature branch. On merge to `main`, `.github/workflows/release.yml` (`changesets/action`) opens/updates the `chore(release): version packages` PR (`npm run changeset:version` also refreshes the lockfile, changelog, docs and contracts). Merging that PR updates source manifests and does not publish.
 
-State today: no release has been published. The three runtime manifests declare 2.0.1 and the toolkit 0.2.0. Private GitHub Packages under `@solidaris-danielbodigil` is the configured target; the four manifests and token-free `.npmrc` use that scope. `npm run pack:libs` writes `tools/packaging/.tarballs/*.tgz`; CI runs `pack:smoke`, `release:check` and `build-storybook:packed`. After the publication workflow merges, a receiving maintainer must perform the first release and verify registry installation, release assets and versioned Storybook. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
+State today: [Plectrum 2.0.1 with toolkit 0.2.0](https://github.com/solidaris-danielbodigil/solidaris-plectrum/releases/tag/plectrum-v2.0.1-devkit-0.2.0) was published through the protected manual workflow and verified with a clean registry installation and [matching versioned Storybook](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/2.0.1-devkit-0.2.0/). Those four former package names are **public**. The owner chose four new `pds-*` package names under the same personal account as the private target; a migration changeset will move the runtime group to 2.0.2 and a new release ID. Do not onboard an application against the new names until their private visibility and matching release are verified. CI continues to run `pack:smoke`, `release:check` and `build-storybook:packed`. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
 
 Consumer smoke after a release: install the new version in a throwaway app (the `pack:smoke` fixture in `tools/packaging` is the template), `providePlectrum()`, render one component, run the app tests.
 
 Rollback: `npm deprecate` the bad version and publish a patch; never unpublish a version an app already pinned. Pages builds the `main` development preview after successful CI and incorporates verified release bundles from GitHub Releases; revert an offending source commit and let its CI trigger a new preview deployment. A failed Pages assembly does not replace the previous site.
 
-Credentials: `GITHUB_TOKEN` (automatic in Actions), `FIGMA_TOKEN`, `CHROMATIC_PROJECT_TOKEN` (optional, gated by `vars.CHROMATIC_ENABLED`). Private package consumers need their own read access; no secret values belong in documentation or `.npmrc` committed to the repository.
+Credentials: `GITHUB_TOKEN` (automatic in Actions for CI and release APIs), `PLECTRUM_PACKAGE_PUBLISH_TOKEN` (classic personal PAT with `write:packages` and `read:packages`, stored only in the protected `package-release` environment), `FIGMA_TOKEN`, `CHROMATIC_PROJECT_TOKEN` (optional, gated by `vars.CHROMATIC_ENABLED`). Private package consumers need their own read access; no secret values belong in documentation or `.npmrc` committed to the repository. The publish workflow checks PAT identity and actual private visibility after each package, before recording a release.
+
+On 2026-09-27, the owner added `PLECTRUM_PACKAGE_PUBLISH_TOKEN` to `package-release`; its name was verified with `gh secret list --env package-release`, not its value. PR #31 passed [all six required CI jobs](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36352293284) and is ready for Code Owner review. The token's actual scopes and identity are checked by the protected publication workflow, after the migration and version PRs merge.
 
 Owner: unresolved · Verified: unresolved
 
@@ -135,7 +137,7 @@ Owner: unresolved · Verified: unresolved
 
 | Item                                         | State                                                         | Next action                                                   | Owner      |
 | -------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ---------- |
-| First private GitHub Packages release       | gated manual workflow prepared; no publish yet     | merge its PR, protect `package-release`, dispatch it on current main and verify registry/Pages | unresolved |
+| First GitHub Packages release       | [release run 36350298527](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36350298527) and [Pages run 36350719416](https://github.com/solidaris-danielbodigil/solidaris-plectrum/actions/runs/36350719416) passed; four old names are public | publish four new `pds-*` names with the protected personal PAT, verify each is private, then record the new release and grant consumer access | Plectrum owner |
 | Code → Figma transport                       | live (Plugin API: agent or plugin); REST parked               | use MCP or plugin on `proposals/{app}`; Enterprise REST later | unresolved |
 | Docs migration to the knowledge base         | ledger drafted (`docs/handoff/migration-ledger.md`)           | name destination + owners, then B07 cutover                   | unresolved |
 | NL copy review                               | `.ai/questions/nl-copy-review.md`                             | native review of drafted NL strings                           | unresolved |

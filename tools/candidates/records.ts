@@ -58,7 +58,7 @@ export function validateSubmission(submission: Submission, proposal: Proposal, r
   if (new URL(submission.preview.url).protocol !== 'https:' || new URL(submission.checks.url).protocol !== 'https:') throw new Error(`${submission.id}: preview and checks must use HTTPS`);
   if (!submission.origin.path.endsWith('.metadata.json') || submission.origin.path.includes('..')) throw new Error(`${submission.id}: unsafe metadata path`);
   if (!semver.satisfies(submission.toolkitVersion, `^${compatibility.toolkitVersion}`) || !semver.satisfies(submission.processVersion, compatibility.processVersionRange)) throw new Error(`${submission.id}: incompatible toolkit/process version`);
-  const required = ['@solidaris-danielbodigil/ui', '@solidaris-danielbodigil/plectrum', '@solidaris-danielbodigil/styles'];
+  const required = ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-plectrum', '@solidaris-danielbodigil/pds-styles'];
   // Withdrawn submissions are immutable historical records. Keep the package
   // identities they actually used before the first GitHub Packages release.
   const legacyWithdrawn = ['@solidaris/ui', '@solidaris/plectrum', '@solidaris/styles'];

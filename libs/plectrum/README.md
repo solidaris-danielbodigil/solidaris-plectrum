@@ -1,13 +1,13 @@
-# @solidaris-danielbodigil/plectrum
+# @solidaris-danielbodigil/pds-plectrum
 
 PrimeNG theme presets (v1 default, v0.6 optional) and `providePlectrum()`.
 
 ## Local vs published
 
-In this monorepo, TypeScript path aliases resolve `@solidaris-danielbodigil/plectrum` to `src/index.ts`. After publish (or `npm pack`), consumers resolve the Angular Package Format build from `node_modules`.
+In this monorepo, TypeScript path aliases resolve `@solidaris-danielbodigil/pds-plectrum` to `src/index.ts`. After publish (or `npm pack`), consumers resolve the Angular Package Format build from `node_modules`.
 
 ```ts
-import { providePlectrum } from '@solidaris-danielbodigil/plectrum';
+import { providePlectrum } from '@solidaris-danielbodigil/pds-plectrum';
 
 export const appConfig = {
   providers: [providePlectrum()],

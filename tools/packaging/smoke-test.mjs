@@ -31,23 +31,24 @@ run('node tools/packaging/pack.mjs', ROOT);
 const tgz = readdirSync(TARBALLS).filter((name) => name.endsWith('.tgz'));
 const fileDeps = {};
 for (const name of tgz) {
-  const match = name.match(/^solidaris-danielbodigil-(.+)-(\d+\.\d+\.\d+)\.tgz$/);
+  const match = name.match(/^solidaris-danielbodigil-(pds-(?:ui|plectrum|styles|devkit))-(\d+\.\d+\.\d+)\.tgz$/);
   if (!match) continue;
   fileDeps[`@solidaris-danielbodigil/${match[1]}`] = `file:${join(TARBALLS, name)}`;
 }
+if (Object.keys(fileDeps).length !== 4) throw new Error(`Expected four Plectrum tarballs, found ${Object.keys(fileDeps).length}.`);
 
 const dest = mkdtempSync(join(tmpdir(), 'pds-pack-smoke-'));
 cpSync(FIXTURE, dest, { recursive: true });
 
 const pkg = JSON.parse(readFileSync(join(dest, 'package.json'), 'utf8'));
 pkg.dependencies = { ...pkg.dependencies, ...fileDeps };
-pkg.devDependencies = { ...pkg.devDependencies, '@solidaris-danielbodigil/plectrum-devkit': fileDeps['@solidaris-danielbodigil/plectrum-devkit'] };
-delete pkg.dependencies['@solidaris-danielbodigil/plectrum-devkit'];
+pkg.devDependencies = { ...pkg.devDependencies, '@solidaris-danielbodigil/pds-devkit': fileDeps['@solidaris-danielbodigil/pds-devkit'] };
+delete pkg.dependencies['@solidaris-danielbodigil/pds-devkit'];
 writeFileSync(join(dest, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 
 run('npm install --legacy-peer-deps', dest);
-run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/plectrum-devkit/schema/metadata.v1'))\"", dest);
-run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/plectrum-devkit/catalogue'))\"", dest);
+run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/schema/metadata.v1'))\"", dest);
+run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/catalogue'))\"", dest);
 run('npx ng build', dest);
 
 run('git init', dest);
@@ -83,7 +84,7 @@ run('npx --no-install plectrum check --profile ci', dest);
 run('git add src .plectrum/config.json', dest);
 run('git -c user.name=Plectrum -c user.email=plectrum@example.invalid commit -m candidate', dest);
 run('npx --no-install plectrum candidate-export --name smoke-card', dest);
-const workflows = await import(pathToFileURL(join(dest, 'node_modules/@solidaris-danielbodigil/plectrum-devkit/src/workflows.mjs')).href);
+const workflows = await import(pathToFileURL(join(dest, 'node_modules/@solidaris-danielbodigil/pds-devkit/src/workflows.mjs')).href);
 const centralProposal = JSON.parse(readFileSync(join(central, '.ai/candidates/proposals/smoke-app-smoke-card.json'), 'utf8'));
 let centralSubmission = null;
 const fakeCentral = {

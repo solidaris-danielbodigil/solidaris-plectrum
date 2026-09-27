@@ -14,7 +14,7 @@ import {
   PDS_DRAWER_CONTENT_STYLE,
   PDS_PANEL_BORDER_BOTTOM_STYLE,
   normalizeAccordionPanelIds,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { Drawer } from 'primeng/drawer';

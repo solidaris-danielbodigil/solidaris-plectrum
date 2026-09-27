@@ -6,7 +6,7 @@ import figma from 'figma'
 export default {
   example: figma.code`<pds-plectrum-avatar initials="AB" />`,
   imports: ["import { Avatar } from 'primeng/avatar'",
-  "import { PlectrumAvatarComponent } from '@solidaris-danielbodigil/ui'"],
+  "import { PlectrumAvatarComponent } from '@solidaris-danielbodigil/pds-ui'"],
   id: 'avatar',
   metadata: { nestable: true },
 }

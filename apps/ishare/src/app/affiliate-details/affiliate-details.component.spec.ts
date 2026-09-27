@@ -15,7 +15,7 @@ import type {
   ListEntryItem,
   ListEntryTag,
   ListEntryTagTarget,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 import {

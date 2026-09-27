@@ -1,5 +1,5 @@
 import { resolveListEntryIcon } from './list-entry-icon';
-import type { ListEntryItem } from '@solidaris-danielbodigil/ui';
+import type { ListEntryItem } from '@solidaris-danielbodigil/pds-ui';
 
 describe('resolveListEntryIcon', () => {
   const base = (overrides: Partial<ListEntryItem>): ListEntryItem => ({

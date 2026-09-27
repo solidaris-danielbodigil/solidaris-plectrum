@@ -14,7 +14,7 @@ import {
   EmptyStateComponent,
   FormFieldComponent,
   InputClearComponent,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 import { AffiliateHeaderService } from '../layout/affiliate-header.service';
 import { BreadcrumbService } from '../layout/breadcrumb.service';
 

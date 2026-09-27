@@ -200,7 +200,7 @@ test(
         ),
       );
       const consumer = path.join(fixture, 'consumer');
-      const installed = path.join(consumer, 'node_modules/@solidaris-danielbodigil/ui');
+      const installed = path.join(consumer, 'node_modules/@solidaris-danielbodigil/pds-ui');
       fs.mkdirSync(installed, { recursive: true });
       execFileSync('tar', [
         '-xzf',
@@ -209,12 +209,12 @@ test(
         '-C',
         installed,
       ]);
-      const probe = `import { PipelineCoreComponent } from '@solidaris-danielbodigil/ui';
-import { DelayPredictionCardComponent, TransactionsCicsModalComponent } from '@solidaris-danielbodigil/ui/patterns/ishare';
+      const probe = `import { PipelineCoreComponent } from '@solidaris-danielbodigil/pds-ui';
+import { DelayPredictionCardComponent, TransactionsCicsModalComponent } from '@solidaris-danielbodigil/pds-ui/patterns/ishare';
 // @ts-expect-error candidates are local, never a public core export
-import { PipelineCandidateComponent } from '@solidaris-danielbodigil/ui';
+import { PipelineCandidateComponent } from '@solidaris-danielbodigil/pds-ui';
 // @ts-expect-error application patterns are absent from the core entry
-import { DelayPredictionCardComponent as WrongEntry } from '@solidaris-danielbodigil/ui';
+import { DelayPredictionCardComponent as WrongEntry } from '@solidaris-danielbodigil/pds-ui';
 export const components = [PipelineCoreComponent, DelayPredictionCardComponent, TransactionsCicsModalComponent];
 `;
       fs.writeFileSync(path.join(consumer, 'probe.ts'), probe);

@@ -8,6 +8,8 @@ import { REGISTRY_PUBLISHED, PACKAGE_VERSION } from '../storybook/release-state'
 
 Changesets versions the three runtime packages together. Applications install a verified GitHub Packages release or the packed tarballs for an unpublished revision. Package manifests and What's new describe source versions; the release manifest proves publication.
 
+The historical `2.0.1-devkit-0.2.0` release used four public package names. <span>{REGISTRY_PUBLISHED ? 'This verified release uses the private pds-* package names.' : 'The new pds-* names shown here are the private distribution target; use their authenticated install commands only after their first verified release.'}</span> A protected manual release uses a separate classic package PAT and checks GitHub's actual visibility for each package before publishing a matching Storybook.
+
 <p>{REGISTRY_PUBLISHED ? `This is the versioned Storybook for Plectrum ${PACKAGE_VERSION}. Its release.json and contracts.json sit beside index.html.` : 'This is a development preview. It does not claim that its manifest versions are available in GitHub Packages.'}</p>
 
 Related pages:
@@ -29,13 +31,13 @@ Related pages:
 <DocsTable
   headers={['Rule', 'Detail']}
   rows={[
-    ['Fixed version group', '@solidaris-danielbodigil/ui, @solidaris-danielbodigil/plectrum and @solidaris-danielbodigil/styles always version together (.changeset/config.json → fixed)'],
-    ['Toolkit version', '@solidaris-danielbodigil/plectrum-devkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
+    ['Fixed version group', '@solidaris-danielbodigil/pds-ui, @solidaris-danielbodigil/pds-plectrum and @solidaris-danielbodigil/pds-styles always version together (.changeset/config.json → fixed)'],
+    ['Toolkit version', '@solidaris-danielbodigil/pds-devkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
     ['Internal token scripts', '@solidaris/tokens-cli is a private workspace maintenance package; consumer token checks ship in the devkit'],
     ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
     ['Commit gate', 'npm run check:commit runs before the commit is created. git commit --no-verify skips it. The pull request into main still runs the full CI gates'],
     ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
-    ['Registry and ownership', 'The four manifests and the token-free repository .npmrc route @solidaris-danielbodigil to private GitHub Packages. Consumer repositories need package read access.'],
+    ['Registry and ownership', 'The four manifests and token-free repository .npmrc route @solidaris-danielbodigil to GitHub Packages. The release checks actual private visibility; consumer repositories then need package read access.'],
     ['Consumer proof', 'pack:smoke installs the packed tarballs into a throwaway app without path aliases and builds it; storybook-packed builds this catalogue against the same tarballs'],
   ]}
 />
@@ -45,10 +47,10 @@ Related pages:
 <DocsTable
   headers={['Package', 'Contents']}
   rows={[
-    ['@solidaris-danielbodigil/ui', 'Angular components (Angular Package Format)'],
-    ['@solidaris-danielbodigil/plectrum', 'providePlectrum(), presets, tokens.json'],
-    ['@solidaris-danielbodigil/styles', 'ITCSS SCSS source (apps add it to includePaths)'],
-    ['@solidaris-danielbodigil/plectrum-devkit', 'Versioned metadata, schemas, process, token inventory and team checks'],
+    ['@solidaris-danielbodigil/pds-ui', 'Angular components (Angular Package Format)'],
+    ['@solidaris-danielbodigil/pds-plectrum', 'providePlectrum(), presets, tokens.json'],
+    ['@solidaris-danielbodigil/pds-styles', 'ITCSS SCSS source (apps add it to includePaths)'],
+    ['@solidaris-danielbodigil/pds-devkit', 'Versioned metadata, schemas, process, token inventory and team checks'],
   ]}
 />
 

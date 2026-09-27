@@ -16,7 +16,7 @@ import {
   SessionParseError,
   type TargetAggregate,
   type TestingTelemetrySession,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';

@@ -110,7 +110,13 @@ for (const lib of LIBS) {
       continue;
     }
 
-    const packageName = JSON.parse(read(join(root, 'libs', lib, 'package.json'))).name;
+    // The checked-in changelogs predate the personal package names. Keep old
+    // entries attributed to the identity they actually had at that version.
+    const packageName = version === '2.0.1'
+      ? `@solidaris-danielbodigil/${lib}`
+      : /^([01])\./.test(version) || /^2\.0\.0(?:$|-)/.test(version)
+        ? `@solidaris/${lib}`
+        : JSON.parse(read(join(root, 'libs', lib, 'package.json'))).name;
     released.push(parseRelease(packageName, version, rest.join('\n').trim()));
   }
 }
@@ -135,7 +141,7 @@ if (existsSync(changesetDir)) {
     /** @type {PackageBump[]} */
     const bumps = [];
     for (const line of (match?.[1] ?? '').split('\n')) {
-      // '@solidaris-danielbodigil/ui': major  |  "@solidaris-danielbodigil/ui": patch
+      // '@solidaris-danielbodigil/pds-ui': major  |  "@solidaris-danielbodigil/pds-ui": patch
       const entry = line.match(/^\s*['"]?([^'":\s]+)['"]?\s*:\s*(major|minor|patch)\s*$/);
       if (entry) bumps.push({ packageName: entry[1], bump: entry[2] });
     }

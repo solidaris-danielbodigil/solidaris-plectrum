@@ -50,7 +50,7 @@ if (releases.includes('Merging the version PR publishes with')) {
   fail('releases.mdx still says merging the version PR publishes to npm');
 }
 
-for (const needle of ['@solidaris-danielbodigil/ui', 'pInputText', 'inputId="member"', 'requiredLabel="obligatoire"']) {
+for (const needle of ['@solidaris-danielbodigil/pds-ui', 'pInputText', 'inputId="member"', 'requiredLabel="obligatoire"']) {
   if (!example.includes(needle)) fail(`form-field.example.ts is missing ${needle}`);
   if (!formField.includes(needle)) fail(`form-field.mdx is missing ${needle}`);
   if (!consumer.includes(needle)) fail(`consumer-app app.ts is missing ${needle}`);

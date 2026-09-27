@@ -5,15 +5,15 @@
   "packageRules": [
     {
       "matchPackageNames": [
-        "@solidaris-danielbodigil/ui",
-        "@solidaris-danielbodigil/plectrum",
-        "@solidaris-danielbodigil/styles",
-        "@solidaris-danielbodigil/plectrum-devkit"
+        "@solidaris-danielbodigil/pds-ui",
+        "@solidaris-danielbodigil/pds-plectrum",
+        "@solidaris-danielbodigil/pds-styles",
+        "@solidaris-danielbodigil/pds-devkit"
       ],
       "groupName": "Plectrum design system",
       "rangeStrategy": "bump",
       "prBodyNotes": [
-        "After merge, delete any local copies of promoted components and import from `@solidaris-danielbodigil/ui`."
+        "After merge, delete any local copies of promoted components and import from `@solidaris-danielbodigil/pds-ui`."
       ]
     }
   ]

@@ -2,7 +2,7 @@ import type {
   ProfileDrawerRelatedMember,
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
-} from '@solidaris-danielbodigil/ui';
+} from '@solidaris-danielbodigil/pds-ui';
 
 import {
 
