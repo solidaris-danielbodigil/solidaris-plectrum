@@ -9,7 +9,7 @@ Status: accepted for P0/P1. This is a historical decision record; phase forecast
 - Colocated metadata owns documentation facts, governance and distribution. `schema/component.schema.ts` is the canonical structural schema; TypeScript types and versioned JSON Schemas derive from it.
 - `registry.json` owns team/application identities and operational configuration. Register a new team here once. Application repositories can be external; only entries marked `local-demo` are scanned from this checkout.
 - `workspace.json` owns hand-authored workspace/token configuration and helper exports. Generated `index.json` is never an input to its own generation.
-- `process.json` owns commands, contexts, check profiles, workflow steps and transitions. Storybook's **Pipelines and contracts** page renders it. Unavailable consumer commands remain explicit instead of presenting unimplemented CLI commands.
+- `process.json` owns commands, contexts, check profiles, workflow steps and transitions. Storybook's **Process and contracts** page renders it. Unavailable consumer commands remain explicit instead of presenting unimplemented CLI commands.
 
 ## Inventories and evidence
 

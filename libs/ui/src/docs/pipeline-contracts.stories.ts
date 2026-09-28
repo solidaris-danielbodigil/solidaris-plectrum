@@ -5,11 +5,12 @@ import compatibility from '../../../../.ai/contracts/compatibility.json';
 import { cardsStory, stepsStory } from './docs-figure-stories';
 import { consumerCiRequirements, journeySteps, teamCards } from '../storybook/process-docs';
 
-const meta: Meta = { title: 'Docs/Figures/Pipeline contracts', tags: ['!dev'] };
+const meta: Meta = { title: 'Docs/Figures/Process contracts', tags: ['!dev'] };
 export default meta;
 
 export const Onboarding = { tags: ['!dev'], ...stepsStory(journeySteps('onboarding', {}, true)) };
 export const Contribution = { tags: ['!dev'], ...stepsStory(journeySteps('contribution', {}, true)) };
+export const DesignComponent = { tags: ['!dev'], ...stepsStory(journeySteps('designComponent', {}, true)) };
 export const Design = { tags: ['!dev'], ...stepsStory(journeySteps('design', {}, true)) };
 export const Commands = {
   tags: ['!dev'],

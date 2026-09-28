@@ -1,6 +1,6 @@
 # Component Creation Protocol
 
-This protocol applies to a **Plectrum checkout**. The distributed consumer toolkit manages application repository candidates; teams never edit installed packages. Shared commands, contexts and transitions live in `process.json`; teams and applications live in `registry.json`. See Storybook → Docs → Pipelines and contracts. Central candidate decisions and submissions live under `.ai/candidates/`.
+This protocol applies to a **Plectrum checkout**. The distributed consumer toolkit manages application repository candidates; teams never edit installed packages. Shared commands, contexts and transitions live in `process.json`; teams and applications live in `registry.json`. See Storybook → Docs → Process and contracts. Central candidate decisions and submissions live under `.ai/candidates/`.
 
 ## Pre-flight
 
