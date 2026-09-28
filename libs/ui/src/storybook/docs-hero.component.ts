@@ -29,7 +29,7 @@ import { docsHeroEyebrow } from './docs-stack';
 import { type DocsLink, docsHref } from './docs-figures.types';
 
 export interface DocsHeroAction extends DocsLink {
-  /** Visual weight — the first action is usually `primary`. */
+  /** Visual weight. Equal audiences share `primary`; a lookup stays `secondary`. */
   variant?: 'primary' | 'secondary';
 }
 
