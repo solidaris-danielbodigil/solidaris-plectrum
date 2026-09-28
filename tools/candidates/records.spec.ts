@@ -18,6 +18,7 @@ test('external candidate records retain identity, revision and ownership across 
     registry.applications.push({ id: 'app', team: 'team', label: 'App', repository: 'https://github.com/team/app', kind: 'external' });
     write('.ai/contracts/registry.json', registry);
     const compatibility = JSON.parse(fs.readFileSync(path.join(sourceRoot, '.ai/contracts/compatibility.json'), 'utf8'));
+    const processContract = JSON.parse(fs.readFileSync(path.join(sourceRoot, '.ai/contracts/process.json'), 'utf8'));
     write('.ai/contracts/compatibility.json', compatibility);
     const sha = 'a'.repeat(40);
     const metadata = structuredClone(JSON.parse(fs.readFileSync(path.join(sourceRoot, 'tools/devkit/assets/catalogue.json'), 'utf8')).components[0].metadata);
@@ -28,7 +29,7 @@ test('external candidate records retain identity, revision and ownership across 
     metadata.governance = { status: 'candidate', owner: 'team', note: 'Approved proposal app-card' };
     const proposal = { schemaVersion: 1, id: 'app-card', componentId: 'team:card', team: 'team', application: 'app', issueUrl: `${registry.repository}/issues/1`, decision: 'approved-candidate', owner: 'team', decidedBy: '@solidaris-danielbodigil', decidedAt: '2026-09-25T00:00:00.000Z', decisionUrl: `${registry.repository}/issues/1#issuecomment-1`, note: 'Approved candidate' };
     write('.ai/candidates/proposals/app-card.json', proposal);
-    const submission = { schemaVersion: 1, id: 'app-card', proposalId: 'app-card', operation: 'submit', componentId: 'team:card', team: 'team', application: 'app', origin: { repository: 'https://github.com/team/app', revision: sha, path: 'src/plectrum-candidates/card/card.metadata.json' }, metadata, toolkitVersion: '0.2.0', processVersion: '1.1.0', packages: ['pds-ui', 'pds-plectrum', 'pds-styles'].map((name) => ({ name: `@solidaris-danielbodigil/${name}`, version: '1.0.0' })), preview: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, checks: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, submittedAt: '2026-09-25T00:00:00.000Z' };
+    const submission = { schemaVersion: 1, id: 'app-card', proposalId: 'app-card', operation: 'submit', componentId: 'team:card', team: 'team', application: 'app', origin: { repository: 'https://github.com/team/app', revision: sha, path: 'src/plectrum-candidates/card/card.metadata.json' }, metadata, toolkitVersion: compatibility.toolkitVersion, processVersion: processContract.version, packages: ['pds-ui', 'pds-plectrum', 'pds-styles'].map((name) => ({ name: `@solidaris-danielbodigil/${name}`, version: '1.0.0' })), preview: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, checks: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, submittedAt: '2026-09-25T00:00:00.000Z' };
     write('.ai/candidates/submissions/app-card.json', submission);
     assert.equal(readCandidateRecords(root).submissions.size, 1);
     write('.ai/candidates/submissions/app-card.json', { ...submission, toolkitVersion: semver.inc(compatibility.toolkitVersion, 'patch') });
