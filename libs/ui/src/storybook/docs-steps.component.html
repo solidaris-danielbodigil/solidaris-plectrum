@@ -1,8 +1,17 @@
-<p-timeline [value]="events()" align="left">
-  <ng-template #marker let-event>
-    <p-badge [value]="event.index" size="xlarge" />
-  </ng-template>
-  <ng-template #content let-event>
+@if (events().length > 1) {
+  <p-timeline [value]="events()" align="left">
+    <ng-template #marker let-event>
+      <p-badge [value]="event.index" size="xlarge" />
+    </ng-template>
+    <ng-template #content let-event>
+      <ng-container *ngTemplateOutlet="stepBody; context: { $implicit: event }" />
+    </ng-template>
+  </p-timeline>
+} @else if (events()[0]; as event) {
+  <ng-container *ngTemplateOutlet="stepBody; context: { $implicit: event }" />
+}
+
+<ng-template #stepBody let-event>
     <div class="c-docs-steps__head o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-1">
       <strong class="c-docs-steps__title">{{ event.title }}</strong>
       @if (event.who) {
@@ -38,5 +47,4 @@
         }
       </ul>
     }
-  </ng-template>
-</p-timeline>
+</ng-template>
