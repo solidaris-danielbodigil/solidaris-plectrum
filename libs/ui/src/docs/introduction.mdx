@@ -1,10 +1,15 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Figures from './introduction.stories';
+import * as ReleaseFigures from './get-started-consume.stories';
 
 <Meta title="Start here/Overview" id="introduction" />
 
 <Unstyled>
   <Story of={Figures.Hero} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={ReleaseFigures.Release} />
 </Unstyled>
 
 Plectrum is the Solidaris design system — shared components, tokens and layout for every application. This Storybook is the published guidance. Figma is where you design; it is not a second set of rules.
@@ -13,7 +18,7 @@ Plectrum is the Solidaris design system — shared components, tokens and layout
   <Story of={Figures.Audience} />
 </Unstyled>
 
-Core components are shared. Candidate and app-specific work stays with the application team until the core team promotes it. Every component page shows status and owner — [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
+Core components are shared. An application Candidate or App-specific component stays with its owning team; promotion to Core is a separate decision. A design-team proposal can start in Figma's Custom components file and becomes available to applications only after Core implementation and release. Plectrum component pages show status and owner — [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
 
 Each application team works in its own repository. It installs the team toolkit next to the runtime packages and runs `plectrum init`, which writes the Cursor and VS Code agent adapters from the installed, versioned rules and process. Nothing is copied from the design-system repository. [Build with Plectrum → Initialize the team toolkit](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit) · [AI strategy → Team repositories](?path=/docs/docs-ai-strategy--docs#team-repositories).
 

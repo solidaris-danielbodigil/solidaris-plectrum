@@ -7,7 +7,7 @@ import { DocsReleaseComponent } from '../storybook/docs-release.component';
 import { consumerCiRequirements, docsStep, journeySteps } from '../storybook/process-docs';
 
 const meta: Meta = {
-  title: 'Get started/Figures/Use Plectrum in an app',
+  title: 'Start here/Figures/Build with Plectrum',
   tags: ['!dev'],
   parameters: { layout: 'padded', chromatic: { disableSnapshot: true } },
 };
