@@ -142,6 +142,8 @@ const preview: Preview = {
             "What's new",
             'Accessibility overview',
             'Releases and versioning',
+            'Process and contracts',
+            'Maintainer workflow',
             'Writing stories',
             'CSS architecture',
             'Token pipeline',

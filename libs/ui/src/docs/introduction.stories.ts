@@ -98,10 +98,10 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Find the next piece',
     detail:
-      'Search by task — error, side panel, no results — then open that page. Find a Token is for colour, type and spacing.',
+      'Search by task — error, side panel, no results — then open that page. Find a token is for colour, type and spacing.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
-      { label: 'Find a Token', path: '/docs/foundations-token-finder--docs' },
+      { label: 'Find a token', path: '/docs/foundations-token-finder--docs' },
     ],
   },
 ];

@@ -112,7 +112,7 @@ How to accomplish tasks correctly.
 
 Machine-readable schemas and AI protocols.
 
-Start with [Contracts](contracts/README.md) for stable identities, generated artifacts, external JSON validation and the boundary between this checkout and consumer repositories. `registry.json`, `process.json` and `compatibility.json` also supply Storybook's Pipelines and contracts page.
+Start with [Contracts](contracts/README.md) for stable identities, generated artifacts, external JSON validation and the boundary between this checkout and consumer repositories. `registry.json`, `process.json` and `compatibility.json` also supply Storybook's Process and contracts page.
 
 | File                                            | Topic                                                                 |
 | ----------------------------------------------- | --------------------------------------------------------------------- |
