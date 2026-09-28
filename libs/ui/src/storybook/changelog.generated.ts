@@ -2,18 +2,7 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "plectrum-private-release-state",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-devkit",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Update the distributed registry snapshot after the verified private GitHub Packages release."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
