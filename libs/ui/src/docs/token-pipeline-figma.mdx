@@ -2,6 +2,7 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './token-pipeline-figma.stories';
+import { PACKAGE_NAMES } from '../storybook/process-docs';
 
 <Meta title="Docs/Token pipeline/Figma sync" />
 
@@ -163,24 +164,22 @@ Applications install published packages. They never copy files from this reposit
   height={230}
   nodes={[
     { id: 'repo', x: 40, y: 77, w: 220, h: 76, tone: 'system', title: 'Design-system repository', lines: ['libraries versioned together', 'by changesets'] },
-    { id: 'pkgs', x: 370, y: 65, w: 220, h: 100, tone: 'neutral', title: 'Published packages', lines: ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-styles', '@solidaris-danielbodigil/pds-plectrum'], mono: true },
-    { id: 'ishare', x: 700, y: 40, w: 220, h: 60, tone: 'app', title: 'iSHARE', lines: ['bump pull request via Renovate'] },
-    { id: 'icrm', x: 700, y: 130, w: 220, h: 60, tone: 'app', title: 'iCRM', lines: ['bump pull request via Renovate'] },
+    { id: 'pkgs', x: 370, y: 65, w: 220, h: 100, tone: 'neutral', title: 'Published packages', lines: ['runtime components', 'theme and styles', 'contributor toolkit'] },
+    { id: 'apps', x: 700, y: 84, w: 220, h: 60, tone: 'app', title: 'Team repositories', lines: ['reviewed version bumps'] },
   ]}
   edges={[
     { from: 'repo', to: 'pkgs', label: 'publish' },
-    { from: 'pkgs', to: 'ishare', label: 'install' },
-    { from: 'pkgs', to: 'icrm', label: 'install' },
+    { from: 'pkgs', to: 'apps', label: 'install' },
   ]}
 />
 
 <DocsTable
   headers={['Package', 'Contents']}
   rows={[
-    ['@solidaris-danielbodigil/pds-ui', 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
-    ['@solidaris-danielbodigil/pds-plectrum', 'PrimeNG presets, providePlectrum(), tokens.json.'],
-    ['@solidaris-danielbodigil/pds-styles', 'ITCSS source. Applications add node_modules/@solidaris-danielbodigil/pds-styles/src to their Sass include paths.'],
-    ['@solidaris-danielbodigil/pds-devkit', 'Versioned contracts, rules and the plectrum CLI. Run init/update/check in an application repository; central Figma token commands stay in Plectrum.'],
+    [PACKAGE_NAMES.ui, 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
+    [PACKAGE_NAMES.plectrum, 'PrimeNG presets, providePlectrum(), tokens.json.'],
+    [PACKAGE_NAMES.styles, `ITCSS source. Applications add node_modules/${PACKAGE_NAMES.styles}/src to their Sass include paths.`],
+    [PACKAGE_NAMES.toolkit, 'Versioned contracts, rules and the plectrum CLI. Run init/update/check in an application repository; central Figma token commands stay in Plectrum.'],
   ]}
 />
 

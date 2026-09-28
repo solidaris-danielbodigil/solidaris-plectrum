@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './profile-card.stories';
+import { ProfileCardMetadata } from './profile-card.metadata';
 
 <Meta of={Stories} />
 
@@ -8,6 +9,8 @@ import * as Stories from './profile-card.stories';
 <Unstyled>
   <Story of={Stories.Status} />
 </Unstyled>
+
+<a href={ProfileCardMetadata.component.figmaUrl}>View the proposed Profile header design in Figma</a>.
 
 ## Default
 

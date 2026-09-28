@@ -56,7 +56,7 @@ A **contract** is a machine-readable file next to the thing it describes. Agents
   rows={[
     ['Index', '.ai/contracts/index.json', 'Generated — npm run generate-index'],
     ['Metadata', 'libs/ui/src/lib/{name}/{name}.metadata.ts', 'Author — typed as ComponentMetadata'],
-    ['Schema', '.ai/contracts/schema/component.metadata.ts', 'Architect — fields agents may read'],
+    ['Schema', '.ai/contracts/schema/component.schema.ts', 'Architect — fields agents may read'],
     ['Token schema', '.ai/contracts/schema/token.contract.ts', 'Architect — token governance shape'],
     ['Protocols', '.ai/contracts/protocols/*.md', 'Architect — decision trees'],
     ['Rules / skills', '.ai/rules/, .ai/skills/', 'Architect — hard stops and how-to'],
@@ -193,10 +193,10 @@ In the Plectrum checkout these roles are authored once in `.ai/agents/`; `npm ru
   headers={['Term', 'Definition']}
   rows={[
     ['CDD', 'Contract-Driven Development. Agents read typed contracts before they write code.'],
-    ['ComponentMetadata', 'TypeScript interface every .metadata.ts must satisfy.'],
+    ['ComponentMetadata', 'Type inferred from the canonical component schema; every .metadata.ts must satisfy it.'],
     ['index.json', 'Offline map of libs/ui: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner. Kept; MCP does not replace it.'],
     ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Foundations / Token contracts play test fails undeclared names in CI.'],
-    ['contracts:check', 'Commit hook and CI. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
+    ['contracts:check', 'Commit hook and CI. Fails when .metadata.ts props drift from Angular input / model / output or generated Storybook registration is stale.'],
     ['Storybook MCP', 'Live catalogue in a Plectrum checkout while npm run storybook runs. Tools and the testing note come from process.json capabilities. CI still uses the test-runner.'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
@@ -216,7 +216,7 @@ In the Plectrum checkout these roles are authored once in `.ai/agents/`; `npm ru
 
 ### Metadata file
 
-Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `ComponentMetadata` in `.ai/contracts/schema/component.metadata.ts`. It is also the single source of truth for the component's docs page — the MDX embeds figures that render these blocks (`pds-docs-status`, `pds-docs-contract`); see [Writing stories → Documentation source](?path=/docs/docs-writing-stories--docs#documentation-source). `npm run docs:check` fails a page that restates a block by hand.
+Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `ComponentMetadata` inferred from `.ai/contracts/schema/component.schema.ts`. It is also the single source of truth for the component's docs page — the MDX embeds figures that render these blocks (`pds-docs-status`, `pds-docs-contract`); see [Writing stories → Documentation source](?path=/docs/docs-writing-stories--docs#documentation-source). `npm run docs:check` fails a page that restates a block by hand.
 
 <DocsTable
   headers={['Block', 'Purpose', 'Rendered on the docs page as']}
@@ -235,7 +235,7 @@ Every `libs/ui` component has `{name}.metadata.ts` next to the class. Shape: `Co
   ]}
 />
 
-Import the type from `@solidaris/contracts`. Export a const (`EmptyStateMetadata`, …). `libs/ui/src/lib/index.ts` re-exports metadata with the component.
+Import the type from the workspace alias `@solidaris/contracts` and export a metadata const (`EmptyStateMetadata`, …). The generated Storybook registration reads these consts; the Angular runtime entry exports component APIs, not metadata.
 
 ### Index
 
