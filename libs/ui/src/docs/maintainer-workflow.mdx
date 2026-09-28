@@ -1,0 +1,91 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { CI_JOBS } from '../storybook/ci-gates.generated';
+import { command, profileCommands, REGISTRY } from '../storybook/process-docs';
+import processContract from '../../../../.ai/contracts/process.json';
+
+<Meta title="Docs/Maintainer workflow" id="docs-maintainer-workflow" />
+
+# Maintainer workflow
+
+Work inside a **Plectrum checkout**. Nothing here is needed to build an application screen — application teams follow [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) and [Contribute](?path=/docs/get-started-contribute--docs).
+
+## Where things live
+
+<DocsTable
+  headers={['Concern', 'Location']}
+  rows={[
+    ['Angular components', `${processContract.contexts.plectrum.componentRoot}/{name}/ — component, stories, metadata (with governance), no colocated stylesheet`],
+    ['Component styles', `${processContract.contexts.plectrum.stylesRoot} — one partial per block; all SCSS lives in libs/styles/src (ITCSS 01-settings → 08-trumps)`],
+    ['Design tokens', 'libs/styles/src/01-settings as --pds-*; imported values from libs/plectrum/src/tokens.json'],
+    ['Theme integration', 'libs/plectrum — providePlectrum(), presets'],
+    ['Contracts', `${processContract.contexts.plectrum.contracts} — process, registry, compatibility, schemas; generated index`],
+    ['Agent roles', '.ai/agents — shared role text; contracts:generate writes the Cursor and VS Code wrappers'],
+    ['Scaffolder + token scripts', 'tools/generators, tools/tokens'],
+  ]}
+/>
+
+## Create a component
+
+Only after the core team's recorded decision. The owner is a registered team ID ({REGISTRY.teams.map((team) => team.id).join(', ')}):
+
+<pre><code>{command('scaffold')}</code></pre>
+
+The scaffolder creates the Angular files, the `.metadata.ts` contract with its `governance` block, a stories stub and the style partial. Then run the component check profile:
+
+<pre><code>{profileCommands('component').join('\n')}</code></pre>
+
+1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** when `npm run storybook` is up — reuse before inventing ([AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp)).
+2. Missing tokens go to `01-settings` first, cited with their Figma variable. Application teams alias semantic roles only.
+3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
+4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Application-owned pages are titled `Patterns/{App}/…`.
+
+A release candidate adds packing: <code>{profileCommands('release').at(-1)}</code>.
+
+## Language
+
+User-facing copy in `libs/ui` lives in a colocated `{name}.i18n.ts` (`fr` + `nl`). Components resolve it with `injectPdsMessages()` from the `PDS_LOCALE` token. The token factory reads Angular `LOCALE_ID` (`nl*` → `nl`, otherwise `fr`); apps can also call `providePdsLocale('nl')`. String inputs still win when the host passes them.
+
+This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story per migrated component pins `globals: { locale: 'nl' }` and asserts a Dutch string. Terminology decisions live in `.ai/questions/nl-copy-review.md`.
+
+## Testing
+
+Stories are the test suite: every story is executed headless in CI, so covering the states covers the smoke tests.
+
+<DocsTable
+  headers={['Layer', 'Command', 'What it checks']}
+  rows={[
+    ['Unit (Vitest)', 'npm test', 'Component logic — the scaffolder emits the Tester checklist as spec skeletons'],
+    ['Unit coverage', 'npm run test:coverage', 'Istanbul / lcov under coverage/ — CI runs this instead of npm test'],
+    ['Story widget (local)', 'Testing widget → Run tests', 'Component tests, Interactions, a11y, coverage, story statuses — @storybook/addon-vitest. Sign in for Visual tests'],
+    ['Story CLI (Vitest)', 'npm run test-storybook:vitest', 'Same Vitest browser project the widget and Storybook MCP test-run use'],
+    ['Story smoke + interaction (CI)', 'npm run test-storybook', 'test-runner: every story renders; play functions run. Debug in the Interactions panel'],
+    ['Story coverage (CI)', 'npm run test-storybook:coverage', 'Istanbul via @storybook/addon-coverage — which libs/ui/src/lib lines the stories execute. CI collects this in test-storybook:ci'],
+    ['Accessibility', 'widget + a11y panel', "WCAG 2.1 AA (wcag2a/aa + wcag21a/aa) via addon-a11y — parameters.a11y.test = 'error' fails the story when a violation is found"],
+    ['Visual tests', 'npm run chromatic', 'Pixel diffs against Chromatic baselines. Sign in via the Visual tests panel, then set CHROMATIC_PROJECT_TOKEN and repo variable CHROMATIC_ENABLED=true for CI'],
+    ['Manual / agent QA', 'Tester subagent', 'Story coverage, missing states, contrast — fixes what it finds'],
+  ]}
+/>
+
+## Before you commit
+
+`npm install` installs a git hook. It runs `npm run check:commit` before the commit is created. That run checks docs, contracts, token prefix, token usage, style lint, and that generated files are already saved. Fix the failure, stage any regenerated file, and commit again.
+
+`git commit --no-verify` skips this hook. A pull request into `main` still runs the full CI gates below. A push of a feature branch by itself does not.
+
+## CI gates
+
+Read from `.github/workflows/ci.yml` by `npm run contracts:generate`; the table cannot drift from the workflow. Setup steps are omitted. A conditional job runs only when its condition holds; an advisory step reports without failing.
+
+<DocsTable
+  headers={['Job', 'Step', 'Command']}
+  rows={CI_JOBS.flatMap((job) => job.steps.length
+    ? job.steps.map((step) => [
+        job.condition ? `${job.id} (when ${job.condition})` : job.id,
+        `${step.name}${step.advisory ? ' — advisory' : ''}${step.condition ? ` — when ${step.condition}` : ''}`,
+        step.run,
+      ])
+    : [[job.condition ? `${job.id} (when ${job.condition})` : job.id, 'GitHub Action step only', '—']])}
+/>
+
+Review rules the gates do not encode — the required Code Owner review, the design-system review under `libs/`, the token risk levels — live in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`. Release flow: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs). Token commands: [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).

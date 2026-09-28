@@ -1,51 +1,61 @@
 # Solidaris — GitHub Copilot Instructions
 
-## Project
+Angular CLI workspace (`angular.json`) · Angular latest · PrimeNG latest · Plectrum design system.
+The local applications (iSHARE, iCRM, iGED) share one source of truth for components, styles, and utilities.
 
-Angular latest · PrimeNG latest · Plectrum design system
+This file is the always-on baseline. The knowledge base is `.ai/` — start at `.ai/README.md`.
+Detailed rules live in `.ai/rules/01…10`; how-to guides in `.ai/skills/`; agent contracts in `.ai/contracts/`.
+Agent roles are authored once in `.ai/agents/`; `npm run contracts:generate` writes this file and the editor agents.
+
+## Workspace
 
 ```
-apps/ishare/    apps/icrm/
-libs/ui/         ← SSOT: all shared Angular components
-libs/styles/     ← SSOT: all SCSS tokens and utilities (ITCSS 01-settings → 08-trumps)
-libs/plectrum/   ← SSOT: design system integration (providePlectrum)
-.github/agents/  ← VS Code custom agents (Plectrum coordinator + 6 specialists)
-.ai/             ← Knowledge base: rules, skills, contracts
+apps/ishare/  apps/icrm/  apps/iged/   ← apps only — no shared logic here
+libs/ui/                   ← SSOT: shared Angular components · Storybook in libs/ui/.storybook
+libs/styles/               ← SSOT: ITCSS SCSS — tokens, objects, components, utilities
+libs/plectrum/             ← SSOT: PrimeNG theme integration (providePlectrum(), presets, tokens.json)
+tools/                     ← pds:component generator, token pipeline scripts, packaging, team toolkit
+.ai/                       ← knowledge base: rules, skills, contracts, protocols, agent roles
 ```
 
 ## Agents
 
-Switch to the **Plectrum** agent in the chat dropdown to run the full
-orchestrated workflow (research → engineering → implementation → QA in parallel).
+Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.agent.md`) for full component builds. It delegates to UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor.
 
-All agents live in `.github/agents/` — see `.ai/README.md` for the full agent map.
+## MCP servers — query before implementing
 
-## MCP Servers
+| Server | Purpose |
+| --- | --- |
+| Figma (`http://127.0.0.1:3845/mcp`) | Plectrum UI Kit — SSOT for all visual decisions |
+| PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
+| Storybook (`http://localhost:6006/mcp`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `npm run storybook` |
 
-| Server                  | URL                         |
-| ----------------------- | --------------------------- |
-| Figma (Plectrum UI Kit) | `http://127.0.0.1:3845/mcp` |
-| PrimeNG                 | `https://primeng.org/mcp`   |
+Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Storybook MCP when the catalogue is up — `docs-list` before inventing. 4. Custom code only when none cover the need. Offline fallback: `.ai/contracts/index.json`. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.
 
-Always query both before implementing any component.
+## Hard rules
 
-## Hard rules (full detail in `.ai/rules/`)
+Short form — full detail and examples in `.ai/rules/`:
 
-- All values in `06-components/` SCSS via `var(--pds-*)` — no hardcoded hex/px/rem
-- Layout via `o-flex` / `o-layout` BEM mixes in the template, not in SCSS — no Tailwind in templates
-- Components have no colocated `.component.scss` / `styleUrl` — styles live in `libs/styles` (ITCSS)
-- Storybook lives in `libs/ui/.storybook/main.ts` (`ng run ui:storybook`)
-- Runtime preset default is **v1** (`providePlectrum()` / `resolvePresetVersion()`)
-- Every component in `libs/ui` needs a colocated `.stories.ts` — not done without it
-- PrimeNG first — never reimplement what PrimeNG provides
-- Missing token → add to `libs/styles/src/01-settings/` first, then use it
-- SCSS file naming: `_{layer-folder}.{description}.scss` (e.g. `_components.toolbar.scss`)
-- `pds:component` scaffolds and regenerates `.ai/contracts/index.json` — never edit the index by hand
+- **PrimeNG first** (`04-primeng.md`) — never reimplement what PrimeNG provides. Restyle via `--p-*` token bridges in `01-settings/_settings.{component}.scss`, scoped to the BEM wrapper — never `.p-*` overrides, never `!important`. Applies to Storybook docs figures too.
+- **SSOT** (`01-architecture.md`) — shared components in `libs/ui`, all SCSS in the correct ITCSS layer of `libs/styles` (`01-settings` → `08-trumps`; files `_{layer}.{description}.scss`, barrels `_{layer}.core.scss`). Never write styles outside `libs/styles`.
+- **Tokens** (`02-scss-tokens.md`) — components consume `var(--pds-*)` only (`$pds-prefix: 'pds'`). No hardcoded hex/px/rem, no local `$variables`, no new bare `--spacing-*` / `--text-*` / `--font-*` declarations (legacy aliases only). Missing token → add it to `01-settings` first. Semantic over primitive.
+- **Disabled cursor** (`09-styling-policy.md`) — disabled interactive controls (`:disabled`, `[aria-disabled="true"]`, `.p-disabled`, SubNav disabled items) use `cursor: not-allowed` via `--pds-cursor-disabled`. Implement once as the trump SSOT — do not restyle disabled PrimeNG chrome beyond this cursor.
+- **Layout in templates** (`08-object-classes.md`, `09-styling-policy.md`) — flex, gap, padding, margin, overflow, and equal columns are `o-flex` / `o-layout` BEM mixes in HTML, never CSS in `06-components`. Static borders/radius/shadows via `u-*` utilities. No Tailwind classes in templates; `@apply` never for layout.
+- **BEMIT** (`05-bemit-naming.md`) — `o-` objects, `c-` components, `u-` utilities, `js-` hooks, `is-`/`has-` states. Elements `__`, modifiers `--`, specificity flat. Naming: kebab-case files, PascalCase classes, `pds-*` selectors, `c-*` blocks. No app prefixes in `libs/ui`.
+- **Components** — no colocated `.component.scss`, no `styleUrl` (only exception: a commented `:host` display rule). Semantic HTML + ARIA (`06-accessibility.md`). Content-first sizing — no arbitrary fixed width/height. No app-specific logic in `libs/ui`.
+- **Storybook first** (`03-storybook.md`) — every `libs/ui` component has a colocated `.stories.ts` covering all states; it is not done without one. Docs figures are PrimeNG components, never hand-rolled HTML. Runtime preset default is **v1** (`providePlectrum()`).
+- **CSS is the SSOT for docs** (`10-css-ssot.md`) — Storybook pages and audits read the CSSOM at runtime; never hand-copy token values or class lists.
+- **No dead code** — delete it; git history is the archive. **Ask early** — ambiguous decisions become a file in `.ai/questions/`.
 
-## Knowledge base
+## Workflow
 
-Full rules, skills, and contracts: `.ai/README.md`
+- **Scaffold**: `npm run pds:component -- --name=<name> --owner=<team>` with a registered team — creates metadata, CSF/MDX figures and ITCSS styles. Core styles join the main stylesheet; candidate styles stay Storybook-only outside the published styles tree. `npm run contracts:generate` owns the metadata registry, index, eligible package exports and these agent files; never edit those generated files. Teams, commands and contexts come from `.ai/contracts/{registry,process}.json`.
+- **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when the catalogue is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `npm run contracts:check` fails props drift. test-run uses the same @storybook/addon-vitest runner as the testing widget. It is local feedback, not the CI gate. CI runs `npm run test-storybook`.
+- **Token pipeline**: run `tokens:audit | build | lint | check-prefix | propose | apply` as tools — never edit `*.generated.scss` or `tokens.generated.ts` by hand. Reference: Storybook → Docs → Token pipeline → Commands.
+- **Before starting**: read `.ai/README.md`, check `.ai/questions/`, make sure tests pass.
 
-<!-- The full rule and skill set is intentionally kept in .ai/ — this file is the
-     baseline context injected into every session. Agents in .github/agents/ carry
-     their own role-specific instructions on top of this baseline. -->
+## Typography
+
+`1rem = 14px`. Agenda = display, Open Sans = body/labels — always via `--pds-text-*` tokens, never hardcoded `font-size` / `font-family`.
+
+<!-- Generated from .ai/agents by contracts:generate. Do not edit. -->

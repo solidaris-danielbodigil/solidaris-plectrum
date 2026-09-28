@@ -2,6 +2,9 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './ai-strategy.stories';
+import { command, PACKAGE_NAMES } from '../storybook/process-docs';
+import processContract from '../../../../.ai/contracts/process.json';
+import agentRoster from '../../../../.ai/agents/agents.json';
 
 <Meta title="Docs/AI strategy" />
 
@@ -9,11 +12,13 @@ import * as Figures from './ai-strategy.stories';
 
 Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and publishing the UI Kit. Agents may write variables and components onto a Figma branch; the Plectrum tokens plugin is the fallback when no agent is running. A designer may still draw the Figma component by hand.
 
-Each application team works in its own repository. The installed `@solidaris-danielbodigil/pds-devkit` gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
+Each application team works in its own repository. The installed toolkit gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
 
 ## Team repositories
 
-Application teams install `@solidaris-danielbodigil/pds-ui`, `@solidaris-danielbodigil/pds-plectrum`, `@solidaris-danielbodigil/pds-styles` and `@solidaris-danielbodigil/pds-devkit`. The first three provide runtime code and styles. The toolkit carries the contributor contract and CLI. From the application root, run `npx --no-install plectrum init --team <id> --application <id> --repository <url>`; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content. After upgrading it, run `npx --no-install plectrum update`; managed-file checksums detect conflicts while unrelated editor configuration remains in place. See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
+<p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code>, <code>{PACKAGE_NAMES.styles}</code> and <code>{PACKAGE_NAMES.toolkit}</code>. The first three provide runtime code and styles. The toolkit carries the contributor contract, the process {processContract.version} and the CLI. From the application root, run <code>{command('consumerInit')}</code>; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content: role text, <code>plectrum help</code> and these pages render the same process contract. After upgrading it, run <code>{command('consumerUpdate')}</code>; managed-file checksums detect conflicts while unrelated editor configuration remains in place.</p>
+
+See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
 
 Related pages:
 
@@ -117,29 +122,25 @@ You can still do any of these steps by hand. It is a choice, not a requirement.
 
 ## Storybook MCP
 
-`@storybook/addon-mcp` serves `http://localhost:6006/mcp` while `npm run storybook` is running. Cursor and VS Code register that URL. No running Storybook → no MCP; use `index.json`.
+<p><code>@storybook/addon-mcp</code> serves <code>{processContract.capabilities.storybookMcp.endpoint}</code> in a Plectrum checkout while <code>{processContract.capabilities.storybookMcp.requires}</code> is running. Cursor and VS Code register that URL. No running Storybook → no MCP; use <code>index.json</code>. It does not scaffold. {processContract.capabilities.storybookMcp.note} The gate is <code>{processContract.capabilities.storybookMcp.gate}</code>.</p>
 
 The index stays. MCP is the live catalogue (stories, Controls, docs pages). The index is the offline map (paths, BEM, `uses` / `usedBy`, status, owner). `tokens.consumed` and `aiHints` stay in `.metadata.ts`.
 
 <DocsTable
-  headers={['Toolset', 'Tools', 'When']}
-  rows={[
-    ['Docs', 'docs-list, docs-show, docs-show-story', 'Find a Plectrum component and read its props before writing UI or stories'],
-    ['Development', 'get-storybook-story-instructions, stories-find-by-component, stories-preview', 'Author CSF; preview Default / Disabled / Empty. Then follow rule 03'],
-    ['Testing', 'test-run', 'Wired. Same Vitest runner as the testing widget. CI still uses npm run test-storybook'],
-  ]}
+  headers={['Toolset', 'Tools']}
+  rows={Object.entries(processContract.capabilities.storybookMcp.toolsets).map(([toolset, tools]) => [toolset, tools.join(', ')])}
 />
 
 ### Create a component
 
-MCP does not scaffold. Pre-flight is still PrimeNG MCP → Figma MCP → `index.json` → `docs-list` (when Storybook is up) → `pds:component`. After the stub exists, `docs-show` a sibling (Copyable Text, Form Field) and copy that CSF + MDX shape. Gate with `contracts:check`, `docs:check`, `test-storybook`.
+Pre-flight is PrimeNG MCP → Figma MCP → `index.json` → `docs-list` (when Storybook is up) → `pds:component`. After the stub exists, `docs-show` a sibling (Copyable Text, Form Field) and copy that CSF + MDX shape. Gate with `contracts:check`, `docs:check`, `test-storybook`.
 
 ### Create stories
 
 1. `docs-show` the component — do not add a Control that is missing from `.metadata.ts` `props`.
 2. `get-storybook-story-instructions`, then apply [Writing stories](?path=/docs/docs-writing-stories--docs): colocated CSF, required states, `play` from `story-tests.ts`.
 3. `stories-preview` the new canvases.
-4. `npm run test-storybook` — MCP cannot run play or a11y tests.
+4. `test-run` for quick local feedback, then `npm run test-storybook` — the gate CI runs.
 
 ---
 
@@ -161,20 +162,16 @@ Proposal: [issue link].
 Use PrimeNG Message if it already covers this.
 ```
 
-In an application repository, Plectrum uses `plectrum scaffold --name <slug> --proposal <application>-<slug>` after the merged proposal decision; in the design-system repository, maintainers use `npm run pds:component`. The central token, Figma and story-writing protocols remain in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
+<p>In an application repository, Plectrum uses <code>{command('consumerScaffold')}</code> after the merged proposal decision; in the design-system repository, maintainers use <code>{command('scaffold')}</code>.</p>
+
+The central token, Figma and story-writing protocols remain in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
 
 <DocsTable
   headers={['Agent', 'Role']}
-  rows={[
-    ['Plectrum', 'Coordinator, invoked with /plectrum. Spawns the specialists below; the only user-facing agent'],
-    ['UX Researcher', 'Figma inspection, token extraction, design brief — read-only'],
-    ['UX Engineer', 'SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories; Figma writes via MCP when designing from the repo'],
-    ['Frontend Dev', 'Angular implementation: class, template, accessibility, PrimeNG wiring'],
-    ['Tester', 'Unit tests, story coverage, WCAG 2.1 AA'],
-    ['Token Auditor', 'Prefix compliance, semantic coverage, PrimeNG sync, Figma drift — read-only'],
-    ['Architect', 'Keeps one catalogue, puts styles in the right folder, owns naming and dependency boundaries — read-only'],
-  ]}
+  rows={agentRoster.roles.map((role) => [role.name, role.summary])}
 />
+
+In the Plectrum checkout these roles are authored once in `.ai/agents/`; `npm run contracts:generate` writes the Cursor and VS Code files and fails CI when they drift. In an application repository, `plectrum init` writes the team roles from the installed toolkit.
 
 ---
 
@@ -200,7 +197,7 @@ In an application repository, Plectrum uses `plectrum scaffold --name <slug> --p
     ['index.json', 'Offline map of libs/ui: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner. Kept; MCP does not replace it.'],
     ['tokens.consumed', 'List of --pds-* names the component SCSS actually uses. Foundations / Token contracts play test fails undeclared names in CI.'],
     ['contracts:check', 'Commit hook and CI. Fails when .metadata.ts props drift from Angular input / model / output, or when ALL_COMPONENT_METADATA misses a metadata file.'],
-    ['Storybook MCP', 'Live catalogue at http://localhost:6006/mcp (docs-list, docs-show, stories-preview, test-run). Needs npm run storybook. CI still uses the test-runner.'],
+    ['Storybook MCP', 'Live catalogue in a Plectrum checkout while npm run storybook runs. Tools and the testing note come from process.json capabilities. CI still uses the test-runner.'],
     ['aiHints', 'Keywords and selectionCriteria so an agent can pick a variant without reading the template.'],
     ['Protocol', 'Markdown decision tree in .ai/contracts/protocols/.'],
     ['pds:component', 'Scaffold script. Writes component, spec, stories, metadata, and the 06-components partial (forwarded from the core barrel). No colocated stylesheet.'],
@@ -208,7 +205,7 @@ In an application repository, Plectrum uses `plectrum scaffold --name <slug> --p
     ['docs:check', 'Commit hook and CI. Fails a component MDX page that restates a metadata block instead of embedding the figure.'],
     ['pds-docs-contract', 'Docs figure that renders one metadata block (usage, anatomy, …) on the component page.'],
     ['@solidaris/contracts', 'Path alias to .ai/contracts/schema. Metadata files import ComponentMetadata from here.'],
-    ['Team repository', 'Install @solidaris-danielbodigil/pds-devkit and run plectrum init; editor adapters are generated from its versioned process and roles.'],
+    ['Team repository', 'Install the team toolkit and run plectrum init; editor adapters are generated from its versioned process and roles.'],
     ['ai-prompts.md', 'Four paste-ready prompts in .ai/contracts/protocols/: token review, Figma-to-tokens, general agent rules, Storybook MCP.'],
   ]}
 />
@@ -274,7 +271,8 @@ npm run contracts:generate # refresh inventory, registration and toolkit snapsho
     ['.ai/contracts/protocols/query-protocol.md', 'Load order, Storybook MCP tools, decide-trees'],
     ['.ai/contracts/protocols/token-audit.md', 'Token health questions'],
     ['.ai/contracts/protocols/ai-prompts.md', 'Prompt templates'],
-    ['.ai/README.md', 'Coordinator + specialist agents (Cursor and Copilot)'],
+    ['.ai/agents/', 'Shared agent roles and baseline; generated into .cursor/agents, .github/agents, .cursorrules and copilot-instructions.md'],
+    ['.ai/README.md', 'Knowledge base entry point'],
     ['.ai/rules/01-architecture.md … 10-css-ssot.md', 'Hard stops'],
     ['.ai/skills/', 'How to run Figma, PrimeNG and Storybook MCP; ITCSS; component workflow; token checklist'],
   ]}

@@ -1,0 +1,695 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$"
+    },
+    "toolkit": {
+      "type": "object",
+      "properties": {
+        "invocation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "globalOptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "invocation",
+        "globalOptions",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "contexts": {
+      "type": "object",
+      "properties": {
+        "plectrum": {
+          "type": "object",
+          "properties": {
+            "root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "componentRoot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stylesRoot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contracts": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "root",
+            "componentRoot",
+            "stylesRoot",
+            "contracts"
+          ],
+          "additionalProperties": false
+        },
+        "consumer": {
+          "type": "object",
+          "properties": {
+            "root": {
+              "type": "string",
+              "minLength": 1
+            },
+            "componentRoot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stylesRoot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "contracts": {
+              "type": "string",
+              "minLength": 1
+            },
+            "rule": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "root",
+            "componentRoot",
+            "stylesRoot",
+            "contracts",
+            "rule"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "plectrum",
+        "consumer"
+      ],
+      "additionalProperties": false
+    },
+    "commands": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][A-Za-z]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "context": {
+            "type": "string",
+            "enum": [
+              "consumer",
+              "plectrum"
+            ]
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "local-draft",
+              "reviewed-pull-request"
+            ]
+          },
+          "values": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1
+            },
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "plannedPhase": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "context",
+          "command",
+          "summary",
+          "available"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "checkProfiles": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "release": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "consumerCi": {
+          "type": "object",
+          "properties": {
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "strictTokens": {
+              "type": "boolean"
+            },
+            "requireSourceScan": {
+              "type": "boolean"
+            },
+            "requireInstalledPackages": {
+              "type": "boolean"
+            },
+            "requireManagedAdapters": {
+              "type": "boolean"
+            },
+            "requireCandidateStoriesAndEvidence": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "commands",
+            "strictTokens",
+            "requireSourceScan",
+            "requireInstalledPackages",
+            "requireManagedAdapters",
+            "requireCandidateStoriesAndEvidence"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "component",
+        "release",
+        "tokens",
+        "consumerCi"
+      ],
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "journey": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner": {
+            "type": "string",
+            "enum": [
+              "team",
+              "core",
+              "designer",
+              "release"
+            ]
+          },
+          "repository": {
+            "type": "string",
+            "enum": [
+              "consumer",
+              "plectrum"
+            ]
+          },
+          "prerequisites": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "journey",
+          "owner",
+          "repository",
+          "prerequisites",
+          "inputs",
+          "outputs",
+          "commands"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "journeys": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "proposalOutcomes": {
+      "type": "object",
+      "properties": {
+        "approved-candidate": {
+          "type": "object",
+          "properties": {
+            "next": {
+              "type": "string",
+              "enum": [
+                "team",
+                "core",
+                "designer",
+                "release"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "enum": [
+                "consumer",
+                "plectrum"
+              ]
+            },
+            "step": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effect": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "next",
+            "repository",
+            "step",
+            "effect"
+          ],
+          "additionalProperties": false
+        },
+        "use-existing": {
+          "type": "object",
+          "properties": {
+            "next": {
+              "type": "string",
+              "enum": [
+                "team",
+                "core",
+                "designer",
+                "release"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "enum": [
+                "consumer",
+                "plectrum"
+              ]
+            },
+            "step": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effect": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "next",
+            "repository",
+            "step",
+            "effect"
+          ],
+          "additionalProperties": false
+        },
+        "app-specific": {
+          "type": "object",
+          "properties": {
+            "next": {
+              "type": "string",
+              "enum": [
+                "team",
+                "core",
+                "designer",
+                "release"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "enum": [
+                "consumer",
+                "plectrum"
+              ]
+            },
+            "step": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effect": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "next",
+            "repository",
+            "step",
+            "effect"
+          ],
+          "additionalProperties": false
+        },
+        "rejected": {
+          "type": "object",
+          "properties": {
+            "next": {
+              "type": "string",
+              "enum": [
+                "team",
+                "core",
+                "designer",
+                "release"
+              ]
+            },
+            "repository": {
+              "type": "string",
+              "enum": [
+                "consumer",
+                "plectrum"
+              ]
+            },
+            "step": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effect": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "next",
+            "repository",
+            "step",
+            "effect"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "approved-candidate",
+        "use-existing",
+        "app-specific",
+        "rejected"
+      ],
+      "additionalProperties": false
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "approved-candidate",
+                  "use-existing",
+                  "app-specific",
+                  "rejected"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "steps": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "decision",
+          "steps"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "storybookMcp": {
+          "type": "object",
+          "properties": {
+            "context": {
+              "type": "string",
+              "enum": [
+                "consumer",
+                "plectrum"
+              ]
+            },
+            "endpoint": {
+              "type": "string",
+              "format": "uri"
+            },
+            "requires": {
+              "type": "string",
+              "minLength": 1
+            },
+            "toolsets": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "minLength": 1
+              },
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "scaffolds": {
+              "type": "boolean"
+            },
+            "gate": {
+              "type": "string",
+              "minLength": 1
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "context",
+            "endpoint",
+            "requires",
+            "toolsets",
+            "scaffolds",
+            "gate",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "storybookMcp"
+      ],
+      "additionalProperties": false
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "approved",
+              "implemented",
+              "submitted",
+              "accepted",
+              "figma-reviewed",
+              "released",
+              "rejected",
+              "withdrawn"
+            ]
+          },
+          "to": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "approved",
+              "implemented",
+              "submitted",
+              "accepted",
+              "figma-reviewed",
+              "released",
+              "rejected",
+              "withdrawn"
+            ]
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "team",
+              "core",
+              "designer",
+              "release"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "role",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "version",
+    "toolkit",
+    "contexts",
+    "commands",
+    "checkProfiles",
+    "steps",
+    "journeys",
+    "proposalOutcomes",
+    "routes",
+    "capabilities",
+    "transitions"
+  ],
+  "additionalProperties": false,
+  "$id": "urn:plectrum:schema:process:1"
+}

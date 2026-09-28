@@ -179,6 +179,16 @@ export function candidateCatalogue(candidates: readonly CandidateListing[], core
   }));
 }
 
+/** Team filter: every registered application, plus any other label a usage observation carries. */
+export function teamFilterLabels(
+  entries: readonly CatalogueEntry[],
+  applications: readonly { label: string }[],
+): string[] {
+  const labels = new Set(applications.map((app) => app.label));
+  for (const entry of entries) for (const label of entry.usedIn) labels.add(label);
+  return [...labels].sort((a, b) => a.localeCompare(b));
+}
+
 export function matchesCatalogue(
   entry: CatalogueEntry,
   query: string,

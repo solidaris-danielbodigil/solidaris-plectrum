@@ -1,57 +1,67 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
-import { REGISTRY_PUBLISHED, PACKAGE_VERSION } from '../storybook/release-state';
+import * as Figures from './get-started-consume.stories';
+import { DISTRIBUTED_PACKAGES, REGISTRY } from '../storybook/process-docs';
+import changesetConfig from '../../../../.changeset/config.json';
 
 <Meta title="Docs/Releases and versioning" />
 
 # Releases and versioning
 
-Changesets versions the three runtime packages together. Applications install a verified GitHub Packages release or the packed tarballs for an unpublished revision. Package manifests and What's new describe source versions; the release manifest proves publication.
+Changesets versions the runtime packages together. Package manifests and What's new describe **source** versions. Only the release manifest — `release.json`, recorded by the attended release workflow after the registry and consumer checks pass — proves that a version pair was published.
 
-The historical `2.0.1-devkit-0.2.0` release used four public package names. <span>{REGISTRY_PUBLISHED ? 'This verified release uses the private pds-* package names.' : 'The new pds-* names shown here are the private distribution target; use their authenticated install commands only after their first verified release.'}</span> A protected manual release uses a separate classic package PAT and checks GitHub's actual visibility for each package before publishing a matching Storybook.
-
-<p>{REGISTRY_PUBLISHED ? `This is the versioned Storybook for Plectrum ${PACKAGE_VERSION}. Its release.json and contracts.json sit beside index.html.` : 'This is a development preview. It does not claim that its manifest versions are available in GitHub Packages.'}</p>
+<Unstyled>
+  <Story of={Figures.Release} />
+</Unstyled>
 
 Related pages:
 
-- [Get started / Use Plectrum in an app](?path=/docs/get-started-use-plectrum-in-an-app--docs) — the consumer side
+- [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) — the consumer side
 - [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how token changes reach a release
 
 ---
 
+## Two kinds of documentation
+
+<DocsTable
+  headers={['Documentation', 'Where', 'What it describes']}
+  rows={[
+    ['Development preview', REGISTRY.operations.storybook, 'main after its CI passed. Manifest versions are not a publication claim.'],
+    ['Versioned release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/releases/<runtime>-devkit-<toolkit>/`, 'Exactly one published runtime and toolkit pair. release.json and contracts.json sit beside index.html and never change.'],
+    ['Latest release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/latest/`, 'Points to the newest complete release. It moves only after package and documentation publication both succeed.'],
+  ]}
+/>
+
+The installed toolkit links each component to the versioned page of the installed runtime and toolkit pair.
+
 ## Process
 
 1. A change lands with a **changeset** (`npm run changeset`) describing the bump (patch / minor / major) and the affected packages.
-2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR** — `chore(release): version packages` — accumulating pending changesets into version bumps and changelogs.
-3. CI packs the four artifacts, builds an isolated consumer and checks package ownership, registry target and tarball integrity with `npm run release:check`. The attended release workflow checks the same commit, publishes exact archives, tests a fresh registry installation, and records the release manifest and Storybook bundle.
-4. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
+2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR**, accumulating pending changesets into version bumps and changelogs.
+3. CI packs the artifacts, builds an isolated consumer and checks package ownership, registry target and tarball integrity with `npm run release:check`.
+4. A maintainer dispatches the attended release (`.github/workflows/publish-release.yml`) for the exact release ID. It requires the same commit's CI, publishes the exact archives, verifies the actual package visibility, installs them in a clean application, records `release.json` and the contract snapshot, and publishes the matching Storybook.
+5. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
 
 ## Rules
 
 <DocsTable
   headers={['Rule', 'Detail']}
   rows={[
-    ['Fixed version group', '@solidaris-danielbodigil/pds-ui, @solidaris-danielbodigil/pds-plectrum and @solidaris-danielbodigil/pds-styles always version together (.changeset/config.json → fixed)'],
-    ['Toolkit version', '@solidaris-danielbodigil/pds-devkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
-    ['Internal token scripts', '@solidaris/tokens-cli is a private workspace maintenance package; consumer token checks ship in the devkit'],
+    ['Fixed version group', `${changesetConfig.fixed.map((group) => group.join(', ')).join('; ')} always version together (.changeset/config.json → fixed)`],
+    ['Toolkit version', 'The toolkit has its own version and declares compatible runtime and process ranges; its snapshot must match installed runtime packages'],
+    ['Internal token scripts', `${changesetConfig.ignore.join(', ')} stays a private workspace package; consumer token checks ship in the toolkit`],
     ['Changeset per change', 'A PR that alters published behaviour carries a changeset; docs-only and Storybook-only changes do not'],
-    ['Commit gate', 'npm run check:commit runs before the commit is created. git commit --no-verify skips it. The pull request into main still runs the full CI gates'],
-    ['CI gates before release', 'Token audits, generated-file diffs, contracts-index freshness, build, tests and the pack smoke test all pass on main first'],
-    ['Registry and ownership', 'The four manifests and token-free repository .npmrc route @solidaris-danielbodigil to GitHub Packages. The release checks actual private visibility; consumer repositories then need package read access.'],
+    ['Registry and ownership', `The manifests and a token-free repository .npmrc route ${REGISTRY.operations.publicationScope} to ${REGISTRY.operations.registry}. The release checks actual ${REGISTRY.operations.visibility} visibility; consumer repositories then need package read access.`],
     ['Consumer proof', 'pack:smoke installs the packed tarballs into a throwaway app without path aliases and builds it; storybook-packed builds this catalogue against the same tarballs'],
+    ['Retry', 'Retry the same release ID and revision. Already-published versions are accepted only when their integrity matches; incomplete releases never move latest.'],
   ]}
 />
 
 ## What ships
 
 <DocsTable
-  headers={['Package', 'Contents']}
-  rows={[
-    ['@solidaris-danielbodigil/pds-ui', 'Angular components (Angular Package Format)'],
-    ['@solidaris-danielbodigil/pds-plectrum', 'providePlectrum(), presets, tokens.json'],
-    ['@solidaris-danielbodigil/pds-styles', 'ITCSS SCSS source (apps add it to includePaths)'],
-    ['@solidaris-danielbodigil/pds-devkit', 'Versioned metadata, schemas, process, token inventory and team checks'],
-  ]}
+  headers={['Package', 'Source version', 'Contents']}
+  rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.version, pkg.description])}
 />
 
-The `main` Storybook is a development preview. A published version appears under `storybook/releases/<runtime-version>-devkit-<toolkit-version>/` after the registry and documentation gates pass. The `storybook/latest/` pointer advances only with that verified release.
+The historical `2.0.1-devkit-0.2.0` release used four public package names that are no longer distributed.

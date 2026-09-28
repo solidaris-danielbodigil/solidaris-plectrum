@@ -1,81 +1,56 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-consume.stories';
-import { REGISTRY_PUBLISHED, TARBALL_INSTALL, tarballName } from '../storybook/release-state';
-import toolkitPackage from '../../../../tools/devkit/package.json';
+import { DISTRIBUTED_PACKAGES, PACKAGE_NAMES, PEER_RANGES, REGISTRY } from '../storybook/process-docs';
 
 <Meta title="Start here/Build with Plectrum" id="get-started-use-plectrum-in-an-app" />
 
 # Build with Plectrum
 
-An application installs versioned packages and consumes CSS custom properties. No token values are copied; no build scripts are required in the application repository. A sample application in `tools/packaging/consumer-app/` is used to verify package installation — CI packs the libraries and builds that app against the tarballs on every push (`npm run pack:smoke`).
+An application team installs versioned packages, initializes the matching toolkit in its own repository and consumes CSS custom properties. No token values are copied and no Plectrum folder is copied into the application.
+
+<Unstyled>
+  <Story of={Figures.Release} />
+</Unstyled>
 
 <Unstyled>
   <Story of={Figures.InstallFlow} />
 </Unstyled>
 
----
+## Prerequisites
 
-## Packages and how to get them
+<ul>
+  <li>Peers: {Object.entries(PEER_RANGES).map(([name, range]) => `${name} ${range}`).join(' · ')}.</li>
+  <li>Read access to the {REGISTRY.operations.visibility} packages in {REGISTRY.operations.registry} under <code>{REGISTRY.operations.publicationScope}</code>.</li>
+  <li>Your team and application registered in the central team registry: {REGISTRY.applications.length} application(s) are registered today. See <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Contribute → Status and owner</a>.</li>
+</ul>
+
+## Install the packages
 
 <DocsTable
   headers={['Package', 'Contents', 'Required']}
-  rows={[
-    ['@solidaris-danielbodigil/pds-ui', 'Angular components (pds-*), Angular Package Format', 'Yes'],
-    ['@solidaris-danielbodigil/pds-plectrum', 'providePlectrum(), PrimeNG presets, tokens.json', 'Yes'],
-    ['@solidaris-danielbodigil/pds-styles', 'ITCSS SCSS source — objects, components, utilities', 'Yes'],
-    ['primeng · @primeuix/themes', 'Peer dependencies — the component engine and theme runtime', 'Yes (peers)'],
-    ['@solidaris-danielbodigil/pds-devkit', 'Portable metadata, schemas, token inventory, editor adapters and application checks', 'Yes for contributor workflow'],
-  ]}
+  rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.description, pkg.role === 'runtime' ? 'Yes' : 'For the team toolkit'])}
 />
 
-<p>{REGISTRY_PUBLISHED ? 'Released install: use the authenticated GitHub Packages commands below for the versions shown on this page.' : 'Development preview: registry publication is not established for this source revision. Build and pack the packages from the Plectrum checkout, then install the tarballs in an application. Manifest versions alone do not prove a registry release.'}</p>
+The runtime packages version together — always upgrade them as a set. The toolkit versions separately and declares which runtime versions it supports.
 
-<p>Contributor toolkit version: {toolkitPackage.version}. Use the toolkit compatible with the runtime package version in this Storybook.</p>
+<Unstyled>
+  <Story of={Figures.Install} />
+</Unstyled>
 
-```bash
-# in the design-system repository
-npm run pack:libs       # builds plectrum + ui, npm-packs all packages into tools/packaging/.tarballs/
-```
-
-In the application, use paths to the four tarballs produced above:
-
-<pre><code>{TARBALL_INSTALL}</code></pre>
-<pre><code>{`npm install --save-dev ./path/to/${tarballName(toolkitPackage.name, toolkitPackage.version)}`}</code></pre>
-
-The first release under the former package names is public. <span>{REGISTRY_PUBLISHED ? 'This verified release uses the private pds-* package names below.' : 'The pds-* names below are being prepared as private packages; use packed tarballs until their first verified release.'}</span> For registry installation, add this scope mapping to the **application repository's** `.npmrc` (without a token):
-
-```ini
-@solidaris-danielbodigil:registry=https://npm.pkg.github.com
-```
-
-GitHub Packages requires package read access. For a developer machine, authenticate with a classic GitHub personal access token with `read:packages` using `npm login --scope=@solidaris-danielbodigil --auth-type=legacy --registry=https://npm.pkg.github.com`; keep the token in your user configuration, not the repository. For application CI, grant that repository Actions access to all four packages and use its `GITHUB_TOKEN` with `packages: read`. Dependabot uses the same package access grant. Then install the matching package versions:
-
-```bash
-npm install @solidaris-danielbodigil/pds-ui @solidaris-danielbodigil/pds-plectrum @solidaris-danielbodigil/pds-styles primeng @primeuix/themes
-npm install --save-dev @solidaris-danielbodigil/pds-devkit
-```
-
-Supported peers: Angular `^21`, PrimeNG `^21`, `@primeuix/themes` `^2`. The three runtime packages version together — always upgrade them as a set.
+Application CI grants its repository Actions access to all four packages and uses `GITHUB_TOKEN` with `packages: read`; Dependabot uses the same access grant.
 
 ## Initialize the team toolkit
 
-Run this from the **application repository root** after installing the toolkit. Use your team's IDs and repository URL:
+Run from the **application repository root**, with your registered team and application IDs.
 
-```bash
-npx --no-install plectrum init --team ishare --application ishare --repository https://github.com/your-org/your-app
-npx --no-install plectrum catalogue
-npx --no-install plectrum doctor
-npx --no-install plectrum check --profile ci
-```
+<Unstyled>
+  <Story of={Figures.Initialize} />
+</Unstyled>
 
-`init` creates `.plectrum/config.json`, Cursor and VS Code/Copilot Plectrum roles and baseline instructions, MCP configuration and a pull-request workflow. In Cursor, invoke the generated **Plectrum** agent; in VS Code, select **Plectrum** in the chat agent picker. Its rules, process, schemas and offline catalogue live in the installed toolkit. No `.ai` folder needs copying. Set Figma or Storybook MCP URLs explicitly in `.plectrum/config.json`; a published Storybook page is not itself an MCP server. `plectrum doctor --live` verifies configured MCP capabilities. Run `plectrum update` after upgrading the toolkit; it preserves team notes outside generated files and reports edits to managed files as conflicts.
+In Cursor, select the generated **Plectrum** agent; in VS Code, select **Plectrum** in the chat agent picker. Rules, process, schemas and the offline catalogue live in the installed toolkit. Set Figma or Storybook MCP URLs in `.plectrum/config.json`; a published Storybook page is not an MCP server.
 
-Register the application in the central team registry and open a proposal issue. Once Core merges an `approved-candidate` decision for the gap, run `plectrum scaffold --name my-component --proposal <application>-my-component`, fill its metadata, story and evidence, then `plectrum check --profile ci`. Commit the candidate and link an HTTPS preview and successful CI result from that commit. `plectrum candidate-submit --name my-component --proposal <application>-my-component --preview <url> --checks <url>` opens the central intake PR using `GH_TOKEN` or `GITHUB_TOKEN`; rerun after a new commit to revise. `plectrum candidate-withdraw --id <application>-my-component --reason <text>` retires it. `plectrum adoption-report` writes a local source-usage draft; after the application's reporting flag is enabled, `plectrum adoption-submit` opens a reviewed central PR. The CI profile checks package/toolkit compatibility, schema and Angular input alignment, published tokens and candidate requirements. It fails on unknown `--pds-*`, hardcoded hex/px and an empty source scan.
-
-The Storybook **Preset** control (`v1` / `v0.6`) switches the theme inside this catalogue. It is not the package version. `providePlectrum()` with no argument uses preset v1.
-
-Moved from a 0.x preset? Find every renamed input on [What's new](?path=/docs/docs-what-s-new--docs).
+The Storybook **Preset** control (`v1` / `v0.6`) switches the theme inside this catalogue. It is not the package version. `providePlectrum()` with no argument uses preset v1. Moved from a 0.x preset? Find every renamed input on [What's new](?path=/docs/docs-what-s-new--docs).
 
 ## Fonts, icons and browsers
 
@@ -91,11 +66,9 @@ This app supports what Angular supports by default: current Chrome, Edge, Firefo
 
 `angular.json` — resolve the ITCSS source from the package:
 
-```json
-"stylePreprocessorOptions": {
-  "includePaths": ["node_modules/@solidaris-danielbodigil/pds-styles/src"]
-}
-```
+<pre><code>{`"stylePreprocessorOptions": {
+  "includePaths": ["node_modules/${PACKAGE_NAMES.styles}/src"]
+}`}</code></pre>
 
 `src/styles.scss` — the whole system is one `@use`:
 
@@ -106,11 +79,10 @@ This app supports what Angular supports by default: current Chrome, Edge, Firefo
 
 ## Boot the theme
 
-```ts
-// src/app/app.config.ts
+<pre><code>{`// src/app/app.config.ts
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '@solidaris-danielbodigil/pds-plectrum';
+import { providePlectrum } from '${PACKAGE_NAMES.plectrum}';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -118,8 +90,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePlectrum(),
   ],
-};
-```
+};`}</code></pre>
 
 `providePlectrum()` registers the PrimeNG theme and emits every `--p-*` custom property. The generated `--pds-*` tokens fall back to literals, so styles render even before the theme boots — but PrimeNG components need the provider.
 
@@ -150,11 +121,37 @@ import { FormFieldComponent } from '@solidaris-danielbodigil/pds-ui';
 export class App {}
 ```
 
-`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every `pds-*` component is exported from the `@solidaris-danielbodigil/pds-ui` root — the component's docs page names the class to import.
+`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every Core Angular component is exported from the UI package root — the component's docs page names the class to import.
 
-## Build screens
+PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). [Find a component](?path=/docs/start-here-catalogue--docs) lists each Core component. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
 
-PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). Import Core `pds-*` components from `@solidaris-danielbodigil/pds-ui` — [Find a component](?path=/docs/start-here-catalogue--docs) lists each one. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
+## Validate
+
+<Unstyled>
+  <Story of={Figures.Validate} />
+</Unstyled>
+
+<Unstyled>
+  <Story of={Figures.CiProfile} />
+</Unstyled>
+
+`plectrum init` writes a pull-request workflow that runs the same profile, whether an agent or a person made the change.
+
+## Report adoption
+
+<Unstyled>
+  <Story of={Figures.Adopt} />
+</Unstyled>
+
+A report lists installed versions and detected component usage; it never sends anything while `reporting.enabled` is false. Find a component shows reported usage with its freshness, and a missing report is never read as non-adoption.
+
+## Upgrade
+
+<Unstyled>
+  <Story of={Figures.Upgrade} />
+</Unstyled>
+
+Copy `tools/consumers/renovate.json` or `dependabot.yml` so upgrades arrive as reviewed pull requests. [What's new](?path=/docs/docs-what-s-new--docs) lists breaking changes per version.
 
 ## Before you invent
 
@@ -171,9 +168,8 @@ Screens start from what already exists. A gap is a proposal, not a new component
   rows={[
     ['CSS is the API', 'Consume var(--pds-*) and the o-/c-/u- classes. Never import PrimeNG theme helpers ($dt, usePreset) at runtime'],
     ['No token copies', 'If a value is missing, request it in the design-system repo — do not inline it'],
-    ['No silent duplicates', 'Do not invent a local component or token that duplicates the catalogue. If PrimeNG and Core do not cover the need, [propose](?path=/docs/get-started-contribute--docs) before building'],
-    ['Version bumps as PRs', 'Once the packages publish, copy tools/consumers/renovate.json (or dependabot.yml) so upgrades arrive as reviewed pull requests'],
-    ['Check your usage', 'Run plectrum check --profile ci from the installed toolkit; generated CI runs the same strict profile'],
+    ['No silent duplicates', 'Do not invent a local component or token that duplicates the catalogue. If PrimeNG and Core do not cover the need, propose before building'],
+    ['Upgrades as pull requests', 'Dependency update pull requests, then the Validate step above'],
   ]}
 />
 

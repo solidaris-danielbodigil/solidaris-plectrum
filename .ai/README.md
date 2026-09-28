@@ -7,16 +7,19 @@ Load the relevant files at the start of every conversation.
 
 ## Agents
 
-The same seven roles are defined for both editors:
+The seven roles are authored once in `agents/`: `agents.json` holds identity and
+editor frontmatter, `roles/*.md` the shared text (editor-only lines sit in
+`<!-- editor:cursor|vscode -->` blocks), `baseline.md` the always-on instructions.
+Commands and capabilities are placeholders resolved from `contracts/process.json`.
+`npm run contracts:generate` writes:
 
-- **Cursor** → `.cursor/agents/*.md` (Cursor frontmatter: `name`, `description`, `readonly`).
-  The **Plectrum** coordinator spawns specialists via the Task tool (multiple Task
-  calls in one message = parallel).
-- **VS Code / Copilot** → `.github/agents/*.agent.md` (VS Code frontmatter: `tools`,
-  `agents`, `user-invocable`), auto-discovered by VS Code.
+- **Cursor** → `.cursor/agents/*.md` and `.cursorrules`. The **Plectrum** coordinator
+  spawns specialists via the Task tool (multiple Task calls in one message = parallel).
+- **VS Code / Copilot** → `.github/agents/*.agent.md` and `.github/copilot-instructions.md`,
+  auto-discovered by VS Code.
 
-Keep the two sets in sync when a role's instructions change. Switch to the
-**Plectrum** agent to start the full orchestrated workflow.
+Edit `agents/`, never the generated files; `contracts:generate -- --check` fails CI on
+drift. Switch to the **Plectrum** agent to start the full orchestrated workflow.
 
 | Agent                    | File                                    | Role                                                             |
 | ------------------------ | --------------------------------------- | ---------------------------------------------------------------- |

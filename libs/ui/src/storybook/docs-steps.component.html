@@ -22,6 +22,11 @@
         }
       </p>
     }
+    @if (event.commands?.length) {
+      <pre
+        class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
+      ><code>{{ event.commands!.join('\n') }}</code></pre>
+    }
     @if (event.links?.length) {
       <ul
         class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0"

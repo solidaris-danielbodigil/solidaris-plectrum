@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.2.0",
+  "version": "1.3.0",
   "contexts": {
     "plectrum": {
       "root": "Plectrum checkout",
@@ -20,94 +20,148 @@
     "scaffold": {
       "context": "plectrum",
       "command": "npm run pds:component -- --name=<name> --owner=<team>",
+      "summary": "Create a Core or local-demo component with metadata, story and style partial.",
       "available": true
     },
     "generate": {
       "context": "plectrum",
       "command": "npm run contracts:generate",
+      "summary": "Regenerate the metadata registry, exports, index, schemas, toolkit snapshot and editor adapters.",
       "available": true
     },
     "check": {
       "context": "plectrum",
       "command": "npm run contracts:check",
+      "summary": "Validate schemas, registry, process commands, generated files and metadata readiness.",
       "available": true
     },
     "docs": {
       "context": "plectrum",
       "command": "npm run docs:check",
+      "summary": "Check that docs pages render metadata and shared process data instead of restating them.",
       "available": true
     },
     "test": {
       "context": "plectrum",
       "command": "npm run test:pipelines",
+      "summary": "Run the pipeline tests: schemas, scaffold, candidates and adoption.",
       "available": true
     },
     "pack": {
       "context": "plectrum",
       "command": "npm run pack:smoke",
+      "summary": "Pack the libraries and build an isolated consumer application against the tarballs.",
       "available": true
     },
     "consumerInit": {
       "context": "consumer",
       "command": "npx --no-install plectrum init --team <id> --application <id> --repository <url>",
+      "summary": "Create .plectrum/config.json, editor adapters, MCP entries and the CI workflow.",
       "available": true
     },
     "consumerUpdate": {
       "context": "consumer",
       "command": "npx --no-install plectrum update",
+      "summary": "Regenerate managed adapters after a toolkit upgrade; report edited managed files as conflicts.",
+      "available": true
+    },
+    "consumerCatalogue": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum catalogue [--id <component-id>]",
+      "summary": "List the installed offline catalogue, or print one component contract.",
+      "available": true
+    },
+    "consumerDoctor": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum doctor [--live]",
+      "summary": "Check package and toolkit compatibility, managed files and configured MCP endpoints.",
+      "available": true
+    },
+    "consumerValidate": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum validate --schema <schema> --file <relative.json>",
+      "summary": "Validate a local JSON file against an installed exchange schema.",
+      "available": true,
+      "values": {
+        "schema": [
+          "metadata",
+          "proposal",
+          "submission",
+          "candidateReview",
+          "candidatePromotion",
+          "candidateFigmaReturn",
+          "candidate",
+          "adoption"
+        ]
+      }
+    },
+    "consumerTokens": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum tokens check [--strict]",
+      "summary": "Check --pds-* usage against the installed token inventory; --strict also rejects hex and px.",
       "available": true
     },
     "consumerCheck": {
       "context": "consumer",
       "command": "npx --no-install plectrum check --profile ci",
+      "summary": "Run the CI profile: compatibility, strict tokens, source scan, managed adapters and candidates.",
       "available": true
     },
     "consumerScaffold": {
       "context": "consumer",
       "command": "npx --no-install plectrum scaffold --name <slug> --proposal <application>-<slug>",
+      "summary": "Create a local candidate after the central proposal record approves it.",
       "available": true
     },
     "candidateExport": {
       "context": "consumer",
-      "command": "npx --no-install plectrum candidate-export --name <slug>",
+      "command": "npx --no-install plectrum candidate-export --name <slug> [--output <path>]",
+      "summary": "Write a local candidate JSON draft without contacting the central repository.",
       "available": true,
       "scope": "local-draft"
     },
     "candidateSubmit": {
       "context": "consumer",
-      "command": "npx --no-install plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url>",
+      "command": "npx --no-install plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url> [--dry-run]",
+      "summary": "Open or revise the reviewed central intake pull request for the committed candidate.",
       "available": true
     },
     "candidateWithdraw": {
       "context": "consumer",
-      "command": "npx --no-install plectrum candidate-withdraw --id <application>-<slug> --reason <text>",
+      "command": "npx --no-install plectrum candidate-withdraw --id <application>-<slug> --reason <text> [--dry-run]",
+      "summary": "Open a central pull request that withdraws the submission; the ID stays reserved.",
       "available": true
     },
     "adoptionReport": {
       "context": "consumer",
-      "command": "npx --no-install plectrum adoption-report",
+      "command": "npx --no-install plectrum adoption-report [--output <path>]",
+      "summary": "Write a local adoption draft of installed packages and detected component usage.",
       "available": true,
       "scope": "local-draft"
     },
     "adoptionSubmit": {
       "context": "consumer",
-      "command": "npx --no-install plectrum adoption-submit",
+      "command": "npx --no-install plectrum adoption-submit [--dry-run]",
+      "summary": "Open a reviewed central pull request with the adoption report.",
       "available": true,
       "scope": "reviewed-pull-request"
     },
     "tokensBuild": {
       "context": "plectrum",
       "command": "npm run tokens:build",
+      "summary": "Generate token SCSS and Storybook token annotations from tokens.json.",
       "available": true
     },
     "tokensAudit": {
       "context": "plectrum",
       "command": "npm run tokens:audit",
+      "summary": "Compare tokens.json, the preset and 01-settings; report drift.",
       "available": true
     },
     "tokensPropose": {
       "context": "plectrum",
       "command": "npm run tokens:propose",
+      "summary": "Write the code-owned token proposal for Figma (proposed.dtcg.json).",
       "available": true
     }
   },
@@ -131,7 +185,9 @@
       "tokensPropose"
     ],
     "consumerCi": {
-      "commands": ["consumerCheck"],
+      "commands": [
+        "consumerCheck"
+      ],
       "strictTokens": true,
       "requireSourceScan": true,
       "requireInstalledPackages": true,
@@ -141,12 +197,89 @@
   },
   "steps": [
     {
+      "id": "install",
+      "journey": "onboarding",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "package read access, or packed tarballs for an unreleased revision"
+      ],
+      "inputs": [
+        "runtime packages",
+        "toolkit package"
+      ],
+      "outputs": [
+        "installed packages"
+      ],
+      "commands": []
+    },
+    {
+      "id": "initialize",
+      "journey": "onboarding",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "installed toolkit",
+        "registered team and application"
+      ],
+      "inputs": [
+        "team, application and repository IDs"
+      ],
+      "outputs": [
+        ".plectrum/config.json",
+        "editor adapters",
+        "CI workflow"
+      ],
+      "commands": [
+        "consumerInit",
+        "consumerCatalogue",
+        "consumerDoctor"
+      ]
+    },
+    {
+      "id": "build",
+      "journey": "onboarding",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "installed packages"
+      ],
+      "inputs": [
+        "stylesheet include path",
+        "providePlectrum()",
+        "installed catalogue"
+      ],
+      "outputs": [
+        "themed screens from PrimeNG, Core components and --pds-* tokens"
+      ],
+      "commands": []
+    },
+    {
+      "id": "validate",
+      "journey": "onboarding",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "initialized toolkit"
+      ],
+      "inputs": [
+        "application source and styles"
+      ],
+      "outputs": [
+        "passing CI profile"
+      ],
+      "commands": [
+        "consumerTokens",
+        "consumerCheck"
+      ]
+    },
+    {
       "id": "discover",
       "journey": "contribution",
       "owner": "team",
       "repository": "consumer",
       "prerequisites": [
-        "installed-version"
+        "installed packages and toolkit"
       ],
       "inputs": [
         "installed contract snapshot",
@@ -342,6 +475,49 @@
         "adoptionReport",
         "adoptionSubmit"
       ]
+    },
+    {
+      "id": "upgrade",
+      "journey": "onboarding",
+      "owner": "team",
+      "repository": "consumer",
+      "prerequisites": [
+        "published release"
+      ],
+      "inputs": [
+        "dependency update pull request",
+        "release notes"
+      ],
+      "outputs": [
+        "upgraded packages and regenerated adapters"
+      ],
+      "commands": [
+        "consumerUpdate",
+        "consumerDoctor",
+        "consumerCheck"
+      ]
+    },
+    {
+      "id": "change-in-plectrum",
+      "journey": "plectrum",
+      "owner": "core",
+      "repository": "plectrum",
+      "prerequisites": [
+        "correction, or Core-owned work"
+      ],
+      "inputs": [
+        "pull request with a changeset when published behaviour changes"
+      ],
+      "outputs": [
+        "reviewed change on main"
+      ],
+      "commands": [
+        "scaffold",
+        "generate",
+        "check",
+        "docs",
+        "test"
+      ]
     }
   ],
   "transitions": [
@@ -450,5 +626,118 @@
         "decision"
       ]
     }
-  ]
+  ],
+  "toolkit": {
+    "invocation": "npx --no-install plectrum",
+    "globalOptions": [
+      "--root <path>"
+    ],
+    "notes": [
+      "Candidate and adoption pull requests need GH_TOKEN or GITHUB_TOKEN.",
+      "adoption-submit does nothing until reporting.enabled is true in .plectrum/config.json."
+    ]
+  },
+  "journeys": {
+    "onboarding": [
+      "install",
+      "initialize",
+      "build",
+      "validate",
+      "adopt",
+      "upgrade"
+    ],
+    "contribution": [
+      "discover",
+      "approve",
+      "implement",
+      "submit",
+      "integrate",
+      "design-return",
+      "release",
+      "adopt"
+    ],
+    "design": [
+      "export-design",
+      "validate-design",
+      "release",
+      "adopt"
+    ]
+  },
+  "proposalOutcomes": {
+    "approved-candidate": {
+      "next": "team",
+      "repository": "consumer",
+      "step": "implement",
+      "effect": "The requesting team is the recorded owner. The toolkit scaffolds and submits only under this decision."
+    },
+    "use-existing": {
+      "next": "team",
+      "repository": "consumer",
+      "step": null,
+      "effect": "No candidate intake. The team uses the existing PrimeNG control, Core component or token."
+    },
+    "app-specific": {
+      "next": "team",
+      "repository": "consumer",
+      "step": null,
+      "effect": "No central candidate intake: the toolkit refuses to scaffold or submit under this decision."
+    },
+    "rejected": {
+      "next": "team",
+      "repository": "consumer",
+      "step": null,
+      "effect": "No candidate intake: the toolkit refuses to scaffold or submit under this decision."
+    }
+  },
+  "routes": [
+    {
+      "id": "local-candidate",
+      "decision": "approved-candidate",
+      "steps": [
+        "implement",
+        "submit"
+      ]
+    },
+    {
+      "id": "plectrum-change",
+      "decision": null,
+      "steps": [
+        "change-in-plectrum"
+      ]
+    },
+    {
+      "id": "promotion",
+      "decision": "approved-candidate",
+      "steps": [
+        "integrate",
+        "design-return",
+        "release"
+      ]
+    }
+  ],
+  "capabilities": {
+    "storybookMcp": {
+      "context": "plectrum",
+      "endpoint": "http://localhost:6006/mcp",
+      "requires": "npm run storybook",
+      "toolsets": {
+        "docs": [
+          "docs-list",
+          "docs-show",
+          "docs-show-story"
+        ],
+        "development": [
+          "get-storybook-story-instructions",
+          "stories-find-by-component",
+          "stories-preview"
+        ],
+        "testing": [
+          "test-run"
+        ]
+      },
+      "scaffolds": false,
+      "gate": "npm run test-storybook",
+      "note": "test-run uses the same @storybook/addon-vitest runner as the testing widget. It is local feedback, not the CI gate."
+    }
+  }
 }

@@ -3,31 +3,14 @@ import processContract from '../../../../.ai/contracts/process.json';
 import registry from '../../../../.ai/contracts/registry.json';
 import compatibility from '../../../../.ai/contracts/compatibility.json';
 import { cardsStory, stepsStory } from './docs-figure-stories';
-import type { DocsStep } from '../storybook/docs-figures.types';
+import { consumerCiRequirements, journeySteps, teamCards } from '../storybook/process-docs';
 
 const meta: Meta = { title: 'Docs/Figures/Pipeline contracts', tags: ['!dev'] };
 export default meta;
 
-function steps(journey: string): DocsStep[] {
-  return processContract.steps
-    .filter((step) => step.journey === journey || step.journey === 'both')
-    .map((step) => ({
-      title: step.id.replaceAll('-', ' '),
-      who: `${step.owner} · ${step.repository} repository`,
-      tone:
-        step.owner === 'designer'
-          ? 'design'
-          : step.repository === 'consumer'
-            ? 'app'
-            : 'system',
-      detail: `Requires: ${step.prerequisites.join(', ')}. Inputs: ${step.inputs.join(', ')}. Outputs: ${step.outputs.join(', ')}.`,
-    }));
-}
-export const Contribution = {
-  tags: ['!dev'],
-  ...stepsStory(steps('contribution')),
-};
-export const Design = { tags: ['!dev'], ...stepsStory(steps('design')) };
+export const Onboarding = { tags: ['!dev'], ...stepsStory(journeySteps('onboarding', {}, true)) };
+export const Contribution = { tags: ['!dev'], ...stepsStory(journeySteps('contribution', {}, true)) };
+export const Design = { tags: ['!dev'], ...stepsStory(journeySteps('design', {}, true)) };
 export const Commands = {
   tags: ['!dev'],
   ...cardsStory(
@@ -35,8 +18,9 @@ export const Commands = {
       title: name,
       eyebrow: command.context,
       tone: 'neutral',
-      lead: command.command ?? 'Not available yet',
+      lead: command.command,
       items: [
+        command.summary,
         command.available
           ? `${command.context === 'consumer' ? 'Available in the application checkout.' : 'Available in the Plectrum checkout.'}${'scope' in command ? ` Scope: ${command.scope}.` : ''}`
           : `Planned: ${'plannedPhase' in command ? command.plannedPhase : 'later phase'}`,
@@ -61,7 +45,7 @@ export const Operations = {
     {
       title: 'Toolkit compatibility',
       eyebrow: compatibility.status,
-      lead: `Toolkit ${compatibility.toolkitVersion}`,
+      lead: `Toolkit ${compatibility.toolkitVersion} · process ${processContract.version}`,
       items: [
         `DS: ${compatibility.dsVersionRange}`,
         `Contracts: ${compatibility.contractSchemaRange}`,
@@ -73,10 +57,7 @@ export const Operations = {
     {
       title: 'Consumer CI profile',
       eyebrow: 'consumerCi',
-      lead: processContract.commands.consumerCheck.command,
-      items: Object.entries(processContract.checkProfiles.consumerCi)
-        .filter(([key]) => key !== 'commands')
-        .map(([key, value]) => `${key}: ${value}`),
+      items: consumerCiRequirements(),
       tone: 'app',
     },
     {
@@ -86,17 +67,4 @@ export const Operations = {
     },
   ]),
 };
-export const Teams = {
-  tags: ['!dev'],
-  ...cardsStory(
-    registry.teams.map((team) => ({
-      title: team.label,
-      eyebrow: team.kind,
-      items: [
-        `ID: ${team.id}`,
-        `Reviewer: ${team.reviewer ?? 'Not configured'}`,
-      ],
-      tone: 'neutral',
-    })),
-  ),
-};
+export const Teams = { tags: ['!dev'], ...cardsStory(teamCards()) };

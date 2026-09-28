@@ -231,8 +231,100 @@ export const releaseManifestSchema = z.strictObject({
   documentation: z.url(),
   figmaReturn: reference.optional(),
 });
+const processRole = z.enum(['team', 'core', 'designer', 'release']);
+const processStep = z.strictObject({
+  id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+  journey: text,
+  owner: processRole,
+  repository: z.enum(['consumer', 'plectrum']),
+  prerequisites: z.array(text),
+  inputs: z.array(text),
+  outputs: z.array(text),
+  commands: z.array(text),
+});
+/** Versioned process contract: the one source for toolkit help, agent guidance and Storybook process pages. */
+export const processSchema = z.strictObject({
+  schemaVersion,
+  version,
+  toolkit: z.strictObject({
+    invocation: text,
+    globalOptions: z.array(text),
+    notes: z.array(text),
+  }),
+  contexts: z.strictObject({
+    plectrum: z.strictObject({ root: text, componentRoot: text, stylesRoot: text, contracts: text }),
+    consumer: z.strictObject({ root: text, componentRoot: text, stylesRoot: text, contracts: text, rule: text }),
+  }),
+  commands: z.record(
+    z.string().regex(/^[a-z][A-Za-z]*$/),
+    z.strictObject({
+      context: z.enum(['consumer', 'plectrum']),
+      command: text,
+      summary: text,
+      available: z.boolean(),
+      scope: z.enum(['local-draft', 'reviewed-pull-request']).optional(),
+      values: z.record(text, z.array(text)).optional(),
+      plannedPhase: text.optional(),
+    }),
+  ),
+  checkProfiles: z.strictObject({
+    component: z.array(text),
+    release: z.array(text),
+    tokens: z.array(text),
+    consumerCi: z.strictObject({
+      commands: z.array(text),
+      strictTokens: z.boolean(),
+      requireSourceScan: z.boolean(),
+      requireInstalledPackages: z.boolean(),
+      requireManagedAdapters: z.boolean(),
+      requireCandidateStoriesAndEvidence: z.boolean(),
+    }),
+  }),
+  steps: z.array(processStep),
+  journeys: z.record(text, z.array(text)),
+  proposalOutcomes: z.strictObject(
+    Object.fromEntries(
+      proposalDecisionSchema.options.map((decision) => [
+        decision,
+        z.strictObject({
+          next: processRole,
+          repository: z.enum(['consumer', 'plectrum']),
+          step: text.nullable(),
+          effect: text,
+        }),
+      ]),
+    ) as Record<z.infer<typeof proposalDecisionSchema>, z.ZodType<{ next: string; repository: string; step: string | null; effect: string }>>,
+  ),
+  routes: z.array(
+    z.strictObject({
+      id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+      decision: proposalDecisionSchema.nullable(),
+      steps: z.array(text).min(1),
+    }),
+  ),
+  capabilities: z.strictObject({
+    storybookMcp: z.strictObject({
+      context: z.enum(['consumer', 'plectrum']),
+      endpoint: z.url(),
+      requires: text,
+      toolsets: z.record(text, z.array(text)),
+      scaffolds: z.boolean(),
+      gate: text,
+      note: text,
+    }),
+  }),
+  transitions: z.array(
+    z.strictObject({
+      from: candidateStateSchema,
+      to: candidateStateSchema,
+      role: processRole,
+      evidence: z.array(text),
+    }),
+  ),
+});
 export const exchangeSchemas = {
   metadata: componentMetadataSchema,
+  process: processSchema,
   registry: registrySchema,
   candidate: candidateSchema,
   proposal: proposalSchema,
