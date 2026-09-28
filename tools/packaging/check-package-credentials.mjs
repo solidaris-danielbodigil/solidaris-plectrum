@@ -18,7 +18,9 @@ const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.git
 const user = await fetch('https://api.github.com/user', { headers });
 if (!user.ok) throw new Error(`Package token identity check failed: HTTP ${user.status}.`);
 const scopes = (user.headers.get('x-oauth-scopes') ?? '').split(',').map((scope) => scope.trim());
-if (!scopes.includes('write:packages') || !scopes.includes('read:packages')) throw new Error('Package token must be a classic PAT with write:packages and read:packages.');
+// GitHub's write:packages scope includes package metadata read access. The
+// separate API request below verifies the effective read permission.
+if (!scopes.includes('write:packages')) throw new Error('Package token must be a classic PAT with write:packages. Check Tokens (classic) and update the package-release environment secret.');
 const identity = await user.json();
 if (identity.login !== owner) throw new Error(`Package PAT belongs to ${identity.login}, expected ${owner}.`);
 const packages = await fetch(`https://api.github.com/users/${owner}/packages?package_type=npm&per_page=1`, { headers });
