@@ -2,7 +2,7 @@
 
 Private Figma plugin that reads `tools/tokens/proposed.dtcg.json` from GitHub and upserts
 code-owned tokens into the collection `proposals/{app}` on a Figma **branch**. It refuses the
-main UI Kit file (`YNZ1DlSjDNUXrvkxlSp10D`).
+main PrimeNG 21 token file (`wjMnb8GsK8bVKA7UreOJ4L`) and the main Custom components file (`IRkr21rHS0w7rI0bgrv1fZ`). The token plugin runs on a branch of PrimeNG 21; component candidates live in Custom components.
 
 The Plugin API is not plan-gated. This plugin is the **fallback** repository → Figma
 transport when no agent is running. Default write: an agent via Figma MCP (`use_figma`),
@@ -55,8 +55,8 @@ Default fetch target:
 
 ## Apply
 
-1. In Figma, open the branch `proposals/{app}` (create it once in the UI if missing). Never run this on main.
-2. Run **Plectrum tokens**. Confirm the file key is not the main UI Kit.
+1. In PrimeNG 21, open the token branch `proposals/{app}` (create it once in the UI if missing). Never run this on main or in Custom components.
+2. Run **Plectrum tokens**. Confirm in Figma that the open branch belongs to PrimeNG 21. The plugin blocks both configured main file keys but cannot infer a branch's parent from its key alone.
 3. Fetch the proposal. Nothing is selected.
 4. Filter, then **Select all visible** (explicit) or tick individual writable rows.
 5. **Plan** — create / update / unchanged / skip. Existing variables are never retyped or deleted.

@@ -15,7 +15,7 @@
     {
       "slug": "ux-researcher",
       "name": "UX Researcher",
-      "description": "Inspects Figma nodes in the Plectrum UI Kit, extracts design tokens, states, and spacing, and produces a structured design brief. Read-only.",
+      "description": "Inspects candidate nodes in Custom components and token variables in PrimeNG 21, then produces a structured design brief. Read-only.",
       "summary": "Figma inspection, token extraction, design brief — read-only",
       "readonly": true,
       "userInvocable": false,

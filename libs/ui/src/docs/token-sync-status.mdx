@@ -61,7 +61,7 @@ Every resolved value that differs from the previous `tokens.json`. Search by tok
 ## When this page updates
 
 1. A designer pushes from the PrimeUI theme generator plugin to `design-tokens/sync`.
-2. `tokens-sync.yml` builds, audits and writes this record; the same report is the body of the promotion pull request and is posted as a comment thread in the Plectrum UI Kit.
+2. `tokens-sync.yml` builds, audits and writes this record; the same report is the body of the promotion pull request and is posted as a comment thread in PrimeNG 21, the token file.
 3. A developer merges the pull request. The next Storybook deploy shows the new record here.
 
 A push that fails a check never reaches this page — it stops at the pull request stage, and the Figma comment says so. The [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs) page describes the plugin settings and the branch rule.

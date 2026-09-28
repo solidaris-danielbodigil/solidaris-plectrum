@@ -22,8 +22,9 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { MAIN_FILE_KEY } from './figma-values.mjs';
 
-const DEFAULT_FILE_KEY = 'YNZ1DlSjDNUXrvkxlSp10D';
+const DEFAULT_FILE_KEY = MAIN_FILE_KEY;
 export const MARKER = '[Plectrum token sync]';
 const MAX_CHANGES = 10;
 const MAX_CHECK_ITEMS = 4;

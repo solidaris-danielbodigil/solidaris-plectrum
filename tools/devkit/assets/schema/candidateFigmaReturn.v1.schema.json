@@ -32,6 +32,29 @@
         "name": {
           "type": "string",
           "minLength": 1
+        }
+      },
+      "required": [
+        "mainFileKey",
+        "branchFileKey",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "tokenBranch": {
+      "type": "object",
+      "properties": {
+        "mainFileKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branchFileKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
         },
         "collectionId": {
           "type": "string",
@@ -116,14 +139,12 @@
     "schemaVersion",
     "id",
     "sourceRevision",
-    "proposalRevision",
     "branch",
     "tokenMappings",
     "componentNodeUrl",
     "designReviewUrl",
     "branchMergeUrl",
     "publicationUrl",
-    "returnExport",
     "recordedAt"
   ],
   "additionalProperties": false,

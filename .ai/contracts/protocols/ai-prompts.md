@@ -174,7 +174,7 @@ You are working in the Plectrum Design System (Angular + PrimeNG + Storybook 10)
 
 Sources, in this order:
 1. PrimeNG MCP — does a vendor control already cover the need?
-2. Figma MCP — extract the Plectrum UI Kit node (tokens, states, spacing).
+2. Figma MCP — inspect the Custom components candidate and PrimeNG 21 token variables (states, spacing, bindings).
 3. .ai/contracts/index.json — offline map: paths, BEM, PrimeNG wraps, uses / usedBy, status, owner.
 4. Storybook MCP at http://localhost:6006/mcp — only while npm run storybook is up.
    Tools: docs-list, docs-show, docs-show-story, get-storybook-story-instructions,

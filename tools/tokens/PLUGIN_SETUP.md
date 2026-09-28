@@ -43,17 +43,19 @@ The promotion PR body and the Actions job summary carry the `tokens:report` outp
 
 ## Feedback in Figma (`tokens:notify-figma`)
 
+The authoritative token file is **Plectrum DS · PrimeNG v21** (`wjMnb8GsK8bVKA7UreOJ4L`). The component candidate file is **PLECTRUM · Custom components** (`IRkr21rHS0w7rI0bgrv1fZ`). The previous file key `YNZ1DlSjDNUXrvkxlSp10D` is historical; check the PrimeUI export source and repository variable before the next live push.
+
 After every push the workflow posts the same summary as a comment in the UI Kit — "Promoted for review" or "Blocked", what changed, which check failed. Replies go into one thread that starts with `[Plectrum token sync]`; resolve the thread to start a fresh one.
 
 | Setting                      | Where                   | Value                                                                                                                                                                                                                                                  |
 | ---------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `FIGMA_TOKEN`                | repo secret             | Figma personal access token. Comments: `file_comments:read` + `file_comments:write`. Repo→Figma variables: also `file_variables:read` + `file_variables:write` (Enterprise, Full seat). Figma cannot add scopes to an existing token — mint a new one. |
-| `FIGMA_FILE_KEY`             | repo variable           | **Main** UI Kit file key (default `YNZ1DlSjDNUXrvkxlSp10D`). A Figma _branch_ key posts comments on main as **Unattached**.                                                                                                                             |
+| `FIGMA_FILE_KEY`             | repo variable           | **Main** PrimeNG 21 token file key (default `wjMnb8GsK8bVKA7UreOJ4L`). A Figma _branch_ key posts comments on main as **Unattached**.                                                                                                                             |
 | `FIGMA_SYNC_COMMENT_NODE_ID` | repo variable, optional | Frame id on that same file (`123:456` from `?node-id=123-456`). A URL, a name, or a frame that exists only on a branch becomes Unattached; the script then skips a new thread. Without it the pin sits at the canvas origin of the first page.          |
 
 Without `FIGMA_TOKEN` the step skips itself. It never blocks the promotion pull request.
 
-Figma **writes** from this repo never target the main file — `apply-to-figma.yml` lists branches on the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`). `FIGMA_FILE_KEY` is the **comment** target and must stay the main file key so threads are not Unattached.
+Figma **token writes** from this repo never target the main file — `apply-to-figma.yml` lists branches on PrimeNG 21 (`wjMnb8GsK8bVKA7UreOJ4L`). `FIGMA_FILE_KEY` is the **comment** target and must stay the main token file key so threads are not Unattached. Verify `FIGMA_SYNC_COMMENT_NODE_ID` points to a frame in that file.
 
 ## Repo → Figma (Plugin API)
 
@@ -62,7 +64,7 @@ Figma **writes** from this repo never target the main file — `apply-to-figma.y
 - **Agent + Figma MCP** — default when a session can write. Selected tokens from `proposed.dtcg.json`, and after core promotion the Figma component from the repo. A designer may still draw the component by hand.
 - **Plectrum tokens plugin** — fallback when no agent is available. Tokens only.
 
-Same guards: branch `proposals/{app}` only, never the main UI Kit, explicit selection. Decisions: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`, `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`. Plugin install: `tools/figma-plugin/README.md`.
+Same guards: PrimeNG 21 token branch `proposals/{app}` only, never either main file, explicit selection. Historical transport decisions: `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`, `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`. Plugin install: `tools/figma-plugin/README.md`.
 
 ### Designer-owned GitHub PAT
 
@@ -83,7 +85,7 @@ Same guards: branch `proposals/{app}` only, never the main UI Kit, explicit sele
 
 ### Guards
 
-- Open the Figma branch `proposals/{app}`. The plugin refuses `figma.fileKey` equal to the main UI Kit (`YNZ1DlSjDNUXrvkxlSp10D`) or undefined.
+- Open the PrimeNG 21 Figma branch `proposals/{app}`. The plugin refuses `figma.fileKey` equal to either configured main file (`wjMnb8GsK8bVKA7UreOJ4L` or `IRkr21rHS0w7rI0bgrv1fZ`) or undefined.
 - Writes only the collection `proposals/{app}`: hidden from publishing, one mode `Value`, `scopes: ALL_SCOPES`, `codeSyntax.WEB = var(--pds-…)`.
 - Explicit selection — nothing is selected after fetch. "Select all visible" is an action, not the default.
 - Never deletes a variable; never changes `resolvedType`.
@@ -98,7 +100,7 @@ Same guards: branch `proposals/{app}` only, never the main UI Kit, explicit sele
 When the Variables API becomes available:
 
 1. Mint a new PAT with `file_variables:read` + `file_variables:write` (plus the comment scopes) and replace `FIGMA_TOKEN`. Scopes cannot be added to an existing token.
-2. Create Figma branch **`proposals/scratch`** on the main UI Kit (Full seat). There is no API for branch creation.
+2. Create Figma token branch **`proposals/scratch`** on PrimeNG 21 (Full seat). There is no API for branch creation.
 3. Run **Apply tokens to Figma** (`workflow_dispatch`) with `only=<one Figma name>`: dry-run first, then `write=true` once the payload looks right. The job writes into the collection `proposals/scratch` on that branch and aborts if the branch is missing. `branch_key` (from the URL `/design/{main}/branch/{key}/`) skips the branch listing when `GET ?branch_data=true` returns none.
 
 The `figma-write` GitHub Environment is the approval gate for real REST writes.

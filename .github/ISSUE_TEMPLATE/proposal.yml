@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Check **Plectrum-themed PrimeNG**, then **Core** `pds-*` components, then open this issue.
-        Do not scaffold, do not draw a new UI Kit component, and do not start a local one until the core team answers.
+        Designers may bring an already reviewed design from PLECTRUM · Custom components; application teams may bring local work. Core records the implementation decision before any new component is scaffolded or submitted.
 
         Storybook: [Use Plectrum in an app](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/libs/ui/src/docs/get-started-consume.mdx) · [Contribute](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/libs/ui/src/docs/get-started-contribute.mdx)
   - type: textarea
@@ -37,10 +37,29 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: origin
+    attributes:
+      label: Where did this proposal start?
+      options:
+        - Design team — Custom components Figma file
+        - Application team — repository or screen
+        - Core team — Plectrum repository
+    validations:
+      required: true
+  - type: textarea
+    id: design-review
+    attributes:
+      label: Design review, if already done
+      description: For a design-origin proposal, link the source node and reviewed version, name the design review decision and its evidence. Core will still review implementation feasibility.
+      placeholder: Source design → reviewed design; review date and link
+    validations:
+      required: false
+  - type: dropdown
     id: scope
     attributes:
       label: How it looks from here
       options:
+        - Shared design-system component proposed by design
         - Only this application (likely app-specific)
         - A second application will need it (maybe system-level)
         - Unsure
@@ -49,17 +68,17 @@ body:
   - type: dropdown
     id: already-built
     attributes:
-      label: Already built without asking?
+      label: What already exists?
       options:
         - 'No — proposing before any code'
-        - 'Yes — we have a local component or Figma frame'
+        - 'Yes — we have a local component or reviewed Figma design'
     validations:
       required: true
   - type: input
     id: app
     attributes:
       label: Application
-      description: ishare, icrm, or another Solidaris app.
+      description: For application-origin proposals only. Leave empty when the design team proposes a shared component directly.
       placeholder: ishare
     validations:
-      required: true
+      required: false

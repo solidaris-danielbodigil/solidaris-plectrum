@@ -18,7 +18,7 @@ These instructions target a Plectrum checkout. Shared steps and commands are in 
 Follow this sequence **every time** before writing any code:
 
 1. **Query PrimeNG MCP** → does an existing component cover the need?
-2. **Query Figma MCP** → inspect the Plectrum UI Kit node, extract tokens and states
+2. **Query Figma MCP** → inspect the candidate in Custom components; resolve tokens and states against PrimeNG 21
 3. **If Figma maps to a PrimeNG primitive** → use `p-*` with default theme styles; layout via `o-layout`/`o-flex` only (see `.ai/rules/04-primeng.md` §5)
 4. **Check `contracts/index.json`** → does a similar component already exist in `libs/ui`?
 5. **When `npm run storybook` is up, Storybook MCP `docs-list` / `docs-show`** → confirm the live catalogue. MCP does not scaffold.
@@ -116,8 +116,8 @@ A component is **not done** until all of these pass:
 ### Code → Figma
 
 - [ ] `tokens:propose` lists new `--pds-*` names in `proposed.dtcg.json`
-- [ ] Selected names applied on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. Never the main UI Kit
-- [ ] After promotion to `core`: Figma component from the repo (variables first, then frames bound to those variables). A designer may draw it by hand instead. Merge and publish stay human
+- [ ] Selected names applied on a PrimeNG 21 `proposals/{app}` token branch — agent + Figma MCP when available, Plectrum tokens plugin otherwise. Never the main file
+- [ ] Figma candidate on a separate Custom components branch, from reviewed Core code or as a design-team proposal. Bind published PrimeNG 21 variables. Merge and publish stay human
 
 ### Index
 

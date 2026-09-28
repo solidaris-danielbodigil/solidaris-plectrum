@@ -107,13 +107,21 @@ export function readCandidateRecords(root: string) {
   for (const handoff of figmaReturns.values()) {
     const promotion = promotions.get(handoff.id);
     if (!promotion || handoff.sourceRevision !== promotion.sourceRevision) throw new Error(`${handoff.id}: Figma return does not match a promotion and its source revision`);
-    if (handoff.branch.mainFileKey !== registry.operations.figma.tokenLibrary || [registry.operations.figma.tokenLibrary, registry.operations.figma.componentLibrary].includes(handoff.branch.branchFileKey) || !handoff.branch.name.startsWith(registry.operations.figma.proposalCollectionPrefix)) throw new Error(`${handoff.id}: Figma return must target a verified proposal branch, not a main library`);
+    const figma = registry.operations.figma;
+    const mainKeys = [figma.tokenLibrary, figma.componentLibrary];
+    if (handoff.branch.mainFileKey !== figma.componentLibrary || mainKeys.includes(handoff.branch.branchFileKey) || !handoff.branch.name.startsWith(figma.proposalCollectionPrefix)) throw new Error(`${handoff.id}: component must target a verified Custom components proposal branch, not a main library`);
     const componentUrl = new URL(handoff.componentNodeUrl);
-    if (!['figma.com', 'www.figma.com'].includes(componentUrl.hostname) || !componentUrl.pathname.includes(`/branch/${handoff.branch.branchFileKey}/`) || !componentUrl.searchParams.has('node-id')) throw new Error(`${handoff.id}: component URL must identify a node in the proposal branch`);
+    if (!['figma.com', 'www.figma.com'].includes(componentUrl.hostname) || !componentUrl.pathname.includes(`/design/${figma.componentLibrary}/branch/${handoff.branch.branchFileKey}/`) || !componentUrl.searchParams.has('node-id')) throw new Error(`${handoff.id}: component URL must identify a node in the Custom components proposal branch`);
+    if (handoff.tokenMappings.length > 0) {
+      const tokenBranch = handoff.tokenBranch;
+      if (!handoff.proposalRevision || !handoff.returnExport || !tokenBranch || tokenBranch.mainFileKey !== figma.tokenLibrary || mainKeys.includes(tokenBranch.branchFileKey) || !tokenBranch.name.startsWith(figma.proposalCollectionPrefix)) throw new Error(`${handoff.id}: token mappings require a verified PrimeNG 21 token proposal branch, revision and return export`);
+      if (!handoff.returnExport.url.startsWith(`${registry.repository}/pull/`)) throw new Error(`${handoff.id}: return export must link a central sync PR`);
+    } else if (handoff.tokenBranch || handoff.proposalRevision || handoff.returnExport) {
+      throw new Error(`${handoff.id}: omit token proposal evidence when no variables changed`);
+    }
     for (const url of [handoff.designReviewUrl, handoff.branchMergeUrl, handoff.publicationUrl]) {
       if (!['figma.com', 'www.figma.com'].includes(new URL(url).hostname)) throw new Error(`${handoff.id}: design review, merge and publication evidence must be Figma URLs`);
     }
-    if (!handoff.returnExport.url.startsWith(`${registry.repository}/pull/`)) throw new Error(`${handoff.id}: return export must link a central sync PR`);
     const cssVars = handoff.tokenMappings.map((entry) => entry.cssVar);
     const variableIds = handoff.tokenMappings.map((entry) => entry.variableId);
     if (new Set(cssVars).size !== cssVars.length || new Set(variableIds).size !== variableIds.length) throw new Error(`${handoff.id}: duplicate token mapping`);

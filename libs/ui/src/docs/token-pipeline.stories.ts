@@ -14,7 +14,7 @@ export const ChangeFlow: StoryObj = stepsStory([
   {
     who: 'Designer',
     tone: 'design',
-    title: 'Edit the variable in the Plectrum UI Kit',
+    title: 'Edit the variable in PrimeNG 21',
     detail:
       'Primitive and Semantic collections are the source of truth. Component collections reference them.',
   },
@@ -68,7 +68,7 @@ export const Roles: StoryObj = cardsStory([
     tone: 'design',
     title: 'Owns design decisions',
     items: [
-      'Edits variables in the Plectrum UI Kit (PrimeNG v21 file)',
+      'Edits every token variable in the PrimeNG 21 file; component candidates belong in Custom components',
       'Runs the plugin sync; the target is the staging branch, never main',
       'Reviews and merges Figma branches named proposals/{app}',
       'Publishes the Figma library after a merge',

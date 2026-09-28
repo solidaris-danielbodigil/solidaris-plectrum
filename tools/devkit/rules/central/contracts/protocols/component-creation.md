@@ -9,7 +9,7 @@ This protocol applies to a **Plectrum checkout**. The distributed consumer toolk
    (Storybook → Get started / Contribute; GitHub issue template `proposal.yml`). If the decision or the owner is missing, write
    `.ai/questions/{date}-{component}-owner.md` and stop — do not scaffold on a guess. For an external team candidate, merge `.ai/candidates/proposals/<application>-<slug>.json` before the team runs `plectrum scaffold --name <slug> --proposal <application>-<slug>`.
 1. Query **PrimeNG MCP** — does a component already exist?
-2. Query **Figma MCP** — extract design specs from Plectrum UI Kit (tokens, spacing, typography, states)
+2. Query **Figma MCP** — inspect the candidate in Custom components; resolve token variables in PrimeNG 21. A design-team proposal can precede code and does not need an application submission.
 3. Check **index.json** — does a similar component already exist in `libs/ui`? Read its `status` / `owner`:
    a `candidate` or `app` entry owned by another team is a reason to reopen the proposal, not to import it.
 4. When `npm run storybook` is up, **Storybook MCP** `docs-list` / `docs-show` — confirm the catalogue has no sibling that already covers the need. No running Storybook → stay on the index. MCP does not scaffold.
@@ -142,7 +142,7 @@ Run `npm run contracts:generate` after metadata changes. It generates the regist
 - [ ] `_components.core.scss` forwards the new partial (automatic via `pds:component`)
 - [ ] `.ai/contracts/index.json` regenerated (automatic via `pds:component` and the afterFileEdit hook) and committed
 - [ ] No app-specific logic in `libs/ui`
-- [ ] New `--pds-*` names are in `proposed.dtcg.json` (`tokens:propose`). Apply selected names on `proposals/{app}` — agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise. Never the main UI Kit.
+- [ ] New `--pds-*` names are in `proposed.dtcg.json` (`tokens:propose`). Apply selected names on a PrimeNG 21 `proposals/{app}` branch — agent + Figma MCP when available, Plectrum tokens plugin otherwise. The component candidate belongs on a separate Custom components branch. Never write either main file.
 
 ## Code → Figma
 

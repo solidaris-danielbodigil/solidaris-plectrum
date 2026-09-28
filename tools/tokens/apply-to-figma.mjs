@@ -210,6 +210,12 @@ async function main() {
     return;
   }
 
+  if (args.fileKey !== DEFAULT_FILE_KEY) {
+    console.error(`apply-to-figma: token proposals must target the configured PrimeNG 21 file ${DEFAULT_FILE_KEY}, not ${args.fileKey}.`);
+    process.exitCode = 1;
+    return;
+  }
+
   if (!args.all && !args.only.length) {
     console.error(
       'apply-to-figma: pass --only name[,name] (or --all). Refusing to dump every code-owned color.',
@@ -262,7 +268,7 @@ async function main() {
     if (!branch) {
       const available = branches.map((item) => item.name).join(', ') || '(none)';
       console.error(
-        `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat) from the main UI Kit. ` +
+          `Figma branch "${branchName}" is missing. Create it in the Figma UI (Full seat) from PrimeNG 21. ` +
           `Aborting — will not write to main file ${args.fileKey}. Available branches: ${available}. ` +
           `Or pass --branch-key from the Figma URL /design/{main}/branch/{key}/.`,
       );

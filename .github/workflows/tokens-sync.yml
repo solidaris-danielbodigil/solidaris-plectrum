@@ -31,7 +31,7 @@ jobs:
             echo "has_tokens=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          file_key="$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('.ai/contracts/registry.json','utf8')).operations.figma.componentLibrary)")"
+          file_key="$(node -e "process.stdout.write(JSON.parse(require('fs').readFileSync('.ai/contracts/registry.json','utf8')).operations.figma.tokenLibrary)")"
           node tools/tokens/staging-gate.mjs --stamp --revision "$GITHUB_SHA" --file-key "$file_key" --write libs/plectrum/src/tokens.json --intent libs/plectrum/sync-release-intent.json libs/plectrum/sync/tokens.json
           echo "has_tokens=true" >> "$GITHUB_OUTPUT"
 

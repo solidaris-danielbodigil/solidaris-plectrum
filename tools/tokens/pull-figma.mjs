@@ -20,8 +20,9 @@
 
 import { resolveDtcg } from './resolve-dtcg.mjs';
 import { normalizeHex } from './format-value.mjs';
+import { MAIN_FILE_KEY } from './figma-values.mjs';
 
-const DEFAULT_FILE_KEY = 'YNZ1DlSjDNUXrvkxlSp10D';
+const DEFAULT_FILE_KEY = MAIN_FILE_KEY;
 
 function help() {
   console.log(`Usage: node tools/tokens/pull-figma.mjs [--file-key KEY]
