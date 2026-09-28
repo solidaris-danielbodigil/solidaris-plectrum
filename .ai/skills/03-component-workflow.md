@@ -11,7 +11,7 @@
 
 ---
 
-These instructions target a Plectrum checkout. Shared steps and commands are in `.ai/contracts/process.json`; team choices come from `.ai/contracts/registry.json`. Consumer initialization remains P2 work. Candidate SCSS lives under `libs/styles/candidates/06-components`, is loaded by Storybook only and is excluded from the styles package.
+These instructions target a Plectrum checkout. Shared steps and commands are in `.ai/contracts/process.json`; team choices come from `.ai/contracts/registry.json`. Application repositories use the team toolkit (`plectrum init`), not these paths. Candidate SCSS lives under `libs/styles/candidates/06-components`, is loaded by Storybook only and is excluded from the styles package.
 
 ## 1. Before Starting a Component
 
@@ -107,7 +107,7 @@ A component is **not done** until all of these pass:
 - [ ] When the catalogue is up: `docs-show` a sibling and `get-storybook-story-instructions` before writing CSF; `stories-preview` the new canvases
 - [ ] Stories cover: default state + all variant states, plus `Status = statusStory(XMetadata.governance)`
 - [ ] Every required canvas story has a `play` function — import from `libs/ui/src/storybook/story-tests.ts`. Interactive: `userEvent` + assert. Display / CSS-only: render contract. Exception: `Status` / `!dev` docs figures (`.ai/rules/03-storybook.md` §5)
-- [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report). Do not call Storybook MCP `test-run`.
+- [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report). Storybook MCP `test-run` is local feedback, not this gate.
 - [ ] Accessibility panel is clean or documented; do not set `a11y.test: 'off'` without a comment
 - [ ] Chromatic snapshots left on; do not set `chromatic.disableSnapshot` on a catalogue story without a comment
 - [ ] Attached `{name}.mdx` opens with the Status badge and includes Figma node URL and a canvas per story

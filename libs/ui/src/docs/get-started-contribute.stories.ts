@@ -1,6 +1,9 @@
-// Figures for Get started/Contribute (get-started-contribute.mdx). Hidden from the sidebar.
+// Figures for Start here/Contribute (get-started-contribute.mdx). Hidden from the sidebar.
+// Decisions, routes, steps, owners and commands come from .ai/contracts/process.json
+// and registry.json; only the guardrail callouts and roles are written here.
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
+import { journeySteps, outcomeCards, routeSteps, teamCards } from '../storybook/process-docs';
 
 const meta: Meta = {
   title: 'Get started/Figures/Contribute',
@@ -20,6 +23,33 @@ export const ProposeEarly: StoryObj = calloutStory({
   ],
 });
 
+export const Journey: StoryObj = {
+  tags: ['!dev'],
+  ...stepsStory(
+    journeySteps('contribution', {
+      discover: [
+        { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
+        { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
+      ],
+      approve: [{ label: 'Proposal decisions', href: '#proposal-decisions' }],
+      implement: [{ label: 'Develop a candidate', href: '#develop-and-submit-a-candidate' }],
+      integrate: [{ label: 'Promote existing work', href: '#promote-existing-work' }],
+      'design-return': [{ label: 'Figma sync', path: '/docs/docs-token-pipeline-figma-sync--docs' }],
+      release: [{ label: 'Releases and versioning', path: '/docs/docs-releases-and-versioning--docs' }],
+    }),
+  ),
+};
+
+export const Outcomes: StoryObj = { tags: ['!dev'], ...cardsStory(outcomeCards(), 2) };
+
+export const LocalCandidate: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('local-candidate')) };
+
+export const PlectrumChange: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('plectrum-change')) };
+
+export const Promotion: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('promotion')) };
+
+export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) };
+
 export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
@@ -33,73 +63,10 @@ export const AlreadyBuilt: StoryObj = calloutStory({
   title: 'Already built it without asking?',
   items: [
     'Open the same proposal and attach what you already have — a screen, a local component, or a Figma frame.',
-    'The core team still decides: switch to what already exists, keep it as yours, or promote it later.',
-    'It does not become Core automatically, and it does not land on the core team’s backlog.',
+    'The core team still records one of the decisions above. Nothing becomes Core automatically.',
+    'It does not land on the core team’s backlog by default.',
   ],
 });
-
-export const DevLoop: StoryObj = stepsStory([
-  {
-    who: 'Anyone',
-    tone: 'design',
-    title: 'Check the catalogue',
-    detail:
-      'Look in the theme gallery first (PrimeNG with the Plectrum theme), then at Core components on Find a component. If something already does the job, use it. If the docs were just hard to find, add an example on that page instead of inventing a new component.',
-    links: [
-      { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
-      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
-    ],
-  },
-  {
-    who: 'Anyone',
-    tone: 'neutral',
-    title: 'Propose',
-    detail:
-      'If nothing in the catalogue covers the need, open a GitHub proposal. Write what the screen must do, which PrimeNG or Core components you already tried, and attach a Figma link or mock. Do not start building until the core team answers.',
-  },
-  {
-    who: 'Core team',
-    tone: 'design',
-    title: 'Decide',
-    detail:
-      'The core team answers in one of three ways: it already exists (use that), it belongs in the design system (they build it, with you if needed), or it is only for your app (you build it and you own it).',
-  },
-  {
-    who: 'Dev',
-    tone: 'system',
-    title: 'Set up',
-    detail:
-      'Clone the repo, run npm install and npm run storybook. The catalogue is at localhost:6006. Local work stays on your machine until you open a pull request.',
-  },
-  {
-    who: 'Dev',
-    tone: 'system',
-    title: 'Scaffold',
-    detail:
-      'Only after the decision. Run npm run pds:component -- --owner=<team>. That creates the files, stories and metadata. Use --owner=design-system for Core, or your app name (ishare, icrm) for a Candidate your team will own.',
-  },
-  {
-    who: 'Dev',
-    tone: 'system',
-    title: 'Implement in Storybook',
-    detail:
-      'Build it here first: tokens, then styles, layout classes in the template, one story per state. An application should not use it until it looks right in Storybook.',
-  },
-  {
-    who: 'Core team',
-    tone: 'design',
-    title: 'Review',
-    detail:
-      'Every pull request needs a developer review. Changes under libs/ also need a design-system review. New tokens go to Figma and get accepted before merge, not after.',
-  },
-  {
-    who: 'CI',
-    tone: 'neutral',
-    title: 'Ship through the gates',
-    detail:
-      'CI checks tokens, generated files, tests and Storybook. A changeset records the version bump. After release, applications get an upgrade pull request.',
-  },
-]);
 
 export const Roles: StoryObj = cardsStory(
   [
@@ -109,7 +76,7 @@ export const Roles: StoryObj = cardsStory(
       title: 'Owns the system',
       items: [
         'libs/ui, libs/styles, tokens.json and the Plectrum UI Kit',
-        'Triages every proposal and gives one of the three answers',
+        'Records a decision on every proposal',
         'Reviews pull requests under libs/ and promotes candidates',
       ],
     },
@@ -118,8 +85,8 @@ export const Roles: StoryObj = cardsStory(
       tone: 'app',
       title: 'Owns its screens',
       items: [
-        'Use themed PrimeNG and Core first; propose a gap — do not hand the core team a finished candidate',
-        'Builds app-specific work in its own layer, as a Candidate it owns',
+        'Uses themed PrimeNG and Core first; proposes a gap',
+        'Builds an approved candidate in its own repository and owns it',
         'Never adds primitives or semantic tokens; a missing token is a proposal',
       ],
     },
@@ -151,9 +118,9 @@ export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
   title: 'While your team owns it, the lint and token checks still apply',
   items: [
-    'Build it from PrimeNG and @solidaris-danielbodigil/pds-ui, and use --pds-* tokens. CI fails hex, px and unknown token names.',
+    'Build it from PrimeNG and the Plectrum UI package, and use --pds-* tokens. The CI profile fails hex, px and unknown token names.',
     'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
     'Put the layout classes in the template.',
-    'The Storybook page lives under Patterns/{App}, and the metadata says your team owns it.',
+    'The metadata names your team as owner and the candidate status.',
   ],
 });

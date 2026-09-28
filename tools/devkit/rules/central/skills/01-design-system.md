@@ -29,7 +29,7 @@ Order of operations:
 3. **Storybook MCP** (when `npm run storybook` is up) — `docs-list` / `docs-show` before inventing a sibling
 4. Only write custom code when none of the three cover the requirement. Offline fallback: `.ai/contracts/index.json`.
 
-Storybook MCP does not scaffold (`pds:component` does) and does not run play / a11y tests (`test-run` needs `@storybook/addon-vitest`, which is not installed — use `npm run test-storybook`). Tools and decide-trees: `.ai/contracts/protocols/query-protocol.md`.
+Storybook MCP does not scaffold (`pds:component` does). Its `test-run` uses the installed `@storybook/addon-vitest` runner for local feedback; the gate is `npm run test-storybook` (`process.json` → `capabilities.storybookMcp`). Tools and decide-trees: `.ai/contracts/protocols/query-protocol.md`.
 
 ---
 
@@ -111,7 +111,7 @@ Needs `npm run storybook`. When it is down, use `.ai/contracts/index.json`.
 - `docs-show` / `docs-show-story` — props, Controls, and canvases for a sibling before writing CSF
 - `get-storybook-story-instructions` — Storybook's own authoring rules, then apply `.ai/rules/03-storybook.md`
 - `stories-find-by-component` / `stories-preview` — existing and new states
-- Do **not** call `test-run`. Do **not** add a Control missing from `.metadata.ts` `props`.
+- `test-run` is local feedback only; finish with `npm run test-storybook`. Do **not** add a Control missing from `.metadata.ts` `props`.
 
 ### Writing to Figma (repo → UI Kit)
 

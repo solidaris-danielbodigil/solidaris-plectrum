@@ -65,11 +65,11 @@ jobs:
       - name: Record the verified release
         run: npm run release:finalize
 
+      # The Storybook reads ./release.json to present itself as this release; without it, a development preview.
       - name: Build the matching versioned Storybook
-        env:
-          VITE_PLECTRUM_RELEASED: 'true'
         run: |
           npm run build-storybook:packed
+          cp dist/release/release.json dist/storybook/ui/release.json
           tar -czf dist/release/storybook.tar.gz -C dist/storybook/ui .
 
       - name: Publish immutable release assets and request Pages deployment

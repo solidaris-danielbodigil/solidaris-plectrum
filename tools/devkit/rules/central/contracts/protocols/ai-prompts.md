@@ -126,7 +126,7 @@ SCSS rules (hard stops):
 - Dimensions content-driven — no arbitrary fixed width/height
 
 Preferred flow:
-PrimeNG MCP → Figma MCP → index.json → Storybook MCP docs-list (when npm run storybook is up) → add missing tokens → pds:component → docs-show sibling → implement → get-storybook-story-instructions → CSF + play tests → stories-preview → test-storybook (not test-run) → generate-index
+PrimeNG MCP → Figma MCP → index.json → Storybook MCP docs-list (when npm run storybook is up) → add missing tokens → pds:component → docs-show sibling → implement → get-storybook-story-instructions → CSF + play tests → stories-preview → test-storybook (test-run is local feedback only) → generate-index
 
 CSS variable naming:
 - All Solidaris/Plectrum tokens: --pds-* (controlled by $pds-prefix in 01-settings/_settings.prefix.scss)
@@ -179,7 +179,7 @@ Sources, in this order:
 4. Storybook MCP at http://localhost:6006/mcp — only while npm run storybook is up.
    Tools: docs-list, docs-show, docs-show-story, get-storybook-story-instructions,
    stories-find-by-component, stories-preview.
-   Do not call test-run (needs @storybook/addon-vitest; not installed).
+   test-run (addon-vitest) is local feedback; the gate is npm run test-storybook.
    When Storybook is down, stay on the index + .metadata.ts.
 
 Rules:

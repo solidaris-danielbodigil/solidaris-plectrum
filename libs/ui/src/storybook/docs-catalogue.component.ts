@@ -16,10 +16,12 @@ import { Tag } from 'primeng/tag';
 import { FormFieldComponent } from '../lib/form-field/form-field.component';
 import { ToolbarComponent } from '../lib/toolbar/toolbar.component';
 import contracts from '../../../../.ai/contracts/index.json';
+import registry from '../../../../.ai/contracts/registry.json';
 import { ALL_COMPONENT_METADATA } from './component-metadata';
 import {
   buildCatalogue,
   matchesCatalogue,
+  teamFilterLabels,
   type CatalogueEntry,
   type CatalogueImplementation,
   type CataloguePurpose,
@@ -98,14 +100,9 @@ export class DocsCatalogueComponent {
   ];
 
   protected readonly usedInOptions = computed(() => {
-    const teams = new Set<string>();
-    for (const entry of this.entries()) {
-      for (const team of entry.usedIn) teams.add(team);
-    }
     return [
       { label: 'All teams', value: 'all' },
-      ...[...teams]
-        .sort((a, b) => a.localeCompare(b))
+      ...teamFilterLabels(this.entries(), registry.applications)
         .map((team) => ({ label: team, value: team })),
       { label: 'No local usage detected', value: 'none' },
     ];

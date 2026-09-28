@@ -1,0 +1,69 @@
+<!-- editor:cursor -->
+# Solidaris — Cursor Rules
+<!-- /editor -->
+<!-- editor:vscode -->
+# Solidaris — GitHub Copilot Instructions
+<!-- /editor -->
+
+Angular CLI workspace (`angular.json`) · Angular latest · PrimeNG latest · Plectrum design system.
+The local applications ({{applications}}) share one source of truth for components, styles, and utilities.
+
+This file is the always-on baseline. The knowledge base is `.ai/` — start at `.ai/README.md`.
+Detailed rules live in `.ai/rules/01…10`; how-to guides in `.ai/skills/`; agent contracts in `.ai/contracts/`.
+Agent roles are authored once in `.ai/agents/`; `{{command:generate}}` writes this file and the editor agents.
+
+## Workspace
+
+```
+{{applicationPaths}}   ← apps only — no shared logic here
+libs/ui/                   ← SSOT: shared Angular components · Storybook in libs/ui/.storybook
+libs/styles/               ← SSOT: ITCSS SCSS — tokens, objects, components, utilities
+libs/plectrum/             ← SSOT: PrimeNG theme integration (providePlectrum(), presets, tokens.json)
+tools/                     ← pds:component generator, token pipeline scripts, packaging, team toolkit
+.ai/                       ← knowledge base: rules, skills, contracts, protocols, agent roles
+```
+
+## Agents
+
+<!-- editor:cursor -->
+Select the **Plectrum** agent (`.cursor/agents/plectrum.md`) for full component builds. It delegates to UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor.
+<!-- /editor -->
+<!-- editor:vscode -->
+Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.agent.md`) for full component builds. It delegates to UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor.
+<!-- /editor -->
+
+## MCP servers — query before implementing
+
+| Server | Purpose |
+| --- | --- |
+| Figma (`{{mcp:figma}}`) | Plectrum UI Kit — SSOT for all visual decisions |
+| PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
+| Storybook (`{{process:capabilities.storybookMcp.endpoint}}`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `{{process:capabilities.storybookMcp.requires}}` |
+
+Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Storybook MCP when the catalogue is up — `docs-list` before inventing. 4. Custom code only when none cover the need. Offline fallback: `.ai/contracts/index.json`. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.
+
+## Hard rules
+
+Short form — full detail and examples in `.ai/rules/`:
+
+- **PrimeNG first** (`04-primeng.md`) — never reimplement what PrimeNG provides. Restyle via `--p-*` token bridges in `01-settings/_settings.{component}.scss`, scoped to the BEM wrapper — never `.p-*` overrides, never `!important`. Applies to Storybook docs figures too.
+- **SSOT** (`01-architecture.md`) — shared components in `libs/ui`, all SCSS in the correct ITCSS layer of `libs/styles` (`01-settings` → `08-trumps`; files `_{layer}.{description}.scss`, barrels `_{layer}.core.scss`). Never write styles outside `libs/styles`.
+- **Tokens** (`02-scss-tokens.md`) — components consume `var(--pds-*)` only (`$pds-prefix: 'pds'`). No hardcoded hex/px/rem, no local `$variables`, no new bare `--spacing-*` / `--text-*` / `--font-*` declarations (legacy aliases only). Missing token → add it to `01-settings` first. Semantic over primitive.
+- **Disabled cursor** (`09-styling-policy.md`) — disabled interactive controls (`:disabled`, `[aria-disabled="true"]`, `.p-disabled`, SubNav disabled items) use `cursor: not-allowed` via `--pds-cursor-disabled`. Implement once as the trump SSOT — do not restyle disabled PrimeNG chrome beyond this cursor.
+- **Layout in templates** (`08-object-classes.md`, `09-styling-policy.md`) — flex, gap, padding, margin, overflow, and equal columns are `o-flex` / `o-layout` BEM mixes in HTML, never CSS in `06-components`. Static borders/radius/shadows via `u-*` utilities. No Tailwind classes in templates; `@apply` never for layout.
+- **BEMIT** (`05-bemit-naming.md`) — `o-` objects, `c-` components, `u-` utilities, `js-` hooks, `is-`/`has-` states. Elements `__`, modifiers `--`, specificity flat. Naming: kebab-case files, PascalCase classes, `pds-*` selectors, `c-*` blocks. No app prefixes in `libs/ui`.
+- **Components** — no colocated `.component.scss`, no `styleUrl` (only exception: a commented `:host` display rule). Semantic HTML + ARIA (`06-accessibility.md`). Content-first sizing — no arbitrary fixed width/height. No app-specific logic in `libs/ui`.
+- **Storybook first** (`03-storybook.md`) — every `libs/ui` component has a colocated `.stories.ts` covering all states; it is not done without one. Docs figures are PrimeNG components, never hand-rolled HTML. Runtime preset default is **v1** (`providePlectrum()`).
+- **CSS is the SSOT for docs** (`10-css-ssot.md`) — Storybook pages and audits read the CSSOM at runtime; never hand-copy token values or class lists.
+- **No dead code** — delete it; git history is the archive. **Ask early** — ambiguous decisions become a file in `.ai/questions/`.
+
+## Workflow
+
+- **Scaffold**: `{{command:scaffold}}` with a registered team — creates metadata, CSF/MDX figures and ITCSS styles. Core styles join the main stylesheet; candidate styles stay Storybook-only outside the published styles tree. `{{command:generate}}` owns the metadata registry, index, eligible package exports and these agent files; never edit those generated files. Teams, commands and contexts come from `.ai/contracts/{registry,process}.json`.
+- **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when the catalogue is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `{{command:check}}` fails props drift. {{process:capabilities.storybookMcp.note}} CI runs `{{process:capabilities.storybookMcp.gate}}`.
+- **Token pipeline**: run `tokens:audit | build | lint | check-prefix | propose | apply` as tools — never edit `*.generated.scss` or `tokens.generated.ts` by hand. Reference: Storybook → Docs → Token pipeline → Commands.
+- **Before starting**: read `.ai/README.md`, check `.ai/questions/`, make sure tests pass.
+
+## Typography
+
+`1rem = 14px`. Agenda = display, Open Sans = body/labels — always via `--pds-text-*` tokens, never hardcoded `font-size` / `font-family`.

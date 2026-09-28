@@ -1,97 +1,68 @@
-// Figures for Get started/Use Plectrum in an app (get-started-consume.mdx). Hidden from the sidebar.
+// Figures for Start here/Build with Plectrum (get-started-consume.mdx). Hidden from the sidebar.
+// Steps, commands and the CI profile come from .ai/contracts/process.json — the same
+// contract the installed toolkit renders into its help and agent guidance.
 import type { Meta, StoryObj } from '@storybook/angular-vite';
-import { stepsStory } from './docs-figure-stories';
+import { calloutStory, stepsStory } from './docs-figure-stories';
+import { DocsReleaseComponent } from '../storybook/docs-release.component';
+import { consumerCiRequirements, docsStep, journeySteps } from '../storybook/process-docs';
 
 const meta: Meta = {
   title: 'Get started/Figures/Use Plectrum in an app',
   tags: ['!dev'],
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'padded', chromatic: { disableSnapshot: true } },
 };
 
 export default meta;
 
-export const InstallFlow: StoryObj = stepsStory([
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Install the packages',
-    detail:
-      'Install `@solidaris-danielbodigil/pds-ui`, `@solidaris-danielbodigil/pds-plectrum` and `@solidaris-danielbodigil/pds-styles`, plus `primeng` and `@primeuix/themes`. Use the verified registry release linked from Releases; for an unpublished development revision, use packed tarballs from `npm run pack:libs`.',
-    links: [
-      {
-        label: 'Packages and how to get them',
-        href: '#packages-and-how-to-get-them',
-      },
-    ],
-  },
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Download the agent files',
-    detail:
-      'Place `.ai` at the repository root, `.cursor/agents` for Cursor, and `.github/agents` for VS Code. The packages do not install these folders.',
-    links: [
-      { label: 'Agent files', href: '#agent-files' },
-      {
-        label: '.ai',
-        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.ai',
-      },
-      {
-        label: 'Cursor agents',
-        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.cursor/agents',
-      },
-      {
-        label: 'VS Code agents',
-        href: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/tree/main/.github/agents',
-      },
-    ],
-  },
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Wire the stylesheet',
-    detail:
-      "Add `node_modules/@solidaris-danielbodigil/pds-styles/src` to `stylePreprocessorOptions.includePaths` and `@use 'main'` in `styles.scss`.",
-    links: [
-      { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
-      { label: 'Fonts, icons and browsers', href: '#fonts-icons-and-browsers' },
-    ],
-  },
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Boot the theme',
-    detail:
-      '`providePlectrum()` in the application config. Every `--p-*` and `--pds-*` custom property exists after this.',
-    links: [{ label: 'Boot the theme', href: '#boot-the-theme' }],
-  },
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Render the first component',
-    detail:
-      '`pds-form-field` from `@solidaris-danielbodigil/pds-ui` around a `pInputText` — the same component the sample application builds in CI.',
-    links: [
-      { label: 'First component', href: '#first-component' },
-      {
-        label: 'Form Field',
-        path: '/docs/custom-components-form-field--docs',
-      },
-    ],
-  },
-  {
-    who: 'Dev',
-    tone: 'app',
-    title: 'Build screens',
-    detail:
-      'PrimeNG and `pds-*` components from this Storybook. Layout via `o-flex` / `o-layout` classes.',
-    links: [
-      { label: 'Build screens', href: '#build-screens' },
-      { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
-      { label: 'Find a Token', path: '/docs/foundations-token-finder--docs' },
-    ],
-  },
-]);
+function releaseStory(mode: 'summary' | 'install'): StoryObj {
+  return {
+    render: () => ({
+      moduleMetadata: { imports: [DocsReleaseComponent] },
+      props: { mode },
+      template: `<pds-docs-release [mode]="mode" />`,
+    }),
+  };
+}
+
+/** Which docs these are: a recorded release, or the development preview of main. */
+export const Release: StoryObj = { tags: ['!dev'], ...releaseStory('summary') };
+
+/** Install commands matching the release record (registry) or its absence (tarballs). */
+export const Install: StoryObj = { tags: ['!dev'], ...releaseStory('install') };
+
+export const InstallFlow: StoryObj = {
+  tags: ['!dev'],
+  ...stepsStory(
+    journeySteps('onboarding', {
+      install: [{ label: 'Install the packages', href: '#install-the-packages' }],
+      initialize: [{ label: 'Initialize the team toolkit', href: '#initialize-the-team-toolkit' }],
+      build: [
+        { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
+        { label: 'First component', href: '#first-component' },
+      ],
+      validate: [{ label: 'Validate', href: '#validate' }],
+      adopt: [{ label: 'Report adoption', href: '#report-adoption' }],
+      upgrade: [{ label: 'Upgrade', href: '#upgrade' }],
+    }),
+  ),
+};
+
+export const Initialize: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('initialize')]) };
+
+export const Validate: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('validate')]) };
+
+export const CiProfile: StoryObj = {
+  tags: ['!dev'],
+  ...calloutStory({
+    tone: 'info',
+    title: 'The consumer CI profile',
+    items: consumerCiRequirements(),
+  }),
+};
+
+export const Adopt: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('adopt')]) };
+
+export const Upgrade: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('upgrade')]) };
 
 /** Check, then ask, then maybe build — the default before inventing. */
 export const BeforeYouInvent: StoryObj = stepsStory([
@@ -108,7 +79,7 @@ export const BeforeYouInvent: StoryObj = stepsStory([
     tone: 'app',
     title: 'Use a Core pds-* component',
     detail:
-      'If PrimeNG is not enough, import a Core component from @solidaris-danielbodigil/pds-ui. Find a component lists each one and which teams already use it.',
+      'If PrimeNG is not enough, import a Core component. Find a component lists each one and which teams already use it.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
@@ -118,7 +89,7 @@ export const BeforeYouInvent: StoryObj = stepsStory([
     tone: 'design',
     title: 'Propose the gap',
     detail:
-      'If still nothing covers the need, open a proposal. Do not start a new component. The core team will say whether to use something that already exists, whether they will build it, or whether your team should build it.',
+      'If still nothing covers the need, open a proposal. Do not start a new component before the recorded decision.',
     links: [
       { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
     ],

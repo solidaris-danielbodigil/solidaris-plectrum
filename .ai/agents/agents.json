@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "note": "Shared source for the Plectrum-checkout agents. contracts:generate writes .cursor/agents/*.md, .github/agents/*.agent.md, .cursorrules and .github/copilot-instructions.md; contracts:generate --check fails on drift. Application-repository roles live in tools/devkit/roles.json.",
+  "roles": [
+    {
+      "slug": "plectrum",
+      "name": "Plectrum",
+      "description": "Coordinator for the Plectrum Design System. Delegates to specialist subagents for research, engineering, implementation, testing, token auditing, and architecture.",
+      "summary": "Coordinator, invoked with /plectrum. Delegates to the specialists below; the only user-facing agent",
+      "readonly": false,
+      "userInvocable": true,
+      "vscodeTools": ["agent", "read", "search", "edit", "editFiles", "fetch", "runCommands", "figma/*"],
+      "delegates": ["UX Researcher", "UX Engineer", "Frontend Dev", "Tester", "Token Auditor", "Architect"]
+    },
+    {
+      "slug": "ux-researcher",
+      "name": "UX Researcher",
+      "description": "Inspects Figma nodes in the Plectrum UI Kit, extracts design tokens, states, and spacing, and produces a structured design brief. Read-only.",
+      "summary": "Figma inspection, token extraction, design brief — read-only",
+      "readonly": true,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search", "fetch", "figma/*"]
+    },
+    {
+      "slug": "ux-engineer",
+      "name": "UX Engineer",
+      "description": "Implements SCSS tokens, BEMIT component styles, PrimeNG token bridges, and Storybook stories from a UX Researcher design brief.",
+      "summary": "SCSS tokens, BEMIT styles, PrimeNG bridges, Storybook stories; Figma writes via MCP when designing from the repo",
+      "readonly": false,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search", "edit", "editFiles", "fetch", "figma/*"]
+    },
+    {
+      "slug": "frontend-dev",
+      "name": "Frontend Dev",
+      "description": "Implements Angular components in libs/ui — TypeScript class, HTML template, accessibility, PrimeNG wiring, inputs/outputs, exports.",
+      "summary": "Angular implementation: class, template, accessibility, PrimeNG wiring",
+      "readonly": false,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search", "edit", "editFiles", "runCommands", "fetch"]
+    },
+    {
+      "slug": "tester",
+      "name": "Tester",
+      "description": "Validates Angular component unit tests, Storybook story coverage, and WCAG 2.1 AA accessibility compliance. Fixes issues it finds.",
+      "summary": "Unit tests, story coverage, WCAG 2.1 AA",
+      "readonly": false,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search", "edit", "editFiles", "runCommands"]
+    },
+    {
+      "slug": "token-auditor",
+      "name": "Token Auditor",
+      "description": "Runs systematic token health checks — prefix compliance, semantic coverage, PrimeNG sync, and Figma drift. Produces actionable reports. Read-only.",
+      "summary": "Prefix compliance, semantic coverage, PrimeNG sync, Figma drift — read-only",
+      "readonly": true,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search", "fetch", "figma/*"]
+    },
+    {
+      "slug": "architect",
+      "name": "Architect",
+      "description": "Final authority on SSOT enforcement, ITCSS layer placement, file naming, and cross-library dependency boundaries. Read-only.",
+      "summary": "Keeps one catalogue, puts styles in the right folder, owns naming and dependency boundaries — read-only",
+      "readonly": true,
+      "userInvocable": false,
+      "vscodeTools": ["read", "search"]
+    }
+  ]
+}

@@ -33,6 +33,32 @@ export function readRegistry(root: string): Registry {
   return registry;
 }
 
+/** Every reference inside the process contract must resolve: renderers never guess. */
+export function checkProcess(contract: import('zod').z.infer<typeof exchangeSchemas.process>): void {
+  const steps = new Map(contract.steps.map((step) => [step.id, step]));
+  if (steps.size !== contract.steps.length) throw new Error('Duplicate process step ID');
+  const known = (id: string, where: string) => {
+    if (!Object.hasOwn(contract.commands, id)) throw new Error(`${where}: unknown process command ${id}`);
+  };
+  for (const step of contract.steps) for (const id of step.commands) known(id, `step ${step.id}`);
+  for (const [name, profile] of Object.entries(contract.checkProfiles)) {
+    for (const id of Array.isArray(profile) ? profile : profile.commands) known(id, `check profile ${name}`);
+  }
+  for (const [journey, ids] of Object.entries(contract.journeys)) {
+    for (const id of ids) if (!steps.has(id)) throw new Error(`journey ${journey}: unknown step ${id}`);
+  }
+  for (const [decision, outcome] of Object.entries(contract.proposalOutcomes)) {
+    if (outcome.step && !steps.has(outcome.step)) throw new Error(`outcome ${decision}: unknown step ${outcome.step}`);
+  }
+  for (const route of contract.routes) {
+    for (const id of route.steps) if (!steps.has(id)) throw new Error(`route ${route.id}: unknown step ${id}`);
+  }
+  for (const [id, command] of Object.entries(contract.commands)) {
+    const consumer = command.command.startsWith(`${contract.toolkit.invocation} `);
+    if ((command.context === 'consumer') !== consumer) throw new Error(`command ${id}: context and invocation disagree`);
+  }
+}
+
 export function validateMetadata(
   metadata: ComponentMetadata,
   registry: Registry,
@@ -183,6 +209,9 @@ export function validateExchange(
       )
     )
       throw new Error('Release is outside toolkit compatibility ranges');
+  }
+  if (kind === 'process') {
+    checkProcess(result as import('zod').z.infer<typeof exchangeSchemas.process>);
   }
   if (kind === 'compatibility') {
     const compatibility = result as import('zod').z.infer<

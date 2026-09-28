@@ -121,7 +121,7 @@ Run `npm run contracts:generate` after metadata changes. It generates the regist
 
 ## Post-creation Checklist
 
-- [ ] Storybook MCP used when the catalogue is up (`docs-show` sibling + `get-storybook-story-instructions`); `test-run` not called
+- [ ] Storybook MCP used when the catalogue is up (`docs-show` sibling + `get-storybook-story-instructions`); `npm run test-storybook` run (not only `test-run`)
 - [ ] Storybook story created **colocated** in `libs/ui/src/lib/{component-name}/` covering all states
 - [ ] Every required canvas story has a `play` function (`story-tests.ts`); interactive stories use `userEvent`
 - [ ] `npm run test-storybook` passes for the new stories (render + play + a11y report)

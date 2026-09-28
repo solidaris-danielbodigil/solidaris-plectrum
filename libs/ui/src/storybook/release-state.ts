@@ -1,13 +1,11 @@
 // Package versions for Storybook consumer pages come from package manifests.
-// Source versions are never treated as evidence of registry publication.
+// Source versions are never treated as evidence of registry publication:
+// release-context.ts reads the recorded release instead.
 import plectrumPackage from '../../../plectrum/package.json';
 import stylesPackage from '../../../styles/package.json';
 import uiPackage from '../../package.json';
 
 export const PACKAGE_VERSION = uiPackage.version;
-const releaseEnv = (import.meta as ImportMeta & { env?: Record<string, string> }).env;
-/** Set only by the release workflow after the registry and consumer checks pass. */
-export const REGISTRY_PUBLISHED = releaseEnv?.['VITE_PLECTRUM_RELEASED'] === 'true';
 
 export const RELEASE_PACKAGES = [
   { name: uiPackage.name, version: uiPackage.version },
@@ -39,12 +37,4 @@ export function tarballName(packageName: string, version = PACKAGE_VERSION): str
   return `${packageName.replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
 }
 
-export const TARBALL_INSTALL = `npm install \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/pds-ui')} \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/pds-plectrum')} \\
-  ./path/to/${tarballName('@solidaris-danielbodigil/pds-styles')} \\
-  primeng @primeuix/themes`;
-
-export const RELEASE_SUMMARY = REGISTRY_PUBLISHED
-  ? `Plectrum ${PACKAGE_VERSION} was verified and published to GitHub Packages. These docs belong to that release. The Preset toolbar (${PRESET_VERSION}) selects the theme, not the package version.`
-  : `The three runtime manifests declare ${PACKAGE_VERSION}; no verified registry release is recorded in this development preview. Install packed tarballs until a verified release exists. The Preset toolbar (${PRESET_VERSION}) selects the theme, not the package version.`;
+export const TARBALL_INSTALL = `npm install \\\n${RELEASE_PACKAGES.map((pkg) => `  ./path/to/${tarballName(pkg.name, pkg.version)} \\\n`).join('')}  primeng @primeuix/themes`;

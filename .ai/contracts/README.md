@@ -7,7 +7,8 @@
 | Colocated `*.metadata.ts` | Stable identity, governance, distribution and all component documentation facts |
 | `registry.json` | Teams, applications, repositories and operational handoff settings |
 | `workspace.json` | Workspace/token configuration and runtime helper exports |
-| `process.json` | Versioned commands, check profiles, repository contexts, steps and candidate transitions |
+| `process.json` | Versioned commands with summaries, check profiles, repository contexts, steps, journeys, proposal outcomes, routes, capabilities and candidate transitions. The one source for `plectrum help`, agent guidance and Storybook process pages |
+| `../agents/` | Shared agent role text and baseline for the Plectrum checkout; generated into Cursor and VS Code files |
 | `compatibility.json` | Separately versioned toolkit and supported DS/schema/process ranges |
 | `schema/*.schema.ts` | Canonical structural validation; inferred TypeScript types and generated JSON Schema |
 
@@ -28,7 +29,7 @@ The scaffold creates unfinished metadata. Complete its TODOs, design and tests b
 ## Three different indexes
 
 1. `index.json` is the central **source inventory**, keyed by immutable component ID. It includes local source observations; those are not external adoption telemetry.
-2. A released contract snapshot is immutable, versioned JSON described by `contracts.v1.schema.json`. Its package version, source revision and docs URL must match the release. Publication is implemented in P7.
+2. A released contract snapshot is immutable, versioned JSON described by `contracts.v1.schema.json`. Its package version, source revision and docs URL must match the release. The attended release publishes it beside the versioned Storybook with `release.json`; Storybook reads that record to present itself as a release.
 3. Storybook's runtime `index.json` provides build-specific docs/story IDs. The generated metadata-source map joins component IDs to the exact MDX source path, including CSS patterns.
 
 Application-local inventories complement the installed snapshot. Teams do not push their whole index over the central index.
@@ -52,6 +53,6 @@ Adoption reports identify the registered app/team, installed package versions, s
 
 Core Angular components export from the main entry. CSS patterns belong to the styles package. Candidates use local distribution: their Angular code is absent from runtime exports and their styles are outside the styles package allowlist. App patterns may use an explicit team secondary entry; iSHARE now uses `@solidaris-danielbodigil/pds-ui/patterns/ishare`.
 
-`@solidaris-danielbodigil/pds-devkit@0.2.0` is packable and versioned independently. Its exports include full metadata, schemas, token inventory, process, registry and compatibility; `plectrum init` installs editor adapters into an application repository. Its current docs links target the Storybook development preview. P7 published a snapshot under the former, public package names; a new private package release is pending. Current `@solidaris/contracts` remains a workspace type alias for the Plectrum checkout. The toolkit's `verified` compatibility status means its **local tarball** passed an external-consumer smoke test; it is not a registry publication claim for the new name. `@solidaris/tokens-cli` is private and internal; consumer token checks live in the toolkit.
+The toolkit package is versioned independently. Its exports include full metadata, schemas, token inventory, process, registry and compatibility; `plectrum init` installs editor adapters into an application repository and `plectrum help` renders the process contract. Its catalogue links resolve to the versioned Storybook of the installed runtime and toolkit pair, which exists only when that pair was released. Which pairs were published is recorded by the GitHub Release manifests, not by this file. Current `@solidaris/contracts` remains a workspace type alias for the Plectrum checkout. `@solidaris/tokens-cli` is private and internal; consumer token checks live in the toolkit.
 
 See the [accepted identity and migration decision](../decisions/2026-09-25-pipeline-contracts-and-distribution.md). Storybook → **Docs / Pipelines and contracts** renders current process and operational configuration directly from these sources.

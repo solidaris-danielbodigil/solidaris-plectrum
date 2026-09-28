@@ -73,6 +73,8 @@ export interface DocsStep {
   tone?: FigureTone;
   /** Pages the step refers to — rendered as a row of links under the detail. */
   links?: readonly DocsLink[];
+  /** Runnable commands, one per line, rendered as a code block. */
+  commands?: readonly string[];
 }
 
 export interface DocsCard {

@@ -1,0 +1,50 @@
+@let current = state();
+@if (!current) {
+  <p class="c-docs-callout__text o-layout o-layout--margin-0">Reading the release record…</p>
+} @else if (mode() === 'summary') {
+  <p-message [severity]="current.kind === 'release' ? 'success' : 'warn'" [icon]="current.kind === 'release' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-triangle-fill'">
+    <div class="c-docs-callout__body">
+      @if (current.kind === 'release') {
+        <strong class="c-docs-callout__title">Release {{ current.manifest.version }} · toolkit {{ current.manifest.toolkit.toolkitVersion }}</strong>
+        <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
+          Published {{ publishedOn(current.manifest.publishedAt) }} to {{ current.manifest.registry }} from commit {{ shortRevision(current.manifest.revision) }}.
+          These pages describe exactly those packages. The Preset toolbar ({{ preset }}) selects the theme, not the package version.
+        </p>
+      } @else {
+        <strong class="c-docs-callout__title">Development preview</strong>
+        <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
+          @if (current.reason === 'mismatch') {
+            The release record beside these pages describes {{ current.manifest?.version }} with toolkit {{ current.manifest?.toolkit?.toolkitVersion }}, not the {{ runtime }} / {{ toolkit }} this build was made from, so it is not treated as that release.
+          } @else {
+            No release record accompanies these pages. They document main: manifests declare runtime {{ runtime }} and toolkit {{ toolkit }}, which is not proof that this pair is published.
+          }
+          The Preset toolbar ({{ preset }}) selects the theme, not the package version.
+        </p>
+      }
+      <ul class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0">
+        <li><pds-docs-link label="Latest release" [href]="links.latest" /></li>
+        <li><pds-docs-link label="Development preview" [href]="links.development" /></li>
+      </ul>
+    </div>
+  </p-message>
+} @else if (current.kind === 'release') {
+  <p class="c-docs-callout__text o-layout o-layout--margin-0">
+    Map the scope in the <strong>application repository's</strong> <code>.npmrc</code>, without a token:
+  </p>
+  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ npmrc }}</code></pre>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
+    On a developer machine, sign in once with a classic personal access token that has <code>read:packages</code>. Keep the token in your user configuration:
+  </p>
+  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ login }}</code></pre>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">Install the versions this release documents:</p>
+  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ registryInstall }}</code></pre>
+} @else {
+  <p class="c-docs-callout__text o-layout o-layout--margin-0">
+    These pages document main, not a release. Build and pack the packages from a Plectrum checkout (<code>npm run pack:libs</code>), then install the tarballs in the application:
+  </p>
+  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ tarballInstall }}</code></pre>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
+    For a registry install, follow the same page in the release you install:
+    <pds-docs-link label="Latest release" [href]="links.latest" />
+  </p>
+}

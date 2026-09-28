@@ -2,8 +2,9 @@
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import type { DocsStep } from '../storybook/docs-figures.types';
 import { DocsAudienceComponent } from '../storybook/docs-audience.component';
-import { calloutStory, heroStory } from './docs-figure-stories';
-import { RELEASE_SUMMARY } from '../storybook/release-state';
+import { heroStory } from './docs-figure-stories';
+import { DocsReleaseComponent } from '../storybook/docs-release.component';
+import { PACKAGE_NAMES } from '../storybook/process-docs';
 
 const meta: Meta = {
   title: 'Introduction/Figures',
@@ -35,11 +36,14 @@ export const Hero: StoryObj = heroStory({
   ],
 });
 
-export const Release: StoryObj = calloutStory({
-  tone: 'info',
-  title: 'Current version',
-  text: RELEASE_SUMMARY,
-});
+/** Which docs these are, from the recorded release beside a versioned build. */
+export const Release: StoryObj = {
+  parameters: { chromatic: { disableSnapshot: true }, layout: 'padded' },
+  render: () => ({
+    moduleMetadata: { imports: [DocsReleaseComponent] },
+    template: '<pds-docs-release mode="summary" />',
+  }),
+};
 
 const DESIGN_STEPS: readonly DocsStep[] = [
   {
@@ -80,7 +84,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Install the packages',
     detail:
-      'Install `@solidaris-danielbodigil/pds-ui`, `@solidaris-danielbodigil/pds-plectrum` and `@solidaris-danielbodigil/pds-styles`, plus the PrimeNG peers. Use a verified registry release or packed tarballs for an unpublished revision. Then add the stylesheet and call `providePlectrum()`. Install `@solidaris-danielbodigil/pds-devkit` and run `plectrum init` in the application repository to set up the contributor workflow.',
+      `Install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\` and \`${PACKAGE_NAMES.styles}\`, plus the PrimeNG peers, in the version these docs describe. Then add the stylesheet and call \`providePlectrum()\`. Install \`${PACKAGE_NAMES.toolkit}\` and run \`plectrum init\` in the application repository to set up the team toolkit.`,
     links: [
       {
         label: 'Build with Plectrum',
@@ -93,7 +97,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Render the first field',
     detail:
-      'Copy the Form Field example. It imports from `@solidaris-danielbodigil/pds-ui` and includes the PrimeNG input directive.',
+      `Copy the Form Field example. It imports from \`${PACKAGE_NAMES.ui}\` and includes the PrimeNG input directive.`,
     links: [
       {
         label: 'Form Field',

@@ -1,23 +1,19 @@
 #!/usr/bin/env node
-// Verify the consumer instructions derive install filenames from manifests.
+// Run by changeset:version. Consumer install commands and filenames are rendered from the
+// manifests (libs/ui/src/storybook/release-state.ts, process-docs.ts), so a version bump
+// needs no docs edit. This only verifies that the runtime versions still agree.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '../..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
-const packages = [
-  JSON.parse(read('libs/ui/package.json')),
-  JSON.parse(read('libs/plectrum/package.json')),
-  JSON.parse(read('libs/styles/package.json')),
-];
-const [runtimeVersion] = [...new Set(packages.map(({ version }) => version))];
-if (packages.some(({ version }) => version !== runtimeVersion)) {
-  throw new Error('Runtime package versions differ; cannot update consumer install instructions.');
+const packages = ['libs/ui', 'libs/plectrum', 'libs/styles'].map((dir) => JSON.parse(read(`${dir}/package.json`)));
+const versions = new Set(packages.map(({ version }) => version));
+if (versions.size !== 1) {
+  throw new Error(`Runtime package versions differ: ${packages.map(({ name, version }) => `${name}@${version}`).join(', ')}`);
 }
-
-const path = 'libs/ui/src/docs/get-started-consume.mdx';
-const current = read(path);
-if (!current.includes('TARBALL_INSTALL') || !current.includes('tarballName(toolkitPackage.name, toolkitPackage.version)')) {
-  throw new Error(`${path} must render package filenames from the manifests.`);
+const releaseState = read('libs/ui/src/storybook/release-state.ts');
+if (!releaseState.includes('RELEASE_PACKAGES.map') || !releaseState.includes('tarballName(')) {
+  throw new Error('release-state.ts must derive tarball install commands from the manifests.');
 }
-console.log(`Consumer install commands derive from runtime ${runtimeVersion} and the toolkit manifest.`);
+console.log(`Consumer install commands derive from runtime ${[...versions][0]} and the toolkit manifest.`);

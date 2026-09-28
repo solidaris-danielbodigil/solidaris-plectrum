@@ -44,7 +44,7 @@
     "generate-index": "tsx tools/scripts/generate-index.ts",
     "prepare": "node tools/scripts/install-git-hooks.mjs",
     "check:commit": "node tools/scripts/check-commit.mjs",
-    "docs:check": "tsx tools/scripts/check-docs-ssot.mjs && node tools/scripts/check-docs-release.mjs && node tools/scripts/sync-release-docs.mjs --check",
+    "docs:check": "tsx tools/scripts/check-docs-ssot.mjs && node tools/scripts/check-docs-release.mjs && node tools/scripts/check-docs-process.mjs && node tools/scripts/sync-release-docs.mjs --check",
     "docs:sync-release": "node tools/scripts/sync-release-docs.mjs",
     "contracts:check": "tsx tools/contracts/check.ts && tsx tools/scripts/check-metadata-props.ts",
     "pds:component": "tsx tools/generators/sds-component/index.ts",

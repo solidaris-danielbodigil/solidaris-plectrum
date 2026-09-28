@@ -22,13 +22,10 @@ async function check() {
     if (command.context === 'consumer' && command.command?.includes('plectrum ') && !devkit.bin?.plectrum)
       throw new Error('Consumer process command has no toolkit executable.');
   }
-  for (const step of processContract.steps) {
-    if (!step.owner || !step.repository)
-      throw new Error(`Unowned process step: ${step.id}`);
-    for (const command of step.commands)
-      if (!Object.hasOwn(processContract.commands, command))
-        throw new Error(`Unknown process command: ${command}`);
-  }
+  validateExchange('process', processContract, readRegistry(root));
+  const gate = /^npm run ([\w:-]+)/.exec(processContract.capabilities.storybookMcp.gate)?.[1];
+  if (gate && !pkg.scripts[gate])
+    throw new Error(`Storybook MCP gate missing from package.json: ${gate}`);
   for (const item of await inventory(root)) {
     if (/\b(TODO|TBD|FIXME)\b/.test(JSON.stringify(item.metadata)))
       throw new Error(

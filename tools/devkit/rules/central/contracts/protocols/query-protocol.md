@@ -65,7 +65,7 @@ Do not invent a Control that is missing from `.metadata.ts` `props`. After `stor
 3. Write colocated CSF + attached MDX per .ai/rules/03-storybook.md
    — do not add a Control missing from .metadata.ts props
 4. stories-preview the new canvases
-5. npm run test-storybook — do not call test-run
+5. npm run test-storybook — test-run alone is not the gate
 ```
 
 ### "Which token should I use?"
@@ -133,7 +133,7 @@ Before marking any implementation complete, verify:
 - [ ] PrimeNG component used where possible
 - [ ] .metadata.ts exists and covers all states
 - [ ] Storybook story exists, colocated, covering required states
-- [ ] Required canvas stories have a `play` function (`.ai/rules/03-storybook.md` §5); `npm run test-storybook` passes (do not call Storybook MCP `test-run`)
+- [ ] Required canvas stories have a `play` function (`.ai/rules/03-storybook.md` §5); `npm run test-storybook` passes (Storybook MCP `test-run` does not replace it)
 - [ ] Accessibility: ARIA attributes, keyboard support, contrast; a11y not disabled on the story
 - [ ] SCSS lives in correct ITCSS layer
 - [ ] No dead code or duplicated patterns
