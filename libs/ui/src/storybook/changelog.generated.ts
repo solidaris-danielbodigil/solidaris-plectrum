@@ -2,18 +2,7 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "figma-design-origin-route",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-devkit",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Describe the design-origin component route and the distinct PrimeNG 21 token and Custom components Figma files in the installed process and registry snapshots."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
