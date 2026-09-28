@@ -231,6 +231,26 @@ describe('docs figures', () => {
         'default → secondary',
       ).toBe(true);
     });
+
+    it('renders a single step without a timeline', () => {
+      const fixture = TestBed.createComponent(DocsStepsComponent);
+      fixture.componentRef.setInput('steps', [
+        {
+          title: 'Initialize',
+          who: 'Application team',
+          tone: 'app',
+          detail: 'Needs the toolkit.',
+        },
+      ]);
+      fixture.detectChanges();
+      const host: HTMLElement = fixture.nativeElement;
+
+      expect(host.querySelector('p-timeline')).toBeNull();
+      expect(host.querySelector('p-badge')).toBeNull();
+      expect(
+        host.querySelector('.c-docs-steps__title')?.textContent?.trim(),
+      ).toBe('Initialize');
+    });
   });
 
   describe('pds-docs-cards', () => {

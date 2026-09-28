@@ -15,6 +15,7 @@
 // (structural only — PrimeNG owns the chrome).
 // =============================================================================
 
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,7 +26,11 @@ import {
 import { Badge } from 'primeng/badge';
 import { Tag } from 'primeng/tag';
 import { Timeline } from 'primeng/timeline';
-import { type DocsStep, toneSeverity, type ToneSeverity } from './docs-figures.types';
+import {
+  type DocsStep,
+  toneSeverity,
+  type ToneSeverity,
+} from './docs-figures.types';
 import { DocsLinkComponent } from './docs-link.component';
 
 interface StepEvent extends DocsStep {
@@ -35,11 +40,13 @@ interface StepEvent extends DocsStep {
 
 @Component({
   selector: 'pds-docs-steps',
-  imports: [Timeline, Badge, Tag, DocsLinkComponent],
+  imports: [NgTemplateOutlet, Timeline, Badge, Tag, DocsLinkComponent],
   templateUrl: './docs-steps.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'c-docs-steps o-layout o-layout--block o-layout--margin-block-3' },
+  host: {
+    class: 'c-docs-steps o-layout o-layout--block o-layout--margin-block-3',
+  },
 })
 export class DocsStepsComponent {
   readonly steps = input.required<readonly DocsStep[]>();
@@ -53,11 +60,16 @@ export class DocsStepsComponent {
   );
 
   /** Backticks in `detail` render as code. The rest stays text. */
-  protected detailParts(detail: string): readonly { text: string; code: boolean }[] {
-    return detail.split(/(`[^`]+`)/g).filter(Boolean).map((part) =>
-      part.startsWith('`') && part.endsWith('`')
-        ? { text: part.slice(1, -1), code: true }
-        : { text: part, code: false },
-    );
+  protected detailParts(
+    detail: string,
+  ): readonly { text: string; code: boolean }[] {
+    return detail
+      .split(/(`[^`]+`)/g)
+      .filter(Boolean)
+      .map((part) =>
+        part.startsWith('`') && part.endsWith('`')
+          ? { text: part.slice(1, -1), code: true }
+          : { text: part, code: false },
+      );
   }
 }
