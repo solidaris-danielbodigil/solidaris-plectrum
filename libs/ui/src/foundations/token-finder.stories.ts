@@ -3,7 +3,7 @@ import { assertTextVisible, expect, within } from '../storybook/story-tests';
 import { TokenFinderComponent } from '../storybook/token-finder.component';
 
 const meta: Meta<TokenFinderComponent> = {
-  title: 'Start here/Figures/Find a Token',
+  title: 'Start here/Figures/Find a token',
   component: TokenFinderComponent,
   tags: ['!dev'],
   parameters: { layout: 'fullscreen', chromatic: { disableSnapshot: true } },

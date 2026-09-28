@@ -1,5 +1,7 @@
 # ADR: Agent-first repo → Figma; plugin as fallback
 
+> Historical file roles below were superseded by the P9 clarification. Tokens belong in PrimeNG 21; candidates belong in Custom components. Follow the current registry and Storybook process for new work.
+
 **Date:** 2026-09-12
 **Status:** accepted
 **Supplements:** `.ai/decisions/2026-09-10-repo-to-figma-plugin.md`

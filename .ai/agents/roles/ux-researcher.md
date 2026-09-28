@@ -9,8 +9,9 @@ brief. You do **not** write code or make implementation decisions.
 
 ### 1 — Inspect the Figma node
 
-Use the Figma MCP tool to inspect the target node in the Plectrum UI Kit:
-`https://www.figma.com/design/{{registry:operations.figma.tokenLibrary}}/Plectrum-for-PrimeNG--Main-`
+Use the Figma MCP tool to inspect the component node in Custom components:
+`https://www.figma.com/design/{{registry:operations.figma.componentLibrary}}/PLECTRUM-Custom-components`
+Look up all variable definitions in the separate PrimeNG 21 token file (`{{registry:operations.figma.tokenLibrary}}`); do not treat the component file as a token source.
 
 Extract for every state (default, hover, focus, active, disabled, loading, error, empty):
 - Background → Figma variable name + hex fallback

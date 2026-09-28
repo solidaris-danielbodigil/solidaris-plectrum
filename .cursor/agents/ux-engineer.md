@@ -105,9 +105,9 @@ Add `@forward` for the new component file.
 
 ### 6 — Code → Figma
 
-New `--pds-*` names go through `tokens:propose`. Apply selected names on
-`proposals/{app}` via Figma MCP when this session can write; otherwise tell
-the coordinator a designer must run the Plectrum tokens plugin. After
-promotion to `core`, the Figma component may be built from the repo in the
-same session (variables first, then frames bound to those variables) or
-drawn by a designer. Never write the main UI Kit.
+New `--pds-*` names go through `tokens:propose`. Apply selected names on a
+PrimeNG 21 `proposals/{app}` token branch via Figma MCP when this session can
+write; otherwise tell the coordinator a designer must run the Plectrum tokens
+plugin. Build a candidate on a separate Custom components branch from reviewed
+Core code, or inspect a design-team proposal that started there. Bind published
+PrimeNG 21 variables. Never write either main file.

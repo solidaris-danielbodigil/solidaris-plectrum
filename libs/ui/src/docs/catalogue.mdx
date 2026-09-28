@@ -7,6 +7,10 @@ import * as Figures from './catalogue.stories';
 
 One list for PrimeNG controls, Angular components and CSS shells. Search by the task, not by which folder the code lives in. `error` finds Form Field. `side panel` finds Drawer.
 
+<Unstyled>
+  <Story of={Figures.Index} />
+</Unstyled>
+
 Scope is who may reuse it. Core is for every application. Candidate belongs to one team and links to that team's preview; App-specific is one product's component — read it, do not import it into another app.
 
 The row count comes from current sources; it is not a copy of `.ai/contracts/index.json` or a count of controls every app already uses.
@@ -18,6 +22,4 @@ The row count comes from current sources; it is not a copy of `.ai/contracts/ind
 
 The same control can appear twice when it has both Plectrum metadata and a PrimeNG kit entry. Status and owner for central Plectrum components stay on their metadata-backed docs pages.
 
-<Unstyled>
-  <Story of={Figures.Index} />
-</Unstyled>
+Nothing fits? [Contribute](?path=/docs/get-started-contribute--docs) explains how to propose a component or token and how a candidate enters this catalogue.

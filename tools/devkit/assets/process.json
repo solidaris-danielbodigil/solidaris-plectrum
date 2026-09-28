@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "contexts": {
     "plectrum": {
       "root": "Plectrum checkout",
@@ -381,22 +381,76 @@
       "repository": "plectrum",
       "prerequisites": [
         "accepted implementation",
-        "reviewed token proposal"
+        "reviewed token proposal when new variables are needed"
       ],
       "inputs": [
         "source revision",
-        "pinned token proposal revision",
-        "verified proposal branch and collection"
+        "pinned token proposal revision when applicable",
+        "PrimeNG 21 token proposal branch and collection when applicable",
+        "Custom components proposal branch for the candidate component"
       ],
       "outputs": [
-        "token mapping and component node URL",
+        "token mapping when applicable and Custom components node URL",
         "design approval and branch merge",
         "library publication",
-        "validated return export"
+        "validated token return export when variables changed"
       ],
       "commands": [
         "tokensPropose"
       ]
+    },
+    {
+      "id": "design-propose",
+      "journey": "design-component",
+      "owner": "designer",
+      "repository": "plectrum",
+      "prerequisites": [
+        "gap or redesign identified"
+      ],
+      "inputs": [
+        "source component or screen",
+        "Custom components design URL"
+      ],
+      "outputs": [
+        "central proposal with design provenance and intended owner"
+      ],
+      "commands": []
+    },
+    {
+      "id": "design-review",
+      "journey": "design-component",
+      "owner": "core",
+      "repository": "plectrum",
+      "prerequisites": [
+        "design proposal"
+      ],
+      "inputs": [
+        "design-team review outcome",
+        "PrimeNG and existing Plectrum component check",
+        "accessibility and implementation feasibility"
+      ],
+      "outputs": [
+        "recorded design and Core decision; reviewed design URL"
+      ],
+      "commands": []
+    },
+    {
+      "id": "design-publish",
+      "journey": "design-component",
+      "owner": "designer",
+      "repository": "plectrum",
+      "prerequisites": [
+        "approved design"
+      ],
+      "inputs": [
+        "Custom components proposal branch",
+        "review and merge evidence"
+      ],
+      "outputs": [
+        "published Custom components node and version",
+        "PrimeNG 21 variable references when needed"
+      ],
+      "commands": []
     },
     {
       "id": "export-design",
@@ -661,6 +715,13 @@
       "validate-design",
       "release",
       "adopt"
+    ],
+    "designComponent": [
+      "design-propose",
+      "design-review",
+      "design-publish",
+      "change-in-plectrum",
+      "release"
     ]
   },
   "proposalOutcomes": {
@@ -711,6 +772,17 @@
       "steps": [
         "integrate",
         "design-return",
+        "release"
+      ]
+    },
+    {
+      "id": "design-origin",
+      "decision": null,
+      "steps": [
+        "design-propose",
+        "design-review",
+        "design-publish",
+        "change-in-plectrum",
         "release"
       ]
     }

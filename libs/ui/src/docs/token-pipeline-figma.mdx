@@ -2,12 +2,15 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './token-pipeline-figma.stories';
+import { PACKAGE_NAMES } from '../storybook/process-docs';
 
 <Meta title="Docs/Token pipeline/Figma sync" />
 
 # Figma sync
 
-Two one-way transports connect the Plectrum UI Kit and the repository. Figma sends variables to the repository through a staging branch, and the repository sends proposed tokens back to a Figma branch. Neither transport writes the main Figma file on its own.
+**Two Figma files have different jobs.** [Plectrum DS · PrimeNG v21](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-) contains PrimeNG and all token variables. [PLECTRUM · Custom components](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components) contains Plectrum component candidates, including designs proposed by the design team. Token export/import operates on the PrimeNG 21 file; component review and publication operate on Custom components. A component can reference published tokens from PrimeNG 21, but it is never the token source.
+
+Two one-way transports connect the PrimeNG 21 token file and the repository. Figma sends variables to the repository through a staging branch, and the repository sends proposed tokens back to a PrimeNG 21 proposal branch. Neither transport writes the main Figma file on its own. Custom components follows its own component review and publication path.
 
 Start at the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the whole architecture and the [Commands](?path=/docs/docs-token-pipeline--docs#commands) for the script flags.
 
@@ -20,8 +23,8 @@ Start at the [pipeline overview](?path=/docs/docs-token-pipeline--docs) for the 
     { title: 'Design-system repository', subtitle: 'GitHub', x: 330, w: 630, tone: 'system' },
   ]}
   nodes={[
-    { id: 'main', x: 40, y: 70, w: 220, tone: 'design', title: 'Plectrum UI Kit — main', lines: ['edited by designers'] },
-    { id: 'branch', x: 40, y: 210, w: 220, tone: 'design', title: 'Figma branch', lines: ['proposals/{app}'], mono: true },
+    { id: 'main', x: 40, y: 70, w: 220, tone: 'design', title: 'PrimeNG 21 — main', lines: ['all token variables'] },
+    { id: 'branch', x: 40, y: 210, w: 220, tone: 'design', title: 'PrimeNG 21 branch', lines: ['proposals/{app}'], mono: true },
     { id: 'staging', x: 370, y: 70, w: 220, tone: 'system', title: 'Staging branch', lines: ['design-tokens/sync'], mono: true },
     { id: 'json', x: 700, y: 70, w: 220, tone: 'system', title: 'tokens.json', lines: ['after a reviewed pull request'] },
     { id: 'proposal', x: 370, y: 210, w: 220, tone: 'system', title: 'Proposal file', lines: ['proposed.dtcg.json'], mono: true },
@@ -89,7 +92,7 @@ Configured once per designer. Reference: `tools/tokens/PLUGIN_SETUP.md`.
 1. Plugin commits land on `design-tokens/sync`. `Plectrum_v1/ts` is never overwritten in place.
 2. `.github/workflows/tokens-sync.yml` runs `tokens:build`, then `tokens:audit` (blocking) and `tokens:validate-preset` (theme gate only).
 3. `tokens:report` summarises the sync — changed values against the current `tokens.json`, check results, what happens next. It is written to the Actions job summary, becomes the pull request body, and is committed as `sync-report.generated.ts` so the [Sync status](?path=/docs/docs-token-pipeline-sync-status--docs) page shows it to everyone without GitHub access once the pull request merges.
-4. `tokens:notify-figma` posts the same summary as a comment thread in the Plectrum UI Kit (`FIGMA_TOKEN` with `file_comments:write`; optional `FIGMA_SYNC_COMMENT_NODE_ID` pins the thread to a frame). Promoted and blocked syncs both reach the designer in Figma. Without the secret the step skips itself; it never blocks the promotion.
+4. `tokens:notify-figma` posts the same summary as a comment thread in the PrimeNG 21 file (`FIGMA_TOKEN` with `file_comments:write`; optional `FIGMA_SYNC_COMMENT_NODE_ID` pins the thread to a frame). Promoted and blocked syncs both reach the designer in Figma. Without the secret the step skips itself; it never blocks the promotion.
 5. The workflow opens a pull request that promotes staging → `libs/plectrum/src/tokens.json` when the audit passed.
 6. Theme files are copied into `Plectrum_v1/` only if `tokens:validate-preset` passes. Code-owned gaps listed in `audit-allowlist.json` warn instead of failing.
 7. Manual fixes stay in `Plectrum_v1/ts/extend.ts`.
@@ -98,16 +101,16 @@ The first sync confirmed the plugin's shape (`aura/*` sets, quoted numeric names
 
 ---
 
-## Single Figma file
+## One token file
 
-Figma variables can only alias variables **in the same file**, and the REST API cannot update remote variables. A separate file per application would break aliases such as `ishare/card/bg → surface/50`. Application-proposed tokens therefore land in a **per-application collection** inside the shared UI Kit.
+Figma variables can only alias variables **in the same file**, and the REST API cannot update remote variables. A separate token file per application would break aliases such as `ishare/card/bg → surface/50`. Application-proposed tokens therefore land in a **per-application collection** inside PrimeNG 21. This constraint does not put component candidates in that file: they live in Custom components.
 
 <Diagram
-  title="Figma collections in the UI Kit"
+  title="Token collections in PrimeNG 21"
   width={960}
   height={240}
   lanes={[
-    { title: 'Plectrum UI Kit — one Figma file', subtitle: 'aliases resolve within the file', x: 0, w: 960, tone: 'design' },
+    { title: 'PrimeNG 21 — one token file', subtitle: 'aliases resolve within the file', x: 0, w: 960, tone: 'design' },
   ]}
   nodes={[
     { id: 'prim', x: 40, y: 70, w: 190, h: 48, pill: true, tone: 'design', title: 'Primitive' },
@@ -135,9 +138,9 @@ Figma remains the source of truth for primitives and semantics. Component tokens
 
 ## Repository → Figma
 
-Propose a token to Figma when it starts in code — a surface step the UI Kit lacks, or a feature-specific colour. Run `tokens:propose` to write `proposed.dtcg.json`. Apply the tokens you select on the branch `proposals/{app}`.
+Propose a token to Figma when it starts in code — a missing surface step or a feature-specific colour. Run `tokens:propose` to write `proposed.dtcg.json`. Apply the selected tokens on a PrimeNG 21 branch `proposals/{app}`.
 
-After a candidate is promoted to core, design the Figma component from the repo on that branch. An agent or a designer may do it. Bind variables; do not paint hex from a screenshot.
+After an application candidate is promoted to Core, create or update its Figma design on a **separate Custom components branch**. A design-team proposal can also start in Custom components before code. In both routes, bind published PrimeNG 21 variables; do not paint hex from a screenshot. See [Contribute](?path=/docs/get-started-contribute--docs#start-from-a-reviewed-figma-design).
 
 ### Process
 
@@ -163,24 +166,22 @@ Applications install published packages. They never copy files from this reposit
   height={230}
   nodes={[
     { id: 'repo', x: 40, y: 77, w: 220, h: 76, tone: 'system', title: 'Design-system repository', lines: ['libraries versioned together', 'by changesets'] },
-    { id: 'pkgs', x: 370, y: 65, w: 220, h: 100, tone: 'neutral', title: 'Published packages', lines: ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-styles', '@solidaris-danielbodigil/pds-plectrum'], mono: true },
-    { id: 'ishare', x: 700, y: 40, w: 220, h: 60, tone: 'app', title: 'iSHARE', lines: ['bump pull request via Renovate'] },
-    { id: 'icrm', x: 700, y: 130, w: 220, h: 60, tone: 'app', title: 'iCRM', lines: ['bump pull request via Renovate'] },
+    { id: 'pkgs', x: 370, y: 65, w: 220, h: 100, tone: 'neutral', title: 'Published packages', lines: ['runtime components', 'theme and styles', 'contributor toolkit'] },
+    { id: 'apps', x: 700, y: 84, w: 220, h: 60, tone: 'app', title: 'Team repositories', lines: ['reviewed version bumps'] },
   ]}
   edges={[
     { from: 'repo', to: 'pkgs', label: 'publish' },
-    { from: 'pkgs', to: 'ishare', label: 'install' },
-    { from: 'pkgs', to: 'icrm', label: 'install' },
+    { from: 'pkgs', to: 'apps', label: 'install' },
   ]}
 />
 
 <DocsTable
   headers={['Package', 'Contents']}
   rows={[
-    ['@solidaris-danielbodigil/pds-ui', 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
-    ['@solidaris-danielbodigil/pds-plectrum', 'PrimeNG presets, providePlectrum(), tokens.json.'],
-    ['@solidaris-danielbodigil/pds-styles', 'ITCSS source. Applications add node_modules/@solidaris-danielbodigil/pds-styles/src to their Sass include paths.'],
-    ['@solidaris-danielbodigil/pds-devkit', 'Versioned contracts, rules and the plectrum CLI. Run init/update/check in an application repository; central Figma token commands stay in Plectrum.'],
+    [PACKAGE_NAMES.ui, 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
+    [PACKAGE_NAMES.plectrum, 'PrimeNG presets, providePlectrum(), tokens.json.'],
+    [PACKAGE_NAMES.styles, `ITCSS source. Applications add node_modules/${PACKAGE_NAMES.styles}/src to their Sass include paths.`],
+    [PACKAGE_NAMES.toolkit, 'Versioned contracts, rules and the plectrum CLI. Run init/update/check in an application repository; central Figma token commands stay in Plectrum.'],
   ]}
 />
 

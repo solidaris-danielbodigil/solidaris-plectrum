@@ -6,7 +6,7 @@ import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 import { journeySteps, outcomeCards, routeSteps, teamCards } from '../storybook/process-docs';
 
 const meta: Meta = {
-  title: 'Get started/Figures/Contribute',
+  title: 'Start here/Figures/Contribute',
   tags: ['!dev'],
   parameters: { layout: 'padded' },
 };
@@ -46,6 +46,8 @@ export const LocalCandidate: StoryObj = { tags: ['!dev'], ...stepsStory(routeSte
 
 export const PlectrumChange: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('plectrum-change')) };
 
+export const DesignOrigin: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('design-origin')) };
+
 export const Promotion: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('promotion')) };
 
 export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) };
@@ -53,7 +55,7 @@ export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) }
 export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
-  text: 'By default the agents do this work. It runs research, tokens, implementation and QA end to end. After promotion they can also write the Figma variables and component from the repo. Every command stays runnable by hand, and a designer may still draw the Figma component instead of the agent. The Plectrum tokens plugin is the fallback when no agent is available. The agent does not skip the proposal either: it asks for the owner and files an open question when the decision is missing.',
+  text: 'Agents can help with research, tokens, implementation and QA. After promotion they can propose Figma variables in PrimeNG 21 and a component in Custom components on their respective branches. Designers can also start the component in Figma and bring its reviewed design to Core. Every command stays runnable by hand. The Plectrum tokens plugin is the fallback for token proposals when no agent is available. Neither route skips a recorded proposal and Core decision.',
   linkLabel: 'AI strategy → Subagents',
   linkPath: '/docs/docs-ai-strategy--docs#subagents',
 });
@@ -75,7 +77,7 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Owns the system',
       items: [
-        'libs/ui, libs/styles, tokens.json and the Plectrum UI Kit',
+        'libs/ui, libs/styles, tokens.json and the Plectrum package contract',
         'Records a decision on every proposal',
         'Reviews pull requests under libs/ and promotes candidates',
       ],
@@ -95,9 +97,9 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Designs against the source',
       items: [
-        'Core designers edit the UI Kit main file and run the plugin sync; they may also draw a core component from the repo by hand',
-        'Application designers work in proposals/{app} and never touch Primitive or Semantic collections',
-        'Both review stories against the UI Kit; proposals reach the core designers, not the main file',
+        'Candidate components live in PLECTRUM · Custom components; designers may start a proposal there before code exists',
+        'All token variables live in Plectrum DS · PrimeNG v21; token proposals use a separate branch of that file',
+        'Designers review stories and the Custom components design before Core implementation and publication',
       ],
     },
     {
@@ -106,7 +108,7 @@ export const Roles: StoryObj = cardsStory(
       title: 'Uses what is packaged',
       items: [
         'Installs the versioned Plectrum runtime packages — never source paths',
-        'Imports Core components; asks before importing a Candidate',
+        'Imports Core components; proposes a gap before reusing another team’s Candidate',
         'Never imports an App-specific component from another team',
       ],
     },

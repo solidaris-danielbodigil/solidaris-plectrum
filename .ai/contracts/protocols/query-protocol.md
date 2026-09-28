@@ -38,7 +38,7 @@ Do not invent a Control that is missing from `.metadata.ts` `props`. After `stor
 3. **Follow-up questions should be cheap.** Reason over cached data, not trigger new reads.
 4. **Prefer semantic tokens.** Never use primitive tokens directly in components.
 5. **Check PrimeNG first.** Before creating a custom component, verify no PrimeNG equivalent exists.
-6. **Repo → Figma is Plugin API.** Agent + Figma MCP when a session can write; Plectrum tokens plugin when it cannot. Never the main UI Kit. A designer may draw the Figma component by hand. See `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`.
+6. **Repo → Figma is Plugin API.** Agent + Figma MCP when a session can write; Plectrum tokens plugin when it cannot. Token proposals go to a PrimeNG 21 branch; component candidates go to a separate Custom components branch. Never either main file. A designer may start the component design before code exists. See `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md` for the historical transport choice.
 
 ---
 
@@ -48,7 +48,7 @@ Do not invent a Control that is missing from `.metadata.ts` `props`. After `stor
 
 ```
 1. Check PrimeNG MCP — does a vendor control cover the need?
-2. Check Figma MCP — extract the Plectrum UI Kit node
+2. Check Figma MCP — inspect the candidate in Custom components and resolve variables in PrimeNG 21
 3. Check index.json → components section (always; offline)
 4. When npm run storybook is up → docs-list / docs-show the catalogue
 5. If match found → read its .metadata.ts → check if it covers the use case

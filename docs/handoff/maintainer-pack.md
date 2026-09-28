@@ -173,6 +173,6 @@ Result, gaps found, date, participants: unresolved.
 
 ## P0/P1 handoff
 
-See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Pipelines and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`. The current end-to-end evidence and remaining external gates are in the [P9 acceptance record](p9-acceptance.md).
+See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Process and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`. The current end-to-end evidence and remaining external gates are in the [P9 acceptance record](p9-acceptance.md).
 
 The iSHARE components now import from `@solidaris-danielbodigil/pds-ui/patterns/ishare`; a major changeset records the root API removal. The private `pds-*` package release and portable toolkit are live; P7 evidence is in §5. The external candidate/adoption round trip and attended Figma proposal return remain open in the P9 record. The registry lists the Figma identity and publication details still to confirm.

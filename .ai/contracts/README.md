@@ -47,7 +47,7 @@ The CLI parses JSON and validates both its versioned schema and cross-field rule
 
 Candidate records identify the team/application, immutable component ID, origin repository/revision, metadata and evidence-backed history. `process.json` specifies each transition's responsible role and required evidence. Intake must independently authenticate that actor and authorize the role in P3.
 
-Adoption reports identify the registered app/team, installed package versions, source revision, observation date, reporter version, stable component IDs, evidence kind and known limitations. Validation is available; automated ingestion and freshness aggregation remain P4.
+Adoption reports identify the registered app/team, installed package versions, source revision, observation date, reporter version, stable component IDs, evidence kind and known limitations. Validation and freshness aggregation are implemented. External reporting remains opt-in and requires a reviewed report from a registered application; none has been merged yet.
 
 ## Distribution and compatibility
 
@@ -55,4 +55,4 @@ Core Angular components export from the main entry. CSS patterns belong to the s
 
 The toolkit package is versioned independently. Its exports include full metadata, schemas, token inventory, process, registry and compatibility; `plectrum init` installs editor adapters into an application repository and `plectrum help` renders the process contract. Its catalogue links resolve to the versioned Storybook of the installed runtime and toolkit pair, which exists only when that pair was released. Which pairs were published is recorded by the GitHub Release manifests, not by this file. Current `@solidaris/contracts` remains a workspace type alias for the Plectrum checkout. Consumer token checks live in the `pds-devkit` toolkit; central token scripts remain in this repository.
 
-See the [accepted identity and migration decision](../decisions/2026-09-25-pipeline-contracts-and-distribution.md). Storybook → **Docs / Pipelines and contracts** renders current process and operational configuration directly from these sources.
+See the [accepted identity and migration decision](../decisions/2026-09-25-pipeline-contracts-and-distribution.md). Storybook → **Docs / Process and contracts** renders current process and operational configuration directly from these sources.

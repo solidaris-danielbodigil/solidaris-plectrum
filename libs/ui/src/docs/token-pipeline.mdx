@@ -7,11 +7,11 @@ import * as Figures from './token-pipeline.stories';
 
 # Token pipeline
 
-The token pipeline moves design tokens between the Plectrum UI Kit in Figma, this design-system repository, and the applications that install it.
+The token pipeline moves design tokens between the Plectrum DS · PrimeNG v21 Figma file, this design-system repository, and the applications that install it. Component candidate designs live in a separate PLECTRUM · Custom components file.
 
 - **Figma** holds the design decisions (colours, radii, shadows, transitions, focus).
 - **The repository** imports them, generates CSS custom properties, documents them in this Storybook, and publishes versioned packages.
-- **Applications** (iSHARE, iCRM) install a package version and reference tokens as `var(--pds-*)`.
+- **External applications** install a package version and reference tokens as `var(--pds-*)`.
 
 Drift between Figma and CSS fails CI. No automated step writes the main Figma file.
 
@@ -71,16 +71,16 @@ Diagram legend, used on all pipeline pages: **orange** = Figma, **blue** = desig
   lanes={[
     { title: 'Figma', subtitle: 'designers', x: 0, w: 305, tone: 'design' },
     { title: 'Design-system repository', subtitle: 'Plectrum · Storybook', x: 327, w: 305, tone: 'system' },
-    { title: 'Applications', subtitle: 'iSHARE · iCRM', x: 655, w: 305, tone: 'app' },
+    { title: 'Applications', subtitle: 'separate team repositories', x: 655, w: 305, tone: 'app' },
   ]}
   nodes={[
-    { id: 'kit', x: 42, y: 80, w: 220, h: 76, tone: 'design', title: 'Plectrum UI Kit', lines: ['main Figma file', 'Primitive · Semantic · Component'] },
+    { id: 'kit', x: 42, y: 80, w: 220, h: 76, tone: 'design', title: 'PrimeNG 21 token file', lines: ['all token variables', 'Primitive · Semantic · Component'] },
     { id: 'branch', x: 42, y: 320, w: 220, h: 76, tone: 'design', title: 'Figma branch', lines: ['proposals/{app}', 'reviewed and merged by a designer'] },
     { id: 'json', x: 369, y: 80, w: 220, h: 76, tone: 'system', title: 'tokens.json', lines: ['imported Figma variables', 'ingestion source of truth'] },
     { id: 'css', x: 369, y: 200, w: 220, h: 76, tone: 'system', title: 'Generated CSS + Storybook', lines: ['--pds-* custom properties', 'Foundations pages'] },
     { id: 'code', x: 369, y: 320, w: 220, h: 76, tone: 'system', title: 'Code-owned tokens', lines: ['--pds-* declared in 01-settings', 'spacing, typography, features'] },
-    { id: 'pkg', x: 697, y: 200, w: 220, h: 76, tone: 'app', title: 'Published packages', lines: ['@solidaris-danielbodigil/pds-ui · styles · plectrum', 'versioned together'] },
-    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'iSHARE · iCRM', lines: ['install published versions', 'candidate tokens via PR'] },
+    { id: 'pkg', x: 697, y: 200, w: 220, h: 76, tone: 'app', title: 'Published packages', lines: ['runtime and toolkit', 'versioned releases'] },
+    { id: 'apps', x: 697, y: 320, w: 220, h: 76, tone: 'app', title: 'Team repositories', lines: ['install published versions', 'candidate tokens via PR'] },
   ]}
   edges={[
     { from: 'kit', to: 'json', label: '1 · plugin sync' },
@@ -234,10 +234,10 @@ Do not edit `*.generated.scss` or `tokens.generated.ts` by hand — `tokens:buil
     ['--dry-run', 'tokens:apply', 'Default. Print payload and branch key. Zero writes.'],
     ['--write', 'tokens:apply', 'POST /v1/files/:branchKey/variables. Needs FIGMA_TOKEN with file_variables:write (Enterprise) and Environment approval.'],
     ['--proposal path', 'tokens:apply', 'Alternate proposed.dtcg.json.'],
-    ['--file-key KEY', 'tokens:apply, tokens:pull-figma', 'apply: the main UI Kit key used to list branches. pull: the file to read. Default is the Plectrum UI Kit.'],
+    ['--file-key KEY', 'tokens:apply, tokens:pull-figma', 'apply: the PrimeNG 21 main key used to list token branches. pull: the token file to read. Default is PrimeNG 21.'],
     ['FIGMA_TOKEN', 'tokens:apply, tokens:pull-figma, tokens:notify-figma', 'Repo secret. Comments need file_comments:read/write; apply and pull need file_variables:read/write, which only Enterprise tokens can carry. Unset: apply prints the payload; pull and notify skip with a message.'],
-    ['FIGMA_FILE_KEY', 'tokens:pull-figma, tokens:notify-figma', 'File the comment thread and the pull target. May be a Figma branch key.'],
-    ['FIGMA_MAIN_FILE_KEY', 'tokens:apply', 'Main UI Kit key for the branch listing. Set in apply-to-figma.yml; never written to.'],
+    ['FIGMA_FILE_KEY', 'tokens:pull-figma, tokens:notify-figma', 'PrimeNG 21 main token file for the comment thread and pull target. Do not use a branch key for comments.'],
+    ['FIGMA_MAIN_FILE_KEY', 'tokens:apply', 'PrimeNG 21 main key for the token branch listing. Set in apply-to-figma.yml; never written to.'],
   ]}
 />
 

@@ -1,21 +1,27 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import * as Stories from './pipeline-contracts.stories';
 
-<Meta title="Docs/Pipelines and contracts" id="docs-pipeline-contracts" />
+<Meta title="Docs/Process and contracts" id="docs-pipeline-contracts" />
 
-# Pipelines and contracts
+# Process and contracts
 
 This page reads the shared process contract, team registry and compatibility declaration. The installed toolkit renders `plectrum help` and its agent guidance from the same process contract, so a changed step or command reaches all three together.
+
+This is the reference for **who acts, what evidence is required and which command runs where**. For token values and their Figma sync, see [Token pipeline](?path=/docs/docs-token-pipeline--docs). For CI and release tasks, see [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
 
 ## Application onboarding
 
 <Unstyled><Story of={Stories.Onboarding} /></Unstyled>
 
-## Teams to Plectrum and Figma
+## Application candidate to Plectrum and Figma
 
 <Unstyled><Story of={Stories.Contribution} /></Unstyled>
 
-## Figma to packages
+## Design-team component to Plectrum and packages
+
+<Unstyled><Story of={Stories.DesignComponent} /></Unstyled>
+
+## Figma tokens to packages
 
 <Unstyled><Story of={Stories.Design} /></Unstyled>
 

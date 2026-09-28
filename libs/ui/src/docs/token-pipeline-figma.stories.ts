@@ -14,7 +14,7 @@ export const InboundProcess: StoryObj = stepsStory([
   {
     who: 'Designer',
     tone: 'design',
-    title: 'Edit the variable in the Plectrum UI Kit',
+    title: 'Edit the variable in PrimeNG 21',
     detail:
       'Primitive and Semantic collections are the source of truth. Component collections reference them.',
   },
@@ -37,7 +37,7 @@ export const InboundProcess: StoryObj = stepsStory([
     tone: 'design',
     title: 'Comment in the Figma file',
     detail:
-      'The same report is posted as a comment thread in the Plectrum UI Kit — promoted or blocked — so the designer who pushed sees the outcome without GitHub. A comment is an annotation; no design data is written.',
+      'The same report is posted as a comment thread in PrimeNG 21 — promoted or blocked — so the designer who pushed sees the outcome without GitHub. A comment is an annotation; no design data is written.',
   },
   {
     who: 'Developer',
@@ -65,7 +65,7 @@ export const OutboundStatus: StoryObj = calloutStory({
   tone: 'info',
   title:
     'Repository → Figma is the Plugin API — agent first, plugin as fallback, REST parked',
-  text: 'On the Organization plan writes go through figma.variables. Default: an agent with Figma MCP and the branch proposals/{app} open. Fallback: the Plectrum tokens plugin when no agent is running. Both fetch proposed.dtcg.json and write the collection of the same name. A designer may still draw the Figma component by hand. tokens:apply and tokens:pull-figma still need the Enterprise-only Variables REST API; they remain the unattended alternative. The inbound PrimeUI plugin sync is unchanged.',
+  text: 'On the Organization plan token writes go through figma.variables on a PrimeNG 21 proposal branch. Default: an agent with Figma MCP. Fallback: the Plectrum tokens plugin. Both fetch proposed.dtcg.json. Component candidates live on a separate Custom components branch and may start with the design team before code exists. tokens:apply and tokens:pull-figma still need the Enterprise-only Variables REST API; they remain the unattended token alternative.',
 });
 
 export const OutboundOptions: StoryObj = cardsStory(
@@ -74,9 +74,9 @@ export const OutboundOptions: StoryObj = cardsStory(
       eyebrow: 'Default',
       tone: 'system',
       title: 'Agent + Figma MCP',
-      lead: 'Same Plugin API as the plugin. When a session can write, the agent upserts selected tokens from proposed.dtcg.json and, after core promotion, may build the Figma component from the repo.',
+      lead: 'Same Plugin API as the plugin. The agent upserts selected tokens on a PrimeNG 21 branch and may build the component on a separate Custom components branch.',
       items: [
-        'Branch-only: refuse the main UI Kit file key. Collection proposals/{app} is hidden from publishing.',
+        'Branch-only: refuse both main Figma file keys. Token collection proposals/{app} is hidden from publishing.',
         'Variables first, then frames bound to those variables — not hex from a screenshot.',
         'A designer may draw the component by hand instead. Merge and publish stay human.',
         'Attended: there is no unattended CI write on the Organization plan.',
@@ -114,8 +114,8 @@ export const OutboundInterim: StoryObj = calloutStory({
   title: 'How to apply a code-owned token',
   items: [
     'npm run tokens:propose writes tools/tokens/proposed.dtcg.json (committed; CI fails if it is stale).',
-    'Open the Figma branch proposals/{app}. Agent + Figma MCP when a session is running; otherwise Plectrum tokens — fetch, select, plan, apply. Setup: tools/figma-plugin/README.md and tools/tokens/PLUGIN_SETUP.md.',
-    'After promotion to core, design the Figma component from the repo on that branch (agent or a designer). Bind variables; do not paint from a screenshot.',
+    'Open the PrimeNG 21 token branch proposals/{app}. Agent + Figma MCP when a session is running; otherwise Plectrum tokens — fetch, select, plan, apply. Setup: tools/figma-plugin/README.md and tools/tokens/PLUGIN_SETUP.md.',
+    'Design the component on a separate Custom components branch (agent or designer). A reviewed design can also precede Core code. Bind published variables; do not paint from a screenshot.',
     'Do not expect Apply tokens to Figma or Figma library publish to write anything: both stop at the first Variables REST call.',
     'Decisions: .ai/decisions/2026-09-10-repo-to-figma-plugin.md, .ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md.',
   ],
@@ -141,14 +141,14 @@ export const OutboundProcess: StoryObj = stepsStory([
     tone: 'design',
     title: 'Write selected tokens on the branch',
     detail:
-      'With the Figma branch proposals/{app} open, apply selected names from proposed.dtcg.json through the Plugin API. Default: agent + Figma MCP. Fallback: Plectrum tokens plugin (nothing is selected after fetch). Writes go to the collection proposals/{app} only. Refuse the main UI Kit file key. tokens:apply remains the Enterprise REST alternative.',
+      'With the PrimeNG 21 branch proposals/{app} open, apply selected names from proposed.dtcg.json through the Plugin API. Default: agent + Figma MCP. Fallback: Plectrum tokens plugin (nothing is selected after fetch). Writes go to the collection proposals/{app} only. Refuse both main file keys. tokens:apply remains the Enterprise REST alternative.',
   },
   {
     who: 'Agent or designer',
     tone: 'design',
-    title: 'Figma component from the repo (after core)',
+    title: 'Figma component in Custom components',
     detail:
-      'Once the coded component is core, build or update the UI Kit component on the same branch. Variables first, then frames bound to those variables. An agent may do this; a designer may draw it by hand. Both are valid.',
+      'Use a separate Custom components branch. An agent or designer can build from reviewed Core code; a designer can also propose the component first. Bind published PrimeNG 21 variables. The token branch is never the component destination.',
   },
   {
     who: 'Designer',
@@ -162,7 +162,7 @@ export const OutboundProcess: StoryObj = stepsStory([
     tone: 'design',
     title: 'Merge to main and publish the library',
     detail:
-      'Publishing is only possible from main. Other files see the variables after publish.',
+      'Publish the PrimeNG 21 variable library and the Custom components library through their own reviewed merges when each changed.',
   },
   {
     who: 'CI',
@@ -182,7 +182,7 @@ export const Guardrails: StoryObj = calloutStory({
     '--only is required; --all is an explicit opt-in. The first real write never dumps every code-owned token.',
     'A real write requires workflow_dispatch plus the figma-write GitHub Environment. First apply only on a throwaway branch.',
     'POST /variables is atomic: one invalid variable rejects the whole batch. Nothing is partially written.',
-    'The plugin and any Figma MCP write refuse a missing file key and the main UI Kit key. Variables REST API calls stay Enterprise only; on the Organization plan apply and pull still stop with 403 Invalid scope.',
+    'The plugin and any Figma MCP write refuse a missing file key and either configured main file key. Variables REST API calls stay Enterprise only; on the Organization plan apply and pull still stop with 403 Invalid scope.',
   ],
 });
 
@@ -208,7 +208,7 @@ export const ComponentPromotion: StoryObj = stepsStory([
     tone: 'design',
     title: 'Design the Figma component from the repo',
     detail:
-      'On proposals/{app}: upsert remaining tokens, then build the UI Kit component bound to those variables. An agent via Figma MCP, or a designer by hand. Merge and publish stay human.',
+      'Upsert remaining variables on the PrimeNG 21 proposal branch. Build the component on a separate Custom components branch, bound to published variables. Merge and publish stay human.',
   },
   {
     who: 'Developer',
@@ -231,7 +231,7 @@ export const Reference: StoryObj = cardsStory(
       title: 'Outbound CLI behaviour',
       items: [
         'propose-to-figma diffs code-declared --pds-* against tokens.json and maps dotted paths to Figma groups (names cannot contain . { }).',
-        'apply-to-figma lists branches on the main UI Kit (GET /v1/files/:key?branch_data=true), reads the branch variables, then POSTs CREATE / UPDATE into the collection proposals/{app} on that branch key. --branch-key skips the listing when it returns no branches.',
+        'apply-to-figma lists branches on the PrimeNG 21 token file (GET /v1/files/:key?branch_data=true), reads branch variables, then POSTs CREATE / UPDATE into collection proposals/{app}. --branch-key skips the listing when it returns no branches.',
         'POST /variables is Tier 3 rate-limited with a ~4 MB body limit and atomic. Enterprise only: on the Organization plan the first GET returns 403 Invalid scope and the CLI stops.',
       ],
     },
