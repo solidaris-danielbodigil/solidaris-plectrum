@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "toolkit-snapshot",
-  "toolkitVersion": "0.3.0",
+  "toolkitVersion": "0.3.1",
   "sourceRepository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "components": [
     {

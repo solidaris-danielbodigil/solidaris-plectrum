@@ -2,18 +2,7 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "profile-card-design-deprecation",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-devkit",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Mark Profile Card as deprecated in the distributed catalogue and link its proposed Profile header design. The existing Angular export remains available; no replacement component is published yet."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
