@@ -60,7 +60,7 @@
     "registry": "https://npm.pkg.github.com",
     "publicationScope": "@solidaris-danielbodigil",
     "visibility": "private",
-    "publicationEnabled": false,
+    "publicationEnabled": true,
     "reportTransport": "reviewed-pull-request",
     "reportIngestionEnabled": false,
     "editors": [
@@ -77,8 +77,7 @@
     "pending": [
       "Prove candidate promotion and adoption from a registered external application",
       "Verify token/component Figma library identities with design owners",
-      "Confirm external reporting after a registered application's reviewed report",
-      "Publish and verify the new private pds-* packages under the personal account after the first package names were public"
+      "Confirm external reporting after a registered application's reviewed report"
     ]
   }
 }
