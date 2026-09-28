@@ -47,7 +47,7 @@ The CLI parses JSON and validates both its versioned schema and cross-field rule
 
 Candidate records identify the team/application, immutable component ID, origin repository/revision, metadata and evidence-backed history. `process.json` specifies each transition's responsible role and required evidence. Intake must independently authenticate that actor and authorize the role in P3.
 
-Adoption reports identify the registered app/team, installed package versions, source revision, observation date, reporter version, stable component IDs, evidence kind and known limitations. Validation is available; automated ingestion and freshness aggregation remain P4.
+Adoption reports identify the registered app/team, installed package versions, source revision, observation date, reporter version, stable component IDs, evidence kind and known limitations. Validation and freshness aggregation are implemented. External reporting remains opt-in and requires a reviewed report from a registered application; none has been merged yet.
 
 ## Distribution and compatibility
 

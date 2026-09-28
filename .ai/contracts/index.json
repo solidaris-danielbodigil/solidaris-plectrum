@@ -568,7 +568,7 @@
       "name": "ProfileCard",
       "path": "libs/ui/src/lib/profile-card/profile-card.component.ts",
       "category": "molecules",
-      "status": "core",
+      "status": "deprecated",
       "owner": "design-system",
       "metadata": "libs/ui/src/lib/profile-card/profile-card.metadata.ts",
       "bemBlock": "c-profile-card",
@@ -963,8 +963,9 @@
     "tokenFiles": 48,
     "primeNgMappings": 15,
     "byStatus": {
-      "core": 18,
-      "app": 2
+      "core": 17,
+      "app": 2,
+      "deprecated": 1
     }
   }
 }
