@@ -6,7 +6,7 @@ import * as Stories from './token-finder.stories';
 
 # Find a token
 
-A token is a named value. Write `var(--pds-*)`. Do not copy the colour or the size.
+A token is a named value. In application code, use `var(--pds-*)`; in Figma, use the published variables in Plectrum DS · PrimeNG v21. Do not copy the colour or the size.
 
 Pick what you are styling; the finder answers with the rule to follow, the snippet shape to write, and the live list of matching tokens — read from the compiled stylesheet, so it is always current.
 
@@ -22,8 +22,8 @@ Pick what you are styling; the finder answers with the rule to follow, the snipp
     ['Is it layout (flex, gap, padding, overflow)?', 'o-flex / o-layout classes in the template — never CSS in 06-components'],
     ['Is it static chrome (border, radius, resting shadow)?', 'u-* utility classes in the template'],
     ['Is there a semantic role for it?', 'Use the role (--pds-color-text, panel-border) — never a hue step like blue-500'],
-    ['Is the value component-specific?', 'Add a component token in 01-settings first, then var(--pds-*) in SCSS'],
-    ['Does PrimeNG own the element?', 'Bridge --p-* to --pds-* in 01-settings/_settings.{component}.scss'],
+    ['Is the value component-specific?', 'Use an existing component token. If none fits, propose one; Core adds it in 01-settings before application code uses var(--pds-*)'],
+    ['Does PrimeNG own the element?', 'Use the Plectrum theme. If it needs a new --p-* to --pds-* bridge, propose the gap; Core maintains that bridge in 01-settings'],
   ]}
 />
 

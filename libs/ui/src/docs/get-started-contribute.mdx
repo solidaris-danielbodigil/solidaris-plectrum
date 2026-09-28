@@ -43,7 +43,7 @@ For an `approved-candidate` decision, in the **application repository** with the
   <Story of={Figures.AppLayer} />
 </Unstyled>
 
-## Change Plectrum directly
+## Contribute to Plectrum Core
 
 ### Start from a reviewed Figma design
 
@@ -98,14 +98,14 @@ Evidence records and commands for each step: [candidate records](https://github.
 
 ## Status and owner
 
-Every component docs page opens with two badges from its `.metadata.ts` `governance` block. The central index carries the same two fields, so agents and audits read one source.
+Every metadata-backed Plectrum component page opens with two badges from its `.metadata.ts` `governance` block. The central index carries the same two fields, so agents and audits read one source.
 
 <DocsTable
   headers={['Status', 'Meaning', 'Who may import it', 'What changes it']}
   rows={Object.values(STATUS_PRESENTATION).map((status) => [status.label, status.hint.replaceAll('{owner}', 'the owning team'), status.importers, status.changedBy])}
 />
 
-The **owner** is a team ID from the shared registry below — the only values metadata, the scaffolder and candidate records accept. A new team is added once, to the registry.
+The **owner** is a team ID from the shared registry below — the only values metadata, the scaffolder and candidate records accept. For a new application, ask Core to add the real team, application and repository URL to `.ai/contracts/registry.json` before running `plectrum init`. Local demo entries do not represent external adoption.
 
 <Unstyled>
   <Story of={Figures.Teams} />

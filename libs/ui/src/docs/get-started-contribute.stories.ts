@@ -6,7 +6,7 @@ import { calloutStory, cardsStory, stepsStory } from './docs-figure-stories';
 import { journeySteps, outcomeCards, routeSteps, teamCards } from '../storybook/process-docs';
 
 const meta: Meta = {
-  title: 'Get started/Figures/Contribute',
+  title: 'Start here/Figures/Contribute',
   tags: ['!dev'],
   parameters: { layout: 'padded' },
 };
@@ -108,7 +108,7 @@ export const Roles: StoryObj = cardsStory(
       title: 'Uses what is packaged',
       items: [
         'Installs the versioned Plectrum runtime packages — never source paths',
-        'Imports Core components; asks before importing a Candidate',
+        'Imports Core components; proposes a gap before reusing another team’s Candidate',
         'Never imports an App-specific component from another team',
       ],
     },

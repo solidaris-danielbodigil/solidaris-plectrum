@@ -10,6 +10,10 @@ import { DISTRIBUTED_PACKAGES, PACKAGE_NAMES, PEER_RANGES, REGISTRY } from '../s
 An application team installs versioned packages, initializes the matching toolkit in its own repository and consumes CSS custom properties. No token values are copied and no Plectrum folder is copied into the application.
 
 <Unstyled>
+  <Story of={Figures.Release} />
+</Unstyled>
+
+<Unstyled>
   <Story of={Figures.InstallFlow} />
 </Unstyled>
 
@@ -18,7 +22,7 @@ An application team installs versioned packages, initializes the matching toolki
 <ul>
   <li>Peers: {Object.entries(PEER_RANGES).map(([name, range]) => `${name} ${range}`).join(' · ')}.</li>
   <li>Read access to the {REGISTRY.operations.visibility} packages in {REGISTRY.operations.registry} under <code>{REGISTRY.operations.publicationScope}</code>.</li>
-  <li>Your team and application registered in the central team registry: {REGISTRY.applications.length} application(s) are registered today. See <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Contribute → Status and owner</a>.</li>
+  <li>Before <code>plectrum init</code>, ask the Core team to register your team, application and repository URL in the <a href="?path=/docs/get-started-contribute--docs#status-and-owner">central registry</a>. Existing local demo entries are not evidence of an external team's adoption.</li>
 </ul>
 
 ## Install the packages
@@ -56,7 +60,7 @@ Open Sans is not bundled. Load it yourself — a font service link or a self-hos
 
 Install `bootstrap-icons`, then add `node_modules/bootstrap-icons/font/bootstrap-icons.css` to the `styles` array in `angular.json`.
 
-This app supports what Angular supports by default: current Chrome, Edge, Firefox and Safari, desktop and mobile. Add your own browser list only if you must support something older.
+Plectrum targets the browsers supported by its Angular version: current Chrome, Edge, Firefox and Safari, desktop and mobile. Define an application-specific browser policy if you must support something older.
 
 ## Wire the stylesheet
 
