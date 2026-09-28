@@ -105,6 +105,8 @@ Owner: unresolved · Verified: unresolved
 
 ## 6. Quality gates and troubleshooting
 
+For candidate, adoption, Figma, managed-toolkit, review, publishing and documentation failures, follow the [pipeline recovery guide](pipeline-recovery.md). It identifies the source, retry action and evidence needed to close each stage.
+
 What blocks (`.github/workflows/ci.yml`):
 
 | Gate                                           | Command                                                    | Blocks                                  |
@@ -171,6 +173,6 @@ Result, gaps found, date, participants: unresolved.
 
 ## P0/P1 handoff
 
-See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Pipelines and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`.
+See `.ai/decisions/2026-09-25-pipeline-contracts-and-distribution.md` and Storybook → Docs → Pipelines and contracts. Run `npm run contracts:generate -- --check`, `npm run contracts:check`, `npm run docs:check` and `npm run test:pipelines`. The current end-to-end evidence and remaining external gates are in the [P9 acceptance record](p9-acceptance.md).
 
-The iSHARE components now import from `@solidaris-danielbodigil/ui/patterns/ishare`; a major changeset records the root API removal. Private GitHub Packages settings are prepared in `registry.json`, but scope migration/publication and the portable toolkit remain later phases. The registry lists the reviewer/Figma configuration still to confirm.
+The iSHARE components now import from `@solidaris-danielbodigil/pds-ui/patterns/ishare`; a major changeset records the root API removal. The private `pds-*` package release and portable toolkit are live; P7 evidence is in §5. The external candidate/adoption round trip and attended Figma proposal return remain open in the P9 record. The registry lists the Figma identity and publication details still to confirm.

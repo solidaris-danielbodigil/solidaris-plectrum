@@ -40,7 +40,7 @@ isProject: false
 
 # Plectrum pipelines, team toolkit and documentation SSOT
 
-Created: 2026-09-24. Updated: 2026-09-28. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1. P6 foundation is merged, with its live Figma trial awaiting the proposal branch URL and approved candidate. P7's private package release, clean registry install and matching versioned Storybook passed their live gates on 2026-09-28; the corrected registry snapshot is now published in devkit 0.2.1. P8–P9 remain pending. Required Code Owner review on `main` has been restored.
+Created: 2026-09-24. Updated: 2026-09-28. Status: P0–P2 merged. P3 intake is proven inside this repo (submit, revise, withdraw of `ishare-temporary-probe`); a registered external candidate and Core promotion remain open. P4 catalogue labelling is on `main`; a registered external adoption report remains open. P5 has one live Figma plugin promotion on `main` at manifest version 2.0.1. P6 foundation is merged, with its live Figma trial awaiting the proposal branch URL and approved candidate. P7's private package release, clean registry install and matching versioned Storybook passed their live gates on 2026-09-28; the corrected registry snapshot is now published in devkit 0.2.1. P8 merged in PR #37 with its shared-source documentation checks green. P9 is in progress; external repository, adoption, candidate and Figma return evidence remain open. Required Code Owner review on `main` has been restored.
 
 ## Outcome
 
@@ -471,7 +471,7 @@ P7's package/contract/documentation release acceptance has been exercised, but *
 
 ## P8 shared-source documentation — 2026-09-28
 
-Branch: `codex/plectrum-p8-storybook-ssot` from `main` at `761abb9`. Not merged; P8 stays **in progress** until CI passes on the pull request.
+Branch: `codex/plectrum-p8-storybook-ssot` from `main` at `761abb9`. [PR #37](https://github.com/solidaris-danielbodigil/solidaris-plectrum/pull/37) merged on 2026-09-28 as `49093e42f1d4b56d6f69f5748294deb8add0e7e1`; P8's shared-source documentation work is **complete**. External journey proof belongs to P9.
 
 - `process.json` 1.3.0 is the one source for toolkit help, agent guidance and Storybook process pages. It gained command summaries, the four missing consumer commands (`catalogue`, `doctor`, `validate`, `tokens check`), toolkit notes, the onboarding journey (`install`, `initialize`, `build`, `validate`, `upgrade`), a Plectrum-direct step, journey orderings, one outcome per `proposalDecisionSchema` value, routes by repository context and the Storybook MCP capability. A versioned `processSchema` plus reference checks validate it in `contracts:check`; the toolkit ships `process.v1.schema.json`.
 - Toolkit: `plectrum help`, `rules/consumer.md` (generated), role text (`{{command:id}}` placeholders), baseline instructions and the generated CI workflow render from the installed contract. `self-check` fails when an advertised command has no handler or a handler is unadvertised. Catalogue and doctor link to the versioned Storybook of the installed runtime/toolkit pair, labelled as existing only if that pair was released.
@@ -492,3 +492,14 @@ Decisions the contracts do not settle (not invented, rendered as the contract st
 - `proposalDecisionSchema` has no "Core builds it" value; the direct Plectrum route has `decision: null`. `candidate:record` records `owner: design-system` for `app-specific`, while the docs call app-specific work team-owned. The ownership meaning of `app-specific` needs a Core decision.
 - Storybook MCP `test-run` is available (addon-mcp 10.6 with addon-vitest installed); docs now call it local feedback with `npm run test-storybook` as the gate. Whether agents may rely on it is a policy choice to confirm.
 - The toolkit cannot know whether the installed runtime/toolkit pair was released; its versioned links say so instead of claiming it.
+
+## P9 end-to-end acceptance — 2026-09-28
+
+Branch: `codex/plectrum-p9-acceptance` from `main` at `49093e4`. P9 is **in progress**. The scenario-by-scenario [acceptance record](../../docs/handoff/p9-acceptance.md) distinguishes local/CI evidence from the required live external proofs; the [recovery guide](../../docs/handoff/pipeline-recovery.md) covers candidate, adoption, managed toolkit, Code Owner, Figma, package and Pages incidents.
+
+- [PR #38](https://github.com/solidaris-danielbodigil/solidaris-plectrum/pull/38) is still open and mergeable; all six required CI jobs passed. Its version bump would make the P8 toolkit `0.3.0`. No `0.3.0` package or matching versioned Storybook is claimed until merge and protected publication.
+- Existing `pack-smoke` provides a disposable Angular consumer outside the monorepo and simulates candidate/adoption transport. The prior P7 release proves private registry installation. Neither proves a real application's package read access, a merged external candidate/adoption record or an attended Figma return.
+- Migrated existing identities and records were audited: three applications still have `local-demo` identity; `ishare-temporary-probe` is a withdrawn historical record; iSHARE patterns use the secondary entry. No external team was invented or enrolled. Copied-agent users and a destination knowledge base still require a named receiving repository/owner.
+- Superseded instructions claiming an unpublished private devkit or an `@solidaris/tokens-cli` consumer command were corrected. The historical P0/P1 ADR is labelled as a baseline, and the maintainer pack links to current recovery and acceptance evidence.
+- Live prerequisites requested from the owner: an external application repository/team, and the `proposals/plectrum` Figma branch URL plus an approved candidate. Until supplied, P3/P4/P6 live gates and P9 completion remain open.
+- Verification on this branch: docs SSOT/release/process checks, generated consumer install command check, toolkit self-check/version sync, devkit tests (5), candidate check and adoption check passed. The pipeline unit suite passed 7 of 8; its isolated tarball case requires `npm_execpath` and could not run in this sandbox because the system npm CLI is inaccessible. The same `pack-smoke` CI job passed on PR #38. `git diff --check` passed.
