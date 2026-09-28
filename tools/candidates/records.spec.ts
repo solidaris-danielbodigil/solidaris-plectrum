@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import semver from 'semver';
 import { readCandidateRecords } from './records';
 import { generateCandidateListing } from './generate';
 import { candidateRecordFromFlags } from './record';
@@ -16,7 +17,8 @@ test('external candidate records retain identity, revision and ownership across 
     registry.teams.push({ id: 'team', label: 'Team', kind: 'application', reviewer: null });
     registry.applications.push({ id: 'app', team: 'team', label: 'App', repository: 'https://github.com/team/app', kind: 'external' });
     write('.ai/contracts/registry.json', registry);
-    write('.ai/contracts/compatibility.json', JSON.parse(fs.readFileSync(path.join(sourceRoot, '.ai/contracts/compatibility.json'), 'utf8')));
+    const compatibility = JSON.parse(fs.readFileSync(path.join(sourceRoot, '.ai/contracts/compatibility.json'), 'utf8'));
+    write('.ai/contracts/compatibility.json', compatibility);
     const sha = 'a'.repeat(40);
     const metadata = structuredClone(JSON.parse(fs.readFileSync(path.join(sourceRoot, 'tools/devkit/assets/catalogue.json'), 'utf8')).components[0].metadata);
     metadata.component.id = 'team:card';
@@ -29,6 +31,9 @@ test('external candidate records retain identity, revision and ownership across 
     const submission = { schemaVersion: 1, id: 'app-card', proposalId: 'app-card', operation: 'submit', componentId: 'team:card', team: 'team', application: 'app', origin: { repository: 'https://github.com/team/app', revision: sha, path: 'src/plectrum-candidates/card/card.metadata.json' }, metadata, toolkitVersion: '0.2.0', processVersion: '1.1.0', packages: ['pds-ui', 'pds-plectrum', 'pds-styles'].map((name) => ({ name: `@solidaris-danielbodigil/${name}`, version: '1.0.0' })), preview: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, checks: { url: 'https://github.com/team/app/actions/runs/1', revision: sha }, submittedAt: '2026-09-25T00:00:00.000Z' };
     write('.ai/candidates/submissions/app-card.json', submission);
     assert.equal(readCandidateRecords(root).submissions.size, 1);
+    write('.ai/candidates/submissions/app-card.json', { ...submission, toolkitVersion: semver.inc(compatibility.toolkitVersion, 'patch') });
+    assert.throws(() => readCandidateRecords(root), /incompatible toolkit\/process version/);
+    write('.ai/candidates/submissions/app-card.json', submission);
     const review = candidateRecordFromFlags(root, 'review', ['--id', 'app-card', '--decision', 'accepted', '--pull-request', `${registry.repository}/pull/1`, '--reviewed-by', '@danielbodi', '--note', 'Source and preview reviewed']) as { sourceRevision: string; reviewedBy: string };
     assert.equal(review.sourceRevision, sha);
     assert.equal(review.reviewedBy, '@danielbodi');

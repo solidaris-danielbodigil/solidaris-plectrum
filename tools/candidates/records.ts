@@ -57,7 +57,15 @@ export function validateSubmission(submission: Submission, proposal: Proposal, r
   if (submission.preview.revision !== submission.origin.revision || submission.checks.revision !== submission.origin.revision) throw new Error(`${submission.id}: preview and checks must point to source revision`);
   if (new URL(submission.preview.url).protocol !== 'https:' || new URL(submission.checks.url).protocol !== 'https:') throw new Error(`${submission.id}: preview and checks must use HTTPS`);
   if (!submission.origin.path.endsWith('.metadata.json') || submission.origin.path.includes('..')) throw new Error(`${submission.id}: unsafe metadata path`);
-  if (!semver.satisfies(submission.toolkitVersion, `^${compatibility.toolkitVersion}`) || !semver.satisfies(submission.processVersion, compatibility.processVersionRange)) throw new Error(`${submission.id}: incompatible toolkit/process version`);
+  const currentToolkit = semver.parse(compatibility.toolkitVersion);
+  const submittedToolkit = semver.parse(submission.toolkitVersion);
+  // A patch release does not invalidate candidates created with an earlier
+  // patch of the same toolkit line. Withdrawn records remain historical.
+  const toolkitCompatible = currentToolkit && submittedToolkit &&
+    currentToolkit.major === submittedToolkit.major &&
+    currentToolkit.minor === submittedToolkit.minor &&
+    semver.lte(submittedToolkit, currentToolkit);
+  if (submission.operation !== 'withdraw' && (!toolkitCompatible || !semver.satisfies(submission.processVersion, compatibility.processVersionRange))) throw new Error(`${submission.id}: incompatible toolkit/process version`);
   const required = ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-plectrum', '@solidaris-danielbodigil/pds-styles'];
   // Withdrawn submissions are immutable historical records. Keep the package
   // identities they actually used before the first GitHub Packages release.
