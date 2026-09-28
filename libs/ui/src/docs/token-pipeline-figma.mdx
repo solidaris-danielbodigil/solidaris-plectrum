@@ -180,13 +180,13 @@ Applications install published packages. They never copy files from this reposit
     ['@solidaris-danielbodigil/pds-ui', 'Angular components (Angular Package Format, public-api.ts). Storybook metadata stays in this workspace.'],
     ['@solidaris-danielbodigil/pds-plectrum', 'PrimeNG presets, providePlectrum(), tokens.json.'],
     ['@solidaris-danielbodigil/pds-styles', 'ITCSS source. Applications add node_modules/@solidaris-danielbodigil/pds-styles/src to their Sass include paths.'],
-    ['@solidaris/tokens-cli', 'propose / apply / lint / pull commands. Application repositories do not copy scripts.'],
+    ['@solidaris-danielbodigil/pds-devkit', 'Versioned contracts, rules and the plectrum CLI. Run init/update/check in an application repository; central Figma token commands stay in Plectrum.'],
   ]}
 />
 
 - Changesets version the three libraries together on merge. The registry is abstracted through `publishConfig` and `.npmrc.example`.
 - `npm run pack:smoke` packs the tarballs, installs them into a throwaway Angular application without path aliases, and builds it.
-- Application repositories copy `tools/consumers/renovate.json` or `dependabot.yml` so design-system bumps arrive as pull requests, and run `pds-tokens-lint` so hard-coded hex/px values and unknown `--pds-*` names fail their CI.
+- Application repositories can adopt the Renovate configuration in `tools/consumers/renovate.json` (or equivalent Dependabot configuration) so design-system bumps arrive as pull requests. Run the installed toolkit's `plectrum check --profile ci` in their CI; the central `tokens:lint` command belongs to the Plectrum repository.
 - Storybook has two modes: source (`npm run storybook`) and packed `dist/` in CI (`npm run build-storybook:packed`).
 
 ### Component promotion

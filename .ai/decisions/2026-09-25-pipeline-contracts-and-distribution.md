@@ -1,6 +1,6 @@
 # Pipeline identities, contracts and package boundaries
 
-Status: accepted for P0/P1. Distribution and external ingestion remain P2–P7 work.
+Status: accepted for P0/P1. This is a historical decision record; phase forecasts below describe the 25 September baseline. The current release and external-acceptance status is tracked in the [pipeline plan](../../.cursor/plans/plectrum-pipelines-toolkit-and-ssot.plan.md) and [P9 record](../../docs/handoff/p9-acceptance.md). The published private package names are `@solidaris-danielbodigil/pds-*`.
 
 ## Identity and sources
 

@@ -89,3 +89,5 @@ Read from `.github/workflows/ci.yml` by `npm run contracts:generate`; the table 
 />
 
 Review rules the gates do not encode — the required Code Owner review, the design-system review under `libs/`, the token risk levels — live in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`. Release flow: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs). Token commands: [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
+
+When a stage fails, use the <a href={`${REGISTRY.repository}/blob/main/docs/handoff/pipeline-recovery.md`}>pipeline recovery guide</a> for the source, retry step and evidence required to close it. The <a href={`${REGISTRY.repository}/blob/main/docs/handoff/p9-acceptance.md`}>P9 acceptance record</a> distinguishes live external proof from local smoke checks.
