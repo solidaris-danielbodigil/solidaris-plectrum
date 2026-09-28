@@ -14,7 +14,7 @@ export function refuseWrite(
     return {
       blocked: true,
       reason:
-        'figma.fileKey is unavailable. Import or publish this plugin privately (enablePrivatePluginApi) and open a Figma branch — never the main UI Kit.',
+        'figma.fileKey is unavailable. Import or publish this plugin privately (enablePrivatePluginApi) and open a PrimeNG 21 token branch — never a main file.',
     };
   }
   if (fileKey === MAIN_FILE_KEY || fileKey === COMPONENT_LIBRARY_FILE_KEY) {

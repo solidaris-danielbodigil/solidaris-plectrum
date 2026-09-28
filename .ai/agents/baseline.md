@@ -36,7 +36,7 @@ Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.
 
 | Server | Purpose |
 | --- | --- |
-| Figma (`{{mcp:figma}}`) | Plectrum UI Kit — SSOT for all visual decisions |
+| Figma (`{{mcp:figma}}`) | Custom components for candidate designs; PrimeNG 21 for all token variables |
 | PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
 | Storybook (`{{process:capabilities.storybookMcp.endpoint}}`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `{{process:capabilities.storybookMcp.requires}}` |
 

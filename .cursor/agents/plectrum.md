@@ -39,7 +39,7 @@ The specialist subagents are `UX Researcher`, `UX Engineer`, `Frontend Dev`,
 Tell specialists to follow this order. Full trees: `.ai/contracts/protocols/query-protocol.md`.
 
 1. **PrimeNG MCP** — does a vendor control exist?
-2. **Figma MCP** — Plectrum UI Kit node
+2. **Figma MCP** — Custom components node for the candidate; PrimeNG 21 for variable definitions
 3. **`.ai/contracts/index.json`** — always; paths, BEM, PrimeNG wraps, `uses` / `usedBy`, status, owner
 4. **Storybook MCP** when the catalogue is up — `docs-list` / `docs-show`. Down → stay on the index
 5. Scaffold with `npm run pds:component -- --name=<name> --owner=<team>`. After the stub: `docs-show` a sibling, then `get-storybook-story-instructions`

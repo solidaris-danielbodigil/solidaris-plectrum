@@ -19,13 +19,13 @@
 
 | Server | URL | Use for |
 |---|---|---|
-| Figma | `http://127.0.0.1:3845/mcp` | Inspect Plectrum UI Kit nodes. Write variables and components onto a Figma **branch** via `use_figma` (never the main UI Kit) |
+| Figma | `http://127.0.0.1:3845/mcp` | Inspect Custom components candidates and PrimeNG 21 variables. Write each onto its own Figma **branch** via `use_figma` (never either main file) |
 | PrimeNG | `https://primeng.org/mcp` | Query component API, props, slots, variants, examples |
 | Storybook | `http://localhost:6006/mcp` | Live catalogue — `docs-list`, `docs-show`, `stories-preview`. Needs `npm run storybook`. |
 
 Order of operations:
 1. **PrimeNG MCP** — does an existing component cover the need?
-2. **Figma MCP** — extract exact design specs from the Plectrum UI Kit
+2. **Figma MCP** — extract candidate specs from Custom components and variables from PrimeNG 21
 3. **Storybook MCP** (when `npm run storybook` is up) — `docs-list` / `docs-show` before inventing a sibling
 4. Only write custom code when none of the three cover the requirement. Offline fallback: `.ai/contracts/index.json`.
 
@@ -49,11 +49,11 @@ Storybook MCP does not scaffold (`pds:component` does). Its `test-run` uses the 
 
 ## 3. Figma UI Kit
 
-- **Main UI Kit**: https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-?node-id=6961-92390
-- This is the **SSOT for all visual decisions**
+- **PrimeNG 21 and all token variables**: https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-
+- **Component candidates and design-origin proposals**: https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components
 - Always inspect the Figma node via Figma MCP before implementing — do not guess at spacing or colour values
 - Custom components file: `https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-·-Custom-components`
-- **Writes** go to a Figma branch (`proposals/{app}`), never this main file key. Default: agent + Figma MCP. Fallback: Plectrum tokens plugin. A designer may still draw the component by hand. Decision: `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`
+- **Writes** go to separate Figma branches: PrimeNG 21 for variables and Custom components for candidates, never either main file. Default: agent + Figma MCP. Fallback for tokens: Plectrum tokens plugin. A designer may start the component before code exists. Historical transport decision: `.ai/decisions/2026-09-12-repo-to-figma-agent-and-plugin.md`
 
 ---
 
@@ -119,8 +119,8 @@ Figma MCP `use_figma` is the same Plugin API as the Plectrum tokens plugin. Use 
 
 1. `npm run tokens:propose` — `proposed.dtcg.json` is the catalog, not the write list.
 2. Open (or ask a Full-seat designer to create) the branch `proposals/{app}`. Figma has no API for branch creation.
-3. Upsert **selected** writable tokens only. Same guards as the plugin: refuse the main file key `YNZ1DlSjDNUXrvkxlSp10D`, never retype or delete, bind `codeSyntax.WEB` to `var(--pds-…)`.
-4. After promotion to `core`, build the Figma component on that branch: variables first, then frames bound to those variables. Do not paint hex from a screenshot. A Storybook capture is a visual check only.
+3. On a PrimeNG 21 token branch, upsert **selected** writable tokens only. Refuse both main file keys, never retype or delete, and bind `codeSyntax.WEB` to `var(--pds-…)`.
+4. On a **separate Custom components branch**, build the component from reviewed Core code or inspect an existing design-team proposal. Bind published PrimeNG 21 variables; do not paint hex from a screenshot. A Storybook capture is a visual check only.
 5. A designer may draw the component by hand instead. Merge and publish stay human.
 
 When no agent is available, a designer runs the Plectrum tokens plugin (`tools/figma-plugin`) for tokens only.

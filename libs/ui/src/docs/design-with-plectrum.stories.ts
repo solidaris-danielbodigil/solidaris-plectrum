@@ -20,7 +20,7 @@ export const Libraries: StoryObj = cardsStory(
       tone: 'design',
       title: 'Themed controls',
       items: [
-        'Buttons, fields, overlays and the other themed PrimeNG components. Use the kit component, not a rectangle with the same colours.',
+        'Buttons, fields, overlays and the other themed PrimeNG components. All Plectrum token variables live in this file. Use the kit component, not a rectangle with the same colours.',
         ENABLE_LIBRARY,
       ],
       links: [
@@ -50,7 +50,7 @@ export const Libraries: StoryObj = cardsStory(
       tone: 'app',
       title: 'Plectrum pieces',
       items: [
-        'Form Field, Empty State, Drawer and the other Plectrum components PrimeNG does not provide as-is.',
+        'Form Field, Empty State, Drawer and the other Plectrum components PrimeNG does not provide as-is. New component candidates and design-team proposals live here.',
         ENABLE_LIBRARY,
       ],
       links: [

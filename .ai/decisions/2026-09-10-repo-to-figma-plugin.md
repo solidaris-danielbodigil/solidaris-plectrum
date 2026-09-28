@@ -1,5 +1,7 @@
 # ADR: Repository → Figma via a private plugin
 
+> Historical file roles below were superseded by the P9 clarification. Tokens belong in PrimeNG 21; candidates belong in Custom components. Follow the current registry and Storybook process for new work.
+
 **Date:** 2026-09-10
 **Status:** accepted
 **Supersedes:** the open choice in `.ai/questions/2026-09-07-repo-to-figma-transport.md`

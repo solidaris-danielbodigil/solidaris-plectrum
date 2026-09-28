@@ -26,7 +26,7 @@ Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.
 
 | Server | Purpose |
 | --- | --- |
-| Figma (`http://127.0.0.1:3845/mcp`) | Plectrum UI Kit — SSOT for all visual decisions |
+| Figma (`http://127.0.0.1:3845/mcp`) | Custom components for candidate designs; PrimeNG 21 for all token variables |
 | PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
 | Storybook (`http://localhost:6006/mcp`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `npm run storybook` |
 

@@ -16,7 +16,7 @@ export const QueryOrder: StoryObj = stepsStory([
     tone: 'design',
     title: 'Check PrimeNG and Figma first',
     detail:
-      'PrimeNG MCP for an existing control. Figma MCP for the Plectrum UI Kit node. Reuse before inventing.',
+      'PrimeNG MCP for an existing control. Figma MCP for the Custom components candidate and PrimeNG 21 variables. Reuse before inventing.',
   },
   {
     who: 'Agent',

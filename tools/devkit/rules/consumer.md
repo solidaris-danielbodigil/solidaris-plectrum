@@ -1,4 +1,4 @@
-<!-- Generated from process.json 1.3.0 by contracts:generate. Do not edit. -->
+<!-- Generated from process.json 1.4.0 by contracts:generate. Do not edit. -->
 # Plectrum in an application repository
 
 The installed `@solidaris-danielbodigil/pds-devkit` package owns the catalogue, schemas, process and shared role instructions. `.plectrum/config.json` owns this application's identity and paths. `plectrum update` regenerates editor adapters; keep team-specific notes in other files.
@@ -21,7 +21,7 @@ Never edit node_modules or assume libs/ui exists. Candidates live under `src/ple
 3. **implement** — team, in this repository. Needs: approved proposal; compatible toolkit. Produces: local candidate; stories; metadata; evidence. Commands: `plectrum init --team <id> --application <id> --repository <url>`, `plectrum scaffold --name <slug> --proposal <application>-<slug>`, `plectrum check --profile ci`.
 4. **submit** — team, in this repository. Needs: checks passed. Produces: reviewed intake PR. Commands: `plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url> [--dry-run]`, `plectrum candidate-withdraw --id <application>-<slug> --reason <text> [--dry-run]`.
 5. **integrate** — core, in the central Plectrum repository. Needs: accepted candidate. Produces: core metadata; package exports; changeset. Commands: `npm run contracts:generate`, `npm run contracts:check`, `npm run docs:check`, `npm run test:pipelines`.
-6. **design-return** — designer, in the central Plectrum repository. Needs: accepted implementation; reviewed token proposal. Produces: token mapping and component node URL; design approval and branch merge; library publication; validated return export. Commands: `npm run tokens:propose`.
+6. **design-return** — designer, in the central Plectrum repository. Needs: accepted implementation; reviewed token proposal when new variables are needed. Produces: token mapping when applicable and Custom components node URL; design approval and branch merge; library publication; validated token return export when variables changed. Commands: `npm run tokens:propose`.
 7. **release** — release, in the central Plectrum repository. Needs: CI passed; review approved. Produces: packages; contract snapshot; versioned docs; release manifest. Commands: `npm run pack:smoke`.
 8. **adopt** — team, in this repository. Needs: published release. Produces: validated adoption JSON. Commands: `plectrum adoption-report [--output <path>]`, `plectrum adoption-submit [--dry-run]`.
 

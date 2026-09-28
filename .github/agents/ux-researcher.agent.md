@@ -1,6 +1,6 @@
 ---
 name: UX Researcher
-description: Inspects Figma nodes in the Plectrum UI Kit, extracts design tokens, states, and spacing, and produces a structured design brief. Read-only.
+description: Inspects candidate nodes in Custom components and token variables in PrimeNG 21, then produces a structured design brief. Read-only.
 user-invocable: false
 tools:
   - read
@@ -22,8 +22,9 @@ brief. You do **not** write code or make implementation decisions.
 
 ### 1 — Inspect the Figma node
 
-Use the Figma MCP tool to inspect the target node in the Plectrum UI Kit:
-`https://www.figma.com/design/YNZ1DlSjDNUXrvkxlSp10D/Plectrum-for-PrimeNG--Main-`
+Use the Figma MCP tool to inspect the component node in Custom components:
+`https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-Custom-components`
+Look up all variable definitions in the separate PrimeNG 21 token file (`wjMnb8GsK8bVKA7UreOJ4L`); do not treat the component file as a token source.
 
 Extract for every state (default, hover, focus, active, disabled, loading, error, empty):
 - Background → Figma variable name + hex fallback

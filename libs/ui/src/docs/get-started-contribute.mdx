@@ -11,6 +11,8 @@ import workspacePackage from '../../../../package.json';
 
 Anyone can contribute — developers and designers, in the core team or in an application team. A typo, a broken example or a wrong link is a pull request on the Plectrum repository. A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml): say what the screen must do, which components you tried, and attach a Figma link.
 
+Components can start in an application repository **or** with the design team in Figma. Candidate designs belong in **PLECTRUM · Custom components**; **Plectrum DS · PrimeNG v21** contains the PrimeNG design and all token variables. A design review in Figma approves a design direction; Core still reviews the implementation and a verified release before an Angular component is available to applications.
+
 <Unstyled>
   <Story of={Figures.ProposeEarly} />
 </Unstyled>
@@ -42,6 +44,18 @@ For an `approved-candidate` decision, in the **application repository** with the
 </Unstyled>
 
 ## Change Plectrum directly
+
+### Start from a reviewed Figma design
+
+A designer can open the same central proposal using a Custom components node as the source. Record the original design, the reviewed version, the design-team decision and the intended owner. Core checks for an existing PrimeNG or Plectrum solution and records its implementation decision. No application repository or `candidate-submit` is required for this route.
+
+<Unstyled>
+  <Story of={Figures.DesignOrigin} />
+</Unstyled>
+
+Keep the Custom components branch, review, merge and publication links with the proposal. If new tokens are needed, review them in a separate PrimeNG 21 token branch and return them through the token sync. Core implements the approved component in this repository and publishes it through the normal release pipeline. [Profile header](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587) is a design-origin example following a design-team review of Profile Card. It is not yet an installable replacement; the old Profile Card remains deprecated and exported.
+
+### Work in the Plectrum checkout
 
 Corrections and Core-owned work happen in a **Plectrum checkout**, through a reviewed pull request:
 
