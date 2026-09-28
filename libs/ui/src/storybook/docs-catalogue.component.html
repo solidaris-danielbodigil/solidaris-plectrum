@@ -78,10 +78,6 @@
   </ng-container>
 </pds-toolbar>
 
-@if (adoptionNote) {
-  <p class="c-docs-catalogue__summary o-layout o-layout--margin-block-end-2">{{ adoptionNote }}</p>
-}
-
 <p-table
   class="c-datatable o-flex__item o-flex__item--grow-1 o-layout--min-h-0 o-layout--full-height"
   [value]="visible()"
@@ -158,3 +154,7 @@
     </tr>
   </ng-template>
 </p-table>
+
+@if (adoptionNote) {
+  <p class="c-docs-catalogue__summary o-layout o-layout--margin-block-start-2">{{ adoptionNote }}</p>
+}
