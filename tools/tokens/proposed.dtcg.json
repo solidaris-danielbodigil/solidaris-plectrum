@@ -577,7 +577,7 @@
     "size/docs/catalogue/offset": {
       "$type": "dimension",
       "$value": {
-        "value": 392,
+        "value": 182,
         "unit": "px"
       },
       "$extensions": {

@@ -78,6 +78,14 @@
   </ng-container>
 </pds-toolbar>
 
+@if (visible().length === 0) {
+  <pds-empty-state
+    class="o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-layout--min-h-0"
+    title="Nothing matches"
+    description="Try error, validation, side panel or no results."
+    illustration="people-search"
+  />
+} @else {
 <p-table
   class="c-datatable o-flex__item o-flex__item--grow-1 o-layout--min-h-0 o-layout--full-height"
   [value]="visible()"
@@ -146,14 +154,8 @@
       <td class="c-docs-catalogue__summary">{{ row.summary }}</td>
     </tr>
   </ng-template>
-  <ng-template #emptymessage>
-    <tr>
-      <td colspan="6" class="c-docs-catalogue__empty">
-        Nothing matches. Try error, validation, side panel or no results.
-      </td>
-    </tr>
-  </ng-template>
 </p-table>
+}
 
 @if (adoptionNote) {
   <p class="c-docs-catalogue__summary o-layout o-layout--margin-block-start-2">{{ adoptionNote }}</p>
