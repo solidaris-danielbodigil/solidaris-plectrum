@@ -38,13 +38,35 @@
   <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ login }}</code></pre>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">Install the versions this release documents:</p>
   <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ registryInstall }}</code></pre>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
+    <pds-docs-link label="Browse packages on GitHub" [href]="links.packages" />
+    — sign in with an account that has access to the private packages.
+  </p>
 } @else {
   <p class="c-docs-callout__text o-layout o-layout--margin-0">
-    These pages document main, not a release. Build and pack the packages from a Plectrum checkout (<code>npm run pack:libs</code>), then install the tarballs in the application:
+    To use Plectrum in an application, install a published release from GitHub Packages.
+    Open its installation guide for the registry setup, authentication and exact package versions:
   </p>
-  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ tarballInstall }}</code></pre>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
+    <pds-docs-link label="Install the latest published release" [href]="links.latestInstall" />
+  </p>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
-    For a registry install, follow the same page in the release you install:
-    <pds-docs-link label="Latest release" [href]="links.latest" />
+    These pages are a development preview. Runtime {{ runtime }} and toolkit {{ toolkit }} are source versions;
+    their presence here does not confirm that this pair is published.
   </p>
+  <ul class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0">
+    <li><pds-docs-link label="Browse packages on GitHub" [href]="links.packages" /></li>
+    <li><pds-docs-link label="Release history" [href]="links.releases" /></li>
+  </ul>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
+    The packages are private: sign in with an account that has package read access.
+  </p>
+  <details class="o-layout o-layout--margin-block-start-1">
+    <summary>Maintainers: test unpublished packages locally</summary>
+    <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
+      In a Plectrum checkout, run <code>npm run pack:libs</code>. The archives are written to
+      <code>tools/packaging/.tarballs/</code>. Install those files using their actual filesystem paths in a test application.
+      <pds-docs-link label="Local packaging instructions" [href]="links.packaging" />
+    </p>
+  </details>
 }

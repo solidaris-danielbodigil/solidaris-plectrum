@@ -171,7 +171,7 @@ export const REGISTRY_LOGIN = `npm login --scope=${registry.operations.publicati
 
 /** Registry install of one exact release; versions come from the manifests of this build. */
 export const REGISTRY_INSTALL = [
-  `npm install ${[...DISTRIBUTED_PACKAGES.filter((pkg) => pkg.role === 'runtime').map((pkg) => `${pkg.name}@${pkg.version}`), ...vendorPeers].join(' ')}`,
+  `npm install ${[...DISTRIBUTED_PACKAGES.filter((pkg) => pkg.role === 'runtime').map((pkg) => `${pkg.name}@${pkg.version}`), ...vendorPeers.map((name) => `"${name}@${PEER_RANGES[name]}"`)].join(' ')}`,
   `npm install --save-dev ${toolkitPackage.name}@${toolkitPackage.version}`,
 ].join('\n');
 

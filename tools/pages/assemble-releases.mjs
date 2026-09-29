@@ -5,6 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
+import { latestRedirectHtml } from './latest-redirect.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
 const pages = join(root, 'dist/pages/storybook');
@@ -54,6 +55,6 @@ for (const release of releases) {
 if (latest) {
   const target = join(pages, 'latest');
   mkdirSync(target, { recursive: true });
-  writeFileSync(join(target, 'index.html'), `<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../releases/${latest.id}/"><a href="../releases/${latest.id}/">Plectrum ${latest.id}</a>\n`);
+  writeFileSync(join(target, 'index.html'), latestRedirectHtml(latest.id));
   console.log(`Released latest points to ${latest.id}; ${releases.length} versioned Storybook bundle(s) verified.`);
 } else console.log('No published Plectrum release yet; deploying the labelled development preview only.');

@@ -24,7 +24,7 @@ import toolkitPackage from '../../../../tools/devkit/package.json';
 import { DocsLinkComponent } from './docs-link.component';
 import { NPMRC, REGISTRY_INSTALL, REGISTRY_LOGIN } from './process-docs';
 import { DOCS_LINKS, loadReleaseContext, type ReleaseContext } from './release-context';
-import { PACKAGE_VERSION, PRESET_VERSION, TARBALL_INSTALL, tarballName } from './release-state';
+import { PACKAGE_VERSION, PRESET_VERSION } from './release-state';
 
 @Component({
   selector: 'pds-docs-release',
@@ -49,7 +49,6 @@ export class DocsReleaseComponent {
   protected readonly npmrc = NPMRC;
   protected readonly login = REGISTRY_LOGIN;
   protected readonly registryInstall = REGISTRY_INSTALL;
-  protected readonly tarballInstall = `${TARBALL_INSTALL}\nnpm install --save-dev ./path/to/${tarballName(toolkitPackage.name, toolkitPackage.version)}`;
 
   constructor() {
     void loadReleaseContext().then((context) => this.loaded.set(context));

@@ -1,6 +1,6 @@
 # Plectrum maintainer handoff pack — draft
 
-Draft — 9 September 2026. Companion to `.cursor/plans/plectrum-storybook-audit-and-agent-plan.md` §5 (B04). Baseline: `main` @ `f152b62`, Angular 21.2.16, PrimeNG 21.1.9, Storybook 10.4.2, Node 24.13.0 locally.
+Historical baseline — 9 September 2026. Operational paths and commands reviewed against the checkout on 29 September 2026; live release/review evidence below retains its original date. Companion to `.cursor/plans/plectrum-storybook-audit-and-agent-plan.md` §5 (B04). Baseline: `main` @ `f152b62`, Angular 21.2.16, PrimeNG 21.1.9, Storybook 10.4.2, Node 24.13.0 locally.
 
 Every runbook below states purpose, prerequisites, source-linked steps, expected outcome, failure/recovery, owner and verification date. **Owner** and **Verified** are left `unresolved` until the receiving team is named — they are filled during the rehearsal (B06), not guessed here. Commands are the ones in `package.json`; if a script is renamed, this page is stale and the script is right.
 
@@ -8,10 +8,10 @@ Every runbook below states purpose, prerequisites, source-linked steps, expected
 
 | Part      | Path                                                                                           | Role                                                                                                                                        |
 | --------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Apps      | `apps/ishare`, `apps/icrm`                                                                     | Consumers only. No shared logic.                                                                                                            |
-| UI        | `libs/ui`                                                                                      | `@solidaris-danielbodigil/ui` — Angular components, Storybook (`libs/ui/.storybook`), colocated `*.metadata.ts` contracts, `src/storybook/*` docs figures |
+| Apps      | `apps/ishare`, `apps/icrm`, `apps/dashboard`, `apps/iged`                                                                     | Consumers only. No shared logic.                                                                                                            |
+| UI        | `libs/ui`                                                                                      | `@solidaris-danielbodigil/pds-ui` — Angular components, Storybook (`libs/ui/.storybook`), colocated `*.metadata.ts` contracts, `src/storybook/*` docs figures |
 | Styles    | `libs/styles`                                                                                  | ITCSS SCSS `01-settings` → `08-trumps`; `*.generated.scss` come from `tokens:build`                                                         |
-| Plectrum  | `libs/plectrum`                                                                                | `@solidaris-danielbodigil/plectrum` — `providePlectrum()`, PrimeNG presets `Plectrum_v0.6` / `Plectrum_v1`, `src/tokens.json` (design-token SSOT)         |
+| Plectrum  | `libs/plectrum`                                                                                | `@solidaris-danielbodigil/pds-plectrum` — `providePlectrum()`, PrimeNG presets `Plectrum_v0.6` / `Plectrum_v1`, `src/tokens.json` (design-token SSOT)         |
 | Tools     | `tools/tokens/*.mjs`, `tools/scripts/*`, `tools/generators/sds-component`, `tools/packaging/*` | Token pipeline, generated indexes, scaffold, pack + smoke                                                                                   |
 | Contracts | `.ai/contracts/index.json` (generated), `.ai/contracts/schema/*.ts`, `.ai/rules/*.md`          | Machine-readable map and the rules agents and reviewers apply                                                                               |
 | Upstream  | PrimeNG (`primeng/*`), Bootstrap Icons, Figma Plectrum UI Kit                                  | PrimeNG first; Figma is the visual SSOT                                                                                                     |
@@ -24,14 +24,16 @@ Owner: unresolved · Verified: unresolved
 
 ## 2. Local setup and contribution
 
+These steps apply to the Plectrum checkout. External application teams follow [Build with Plectrum](../../libs/ui/src/docs/get-started-consume.mdx). The current devkit does not provide Angular bootstrap, local ITCSS/SCSS configuration, Storybook, test runners or a pre-commit hook; those remain application onboarding tasks.
+
 Purpose: run the catalogue and change a component safely.
 
-Prerequisites: Node `^20.19.0 || ^22.12.0 || ^24.0.0` (Angular 21 range; CI uses 20, Pages deploy uses 24), npm. Optional: Cursor/VS Code with the repo agents (`.cursor/agents`, `.github/agents`).
+Prerequisites: Node `^20.19.0 || ^22.12.0 || ^24.0.0` (Angular 21 range; CI uses Node 24), npm. Optional: Cursor/VS Code with the repo agents (`.cursor/agents`, `.github/agents`).
 
 Steps:
 
 1. `npm install`
-2. `npm run storybook` → http://localhost:6006 (runs `changelog:build` first)
+2. `npm run storybook` → http://localhost:6006 (regenerates contracts, changelog, candidate and adoption data first)
 3. Scaffold: `npm run pds:component -- --name=<name> --owner=<registered-team>` — creates component (no colocated stylesheet), `.metadata.ts`, stories stub, `_components.{name}.scss` + `@forward`, regenerates registry, inventory and eligible package exports. Team choices come from `.ai/contracts/registry.json`; candidate styles remain Storybook-only.
 4. Implement per `.ai/contracts/protocols/component-creation.md`; every state has a story; tokens via `var(--pds-*)`.
 5. Unit tests: `npm test` (Vitest — ui, ishare, plectrum).
@@ -40,7 +42,7 @@ Steps:
 
 Expected outcome: green local tests, Storybook shows the new page, `git diff` includes the regenerated `index.json`.
 
-Failure/recovery: `index.json` diff in CI → run `npm run generate-index` and commit. Story a11y failure → fix the markup, never lower the a11y level. Windows file watcher stalls → restart `npm run storybook`.
+Failure/recovery: Stale generated contracts or exports in CI → run `npm run contracts:generate`, review and commit the outputs. Story a11y failure → fix the markup, never lower the a11y level. Windows file watcher stalls → restart `npm run storybook`.
 
 Owner: unresolved · Verified: unresolved
 
@@ -85,7 +87,7 @@ Purpose: version and publish the new `@solidaris-danielbodigil/pds-plectrum`, `p
 
 Actual workflow: Changesets. `npm run changeset` on the feature branch. On merge to `main`, `.github/workflows/release.yml` (`changesets/action`) opens/updates the `chore(release): version packages` PR (`npm run changeset:version` also refreshes the lockfile, changelog, docs and contracts). Merging that PR updates source manifests and does not publish.
 
-State today: [Plectrum 2.0.2 with toolkit 0.2.1](https://github.com/solidaris-danielbodigil/solidaris-plectrum/releases/tag/plectrum-v2.0.2-devkit-0.2.1) was published through the protected manual workflow. The four `pds-*` names were individually verified **private**, installed in a clean registry smoke app, and documented in the [matching versioned Storybook](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/2.0.2-devkit-0.2.1/). The devkit 0.2.1 snapshot records `publicationEnabled: true`. The older `ui`, `plectrum`, `styles` and `plectrum-devkit` package names at release 2.0.1 remain **public** historical artifacts; do not use them for private onboarding. CI continues to run `pack:smoke`, `release:check` and `build-storybook:packed`. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
+Latest verified publication recorded in this handoff: [Plectrum 2.0.2 with toolkit 0.2.1](https://github.com/solidaris-danielbodigil/solidaris-plectrum/releases/tag/plectrum-v2.0.2-devkit-0.2.1) was published through the protected manual workflow. The four `pds-*` names were individually verified **private**, installed in a clean registry smoke app, and documented in the [matching versioned Storybook](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/releases/2.0.2-devkit-0.2.1/). The devkit 0.2.1 snapshot records `publicationEnabled: true`. The older `ui`, `plectrum`, `styles` and `plectrum-devkit` package names at release 2.0.1 remain **public** historical artifacts; do not use them for private onboarding. CI continues to run `pack:smoke`, `release:check` and `build-storybook:packed`. Follow `tools/packaging/README.md` for the exact sequence and recovery path.
 
 Consumer smoke after a release: install the new version in a throwaway app (the `pack:smoke` fixture in `tools/packaging` is the template), `providePlectrum()`, render one component, run the app tests.
 
@@ -107,7 +109,7 @@ Owner: unresolved · Verified: unresolved
 
 For candidate, adoption, Figma, managed-toolkit, review, publishing and documentation failures, follow the [pipeline recovery guide](pipeline-recovery.md). It identifies the source, retry action and evidence needed to close each stage.
 
-What blocks (`.github/workflows/ci.yml`):
+Selected gates from `.github/workflows/ci.yml` (the complete generated command table and per-job explanations are in [Maintainer workflow](../../libs/ui/src/docs/maintainer-workflow.mdx)):
 
 | Gate                                           | Command                                                    | Blocks                                  |
 | ---------------------------------------------- | ---------------------------------------------------------- | --------------------------------------- |
@@ -117,11 +119,11 @@ What blocks (`.github/workflows/ci.yml`):
 | Generated tokens committed                     | `npm run tokens:build` + `git diff --exit-code`            | yes                                     |
 | Changelog feed committed                       | `npm run changelog:build` + `git diff --exit-code`         | yes                                     |
 | Token usage lint                               | `npm run tokens:lint`                                      | yes                                     |
-| Contracts index committed                      | `npm run generate-index` + `git diff --exit-code`          | yes                                     |
-| Apps build                                     | `npm run build`                                            | yes                                     |
+| Contracts and exports current                  | `npm run contracts:generate -- --check`                    | yes                                     |
+| Apps build                                     | `npm run build` and `npx ng build iged --configuration=production` | yes                              |
 | Unit tests + coverage                          | `npm run test:coverage`                                    | yes                                     |
 | Pack smoke                                     | `npm run pack:smoke`                                       | yes                                     |
-| Story tests (smoke, play, a11y, coverage)      | `npm run build-storybook` then `npm run test-storybook:ci` | yes                                     |
+| Story tests (smoke, play, a11y, coverage)      | `npm run build-storybook:coverage` then `npm run test-storybook:ci` | yes                                     |
 | Cross-page navigation under the Pages sub-path | `npm run test-storybook:nav`                               | yes                                     |
 | Storybook against packed tarballs              | `npm run build-storybook:packed`                           | yes                                     |
 | Chromatic visual tests                         | `chromaui/action`                                          | only when `CHROMATIC_ENABLED == 'true'` |

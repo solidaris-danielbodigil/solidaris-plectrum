@@ -2,6 +2,8 @@
 
 The stable identity is `<team>:<component>` and the candidate record ID is `<application>-<component>`. A team candidate stays in the application repository until a reviewed Core integration actually adds its implementation to Plectrum. See the [central record contract](../.ai/candidates/README.md) and Storybook → Start here / Contribute.
 
+This guide describes the implemented approval-gated workflow. Separating autonomous local development from Core mutualisation is part of the [application onboarding plan](plan-autonomie-equipes-devkit-ci.md); it is not yet supported by the current scaffolder. Prepare the application's own Storybook, tests and CI before submitting evidence. The toolkit check validates static contracts and evidence fields; it does not run those tests.
+
 1. The team opens a proposal issue. Core records the decision and owner in `.ai/candidates/proposals/<id>.json` via `npm run candidate:record -- proposal --team TEAM --application APP --component SLUG --issue URL --decision approved-candidate --decided-by @REVIEWER --decision-url URL --note TEXT` and merges it. The team scaffolds only after `approved-candidate` is merged.
 2. The team builds the candidate locally, fills metadata, stories and evidence, and runs the installed toolkit's `plectrum check --profile ci`. It commits the source and publishes preview and CI URLs for the same commit.
 3. `plectrum candidate-submit` sends the metadata and provenance as a JSON pull request to this repository. Subsequent commits use `revise`; `candidate-withdraw` reserves the ID and removes the listing. The team's `index.json` is not submitted.

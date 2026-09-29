@@ -26,6 +26,10 @@ const storybookBase = registry.operations.storybook.replace(/\/$/, '');
 
 export const DOCS_LINKS = {
   latest: `${storybookBase}/latest/`,
+  latestInstall: `${storybookBase}/latest/?path=/docs/get-started-use-plectrum-in-an-app--docs#install-the-packages`,
+  packages: `${registry.repository}/packages`,
+  releases: `${registry.repository}/releases`,
+  packaging: `${registry.repository}/blob/main/tools/packaging/README.md`,
   development: `${storybookBase}/`,
   release: (runtime: string, toolkit: string) => `${storybookBase}/releases/${runtime}-devkit-${toolkit}/`,
 } as const;

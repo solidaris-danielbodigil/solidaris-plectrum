@@ -120,7 +120,7 @@ export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
   title: 'While your team owns it, the lint and token checks still apply',
   items: [
-    'Build it from PrimeNG and the Plectrum UI package, and use --pds-* tokens. The CI profile fails hex, px and unknown token names.',
+    'Build it from PrimeNG and the Plectrum UI package, and use --pds-* tokens. The CI profile checks unknown tokens in configured sources and applies strict hex/px checks to SCSS, CSS and HTML; it is not a complete style or runtime test suite.',
     'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
     'Put the layout classes in the template.',
     'The metadata names your team as owner and the candidate status.',

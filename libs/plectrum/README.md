@@ -15,3 +15,5 @@ export const appConfig = {
 ```
 
 `Plectrum_v1/` is the default. Do not configure PrimeNG theme directly in an app.
+
+PrimeNG and `@primeuix/themes` are compatible peer dependencies of the runtime packages; the devkit does not bundle or configure them. Follow the [published installation guide](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/latest/?path=/docs/get-started-use-plectrum-in-an-app--docs) for registry access, exact versions, provider setup and shared SCSS. Use the same theme providers in the application and its separately configured local Storybook.

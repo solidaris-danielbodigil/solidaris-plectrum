@@ -13,6 +13,8 @@ In a component, use `var(--pds-*)` and the layout classes. Do not call the Prime
 
 This page is the developer view of the [pipeline overview](?path=/docs/docs-token-pipeline--docs). For the transport see [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs), for the layers and class mixes see [CSS architecture](?path=/docs/docs-css-architecture--docs), and for the component contracts see [AI strategy](?path=/docs/docs-ai-strategy--docs).
 
+The token generation commands and CSSOM tests shown here belong to the Plectrum checkout. Application teams consume the packaged styles and use the installed toolkit's token scan; they must configure their own executable tests. See [Build with Plectrum → Validate](?path=/docs/get-started-use-plectrum-in-an-app--docs#validate).
+
 The live swatches are stories under **Foundations**, because `--p-*` only exists once `providePlectrum()` has booted.
 
 ---
@@ -72,13 +74,14 @@ Properties of this rule:
 ```scss
 // ✅ settings + components
 .c-card {
-  padding: var(--pds-spacing-2);
   color: var(--pds-color-text);
 }
 
 // ❌ new bare declarations (legacy file only)
 --spacing-2: 1rem;
 ```
+
+Put spacing on the template with the appropriate `o-layout` classes; do not duplicate layout rules in the component partial.
 
 ---
 

@@ -9,6 +9,8 @@ import * as Figures from './css-architecture.stories';
 
 All shared CSS lives in `libs/styles` and is layered with **ITCSS**. Class names follow **BEMIT**. Templates mix a component block with object and utility classes. Component SCSS does not restate layout that an `o-*` class already covers.
 
+**Application repositories follow the same ITCSS/BEMIT conventions.** Consume shared SCSS from the installed style package and keep application extensions in local layers. Put component partials in `src/styles/06-components`; do not copy shared tokens or styles. The current devkit does not generate or wire these folders. Follow [Build with Plectrum → Local ITCSS structure](?path=/docs/get-started-use-plectrum-in-an-app--docs#local-itcss-structure), including shared/local cascade order. Paths below describe the central Plectrum implementation.
+
 Related pages:
 
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — what component SCSS may write (`var(--pds-*)`)
@@ -67,7 +69,7 @@ Specificity rises along the cascade. Tokens and mixins come first. Component ski
     ['05-objects', '05-objects/', 'o-', 'Layout patterns: flex grid, spacing/overflow, scroll-shadow.'],
     ['06-components', '06-components/', 'c-', 'One BEM file per libs/ui component. PrimeNG wrappers restyle here; --p-* bridges stay in 01-settings.'],
     ['07-utilities', '07-utilities/', 'u-', 'Single-purpose helpers: type, border, radius, shadow, visibility.'],
-    ['08-trumps', '08-trumps/', '—', 'Highest layer. Today: Storybook demo wrappers (.sb-demo-wrapper). Forwarded from main.scss; apps do not use these classes.'],
+    ['08-trumps', '08-trumps/', '—', 'Final overrides, including shared disabled-cursor behavior and Storybook demo wrappers. Loaded from main.scss; demo-only classes are not application APIs.'],
   ]}
 />
 
