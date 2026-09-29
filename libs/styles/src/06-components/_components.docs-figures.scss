@@ -516,7 +516,6 @@ $docs-tones: design, system, app, neutral;
 }
 
 .c-docs-catalogue__none,
-.c-docs-catalogue__empty,
 .c-docs-catalogue__summary {
   @include text-body-sm;
   color: var(--#{$pds-prefix}-color-text-muted);
