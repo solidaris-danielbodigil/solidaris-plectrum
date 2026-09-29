@@ -33,7 +33,11 @@ The core team records one decision per proposal in the central repository. What 
 
 ## Develop and submit a candidate
 
+**Current workflow:** the candidate scaffolder still requires Core's merged approval. The planned autonomy model will separate local development from the decision to share a component through Core; it is not implemented yet. Track that dependency explicitly in the application epic — see [Planned onboarding](?path=/docs/get-started-use-plectrum-in-an-app--docs#planned-onboarding).
+
 For an `approved-candidate` decision, in the **application repository** with the initialized toolkit ([Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit)). Commit the candidate, publish an HTTPS preview and a CI result for that exact commit, then submit. Submitting again after a new commit revises the same stable ID. The reviewed central JSON — never a local `index.json` — makes the candidate appear in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
+
+Before scaffolding, prepare the application's [Storybook and executable tests](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests). Align `paths.candidateStyles` with the local ITCSS component layer and wire its imports. The current generator creates a story, metadata JSON, SCSS and an evidence checklist; it does not configure Storybook, generate a unit spec or register the SCSS import. The toolkit's CI profile validates those files and static contracts, but does not execute the tests recorded as evidence.
 
 <Unstyled>
   <Story of={Figures.LocalCandidate} />

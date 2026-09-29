@@ -1,10 +1,10 @@
 // Figures for Start here/Build with Plectrum (get-started-consume.mdx). Hidden from the sidebar.
-// Steps, commands and the CI profile come from .ai/contracts/process.json — the same
+// Process commands and the CI profile come from .ai/contracts/process.json — the same
 // contract the installed toolkit renders into its help and agent guidance.
 import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { calloutStory, stepsStory } from './docs-figure-stories';
 import { DocsReleaseComponent } from '../storybook/docs-release.component';
-import { consumerCiRequirements, docsStep, journeySteps } from '../storybook/process-docs';
+import { consumerCiRequirements, docsStep } from '../storybook/process-docs';
 
 const meta: Meta = {
   title: 'Start here/Figures/Build with Plectrum',
@@ -27,24 +27,76 @@ function releaseStory(mode: 'summary' | 'install'): StoryObj {
 /** Which docs these are: a recorded release, or the development preview of main. */
 export const Release: StoryObj = { tags: ['!dev'], ...releaseStory('summary') };
 
-/** Install commands matching the release record (registry) or its absence (tarballs). */
+/** Registry commands for a recorded release; otherwise link to the published installation guide. */
 export const Install: StoryObj = { tags: ['!dev'], ...releaseStory('install') };
 
 export const InstallFlow: StoryObj = {
   tags: ['!dev'],
-  ...stepsStory(
-    journeySteps('onboarding', {
-      install: [{ label: 'Install the packages', href: '#install-the-packages' }],
-      initialize: [{ label: 'Initialize the team toolkit', href: '#initialize-the-team-toolkit' }],
-      build: [
-        { label: 'Wire the stylesheet', href: '#wire-the-stylesheet' },
-        { label: 'First component', href: '#first-component' },
-      ],
-      validate: [{ label: 'Validate', href: '#validate' }],
-      adopt: [{ label: 'Report adoption', href: '#report-adoption' }],
-      upgrade: [{ label: 'Upgrade', href: '#upgrade' }],
-    }),
-  ),
+  ...stepsStory([
+    {
+      title: 'Prepare the application and package access',
+      who: 'App team + Core',
+      tone: 'app',
+      detail: 'Start from a working Angular application. Confirm private package access and register the team and application with Core.',
+      links: [{ label: 'Prerequisites', href: '#prerequisites' }],
+    },
+    {
+      title: 'Install the runtime packages and devkit',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Use a published release and compatible peers, including PrimeNG. Commit the dependency manifest and lockfile.',
+      links: [{ label: 'Install the packages', href: '#install-the-packages' }],
+    },
+    {
+      title: 'Initialize the toolkit and editor instructions',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Generate the Plectrum configuration, editor adapters and checks workflow. Verify the application identity and source paths.',
+      links: [{ label: 'Initialize the team toolkit', href: '#initialize-the-team-toolkit' }],
+    },
+    {
+      title: 'Configure SCSS, ITCSS and assets',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Connect the shared stylesheet, prepare the local ITCSS layers and load fonts and icons. This setup is currently manual.',
+      links: [{ label: 'Wire the stylesheet', href: '#wire-the-stylesheet' }],
+    },
+    {
+      title: 'Register the Plectrum theme',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Add the Plectrum providers to the application and verify that a PrimeNG control renders with the theme.',
+      links: [{ label: 'Boot the theme', href: '#boot-the-theme' }],
+    },
+    {
+      title: 'Render the first component',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Build the Form Field example to check package imports, theme and shared styles together.',
+      links: [{ label: 'First component', href: '#first-component' }],
+    },
+    {
+      title: 'Set up local Storybook and executable tests',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Configure local stories, unit tests, interactions and accessibility checks. Confirm that a broken assertion fails the run.',
+      links: [{ label: 'Set up Storybook and tests', href: '#set-up-storybook-and-tests' }],
+    },
+    {
+      title: 'Connect Plectrum checks to application CI',
+      who: 'App team + CI owners',
+      tone: 'app',
+      detail: 'Run the toolkit checks, wire the local hook and add application build and tests to the Solidaris pipeline.',
+      links: [{ label: 'Validate', href: '#validate' }],
+    },
+    {
+      title: 'Verify that the team workspace is ready',
+      who: 'App team',
+      tone: 'app',
+      detail: 'Review the acceptance checklist and have a second developer reproduce the setup from the committed configuration.',
+      links: [{ label: 'Workspace readiness', href: '#workspace-readiness' }],
+    },
+  ]),
 };
 
 export const Initialize: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('initialize')]) };

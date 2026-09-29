@@ -158,7 +158,7 @@ After an application candidate is promoted to Core, create or update its Figma d
 
 ## Package distribution
 
-Applications install published packages. They never copy files from this repository, so the design-system version in use is explicit in each application's `package.json`.
+Applications install the shared runtime code and SCSS as published packages, so the design-system version in use is explicit in each application's `package.json`. Some onboarding resources, including Agenda fonts, still require separate setup; see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#fonts-icons-and-browsers).
 
 <Diagram
   title="Package distribution"

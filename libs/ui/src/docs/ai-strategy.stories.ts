@@ -44,7 +44,7 @@ export const QueryOrder: StoryObj = stepsStory([
     tone: 'neutral',
     title: 'Regenerate and verify',
     detail:
-      'pds:component and the afterFileEdit hook regenerate index.json; CI fails a stale index, a hand-written docs copy (docs:check), or props drift (contracts:check). Play tests stay on the test-runner — MCP does not run them.',
+      'pds:component and the afterFileEdit hook regenerate index.json; CI fails a stale index, a hand-written docs copy (docs:check), or props drift (contracts:check). Local MCP test-run uses the Vitest addon; CI runs the test-runner.',
   },
 ]);
 
@@ -103,7 +103,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'Index is generated',
-    lead: 'Do not edit index.json by hand. pds:component and a Cursor hook regenerate it; CI fails when the committed file is stale. A manual run is only needed after deleting files by hand.',
+    lead: 'Do not edit index.json by hand. pds:component, the Cursor hook and npm run storybook regenerate contracts. After source changes outside those paths, run npm run contracts:generate. CI checks the committed artifacts for drift.',
   },
   {
     title: 'tokens.consumed is checked',
@@ -135,8 +135,8 @@ export const Gaps: StoryObj = calloutStory({
   tone: 'info',
   title: 'Not automated yet',
   items: [
-    '@storybook/angular-vite stays in preview until Storybook 11.',
-    'Storybook MCP’s test toolset needs the Vitest addon; this workspace keeps @storybook/test-runner.',
+    'The application toolkit does not yet initialize SCSS/ITCSS, Storybook, test runners or pre-commit hooks.',
+    'Local MCP tests are wired through @storybook/addon-vitest in this checkout. Application repositories must configure their own Storybook and test tooling.',
     'tokens.consumed is gated one way (listed but not declared). Unused tokens in SCSS are not gated.',
   ],
 });

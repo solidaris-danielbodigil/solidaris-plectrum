@@ -20,6 +20,10 @@ Each application team works in its own repository. The installed toolkit gives i
 
 See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
 
+The package includes application rules and roles, plus central rules, skills and protocols as reference material under `rules/central`. `init` does not copy the full `.ai/` tree, install every editor skill or reproduce Core's agents unchanged. The generated application roles use the portable CLI; central paths and npm scripts still require a Plectrum checkout.
+
+Storybook, SCSS/ITCSS setup, test runners and a pre-commit hook are not installed by the current toolkit. MCP configuration connects an available server; it does not install that server. Follow the [application setup and readiness checks](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests) before treating the workspace as ready.
+
 Related pages:
 
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX + Storybook MCP
@@ -31,6 +35,8 @@ Related pages:
 ---
 
 ## Definition
+
+The architecture, paths and npm scripts below describe the **Plectrum checkout**. Application repositories use the installed catalogue, JSON candidate metadata and `plectrum` commands described above.
 
 A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then Storybook MCP when the catalogue is running, then one metadata file, then a protocol. They do not invent a second design system.
 
@@ -152,7 +158,7 @@ Pre-flight is PrimeNG MCP → Figma MCP → `index.json` → `docs-list` (when S
 
 ### Subagents
 
-Component work is coordinated by the Plectrum agent. In Cursor, select the generated Plectrum agent (or invoke `/plectrum` where supported); in VS Code/Copilot, select Plectrum in the chat agent picker. The toolkit generates both editors' role files from one shared source. Describe the component, proposal and owner; the agent can involve the specialist roles.
+Component work is coordinated by the Plectrum agent. In Cursor, select the generated Plectrum agent (or invoke `/plectrum` where supported); in VS Code/Copilot, select Plectrum in the chat agent picker. Each context generates both editors' role files from its shared role source: `.ai/agents/` for Core, the installed toolkit for applications. Describe the component, proposal and owner; the agent can involve the specialist roles. The following example is for a Plectrum checkout:
 
 ```
 /plectrum Add a Core status banner.

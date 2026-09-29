@@ -1,73 +1,59 @@
-# Solidaris Plectrum Monorepo
+# Solidaris Plectrum
 
-Welcome to the Solidaris Plectrum Monorepo! This repository is an Angular CLI multi-project workspace containing two Angular applications, iSHARE and iCRM, built using the latest technologies and design systems.
+Plectrum is the Solidaris design system: Angular components, PrimeNG presets, shared SCSS and a contributor toolkit. This Angular CLI workspace also contains the iShare, iCRM, Dashboard and iGED applications. Those workspace applications are not a generated starter for a new team repository.
 
-## Project Structure
+## Use Plectrum in an application
 
-The project is organized into the following main directories:
+Start with [Build with Plectrum in the published documentation](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/latest/?path=/docs/get-started-use-plectrum-in-an-app--docs). Check its release banner and use the installation instructions for that release. The [development preview](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/) describes main; source versions alone do not prove publication.
 
-- **apps/**: Contains the Angular applications.
-  - **ishare/**: The iSHARE application.
-  - **icrm/**: The iCRM application.
-  
-- **libs/**: Contains shared libraries and styles.
-  - **ui/**: UI components and services.
-  - **styles/**: SCSS styles organized using ITCSS.
-  - **plectrum/**: Plectrum design system components and tokens.
+| Package | Purpose |
+| --- | --- |
+| `@solidaris-danielbodigil/pds-ui` | Shared Angular components |
+| `@solidaris-danielbodigil/pds-plectrum` | PrimeNG presets and `providePlectrum()` |
+| `@solidaris-danielbodigil/pds-styles` | Shared ITCSS/SCSS source |
+| `@solidaris-danielbodigil/pds-devkit` | Development CLI, offline catalogue, contracts, rules and editor adapters |
 
-- **storybook/**: Contains Storybook configuration and stories for UI components.
+The packages are private on GitHub Packages; developers and application CI need read access. Install compatible Angular and PrimeNG peers as application dependencies. The current devkit does **not** bootstrap Angular, local SCSS/ITCSS folders, Storybook, test runners or a pre-commit hook. `plectrum init` creates toolkit configuration, editor adapters, MCP entries and a Plectrum checks workflow. Application build/tests and Solidaris CI integration still need setup.
 
-- **tools/**: Custom generators for streamlining development.
+The [detailed onboarding guide source](libs/ui/src/docs/get-started-consume.mdx) explains each step and its verification. The [application autonomy and devkit plan](docs/plan-autonomie-equipes-devkit-ci.md) describes the intended complete starter and the remaining implementation work.
 
-- **.ai/**: Contains AI-related files, including skills and rules for UI design agents.
+## Work in the Plectrum repository
 
-## Technologies Used
+Use a Node version supported by [`package.json`](package.json), then:
 
-- **Angular**: The latest version for building the applications.
-- **PrimeNG**: A rich set of UI components for Angular.
-- **SCSS**: Organized using ITCSS methodology.
-- **BEMIT**: Naming convention for CSS classes.
-- **Plectrum Design System**: A design system for consistent UI elements.
-- **Storybook**: For developing and showcasing UI components in isolation.
+```sh
+git clone https://github.com/solidaris-danielbodigil/solidaris-plectrum.git
+cd solidaris-plectrum
+npm install
+npm run storybook
+```
 
-## Getting Started
+Open [local Storybook](http://localhost:6006/). The start script regenerates contracts, changelog, candidate and adoption data before starting the catalogue. Lifecycle scripts install the central pre-commit hook when no unrelated hook already exists. These repository scripts are not installed into an application by the devkit.
 
-To get started with the project, follow these steps:
+| Command | Runs |
+| --- | --- |
+| `npm start` | iShare |
+| `npm run start:icrm` | iCRM |
+| `npm run start:dashboard` | Dashboard |
+| `npm run start:iged` | iGED |
+| `npm run docs:check` | Documentation consistency checks |
+| `npm run check:commit` | Fast local docs, contract, token, style and generated-file gates |
+| `npm test` | Configured UI, iShare and Plectrum unit suites |
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
+The [maintainer guide](libs/ui/src/docs/maintainer-workflow.mdx) explains the full CI jobs, story tests, package checks and their limits. The [packaging guide](tools/packaging/README.md) covers publishing and isolated consumer verification.
 
-2. Navigate to the project directory:
-   ```
-   cd solidaris-nx
-   ```
+## Repository layout
 
-3. Install the dependencies:
-   ```
-   npm install
-   ```
+- `apps/`: workspace applications.
+- `libs/ui/src/`: shared components, stories and MDX documentation.
+- `libs/ui/.storybook/`: Storybook configuration and test integration.
+- `libs/plectrum/`: presets, theme integration and token source.
+- `libs/styles/src/`: shared ITCSS layers, settings, objects, components and utilities.
+- `libs/assets/`: shared repository assets; some assets still require separate application setup.
+- `tools/devkit/`: portable contributor toolkit.
+- `tools/`: generators, token tooling, packaging and documentation checks.
+- `.ai/`: central contracts, rules, protocols, skills and agents.
 
-4. Run the applications:
-   - For iSHARE:
-     ```
-     npm start
-     ```
-   - For iCRM:
-     ```
-     npm run start:icrm
-     ```
+## Contribute
 
-5. Open Storybook:
-   ```
-   npm run storybook
-   ```
-
-## Contributing
-
-Contributions are welcome! Please follow the guidelines in the `.ai/README.md` knowledge base (rules, skills, and contracts) for project management and development practices.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+Read [Contribute](libs/ui/src/docs/get-started-contribute.mdx) and the [AI knowledge base](.ai/README.md). The current candidate scaffolder requires a merged Core proposal decision. Application-owned candidates remain in their repository until reviewed integration and a verified package release; see [component promotion](docs/component-promotion.md).

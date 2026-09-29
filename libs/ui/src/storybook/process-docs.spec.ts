@@ -1,9 +1,16 @@
 import processContract from '../../../../.ai/contracts/process.json';
 import registry from '../../../../.ai/contracts/registry.json';
 import { teamFilterLabels, type CatalogueEntry } from './catalogue';
-import { consumerCiRequirements, docsStep, journeySteps, outcomeCards, routeSteps, teamCards } from './process-docs';
+import { consumerCiRequirements, docsStep, journeySteps, outcomeCards, routeSteps, teamCards, PEER_RANGES, REGISTRY_INSTALL } from './process-docs';
 
 describe('process docs renderers', () => {
+  it('constrains vendor installs to the runtime peer ranges instead of npm latest', () => {
+    for (const name of ['primeng', '@primeuix/themes']) {
+      expect(PEER_RANGES[name]).toBeTruthy();
+      expect(REGISTRY_INSTALL).toContain(`"${name}@${PEER_RANGES[name]}"`);
+    }
+  });
+
   it('renders every journey step, in contract order, with its commands', () => {
     for (const [journey, ids] of Object.entries(processContract.journeys)) {
       const steps = journeySteps(journey as keyof typeof processContract.journeys, {}, true);

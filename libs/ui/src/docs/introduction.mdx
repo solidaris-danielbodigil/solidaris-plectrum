@@ -7,7 +7,7 @@ import * as Figures from './introduction.stories';
   <Story of={Figures.Hero} />
 </Unstyled>
 
-Plectrum is the Solidaris design system — shared components, tokens and layout for every application. This Storybook is the published guidance. Figma is where you design; it is not a second set of rules.
+Plectrum is the Solidaris design system — shared components, tokens and layout for every application. This Storybook documents the system. Use the documentation matching the release you install; [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) explains published releases and development previews. Figma is where you design; it is not a second set of rules.
 
 <Unstyled>
   <Story of={Figures.Audience} />
@@ -15,7 +15,9 @@ Plectrum is the Solidaris design system — shared components, tokens and layout
 
 Core components are shared. An application Candidate or App-specific component stays with its owning team; promotion to Core is a separate decision. A design-team proposal can start in Figma's Custom components file and becomes available to applications only after Core implementation and release. Plectrum component pages show status and owner — [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
 
-Each application team works in its own repository. It installs the team toolkit next to the runtime packages and runs `plectrum init`, which writes the Cursor and VS Code agent adapters from the installed, versioned rules and process. Nothing is copied from the design-system repository. [Build with Plectrum → Initialize the team toolkit](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit) · [AI strategy → Team repositories](?path=/docs/docs-ai-strategy--docs#team-repositories).
+Each application team works in its own repository. The installed toolkit supplies versioned rules and contracts; `plectrum init` generates configuration, Cursor and VS Code agent adapters, and a Plectrum checks workflow. It does not copy the full central `.ai/` directory or create the complete development environment. [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) gives the nine setup steps, their owners and verification criteria. [AI strategy → Team repositories](?path=/docs/docs-ai-strategy--docs#team-repositories) explains the editor integration.
+
+A starter that prepares SCSS, empty ITCSS layers, local Storybook, tests, hooks and CI during `npm install` is [planned work](?path=/docs/get-started-use-plectrum-in-an-app--docs#planned-onboarding). Until it ships, track these setup tasks explicitly in the application's onboarding epic.
 
 ## Get help
 

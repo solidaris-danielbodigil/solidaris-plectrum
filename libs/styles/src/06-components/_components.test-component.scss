@@ -1,0 +1,7 @@
+@use '../01-settings/settings.prefix' as *;
+
+// TODO: Apply the approved design using var(--#{$pds-prefix}-*) tokens.
+// Layout belongs in o-flex / o-layout classes on the template.
+.c-test-component {
+  // Add only the component's own visual rules.
+}

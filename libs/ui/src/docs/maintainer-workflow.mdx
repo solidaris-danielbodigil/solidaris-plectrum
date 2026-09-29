@@ -50,7 +50,7 @@ This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story p
 
 ## Testing
 
-Stories are the test suite: every story is executed headless in CI, so covering the states covers the smoke tests.
+Stories provide render smoke checks and interaction assertions alongside unit tests. A rendered state is not proof of every behavior; add assertions for the expected interaction and error paths. Automated accessibility checks also need manual keyboard and screen-reader review.
 
 <DocsTable
   headers={['Layer', 'Command', 'What it checks']}
@@ -69,11 +69,28 @@ Stories are the test suite: every story is executed headless in CI, so covering 
 
 ## Before you commit
 
-`npm install` installs a git hook. It runs `npm run check:commit` before the commit is created. That run checks docs, contracts, token prefix, token usage, style lint, and that generated files are already saved. Fix the failure, stage any regenerated file, and commit again.
+In this checkout, `npm install` runs the hook installer through `prepare`, unless lifecycle scripts are disabled. It installs the Plectrum pre-commit hook when no unrelated hook already occupies that path. The hook runs `npm run check:commit`: docs, contracts, token prefix, token usage, style lint, and generated-file consistency. Fix the failure, stage any regenerated file, and commit again. The installed application devkit does not install this hook.
 
 `git commit --no-verify` skips this hook. A pull request into `main` still runs the full CI gates below. A push of a feature branch by itself does not.
 
 ## CI gates
+
+These are the **Plectrum repository's jobs**, not a declaration of the global Solidaris CI requirements. The generated application workflow runs the portable toolkit profile; application build, test, security and deployment jobs must be integrated with the team's CI owners.
+
+<DocsTable
+  headers={['Job', 'Purpose and failure meaning', 'Application equivalent']}
+  rows={[
+    ['intake-guard', 'Rejects candidate/adoption intake PRs that contain more than the permitted single JSON record.', 'Core intake only; application feature PRs do not use this restriction.'],
+    ['build', 'Checks token drift, generated files, styles, contracts, docs, candidate/adoption records and toolkit tests; builds iShare and iGED and runs the configured unit coverage suites. Any required step failure fails the job; preset validation alone is advisory.', 'Portable plectrum check --profile ci plus the application build, style rules and executable unit tests. Central token generation and intake validation stay in Plectrum.'],
+    ['pack-smoke', 'Packs the four packages, installs them in an isolated Angular consumer, builds it and verifies release artifact metadata. Detects missing exports, assets, dependencies or invalid package metadata.', 'Verify a clean registry install and build in the real application; teams do not repack Core libraries.'],
+    ['storybook-tests', 'Builds Storybook with coverage, validates catalogue routes, executes story smoke/interaction/a11y checks and checks navigation under the Pages sub-path.', 'Configure the local Storybook build and equivalent story/a11y tests; the devkit check does not run these.'],
+    ['storybook-packed', 'Builds the central catalogue against packed libraries to catch differences between source aliases and package consumption.', 'Application imports resolve installed packages; build both the application and its local Storybook.'],
+    ['figma-plugin', 'Typechecks, tests and builds the Plectrum token plugin and uploads its artifact.', 'Core token tooling only.'],
+    ['chromatic / visual-tests', 'Runs only when CHROMATIC_ENABLED is true; requires the project token and checks visual changes against baselines.', 'Choose and configure the application visual regression service with its owners.'],
+  ]}
+/>
+
+For each Solidaris pipeline requirement, record the equivalent command, trigger, merge-blocking policy, report and owner. A configured workflow does not itself prove that branch protection requires it. The local hook is a fast subset: builds, unit tests, package smoke tests and Storybook tests remain CI jobs. Application setup and acceptance criteria: [Build with Plectrum → Validate](?path=/docs/get-started-use-plectrum-in-an-app--docs#validate).
 
 Read from `.github/workflows/ci.yml` by `npm run contracts:generate`; the table cannot drift from the workflow. Setup steps are omitted. A conditional job runs only when its condition holds; an advisory step reports without failing.
 

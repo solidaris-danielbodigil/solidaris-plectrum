@@ -13,3 +13,5 @@ import { FormFieldComponent } from '@solidaris-danielbodigil/pds-ui';
 ```
 
 Pair with `@solidaris-danielbodigil/pds-plectrum` (`providePlectrum()`) and `@solidaris-danielbodigil/pds-styles` (global ITCSS). See `@solidaris-danielbodigil/pds-styles` for `stylePreprocessorOptions.includePaths`.
+
+For private-registry access, exact published versions and compatible Angular/PrimeNG peers, follow [Build with Plectrum](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/latest/?path=/docs/get-started-use-plectrum-in-an-app--docs). The UI package does not ship this repository's Storybook, MDX helpers or test suite. Install the devkit separately as development tooling, then configure the application's local Storybook, tests and CI as described in the guide.

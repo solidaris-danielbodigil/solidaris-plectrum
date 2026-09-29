@@ -72,8 +72,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Install the packages',
-    detail: `Install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\` and \`${PACKAGE_NAMES.styles}\`, plus the PrimeNG peers, in the version these docs describe. Then add the stylesheet and call \`providePlectrum()\`. Install \`${PACKAGE_NAMES.toolkit}\` and run \`plectrum init\` in the application repository to set up the team toolkit.`,
+    title: 'Prepare the application and install a release',
+    detail: `Start from a working Angular application, confirm private package access and register the application with Core. Follow a published release's guide to install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\`, \`${PACKAGE_NAMES.styles}\` and \`${PACKAGE_NAMES.toolkit}\`, with compatible PrimeNG peers.`,
     links: [
       {
         label: 'Build with Plectrum',
@@ -84,12 +84,48 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Render the first field',
-    detail: `Copy the Form Field example. It imports from \`${PACKAGE_NAMES.ui}\` and includes the PrimeNG input directive.`,
+    title: 'Initialize the team toolkit',
+    detail: 'Run `plectrum init` in the application repository. Verify the application identity, source paths, editor instructions and generated checks workflow. This does not create a complete application workspace.',
     links: [
       {
+        label: 'Initialize the team toolkit',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit',
+      },
+    ],
+  },
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Wire the styles and render the first field',
+    detail: 'Configure SCSS, the local ITCSS layers, fonts and icons, then register `providePlectrum()`. Render the Form Field example to verify the theme and shared styles together. This configuration is currently manual.',
+    links: [
+      {
+        label: 'Styles and ITCSS',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#wire-the-stylesheet',
+      },
+      {
         label: 'Form Field',
-        path: '/docs/custom-components-form-field--docs',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#first-component',
+      },
+    ],
+  },
+  {
+    who: 'Dev',
+    tone: 'app',
+    title: 'Prepare Storybook, tests and CI',
+    detail: 'Set up local Storybook, executable tests and a pre-commit hook. Connect Plectrum checks, the application build and tests to the Solidaris pipeline. The current devkit does not install this complete toolchain; verify the readiness checklist before closing onboarding.',
+    links: [
+      {
+        label: 'Storybook and tests',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests',
+      },
+      {
+        label: 'Checks and CI',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#validate',
+      },
+      {
+        label: 'Workspace readiness',
+        path: '/docs/get-started-use-plectrum-in-an-app--docs#workspace-readiness',
       },
     ],
   },
