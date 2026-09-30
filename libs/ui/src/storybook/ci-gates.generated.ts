@@ -132,6 +132,12 @@ export const CI_JOBS = [
     "condition": null,
     "steps": [
       {
+        "name": "Install Playwright Chromium",
+        "run": "npx playwright install --with-deps chromium",
+        "advisory": false,
+        "condition": null
+      },
+      {
         "name": "Pack libraries and build a throwaway consumer app",
         "run": "npm run pack:smoke",
         "advisory": false,

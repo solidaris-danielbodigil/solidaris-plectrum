@@ -1,38 +1,21 @@
-# Plectrum team toolkit
+# Plectrum application devkit
 
-`@solidaris-danielbodigil/pds-devkit` contains a versioned offline catalogue with complete component metadata, token inventory, JSON schemas, process contract, rules and the `plectrum` CLI. The private package was first verified in release `2.0.2-devkit-0.2.0`; use the matching versioned Storybook for the version you install. The earlier `plectrum-devkit` package name was published publicly.
+`@solidaris-danielbodigil/pds-devkit` distributes the versioned catalogue, token inventory, schemas, process contract, application rules and the `plectrum` CLI. Source version **0.4.0** adds a project-owned bootstrap and autonomous local component scaffold. It is not a published package until the release pipeline completes; use the versioned documentation for the package actually installed.
+
+Start a new Angular application from [`tools/consumers/starter`](../consumers/starter/README.md). Set its `package.json` `plectrum` identity, configure private-registry access, then run `npm install`. The starter declares all runtime and development dependencies and runs `plectrum bootstrap` from its own `postinstall`. This generates empty local ITCSS layers and an ordered SCSS entry, Angular/Storybook/test targets, Agenda assets, `.ai` rules/skills/protocols/agents, editor adapters, a fast Git hook and a GitHub Actions job. The operation is idempotent; CI verifies committed setup without migrating files.
+
+Useful commands in the application root:
 
 ```sh
-npx --no-install plectrum init --team my-team --application my-app --repository https://github.com/owner/my-app
-npx --no-install plectrum catalogue
-npx --no-install plectrum doctor
-npx --no-install plectrum check --profile ci
+npm run pds:storybook
+npm run pds:build-storybook
+npm run pds:test:unit
+npm run pds:check:ci
+npm run pds:component -- --name local-card
 ```
 
-`init` creates `.plectrum/config.json`, Cursor and VS Code/Copilot instructions and agent roles, plus a CI workflow. It adds PrimeNG MCP configuration; Figma and Storybook MCP URLs are opt-in in the config. `doctor --live` checks configured MCP initialization. Offline catalogue lookup always works without MCP. Invoke **Plectrum** by selecting the generated Plectrum agent in Cursor or the VS Code chat agent picker; in Cursor you can also use `/plectrum` if the agent is exposed as a slash command by your version.
+`plectrum scaffold --name <slug>` creates a locally owned Angular component, story, unit test, metadata, evidence checklist and `src/styles/06-components/_components.<slug>.scss`; it registers the style in the local ITCSS index. Core approval is **not** needed to create or deliver a local component. Complete the scaffold's placeholders and tests before CI. The static `plectrum check --profile ci` checks contracts and files but does not execute unit tests, Storybook interactions or an Angular build.
 
-Customize the identity, source/style/candidate paths and MCP URLs in `.plectrum/config.json`. Keep team notes in separate files. `plectrum update` refreshes generated adapters and reports edits to managed files as conflicts. It preserves existing unrelated MCP servers and editor files.
+To submit for shared intake, Core first merges `.ai/candidates/proposals/<application>-<slug>.json` with `decision: approved-candidate`. Then run `plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <https-url> --checks <https-url>` from a committed revision. Submission rereads the central decision and opens a reviewed pull request; it does not publish a Core package. `candidate-export` is an offline draft, while adoption reporting is optional.
 
-## What the application still needs
-
-Start from an existing Angular application and use the [published installation guide](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/latest/?path=/docs/get-started-use-plectrum-in-an-app--docs). The runtime packages and compatible PrimeNG/theme peers are application dependencies; install this toolkit as a development dependency. `npm install` installs packages but does not bootstrap the application workspace with this version.
-
-| Concern | Current behavior |
-| --- | --- |
-| SCSS and ITCSS | Shared source comes from `pds-styles`. Configure Sass, the global entry point and empty local ITCSS layers in the application. Put local component styles in `src/styles/06-components` and wire each import once, preserving layer order. |
-| Storybook and tests | Configure application Storybook, providers, styles, assets and test runners separately. The generated story is not a configured server or an executed test. |
-| Checks and CI | `plectrum check --profile ci` performs static package/configuration, token and candidate checks. It does not run an Angular build, unit tests, story interactions or accessibility tests. Add those jobs with the Solidaris CI owners. |
-| Pre-commit | No hook is installed by this package. Connect the agreed fast checks to the application's hook and repeat required checks in CI. |
-| AI instructions | Application roles and editor adapters are generated. Central rules, skills and protocols under `rules/central` are reference material; the full `.ai/` tree and Core agents are not copied into the application. |
-
-The generated GitHub workflow needs private-registry authentication configured by the application. It also invokes adoption submission on pushes to `main`; reporting stays disabled by default. If enabled, configure `PLECTRUM_ADOPTION_TOKEN`. A generated workflow does not configure merge requirements or the organisation's full CI policy.
-
-## Candidate workflow
-
-The current scaffolder requires a merged Core approval. Independent local scaffolding and the complete application starter are [planned work](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/?path=/docs/get-started-use-plectrum-in-an-app--docs#planned-onboarding), not shipped capabilities.
-
-After the Core reviewer merges `.ai/candidates/proposals/<application>-<slug>.json` with `decision: approved-candidate`, run `plectrum scaffold --name slug --proposal <application>-<slug>`. The toolkit reads that merged decision from the central repository and creates a local Angular candidate, metadata JSON, Storybook story, style, decision copy and evidence checklist. `plectrum check --profile ci` verifies the proposal, installed package compatibility, managed adapters, tokens and metadata/API alignment. Commit the candidate and capture an HTTPS preview plus successful CI URL for that same commit. Then run `plectrum candidate-submit --name slug --proposal <application>-<slug> --preview <url> --checks <url>` with `GH_TOKEN` or `GITHUB_TOKEN`. It opens a reviewed intake PR, creating a fork when needed. Run it again after a new commit to revise the same ID. `plectrum candidate-withdraw --id <application>-<slug> --reason <text>` opens a withdrawal PR. `--dry-run` writes a local draft after live central checks without opening a PR. `plectrum candidate-export` and `plectrum adoption-report` write local drafts; `plectrum adoption-submit` opens a reviewed central PR when the application enables reporting.
-
-The package exports `./catalogue`, `./tokens`, `./process`, `./compatibility`, `./registry` and `./schema/*.v1` for tools. Catalogue and doctor resolve a versioned Storybook link for a released runtime/toolkit pair and label an unreleased pair as a development preview.
-
-`scaffold` writes styles under `paths.candidateStyles` (initially `src/styles/plectrum-candidates`). Set that path to the application's ITCSS component layer before scaffolding. It does not register the SCSS import or create a unit spec. Complete the evidence checklist with actual test results; a passing static check does not execute that evidence.
+`plectrum update` refreshes managed files after a toolkit upgrade and reports conflicts instead of overwriting edited adapters. Team-specific instructions stay in separate files. The starter's `.npmrc` names GitHub Packages without credentials; developers and CI must supply authorized access. Its GitHub job is portable, but CI owners must map it to Solidaris branch protection, secrets and global checks. Browser installation (`npx playwright install chromium` locally; `--with-deps` in CI) remains required for the unit runner.

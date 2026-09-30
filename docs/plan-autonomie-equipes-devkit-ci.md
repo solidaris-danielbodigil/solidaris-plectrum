@@ -1,10 +1,24 @@
 # Plan d’évolution Plectrum : autonomie des équipes, devkit et CI
 
-Date : 29 septembre 2026  
-Statut : plan de travail proposé, fondé sur les retours de l’équipe iShare et sur le dépôt actuel.  
+Date : 29 septembre 2026 · mise en œuvre source : 30 septembre 2026
+
+Statut : socle implémenté dans le dépôt ; publication et pilote iShare encore à réaliser.
 Périmètre : gouvernance des contributions, outillage des applications, documentation Storybook, intégration aux CI Solidaris et migration.
 
-> Ce document décrit une cible à implémenter. Les commandes et comportements présentés comme proposés ne sont pas encore disponibles. La rédaction de ce plan ne modifie ni les règles actuelles, ni les packages, ni les pipelines.
+> Les constats de la section 2 décrivent l’état observé avant les modifications. Les sections suivantes restent la cible d’ensemble ; le tableau ci-dessous distingue ce qui est codé de ce qui demande encore un accord ou une validation externe.
+
+## État de mise en œuvre
+
+| Lot | Réalisé dans le code source | Reste à confirmer ou livrer |
+| --- | --- | --- |
+| Autonomie locale | `plectrum scaffold --name` ne consulte plus Core ; style dans `06-components`, import ITCSS, story, spec, métadonnées et preuves ; l’approbation centrale reste contrôlée à la soumission. | Enregistrement réel de l’équipe et choix de revue design asynchrone pour iShare. |
+| Installation | Socle `tools/consumers/starter`, manifeste avec dépendances et `postinstall`, `plectrum bootstrap` idempotent, contrôle sans écriture en CI. | Publier `pds-devkit` 0.4.0, créer et committer le lockfile depuis les versions publiées, tester un clone iShare avec accès privé. |
+| Styles et assets | Huit couches locales vides, composition Sass partagée/locale, placement des nouveaux composants et polices Agenda distribuées par le devkit. | Vérifier visuellement la cascade et les polices dans l’application iShare réelle. |
+| Storybook et tests | Storybook Angular local avec thème, docs, exemple, build statique ; Vitest navigateur pour unités et stories, assertions `play` et addon a11y. | Publier les packages, configurer une preview privée liée à la révision et enrichir les tests métier/a11y du pilote. |
+| Règles et CI | `.ai` portable, adapters Cursor/Copilot, hook rapide, workflow GitHub Actions avec checks, build et tests ; documentation des garanties et limites. | Confirmer le fournisseur CI et les contrôles globaux Solidaris, les secrets, les jobs obligatoires et la protection des branches. |
+| Support | Storybook « Build with Plectrum », contribution, overview, contrats et CI mis à jour ; copie révisée du PPT. | Présenter le parcours final aux équipes et intégrer les retours du pilote. |
+
+La vérification locale empaquette les quatre packages et installe le socle dans un dépôt temporaire : `postinstall`, build Angular, compilation SCSS, scaffold, contrôles statiques, tests unitaires, build Storybook et tests de stories sont couverts. Une installation depuis le registre privé après publication reste une étape distincte.
 
 ## 1. Objectif et décisions de principe
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.4.0",
+  "version": "1.5.0",
   "contexts": {
     "plectrum": {
       "root": "Plectrum checkout",
@@ -11,7 +11,7 @@
     "consumer": {
       "root": "Application checkout",
       "componentRoot": "src/plectrum-candidates",
-      "stylesRoot": "src/styles/plectrum-candidates",
+      "stylesRoot": "src/styles/06-components",
       "contracts": ".plectrum",
       "rule": "Never edit node_modules or assume libs/ui exists."
     }
@@ -57,6 +57,12 @@
       "context": "consumer",
       "command": "npx --no-install plectrum init --team <id> --application <id> --repository <url>",
       "summary": "Create .plectrum/config.json, editor adapters, MCP entries and the CI workflow.",
+      "available": true
+    },
+    "consumerBootstrap": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum bootstrap",
+      "summary": "Initialize or verify the Angular application, local ITCSS, Storybook and managed tooling. The application postinstall runs this automatically.",
       "available": true
     },
     "consumerUpdate": {
@@ -109,8 +115,8 @@
     },
     "consumerScaffold": {
       "context": "consumer",
-      "command": "npx --no-install plectrum scaffold --name <slug> --proposal <application>-<slug>",
-      "summary": "Create a local candidate after the central proposal record approves it.",
+      "command": "npx --no-install plectrum scaffold --name <slug>",
+      "summary": "Create a locally owned application component, story, unit test, metadata and ITCSS style without Core approval.",
       "available": true
     },
     "candidateExport": {
@@ -220,18 +226,20 @@
       "repository": "consumer",
       "prerequisites": [
         "installed toolkit",
-        "registered team and application"
+        "application identity in package.json"
       ],
       "inputs": [
         "team, application and repository IDs"
       ],
       "outputs": [
         ".plectrum/config.json",
-        "editor adapters",
-        "CI workflow"
+        "empty ITCSS layers and SCSS wiring",
+        "local Storybook and unit-test setup",
+        "editor and .ai adapters",
+        "Git hook and CI workflow"
       ],
       "commands": [
-        "consumerInit",
+        "consumerBootstrap",
         "consumerCatalogue",
         "consumerDoctor"
       ]
@@ -313,7 +321,6 @@
       "owner": "team",
       "repository": "consumer",
       "prerequisites": [
-        "approved proposal",
         "compatible toolkit"
       ],
       "inputs": [
@@ -323,7 +330,8 @@
         "local candidate",
         "stories",
         "metadata",
-        "evidence"
+        "evidence",
+        "unit test"
       ],
       "commands": [
         "consumerInit",
@@ -337,7 +345,8 @@
       "owner": "team",
       "repository": "consumer",
       "prerequisites": [
-        "checks passed"
+        "checks passed",
+        "merged central proposal decision"
       ],
       "inputs": [
         "candidate JSON",
@@ -702,8 +711,8 @@
     ],
     "contribution": [
       "discover",
-      "approve",
       "implement",
+      "approve",
       "submit",
       "integrate",
       "design-return",
@@ -729,7 +738,7 @@
       "next": "team",
       "repository": "consumer",
       "step": "implement",
-      "effect": "The requesting team is the recorded owner. The toolkit scaffolds and submits only under this decision."
+      "effect": "The requesting team is the recorded owner. Central submission is permitted under this decision; local implementation does not require it."
     },
     "use-existing": {
       "next": "team",
@@ -741,16 +750,24 @@
       "next": "team",
       "repository": "consumer",
       "step": null,
-      "effect": "No central candidate intake: the toolkit refuses to scaffold or submit under this decision."
+      "effect": "No central candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
     },
     "rejected": {
       "next": "team",
       "repository": "consumer",
       "step": null,
-      "effect": "No candidate intake: the toolkit refuses to scaffold or submit under this decision."
+      "effect": "No candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
     }
   },
   "routes": [
+    {
+      "id": "local-application",
+      "decision": null,
+      "steps": [
+        "discover",
+        "implement"
+      ]
+    },
     {
       "id": "local-candidate",
       "decision": "approved-candidate",

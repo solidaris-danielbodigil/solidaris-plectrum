@@ -37,28 +37,28 @@ export const InstallFlow: StoryObj = {
       title: 'Prepare the application and package access',
       who: 'App team + Core',
       tone: 'app',
-      detail: 'Start from a working Angular application. Confirm private package access and register the team and application with Core.',
+      detail: 'Start from the application starter or an existing Angular project. Confirm private package access and set the local identity.',
       links: [{ label: 'Prerequisites', href: '#prerequisites' }],
     },
     {
       title: 'Install the runtime packages and devkit',
       who: 'App team',
       tone: 'app',
-      detail: 'Use a published release and compatible peers, including PrimeNG. Commit the dependency manifest and lockfile.',
+      detail: 'Install the matching released packages and peers, including PrimeNG. The starter postinstall runs the devkit bootstrap.',
       links: [{ label: 'Install the packages', href: '#install-the-packages' }],
     },
     {
-      title: 'Initialize the toolkit and editor instructions',
+      title: 'Inspect toolkit and editor instructions',
       who: 'App team',
       tone: 'app',
-      detail: 'Generate the Plectrum configuration, editor adapters and checks workflow. Verify the application identity and source paths.',
+      detail: 'Verify generated configuration, .ai guidance, editor adapters, hook and checks workflow.',
       links: [{ label: 'Initialize the team toolkit', href: '#initialize-the-team-toolkit' }],
     },
     {
       title: 'Configure SCSS, ITCSS and assets',
       who: 'App team',
       tone: 'app',
-      detail: 'Connect the shared stylesheet, prepare the local ITCSS layers and load fonts and icons. This setup is currently manual.',
+      detail: 'Verify the generated empty ITCSS layers, ordered shared/local SCSS and font/icon assets.',
       links: [{ label: 'Wire the stylesheet', href: '#wire-the-stylesheet' }],
     },
     {
@@ -79,14 +79,14 @@ export const InstallFlow: StoryObj = {
       title: 'Set up local Storybook and executable tests',
       who: 'App team',
       tone: 'app',
-      detail: 'Configure local stories, unit tests, interactions and accessibility checks. Confirm that a broken assertion fails the run.',
+      detail: 'Run local Storybook, its static build and Angular unit tests; complete interaction and accessibility evidence.',
       links: [{ label: 'Set up Storybook and tests', href: '#set-up-storybook-and-tests' }],
     },
     {
       title: 'Connect Plectrum checks to application CI',
       who: 'App team + CI owners',
       tone: 'app',
-      detail: 'Run the toolkit checks, wire the local hook and add application build and tests to the Solidaris pipeline.',
+      detail: 'Run static checks, build and tests, then map generated jobs to the Solidaris pipeline.',
       links: [{ label: 'Validate', href: '#validate' }],
     },
     {
@@ -139,9 +139,9 @@ export const BeforeYouInvent: StoryObj = stepsStory([
   {
     who: 'App team',
     tone: 'design',
-    title: 'Propose the gap',
+    title: 'Build locally, propose sharing when useful',
     detail:
-      'If still nothing covers the need, open a proposal. Do not start a new component before the recorded decision.',
+      'If nothing covers the need, the application team may create a local component. Core reviews only central intake and promotion.',
     links: [
       { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
     ],

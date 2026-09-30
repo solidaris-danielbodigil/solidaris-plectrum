@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { asset, configAt, flag, packageJson, packageRoot, projectPath, readJson, requiredFlag } from '../src/common.mjs';
 import { initialize, update } from '../src/managed.mjs';
+import { bootstrap } from '../src/bootstrap.mjs';
 import { candidateCheck, check, compatibility, tokenCheck, validateSchema } from '../src/checks.mjs';
 import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold } from '../src/workflows.mjs';
 import { probeMcp } from '../src/mcp.mjs';
@@ -38,6 +39,7 @@ function docsNotice() {
 
 const handlers = {
   init: () => initialize(root, args),
+  bootstrap: () => bootstrap(root),
   update: () => update(root),
   catalogue: () => {
     const catalogue = asset('catalogue.json');

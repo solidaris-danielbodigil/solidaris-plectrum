@@ -5,7 +5,7 @@
  */
 
 import { execSync, spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +13,7 @@ import { pathToFileURL } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const TARBALLS = join(ROOT, 'tools/packaging/.tarballs');
-const FIXTURE = join(ROOT, 'tools/packaging/consumer-app');
+const FIXTURE = join(ROOT, 'tools/consumers/starter');
 
 function run(cmd, cwd) {
   console.log(`$ ${cmd}`);
@@ -41,6 +41,7 @@ const dest = mkdtempSync(join(tmpdir(), 'pds-pack-smoke-'));
 cpSync(FIXTURE, dest, { recursive: true });
 
 const pkg = JSON.parse(readFileSync(join(dest, 'package.json'), 'utf8'));
+pkg.plectrum = { team: 'ishare', application: 'smoke-app', project: 'application', repository: 'https://github.com/example/smoke-app' };
 pkg.dependencies = { ...pkg.dependencies, ...fileDeps };
 pkg.devDependencies = { ...pkg.devDependencies, '@solidaris-danielbodigil/pds-devkit': fileDeps['@solidaris-danielbodigil/pds-devkit'] };
 delete pkg.dependencies['@solidaris-danielbodigil/pds-devkit'];
@@ -49,20 +50,17 @@ writeFileSync(join(dest, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 run('npm install --legacy-peer-deps', dest);
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/schema/metadata.v1'))\"", dest);
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/catalogue'))\"", dest);
-run('npx ng build', dest);
+run('npx ng build application', dest);
 
 run('git init', dest);
 run('git add package.json src', dest);
 run('git -c user.name=Plectrum -c user.email=plectrum@example.invalid commit -m fixture', dest);
-run('npx --no-install plectrum init --team ishare --application smoke-app --repository https://github.com/example/smoke-app', dest);
+run('npx --no-install plectrum bootstrap', dest);
 run('npx --no-install plectrum update', dest);
 run('npx --no-install plectrum doctor', dest);
 run('npx --no-install plectrum catalogue --id plectrum:form-field', dest);
 run('npx --no-install plectrum check --profile ci', dest);
-const central = join(dest, 'central-checkout');
-mkdirSync(join(central, '.ai/candidates/proposals'), { recursive: true });
-writeFileSync(join(central, '.ai/candidates/proposals/smoke-app-smoke-card.json'), `${JSON.stringify({ schemaVersion: 1, id: 'smoke-app-smoke-card', componentId: 'ishare:smoke-card', team: 'ishare', application: 'smoke-app', issueUrl: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/1', decision: 'approved-candidate', owner: 'ishare', decidedBy: '@solidaris-danielbodigil', decidedAt: '2026-09-25T00:00:00.000Z', decisionUrl: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/1#issuecomment-1', note: 'Approved fixture' }, null, 2)}\n`);
-run(`npx --no-install plectrum scaffold --name smoke-card --proposal smoke-app-smoke-card --central-checkout "${central}"`, dest);
+run('npx --no-install plectrum scaffold --name smoke-card', dest);
 run('npx --no-install plectrum validate --schema metadata --file src/plectrum-candidates/smoke-card/smoke-card.metadata.json', dest);
 expectFailure('npx --no-install plectrum check --profile ci', dest, 'complete candidate placeholders');
 const metadataFile = join(dest, 'src/plectrum-candidates/smoke-card/smoke-card.metadata.json');
@@ -74,18 +72,21 @@ metadata.aiHints.context = 'Use for the approved smoke app summary.';
 metadata.aiHints.selectionCriteria.gap = 'Approved local candidate for smoke testing.';
 metadata.examples[0].description = 'Basic smoke card presentation.';
 writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
-writeFileSync(join(dest, 'src/plectrum-candidates/smoke-card/evidence.md'), '# Smoke card evidence\n\nProposal decision and owner: approved by smoke team\nDesign reference and states: local static card\nKeyboard test: static content\nScreen reader test: text announced\nStory and responsive checks: default story reviewed\nKnown limitations: not shipped as Core\n');
+writeFileSync(join(dest, 'src/plectrum-candidates/smoke-card/evidence.md'), '# Smoke card evidence\n\nOwner and use case: smoke team summary\nDesign reference and states: local static card\nKeyboard test: static content\nScreen reader test: text announced\nStory and responsive checks: default story reviewed\nKnown limitations: not shipped as Core\n');
 metadata.props = [{ name: 'missingInput', type: 'string', required: false, description: 'A deliberately mismatched API.' }];
 writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
 expectFailure('npx --no-install plectrum check --profile ci', dest, 'missing from Angular inputs');
 metadata.props = [];
 writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
 run('npx --no-install plectrum check --profile ci', dest);
+run('npm run pds:test:unit', dest);
+run('npm run pds:build-storybook', dest);
+run('npm run pds:test:stories', dest);
 run('git add src .plectrum/config.json', dest);
 run('git -c user.name=Plectrum -c user.email=plectrum@example.invalid commit -m candidate', dest);
 run('npx --no-install plectrum candidate-export --name smoke-card', dest);
 const workflows = await import(pathToFileURL(join(dest, 'node_modules/@solidaris-danielbodigil/pds-devkit/src/workflows.mjs')).href);
-const centralProposal = JSON.parse(readFileSync(join(central, '.ai/candidates/proposals/smoke-app-smoke-card.json'), 'utf8'));
+const centralProposal = { schemaVersion: 1, id: 'smoke-app-smoke-card', componentId: 'ishare:smoke-card', team: 'ishare', application: 'smoke-app', issueUrl: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/1', decision: 'approved-candidate', owner: 'ishare', decidedBy: '@solidaris-danielbodigil', decidedAt: '2026-09-25T00:00:00.000Z', decisionUrl: 'https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/1#issuecomment-1', note: 'Approved fixture' };
 let centralSubmission = null;
 const fakeCentral = {
   proposal: async () => centralProposal,

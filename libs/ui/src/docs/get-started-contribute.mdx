@@ -2,6 +2,7 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-contribute.stories';
 import { STATUS_PRESENTATION } from '../storybook/governance';
+import { command, DISTRIBUTED_PACKAGES } from '../storybook/process-docs';
 import { REPO_CLONE, REPO_DIR } from '../storybook/release-state';
 import workspacePackage from '../../../../package.json';
 
@@ -33,11 +34,11 @@ The core team records one decision per proposal in the central repository. What 
 
 ## Develop and submit a candidate
 
-**Current workflow:** the candidate scaffolder still requires Core's merged approval. The planned autonomy model will separate local development from the decision to share a component through Core; it is not implemented yet. Track that dependency explicitly in the application epic — see [Planned onboarding](?path=/docs/get-started-use-plectrum-in-an-app--docs#planned-onboarding).
+**Application work is autonomous in the devkit <code>{DISTRIBUTED_PACKAGES.find((pkg) => pkg.role === 'toolkit')?.version}</code> source.** Search PrimeNG and the shared catalogue, then run <code>{command('consumerScaffold')}</code> for a local component. The team owns, tests and may deliver it without waiting for Core. This source version must be published before teams can install it from the registry; earlier releases retain their own documented behavior.
 
-For an `approved-candidate` decision, in the **application repository** with the initialized toolkit ([Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit)). Commit the candidate, publish an HTTPS preview and a CI result for that exact commit, then submit. Submitting again after a new commit revises the same stable ID. The reviewed central JSON — never a local `index.json` — makes the candidate appear in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
+To **share** that component, request an `approved-candidate` central decision. Commit the implementation, publish an HTTPS preview and a CI result for that exact commit, then run <code>{command('candidateSubmit')}</code>. Submission rereads the merged central decision; local ownership does not grant Core publication. Submitting again after a new commit revises the same stable ID. The reviewed central JSON makes the candidate appear in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
 
-Before scaffolding, prepare the application's [Storybook and executable tests](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests). Align `paths.candidateStyles` with the local ITCSS component layer and wire its imports. The current generator creates a story, metadata JSON, SCSS and an evidence checklist; it does not configure Storybook, generate a unit spec or register the SCSS import. The toolkit's CI profile validates those files and static contracts, but does not execute the tests recorded as evidence.
+The [application starter](?path=/docs/get-started-use-plectrum-in-an-app--docs) configures local Storybook and executable tests. The generator creates a story, metadata JSON, unit spec, ITCSS style/import and evidence checklist. The toolkit CI profile checks those files and static contracts; the separate unit and Storybook commands execute code. Complete the placeholders before CI.
 
 <Unstyled>
   <Story of={Figures.LocalCandidate} />
@@ -109,7 +110,7 @@ Every metadata-backed Plectrum component page opens with two badges from its `.m
   rows={Object.values(STATUS_PRESENTATION).map((status) => [status.label, status.hint.replaceAll('{owner}', 'the owning team'), status.importers, status.changedBy])}
 />
 
-The **owner** is a team ID from the shared registry below — the only values metadata, the scaffolder and candidate records accept. For a new application, ask Core to add the real team, application and repository URL to `.ai/contracts/registry.json` before running `plectrum init`. Local demo entries do not represent external adoption.
+The **owner** is the application team ID in its local config. A team can scaffold locally before central registration. To submit a candidate or adoption report, ask Core to register the real team, application and repository URL in `.ai/contracts/registry.json`. Local demo entries do not represent external adoption.
 
 <Unstyled>
   <Story of={Figures.Teams} />
