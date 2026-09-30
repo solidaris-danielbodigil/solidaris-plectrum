@@ -7,7 +7,7 @@ import {
   type PlectrumPresetVersion,
 } from './preset-storage';
 
-export type { PlectrumPresetVersion } from './preset-storage';
+export type { DeprecatedPlectrumPresetVersion, PlectrumPresetVersion } from './preset-storage';
 export {
   DEFAULT_PLECTRUM_PRESET_VERSION,
   PLECTRUM_PRESET_STORAGE_KEY,
@@ -24,6 +24,7 @@ export { PlectrumPresetMenuService } from './plectrum-preset-menu.service';
  *
  * @param version — Explicit preset version. When omitted, reads
  *   `solidaris-plectrum-preset` from localStorage (default `v1`).
+ *   `v0.6` is deprecated and retained only for migration comparisons.
  *
  * @example
  * // app.config.ts

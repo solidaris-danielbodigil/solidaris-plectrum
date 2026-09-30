@@ -67,6 +67,6 @@ The older `libs/plectrum/scripts/audit-preset-refs.mjs` scan still exists for ga
 
 | Key                                        | Values         | Default                                                    |
 | ------------------------------------------ | -------------- | ---------------------------------------------------------- |
-| `solidaris-plectrum-preset` (localStorage) | `v0.6` \| `v1` | **`v1`** (`resolvePresetVersion()` in `preset-storage.ts`) |
+| `solidaris-plectrum-preset` (localStorage) | `v0.6` (deprecated) \| `v1` | **`v1`** (`resolvePresetVersion()` in `preset-storage.ts`) |
 
 Set via top-nav avatar menu or Storybook toolbar; requires full reload (PrimeNG preset is bootstrap-bound).

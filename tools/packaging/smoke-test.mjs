@@ -48,9 +48,14 @@ delete pkg.dependencies['@solidaris-danielbodigil/pds-devkit'];
 writeFileSync(join(dest, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 
 run('npm install --legacy-peer-deps', dest);
+for (const font of ['regular', 'italic', 'semibold', 'bold']) {
+  if (!existsSync(join(dest, `node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts/agenda/agenda-${font}.woff2`))) throw new Error(`Packed styles package is missing Agenda ${font}.`);
+}
+if (existsSync(join(dest, 'node_modules/@solidaris-danielbodigil/pds-styles/src/06-components/_components.test-component.scss'))) throw new Error('Test-only component leaked into packed styles.');
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/schema/metadata.v1'))\"", dest);
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/catalogue'))\"", dest);
 run('npx ng build application', dest);
+if (!existsSync(join(dest, 'dist/application/browser/assets/fonts/agenda/agenda-regular.woff2'))) throw new Error('Application build did not publish Agenda fonts.');
 
 run('git init', dest);
 run('git add package.json src', dest);
@@ -81,6 +86,7 @@ writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
 run('npx --no-install plectrum check --profile ci', dest);
 run('npm run pds:test:unit', dest);
 run('npm run pds:build-storybook', dest);
+if (!existsSync(join(dest, 'dist/storybook/assets/fonts/agenda/agenda-regular.woff2'))) throw new Error('Local Storybook did not publish Agenda fonts.');
 run('npm run pds:test:stories', dest);
 run('git add src .plectrum/config.json', dest);
 run('git -c user.name=Plectrum -c user.email=plectrum@example.invalid commit -m candidate', dest);

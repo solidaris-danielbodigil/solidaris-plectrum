@@ -28,6 +28,12 @@ test('starter bootstraps once, composes SCSS and scaffolds an autonomous local c
   assert.ok(readJson(path.join(root, 'angular.json')).projects.application.architect.storybook);
   assert.ok(fs.existsSync(path.join(root, '.ai/skills/plectrum-component/SKILL.md')));
   assert.match(fs.readFileSync(path.join(root, '.github/workflows/plectrum-checks.yml'), 'utf8'), /NODE_AUTH_TOKEN: \$\{\{ secrets\.GITHUB_TOKEN \}\}/);
+  const preview = fs.readFileSync(path.join(root, '.storybook/preview.ts'), 'utf8');
+  assert.match(preview, /providePlectrum\(version\)/);
+  assert.match(preview, /providePdsLocale\(locale\)/);
+  assert.match(preview, /Preset v0\.6 \(deprecated\)/);
+  assert.match(fs.readFileSync(path.join(root, '.storybook/main.ts'), 'utf8'), /pds-styles\/assets\/fonts/);
+  assert.ok(readJson(path.join(root, 'angular.json')).projects.application.architect.build.options.assets.some((asset) => asset.input === 'node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts'));
 
   await scaffold(root, ['--name', 'local-card']);
   const config = configAt(root);
@@ -45,9 +51,19 @@ test('bootstrap refuses an incomplete Angular application before generating file
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'plectrum-devkit-preflight-'));
   context.after(() => fs.rmSync(root, { recursive: true, force: true }));
   fs.cpSync(starter, root, { recursive: true });
+  fs.symlinkSync(path.join(repository, 'node_modules'), path.join(root, 'node_modules'), 'dir');
   fs.rmSync(path.join(root, 'angular.json'));
 
   assert.throws(() => bootstrap(root, { ci: false }), /Missing angular\.json/);
   assert.equal(fs.existsSync(path.join(root, '.plectrum/config.json')), false);
   assert.equal(fs.existsSync(path.join(root, 'src/styles/main.scss')), false);
+});
+
+test('bootstrap rejects a styles package without shipped Agenda assets', (context) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'plectrum-devkit-fonts-'));
+  context.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.cpSync(starter, root, { recursive: true });
+
+  assert.throws(() => bootstrap(root, { ci: false }), /pds-styles package lacks Agenda assets/);
+  assert.equal(fs.existsSync(path.join(root, '.plectrum/config.json')), false);
 });

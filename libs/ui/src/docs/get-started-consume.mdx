@@ -54,7 +54,7 @@ src/styles/
   08-trumps/_index.scss
 ```
 
-Keep local layers free of copied shared tokens. <code>{command('consumerScaffold')}</code> writes `_components.<slug>.scss` in `06-components` and registers its import. The devkit supplies Agenda font assets and configures `/assets/fonts/agenda`; the starter installs `bootstrap-icons`. Open Sans remains an approved application font-source decision. Bootstrap reports an existing full Plectrum stylesheet import as a conflict to avoid duplicate CSS.
+Keep local layers free of copied shared tokens. <code>{command('consumerScaffold')}</code> writes `_components.<slug>.scss` in `06-components` and registers its import. The source `pds-styles` package now includes Agenda font files; bootstrap maps them to `/assets/fonts/agenda` for the app and local Storybook. Install a release containing these assets before using that mapping from the private registry. The starter installs `bootstrap-icons`. Open Sans remains an approved application font-source decision. Bootstrap reports an existing full Plectrum stylesheet import as a conflict to avoid duplicate CSS.
 
 ## Boot the theme
 
@@ -90,7 +90,7 @@ export class App {}
 
 ## Set up Storybook and tests
 
-**Step 7 · Run the generated tools.** `npm run pds:storybook` opens local Storybook with an example story, controls, docs and the accessibility addon. `npm run pds:build-storybook` builds a static preview; `npm run pds:test:unit` runs Angular unit tests and `npm run pds:test:stories` executes Storybook play and accessibility checks in Chromium. Install the browser once locally with `npx playwright install chromium`; generated CI installs it before testing. New local components receive a story and a unit spec from the scaffold. Complete their assertions and manual accessibility evidence before delivery.
+**Step 7 · Run the generated tools.** `npm run pds:storybook` opens local Storybook with an example story, controls, docs, FR/NL locale, the v1 preset selector and the accessibility addon. Deprecated v0.6 remains selectable only to compare screens during migration. The preview applies the selected locale and preset through the published providers. `npm run pds:build-storybook` builds a static preview; `npm run pds:test:unit` runs Angular unit tests and `npm run pds:test:stories` executes Storybook play and accessibility checks in Chromium. Install the browser once locally with `npx playwright install chromium`; generated CI installs it before testing. New local components receive a story and a unit spec from the scaffold. Complete their assertions and manual accessibility evidence before delivery.
 
 The central Storybook remains the published shared-component reference. The generated story test runs interactions and automated accessibility checks; the evidence checklist still records manual checks and their limits. Preview hosting, private access and visual regression service remain application and CI decisions.
 

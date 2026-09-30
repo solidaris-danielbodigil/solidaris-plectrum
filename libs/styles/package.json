@@ -5,6 +5,7 @@
   "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "files": [
     "src/**/*.scss",
+    "assets/fonts/**/*.woff2",
     "README.md"
   ],
   "exports": {

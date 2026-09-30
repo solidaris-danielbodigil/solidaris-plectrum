@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { DOCUMENT } from '@angular/common';
 import { PlectrumPresetMenuService } from './plectrum-preset-menu.service';
 import { PLECTRUM_PRESET_STORAGE_KEY } from './preset-storage';
 
@@ -20,7 +21,7 @@ describe('PlectrumPresetMenuService', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: Document,
+          provide: DOCUMENT,
           useValue: {
             defaultView: {
               localStorage: mockStorage,
@@ -49,6 +50,7 @@ describe('PlectrumPresetMenuService', () => {
 
     expect(merged.length).toBe(3);
     expect(merged[0]?.id).toBe('plectrum-preset-toggle');
+    expect(merged[0]?.label).toContain('v0.6 (deprecated, active)');
     expect(merged[1]?.separator).toBe(true);
     expect(merged[2]?.id).toBe('session-start');
   });
