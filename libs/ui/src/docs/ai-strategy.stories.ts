@@ -135,8 +135,8 @@ export const Gaps: StoryObj = calloutStory({
   tone: 'info',
   title: 'Not automated yet',
   items: [
-    'The application toolkit does not yet initialize SCSS/ITCSS, Storybook, test runners or pre-commit hooks.',
-    'Local MCP tests are wired through @storybook/addon-vitest in this checkout. Application repositories must configure their own Storybook and test tooling.',
+    'The source starter and matching devkit generate SCSS/ITCSS, Storybook, test runners and a pre-commit hook. The next package release and an external application pilot are still required.',
+    'Local MCP tests are wired through @storybook/addon-vitest in this checkout. Application repositories receive local Storybook and test tooling from the matching starter and devkit.',
     'tokens.consumed is gated one way (listed but not declared). Unused tokens in SCSS are not gated.',
   ],
 });

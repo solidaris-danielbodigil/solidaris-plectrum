@@ -47,7 +47,23 @@ pkg.devDependencies = { ...pkg.devDependencies, '@solidaris-danielbodigil/pds-de
 delete pkg.dependencies['@solidaris-danielbodigil/pds-devkit'];
 writeFileSync(join(dest, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 
-run('npm install --legacy-peer-deps', dest);
+// Match the documented application path: plain npm install runs postinstall/bootstrap.
+run('npm install', dest);
+const layers = ['01-settings', '02-tools', '03-generic', '04-elements', '05-objects', '06-components', '07-utilities', '08-trumps'];
+const barrels = ['settings', 'tools', 'generic', 'elements', 'objects', 'components', 'utilities', 'trumps'];
+const mainStyles = readFileSync(join(dest, 'src/styles/main.scss'), 'utf8');
+for (const [index, layer] of layers.entries()) {
+  if (!existsSync(join(dest, `src/styles/${layer}/_index.scss`))) throw new Error(`Bootstrap omitted local ITCSS layer ${layer}.`);
+  const shared = `@use '${layer}/${barrels[index]}.core';`;
+  const local = `@use '${layer}' as *;`;
+  if (mainStyles.split(shared).length !== 2 ||
+      mainStyles.split(local).length !== 2 ||
+      mainStyles.indexOf(shared) > mainStyles.indexOf(local)) throw new Error(`Shared/local ITCSS composition is wrong for ${layer}.`);
+}
+for (const relative of ['.storybook/main.ts', '.storybook/preview.ts', '.ai/rules/plectrum.md', '.ai/skills/plectrum-component/SKILL.md', '.github/agents/plectrum.agent.md', '.github/workflows/plectrum-checks.yml', '.githooks/pre-commit', 'vitest.config.mts']) {
+  if (!existsSync(join(dest, relative))) throw new Error(`Bootstrap omitted ${relative}.`);
+}
+if (!readFileSync(join(dest, '.storybook/preview.ts'), 'utf8').includes('providePlectrum(version)')) throw new Error('Local Storybook is missing the Plectrum provider.');
 for (const font of ['regular', 'italic', 'semibold', 'bold']) {
   if (!existsSync(join(dest, `node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts/agenda/agenda-${font}.woff2`))) throw new Error(`Packed styles package is missing Agenda ${font}.`);
 }
@@ -65,7 +81,11 @@ run('npx --no-install plectrum update', dest);
 run('npx --no-install plectrum doctor', dest);
 run('npx --no-install plectrum catalogue --id plectrum:form-field', dest);
 run('npx --no-install plectrum check --profile ci', dest);
-run('npx --no-install plectrum scaffold --name smoke-card', dest);
+run('npm run pds:component -- --name smoke-card', dest);
+const componentIndex = readFileSync(join(dest, 'src/styles/06-components/_index.scss'), 'utf8');
+if ((componentIndex.match(/@use 'components\.smoke-card';/g) ?? []).length !== 1) throw new Error('Generated candidate style is not imported exactly once from local ITCSS.');
+if (!existsSync(join(dest, 'src/styles/06-components/_components.smoke-card.scss'))) throw new Error('Generated candidate style is outside local ITCSS.');
+if (existsSync(join(dest, 'src/plectrum-candidates/smoke-card/smoke-card.component.scss'))) throw new Error('Generated candidate has a colocated stylesheet.');
 run('npx --no-install plectrum validate --schema metadata --file src/plectrum-candidates/smoke-card/smoke-card.metadata.json', dest);
 expectFailure('npx --no-install plectrum check --profile ci', dest, 'complete candidate placeholders');
 const metadataFile = join(dest, 'src/plectrum-candidates/smoke-card/smoke-card.metadata.json');
@@ -87,6 +107,10 @@ run('npx --no-install plectrum check --profile ci', dest);
 run('npm run pds:test:unit', dest);
 run('npm run pds:build-storybook', dest);
 if (!existsSync(join(dest, 'dist/storybook/assets/fonts/agenda/agenda-regular.woff2'))) throw new Error('Local Storybook did not publish Agenda fonts.');
+const storyIndex = JSON.parse(readFileSync(join(dest, 'dist/storybook/index.json'), 'utf8'));
+for (const id of ['plectrum-ready--docs', 'application-smokecard--docs']) {
+  if (storyIndex.entries?.[id]?.type !== 'docs') throw new Error(`Local Storybook did not publish ${id}.`);
+}
 run('npm run pds:test:stories', dest);
 run('git add src .plectrum/config.json', dest);
 run('git -c user.name=Plectrum -c user.email=plectrum@example.invalid commit -m candidate', dest);
