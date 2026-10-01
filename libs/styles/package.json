@@ -6,6 +6,7 @@
   "files": [
     "src/**/*.scss",
     "assets/fonts/**/*.woff2",
+    "assets/fonts/**/OFL.txt",
     "README.md"
   ],
   "exports": {
