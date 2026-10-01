@@ -116,6 +116,26 @@
   overflow: visible;
 }
 
+// The nine Build with Plectrum headings reuse the PrimeNG timeline badge chrome.
+// Only these markers increment, so the later unnumbered sections stay unchanged.
+.sbdocs-content {
+  counter-reset: pds-onboarding-step;
+}
+
+.c-docs-onboarding__step-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.c-docs-onboarding__step-index {
+  counter-increment: pds-onboarding-step;
+
+  &::before {
+    content: counter(pds-onboarding-step);
+  }
+}
+
 // Angular CSF wraps each story in a custom element (`foundations-colors--primitive`).
 // Custom elements default to display: inline, which breaks position: sticky.
 .sb-story [id$='-inner']>* {
