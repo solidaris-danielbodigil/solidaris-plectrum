@@ -99,6 +99,7 @@ export class DocsCatalogueComponent {
   protected readonly scopeOptions: { label: string; value: ScopeFilter }[] = [
     { label: 'All scopes', value: 'all' },
     ...Object.values(STATUS_PRESENTATION).map(status => ({ label: status.label, value: status.label as CatalogueScope })),
+    { label: 'Local', value: 'Local' },
   ];
 
   protected readonly usedInOptions = computed(() => {
@@ -145,7 +146,8 @@ export class DocsCatalogueComponent {
     this.docsIds.set(await loadDocsIdsBySource());
   }
 
-  protected scopeSeverity(entry: CatalogueEntry): 'info' | 'success' | 'warn' | 'danger' {
+  protected scopeSeverity(entry: CatalogueEntry): 'info' | 'success' | 'warn' | 'danger' | 'secondary' {
+    if (entry.scope === 'Local') return 'secondary';
     return Object.values(STATUS_PRESENTATION).find(status => status.label === entry.scope)?.severity ?? 'info';
   }
 }

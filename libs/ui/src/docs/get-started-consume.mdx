@@ -106,7 +106,7 @@ More components: [Find a component](?path=/docs/start-here-catalogue--docs).
 
 Run `npx playwright install chromium` once before the tests. Your Storybook documents your application's components; shared ones are documented here.
 
-Create a component with `npm run pds:component -- --name <name>`. You get the component, a story, a unit test, metadata, styles in `06-components` and an evidence checklist to complete.
+Create a component with `npm run pds:component -- --name <name>`. You get the component, a story, a unit test, metadata, styles in `06-components` and an evidence checklist (`evidence.md`): record the manual keyboard and screen-reader checks, and say on the **Reuse potential** line whether other teams could use it. `npm run pds:check:ci` fails while a line still says `TODO`.
 
 <h2 id="validate" className="c-docs-onboarding__step-title o-flex o-flex--align-center o-flex--gap-md"><span className="c-docs-onboarding__step-index p-badge p-badge-xl p-badge-circle" aria-hidden="true" />Validate</h2>
 
@@ -127,7 +127,7 @@ A second developer can clone the repository, install, start the application and 
 
 ## Report usage
 
-A usage report lists the Plectrum components your application uses. Core reads it to plan changes, and it fills the **Used in** column of [Find a component](?path=/docs/start-here-catalogue--docs).
+A usage report lists the Plectrum components your application uses and the components your team built locally, with their reuse estimate. Core reads it to plan changes and to spot local components worth sharing; it also fills [Find a component](?path=/docs/start-here-catalogue--docs).
 
 Reporting is on by default: after each push to `main`, the generated CI workflow sends the report as a pull request on the Plectrum repository. It starts once your team is [registered](?path=/docs/get-started-contribute--docs#register-your-team) and the repository has a `PLECTRUM_ADOPTION_TOKEN` secret, a GitHub token that can open pull requests on the Plectrum repository. Until then, the CI run shows a warning instead of failing. To opt out, set `reporting.enabled` to `false` in `.plectrum/config.json`.
 

@@ -188,6 +188,17 @@ export const adoptionReportSchema = z.strictObject({
     }),
   ),
   limitations: z.array(text),
+  /** Components the team built in its own repository, so Core can spot reuse across teams. */
+  localComponents: z.array(
+    z.strictObject({
+      id: componentIdSchema,
+      name: text,
+      description: text,
+      useCases: z.array(text),
+      reusePotential: z.enum(['none', 'possible', 'likely', 'unknown']),
+      reuseNote: text.optional(),
+    }),
+  ).optional(),
 });
 export const compatibilitySchema = z.strictObject({
   schemaVersion,
