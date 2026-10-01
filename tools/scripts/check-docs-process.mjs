@@ -71,7 +71,7 @@ for (const file of files('libs/ui/src', /\.(ts|mdx|html)$/)) {
 if (read('.github/workflows/publish-release.yml').includes('VITE_PLECTRUM_RELEASED')) fail('.github/workflows/publish-release.yml', 'sets the retired release build flag');
 
 // Package names come from the manifests. The First component snippet is verified against the consumer app.
-const withoutVerifiedSnippet = (text) => text.replace(/## First component[\s\S]*?```ts[\s\S]*?```/, '');
+const withoutVerifiedSnippet = (text) => text.replace(/(?:## First component|<h2 id="first-component"[^>]*>[\s\S]*?<\/h2>)[\s\S]*?```ts[\s\S]*?```/, '');
 for (const file of ['libs/ui/src/docs/get-started-consume.mdx', 'libs/ui/src/docs/get-started-contribute.mdx', 'libs/ui/src/docs/releases.mdx', 'libs/ui/src/docs/ai-strategy.mdx', 'libs/ui/src/docs/introduction.stories.ts']) {
   const text = withoutVerifiedSnippet(read(file));
   for (const name of packages) if (text.includes(name)) fail(file, `hardcodes ${name} — import it from the manifests (process-docs)`);
