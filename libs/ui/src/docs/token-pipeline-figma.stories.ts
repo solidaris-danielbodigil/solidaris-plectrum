@@ -123,11 +123,11 @@ export const OutboundInterim: StoryObj = calloutStory({
 
 export const OutboundProcess: StoryObj = stepsStory([
   {
-    who: 'Developer',
+    who: 'Core developer',
     tone: 'system',
     title: 'Declare the token in 01-settings',
     detail:
-      'Example: --pds-color-surface-75, --pds-color-emutnav-*. The token is usable in applications immediately.',
+      'Example: --pds-color-surface-75. Applications can use it from the next release.',
   },
   {
     who: 'CI',
@@ -188,32 +188,39 @@ export const Guardrails: StoryObj = calloutStory({
 
 export const ComponentPromotion: StoryObj = stepsStory([
   {
-    who: 'Developer',
+    who: 'Application team',
     tone: 'app',
-    title: 'Develop in the application while the API is unstable',
+    title: 'Build and use the component locally',
+    detail: 'No Core approval is needed. The team owns the component in its application.',
   },
   {
-    who: 'Developer',
+    who: 'Application team',
+    tone: 'app',
+    title: 'Submit it to Core',
+    detail: 'With an approved-candidate decision, the team submits the candidate with its preview and CI result.',
+  },
+  {
+    who: 'Core team',
     tone: 'system',
-    title: 'Open a pull request in this repository with the generic component',
-    detail: 'libs/ui + libs/styles + a story. No application-specific logic.',
-  },
-  {
-    who: 'CI',
-    tone: 'neutral',
-    title: 'Publish @solidaris-danielbodigil/pds-ui through changesets',
+    title: 'Integrate it',
+    detail: 'Core generalizes the component in libs/ui and libs/styles, with its story and metadata.',
   },
   {
     who: 'Agent or designer',
     tone: 'design',
-    title: 'Design the Figma component from the repo',
-    detail:
-      'Upsert remaining variables on the PrimeNG 21 proposal branch. Build the component on a separate Custom components branch, bound to published variables. Merge and publish stay human.',
+    title: 'Design the Figma component',
+    detail: 'On a separate Custom components branch, bound to published variables. A designer merges and publishes.',
   },
   {
-    who: 'Developer',
+    who: 'Release maintainer',
+    tone: 'neutral',
+    title: 'Release',
+  },
+  {
+    who: 'Application team',
     tone: 'app',
-    title: 'Bump the package, delete the local copy, import from @solidaris-danielbodigil/pds-ui',
+    title: 'Upgrade and delete the local copy',
+    detail: 'Import the released component from the UI package instead.',
   },
 ]);
 

@@ -41,7 +41,7 @@ const DESIGN_STEPS: readonly DocsStep[] = [
     tone: 'design',
     title: 'Open the libraries',
     detail:
-      'Enable the Plectrum libraries in Figma: the PrimeNG kit, Foundations, Custom components, and Icons and illustrations.',
+      'Enable the four Plectrum libraries in Figma: the PrimeNG kit, Foundations, Custom components, and Icons and illustrations.',
     links: [
       {
         label: 'Design with Plectrum',
@@ -54,7 +54,7 @@ const DESIGN_STEPS: readonly DocsStep[] = [
     tone: 'design',
     title: 'Pick an approved component',
     detail:
-      'Start from Find a component. Use the component that already does the job, including its documented variants, error state and narrow layout.',
+      'Search Find a component and use what already does the job, with its variants, error state and narrow layout.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
@@ -64,7 +64,7 @@ const DESIGN_STEPS: readonly DocsStep[] = [
     tone: 'design',
     title: 'Hand off the decision',
     detail:
-      'Link the Figma frame and the Storybook page. If nothing covers the need, open a proposal. Do not draw a new component on the main kit.',
+      'Share the Figma frame with the Storybook page. If nothing fits, open a proposal — never draw a new component on the main kit.',
   },
 ];
 
@@ -72,8 +72,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Prepare the application and install a release',
-    detail: `Start from the Plectrum application starter or an existing Angular project. Confirm private package access, set the local identity and install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\`, \`${PACKAGE_NAMES.styles}\` and \`${PACKAGE_NAMES.toolkit}\` with compatible PrimeNG peers.`,
+    title: 'Create the application',
+    detail: `Copy the Plectrum starter, or open an existing Angular project. With access to the private packages, \`npm install\` adds \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\`, \`${PACKAGE_NAMES.styles}\` and \`${PACKAGE_NAMES.toolkit}\`.`,
     links: [
       {
         label: 'Build with Plectrum',
@@ -84,8 +84,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Inspect the generated toolkit',
-    detail: 'The starter postinstall runs `plectrum bootstrap`. Verify identity, source paths, .ai and editor instructions, hook and checks workflow. The source implementation targets the next devkit release.',
+    title: 'Check the generated setup',
+    detail: 'Installation runs `plectrum bootstrap`. Review the team identity and source paths in `.plectrum/config.json`.',
     links: [
       {
         label: 'Initialize the team toolkit',
@@ -96,8 +96,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Verify styles and render the first field',
-    detail: 'Inspect the generated SCSS composition, empty local ITCSS layers, fonts and icons. The starter registers `providePlectrum()`. Render Form Field to verify the theme and shared styles together.',
+    title: 'Render the first field',
+    detail: 'Styles, fonts, icons and `providePlectrum()` are already wired. Render Form Field to see the theme at work.',
     links: [
       {
         label: 'Styles and ITCSS',
@@ -113,7 +113,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     who: 'Dev',
     tone: 'app',
     title: 'Prepare Storybook, tests and CI',
-    detail: 'Run local Storybook, unit tests, the static build and Plectrum checks. Map the generated jobs and hook to the application’s Solidaris CI policy before closing onboarding.',
+    detail: 'Run Storybook, the tests and the Plectrum checks locally, then add them to your CI.',
     links: [
       {
         label: 'Storybook and tests',
@@ -134,7 +134,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Find the next piece',
     detail:
-      'Search by task — error, side panel, no results — then open that page. Find a token is for colour, type and spacing.',
+      'Search by task — error, side panel, no results. Use Find a token for colour, type and spacing.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
       { label: 'Find a token', path: '/docs/foundations-token-finder--docs' },

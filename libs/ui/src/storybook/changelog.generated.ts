@@ -2,7 +2,28 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "adoption-on-by-default",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "minor"
+      }
+    ],
+    "summary": "Turn usage reporting on by default, and show its status in a generated `Plectrum/Setup` story and in `plectrum doctor`. New applications get `reporting.enabled: true`, and the generated CI workflow runs `plectrum adoption-submit` after each push to `main` with the `PLECTRUM_ADOPTION_TOKEN` secret. While the application is not in the Plectrum registry or no token is set, the submission is skipped with a GitHub Actions warning instead of failing the build. Existing `.plectrum/config.json` files keep their current value; set `reporting.enabled` to `false` to opt out."
+  },
+  {
+    "id": "open-sans-font",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-styles",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Ship Open Sans with the styles package. The latin variable font (weights 300–800, SIL Open Font License) is in `assets/fonts/open-sans/` and loaded by `04-elements`; applications that copy the package's `assets/fonts` folder get it with Agenda, without loading Open Sans from another source."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {

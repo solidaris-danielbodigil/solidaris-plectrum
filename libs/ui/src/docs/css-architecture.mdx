@@ -9,7 +9,7 @@ import * as Figures from './css-architecture.stories';
 
 All shared CSS lives in `libs/styles` and is layered with **ITCSS**. Class names follow **BEMIT**. Templates mix a component block with object and utility classes. Component SCSS does not restate layout that an `o-*` class already covers.
 
-**Application repositories follow the same ITCSS/BEMIT conventions.** Consume shared SCSS from the installed style package and keep application extensions in local layers. The source starter and matching devkit bootstrap generate and wire eight empty layers. `pds:component` puts each component partial in `src/styles/06-components` and imports it once; do not copy shared tokens or styles. Follow [Build with Plectrum → Wire the stylesheet](?path=/docs/get-started-use-plectrum-in-an-app--docs#wire-the-stylesheet), including shared/local cascade order. Paths below describe the central Plectrum implementation; use the documentation for the package release actually installed.
+**Applications follow the same conventions.** Their own styles go in local ITCSS layers, next to the shared ones from the style package; never copy shared tokens or styles. See [Build with Plectrum → Wire the stylesheet](?path=/docs/get-started-use-plectrum-in-an-app--docs#wire-the-stylesheet). The paths below are those of the Plectrum repository.
 
 Related pages:
 
@@ -254,4 +254,4 @@ When a wrapper must win over PrimeNG chrome, prefer ITCSS order, then `:is()` / 
 
 ### Agent rules
 
-The same constraints live as hard stops in `.ai/rules/01-architecture.md`, `.ai/rules/05-bemit-naming.md`, `.ai/rules/08-object-classes.md`, `.ai/rules/09-styling-policy.md` and `.ai/rules/10-css-ssot.md`. This page is the human-facing map. Foundations pages remain the live class lists.
+The same constraints live as hard stops in `.ai/rules/01-architecture.md`, `.ai/rules/05-bemit-naming.md`, `.ai/rules/08-object-classes.md`, `.ai/rules/09-styling-policy.md` and `.ai/rules/10-css-ssot.md`. The Foundations pages list the classes.

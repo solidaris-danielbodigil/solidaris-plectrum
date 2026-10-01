@@ -2,7 +2,7 @@ import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-contribute.stories';
 import { STATUS_PRESENTATION } from '../storybook/governance';
-import { command, DISTRIBUTED_PACKAGES } from '../storybook/process-docs';
+import { command, REGISTRY } from '../storybook/process-docs';
 import { REPO_CLONE, REPO_DIR } from '../storybook/release-state';
 import workspacePackage from '../../../../package.json';
 
@@ -10,15 +10,18 @@ import workspacePackage from '../../../../package.json';
 
 # Contribute
 
-Anyone can contribute — developers and designers, in the core team or in an application team. A typo, a broken example or a wrong link is a pull request on the Plectrum repository. A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml): say what the screen must do, which components you tried, and attach a Figma link.
+Anyone can contribute, developer or designer, in the core team or an application team.
 
-Components can start in an application repository **or** with the design team in Figma. Candidate designs belong in **PLECTRUM · Custom components**; **Plectrum DS · PrimeNG v21** contains the PrimeNG design and all token variables. A design review in Figma approves a design direction; Core still reviews the implementation and a verified release before an Angular component is available to applications.
+- **A typo, a broken example, a wrong link:** open a pull request on the Plectrum repository.
+- **A missing component, variant or token:** open a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Describe what the screen must do, what you tried, and link the Figma frame.
+
+Designers draw new components in [PLECTRUM · Custom components](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components); tokens live in [Plectrum DS · PrimeNG v21](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-).
 
 <Unstyled>
   <Story of={Figures.ProposeEarly} />
 </Unstyled>
 
-Every step below names who acts, in which repository, what they need and what they hand over.
+From a gap to a shared component:
 
 <Unstyled>
   <Story of={Figures.Journey} />
@@ -26,7 +29,7 @@ Every step below names who acts, in which repository, what they need and what th
 
 ## Proposal decisions
 
-The core team records one decision per proposal in the central repository. What happens next follows from that record, not from a local field:
+The core team answers each proposal with one of these decisions:
 
 <Unstyled>
   <Story of={Figures.Outcomes} />
@@ -34,66 +37,48 @@ The core team records one decision per proposal in the central repository. What 
 
 ## Develop and submit a candidate
 
-**Application work is autonomous in the devkit <code>{DISTRIBUTED_PACKAGES.find((pkg) => pkg.role === 'toolkit')?.version}</code> source.** Search PrimeNG and the shared catalogue, then run <code>{command('consumerScaffold')}</code> for a local component. The team owns, tests and may deliver it without waiting for Core. This source version must be published before teams can install it from the registry; earlier releases retain their own documented behavior.
+Create the component in your application with `npm run pds:component -- --name <name>`, then complete its story, unit test and evidence checklist.
 
-To **share** that component, request an `approved-candidate` central decision. Commit the implementation, publish an HTTPS preview and a CI result for that exact commit, then run <code>{command('candidateSubmit')}</code>. Submission rereads the merged central decision; local ownership does not grant Core publication. Submitting again after a new commit revises the same stable ID. The reviewed central JSON makes the candidate appear in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
-
-The [application starter](?path=/docs/get-started-use-plectrum-in-an-app--docs) configures local Storybook and executable tests. The generator creates a story, metadata JSON, unit spec, ITCSS style/import and evidence checklist. The toolkit CI profile checks those files and static contracts; the separate unit and Storybook commands execute code. Complete the placeholders before CI.
-
-<Unstyled>
-  <Story of={Figures.LocalCandidate} />
-</Unstyled>
+To share it with other teams, you need an `approved-candidate` decision. Commit, publish a preview of that commit with its CI result, then run <code>{command('candidateSubmit')}</code>. After a new commit, run it again: the candidate keeps its ID. Once Core accepts it, the component appears in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
 
 <Unstyled>
   <Story of={Figures.AppLayer} />
 </Unstyled>
 
+## Promote existing work
+
+If Core decides to make an accepted candidate a Core component, the core team generalizes it, a designer completes the Figma work, and a release ships it. Your team then upgrades, deletes its local copy and imports the released component. Until then, the component stays yours.
+
+<Unstyled>
+  <Story of={Figures.AlreadyBuilt} />
+</Unstyled>
+
+More detail: [candidate records](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/candidates/README.md) and [component promotion](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/docs/component-promotion.md).
+
 ## Contribute to Plectrum Core
 
 ### Start from a reviewed Figma design
 
-A designer can open the same central proposal using a Custom components node as the source. Record the original design, the reviewed version, the design-team decision and the intended owner. Core checks for an existing PrimeNG or Plectrum solution and records its implementation decision. No application repository or `candidate-submit` is required for this route.
+A designer can open a proposal straight from a Custom components frame. Link the original and reviewed designs, the design-team decision and the intended owner. New tokens go on a separate branch of the PrimeNG v21 file. Example: [Profile header](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587), a redesign of Profile Card.
 
 <Unstyled>
   <Story of={Figures.DesignOrigin} />
 </Unstyled>
 
-Keep the Custom components branch, review, merge and publication links with the proposal. If new tokens are needed, review them in a separate PrimeNG 21 token branch and return them through the token sync. Core implements the approved component in this repository and publishes it through the normal release pipeline. [Profile header](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587) is a design-origin example following a design-team review of Profile Card. It is not yet an installable replacement; the old Profile Card remains deprecated and exported.
+### Work in the Plectrum repository
 
-### Work in the Plectrum checkout
-
-Corrections and Core-owned work happen in a **Plectrum checkout**, through a reviewed pull request:
+Fixes and Core work go through a reviewed pull request on the Plectrum repository (Node <code>{workspacePackage.engines.node}</code>):
 
 <pre><code>{`git clone ${REPO_CLONE}
 cd ${REPO_DIR}
 npm install
 npm run storybook`}</code></pre>
 
-<p>Node: <code>{workspacePackage.engines.node}</code>.</p>
-
-<Unstyled>
-  <Story of={Figures.PlectrumChange} />
-</Unstyled>
-
 <Unstyled>
   <Story of={Figures.PlectrumAgent} />
 </Unstyled>
 
-Paths, testing layers, the commit hook and CI gates are on [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
-
-## Promote existing work
-
-Promotion is a Core decision about an accepted candidate. The core team integrates and generalizes it, a designer completes the Figma work, and a verified release ships it. The application then upgrades, deletes its local copy and imports the released component. Until integration the component remains the application's.
-
-<Unstyled>
-  <Story of={Figures.Promotion} />
-</Unstyled>
-
-<Unstyled>
-  <Story of={Figures.AlreadyBuilt} />
-</Unstyled>
-
-Evidence records and commands for each step: [candidate records](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/candidates/README.md) and [component promotion](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/docs/component-promotion.md). Token writes to Figma: [Figma sync](?path=/docs/docs-token-pipeline-figma-sync--docs).
+Paths, tests and CI: [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
 
 ## Who does what
 
@@ -103,17 +88,40 @@ Evidence records and commands for each step: [candidate records](https://github.
 
 ## Status and owner
 
-Every metadata-backed Plectrum component page opens with two badges from its `.metadata.ts` `governance` block. The central index carries the same two fields, so agents and audits read one source.
+Each component page shows its status and its owner.
 
 <DocsTable
   headers={['Status', 'Meaning', 'Who may import it', 'What changes it']}
   rows={Object.values(STATUS_PRESENTATION).map((status) => [status.label, status.hint.replaceAll('{owner}', 'the owning team'), status.importers, status.changedBy])}
 />
 
-The **owner** is the application team ID in its local config. A team can scaffold locally before central registration. To submit a candidate or adoption report, ask Core to register the real team, application and repository URL in `.ai/contracts/registry.json`. Local demo entries do not represent external adoption.
+## Register your team
+
+An ID is a short lowercase name: letters, digits and hyphens, starting with a letter. It is separate from the display name. For example, the team ID `ishare` has the label `iSHARE`.
+
+**When:** before your first component submission or usage report. You do not need it to build locally.
+
+**Where:** in the Plectrum repository, file <a href={`${REGISTRY.repository}/blob/main/.ai/contracts/registry.json`}><code>.ai/contracts/registry.json</code></a>.
+
+1. <a href={`${REGISTRY.repository}/edit/main/.ai/contracts/registry.json`}>Edit the file on GitHub</a>.
+2. Add your team to `teams` and your application to `applications`:
+
+```json
+{ "id": "claims", "label": "Claims", "kind": "application", "reviewer": null }
+```
+
+```json
+{ "id": "claims-portal", "team": "claims", "label": "Claims portal", "repository": "https://github.com/<org>/<repo>", "kind": "external" }
+```
+
+3. Open the pull request. The core team reviews and merges it.
+
+Use the same IDs in your `package.json`.
+
+Registered teams:
 
 <Unstyled>
   <Story of={Figures.Teams} />
 </Unstyled>
 
-Shared commands, check profiles and operational configuration: [Process and contracts](?path=/docs/docs-pipeline-contracts--docs).
+All commands: [Process and contracts](?path=/docs/docs-pipeline-contracts--docs).

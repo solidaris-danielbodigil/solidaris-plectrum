@@ -23,7 +23,7 @@ function adapters() {
     '.ai/protocols/plectrum.md': `# Plectrum protocol\n\nThe application owns local components. The installed process contract at node_modules/@solidaris-danielbodigil/pds-devkit/assets/process.json owns CLI syntax and exchange schemas. Use package scripts for Storybook, tests and CI. A candidate submission rereads the central decision; local quality does not imply central publication.\n`,
     '.cursor/rules/plectrum.mdc': `---\ndescription: Plectrum application workflow\nalwaysApply: true\n---\n\n${baseline}`,
     '.github/instructions/plectrum.instructions.md': `---\napplyTo: '**/*'\n---\n\n${baseline}`,
-    '.github/workflows/plectrum-checks.yml': `name: Plectrum checks\non:\n  pull_request:\n  push:\n    branches: [main]\npermissions:\n  contents: read\n  packages: read\njobs:\n  plectrum:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: actions/setup-node@v5\n        with:\n          node-version: '24'\n          cache: npm\n          registry-url: https://npm.pkg.github.com\n          scope: '@solidaris-danielbodigil'\n      - run: npm ci\n        env:\n          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n      - run: npx playwright install --with-deps chromium\n      - run: ${run('consumerCheck')}\n      - run: npm run build\n      - run: npm run pds:test:unit\n      - run: npm run pds:build-storybook\n      - run: npm run pds:test:stories\n`,
+    '.github/workflows/plectrum-checks.yml': `name: Plectrum checks\non:\n  pull_request:\n  push:\n    branches: [main]\npermissions:\n  contents: read\n  packages: read\njobs:\n  plectrum:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v5\n      - uses: actions/setup-node@v5\n        with:\n          node-version: '24'\n          cache: npm\n          registry-url: https://npm.pkg.github.com\n          scope: '@solidaris-danielbodigil'\n      - run: npm ci\n        env:\n          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}\n      - run: npx playwright install --with-deps chromium\n      - run: ${run('consumerCheck')}\n      - run: npm run build\n      - run: npm run pds:test:unit\n      - run: npm run pds:build-storybook\n      - run: npm run pds:test:stories\n      - if: github.event_name == 'push'\n        run: ${run('adoptionSubmit')}\n        env:\n          GH_TOKEN: \${{ secrets.PLECTRUM_ADOPTION_TOKEN }}\n`,
   };
   for (const [name, body] of Object.entries(roles)) {
     const file = slug(name);
@@ -62,7 +62,7 @@ export function initialize(root, args) {
     paths: { source: ['src'], styles: ['src/styles'], candidates: 'src/plectrum-candidates', candidateStyles: 'src/styles/06-components', localTokenFiles: [] },
     dependencies: ['@solidaris-danielbodigil/pds-ui', '@solidaris-danielbodigil/pds-plectrum', '@solidaris-danielbodigil/pds-styles'],
     mcp: { primeNg: 'https://primeng.org/mcp', figma: null, storybook: null },
-    reporting: { output: '.plectrum/reports/adoption.json', enabled: false },
+    reporting: { output: '.plectrum/reports/adoption.json', enabled: true },
   };
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, format(config));

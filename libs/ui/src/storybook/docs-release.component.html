@@ -7,18 +7,12 @@
       @if (current.kind === 'release') {
         <strong class="c-docs-callout__title">Release {{ current.manifest.version }} · toolkit {{ current.manifest.toolkit.toolkitVersion }}</strong>
         <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
-          Published {{ publishedOn(current.manifest.publishedAt) }} to {{ current.manifest.registry }} from commit {{ shortRevision(current.manifest.revision) }}.
-          These pages describe exactly those packages. The Preset toolbar ({{ preset }}) selects the theme, not the package version.
+          Published {{ publishedOn(current.manifest.publishedAt) }} from commit {{ shortRevision(current.manifest.revision) }}. These pages document exactly these packages.
         </p>
       } @else {
         <strong class="c-docs-callout__title">Development preview</strong>
         <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
-          @if (current.reason === 'mismatch') {
-            The release record beside these pages describes {{ current.manifest?.version }} with toolkit {{ current.manifest?.toolkit?.toolkitVersion }}, not the {{ runtime }} / {{ toolkit }} this build was made from, so it is not treated as that release.
-          } @else {
-            No release record accompanies these pages. They document main: manifests declare runtime {{ runtime }} and toolkit {{ toolkit }}, which is not proof that this pair is published.
-          }
-          The Preset toolbar ({{ preset }}) selects the theme, not the package version.
+          These pages follow the main branch ({{ runtime }}, toolkit {{ toolkit }}) and may describe changes that are not released yet. To install Plectrum, use the latest release.
         </p>
       }
       <ul class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0">
@@ -29,44 +23,31 @@
   </p-message>
 } @else if (current.kind === 'release') {
   <p class="c-docs-callout__text o-layout o-layout--margin-0">
-    Map the scope in the <strong>application repository's</strong> <code>.npmrc</code>, without a token:
+    In the application's <code>.npmrc</code>, map the scope to the registry (no token in this file):
   </p>
   <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ npmrc }}</code></pre>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
-    On a developer machine, sign in once with a classic personal access token that has <code>read:packages</code>. Keep the token in your user configuration:
+    Sign in once on your machine with a classic personal access token that has <code>read:packages</code>:
   </p>
   <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ login }}</code></pre>
-  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">Install the versions this release documents:</p>
+  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">Install this release:</p>
   <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ registryInstall }}</code></pre>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
     <pds-docs-link label="Browse packages on GitHub" [href]="links.packages" />
-    — sign in with an account that has access to the private packages.
+    — requires access to the private packages.
   </p>
 } @else {
   <p class="c-docs-callout__text o-layout o-layout--margin-0">
-    To use Plectrum in an application, install a published release from GitHub Packages.
-    Open its installation guide for the registry setup, authentication and exact package versions:
+    These pages describe the main branch, which may not be released yet.
   </p>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
-    <pds-docs-link label="Install the latest published release" [href]="links.latestInstall" />
-  </p>
-  <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
-    These pages are a development preview. Runtime {{ runtime }} and toolkit {{ toolkit }} are source versions;
-    their presence here does not confirm that this pair is published.
+    <pds-docs-link label="Open the installation guide of the latest release ↗" [href]="links.latestInstall" />
   </p>
   <ul class="c-docs-steps__links o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--row-gap-0-5 o-layout--column-gap-1 o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-0">
     <li><pds-docs-link label="Browse packages on GitHub" [href]="links.packages" /></li>
     <li><pds-docs-link label="Release history" [href]="links.releases" /></li>
   </ul>
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
-    The packages are private: sign in with an account that has package read access.
+    The packages are private: you need package read access.
   </p>
-  <details class="o-layout o-layout--margin-block-start-1">
-    <summary>Maintainers: test unpublished packages locally</summary>
-    <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-0-5">
-      In a Plectrum checkout, run <code>npm run pack:libs</code>. The archives are written to
-      <code>tools/packaging/.tarballs/</code>. Install those files using their actual filesystem paths in a test application.
-      <pds-docs-link label="Local packaging instructions" [href]="links.packaging" />
-    </p>
-  </details>
 }

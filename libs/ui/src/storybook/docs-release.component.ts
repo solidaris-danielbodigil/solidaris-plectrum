@@ -24,7 +24,7 @@ import toolkitPackage from '../../../../tools/devkit/package.json';
 import { DocsLinkComponent } from './docs-link.component';
 import { NPMRC, REGISTRY_INSTALL, REGISTRY_LOGIN } from './process-docs';
 import { DOCS_LINKS, loadReleaseContext, type ReleaseContext } from './release-context';
-import { PACKAGE_VERSION, PRESET_VERSION } from './release-state';
+import { PACKAGE_VERSION } from './release-state';
 
 @Component({
   selector: 'pds-docs-release',
@@ -45,7 +45,6 @@ export class DocsReleaseComponent {
   protected readonly links = DOCS_LINKS;
   protected readonly runtime = PACKAGE_VERSION;
   protected readonly toolkit = toolkitPackage.version;
-  protected readonly preset = PRESET_VERSION;
   protected readonly npmrc = NPMRC;
   protected readonly login = REGISTRY_LOGIN;
   protected readonly registryInstall = REGISTRY_INSTALL;

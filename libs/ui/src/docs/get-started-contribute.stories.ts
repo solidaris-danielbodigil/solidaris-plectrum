@@ -15,11 +15,11 @@ export default meta;
 
 export const ProposeEarly: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'Search first; local work can start without Core',
+  title: 'Search first, then build locally',
   items: [
-    'Look at themed PrimeNG, then Core components. If neither fits, document the gap and build locally under your team’s ownership.',
-    'Ask Core for a decision when you want to submit that work to the shared system. Design feedback may happen asynchronously.',
-    'If you build a Candidate, your team owns it. Another app that needs it opens a new proposal — they do not import yours.',
+    'Look at themed PrimeNG, then Core components. If neither fits, build the component in your application.',
+    'Ask Core for a decision only when you want to share it with other teams.',
+    'Your team owns what it builds. Another team that needs it opens a proposal instead of importing yours.',
   ],
 });
 
@@ -28,7 +28,7 @@ export const Journey: StoryObj = {
   ...stepsStory(
     journeySteps('contribution', {
       discover: [
-        { label: 'Theme gallery', path: '/docs/primeng-actions--docs' },
+        { label: 'PrimeNG components', path: '/docs/primeng-ui-kit--docs' },
         { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
       ],
       approve: [{ label: 'Proposal decisions', href: '#proposal-decisions' }],
@@ -42,20 +42,14 @@ export const Journey: StoryObj = {
 
 export const Outcomes: StoryObj = { tags: ['!dev'], ...cardsStory(outcomeCards(), 2) };
 
-export const LocalCandidate: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('local-application')) };
-
-export const PlectrumChange: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('plectrum-change')) };
-
 export const DesignOrigin: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('design-origin')) };
-
-export const Promotion: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('promotion')) };
 
 export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) };
 
 export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
-  text: 'Agents can help with research, tokens, implementation and QA. Local application development needs no Core decision. Sharing through Core still requires a recorded proposal, review and release. Every command remains runnable by hand.',
+  text: 'The Plectrum agent helps with research, tokens, implementation and QA. Every command it runs also works by hand.',
   linkLabel: 'AI strategy → Subagents',
   linkPath: '/docs/docs-ai-strategy--docs#subagents',
 });
@@ -64,9 +58,8 @@ export const AlreadyBuilt: StoryObj = calloutStory({
   tone: 'info',
   title: 'Already built it without asking?',
   items: [
-    'Open the same proposal and attach what you already have — a screen, a local component, or a Figma frame.',
-    'The core team still records one of the decisions above. Nothing becomes Core automatically.',
-    'It does not land on the core team’s backlog by default.',
+    'Open a proposal and attach what you have: a screen, a local component or a Figma frame.',
+    'The core team records one of the decisions above. Nothing becomes Core automatically.',
   ],
 });
 
@@ -87,9 +80,9 @@ export const Roles: StoryObj = cardsStory(
       tone: 'app',
       title: 'Owns its screens',
       items: [
-        'Uses themed PrimeNG and Core first; records a gap',
-        'Builds a local component in its own repository and owns it',
-        'Never adds primitives or semantic tokens; a missing token is a proposal',
+        'Uses themed PrimeNG and Core components first',
+        'Builds and owns its local components',
+        'Proposes missing primitive or semantic tokens instead of adding them',
       ],
     },
     {
@@ -97,9 +90,9 @@ export const Roles: StoryObj = cardsStory(
       tone: 'design',
       title: 'Designs against the source',
       items: [
-        'Candidate components live in PLECTRUM · Custom components; designers may start a proposal there before code exists',
-        'All token variables live in Plectrum DS · PrimeNG v21; token proposals use a separate branch of that file',
-        'Designers review stories and the Custom components design before Core implementation and publication',
+        'Draws candidates in PLECTRUM · Custom components, before any code exists',
+        'Proposes tokens on a branch of Plectrum DS · PrimeNG v21',
+        'Reviews stories against the Figma design before release',
       ],
     },
     {
@@ -107,9 +100,8 @@ export const Roles: StoryObj = cardsStory(
       tone: 'system',
       title: 'Uses what is packaged',
       items: [
-        'Installs the versioned Plectrum runtime packages — never source paths',
-        'Imports Core components; proposes a gap before reusing another team’s Candidate',
-        'Never imports an App-specific component from another team',
+        'Installs released Plectrum packages, never source paths',
+        'Imports Core components, never another team’s components',
       ],
     },
   ],
@@ -118,11 +110,11 @@ export const Roles: StoryObj = cardsStory(
 
 export const AppLayer: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'While your team owns it, the lint and token checks still apply',
+  title: 'Local components follow the same rules',
   items: [
-    'Build it from PrimeNG and the Plectrum UI package, and use --pds-* tokens. The CI profile checks unknown tokens in configured sources and applies strict hex/px checks to SCSS, CSS and HTML; it is not a complete style or runtime test suite.',
-    'Name your blocks after your feature (c-affiliate-*). Never reuse a Core block name.',
-    'Put the layout classes in the template.',
-    'The metadata names your team as owner and the candidate status.',
+    'Build from PrimeNG and Plectrum components, and style with --pds-* tokens. The checks reject unknown tokens and hardcoded colours or pixel values.',
+    'Name blocks after your feature (c-affiliate-*), never after a Core block.',
+    'Put layout classes in the template.',
+    'The metadata names your team as owner.',
   ],
 });

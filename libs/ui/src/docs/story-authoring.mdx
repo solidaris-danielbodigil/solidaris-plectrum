@@ -8,9 +8,9 @@ import * as AccordionStories from '../lib/accordion/accordion.stories';
 
 # Writing stories
 
-A story is one rendered state of a Plectrum component. Designers review stories against the candidate in Custom components and its variable bindings from PrimeNG 21. Developers author them next to the component. This page is the short path for both roles.
+A story is one rendered state of a component. Developers write stories next to the component; designers review them against the Figma design.
 
-**Scope:** the paths, figure helpers, metadata types and test commands below belong to the Plectrum checkout. Application teams use the same authoring principles in the local Storybook created by the source starter and devkit 0.4.0 bootstrap. The starter declares Storybook and test dependencies; bootstrap configures them and scaffolds a story and unit spec with each local component. These Core-only helpers are not copied into an application. Start with [Build with Plectrum → Set up Storybook and tests](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests).
+The paths, helpers and commands below are those of the Plectrum repository. In an application, follow the same principles in your local Storybook — see [Build with Plectrum → Set up Storybook and tests](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests).
 
 Related pages:
 
@@ -58,7 +58,7 @@ Related pages:
 
 ## Documentation source
 
-The `.metadata.ts` is the single source of truth for a component's documentation. It already drove the API table (`props`) and the ownership badge (`governance`); usage, anatomy, accessibility, the lead paragraph and the Figma link now come from it too. The MDX embeds one figure per block and keeps only what is its own: headings, canvases, prose about the examples, visuals. `npm run docs:check` runs before the commit and again in CI. It fails a page that restates a block as prose. Preview layout defaults to `padded`. A fullscreen or `100dvh` wrapper belongs on app-chrome catalogue stories, never on `meta.decorators` — otherwise every figure on the docs page becomes a blank viewport. Token catalogues with a sticky toolbar embed `<Story>`, not `<Canvas>`, so the toolbar can pin against the docs scroll.
+The `.metadata.ts` is the single source of a component's documentation: API table, status and owner, usage, anatomy, accessibility, lead paragraph and Figma link. The MDX embeds one figure per block and adds only headings, canvases, prose about the examples and visuals. `npm run docs:check` fails a page that restates a block as prose. Preview layout defaults to `padded`. A fullscreen or `100dvh` wrapper belongs on app-chrome catalogue stories, never on `meta.decorators` — otherwise every figure on the docs page becomes a blank viewport. Token catalogues with a sticky toolbar embed `<Story>`, not `<Canvas>`, so the toolbar can pin against the docs scroll.
 
 <Unstyled>
   <Story of={Figures.DocsSource} />
@@ -413,7 +413,7 @@ PrimeNG-first layers that only add a BEMIT class skip the wrapper component. Acc
 
 Process pages such as this one live in `libs/ui/src/docs/`. Figure content that MDX cannot pass as props lives in a sibling `*.stories.ts` tagged to stay out of the sidebar.
 
-Do not name an unattached docs file `*-stories.mdx`. Webpack treats that as a CSF story and skips the MDX loader.
+Do not end a docs file name in `.stories.mdx`: Storybook would read it as a story file.
 
 ### Required story exports
 
@@ -445,11 +445,11 @@ Do not name an unattached docs file `*-stories.mdx`. Webpack treats that as a CS
   ]}
 />
 
-Storybook MCP `test-run` is wired (`@storybook/addon-vitest`). Locally prefer the testing widget or `npm run test-storybook:vitest`. CI still uses `npm run test-storybook`. The MCP catalogue is live only; `.ai/contracts/index.json` stays the offline map. Full tool table: [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
+Locally, run tests from the testing widget, Storybook MCP `test-run` or `npm run test-storybook:vitest`; CI uses `npm run test-storybook`. Without a running Storybook, agents read `.ai/contracts/index.json`. Full tool table: [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
 
 ### Testing
 
-Stories cover rendered states and interactions alongside the unit test suite. A story without assertions provides a render smoke check, not complete behavioral coverage. See [Storybook — How to test UIs](https://storybook.js.org/docs/writing-tests). `@storybook/addon-vitest` powers the sidebar testing widget (statuses, Interactions, a11y, coverage). CI still runs `@storybook/test-runner` (`npm run test-storybook`).
+A story without assertions only checks that it renders; add a `play` function to test behaviour. The sidebar testing widget runs on `@storybook/addon-vitest`; CI runs `@storybook/test-runner` (`npm run test-storybook`). See [Storybook — How to test UIs](https://storybook.js.org/docs/writing-tests).
 
 <DocsTable
   headers={['Kind', 'How']}

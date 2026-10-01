@@ -1,7 +1,7 @@
 import processContract from '../../../../.ai/contracts/process.json';
 import registry from '../../../../.ai/contracts/registry.json';
 import { teamFilterLabels, type CatalogueEntry } from './catalogue';
-import { consumerCiRequirements, docsStep, journeySteps, outcomeCards, routeSteps, teamCards, PEER_RANGES, REGISTRY_INSTALL } from './process-docs';
+import { consumerCiRequirements, docsStep, journeySteps, outcomeCards, routeSteps, teamCards, OUTCOME_COPY, PEER_RANGES, REGISTRY_INSTALL, STEP_COPY } from './process-docs';
 
 describe('process docs renderers', () => {
   it('constrains vendor installs to the runtime peer ranges instead of npm latest', () => {
@@ -14,7 +14,7 @@ describe('process docs renderers', () => {
   it('renders every journey step, in contract order, with its commands', () => {
     for (const [journey, ids] of Object.entries(processContract.journeys)) {
       const steps = journeySteps(journey as keyof typeof processContract.journeys, {}, true);
-      expect(steps.map((step) => step.title.toLowerCase().replaceAll(' ', '-'))).toEqual(ids);
+      expect(steps.map((step) => step.title)).toEqual(ids.map((id) => STEP_COPY[id].title));
     }
     const initialize = docsStep('initialize');
     expect(initialize.commands).toEqual(
@@ -22,6 +22,11 @@ describe('process docs renderers', () => {
         (id) => processContract.commands[id as keyof typeof processContract.commands].command,
       ),
     );
+  });
+
+  it('has reader copy for every step and decision of the contract', () => {
+    for (const step of processContract.steps) expect(STEP_COPY[step.id], step.id).toBeTruthy();
+    for (const decision of Object.keys(processContract.proposalOutcomes)) expect(OUTCOME_COPY[decision], decision).toBeTruthy();
   });
 
   it('omits commands from journey overviews unless asked', () => {
@@ -43,7 +48,7 @@ describe('process docs renderers', () => {
   });
 
   it('renders the consumer CI profile flags from the contract', () => {
-    expect(consumerCiRequirements()).toContain('strict tokens: required');
+    expect(consumerCiRequirements()).toContain('Fails on an unknown or hardcoded token');
   });
 
   it('adds a registered application to the team filter before it reports any usage', () => {

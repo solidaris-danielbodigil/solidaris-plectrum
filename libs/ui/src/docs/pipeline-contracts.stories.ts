@@ -8,7 +8,6 @@ import { consumerCiRequirements, journeySteps, teamCards } from '../storybook/pr
 const meta: Meta = { title: 'Docs/Figures/Process contracts', tags: ['!dev'] };
 export default meta;
 
-export const Onboarding = { tags: ['!dev'], ...stepsStory(journeySteps('onboarding', {}, true)) };
 export const Contribution = { tags: ['!dev'], ...stepsStory(journeySteps('contribution', {}, true)) };
 export const DesignComponent = { tags: ['!dev'], ...stepsStory(journeySteps('designComponent', {}, true)) };
 export const Design = { tags: ['!dev'], ...stepsStory(journeySteps('design', {}, true)) };
