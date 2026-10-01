@@ -1,6 +1,6 @@
 # Plectrum application devkit
 
-`@solidaris-danielbodigil/pds-devkit` distributes the versioned catalogue, token inventory, schemas, process contract, application rules and the `plectrum` CLI. Source version **0.4.0** adds a project-owned bootstrap and autonomous local component scaffold. It is not a published package until the release pipeline completes; use the versioned documentation for the package actually installed.
+`@solidaris-danielbodigil/pds-devkit` distributes the versioned catalogue, token inventory, schemas, process contract, application rules and the `plectrum` CLI. Use the [documentation of the release you install](https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/latest/); `package.json` holds the source version.
 
 Start a new Angular application from [`tools/consumers/starter`](../consumers/starter/README.md). Set its `package.json` `plectrum` identity, configure private-registry access, then run `npm install`. The starter declares all runtime and development dependencies and runs `plectrum bootstrap` from its own `postinstall`. This generates empty local ITCSS layers and an ordered SCSS entry, Angular/Storybook/test targets, Agenda asset mappings from `pds-styles`, `.ai` rules/skills/protocols/agents, editor adapters, a fast Git hook and a GitHub Actions job. The generated preview includes FR/NL locale and a v1 preset selector; deprecated v0.6 remains available for migration comparisons. The operation is idempotent; CI verifies committed setup without migrating files.
 

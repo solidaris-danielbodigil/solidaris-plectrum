@@ -27,6 +27,12 @@ for (const page of pages) {
   }
 }
 
+// Package READMEs ship inside the tarballs and outlive a release: they never name a version.
+for (const readme of ['README.md', 'libs/ui/README.md', 'libs/plectrum/README.md', 'libs/styles/README.md', 'tools/devkit/README.md', 'tools/consumers/starter/README.md']) {
+  const match = read(readme).match(/(?<![\w.])\d+\.\d+\.\d+(?![\w-]|\.\d)/);
+  if (match) fail(`${readme} names version ${match[0]}; point to package.json or the release documentation`);
+}
+
 const consume = read('libs/ui/src/docs/get-started-consume.mdx');
 for (const needle of ['Agenda', 'bootstrap-icons']) {
   if (!consume.includes(needle)) fail(`get-started-consume.mdx does not mention ${needle}`);
