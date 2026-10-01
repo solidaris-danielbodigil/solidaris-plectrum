@@ -158,7 +158,7 @@ Sequence for one token change, from Figma to a running application.
     ['tokens.json', 'The Figma export stored in the repository. Input for every generated file.'],
     ['--pds-*', 'A Plectrum CSS custom property. The only token name written in component SCSS.'],
     ['--p-*', 'A PrimeNG theme custom property, emitted by the preset. Bridged to --pds-* in 01-settings only.'],
-    ['Preset', 'The PrimeNG theme configuration. v1 runs in production; v0.6 remains available via the toolbar toggle.'],
+    ['Preset', 'The PrimeNG theme configuration. v1 is the production choice; deprecated v0.6 remains in the toolbar only for migration comparisons.'],
     ['Staging branch', 'design-tokens/sync. The only branch the Figma plugin writes to. Promotion to main requires a reviewed pull request.'],
     ['Variables REST API', 'Figma HTTP endpoints that read and write variables (tokens:apply, tokens:pull-figma). Enterprise plan only; parked. The live Organization-plan write is the Plugin API: agent + Figma MCP, or the Plectrum tokens plugin when no agent is running.'],
     ['Plugin API', 'Figma desktop / MCP API (figma.variables and nodes). Not plan-gated. Default write: agent + Figma MCP. Fallback: Plectrum tokens plugin. A human may still draw the Figma component by hand.'],

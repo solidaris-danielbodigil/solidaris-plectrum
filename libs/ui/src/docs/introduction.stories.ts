@@ -73,7 +73,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     who: 'Dev',
     tone: 'app',
     title: 'Prepare the application and install a release',
-    detail: `Start from a working Angular application, confirm private package access and register the application with Core. Follow a published release's guide to install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\`, \`${PACKAGE_NAMES.styles}\` and \`${PACKAGE_NAMES.toolkit}\`, with compatible PrimeNG peers.`,
+    detail: `Start from the Plectrum application starter or an existing Angular project. Confirm private package access, set the local identity and install \`${PACKAGE_NAMES.ui}\`, \`${PACKAGE_NAMES.plectrum}\`, \`${PACKAGE_NAMES.styles}\` and \`${PACKAGE_NAMES.toolkit}\` with compatible PrimeNG peers.`,
     links: [
       {
         label: 'Build with Plectrum',
@@ -84,8 +84,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Initialize the team toolkit',
-    detail: 'Run `plectrum init` in the application repository. Verify the application identity, source paths, editor instructions and generated checks workflow. This does not create a complete application workspace.',
+    title: 'Inspect the generated toolkit',
+    detail: 'The starter postinstall runs `plectrum bootstrap`. Verify identity, source paths, .ai and editor instructions, hook and checks workflow. The source implementation targets the next devkit release.',
     links: [
       {
         label: 'Initialize the team toolkit',
@@ -96,8 +96,8 @@ const DEV_STEPS: readonly DocsStep[] = [
   {
     who: 'Dev',
     tone: 'app',
-    title: 'Wire the styles and render the first field',
-    detail: 'Configure SCSS, the local ITCSS layers, fonts and icons, then register `providePlectrum()`. Render the Form Field example to verify the theme and shared styles together. This configuration is currently manual.',
+    title: 'Verify styles and render the first field',
+    detail: 'Inspect the generated SCSS composition, empty local ITCSS layers, fonts and icons. The starter registers `providePlectrum()`. Render Form Field to verify the theme and shared styles together.',
     links: [
       {
         label: 'Styles and ITCSS',
@@ -113,7 +113,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     who: 'Dev',
     tone: 'app',
     title: 'Prepare Storybook, tests and CI',
-    detail: 'Set up local Storybook, executable tests and a pre-commit hook. Connect Plectrum checks, the application build and tests to the Solidaris pipeline. The current devkit does not install this complete toolchain; verify the readiness checklist before closing onboarding.',
+    detail: 'Run local Storybook, unit tests, the static build and Plectrum checks. Map the generated jobs and hook to the application’s Solidaris CI policy before closing onboarding.',
     links: [
       {
         label: 'Storybook and tests',

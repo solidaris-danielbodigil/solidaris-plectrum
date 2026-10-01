@@ -2,7 +2,8 @@
 // 04-elements/_elements.fonts.scss
 // Plectrum display face (Agenda) — files from Adobe Fonts kit referenced in
 // https://plectrum.solidaris.be/5cba76f64/p/944759-installation/b/414795
-// Self-hosted under libs/assets/fonts/agenda/ (served at /assets/fonts/agenda/).
+// The pds-styles package ships Agenda under assets/fonts/agenda/.
+// Application and Storybook builds publish it at /assets/fonts/agenda/.
 // =============================================================================
 
 @font-face {

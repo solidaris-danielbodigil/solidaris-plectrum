@@ -9,7 +9,7 @@ import * as Figures from './css-architecture.stories';
 
 All shared CSS lives in `libs/styles` and is layered with **ITCSS**. Class names follow **BEMIT**. Templates mix a component block with object and utility classes. Component SCSS does not restate layout that an `o-*` class already covers.
 
-**Application repositories follow the same ITCSS/BEMIT conventions.** Consume shared SCSS from the installed style package and keep application extensions in local layers. Put component partials in `src/styles/06-components`; do not copy shared tokens or styles. The current devkit does not generate or wire these folders. Follow [Build with Plectrum → Local ITCSS structure](?path=/docs/get-started-use-plectrum-in-an-app--docs#local-itcss-structure), including shared/local cascade order. Paths below describe the central Plectrum implementation.
+**Application repositories follow the same ITCSS/BEMIT conventions.** Consume shared SCSS from the installed style package and keep application extensions in local layers. The source starter and matching devkit bootstrap generate and wire eight empty layers. `pds:component` puts each component partial in `src/styles/06-components` and imports it once; do not copy shared tokens or styles. Follow [Build with Plectrum → Wire the stylesheet](?path=/docs/get-started-use-plectrum-in-an-app--docs#wire-the-stylesheet), including shared/local cascade order. Paths below describe the central Plectrum implementation; use the documentation for the package release actually installed.
 
 Related pages:
 

@@ -10,8 +10,8 @@ import {
 } from './preset-storage';
 
 /**
- * Avatar-menu item for switching Plectrum preset (v1 ↔ v0.6).
- * Visible in all environments; not gated by testing telemetry.
+ * Avatar-menu item for comparing the current v1 preset with deprecated v0.6.
+ * Existing consumers retain the toggle for migration; new applications use v1.
  */
 @Injectable({ providedIn: 'root' })
 export class PlectrumPresetMenuService {
@@ -23,7 +23,7 @@ export class PlectrumPresetMenuService {
 
   readonly menuItem = computed<MenuItem>(() => {
     const current = this.currentVersion();
-    const activeLabel = current === 'v1' ? 'v1 (active)' : 'v0.6 (active)';
+    const activeLabel = current === 'v1' ? 'v1 (active)' : 'v0.6 (deprecated, active)';
 
     return {
       label: `Plectrum theme : ${activeLabel}`,

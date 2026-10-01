@@ -29,7 +29,7 @@ The live swatches are stories under **Foundations**, because `--p-*` only exists
 
 ## Hybrid colour tokens
 
-A mapped colour token has two sources: the **live PrimeNG preset** (v0.6 or v1, selected in the toolbar) and the **Figma literal** generated from `tokens.json`. The custom property reads the live value and falls back to the literal. Neither value is typed by hand.
+A mapped colour token has two sources: the **live PrimeNG preset** (v1 by default; deprecated v0.6 can be selected for migration comparison) and the **Figma literal** generated from `tokens.json`. The custom property reads the live value and falls back to the literal. Neither value is typed by hand.
 
 <Diagram
   title="Hybrid colour token resolution"
@@ -60,7 +60,7 @@ A mapped colour token has two sources: the **live PrimeNG preset** (v0.6 or v1, 
 Properties of this rule:
 
 - Aliasing is safe before Angular bootstraps: the fallback literal renders until the preset is applied.
-- Toggling v0.6 ↔ v1 in the toolbar changes aliased colour swatches; foundation literals do not change.
+- Comparing deprecated v0.6 with v1 in the toolbar changes aliased colour swatches; foundation literals do not change.
 - `alias-map.json` is reviewed. A missing entry emits a literal. CI fails if a mapped `--p-*` is never emitted by the resolved v1 preset, and warns when a `--pds-color-*` shares a `tokens.json` node with an unmapped `--p-*`.
 
 ---

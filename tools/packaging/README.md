@@ -13,7 +13,7 @@ Publishable packages:
 
 - `npm run build:libs` — ng-packagr for plectrum then ui
 - `npm run pack:libs` — build (as needed) and `npm pack` all four into `tools/packaging/.tarballs/`
-- `npm run pack:smoke` — pack, install tarballs into a throwaway Angular app **outside this repo** (no path aliases), `ng build`
+- `npm run pack:smoke` — pack, copy the documented starter into a throwaway Angular app **outside this repo** (no path aliases), run plain `npm install` and its bootstrap, verify ITCSS/scaffold/agents, then build Angular and Storybook and run checks/tests. It validates package contents independently of GitHub Packages or Nexus access.
 - `npm run storybook:packed` / `npm run build-storybook:packed` — remaps aliases to `dist/` and runs `ui:build-storybook`. Local `npm run storybook` stays on source.
 - `npm run release:check && npm run release:prepare` — verify four packed archives and produce the Core contract snapshot plus archive integrity list in `dist/release/`
 - `npm run release:test` — test immutable registry retry decisions

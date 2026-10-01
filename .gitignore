@@ -28,6 +28,8 @@ testem.log
 # Storybook
 /storybook-static
 /dist/storybook
+/.vitest-attachments/
+/chromatic-diagnostics.json
 
 # IDE / OS
 .idea

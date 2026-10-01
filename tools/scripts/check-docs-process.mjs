@@ -14,7 +14,7 @@ const root = resolve(import.meta.dirname, '../..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8').replaceAll('\r\n', '\n');
 const json = (path) => JSON.parse(read(path));
 const contract = json('.ai/contracts/process.json');
-const scripts = json('package.json').scripts;
+const scripts = { ...json('package.json').scripts, ...json('tools/consumers/starter/package.json').scripts };
 const packages = ['libs/ui', 'libs/plectrum', 'libs/styles', 'tools/devkit'].map((dir) => json(`${dir}/package.json`).name);
 const problems = [];
 const fail = (file, message) => problems.push(`${file}: ${message}`);

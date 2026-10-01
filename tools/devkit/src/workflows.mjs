@@ -28,34 +28,38 @@ export async function scaffold(root, args) {
   const config = configAt(root);
   const name = requiredFlag(args, 'name');
   if (!safeName(name)) throw new Error('Candidate name must be a lowercase slug.');
-  const proposal = await approvedProposal(root, args, name);
   const folder = `${config.paths.candidates}/${name}`;
   const file = `${folder}/${name}`;
   const style = `${config.paths.candidateStyles}/_components.${name}.scss`;
-  const targets = [`${file}.component.ts`, `${file}.stories.ts`, `${file}.metadata.json`, `${folder}/evidence.md`, `${folder}/proposal.json`, style];
+  const targets = [`${file}.component.ts`, `${file}.stories.ts`, `${file}.component.spec.ts`, `${file}.metadata.json`, `${folder}/evidence.md`, style];
   if (targets.some((p) => fs.existsSync(projectPath(root, p)))) throw new Error(`Candidate ${name} already has files; scaffold did not overwrite them.`);
   const cls = `${className(name)}Component`;
   const metadata = {
     component: { id: `${config.team}:${name}`, name: className(name), category: 'molecules', description: `TODO: Describe the ${name} candidate and the need it addresses.`, type: 'display', path: `${file}.component.ts`, bemBlock: `c-${name}`, itcssLayer: '06-components', scssPath: style, created: nowDate(), modified: nowDate() },
     distribution: { kind: 'local' },
-    governance: { status: 'candidate', owner: config.team, note: `Central proposal ${proposal.id}: ${proposal.decisionUrl}` },
+    governance: { status: 'candidate', owner: config.team, note: 'Local application component; central sharing is optional.' },
     usage: { useCases: ['TODO: Describe a supported use case.'], commonPatterns: [], antiPatterns: [] },
     props: [],
     accessibility: { wcagLevel: 'AA', keyboardSupport: ['TODO: Record keyboard behavior.'] },
     tokens: { consumed: [] },
-    aiHints: { priority: 'medium', context: 'TODO: Describe the candidate selection context.', selectionCriteria: { gap: 'TODO: Record the approved gap.' }, keywords: [name] },
+    aiHints: { priority: 'medium', context: 'TODO: Describe the candidate selection context.', selectionCriteria: { gap: 'TODO: Record the application gap.' }, keywords: [name] },
     examples: [{ name: 'Basic', description: 'TODO: Explain this example.', code: `<app-${name} />` }],
   };
   validateSchema('metadata', metadata);
   const content = {
     [`${file}.component.ts`]: `import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-${name}',\n  standalone: true,\n  template: \`<div class="c-${name}">Describe the candidate</div>\`,\n})\nexport class ${cls} {}\n`,
-    [`${file}.stories.ts`]: `import type { Meta, StoryObj } from '@storybook/angular';\nimport { ${cls} } from './${name}.component';\n\nconst meta: Meta<${cls}> = { title: 'Candidates/${className(name)}', component: ${cls} };\nexport default meta;\nexport const Default: StoryObj<${cls}> = {};\n`,
+    [`${file}.stories.ts`]: `import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { ${cls} } from './${name}.component';\n\nconst meta: Meta<${cls}> = { title: 'Application/${className(name)}', component: ${cls}, tags: ['autodocs'] };\nexport default meta;\nexport const Default: StoryObj<${cls}> = {};\n`,
+    [`${file}.component.spec.ts`]: `import { TestBed } from '@angular/core/testing';\nimport { ${cls} } from './${name}.component';\n\ndescribe('${cls}', () => {\n  it('renders its host', async () => {\n    await TestBed.configureTestingModule({ imports: [${cls}] }).compileComponents();\n    const fixture = TestBed.createComponent(${cls});\n    fixture.detectChanges();\n    expect(fixture.nativeElement.querySelector('.c-${name}')).not.toBeNull();\n  });\n});\n`,
     [`${file}.metadata.json`]: format(metadata),
-    [`${folder}/proposal.json`]: format(proposal),
-    [`${folder}/evidence.md`]: `# ${className(name)} evidence\n\nProposal decision and owner: TODO\nDesign reference and states: TODO\nKeyboard test: TODO\nScreen reader test: TODO\nStory and responsive checks: TODO\nKnown limitations: TODO\n`,
+    [`${folder}/evidence.md`]: `# ${className(name)} evidence\n\nOwner and use case: TODO\nDesign reference and states: TODO\nKeyboard test: TODO\nScreen reader test: TODO\nStory and responsive checks: TODO\nKnown limitations: TODO\n`,
     [style]: `// Candidate styles. Use published --pds-* tokens.\n.c-${name} {\n  display: block;\n}\n`,
   };
+  const index = projectPath(root, `${config.paths.candidateStyles}/_index.scss`);
+  if (!fs.existsSync(index)) throw new Error(`Missing ITCSS component index: ${path.relative(root, index)}. Run plectrum bootstrap first.`);
+  const importLine = `@use 'components.${name}';`;
+  if (fs.readFileSync(index, 'utf8').includes(importLine)) throw new Error(`ITCSS component import already exists: ${importLine}`);
   for (const [relative, body] of Object.entries(content)) { const target = projectPath(root, relative); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, body); }
+  fs.appendFileSync(index, `\n${importLine}\n`);
   console.log(`Scaffolded ${name} in ${folder}; complete metadata, story, styles and evidence before export.`);
 }
 
@@ -126,8 +130,6 @@ export async function candidateSubmit(root, args, client = new GitHubClient(proc
   // Submission always rechecks the merged central decision; a local cached copy is insufficient.
   const liveArgs = args.filter((arg) => arg !== '--central-checkout');
   const proposal = await approvedProposal(root, liveArgs, name, client);
-  const cached = readJson(projectPath(root, `${config.paths.candidates}/${name}/proposal.json`));
-  if (JSON.stringify(cached) !== JSON.stringify(proposal)) throw new Error('Local proposal copy differs from the merged central decision; resync before submission.');
   const submission = submissionBase(root, config, name, proposal, args);
   const central = asset('registry.json').repository;
   const repo = githubRepository(central).fullName;

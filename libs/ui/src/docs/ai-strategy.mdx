@@ -12,17 +12,17 @@ import agentRoster from '../../../../.ai/agents/agents.json';
 
 Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and Figma library publication. Agents may propose variables on a PrimeNG 21 branch and components on a separate Custom components branch; the Plectrum tokens plugin is the fallback for token writes when no agent is running. A designer may start the component design before code exists.
 
-Each application team works in its own repository. The installed toolkit gives its agents the versioned rules, process, metadata catalogue and schemas. `plectrum init` creates the editor adapters in that repository.
+Each application team works in its own repository. The installed toolkit gives its agents the versioned rules, process, metadata catalogue and schemas. In the application starter, `npm install` invokes `plectrum bootstrap` to generate the local configuration and editor adapters.
 
 ## Team repositories
 
-<p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code>, <code>{PACKAGE_NAMES.styles}</code> and <code>{PACKAGE_NAMES.toolkit}</code>. The first three provide runtime code and styles. The toolkit carries the contributor contract, the process {processContract.version} and the CLI. From the application root, run <code>{command('consumerInit')}</code>; it writes small Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content: role text, <code>plectrum help</code> and these pages render the same process contract. After upgrading it, run <code>{command('consumerUpdate')}</code>; managed-file checksums detect conflicts while unrelated editor configuration remains in place.</p>
+<p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code>, <code>{PACKAGE_NAMES.styles}</code> and <code>{PACKAGE_NAMES.toolkit}</code>. The first three provide runtime code and styles. The toolkit carries the contributor contract, the process {processContract.version} and the CLI. The source starter declares these dependencies and invokes <code>plectrum bootstrap</code> after installation to create ITCSS, Storybook, tests, a hook, portable <code>.ai</code> guidance, Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content: role text, <code>plectrum help</code> and these pages render the same process contract. After upgrading it, run <code>{command('consumerUpdate')}</code>; managed-file checksums detect conflicts while unrelated editor configuration remains in place.</p>
 
-See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs#initialize-the-team-toolkit).
+See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) for the source starter and published-package distinction.
 
-The package includes application rules and roles, plus central rules, skills and protocols as reference material under `rules/central`. `init` does not copy the full `.ai/` tree, install every editor skill or reproduce Core's agents unchanged. The generated application roles use the portable CLI; central paths and npm scripts still require a Plectrum checkout.
+The package includes application rules and roles, plus central rules, skills and protocols as reference material under `rules/central`. Bootstrap creates a portable `.ai/` subset; it does not copy the full Core tree or reproduce Core's agents unchanged. The generated application roles use the portable CLI; central paths and npm scripts still require a Plectrum checkout.
 
-Storybook, SCSS/ITCSS setup, test runners and a pre-commit hook are not installed by the current toolkit. MCP configuration connects an available server; it does not install that server. Follow the [application setup and readiness checks](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests) before treating the workspace as ready.
+The source starter declares Storybook, Sass and test dependencies; bootstrap generates ITCSS, configuration and a pre-commit hook. This source version still needs publication before a private-registry install can use it. MCP configuration connects an available server; it does not install that server. Follow the [application setup and readiness checks](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests) before treating the workspace as ready.
 
 Related pages:
 
@@ -168,7 +168,7 @@ Proposal: [issue link].
 Use PrimeNG Message if it already covers this.
 ```
 
-<p>In an application repository, Plectrum uses <code>{command('consumerScaffold')}</code> after the merged proposal decision; in the design-system repository, maintainers use <code>{command('scaffold')}</code>.</p>
+<p>In an application repository, Plectrum uses <code>{command('consumerScaffold')}</code> for local work without a Core decision. A merged proposal decision is needed only to submit the result for shared intake. In the design-system repository, maintainers use <code>{command('scaffold')}</code>.</p>
 
 The central token, Figma and story-writing protocols remain in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
 

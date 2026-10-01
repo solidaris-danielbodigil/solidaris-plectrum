@@ -115,23 +115,20 @@ export function candidateCheck(root, config) {
     catch (error) { errors.push(`${rel}: ${error.message}`); continue; }
     if (/TODO:/.test(JSON.stringify(metadata))) errors.push(`${rel}: complete candidate placeholders before CI`);
     if (metadata.component.id.split(':')[0] !== config.team || metadata.governance.owner !== config.team || metadata.governance.status !== 'candidate' || metadata.distribution.kind !== 'local') errors.push(`${rel}: candidate ownership, status, ID or distribution invalid`);
-    const proposalFile = path.join(path.dirname(file), 'proposal.json');
-    if (!fs.existsSync(proposalFile)) errors.push(`${rel}: merged proposal copy missing`);
-    else {
-      try {
-        const proposal = readJson(proposalFile);
-        validateSchema('proposal', proposal);
-        if (proposal.decision !== 'approved-candidate' || proposal.componentId !== metadata.component.id || proposal.team !== config.team || proposal.application !== config.application || proposal.id !== `${config.application}-${path.basename(path.dirname(file))}` || proposal.owner !== config.team || !proposal.decisionUrl.startsWith(`${asset('registry.json').repository}/`)) errors.push(`${rel}: proposal does not approve this candidate`);
-      } catch (error) { errors.push(`${rel}: ${error.message}`); }
-    }
     if (!metadata.component.path.startsWith(`${config.paths.candidates}/`)) errors.push(`${rel}: implementation must stay under ${config.paths.candidates}`);
     if (!metadata.component.scssPath?.startsWith(`${config.paths.candidateStyles}/`)) errors.push(`${rel}: styles must stay under ${config.paths.candidateStyles}`);
     const source = projectPath(root, metadata.component.path);
     if (!fs.existsSync(source)) { errors.push(`${rel}: implementation missing ${metadata.component.path}`); continue; }
     const stem = source.replace(/\.component\.ts$/, '');
     if (!fs.existsSync(`${stem}.stories.ts`)) errors.push(`${rel}: Storybook story missing`);
+    if (!fs.existsSync(`${stem}.component.spec.ts`)) errors.push(`${rel}: unit test missing`);
     const style = metadata.component.scssPath;
     if (!style || !fs.existsSync(projectPath(root, style))) errors.push(`${rel}: candidate style missing`);
+    else {
+      const index = projectPath(root, `${config.paths.candidateStyles}/_index.scss`);
+      const name = path.basename(style).replace(/^_components\./, '').replace(/\.scss$/, '');
+      if (!fs.existsSync(index) || !fs.readFileSync(index, 'utf8').includes(`@use 'components.${name}';`)) errors.push(`${rel}: candidate style is not imported by ITCSS component index`);
+    }
     const declared = new Set((metadata.props ?? []).map((p) => p.name));
     const actual = classInputs(source);
     for (const name of actual) if (!declared.has(name)) errors.push(`${rel}: Angular input ${name} missing from metadata.props`);

@@ -1,6 +1,9 @@
 export const PLECTRUM_PRESET_STORAGE_KEY = 'solidaris-plectrum-preset';
 
-export type PlectrumPresetVersion = 'v0.6' | 'v1';
+/** @deprecated Preset v0.6 is retained only for migration comparisons. New applications use v1. */
+export type DeprecatedPlectrumPresetVersion = 'v0.6';
+
+export type PlectrumPresetVersion = 'v1' | DeprecatedPlectrumPresetVersion;
 
 export const DEFAULT_PLECTRUM_PRESET_VERSION: PlectrumPresetVersion = 'v1';
 

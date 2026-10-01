@@ -15,10 +15,10 @@ export default meta;
 
 export const ProposeEarly: StoryObj = calloutStory({
   tone: 'warning',
-  title: 'Propose before code — a Candidate is not a core-team ticket',
+  title: 'Search first; local work can start without Core',
   items: [
-    'Look at themed PrimeNG, then Core components. If neither fits, open a proposal. Do not start a new component on a guess.',
-    'Talking first is cheaper than two teams building the same thing, and cheaper than the core team inheriting work they never agreed to.',
+    'Look at themed PrimeNG, then Core components. If neither fits, document the gap and build locally under your team’s ownership.',
+    'Ask Core for a decision when you want to submit that work to the shared system. Design feedback may happen asynchronously.',
     'If you build a Candidate, your team owns it. Another app that needs it opens a new proposal — they do not import yours.',
   ],
 });
@@ -42,7 +42,7 @@ export const Journey: StoryObj = {
 
 export const Outcomes: StoryObj = { tags: ['!dev'], ...cardsStory(outcomeCards(), 2) };
 
-export const LocalCandidate: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('local-candidate')) };
+export const LocalCandidate: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('local-application')) };
 
 export const PlectrumChange: StoryObj = { tags: ['!dev'], ...stepsStory(routeSteps('plectrum-change')) };
 
@@ -55,7 +55,7 @@ export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) }
 export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
-  text: 'Agents can help with research, tokens, implementation and QA. After promotion they can propose Figma variables in PrimeNG 21 and a component in Custom components on their respective branches. Designers can also start the component in Figma and bring its reviewed design to Core. Every command stays runnable by hand. The Plectrum tokens plugin is the fallback for token proposals when no agent is available. Neither route skips a recorded proposal and Core decision.',
+  text: 'Agents can help with research, tokens, implementation and QA. Local application development needs no Core decision. Sharing through Core still requires a recorded proposal, review and release. Every command remains runnable by hand.',
   linkLabel: 'AI strategy → Subagents',
   linkPath: '/docs/docs-ai-strategy--docs#subagents',
 });
@@ -87,8 +87,8 @@ export const Roles: StoryObj = cardsStory(
       tone: 'app',
       title: 'Owns its screens',
       items: [
-        'Uses themed PrimeNG and Core first; proposes a gap',
-        'Builds an approved candidate in its own repository and owns it',
+        'Uses themed PrimeNG and Core first; records a gap',
+        'Builds a local component in its own repository and owns it',
         'Never adds primitives or semantic tokens; a missing token is a proposal',
       ],
     },

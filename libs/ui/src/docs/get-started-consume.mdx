@@ -1,107 +1,52 @@
 import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-consume.stories';
-import { DISTRIBUTED_PACKAGES, PACKAGE_NAMES, PEER_RANGES, REGISTRY } from '../storybook/process-docs';
+import { command, DISTRIBUTED_PACKAGES, PACKAGE_NAMES, REGISTRY } from '../storybook/process-docs';
 import workspacePackage from '../../../../package.json';
 
 <Meta title="Start here/Build with Plectrum" id="get-started-use-plectrum-in-an-app" />
 
 # Build with Plectrum
 
-Use this guide in your **application repository**. It takes you from package access to a themed screen, then identifies the tooling and checks needed before the team starts delivering components.
+This is the application team's path from package access to a themed Angular screen, local Storybook and executable checks. The source starter in `tools/consumers/starter` targets devkit <code>{DISTRIBUTED_PACKAGES.find((pkg) => pkg.role === 'toolkit')?.version}</code>. It must be released before it can be installed from the private registry. For an earlier published version, use that release's versioned documentation and manual setup.
 
-**Installing the packages does not yet create a complete application workspace.** The current toolkit initializes Plectrum configuration, editor instructions and a checks workflow. Angular setup, local ITCSS folders, Storybook, test runners and a pre-commit hook still need application setup. The target is a starter where one installation prepares that environment; see [the planned onboarding work](#planned-onboarding).
-
-Follow these steps in order. Each step states where to work and how to check the result:
-
-<Unstyled>
-  <Story of={Figures.InstallFlow} />
-</Unstyled>
+<Unstyled><Story of={Figures.InstallFlow} /></Unstyled>
 
 ## Prerequisites
 
-**Step 1 · Application team, with Core for package access and registration.** Start from a working Angular application or your team's approved Angular starter. The current devkit does not create Angular projects or install their build tools.
+**Step 1 · Application team.** Create a repository from the source starter, or connect an existing Angular application. An empty directory has no `package.json`, so npm cannot discover dependencies or run the project's `postinstall`. Set `plectrum.team`, `plectrum.application` and `plectrum.repository` in the manifest before installation. Local IDs permit local work; Core registration is required before central intake.
 
-<ul>
-  <li>Node version supported by this checkout: <code>{workspacePackage.engines.node}</code>. Check the matching release documentation for the version you install.</li>
-  <li>Peers: {Object.entries(PEER_RANGES).map(([name, range]) => `${name} ${range}`).join(' · ')}.</li>
-  <li>Read access to the {REGISTRY.operations.visibility} packages in {REGISTRY.operations.registry} under <code>{REGISTRY.operations.publicationScope}</code>.</li>
-  <li>Before <code>plectrum init</code>, ask the Core team to register your team, application and repository URL in the <a href="?path=/docs/get-started-contribute--docs#status-and-owner">central registry</a>. Existing local demo entries are not evidence of an external team's adoption.</li>
-</ul>
+- Use a supported Node version ({workspacePackage.engines.node} for this checkout) and ensure access to the {REGISTRY.operations.visibility} packages in {REGISTRY.operations.registry}.
+- Supply registry credentials on the developer machine and in CI. The starter `.npmrc` selects a registry but contains no secret.
+- For an existing application, preserve its build, stories and hooks. Review config conflicts before attaching the bootstrap.
 
-**Check before continuing:** the application builds on its own, the developer can read the private packages, and Core has supplied the actual team/application IDs. An existing iShare demo inside Plectrum does not register the new front-end repository automatically.
+### If npm cannot download the private packages
+
+The starter `.npmrc` routes `@solidaris-danielbodigil` to GitHub Packages. If Solidaris requires all npm traffic through Nexus, this mapping must instead point to the Nexus repository approved by DevOps **after** that repository can proxy or host the Plectrum packages. A scope mapping changes the destination; it does not grant package access or establish trust in a TLS certificate. Confirm the effective registry with `npm config get @solidaris-danielbodigil:registry`, then ask DevOps to verify package availability, credentials and the certificate chain at that endpoint.
+
+`UNABLE_TO_GET_ISSUER_CERT_LOCALLY` means the Node/npm process could not validate the certificate chain it received. It does not by itself establish whether the failing endpoint is GitHub Packages, a corporate proxy or Nexus. Use the Solidaris-approved CA bundle or Node system trust configuration on developer machines and CI; do not disable npm TLS verification. Package publication to Nexus, proxy setup and corporate CA distribution are infrastructure prerequisites, not files generated by the devkit. The local-tarball test described below proves package contents without proving access through the corporate registry.
 
 ## Install the packages
 
-**Step 2 · In the application root, beside `package.json`.** Use the installation instructions for a published release below. Commit the dependency manifest and lockfile after installation.
+**Step 2 · Application root.** Run `npm install` in the copied starter. Its manifest declares Angular, PrimeNG, `@primeuix/themes`, the three runtime packages, Sass, Storybook, test tools and the devkit. Runtime packages must use one compatible version; the toolkit has its own version.
 
-<DocsTable
-  headers={['Package', 'Contents', 'Install as']}
-  rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.description, pkg.role === 'runtime' ? 'Application dependency' : 'Development dependency — team CLI, contracts and instructions'])}
-/>
+<DocsTable headers={['Package', 'Contents', 'Install as']} rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.description, pkg.role === 'runtime' ? 'Application dependency' : 'Development dependency'])} />
 
-The runtime packages version together — always upgrade them as a set. The toolkit versions separately and declares which runtime versions it supports.
+<Unstyled><Story of={Figures.Install} /></Unstyled>
 
-**PrimeNG is an application dependency.** The runtime packages declare compatible PrimeNG and theme peers; the devkit does not bundle or configure those libraries. Install them with the runtime packages using the compatible ranges shown above. Angular and its compiler/build tooling belong to the application as well.
-
-<Unstyled>
-  <Story of={Figures.Install} />
-</Unstyled>
-
-**Check:** all four Plectrum packages are installed at the selected release versions, and npm reports no unresolved peer dependency conflict. Installing them alone does not create local folders, configure SCSS or add a Storybook server.
+The application's `postinstall` invokes `plectrum bootstrap`. It does not install more dependencies. If npm scripts are disabled, run `npm run pds:bootstrap` afterward. Commit generated configuration and the lockfile. Repeated installation preserves application files; CI verifies that the setup was committed instead of rewriting it.
 
 ## Initialize the team toolkit
 
-**Step 3 · In the application root.** Replace the team, application and repository placeholders with the registered values. The following commands initialize the toolkit, inspect its catalogue and check the setup:
+**Step 3 · Inspect what installation generated.** Bootstrap creates `.plectrum/config.json`, managed editor adapters, `.ai` rules, skills, protocols and agents, MCP configuration, a local Git hook and a GitHub Actions workflow. It also configures Angular's stylesheet, Storybook and unit-test targets. `plectrum update` refreshes managed files after a devkit upgrade and reports conflicts rather than overwriting team edits.
 
-<Unstyled>
-  <Story of={Figures.Initialize} />
-</Unstyled>
+<Unstyled><Story of={Figures.Initialize} /></Unstyled>
 
-<DocsTable
-  headers={['Created or configured by init', 'Purpose']}
-  rows={[
-    ['.plectrum/config.json', 'Application identity, source/style paths, candidate paths, MCP endpoints and reporting preferences'],
-    ['.plectrum/managed.json', 'Tracks generated files so updates detect local edits'],
-    ['.cursor/rules/ and .cursor/agents/', 'Plectrum instructions and application agent roles for Cursor'],
-    ['.github/instructions/ and .github/agents/', 'Plectrum instructions and application agent roles for VS Code/Copilot'],
-    ['.cursor/mcp.json and .vscode/mcp.json', 'MCP configuration; unrelated server entries are preserved'],
-    ['.github/workflows/plectrum-checks.yml', 'Plectrum checks on pull requests and main; application build and tests remain separate'],
-  ]}
-/>
-
-**Review the paths** in `.plectrum/config.json` against your actual workspace. A multi-project repository may not keep its sources under `src`. The toolkit must scan the real application sources and styles.
-
-In Cursor, select the generated **Plectrum** agent; in VS Code, select **Plectrum** in the chat agent picker. Agent use is optional: developers run the same CLI commands by hand.
-
-**Rules, skills and protocols:** the installed devkit contains the application rules, role instructions, catalogue and schemas. It also carries central rules/skills/protocols as reference material. `init` does not copy the full `.ai/` directory or automatically activate every skill in your editor. Central paths such as `libs/ui` and central npm scripts do not exist in your application. Keep team-specific instructions outside generated files.
-
-Set Figma or Storybook MCP URLs in `.plectrum/config.json` when needed. A Storybook documentation URL is not an MCP endpoint; configuring MCP does not install Storybook or grant access to Figma.
-
-**Check:** the configuration contains your repository and paths, catalogue lookup works, and the diagnostic succeeds. No Angular providers, SCSS imports, local ITCSS skeleton, Storybook configuration, unit test runner or pre-commit hook have been installed by this step.
+Check identity, selected Angular project and source paths in `.plectrum/config.json`. Set the project explicitly for a multi-project workspace. Local team instructions belong outside managed adapters. Figma and Storybook MCP endpoints are optional and distinct from the local Storybook server.
 
 ## Wire the stylesheet
 
-**Step 4 · Application build configuration and global styles.** `pds-styles` supplies SCSS source. Configure a compatible Sass-capable Angular builder; there is no separate package named `scss` to install. If your chosen tooling needs a direct Sass dependency, declare it in the application.
-
-In the application's build options in `angular.json`, include `src/styles.scss` in `styles` and resolve the shared ITCSS source from the package:
-
-<pre><code>{`"stylePreprocessorOptions": {
-  "includePaths": ["node_modules/${PACKAGE_NAMES.styles}/src"]
-}`}</code></pre>
-
-For the initial screen using shared styles only, `src/styles.scss` loads the packaged system:
-
-```scss
-@use '01-settings/settings.prefix' as *;
-@use 'main';
-```
-
-Here `main` resolves to the **package's** entry point. If you later add a local `styles/main.scss`, make the two imports unambiguous and avoid importing the shared CSS twice.
-
-### Local ITCSS structure
-
-The team should follow the same ITCSS/BEMIT architecture for its own styles. The shared layers stay in the package; local layers hold application extensions. This skeleton is **not generated by the current init command**:
+**Step 4 · Already wired by bootstrap for the starter.** Eight empty local ITCSS layer entries live under `src/styles/`, matching the eight layers in the Plectrum repository. `src/styles/main.scss` interleaves each shared `pds-styles` layer with the matching local layer; `src/styles.scss` loads that composition once in Angular and Storybook. The starter declares Sass, so no package named `scss` is needed.
 
 ```text
 src/styles/
@@ -113,54 +58,19 @@ src/styles/
   06-components/_index.scss
   07-utilities/_index.scss
   08-trumps/_index.scss
-  main.scss
 ```
 
-Keep the layer entry points empty until needed; do not copy shared token values or component styles into them. Put new application component styles in `06-components/_components.name.scss` and import each partial once through the layer entry point. Use the same global entry point in Angular and local Storybook.
-
-**Agree the layer composition before adding local styles.** Loading all local components after the complete shared stylesheet can place them after utilities that should take precedence. Configure and verify the shared/local order with Core using [CSS architecture](?path=/docs/docs-css-architecture--docs). Automated composition and generator placement are part of the planned starter.
-
-The current candidate generator uses the configured `paths.candidateStyles`; it does not automatically create or wire this ITCSS skeleton. Align that path with your chosen component layer before generating candidates, then add their imports. The generator's current workflow is described in [Contribute](?path=/docs/get-started-contribute--docs).
-
-### Fonts, icons and browsers
-
-Agenda is currently supplied in the Plectrum repository at `libs/assets/fonts/agenda`, rather than in the style package. Obtain those four `.woff2` files from Core, place them in the application's assets and configure asset copying so `/assets/fonts/agenda/*.woff2` resolves. This asset transfer is a separate onboarding task today.
-
-Open Sans is not bundled. Load it through your team's approved font source. Install `bootstrap-icons` and add `node_modules/bootstrap-icons/font/bootstrap-icons.css` to the application's global `styles` list. Include the same assets in local Storybook.
-
-Agree the application's browser support with the team and verify it against the Angular version in use.
-
-**Check:** the application compiles SCSS, token custom properties and shared classes are present in the browser, and fonts/icons load without missing-file errors. For local styles, verify a component and a utility together to check the cascade.
+Keep local layers free of copied shared tokens. <code>{command('consumerScaffold')}</code> writes `_components.<slug>.scss` in `06-components` and registers its import. The source `pds-styles` package now includes Agenda font files; bootstrap maps them to `/assets/fonts/agenda` for the app and local Storybook. Install a release containing these assets before using that mapping from the private registry. The starter installs `bootstrap-icons`. Open Sans remains an approved application font-source decision. Bootstrap reports an existing full Plectrum stylesheet import as a conflict to avoid duplicate CSS.
 
 ## Boot the theme
 
-**Step 5 · `src/app/app.config.ts`, or the equivalent application provider configuration.** Add these providers to the existing configuration; preserve routing and other application providers.
-
-<pre><code>{`// src/app/app.config.ts
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePlectrum } from '${PACKAGE_NAMES.plectrum}';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideAnimationsAsync(),
-    providePlectrum(),
-  ],
-};`}</code></pre>
-
-`providePlectrum()` registers the PrimeNG theme and emits every `--p-*` custom property. The generated `--pds-*` tokens fall back to literals, so styles render even before the theme boots — but PrimeNG components need the provider.
-
-The Storybook **Preset** control (`v1` / `v0.6`) switches this catalogue's theme; it is not the package version. `providePlectrum()` defaults to preset v1. Use the same provider setup in the application's Storybook. For older preset migrations, see [What's new](?path=/docs/docs-what-s-new--docs).
-
-**Check:** a PrimeNG control renders with the Plectrum theme and the application starts without provider errors.
+**Step 5 · Provided in the starter.** `src/app/app.config.ts` calls `providePlectrum()` and the animation provider. The local Storybook preview uses the same theme provider. In an existing application, merge these providers with its router and other providers.
 
 ## First component
 
-**Step 6 · An application screen or temporary smoke-test screen.** Render a Core component around a PrimeNG input to check package imports, theme and shared styles together:
+**Step 6 · Verify the runtime.** Run `npm start`; the starter PrimeNG button should render with the Plectrum theme. Then import a Core component in an application screen. This Form Field example checks the UI package, PrimeNG directive and theme together:
 
 ```ts
-// src/app/app.ts
 import { Component } from '@angular/core';
 import { InputText } from 'primeng/inputtext';
 import { FormFieldComponent } from '@solidaris-danielbodigil/pds-ui';
@@ -182,122 +92,43 @@ import { FormFieldComponent } from '@solidaris-danielbodigil/pds-ui';
 export class App {}
 ```
 
-`ng serve` shows a labelled, themed field: the label and hint come from `pds-form-field` ([Form Field](?path=/docs/custom-components-form-field--docs)), the input chrome from the Plectrum preset. Every Core Angular component is exported from the UI package root — the component's docs page names the class to import.
-
-PrimeNG components use the Plectrum preset as-is ([theme gallery](?path=/docs/primeng-actions--docs)). [Find a component](?path=/docs/start-here-catalogue--docs) lists each Core component. Layout with `o-flex` / `o-layout`, chrome with `u-*`, values via `var(--pds-*)`.
-
-**Check:** the example builds and renders, its label targets the input, and the hint, spacing and theme are visible. A successful screen proves the runtime integration; it does not prove that local tests and CI are ready.
+[Form Field](?path=/docs/custom-components-form-field--docs) has the component contract; [Find a component](?path=/docs/start-here-catalogue--docs) lists other shared exports.
 
 ## Set up Storybook and tests
 
-**Step 7 · Application development tooling.** Each team needs its own Storybook for local components and patterns. The central Storybook documents the shared packages; it does not execute your application's stories.
+**Step 7 · Run the generated tools.** `npm run pds:storybook` opens local Storybook with an example story, controls, docs, FR/NL locale, the v1 preset selector and the accessibility addon. Deprecated v0.6 remains selectable only to compare screens during migration. The preview applies the selected locale and preset through the published providers. `npm run pds:build-storybook` builds a static preview; `npm run pds:test:unit` runs Angular unit tests and `npm run pds:test:stories` executes Storybook play and accessibility checks in Chromium. Install the browser once locally with `npx playwright install chromium`; generated CI installs it before testing. New local components receive a story and a unit spec from the scaffold. Complete their assertions and manual accessibility evidence before delivery.
 
-**The current devkit does not install Storybook, its builder/addons or test runners.** A generated `.stories.ts` file needs a configured Storybook to run. Create a tooling task in the onboarding epic and agree the supported setup with Core:
-
-1. Declare compatible Storybook/Angular and test dependencies in the application, preserving existing tooling.
-2. Configure local story discovery, the Plectrum providers, the global stylesheet and static assets.
-3. Add server, static build and headless test scripts to the application's `package.json`.
-4. Render the first example in a story and add an assertion covering its behavior.
-5. Configure unit tests and automated accessibility checks; document keyboard and screen-reader checks that remain manual.
-6. Produce a preview accessible to the reviewers, with a reference to the commit tested.
-
-The authoring conventions in [Writing stories](?path=/docs/docs-writing-stories--docs) apply, but its central repository paths and helper imports are not a portable application configuration. Do not copy the central Storybook folder unchanged.
-
-**Check:** start the local catalogue, build it, then run a unit test, a story interaction and an accessibility check. Deliberately break an assertion to confirm the runner fails. A story file, an empty suite or a completed evidence checklist is not proof that tests ran.
+The central Storybook remains the published shared-component reference. The generated story test runs interactions and automated accessibility checks; the evidence checklist still records manual checks and their limits. Preview hosting, private access and visual regression service remain application and CI decisions.
 
 ## Validate
 
-**Step 8 · Run local checks, then connect them to the application's CI.** These commands come from the same process contract as the installed toolkit:
+**Step 8 · Run the portable checks.** `npm run pds:check:ci` verifies installed package compatibility, tokens, managed files, candidate metadata/API alignment, stories, unit specs, ITCSS imports and completed evidence. It does not compile the application or execute tests. Run `npm run build`, `npm run pds:test:unit`, `npm run pds:build-storybook` and `npm run pds:test:stories` as separate gates. Generated GitHub Actions runs these gates and passes `GITHUB_TOKEN` to npm; grant the application repository read access to the private packages first. Merge protection and alignment with Solidaris global CI must be configured with CI owners.
 
-<Unstyled>
-  <Story of={Figures.Validate} />
-</Unstyled>
+<Unstyled><Story of={Figures.Validate} /></Unstyled>
+<Unstyled><Story of={Figures.CiProfile} /></Unstyled>
 
-<Unstyled>
-  <Story of={Figures.CiProfile} />
-</Unstyled>
-
-<DocsTable
-  headers={['Check', 'What the current toolkit verifies', 'What it does not establish']}
-  rows={[
-    ['Packages and configuration', 'Installed runtime/toolkit compatibility, catalogue/token snapshots and generated adapter consistency', 'A successful application build or integration with backend services'],
-    ['Tokens', 'Configured source/style paths, unknown tokens, forbidden theme helper imports and some hardcoded values', 'Complete CSS correctness or all visual regressions; strict hex/px scanning currently targets SCSS, CSS and HTML'],
-    ['Candidates', 'Metadata schema, owner, proposal approval, files, documented inputs and completed evidence checklist', 'Execution of unit tests, story interactions or manual accessibility review'],
-  ]}
-/>
-
-`plectrum init` creates `.github/workflows/plectrum-checks.yml`. That workflow installs dependencies and runs the toolkit profile, whether an agent or a person made the change. It does not add the application build, unit tests, Storybook tests, visual tests or Solidaris-specific quality gates.
-
-On pushes to `main`, the generated workflow also invokes the adoption submission command. Reporting is disabled by default; enable it only when the team wants to submit reports and has configured the required `PLECTRUM_ADOPTION_TOKEN` secret. See [Report adoption](#report-adoption).
-
-For GitHub Actions, grant the application repository access to the private packages, set the required package-read permissions and configure npm registry authentication for the installation step. The generated workflow does not supply package credentials. Configure dependency-bot access separately as required by the organisation.
-
-With the Solidaris CI owners, map the toolkit commands to the existing pipeline and add the build/test steps from the preceding section. Record which jobs block merging, their reports and who fixes failures. If a different CI provider is used, run the same CLI there; the generated GitHub workflow does not configure that provider. Keep managed-file changes compatible with `plectrum update`, which reports edited generated files as conflicts.
-
-**Pre-commit:** the current devkit does not install a hook in the application. Agree a fast local profile and connect it to the team's existing hook mechanism. Repeat required checks in CI; skipping a local hook must not bypass them. The central `check:commit` script assumes the Plectrum checkout and is not an application hook to copy.
-
-**Check:** a clean CI installation succeeds with the repository's own credentials; Plectrum checks, the application build and executable tests run; a known failing check prevents the expected merge. The global Solidaris requirements still need confirmation with their owners.
+The local `.githooks/pre-commit` runs a fast strict token check if no other Git hook path is configured. CI repeats the blocking checks.
 
 ## Workspace readiness
 
-**Step 9 · Application team review before closing the onboarding work.** Track these as acceptance criteria in the iShare epic, with an owner and evidence for each:
-
-- Packages install from the private registry on a developer machine and in CI.
-- Application identity and scan paths are correct; toolkit diagnostics and checks pass.
-- The first screen renders with the shared theme, styles, fonts and icons.
-- Local ITCSS placement and imports are configured and verified; component styles are loaded once.
-- Local Storybook starts and builds using the same providers, stylesheet and assets as the application.
-- Unit, story-interaction and accessibility tests execute and demonstrate that failures are detected.
-- The pre-commit checks and required CI jobs are connected to the team's workflow.
-- Editor instructions resolve the installed toolkit; team-specific instructions are preserved.
-- A second developer can reproduce the setup from the committed manifest, lockfile and configuration.
-
-A green toolkit check alone does not complete this list. These are the development conditions to establish before treating the application as equipped to the same quality standard as Core.
+**Step 9 · Reproduce from a clean clone.** Confirm that package access works in CI, generated files and lockfile are committed, the app and Storybook render the theme and fonts, unit tests and static build run, and the CI owner has mapped these commands to required Solidaris jobs. An existing application may need a targeted integration instead of a second Angular project.
 
 ## Planned onboarding
 
-The agreed target is a Plectrum application starter where `npm install` installs compatible dependencies and initializes the missing structure: empty ITCSS layers, SCSS wiring, theme, local Storybook, executable tests, hooks, CI configuration and application instructions. The component generator will place each style in `06-components`, add its import and update its metadata. Repeat installations will preserve application code.
-
-Local component development should become independent of the Core mutualisation decision. **That autonomy and the complete starter are planned work, not capabilities supplied by the current toolkit.** Today the candidate generator still requires an approved proposal. Until the changes are delivered, use the current contribution procedure and track the missing onboarding capabilities explicitly.
-
-Track the starter, portable quality tools and autonomy changes as explicit onboarding work. Use the installed release's documentation when checking which parts have shipped; a development-preview page is not evidence of package publication.
+The source starter and devkit <code>{DISTRIBUTED_PACKAGES.find((pkg) => pkg.role === 'toolkit')?.version}</code> implementation are in this repository. Private-registry publication, a clean-clone iShare pilot, preview hosting and final Solidaris CI mapping are separate release and adoption steps. A development-preview page is not proof that the package version was published.
 
 ## Report adoption
 
-After onboarding, reporting is a separate, optional activity; it is not required to render a screen or run local checks.
-
-<Unstyled>
-  <Story of={Figures.Adopt} />
-</Unstyled>
-
-A report lists installed versions and detected component usage; it never sends anything while `reporting.enabled` is false. Find a component shows reported usage with its freshness, and a missing report is never read as non-adoption.
+Reporting is optional and disabled by default. <Unstyled><Story of={Figures.Adopt} /></Unstyled> A missing report is never read as non-adoption.
 
 ## Upgrade
 
-<Unstyled>
-  <Story of={Figures.Upgrade} />
-</Unstyled>
-
-Copy `tools/consumers/renovate.json` or `dependabot.yml` so upgrades arrive as reviewed pull requests. [What's new](?path=/docs/docs-what-s-new--docs) lists breaking changes per version.
+Update runtime packages together, upgrade to a compatible toolkit, run `plectrum update` and the checks above. <Unstyled><Story of={Figures.Upgrade} /></Unstyled> [What's new](?path=/docs/docs-what-s-new--docs) describes migrations.
 
 ## Before you invent
 
-Screens start from what already exists. A gap is a proposal, not a new component — [Contribute](?path=/docs/get-started-contribute--docs) is the intake.
+Search PrimeNG and the shared catalogue first. If the gap is application-specific, the team may create and maintain a local component immediately. Core approval is required for shared intake, not local implementation.
 
-<Unstyled>
-  <Story of={Figures.BeforeYouInvent} />
-</Unstyled>
+<Unstyled><Story of={Figures.BeforeYouInvent} /></Unstyled>
 
-## Rules for application code
-
-<DocsTable
-  headers={['Rule', 'Detail']}
-  rows={[
-    ['CSS is the API', 'Consume var(--pds-*) and the o-/c-/u- classes. Never import PrimeNG theme helpers ($dt, usePreset) at runtime'],
-    ['No token copies', 'If a value is missing, request it in the design-system repo — do not inline it'],
-    ['No silent duplicates', 'Do not invent a local component or token that duplicates the catalogue. If PrimeNG and Core do not cover the need, propose before building'],
-    ['Upgrades as pull requests', 'Dependency update pull requests, then the Validate step above'],
-  ]}
-/>
-
-Next: [Find a token](?path=/docs/foundations-token-finder--docs) to pick the right token.
+Use published `var(--pds-*)` tokens, BEMIT classes and local ITCSS layers. [Find a token](?path=/docs/foundations-token-finder--docs) helps choose a token.

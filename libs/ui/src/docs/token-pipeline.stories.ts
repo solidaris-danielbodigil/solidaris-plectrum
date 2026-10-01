@@ -117,7 +117,7 @@ export const Rules: StoryObj = cardsStory([
   },
   {
     title: 'v1 is the production default',
-    lead: 'providePlectrum() and Storybook boot v1. The toolbar still toggles v0.6 for comparison.',
+    lead: 'providePlectrum() and Storybook boot v1. Deprecated v0.6 remains selectable only for migration comparisons.',
   },
   {
     title: 'Spacing and typography are code-owned',

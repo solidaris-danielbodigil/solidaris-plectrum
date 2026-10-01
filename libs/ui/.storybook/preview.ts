@@ -62,7 +62,7 @@ const preview: Preview = {
         dynamicTitle: true,
         items: [
           { value: 'v1', title: 'Preset v1 (default)' },
-          { value: 'v0.6', title: 'Preset v0.6 (legacy)' },
+          { value: 'v0.6', title: 'Preset v0.6 (deprecated)' },
         ],
       },
     },
