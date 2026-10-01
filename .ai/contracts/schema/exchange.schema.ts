@@ -55,7 +55,7 @@ export const candidateStateSchema = z.enum([
   'accepted',
   'figma-reviewed',
   'released',
-  'rejected',
+  'kept-local',
   'withdrawn',
 ]);
 export const candidateSchema = z.strictObject({
@@ -83,7 +83,6 @@ export const proposalDecisionSchema = z.enum([
   'approved-candidate',
   'use-existing',
   'app-specific',
-  'rejected',
 ]);
 export const proposalSchema = z.strictObject({
   schemaVersion,
@@ -120,7 +119,7 @@ export const candidateSubmissionSchema = z.strictObject({
 export const candidateReviewSchema = z.strictObject({
   schemaVersion,
   id: text,
-  decision: z.enum(['accepted', 'rejected']),
+  decision: z.enum(['accepted', 'kept-local']),
   pullRequestUrl: z.url(),
   reviewedBy: text,
   reviewedAt: z.iso.datetime(),

@@ -641,16 +641,8 @@
       ]
     },
     {
-      "from": "proposed",
-      "to": "rejected",
-      "role": "core",
-      "evidence": [
-        "decision"
-      ]
-    },
-    {
       "from": "submitted",
-      "to": "rejected",
+      "to": "kept-local",
       "role": "core",
       "evidence": [
         "decision"
@@ -750,12 +742,6 @@
       "repository": "consumer",
       "step": null,
       "effect": "No central candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
-    },
-    "rejected": {
-      "next": "team",
-      "repository": "consumer",
-      "step": null,
-      "effect": "No candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
     }
   },
   "routes": [

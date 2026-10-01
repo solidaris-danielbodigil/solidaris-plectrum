@@ -5,7 +5,7 @@ This protocol applies to a **Plectrum checkout**. The distributed consumer toolk
 ## Pre-flight
 
 0. Confirm the **recorded core-team decision and owner**. Every component starts as a proposal to the
-   design-system team; the answer is one of _use-existing / approved-candidate / app-specific / rejected_
+   design-system team; the answer is one of _use-existing / approved-candidate / app-specific_
    (Storybook → Get started / Contribute; GitHub issue template `proposal.yml`). If the decision or the owner is missing, write
    `.ai/questions/{date}-{component}-owner.md` and stop — do not scaffold a **Core** component on a guess. External teams may scaffold application-owned components independently; merge `.ai/candidates/proposals/<application>-<slug>.json` with `approved-candidate` before `plectrum candidate-submit` for shared intake.
 1. Query **PrimeNG MCP** — does a component already exist?

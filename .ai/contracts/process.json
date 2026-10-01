@@ -412,9 +412,16 @@
       "journey": "design-component",
       "owner": "designer",
       "repository": "plectrum",
-      "prerequisites": ["gap or redesign identified"],
-      "inputs": ["source component or screen", "Custom components design URL"],
-      "outputs": ["central proposal with design provenance and intended owner"],
+      "prerequisites": [
+        "gap or redesign identified"
+      ],
+      "inputs": [
+        "source component or screen",
+        "Custom components design URL"
+      ],
+      "outputs": [
+        "central proposal with design provenance and intended owner"
+      ],
       "commands": []
     },
     {
@@ -422,9 +429,17 @@
       "journey": "design-component",
       "owner": "core",
       "repository": "plectrum",
-      "prerequisites": ["design proposal"],
-      "inputs": ["design-team review outcome", "PrimeNG and existing Plectrum component check", "accessibility and implementation feasibility"],
-      "outputs": ["recorded design and Core decision; reviewed design URL"],
+      "prerequisites": [
+        "design proposal"
+      ],
+      "inputs": [
+        "design-team review outcome",
+        "PrimeNG and existing Plectrum component check",
+        "accessibility and implementation feasibility"
+      ],
+      "outputs": [
+        "recorded design and Core decision; reviewed design URL"
+      ],
       "commands": []
     },
     {
@@ -432,9 +447,17 @@
       "journey": "design-component",
       "owner": "designer",
       "repository": "plectrum",
-      "prerequisites": ["approved design"],
-      "inputs": ["Custom components proposal branch", "review and merge evidence"],
-      "outputs": ["published Custom components node and version", "PrimeNG 21 variable references when needed"],
+      "prerequisites": [
+        "approved design"
+      ],
+      "inputs": [
+        "Custom components proposal branch",
+        "review and merge evidence"
+      ],
+      "outputs": [
+        "published Custom components node and version",
+        "PrimeNG 21 variable references when needed"
+      ],
       "commands": []
     },
     {
@@ -618,16 +641,8 @@
       ]
     },
     {
-      "from": "proposed",
-      "to": "rejected",
-      "role": "core",
-      "evidence": [
-        "decision"
-      ]
-    },
-    {
       "from": "submitted",
-      "to": "rejected",
+      "to": "kept-local",
       "role": "core",
       "evidence": [
         "decision"
@@ -727,12 +742,6 @@
       "repository": "consumer",
       "step": null,
       "effect": "No central candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
-    },
-    "rejected": {
-      "next": "team",
-      "repository": "consumer",
-      "step": null,
-      "effect": "No candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible."
     }
   },
   "routes": [

@@ -31,8 +31,7 @@
       "enum": [
         "approved-candidate",
         "use-existing",
-        "app-specific",
-        "rejected"
+        "app-specific"
       ]
     },
     "owner": {
