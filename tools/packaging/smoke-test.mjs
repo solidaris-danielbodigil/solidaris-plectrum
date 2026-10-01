@@ -61,18 +61,22 @@ for (const [index, layer] of layers.entries()) {
       mainStyles.split(local).length !== 2 ||
       mainStyles.indexOf(shared) > mainStyles.indexOf(local)) throw new Error(`Shared/local ITCSS composition is wrong for ${layer}.`);
 }
-for (const relative of ['.storybook/main.ts', '.storybook/preview.ts', '.ai/rules/plectrum.md', '.ai/skills/plectrum-component/SKILL.md', '.github/agents/plectrum.agent.md', '.github/workflows/plectrum-checks.yml', '.githooks/pre-commit', 'vitest.config.mts']) {
+for (const relative of ['.storybook/main.ts', '.storybook/preview.ts', '.storybook/plectrum-setup.stories.ts', '.ai/rules/plectrum.md', '.ai/skills/plectrum-component/SKILL.md', '.github/agents/plectrum.agent.md', '.github/workflows/plectrum-checks.yml', '.githooks/pre-commit', 'vitest.config.mts']) {
   if (!existsSync(join(dest, relative))) throw new Error(`Bootstrap omitted ${relative}.`);
 }
 if (!readFileSync(join(dest, '.storybook/preview.ts'), 'utf8').includes('providePlectrum(version)')) throw new Error('Local Storybook is missing the Plectrum provider.');
 for (const font of ['regular', 'italic', 'semibold', 'bold']) {
   if (!existsSync(join(dest, `node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts/agenda/agenda-${font}.woff2`))) throw new Error(`Packed styles package is missing Agenda ${font}.`);
 }
+for (const file of ['open-sans-latin-variable.woff2', 'OFL.txt']) {
+  if (!existsSync(join(dest, `node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts/open-sans/${file}`))) throw new Error(`Packed styles package is missing Open Sans ${file}.`);
+}
 if (existsSync(join(dest, 'node_modules/@solidaris-danielbodigil/pds-styles/src/06-components/_components.test-component.scss'))) throw new Error('Test-only component leaked into packed styles.');
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/schema/metadata.v1'))\"", dest);
 run("node -e \"console.log(require.resolve('@solidaris-danielbodigil/pds-devkit/catalogue'))\"", dest);
 run('npx ng build application', dest);
 if (!existsSync(join(dest, 'dist/application/browser/assets/fonts/agenda/agenda-regular.woff2'))) throw new Error('Application build did not publish Agenda fonts.');
+if (!existsSync(join(dest, 'dist/application/browser/assets/fonts/open-sans/open-sans-latin-variable.woff2'))) throw new Error('Application build did not publish Open Sans.');
 
 run('git init', dest);
 run('git add package.json src', dest);
@@ -108,6 +112,7 @@ run('npx --no-install plectrum check --profile ci', dest);
 run('npm run pds:test:unit', dest);
 run('npm run pds:build-storybook', dest);
 if (!existsSync(join(dest, 'dist/storybook/assets/fonts/agenda/agenda-regular.woff2'))) throw new Error('Local Storybook did not publish Agenda fonts.');
+if (!existsSync(join(dest, 'dist/storybook/assets/fonts/open-sans/open-sans-latin-variable.woff2'))) throw new Error('Local Storybook did not publish Open Sans.');
 const storyIndex = JSON.parse(readFileSync(join(dest, 'dist/storybook/index.json'), 'utf8'));
 for (const id of ['plectrum-ready--docs', 'application-smokecard--docs']) {
   if (storyIndex.entries?.[id]?.type !== 'docs') throw new Error(`Local Storybook did not publish ${id}.`);

@@ -200,10 +200,34 @@ export function adoptionReport(root, args) {
   return report;
 }
 
+const isRegistered = (config) => asset('registry.json').applications.some((app) => app.id === config.application && app.team === config.team);
+
+/** Usage-report readiness in reader words, for bootstrap and doctor. The CI secret cannot be checked locally. */
+export function usageReportStatus(config) {
+  const id = `${config.team}/${config.application}`;
+  if (!config.reporting?.enabled) return ['Usage reporting: off (reporting.enabled is false in .plectrum/config.json).'];
+  if (!isRegistered(config)) return [`Usage reporting: not active yet — ${id} is not in the Plectrum registry. Register the team, then upgrade the toolkit.`, 'Usage reporting: CI also needs the PLECTRUM_ADOPTION_TOKEN secret.'];
+  return [`Usage reporting: ${id} is registered. CI sends the report after each push to main when the PLECTRUM_ADOPTION_TOKEN secret is set.`];
+}
+
+/** A skipped step that people should notice: a yellow annotation on GitHub Actions, a plain line elsewhere. */
+function skipWarning(message) {
+  console.log(process.env.GITHUB_ACTIONS === 'true' ? `::warning title=Plectrum usage report::${message}` : message);
+}
+
 export async function adoptionSubmit(root, args, client = new GitHubClient(process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN)) {
   const config = configAt(root);
   if (!config.reporting.enabled) {
-    console.log('Adoption submission is off. Set reporting.enabled in .plectrum/config.json to open a reviewed report PR. Installing the toolkit does not send telemetry.');
+    console.log('Adoption submission is off (reporting.enabled is false in .plectrum/config.json).');
+    return;
+  }
+  // Reporting is on by default; until the team is registered and CI has a token, skip without failing the build.
+  if (!isRegistered(config)) {
+    skipWarning(`Adoption submission skipped: ${config.team}/${config.application} is not in the Plectrum registry yet. Register the team, then upgrade the toolkit.`);
+    return;
+  }
+  if (!client.token && !args.includes('--dry-run')) {
+    skipWarning('Adoption submission skipped: set the PLECTRUM_ADOPTION_TOKEN secret (or GH_TOKEN locally) to open the report pull request.');
     return;
   }
   const report = adoptionReport(root, args);

@@ -5,7 +5,7 @@ import { asset, configAt, flag, packageJson, packageRoot, projectPath, readJson,
 import { initialize, update } from '../src/managed.mjs';
 import { bootstrap } from '../src/bootstrap.mjs';
 import { candidateCheck, check, compatibility, tokenCheck, validateSchema } from '../src/checks.mjs';
-import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold } from '../src/workflows.mjs';
+import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold, usageReportStatus } from '../src/workflows.mjs';
 import { probeMcp } from '../src/mcp.mjs';
 import { consumerCommands, renderHelp, subcommandOf } from '../src/process.mjs';
 
@@ -63,6 +63,7 @@ const handlers = {
       else if (args.includes('--live')) await probe(name, url);
       else console.log(`${name}: configured ${url}; pass --live to verify MCP initialize capabilities`);
     }
+    for (const line of usageReportStatus(config)) console.log(line);
     if (errors.length) throw new Error(errors.join('\n'));
     console.log('Compatibility and managed files: ok');
   },
