@@ -64,7 +64,7 @@ export const STEP_COPY: Readonly<Record<string, { title: string; detail: string 
   initialize: { title: 'Set up the application', detail: 'The plectrum bootstrap script adds the Plectrum configuration, local style layers, Storybook, tests, editor instructions, a pre-commit hook and a CI workflow.' },
   build: { title: 'Build screens', detail: 'Compose screens from themed PrimeNG controls, Core components and --pds-* tokens.' },
   validate: { title: 'Run the checks', detail: 'Check token usage and the Plectrum rules before each merge.' },
-  discover: { title: 'Look for an existing solution', detail: 'Search themed PrimeNG and Core components. If nothing fits, describe the gap in a proposal.' },
+  discover: { title: 'Look for an existing solution', detail: 'Ask /plectrum or search themed PrimeNG and Core components. For new UX, talk early to the core team or a designer.' },
   approve: { title: 'Core decides', detail: 'The core team records a decision on the proposal and names the owner.' },
   implement: { title: 'Build the component', detail: 'Create the component in your application, with its story, unit test, metadata and evidence checklist.' },
   submit: { title: 'Submit it to Core', detail: 'When your checks pass and Core has approved the proposal, open the intake pull request.' },
