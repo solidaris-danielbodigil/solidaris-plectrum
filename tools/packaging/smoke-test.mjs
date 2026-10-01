@@ -102,7 +102,7 @@ metadata.aiHints.context = 'Use for the approved smoke app summary.';
 metadata.aiHints.selectionCriteria.gap = 'Approved local candidate for smoke testing.';
 metadata.examples[0].description = 'Basic smoke card presentation.';
 writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
-writeFileSync(join(dest, 'src/plectrum-candidates/smoke-card/evidence.md'), '# Smoke card evidence\n\nOwner and use case: smoke team summary\nDesign reference and states: local static card\nKeyboard test: static content\nScreen reader test: text announced\nStory and responsive checks: default story reviewed\nKnown limitations: not shipped as Core\n');
+writeFileSync(join(dest, 'src/plectrum-candidates/smoke-card/evidence.md'), '# Smoke card evidence\n\nOwner and use case: smoke team summary\nDesign reference and states: local static card\nKeyboard test: static content\nScreen reader test: text announced\nStory and responsive checks: default story reviewed\nKnown limitations: not shipped as Core\nReuse potential (none / possible / likely) and why: possible — other teams show summaries\n');
 metadata.props = [{ name: 'missingInput', type: 'string', required: false, description: 'A deliberately mismatched API.' }];
 writeFileSync(metadataFile, `${JSON.stringify(metadata, null, 2)}\n`);
 expectFailure('npx --no-install plectrum check --profile ci', dest, 'missing from Angular inputs');
@@ -135,6 +135,8 @@ centralSubmission = submitted;
 const withdrawn = await workflows.candidateWithdraw(dest, ['candidate-withdraw', '--id', 'smoke-app-smoke-card', '--reason', 'Smoke fixture withdrawal', '--dry-run'], fakeCentral);
 if (withdrawn.operation !== 'withdraw' || !withdrawn.withdrawalReason) throw new Error('Packed toolkit did not prepare a withdrawal.');
 run('npx --no-install plectrum adoption-report', dest);
+const adoption = JSON.parse(readFileSync(join(dest, '.plectrum/reports/adoption.json'), 'utf8'));
+if (adoption.localComponents?.[0]?.reusePotential !== 'possible') throw new Error('Usage report does not carry the local component and its reuse estimate.');
 for (const relative of ['.cursor/agents/plectrum.md', '.github/agents/plectrum.agent.md', '.github/instructions/plectrum.instructions.md', '.github/workflows/plectrum-checks.yml', '.plectrum/exports/smoke-card.candidate.json', '.plectrum/reports/adoption.json']) {
   if (!existsSync(join(dest, relative))) throw new Error(`Missing generated consumer artifact: ${relative}`);
 }

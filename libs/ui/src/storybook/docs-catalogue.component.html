@@ -131,8 +131,11 @@
       <td class="c-docs-catalogue__cell">{{ row.implementation }}</td>
       <td>
         <p-tag [value]="row.scope" [severity]="scopeSeverity(row)" />
+        @if (row.reusePotential === 'likely' || row.reusePotential === 'possible') {
+          <p-tag [value]="row.reusePotential === 'likely' ? 'Reuse likely' : 'Reuse possible'" [severity]="row.reusePotential === 'likely' ? 'success' : 'info'" />
+        }
         @if (row.candidateState) {
-          <p-tag [value]="row.candidateState" [severity]="row.candidateState === 'Rejected' ? 'danger' : row.candidateState === 'Submitted' ? 'warn' : 'success'" />
+          <p-tag [value]="row.candidateState" [severity]="row.candidateState === 'Kept local' ? 'secondary' : row.candidateState === 'Submitted' ? 'warn' : 'success'" />
         }
       </td>
       <td>

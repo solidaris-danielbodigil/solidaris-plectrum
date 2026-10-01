@@ -57,6 +57,16 @@ test('a stale report stays visible as stale', () => {
   assert.equal(aggregate.usedIn['plectrum:empty-state'][0].freshness, 'stale');
 });
 
+test('local components reach Core with their reuse estimate and team prefix', () => {
+  const local = { id: 'external:claim-card', name: 'ClaimCard', description: 'Claim summary card.', useCases: ['Claim lists'], reusePotential: 'likely' as const, reuseNote: 'Every claims screen needs it.' };
+  const withLocal = { ...report([usage]), localComponents: [local] };
+  validateAdoptionReport(withLocal, registry, known);
+  const aggregate = aggregateAdoption([withLocal], registry, new Date('2026-09-25T12:00:00.000Z'));
+  assert.deepEqual(aggregate.localComponents, [{ ...local, team: 'external', application: 'external', label: 'External', freshness: 'current' }]);
+  assert.throws(() => validateAdoptionReport({ ...withLocal, localComponents: [{ ...local, id: 'other:claim-card' }] }, registry, known), /team prefix/);
+  assert.throws(() => validateAdoptionReport({ ...withLocal, localComponents: [local, local] }, registry, known), /duplicate local component/);
+});
+
 function expectSighting(freshness: 'current' | 'stale') {
   return { application: 'external', label: 'External', kind: 'external', freshness, observedAt: freshness === 'current' ? '2026-09-25T00:00:00.000Z' : '2026-08-01T00:00:00.000Z', packageVersion: '2.0.0' };
 }

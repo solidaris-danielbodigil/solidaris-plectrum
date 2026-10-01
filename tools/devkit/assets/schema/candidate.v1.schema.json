@@ -32,7 +32,7 @@
         "accepted",
         "figma-reviewed",
         "released",
-        "rejected",
+        "kept-local",
         "withdrawn"
       ]
     },
@@ -766,7 +766,7 @@
               "accepted",
               "figma-reviewed",
               "released",
-              "rejected",
+              "kept-local",
               "withdrawn"
             ]
           },
@@ -780,7 +780,7 @@
               "accepted",
               "figma-reviewed",
               "released",
-              "rejected",
+              "kept-local",
               "withdrawn"
             ]
           },
