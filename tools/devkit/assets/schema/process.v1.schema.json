@@ -457,56 +457,12 @@
             "effect"
           ],
           "additionalProperties": false
-        },
-        "rejected": {
-          "type": "object",
-          "properties": {
-            "next": {
-              "type": "string",
-              "enum": [
-                "team",
-                "core",
-                "designer",
-                "release"
-              ]
-            },
-            "repository": {
-              "type": "string",
-              "enum": [
-                "consumer",
-                "plectrum"
-              ]
-            },
-            "step": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "effect": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "required": [
-            "next",
-            "repository",
-            "step",
-            "effect"
-          ],
-          "additionalProperties": false
         }
       },
       "required": [
         "approved-candidate",
         "use-existing",
-        "app-specific",
-        "rejected"
+        "app-specific"
       ],
       "additionalProperties": false
     },
@@ -526,8 +482,7 @@
                 "enum": [
                   "approved-candidate",
                   "use-existing",
-                  "app-specific",
-                  "rejected"
+                  "app-specific"
                 ]
               },
               {
@@ -631,7 +586,7 @@
               "accepted",
               "figma-reviewed",
               "released",
-              "rejected",
+              "kept-local",
               "withdrawn"
             ]
           },
@@ -645,7 +600,7 @@
               "accepted",
               "figma-reviewed",
               "released",
-              "rejected",
+              "kept-local",
               "withdrawn"
             ]
           },

@@ -30,7 +30,6 @@ Never edit node_modules or assume libs/ui exists. Candidates live under `src/ple
 - `approved-candidate`: The requesting team is the recorded owner. Central submission is permitted under this decision; local implementation does not require it. Next step: **implement**.
 - `use-existing`: No candidate intake. The team uses the existing PrimeNG control, Core component or token.
 - `app-specific`: No central candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible.
-- `rejected`: No candidate intake: the toolkit refuses to submit under this decision. Local implementation remains possible.
 
 ## Commands
 

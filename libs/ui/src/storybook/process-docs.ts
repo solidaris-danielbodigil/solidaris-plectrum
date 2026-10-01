@@ -134,7 +134,6 @@ export const OUTCOME_COPY: Readonly<Record<string, { title: string; lead: string
   'approved-candidate': { title: 'Build it, then submit it', lead: 'Your team builds the component and owns it. When it is ready, submit it to Core.' },
   'use-existing': { title: 'Use what exists', lead: 'A PrimeNG control, Core component or token already covers the need.' },
   'app-specific': { title: 'Keep it in your application', lead: 'The need is specific to your application. Build it locally; it will not be shared.' },
-  rejected: { title: 'Not accepted', lead: 'Core will not add this to the system. Your team can still build it locally.' },
 };
 
 /** The proposal decisions of the contract, in reader words. */

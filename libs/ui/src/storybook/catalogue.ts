@@ -32,7 +32,7 @@ export interface CatalogueEntry {
   path: string;
   /** Versioned preview in the contributing application's repository. */
   externalUrl?: string;
-  candidateState?: 'Submitted' | 'Accepted for integration' | 'Rejected';
+  candidateState?: 'Submitted' | 'Accepted for integration' | 'Kept local';
   /** For a Local row: the owning team's estimate, from its evidence checklist. */
   reusePotential?: 'none' | 'possible' | 'likely' | 'unknown';
 }
@@ -182,7 +182,7 @@ export interface CandidateListing {
   application: string;
   metadata: { component: { name: string; description: string; type: string; path: string; bemBlock: string }; usage: { useCases: readonly string[] } };
   preview: { url: string; revision: string };
-  reviewState?: 'submitted' | 'accepted' | 'rejected';
+  reviewState?: 'submitted' | 'accepted' | 'kept-local';
 }
 
 export function candidateCatalogue(candidates: readonly CandidateListing[], coreIds: ReadonlySet<string>): CatalogueEntry[] {
@@ -196,7 +196,7 @@ export function candidateCatalogue(candidates: readonly CandidateListing[], core
     usedIn: [],
     path: '',
     externalUrl: record.preview.url,
-    candidateState: record.reviewState === 'accepted' ? 'Accepted for integration' : record.reviewState === 'rejected' ? 'Rejected' : 'Submitted',
+    candidateState: record.reviewState === 'accepted' ? 'Accepted for integration' : record.reviewState === 'kept-local' ? 'Kept local' : 'Submitted',
   }));
 }
 
