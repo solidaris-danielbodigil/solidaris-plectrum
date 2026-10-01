@@ -15,9 +15,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const TARBALLS = join(ROOT, 'tools/packaging/.tarballs');
 const FIXTURE = join(ROOT, 'tools/consumers/starter');
 
-function run(cmd, cwd) {
+function run(cmd, cwd, env = process.env) {
   console.log(`$ ${cmd}`);
-  execSync(cmd, { cwd, stdio: 'inherit' });
+  execSync(cmd, { cwd, stdio: 'inherit', env });
 }
 
 function expectFailure(cmd, cwd, contains) {
@@ -47,8 +47,9 @@ pkg.devDependencies = { ...pkg.devDependencies, '@solidaris-danielbodigil/pds-de
 delete pkg.dependencies['@solidaris-danielbodigil/pds-devkit'];
 writeFileSync(join(dest, 'package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 
-// Match the documented application path: plain npm install runs postinstall/bootstrap.
-run('npm install', dest);
+// This disposable app must initialize on its first install, even when the
+// parent smoke job runs in CI. Later commands still inherit CI and verify it.
+run('npm install', dest, { ...process.env, CI: '' });
 const layers = ['01-settings', '02-tools', '03-generic', '04-elements', '05-objects', '06-components', '07-utilities', '08-trumps'];
 const barrels = ['settings', 'tools', 'generic', 'elements', 'objects', 'components', 'utilities', 'trumps'];
 const mainStyles = readFileSync(join(dest, 'src/styles/main.scss'), 'utf8');
