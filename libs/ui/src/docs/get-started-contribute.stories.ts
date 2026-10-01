@@ -73,6 +73,7 @@ export const Roles: StoryObj = cardsStory(
       items: [
         'libs/ui, libs/styles, tokens.json and the Plectrum package contract',
         'Records a decision on every proposal',
+        'Reviews teams’ local components and picks the ones worth sharing',
         'Reviews pull requests under libs/ and promotes candidates',
       ],
     },
@@ -82,7 +83,7 @@ export const Roles: StoryObj = cardsStory(
       title: 'Owns its screens',
       items: [
         'Uses themed PrimeNG and Core components first',
-        'Builds and owns its local components',
+        'Builds and owns its local components, and estimates their reuse potential',
         'Proposes missing primitive or semantic tokens instead of adding them',
       ],
     },
@@ -119,3 +120,31 @@ export const AppLayer: StoryObj = calloutStory({
     'The metadata names your team as owner.',
   ],
 });
+
+/** How a local component becomes visible and, when worth it, shared — no extra step for the team. */
+export const SharingLoop: StoryObj = stepsStory([
+  {
+    who: 'Application team',
+    tone: 'app',
+    title: 'Build locally',
+    detail: 'npm run pds:component lists similar components other teams already built. Fill the Reuse potential line of the evidence checklist.',
+  },
+  {
+    who: 'CI',
+    tone: 'neutral',
+    title: 'Report usage',
+    detail: 'After each push to main, the usage report sends your local components and their reuse estimate to Core.',
+  },
+  {
+    who: 'Core team',
+    tone: 'system',
+    title: 'Spot what to share',
+    detail: 'Core reviews the Local scope of Find a component: duplicates across teams and components marked Reuse likely.',
+  },
+  {
+    who: 'Core team',
+    tone: 'system',
+    title: 'Contact the team',
+    detail: 'Core proposes sharing the component, then integrates and generalizes it. The team keeps its copy until the release.',
+  },
+]);
