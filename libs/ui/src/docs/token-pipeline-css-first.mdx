@@ -65,6 +65,10 @@ Properties of this rule:
 
 ## Adding a token
 
+**In an application**, declare a token only your application needs in a local token file listed under `paths.localTokenFiles` in `.plectrum/config.json`, and use it as `var(--pds-*)`. If other teams could use it, propose it to Core.
+
+**In Plectrum**, a shared token goes through these steps:
+
 <Unstyled>
   <Story of={Figures.AddingAToken} />
 </Unstyled>

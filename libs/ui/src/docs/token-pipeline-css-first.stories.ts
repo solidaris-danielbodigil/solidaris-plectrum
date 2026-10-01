@@ -26,9 +26,9 @@ export const Scope: StoryObj = cardsStory([
 ]);
 
 export const AddingAToken: StoryObj = stepsStory([
-  { who: 'Developer', tone: 'system', title: 'Add the value in libs/styles/src/01-settings/', detail: 'Generated file if Style Dictionary owns the token; otherwise the feature settings file _settings.{name}.scss.' },
-  { who: 'Developer', tone: 'system', title: 'Reference it as var(--pds-*) in 06-components', detail: 'No raw hex or px, no --p-* names.' },
-  { who: 'Developer', tone: 'system', title: 'List it under tokens.consumed in the component .metadata.ts', detail: 'Input for the Tokens consumed view below and for the token-usage CLI.' },
+  { who: 'Core developer', tone: 'system', title: 'Add the value in libs/styles/src/01-settings/', detail: 'Generated file if Style Dictionary owns the token; otherwise the feature settings file _settings.{name}.scss.' },
+  { who: 'Core developer', tone: 'system', title: 'Reference it as var(--pds-*) in 06-components', detail: 'No raw hex or px, no --p-* names.' },
+  { who: 'Core developer', tone: 'system', title: 'List it under tokens.consumed in the component .metadata.ts', detail: 'Input for the Tokens consumed view below and for the token-usage CLI.' },
   { who: 'CI', tone: 'neutral', title: 'tokens:lint', detail: 'Fails on --p-* declarations in 06-components and on @primeuix/themes runtime imports. --strict also fails on hard-coded hex/px.' },
 ]);
 
