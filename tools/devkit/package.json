@@ -1,6 +1,6 @@
 {
   "name": "@solidaris-danielbodigil/pds-devkit",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "type": "module",
   "private": false,
   "description": "Portable Plectrum contracts and contributor CLI for application teams",
