@@ -15,7 +15,7 @@ export type CataloguePurpose =
 
 export type CatalogueImplementation = 'PrimeNG' | 'Angular' | 'CSS';
 
-export type CatalogueScope = 'Core' | 'Candidate' | 'App-specific' | 'Deprecated';
+export type CatalogueScope = 'Core' | 'Candidate' | 'App-specific' | 'Deprecated' | 'Local';
 
 export interface CatalogueEntry {
   name: string;
@@ -33,6 +33,8 @@ export interface CatalogueEntry {
   /** Versioned preview in the contributing application's repository. */
   externalUrl?: string;
   candidateState?: 'Submitted' | 'Accepted for integration' | 'Rejected';
+  /** For a Local row: the owning team's estimate, from its evidence checklist. */
+  reusePotential?: 'none' | 'possible' | 'likely' | 'unknown';
 }
 
 const TYPE_PURPOSE: Record<
@@ -150,7 +152,26 @@ export function buildCatalogue(
     ...metadataCatalogue(metadata, docsIdBySource, usedIn),
     ...primengCatalogue(),
     ...candidateCatalogue(CENTRAL_CANDIDATES, new Set(metadata.map((item) => item.component.id))),
+    ...localCatalogue(CENTRAL_ADOPTION.localComponents, new Set([...metadata.map((item) => item.component.id), ...(CENTRAL_CANDIDATES as readonly CandidateListing[]).map((item) => item.componentId)])),
   ];
+}
+
+export type LocalListing = (typeof CENTRAL_ADOPTION.localComponents)[number];
+
+/** Components a team built in its own repository, from its usage report. Already-submitted or Core ids are skipped. */
+export function localCatalogue(locals: readonly LocalListing[], knownIds: ReadonlySet<string>): CatalogueEntry[] {
+  return locals.filter((local) => !knownIds.has(local.id)).map((local) => ({
+    name: displayName(local.name),
+    purpose: 'Data' as const,
+    implementation: 'Angular' as const,
+    scope: 'Local' as const,
+    summary: local.reuseNote ? `${local.description} Reuse: ${local.reuseNote}` : local.description,
+    keywords: [local.id, local.team, local.application, ...local.useCases, ...taskWords(`${local.description} ${local.useCases.join(' ')}`)],
+    usedIn: [local.label],
+    usageMarks: { [local.label]: local.freshness },
+    path: '',
+    reusePotential: local.reusePotential,
+  }));
 }
 
 export interface CandidateListing {

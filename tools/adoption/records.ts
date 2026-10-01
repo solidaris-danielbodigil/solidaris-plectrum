@@ -19,8 +19,22 @@ export interface UsageSighting {
   packageVersion: string;
 }
 
+export interface LocalComponentSighting {
+  id: string;
+  name: string;
+  description: string;
+  useCases: string[];
+  reusePotential: 'none' | 'possible' | 'likely' | 'unknown';
+  reuseNote?: string;
+  team: string;
+  application: string;
+  label: string;
+  freshness: 'current' | 'stale';
+}
+
 export interface AdoptionAggregate {
   staleAfterDays: number;
+  localComponents: LocalComponentSighting[];
   usedIn: Record<string, UsageSighting[]>;
   missing: { id: string; label: string; kind: 'local-demo' | 'external' }[];
   reported: { id: string; label: string }[];
@@ -58,6 +72,12 @@ export function validateAdoptionReport(report: AdoptionReport, registry: Registr
     if (!knownIds.has(observation.componentId)) throw new Error(`${report.application}: unknown component ${observation.componentId}`);
     if (observation.count < 1 || observation.files.length < 1) throw new Error(`${report.application}: usage needs a positive count and a file`);
   }
+  const localIds = new Set<string>();
+  for (const local of report.localComponents ?? []) {
+    if (!local.id.startsWith(`${report.team}:`)) throw new Error(`${report.application}: local component ${local.id} must use the team prefix ${report.team}:`);
+    if (localIds.has(local.id)) throw new Error(`${report.application}: duplicate local component ${local.id}`);
+    localIds.add(local.id);
+  }
   if (previous && report.observedAt < previous.observedAt) throw new Error(`${report.application}: older report cannot replace a newer observation`);
   if (previous && report.observedAt === previous.observedAt && JSON.stringify(report) !== JSON.stringify(previous)) {
     throw new Error(`${report.application}: duplicate observation time with different content`);
@@ -70,6 +90,7 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
   const missing: AdoptionAggregate['missing'] = [];
   const reported: AdoptionAggregate['reported'] = [];
   const retired: AdoptionAggregate['retired'] = [];
+  const localComponents: LocalComponentSighting[] = [];
   const staleMs = STALE_AFTER_DAYS * 24 * 60 * 60 * 1000;
   for (const app of registry.applications) {
     const report = byId.get(app.id);
@@ -81,6 +102,9 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
     const packageVersion = versions.length === 1 ? versions[0] : versions.sort().join(', ');
     reported.push({ id: app.id, label: app.label });
     const freshness = now.getTime() - Date.parse(report.observedAt) > staleMs ? 'stale' : 'current';
+    for (const local of report.localComponents ?? []) {
+      localComponents.push({ ...local, team: report.team, application: app.id, label: app.label, freshness });
+    }
     for (const observation of report.observations) {
       const sightings = usedIn[observation.componentId] ?? [];
       sightings.push({ application: app.id, label: app.label, kind: app.kind, freshness, observedAt: report.observedAt, packageVersion });
@@ -90,7 +114,7 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
   for (const [id, report] of byId) {
     if (!registry.applications.some((app) => app.id === id)) retired.push({ id, observedAt: report.observedAt });
   }
-  return { staleAfterDays: STALE_AFTER_DAYS, usedIn, missing, reported: reported.sort((a, b) => a.label.localeCompare(b.label)), retired: retired.sort((a, b) => a.id.localeCompare(b.id)) };
+  return { staleAfterDays: STALE_AFTER_DAYS, localComponents: localComponents.sort((a, b) => a.label.localeCompare(b.label) || a.name.localeCompare(b.name)), usedIn, missing, reported: reported.sort((a, b) => a.label.localeCompare(b.label)), retired: retired.sort((a, b) => a.id.localeCompare(b.id)) };
 }
 
 export async function checkAdoption(root = process.cwd(), base?: string): Promise<AdoptionAggregate> {
@@ -108,6 +132,6 @@ export async function checkAdoption(root = process.cwd(), base?: string): Promis
   }
   const aggregate = aggregateAdoption(reports.values(), registry);
   if (aggregate.retired.length) throw new Error(`Retired adoption reports must be removed with the application: ${aggregate.retired.map((item) => item.id).join(', ')}`);
-  console.log(`Adoption reports valid: ${reports.size} current, ${aggregate.missing.length} missing. Missing is not non-adoption.`);
+  console.log(`Adoption reports valid: ${reports.size} current, ${aggregate.missing.length} missing, ${aggregate.localComponents.length} local component(s). Missing is not non-adoption.`);
   return aggregate;
 }

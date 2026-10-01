@@ -4,6 +4,7 @@ import { PRIMENG_KIT } from '../primeng/plectrum-figma';
 import {
   buildCatalogue,
   candidateCatalogue,
+  localCatalogue,
   matchesCatalogue,
   primengCatalogue,
 } from './catalogue';
@@ -78,5 +79,11 @@ describe('catalogue generation', () => {
     expect(candidateCatalogue([candidate], new Set())).toEqual([expect.objectContaining({ name: 'Shared Card', scope: 'Candidate', externalUrl: candidate.preview.url, path: '' })]);
     expect(candidateCatalogue([candidate], new Set(['external:card']))).toEqual([]);
     expect(candidateCatalogue([{ ...candidate, operation: 'withdraw' }], new Set())).toEqual([]);
+  });
+
+  it('lists local components from usage reports with their reuse estimate, skipping known ids', () => {
+    const local = { id: 'claims:claim-card', name: 'ClaimCard', description: 'Claim summary card.', useCases: ['Claim lists'], reusePotential: 'likely' as const, reuseNote: 'Every claims screen needs it.', team: 'claims', application: 'claims-portal', label: 'Claims', freshness: 'current' as const };
+    expect(localCatalogue([local], new Set())).toEqual([expect.objectContaining({ name: 'Claim Card', scope: 'Local', reusePotential: 'likely', usedIn: ['Claims'], path: '' })]);
+    expect(localCatalogue([local], new Set(['claims:claim-card']))).toEqual([]);
   });
 });
