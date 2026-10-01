@@ -25,8 +25,8 @@ const plectrumTheme = create({
     '<img src="./assets/Logo.svg" alt="Solidaris" height="28" />' +
     '<span>Plectrum Design System</span>' +
     '</span>',
-  brandUrl: 'https://zeroheight.com/5cba76f64/p/8028d1-plectrum-design-system',
-  brandTarget: '_blank',
+  brandUrl: './?path=/docs/introduction--docs',
+  brandTarget: '_self',
 
   colorPrimary: '#487395',
   colorSecondary: '#487395',
