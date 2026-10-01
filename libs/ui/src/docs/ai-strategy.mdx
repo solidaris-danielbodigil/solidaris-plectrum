@@ -16,7 +16,7 @@ Agents work from **typed contracts** instead of reading the whole repository. We
 
 <p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code> and <code>{PACKAGE_NAMES.styles}</code> for code and styles, and <code>{PACKAGE_NAMES.toolkit}</code> for the CLI, rules and process {processContract.version}. On installation, the starter runs <code>plectrum bootstrap</code>, which adds <code>.ai</code> rules, skills and agents, Cursor and VS Code/Copilot adapters and MCP configuration. After an upgrade, run <code>{command('consumerUpdate')}</code>: it refreshes these files and reports any you edited instead of overwriting them.</p>
 
-Application agents use the `plectrum` CLI and your local paths; the Core agents described below work only in the Plectrum repository. MCP configuration points to a server, it does not start one. Setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
+Because application teams own their components, the Plectrum agent acts as their first reviewer: before anything is built, it checks PrimeNG and the catalogue, suggests what to reuse or compose, answers layout and UX questions, and says when a designer should decide. For new UX it still recommends showing the work early to the core team or a designer. Application agents use the `plectrum` CLI and your local paths; the Core agents described below work only in the Plectrum repository. MCP configuration points to a server, it does not start one. Setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
 
 Related pages:
 
