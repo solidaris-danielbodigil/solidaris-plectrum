@@ -1,5 +1,11 @@
 # @solidaris-danielbodigil/pds-devkit
 
+## 0.5.1
+
+### Patch Changes
+
+- 660ba0a: Application agents act as the team's first reviewer: before anything is built they check PrimeNG and the installed catalogue (use cases, anti-patterns, compositions), say when an existing component already covers the need, answer layout and UX questions, flag decisions for a designer, and recommend showing new UX early to the core team or a designer. They also know about local token files. The contribution "implement" step no longer lists `plectrum init`; the starter runs `plectrum bootstrap` on `npm install`.
+
 ## 0.5.0
 
 ### Minor Changes
