@@ -150,7 +150,7 @@ export const AskPlectrum: StoryObj = calloutStory({
   title: 'Ask /plectrum before you build',
   items: [
     'Your team owns its components, so the Plectrum agent is your first reviewer. In Cursor or VS Code, select Plectrum and describe what the screen must do.',
-    'It checks PrimeNG and the Plectrum catalogue and tells you when something already does the job. Example: “I need a side panel with member details” → Drawer with Detail List, no new component.',
+    'It checks PrimeNG, the Plectrum catalogue and other teams’ local components, and tells you when something already does the job. Example: “I need a side panel with member details” → Drawer with Detail List, no new component.',
     'It also helps with layout and UX: spacing, states, responsive behaviour, accessibility. It tells you when a designer should decide.',
     'For new UX (a component, pattern or page), show it early to the core team or an available designer, while you build. The agent does not replace them.',
   ],

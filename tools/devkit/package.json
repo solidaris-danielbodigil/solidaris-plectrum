@@ -14,6 +14,7 @@
     "./process": "./assets/process.json",
     "./compatibility": "./assets/compatibility.json",
     "./registry": "./assets/registry.json",
+    "./local-components": "./assets/local-components.json",
     "./schema/*": "./assets/schema/*.schema.json"
   },
   "files": [

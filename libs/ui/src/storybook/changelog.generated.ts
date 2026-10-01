@@ -12,6 +12,16 @@ export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
       }
     ],
     "summary": "Application agents act as the team's first reviewer: before anything is built they check PrimeNG and the installed catalogue (use cases, anti-patterns, compositions), say when an existing component already covers the need, answer layout and UX questions, flag decisions for a designer, and recommend showing new UX early to the core team or a designer. They also know about local token files. The contribution \"implement\" step no longer lists `plectrum init`; the starter runs `plectrum bootstrap` on `npm install`."
+  },
+  {
+    "id": "share-local-components",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "minor"
+      }
+    ],
+    "summary": "Make local components visible to Core. The evidence checklist of a new component gets a \"Reuse potential (none / possible / likely) and why\" line. The usage report now lists the team's local components with that estimate, and Find a component shows them under a new Local scope. Each toolkit release ships the other teams' local components (`@solidaris-danielbodigil/pds-devkit/local-components`): `plectrum scaffold` lists similar ones, and the agents check them before suggesting a new component."
   }
 ];
 

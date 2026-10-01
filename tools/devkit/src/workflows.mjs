@@ -51,7 +51,7 @@ export async function scaffold(root, args) {
     [`${file}.stories.ts`]: `import type { Meta, StoryObj } from '@storybook/angular-vite';\nimport { ${cls} } from './${name}.component';\n\nconst meta: Meta<${cls}> = { title: 'Application/${className(name)}', component: ${cls}, tags: ['autodocs'] };\nexport default meta;\nexport const Default: StoryObj<${cls}> = {};\n`,
     [`${file}.component.spec.ts`]: `import { TestBed } from '@angular/core/testing';\nimport { ${cls} } from './${name}.component';\n\ndescribe('${cls}', () => {\n  it('renders its host', async () => {\n    await TestBed.configureTestingModule({ imports: [${cls}] }).compileComponents();\n    const fixture = TestBed.createComponent(${cls});\n    fixture.detectChanges();\n    expect(fixture.nativeElement.querySelector('.c-${name}')).not.toBeNull();\n  });\n});\n`,
     [`${file}.metadata.json`]: format(metadata),
-    [`${folder}/evidence.md`]: `# ${className(name)} evidence\n\nOwner and use case: TODO\nDesign reference and states: TODO\nKeyboard test: TODO\nScreen reader test: TODO\nStory and responsive checks: TODO\nKnown limitations: TODO\n`,
+    [`${folder}/evidence.md`]: `# ${className(name)} evidence\n\nOwner and use case: TODO\nDesign reference and states: TODO\nKeyboard test: TODO\nScreen reader test: TODO\nStory and responsive checks: TODO\nKnown limitations: TODO\nReuse potential (none / possible / likely) and why: TODO\n`,
     [style]: `// Candidate styles. Use published --pds-* tokens.\n.c-${name} {\n  display: block;\n}\n`,
   };
   const index = projectPath(root, `${config.paths.candidateStyles}/_index.scss`);
@@ -60,6 +60,8 @@ export async function scaffold(root, args) {
   if (fs.readFileSync(index, 'utf8').includes(importLine)) throw new Error(`ITCSS component import already exists: ${importLine}`);
   for (const [relative, body] of Object.entries(content)) { const target = projectPath(root, relative); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, body); }
   fs.appendFileSync(index, `\n${importLine}\n`);
+  const similar = similarLocalComponents(name, config.team);
+  if (similar.length) console.log(`Similar components already built by other teams — check them before going further:\n${similar.map((item) => `  ${item.id} (${item.application}): ${item.description}`).join('\n')}`);
   console.log(`Scaffolded ${name} in ${folder}; complete metadata, story, styles and evidence before export.`);
 }
 
@@ -167,6 +169,33 @@ export async function candidateWithdraw(root, args, client = new GitHubClient(pr
   return url;
 }
 
+const words = (text) => new Set(String(text).toLowerCase().split(/[^a-z0-9]+/).filter((word) => word.length > 2));
+
+/** Local components of other teams, from the snapshot shipped with this toolkit, that share words with a new name. */
+export function similarLocalComponents(name, team, snapshot = asset('local-components.json')) {
+  const wanted = words(name.replaceAll('-', ' '));
+  return (snapshot.components ?? []).filter((item) => item.team !== team && [...words(`${item.name.replace(/([a-z])([A-Z])/g, '$1 $2')} ${item.id.split(':')[1].replaceAll('-', ' ')}`)].some((word) => wanted.has(word)));
+}
+
+/** Local components with their reuse estimate from evidence.md ("unknown" until the line is filled). */
+export function localComponents(root, config) {
+  const directory = projectPath(root, config.paths.candidates);
+  if (!fs.existsSync(directory)) return [];
+  return filesUnder(directory).filter((file) => file.endsWith('.metadata.json')).sort().map((file) => {
+    const metadata = readJson(file);
+    const evidence = path.join(path.dirname(file), 'evidence.md');
+    const line = fs.existsSync(evidence) ? fs.readFileSync(evidence, 'utf8').match(/^Reuse potential[^:]*:\s*(none|possible|likely)\b[\s.,;:—-]*(.*)$/im) : null;
+    return {
+      id: metadata.component.id,
+      name: metadata.component.name,
+      description: metadata.component.description,
+      useCases: metadata.usage?.useCases ?? [],
+      reusePotential: line ? line[1].toLowerCase() : 'unknown',
+      ...(line?.[2]?.trim() ? { reuseNote: line[2].trim() } : {}),
+    };
+  });
+}
+
 export function adoptionReport(root, args) {
   const config = configAt(root);
   requireCommitted(root, [...config.paths.source, '.plectrum/config.json']);
@@ -191,7 +220,7 @@ export function adoptionReport(root, args) {
     });
     if (matches.length) observations.push({ componentId: component.id, kind: 'source-reference', count: matches.length, files: matches.map((m) => m.file) });
   }
-  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.'] };
+  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.'], localComponents: localComponents(root, config) };
   validateSchema('adoption', report);
   const output = projectPath(root, flag(args, 'output') ?? config.reporting.output);
   fs.mkdirSync(path.dirname(output), { recursive: true });

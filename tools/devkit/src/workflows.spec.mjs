@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { asset } from './common.mjs';
-import { adoptionSubmit, usageReportStatus } from './workflows.mjs';
+import { adoptionSubmit, localComponents, similarLocalComponents, usageReportStatus } from './workflows.mjs';
 
 function projectWith(team, application) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'plectrum-adoption-'));
@@ -49,4 +49,26 @@ test('usage report status names what is missing', () => {
   assert.match(usageReportStatus({ ...base, team: 'nobody', application: 'nobody' }).join(' '), /not in the Plectrum registry/);
   assert.match(usageReportStatus({ ...base, team: app.team, application: app.id }).join(' '), /is registered/);
   assert.match(usageReportStatus({ team: app.team, application: app.id, reporting: { enabled: false } }).join(' '), /off/);
+});
+
+test('local components carry the reuse estimate from evidence.md', () => {
+  const root = projectWith('claims', 'claims-portal');
+  const folder = path.join(root, 'src/plectrum-candidates/claim-card');
+  fs.mkdirSync(folder, { recursive: true });
+  fs.writeFileSync(path.join(folder, 'claim-card.metadata.json'), JSON.stringify({ component: { id: 'claims:claim-card', name: 'ClaimCard', description: 'Claim summary card.' }, usage: { useCases: ['Claim lists'] } }));
+  fs.writeFileSync(path.join(folder, 'evidence.md'), '# Evidence\n\nReuse potential (none / possible / likely) and why: Likely — every claims screen needs it.\n');
+  const config = JSON.parse(fs.readFileSync(path.join(root, '.plectrum/config.json'), 'utf8'));
+  assert.deepEqual(localComponents(root, config), [{ id: 'claims:claim-card', name: 'ClaimCard', description: 'Claim summary card.', useCases: ['Claim lists'], reusePotential: 'likely', reuseNote: 'every claims screen needs it.' }]);
+  fs.writeFileSync(path.join(folder, 'evidence.md'), '# Evidence\n');
+  assert.equal(localComponents(root, config)[0].reusePotential, 'unknown');
+});
+
+test('scaffold flags near-duplicates built by other teams, not by the same team', () => {
+  const snapshot = { components: [
+    { id: 'claims:claim-card', name: 'ClaimCard', description: 'Claim summary card.', team: 'claims', application: 'claims-portal' },
+    { id: 'members:member-card', name: 'MemberCard', description: 'Member card.', team: 'members', application: 'members-app' },
+  ] };
+  assert.deepEqual(similarLocalComponents('summary-card', 'members', snapshot).map((item) => item.id), ['claims:claim-card']);
+  assert.deepEqual(similarLocalComponents('claim-card', 'claims', snapshot).map((item) => item.id), ['members:member-card']);
+  assert.deepEqual(similarLocalComponents('date-filter', 'claims', snapshot), []);
 });
