@@ -5,5 +5,5 @@
     "types": ["node"],
     "resolveJsonModule": true
   },
-  "include": ["./*.ts", "../generators/sds-component/*.ts", "../candidates/*.ts"]
+  "include": ["./*.ts", "../generators/pds-component/*.ts", "../candidates/*.ts"]
 }

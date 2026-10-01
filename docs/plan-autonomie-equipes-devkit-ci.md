@@ -563,7 +563,7 @@ Conserver une source unique pour les identifiants de règles, commandes et profi
 
 **Dépendance** : lot 1 pour les nouveaux contrats.
 
-**Zones concernées** : `tools/devkit`, `tools/generators/sds-component`, `libs/styles` et ses points d’entrée publics, scripts et configuration d’initialisation, nouveau socle applicatif à distribuer.
+**Zones concernées** : `tools/devkit`, `tools/generators/pds-component`, `libs/styles` et ses points d’entrée publics, scripts et configuration d’initialisation, nouveau socle applicatif à distribuer.
 
 **Travaux** : préparer le manifeste et le bootstrap du socle ; faire de `npm install` le parcours d’installation des dépendances et de génération initiale ; fournir ITCSS vide et SCSS préconfiguré selon la section 4.5 ; extraire les éléments communs du générateur, fournir le scaffold applicatif complet, ajouter les alias, gérer les chemins et collisions, préserver les fichiers existants. Les capacités Storybook/tests/CI sont raccordées à ce même parcours à mesure que les lots suivants sont livrés.
 
@@ -707,7 +707,7 @@ Arbitrages à prendre pendant le cadrage : niveaux de revue design, délai de r�
 | `tools/devkit/src/workflows.mjs` | Scaffold et parcours de soumission actuels |
 | `tools/devkit/src/checks.mjs` | Compatibilité, tokens et validation des candidats |
 | `tools/devkit/src/managed.mjs` | Initialisation, workflow et fichiers gérés |
-| `tools/generators/sds-component/index.ts` | Générateur central à découpler des éléments communs |
+| `tools/generators/pds-component/index.ts` | Générateur central à découpler des éléments communs |
 | `tools/scripts/check-commit.mjs` et `install-git-hooks.mjs` | Contrôles et installation du hook central actuel |
 | `.github/workflows/ci.yml` | CI centrale et conditions effectives des contrôles |
 | `tools/contracts/ci-gates.ts` | Extraction de la CI pour Storybook |

@@ -83,7 +83,7 @@ Primary implementation surfaces:
 - `libs/ui/src/docs/docs-figure-stories.ts` and `libs/ui/src/storybook/`
 - `.ai/contracts/schema/`, `.ai/contracts/protocols/`, `.ai/rules/`, `.ai/skills/`
 - `.cursor/agents/`, `.github/agents/`, editor baseline instructions and MCP configuration
-- `tools/generators/sds-component/index.ts`, `tools/scripts/generate-index.ts`, validation scripts
+- `tools/generators/pds-component/index.ts`, `tools/scripts/generate-index.ts`, validation scripts
 - `tools/tokens/`, `tools/figma-plugin/`, `tools/packaging/`
 - `.github/workflows/`, `.changeset/config.json`, library package manifests and entry points
 
