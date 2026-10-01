@@ -10,13 +10,61 @@ import agentRoster from '../../../../.ai/agents/agents.json';
 
 # AI strategy
 
-Agents work from **typed contracts** instead of reading the whole repository. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index and short protocols. People still review, and own Storybook, CSS and Figma library publication. Agents may propose token variables on a PrimeNG 21 branch and components on a Custom components branch; without an agent, use the Plectrum tokens plugin for token writes.
+Plectrum ships AI agents with the toolkit. In an application, the **Plectrum agent** is your team's first reviewer: it helps you reuse what exists, lay out screens and build components without waiting for the core team. In the Plectrum repository, the same approach keeps Core work consistent. Both read typed contracts instead of the whole code base.
+
+## Your Plectrum agent
+
+Your team owns its components, so most questions no longer go through the core team. Ask the agent first. It answers from the Plectrum catalogue installed with your packages, from PrimeNG, and from the shared design rules.
+
+### Start it
+
+The agent is set up by `npm install`. In **Cursor**, select **Plectrum** in the agent picker or type `/plectrum`. In **VS Code / Copilot**, select **Plectrum** in the chat agent picker. Describe what the screen must do, not the component you think you need.
+
+### What to ask
+
+<DocsTable
+  headers={['You want to…', 'Ask, for example', 'The agent…']}
+  rows={[
+    ['Avoid building something that exists', '/plectrum I need a side panel showing a member\'s details.', 'Checks PrimeNG and the catalogue, and proposes Drawer with Detail List, using the documented composition. No new component.'],
+    ['Lay out a screen', '/plectrum Two-column form that stacks on mobile?', 'Gives the o-flex / o-layout classes, breakpoints and Form Field usage.'],
+    ['Cover every state', '/plectrum What states does this document list need?', 'Lists empty, loading and error states with Empty State and Skeleton Slot, plus keyboard and screen-reader points.'],
+    ['Pick a token', '/plectrum Which colour for a warning border?', 'Picks a semantic role. If only your app needs a new value, adds it to your local token file.'],
+    ['Build a component', '/plectrum Create a claim summary card.', 'Checks reuse first, then scaffolds it with npm run pds:component, writes the story and unit test, and runs the checks.'],
+    ['Decide whether to share', '/plectrum Could other teams use this card?', 'Weighs reuse potential against the catalogue and helps you write the proposal for Core.'],
+  ]}
+/>
+
+### Its specialists
+
+The Plectrum agent delegates to specialist roles when a task needs them:
+
+<DocsTable
+  headers={['Role', 'Helps with']}
+  rows={[
+    ['UX Researcher', 'The user need, existing alternatives and open design questions'],
+    ['UX Engineer', 'Composition, layout, tokens, states and responsive behaviour'],
+    ['Frontend Dev', 'Angular implementation, PrimeNG wiring, story and unit test'],
+    ['Tester', 'Keyboard, screen reader, states and story coverage'],
+    ['Token Auditor', 'Unknown or hardcoded values and local token files'],
+    ['Architect', 'Reuse, public API, ownership and upgrade path'],
+  ]}
+/>
+
+### What it does not replace
+
+- **Designers.** The agent says which decisions a designer should take. For new UX — a new component, pattern or page — show it early to the core team or an available designer, while you build. It is advice, not an approval step.
+- **Core decisions.** Sharing a component with other teams still needs a Core decision. The agent prepares the proposal; Core decides.
+- **Checks and review.** The checks, tests and pull-request review run the same way whether a person or the agent wrote the code.
 
 ## Team repositories
 
 <p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code> and <code>{PACKAGE_NAMES.styles}</code> for code and styles, and <code>{PACKAGE_NAMES.toolkit}</code> for the CLI, rules and process {processContract.version}. On installation, the starter runs <code>plectrum bootstrap</code>, which adds <code>.ai</code> rules, skills and agents, Cursor and VS Code/Copilot adapters and MCP configuration. After an upgrade, run <code>{command('consumerUpdate')}</code>: it refreshes these files and reports any you edited instead of overwriting them.</p>
 
-Because application teams own their components, the Plectrum agent acts as their first reviewer: before anything is built, it checks PrimeNG and the catalogue, suggests what to reuse or compose, answers layout and UX questions, and says when a designer should decide. For new UX it still recommends showing the work early to the core team or a designer. Application agents use the `plectrum` CLI and your local paths; the Core agents described below work only in the Plectrum repository. MCP configuration points to a server, it does not start one. Setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
+Application agents use the `plectrum` CLI and your local paths. The PrimeNG MCP server is configured by default; MCP configuration points to a server, it does not start one. Setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
+
+## In the Plectrum repository
+
+The rest of this page describes how the Core agents work in the Plectrum repository, through Contract-Driven Development (CDD): a typed metadata schema, a generated component index and short protocols. People still review, and own Storybook, CSS and Figma library publication. Agents may propose token variables on a PrimeNG 21 branch and components on a Custom components branch; without an agent, use the Plectrum tokens plugin for token writes.
 
 Related pages:
 
@@ -30,7 +78,6 @@ Related pages:
 
 ## Definition
 
-The rest of this page describes the Plectrum repository.
 
 A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then Storybook MCP when the catalogue is running, then one metadata file, then a protocol. They do not invent a second design system.
 

@@ -154,4 +154,6 @@ export const AskPlectrum: StoryObj = calloutStory({
     'It also helps with layout and UX: spacing, states, responsive behaviour, accessibility. It tells you when a designer should decide.',
     'For new UX (a component, pattern or page), show it early to the core team or an available designer, while you build. The agent does not replace them.',
   ],
+  linkLabel: 'How to use the Plectrum agent',
+  linkPath: '/docs/docs-ai-strategy--docs#your-plectrum-agent',
 });

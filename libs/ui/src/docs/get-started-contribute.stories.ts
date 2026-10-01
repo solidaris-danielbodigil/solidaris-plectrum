@@ -51,8 +51,8 @@ export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
   text: 'In an application, the Plectrum agent is the team’s first reviewer: it suggests what to reuse, answers layout and UX questions, and helps with tokens, implementation and QA. Every command it runs also works by hand.',
-  linkLabel: 'AI strategy → Subagents',
-  linkPath: '/docs/docs-ai-strategy--docs#subagents',
+  linkLabel: 'How to use the Plectrum agent',
+  linkPath: '/docs/docs-ai-strategy--docs#your-plectrum-agent',
 });
 
 export const AlreadyBuilt: StoryObj = calloutStory({
