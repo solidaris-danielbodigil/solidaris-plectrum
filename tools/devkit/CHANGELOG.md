@@ -1,5 +1,11 @@
 # @solidaris-danielbodigil/pds-devkit
 
+## 0.4.1
+
+### Patch Changes
+
+- a00b0ca: Mark the v0.6 preset as deprecated while retaining it for migration comparisons. Ship Agenda font files in `pds-styles` and generate FR/NL and preset controls in application Storybook previews. Remove the test-only SCSS component.
+
 ## 0.3.2
 
 ### Patch Changes

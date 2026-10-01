@@ -1,6 +1,6 @@
 {
   "name": "@solidaris-danielbodigil/pds-styles",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Plectrum ITCSS source — consume via stylePreprocessorOptions.includePaths",
   "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
   "files": [

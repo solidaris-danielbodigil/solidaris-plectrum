@@ -2,32 +2,20 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "agenda-preview-deprecation",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-ui",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris-danielbodigil/pds-plectrum",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris-danielbodigil/pds-styles",
-        "bump": "patch"
-      },
-      {
-        "packageName": "@solidaris-danielbodigil/pds-devkit",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Mark the v0.6 preset as deprecated while retaining it for migration comparisons. Ship Agenda font files in `pds-styles` and generate FR/NL and preset controls in application Storybook previews. Remove the test-only SCSS component."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris-danielbodigil/pds-ui",
+    "version": "2.0.3",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "a00b0ca: Mark the v0.6 preset as deprecated while retaining it for migration comparisons. Ship Agenda font files in `pds-styles` and generate FR/NL and preset controls in application Storybook previews. Remove the test-only SCSS component."
+      }
+    ],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris-danielbodigil/pds-ui",
     "version": "2.0.2",
@@ -86,6 +74,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   },
   {
     "packageName": "@solidaris-danielbodigil/pds-plectrum",
+    "version": "2.0.3",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "a00b0ca: Mark the v0.6 preset as deprecated while retaining it for migration comparisons. Ship Agenda font files in `pds-styles` and generate FR/NL and preset controls in application Storybook previews. Remove the test-only SCSS component."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-plectrum",
     "version": "2.0.2",
     "changes": [
       {
@@ -131,6 +130,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
       {
         "bump": "patch",
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-styles",
+    "version": "2.0.3",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "a00b0ca: Mark the v0.6 preset as deprecated while retaining it for migration comparisons. Ship Agenda font files in `pds-styles` and generate FR/NL and preset controls in application Storybook previews. Remove the test-only SCSS component."
       }
     ],
     "notes": ""
