@@ -17,7 +17,7 @@ Never edit node_modules or assume libs/ui exists. Candidates live under `src/ple
 ## Contribute a component
 
 1. **discover** — team, in this repository. Needs: installed packages and toolkit. Produces: gap proposal.
-2. **implement** — team, in this repository. Needs: compatible toolkit. Produces: local candidate; stories; metadata; evidence; unit test. Commands: `plectrum init --team <id> --application <id> --repository <url>`, `plectrum scaffold --name <slug>`, `plectrum check --profile ci`.
+2. **implement** — team, in this repository. Needs: compatible toolkit. Produces: local candidate; stories; metadata; evidence; unit test. Commands: `plectrum scaffold --name <slug>`, `plectrum check --profile ci`.
 3. **approve** — core, in the central Plectrum repository. Needs: gap proposal. Produces: recorded decision and owner.
 4. **submit** — team, in this repository. Needs: checks passed; merged central proposal decision. Produces: reviewed intake PR. Commands: `plectrum candidate-submit --name <slug> --proposal <application>-<slug> --preview <url> --checks <url> [--dry-run]`, `plectrum candidate-withdraw --id <application>-<slug> --reason <text> [--dry-run]`.
 5. **integrate** — core, in the central Plectrum repository. Needs: accepted candidate. Produces: core metadata; package exports; changeset. Commands: `npm run contracts:generate`, `npm run contracts:check`, `npm run docs:check`, `npm run test:pipelines`.

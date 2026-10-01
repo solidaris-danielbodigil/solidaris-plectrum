@@ -17,7 +17,8 @@ export const ProposeEarly: StoryObj = calloutStory({
   tone: 'warning',
   title: 'Search first, then build locally',
   items: [
-    'Look at themed PrimeNG, then Core components. If neither fits, build the component in your application.',
+    'Ask the Plectrum agent, or look at themed PrimeNG and Core components yourself. If nothing fits, build the component in your application.',
+    'Show new UX early to the core team or an available designer, while you build. It is advice, not an approval step.',
     'Ask Core for a decision only when you want to share it with other teams.',
     'Your team owns what it builds. Another team that needs it opens a proposal instead of importing yours.',
   ],
@@ -49,9 +50,9 @@ export const Teams: StoryObj = { tags: ['!dev'], ...cardsStory(teamCards(), 2) }
 export const PlectrumAgent: StoryObj = calloutStory({
   tone: 'info',
   title: 'Invoke /plectrum',
-  text: 'The Plectrum agent helps with research, tokens, implementation and QA. Every command it runs also works by hand.',
-  linkLabel: 'AI strategy → Subagents',
-  linkPath: '/docs/docs-ai-strategy--docs#subagents',
+  text: 'In an application, the Plectrum agent is the team’s first reviewer: it suggests what to reuse, answers layout and UX questions, and helps with tokens, implementation and QA. Every command it runs also works by hand.',
+  linkLabel: 'How to use the Plectrum agent',
+  linkPath: '/docs/docs-ai-strategy--docs#your-plectrum-agent',
 });
 
 export const AlreadyBuilt: StoryObj = calloutStory({

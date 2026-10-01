@@ -59,7 +59,7 @@ test(
       const cli = [
         '--import',
         'tsx',
-        'tools/generators/sds-component/index.ts',
+        'tools/generators/pds-component/index.ts',
       ];
       assert.throws(
         () => run(fixture, [...cli, '--name=invalid-owner', '--owner=unknown']),

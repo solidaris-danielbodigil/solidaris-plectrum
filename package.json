@@ -47,7 +47,7 @@
     "docs:check": "tsx tools/scripts/check-docs-ssot.mjs && node tools/scripts/check-docs-release.mjs && node tools/scripts/check-docs-process.mjs && node tools/scripts/sync-release-docs.mjs --check",
     "docs:sync-release": "node tools/scripts/sync-release-docs.mjs",
     "contracts:check": "tsx tools/contracts/check.ts && tsx tools/scripts/check-metadata-props.ts",
-    "pds:component": "tsx tools/generators/sds-component/index.ts",
+    "pds:component": "tsx tools/generators/pds-component/index.ts",
     "tokens:resolve": "node tools/tokens/resolve-dtcg.mjs",
     "tokens:audit": "tsx tools/tokens/audit-drift.mjs",
     "tokens:validate-preset": "tsx tools/tokens/validate-preset.mjs",

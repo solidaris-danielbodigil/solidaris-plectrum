@@ -134,7 +134,7 @@ const DEV_STEPS: readonly DocsStep[] = [
     tone: 'app',
     title: 'Find the next piece',
     detail:
-      'Search by task — error, side panel, no results. Use Find a token for colour, type and spacing.',
+      'Ask /plectrum, or search by task — error, side panel, no results. Use Find a token for colour, type and spacing.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
       { label: 'Find a token', path: '/docs/foundations-token-finder--docs' },
