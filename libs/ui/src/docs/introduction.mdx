@@ -7,29 +7,27 @@ import * as Figures from './introduction.stories';
   <Story of={Figures.Hero} />
 </Unstyled>
 
-Plectrum is the Solidaris design system — shared components, tokens and layout for every application. This Storybook documents the system. Use the documentation matching the release you install; [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) explains published releases and development previews. Figma is where you design; it is not a second set of rules.
+Plectrum is the Solidaris design system: shared components, tokens and layout for every application. Design in Figma, build with the packages, and check this Storybook for how each piece behaves. Read the documentation of the release you install — see [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs).
 
 <Unstyled>
   <Story of={Figures.Audience} />
 </Unstyled>
 
-Core components are shared. An application Candidate or App-specific component stays with its owning team; promotion to Core is a separate decision. A design-team proposal can start in Figma's Custom components file and becomes available to applications only after Core implementation and release. Plectrum component pages show status and owner — [Contribute → Status and owner](?path=/docs/get-started-contribute--docs#status-and-owner).
+Core components are for every application. A component built by an application team stays with that team until Core adopts it. Each component page shows its status and owner — see [Contribute](?path=/docs/get-started-contribute--docs#status-and-owner).
 
-Each application team works in its own repository. The source starter uses `npm install` and its application-owned `postinstall` to generate local ITCSS, Storybook, tests, `.ai` guidance, editor adapters and checks. This targets the next devkit release; use versioned documentation for published packages. [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) gives the nine setup steps and verification criteria. [AI strategy → Team repositories](?path=/docs/docs-ai-strategy--docs#team-repositories) explains the editor integration.
-
-The source starter already prepares SCSS, empty ITCSS layers, local Storybook, tests, hooks and CI during `npm install` when installed with the matching source packages. Publishing the next package release and validating access through the Solidaris registry remain separate adoption steps.
+Each team works in its own repository, set up from the Plectrum starter: `npm install` prepares styles, Storybook, tests, editor instructions and checks. [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) walks through it.
 
 ## Get help
 
-A typo or a wrong example is a pull request. A missing component, variant or token is a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Say what the screen must do, what you already tried, and attach a Figma link. The core team records a decision — [Contribute → Proposal decisions](?path=/docs/get-started-contribute--docs#proposal-decisions) says what each one means and who acts next.
+Found a typo or a wrong example? Open a pull request. Missing a component, variant or token? Open a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml): describe what the screen must do, what you tried, and link the Figma frame. The core team answers with a [decision](?path=/docs/get-started-contribute--docs#proposal-decisions).
 
 Next: [Design with Plectrum](?path=/docs/start-here-design-with-plectrum--docs) or [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
 
 ## Maintainers
 
-Nothing below is needed to design or build a screen.
+For the core team; not needed to design or build a screen.
 
-- [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs) — paths, component creation, testing and the CI gates read from the workflow.
+- [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs) — paths, component creation, tests and CI.
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — where styles live and how classes are named.
 - [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how Figma values become tokens.
 - [Writing stories](?path=/docs/docs-writing-stories--docs) · [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) · [AI strategy](?path=/docs/docs-ai-strategy--docs).

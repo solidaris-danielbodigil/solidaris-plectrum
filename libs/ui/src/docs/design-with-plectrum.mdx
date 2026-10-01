@@ -6,17 +6,17 @@ import * as FormFieldStories from '../lib/form-field/form-field.stories';
 
 # Design with Plectrum
 
-This Storybook documents the current implementation, its reuse scope, variants and behaviour. Figma is where designs are authored. A reviewed design in Custom components may propose a future version; [Contribute](?path=/docs/get-started-contribute--docs#start-from-a-reviewed-figma-design) explains how Core reviews, implements and releases it.
+Design in Figma; use this Storybook to see what each component does, its variants and its states. You do not need the repository to design a screen.
 
-You do not need the repository to design a screen. Enable these four libraries. Do not draw new components on the main kit.
+Enable these four libraries. Do not draw new components on the main kit.
 
 <Unstyled>
   <Story of={Figures.Libraries} />
 </Unstyled>
 
-Agenda is only for display titles. Open Sans is for headings, body, labels and buttons. Use these families in Figma and check that they are available on your machine; the [application setup](?path=/docs/get-started-use-plectrum-in-an-app--docs#fonts-icons-and-browsers) explains how developers load them.
+Use Agenda for display titles only, and Open Sans for headings, body text, labels and buttons. Install both on your machine.
 
-Zeroheight was an earlier site. Start here.
+This Storybook replaces the former Zeroheight site.
 
 ## Build a simple form
 
@@ -42,8 +42,8 @@ Show the field at the narrow width, label stacked above the control.
 
 ## When nothing fits
 
-For a shared gap, open a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml). Attach the Custom components frame, say which PrimeNG and Plectrum components you tried, and what the screen must do. Application designers and the design team may propose a candidate in **PLECTRUM · Custom components**. Record a design-team review if one already happened. Any new shared token variable belongs in **Plectrum DS · PrimeNG v21**, through a separate reviewed token branch. Core records the decision before a component enters the shared catalogue.
+Draw the candidate in [PLECTRUM · Custom components](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components), then open a [proposal](https://github.com/solidaris-danielbodigil/solidaris-plectrum/issues/new?template=proposal.yml): link the frame, say which PrimeNG and Plectrum components you tried, and what the screen must do. Mention any design-team review. New token variables go on a separate branch of [Plectrum DS · PrimeNG v21](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-).
 
-An application team may build and deliver a local component without waiting for that decision. It remains owned by the application until Core reviews it for sharing. See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) for the local setup and checks.
+Your application team can still build the component locally while Core decides whether to share it.
 
 Next: [Find a component](?path=/docs/start-here-catalogue--docs) · [Contribute](?path=/docs/get-started-contribute--docs) for the proposal process · [Accessibility](?path=/docs/foundations-accessibility-overview--docs)

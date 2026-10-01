@@ -111,7 +111,7 @@ export class DocsCatalogueComponent {
   });
 
   protected readonly adoptionNote = CENTRAL_ADOPTION.missing.length
-    ? `No adoption report for ${CENTRAL_ADOPTION.missing.map((app) => app.label).join(', ')}. A missing report is not proof that a team does not use a component.`
+    ? `${CENTRAL_ADOPTION.missing.map((app) => app.label).join(', ')} ${CENTRAL_ADOPTION.missing.length > 1 ? 'have' : 'has'} not reported usage yet, so their columns may be incomplete.`
     : '';
 
   protected readonly entries = computed(() =>

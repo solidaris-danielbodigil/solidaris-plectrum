@@ -5,13 +5,11 @@ import * as Figures from './whats-new.stories';
 
 # What's new
 
-What changed in each package version. **Released** means the version PR merged in the repository. A version is installable only once the attended release recorded it — see [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) for which pairs were published. Install steps: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
-
-Generated from the pending changesets and the package changelogs by `npm run changelog:build`. Do not edit the generated file by hand. Major is breaking, minor is a feature, patch is a fix. Process: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs).
+What changed in each version. Major versions break compatibility, minor versions add features, patches fix bugs. Check [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) to see which versions are published.
 
 ## Unreleased
 
-Pending changesets on `main`. The three packages version together, so the header shows the bump the next version PR applies to each of them.
+Changes merged on `main` and waiting for the next version.
 
 <Unstyled>
   <Story of={Figures.Unreleased} />
@@ -19,7 +17,7 @@ Pending changesets on `main`. The three packages version together, so the header
 
 ## Released
 
-Published versions, newest first. A change shared by several packages appears once.
+Newest first.
 
 <Unstyled>
   <Story of={Figures.Released} />

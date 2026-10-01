@@ -47,18 +47,18 @@ export const ChangeFlow: StoryObj = stepsStory([
       'Foundations pages read the compiled CSS at runtime; no documentation edit is required.',
   },
   {
-    who: 'CI',
+    who: 'Release maintainer',
     tone: 'neutral',
-    title: 'Version and publish',
+    title: 'Release',
     detail:
-      'Changesets publish @solidaris-danielbodigil/pds-ui, @solidaris-danielbodigil/pds-styles and @solidaris-danielbodigil/pds-plectrum with a changelog entry.',
+      'The change ships in the next release of the packages, with a changelog entry.',
   },
   {
     who: 'Developer',
     tone: 'app',
     title: 'Upgrade the application',
     detail:
-      'Each application receives a bump pull request. The installed version is visible in package.json.',
+      'Each application receives an upgrade pull request.',
   },
 ]);
 
@@ -75,25 +75,32 @@ export const Roles: StoryObj = cardsStory([
     ],
   },
   {
-    eyebrow: 'Developer',
+    eyebrow: 'Core developer',
     tone: 'system',
-    title: 'Consumes tokens',
+    title: 'Maintains shared tokens',
     items: [
-      'References tokens as var(--pds-*) with BEMIT classes only',
-      'Adds missing values in 01-settings before using them',
-      'Runs tokens:propose, then applies selected tokens on proposals/{app}: agent + Figma MCP when a session is running, Plectrum tokens plugin otherwise',
-      'Keeps PrimeNG --p-* bridges in 01-settings',
+      'Adds shared tokens and PrimeNG --p-* bridges in 01-settings',
+      'Runs tokens:propose, then applies the selected tokens on proposals/{app}, with an agent or the Plectrum tokens plugin',
+    ],
+  },
+  {
+    eyebrow: 'Application developer',
+    tone: 'app',
+    title: 'Uses tokens',
+    items: [
+      'Styles with var(--pds-*) and BEMIT classes',
+      'Declares tokens only its application needs in a local token file',
+      'Proposes tokens other teams could use',
     ],
   },
   {
     eyebrow: 'Architect',
-    tone: 'app',
+    tone: 'neutral',
     title: 'Owns the contract',
     items: [
       'CSS is the only interface between the design system and applications',
       'CI never writes design data to the main Figma file; it only posts sync comments there',
       'Applications install versions; drift is visible as a package bump',
-      'Commands, delivery status and constraints: see Reference',
     ],
   },
 ]);

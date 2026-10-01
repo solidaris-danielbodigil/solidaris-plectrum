@@ -8,7 +8,7 @@ import changesetConfig from '../../../../.changeset/config.json';
 
 # Releases and versioning
 
-Changesets versions the runtime packages together. Package manifests and What's new describe **source** versions. Only the release manifest — `release.json`, recorded by the attended release workflow after the registry and consumer checks pass — proves that a version pair was published.
+The three runtime packages share one version; the toolkit has its own. A version is installable once its release is published — the banner below tells you which version these pages document.
 
 <Unstyled>
   <Story of={Figures.Release} />
@@ -26,21 +26,21 @@ Related pages:
 <DocsTable
   headers={['Documentation', 'Where', 'What it describes']}
   rows={[
-    ['Development preview', REGISTRY.operations.storybook, 'main after its CI passed. Manifest versions are not a publication claim.'],
-    ['Versioned release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/releases/<runtime>-devkit-<toolkit>/`, 'Exactly one published runtime and toolkit pair. release.json and contracts.json sit beside index.html and never change.'],
-    ['Latest release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/latest/`, 'Points to the newest complete release. It moves only after package and documentation publication both succeed.'],
+    ['Development preview', REGISTRY.operations.storybook, 'The main branch, which may be ahead of the latest release'],
+    ['Versioned release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/releases/<runtime>-devkit-<toolkit>/`, 'One published release; never changes'],
+    ['Latest release', `${REGISTRY.operations.storybook.replace(/\/$/, '')}/latest/`, 'The newest published release'],
   ]}
 />
 
-The installed toolkit links each component to the versioned page of the installed runtime and toolkit pair.
+The installed toolkit links each component to the documentation of your installed release.
 
 ## Process
 
-1. A change lands with a **changeset** (`npm run changeset`) describing the bump (patch / minor / major) and the affected packages.
-2. On merge to `main`, the release workflow (`.github/workflows/release.yml`, `changesets/action`) opens or updates the **version PR**, accumulating pending changesets into version bumps and changelogs.
-3. CI packs the artifacts, builds an isolated consumer and checks package ownership, registry target and tarball integrity with `npm run release:check`.
-4. A maintainer dispatches the attended release (`.github/workflows/publish-release.yml`) for the exact release ID. It requires the same commit's CI, publishes the exact archives, verifies the actual package visibility, installs them in a clean application, records `release.json` and the contract snapshot, and publishes the matching Storybook.
-5. Application repositories receive the bump as a Renovate / Dependabot pull request (`tools/consumers/renovate.json`).
+1. Add a **changeset** (`npm run changeset`) to each change that affects a package: patch, minor or major.
+2. When it merges, `.github/workflows/release.yml` opens or updates the **version PR**, which bumps the versions and changelogs.
+3. Merge the version PR. CI packs the packages and installs them in a test application (`npm run release:check`).
+4. Run `.github/workflows/publish-release.yml` with the release ID (`<runtime>-devkit-<toolkit>`). It publishes the packages, installs them in a clean application, records the release and publishes its Storybook.
+5. Application repositories receive the upgrade as a Renovate or Dependabot pull request (`tools/consumers/renovate.json`).
 
 ## Rules
 
@@ -64,6 +64,6 @@ The installed toolkit links each component to the versioned page of the installe
   rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.version, pkg.description])}
 />
 
-The historical `2.0.1-devkit-0.2.0` release used four public package names that are no longer distributed.
+Release `2.0.1-devkit-0.2.0` used older public package names; do not install them.
 
-The current toolkit provides its CLI, catalogue, contracts, rules and editor adapters. It does not bundle PrimeNG, an Angular starter, a local Storybook, test runners or a pre-commit hook. The SCSS package supplies shared ITCSS source; it does not create application folders. Follow [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) for the remaining setup and the separate planned starter.
+To set up an application with these packages, see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).

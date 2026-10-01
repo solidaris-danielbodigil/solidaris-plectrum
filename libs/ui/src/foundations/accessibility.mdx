@@ -5,11 +5,11 @@ import { DocsTable } from '../../.storybook/docs-table';
 
 # Accessibility overview
 
-The target for Plectrum is **WCAG 2.1 AA**. A component page that shows that label is stating the target. It is not a certificate, and it is not a claim that a person has completed a manual assessment.
+Plectrum targets **WCAG 2.1 AA**. The label on a component page states that target; it does not mean a person has reviewed the component.
 
-Storybook runs automated checks (axe, WCAG 2.1 A and AA tags) on catalogue stories. Those checks fail the story when they find a violation. They do not cover screen-reader announcements, reading order in a real page, or whether focus is easy to see in context.
+Every story runs automated checks (axe, WCAG 2.1 A and AA) and fails on a violation. Screen-reader announcements, reading order and focus visibility in a real page still need a manual check.
 
-WCAG 2.2 AA adds rules we have not adopted as the target yet, including focus not being fully hidden and a minimum target size. That is a product decision still open. It is not a finding that Plectrum fails those rules.
+WCAG 2.2 AA is not our target yet; the decision is open.
 
 ## What the status words mean
 

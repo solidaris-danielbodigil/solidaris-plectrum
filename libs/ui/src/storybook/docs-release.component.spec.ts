@@ -25,9 +25,9 @@ describe('release installation guidance', () => {
     const el = await render({ kind: 'development', reason: 'no-release-record' });
     const firstLink = el.querySelector('a');
     expect(firstLink?.getAttribute('href')).toBe(DOCS_LINKS.latestInstall);
-    expect(firstLink?.textContent).toContain('Install the latest published release');
+    expect(firstLink?.textContent).toContain('Open the installation guide of the latest release');
     expect(el.textContent).not.toContain('./path/to/');
-    expect(el.querySelector('details')?.open).toBe(false);
+    expect(el.querySelector('details')).toBeNull();
     expect(el.querySelector('pre')).toBeNull();
   });
 

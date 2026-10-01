@@ -8,7 +8,7 @@ import processContract from '../../../../.ai/contracts/process.json';
 
 # Maintainer workflow
 
-Work inside a **Plectrum checkout**. Nothing here is needed to build an application screen — application teams follow [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) and [Contribute](?path=/docs/get-started-contribute--docs).
+For work in the Plectrum repository. Application teams: see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) and [Contribute](?path=/docs/get-started-contribute--docs).
 
 ## Where things live
 
@@ -27,7 +27,7 @@ Work inside a **Plectrum checkout**. Nothing here is needed to build an applicat
 
 ## Create a component
 
-Only after the core team's recorded decision. The owner is a registered team ID ({REGISTRY.teams.map((team) => team.id).join(', ')}):
+Once the core team has recorded its decision, scaffold the component. The owner is a registered team ID ({REGISTRY.teams.map((team) => team.id).join(', ')}):
 
 <pre><code>{command('scaffold')}</code></pre>
 
@@ -36,7 +36,7 @@ The scaffolder creates the Angular files, the `.metadata.ts` contract with its `
 <pre><code>{profileCommands('component').join('\n')}</code></pre>
 
 1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** when `npm run storybook` is up — reuse before inventing ([AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp)).
-2. Missing tokens go to `01-settings` first, cited with their Figma variable. Application teams alias semantic roles only.
+2. Missing shared tokens go to `01-settings` first, cited with their Figma variable.
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
 4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Application-owned pages are titled `Patterns/{App}/…`.
 
@@ -50,7 +50,7 @@ This Storybook has a **FR / NL** toolbar (`globals.locale`). One `Dutch` story p
 
 ## Testing
 
-Stories provide render smoke checks and interaction assertions alongside unit tests. A rendered state is not proof of every behavior; add assertions for the expected interaction and error paths. Automated accessibility checks also need manual keyboard and screen-reader review.
+Every story is a render test; add `play` assertions for interactions and error paths. Automated accessibility checks do not replace a keyboard and screen-reader review.
 
 <DocsTable
   headers={['Layer', 'Command', 'What it checks']}
@@ -69,13 +69,13 @@ Stories provide render smoke checks and interaction assertions alongside unit te
 
 ## Before you commit
 
-In this checkout, `npm install` runs the hook installer through `prepare`, unless lifecycle scripts are disabled. It installs the Plectrum pre-commit hook when no unrelated hook already occupies that path. The hook runs `npm run check:commit`: docs, contracts, token prefix, token usage, style lint, and generated-file consistency. Fix the failure, stage any regenerated file, and commit again. The devkit 0.4.0 source also generates an application hook for a fast strict token check; it preserves an existing hook path and asks the team to chain that check.
+`npm install` installs the pre-commit hook, unless another hook is already in place. The hook runs `npm run check:commit`: docs, contracts, tokens, style lint and generated files. If it fails, fix the problem, stage any regenerated file and commit again.
 
-`git commit --no-verify` skips this hook. A pull request into `main` still runs the full CI gates below. A push of a feature branch by itself does not.
+`git commit --no-verify` skips the hook, but a pull request into `main` still runs every CI gate below.
 
 ## CI gates
 
-These are the **Plectrum repository's jobs**, not a declaration of the global Solidaris CI requirements. The generated application workflow runs the portable toolkit profile, application build, Chromium unit tests, local Storybook build and browser story tests with automated accessibility checks. Security, deployment, preview hosting and branch protection must be integrated with the team's CI owners.
+The jobs of the Plectrum repository, with their application counterparts:
 
 <DocsTable
   headers={['Job', 'Purpose and failure meaning', 'Application equivalent']}
@@ -90,11 +90,15 @@ These are the **Plectrum repository's jobs**, not a declaration of the global So
   ]}
 />
 
-For each Solidaris pipeline requirement, record the equivalent command, trigger, merge-blocking policy, report and owner. A configured workflow does not itself prove that branch protection requires it. The local hook is a fast subset: builds, unit tests, package smoke tests and Storybook tests remain CI jobs. Application setup and acceptance criteria: [Build with Plectrum → Validate](?path=/docs/get-started-use-plectrum-in-an-app--docs#validate).
+Common failures:
 
-An unknown `--pds-*` name means the token check cannot find it in the installed inventory: choose a published token or declare an allowed application token. A metadata/API mismatch means an Angular input and its documented prop disagree. A failing unit test means behavior did not satisfy an assertion; a Storybook build failure means a story, provider, style or asset cannot be bundled. The preset-reference validation is currently advisory (`continue-on-error`), while a failing required step makes its job red. Chromatic runs only when the repository variable enables it, so absence of a visual job is not visual approval.
+- **Unknown `--pds-*` token** — use a published token or declare an allowed application token.
+- **Metadata/API mismatch** — an Angular input and its documented prop disagree.
+- **Storybook build failure** — a story, provider, style or asset cannot be bundled.
 
-Read from `.github/workflows/ci.yml` by `npm run contracts:generate`; the table cannot drift from the workflow. Setup steps are omitted. A conditional job runs only when its condition holds; an advisory step reports without failing.
+The preset-reference validation only reports (advisory). Chromatic runs only when the repository enables it.
+
+Every step, read from `.github/workflows/ci.yml` (setup steps omitted):
 
 <DocsTable
   headers={['Job', 'Step', 'Command']}
@@ -107,6 +111,6 @@ Read from `.github/workflows/ci.yml` by `npm run contracts:generate`; the table 
     : [[job.condition ? `${job.id} (when ${job.condition})` : job.id, 'GitHub Action step only', '—']])}
 />
 
-Review rules the gates do not encode — the required Code Owner review, the design-system review under `libs/`, the token risk levels — live in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`. Release flow: [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs). Token commands: [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
+Review rules (Code Owner review, design-system review under `libs/`, token risk levels) are in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`. See also [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) and [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
 
-When a stage fails, use the <a href={`${REGISTRY.repository}/blob/main/docs/handoff/pipeline-recovery.md`}>pipeline recovery guide</a> for the source, retry step and evidence required to close it. The <a href={`${REGISTRY.repository}/blob/main/docs/handoff/p9-acceptance.md`}>P9 acceptance record</a> distinguishes live external proof from local smoke checks.
+When a stage fails, follow the <a href={`${REGISTRY.repository}/blob/main/docs/handoff/pipeline-recovery.md`}>pipeline recovery guide</a>.

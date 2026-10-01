@@ -10,19 +10,13 @@ import agentRoster from '../../../../.ai/agents/agents.json';
 
 # AI strategy
 
-Agents work from **typed contracts**, not from reading the whole repo. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index, and short protocols. Humans still own review, Storybook, CSS, and Figma library publication. Agents may propose variables on a PrimeNG 21 branch and components on a separate Custom components branch; the Plectrum tokens plugin is the fallback for token writes when no agent is running. A designer may start the component design before code exists.
-
-Each application team works in its own repository. The installed toolkit gives its agents the versioned rules, process, metadata catalogue and schemas. In the application starter, `npm install` invokes `plectrum bootstrap` to generate the local configuration and editor adapters.
+Agents work from **typed contracts** instead of reading the whole repository. We call this Contract-Driven Development (CDD): a typed metadata schema, a generated component index and short protocols. People still review, and own Storybook, CSS and Figma library publication. Agents may propose token variables on a PrimeNG 21 branch and components on a Custom components branch; without an agent, use the Plectrum tokens plugin for token writes.
 
 ## Team repositories
 
-<p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code>, <code>{PACKAGE_NAMES.styles}</code> and <code>{PACKAGE_NAMES.toolkit}</code>. The first three provide runtime code and styles. The toolkit carries the contributor contract, the process {processContract.version} and the CLI. The source starter declares these dependencies and invokes <code>plectrum bootstrap</code> after installation to create ITCSS, Storybook, tests, a hook, portable <code>.ai</code> guidance, Cursor and VS Code/Copilot adapters, MCP configuration and CI checks. The installed package remains the authoritative content: role text, <code>plectrum help</code> and these pages render the same process contract. After upgrading it, run <code>{command('consumerUpdate')}</code>; managed-file checksums detect conflicts while unrelated editor configuration remains in place.</p>
+<p>Application teams install <code>{PACKAGE_NAMES.ui}</code>, <code>{PACKAGE_NAMES.plectrum}</code> and <code>{PACKAGE_NAMES.styles}</code> for code and styles, and <code>{PACKAGE_NAMES.toolkit}</code> for the CLI, rules and process {processContract.version}. On installation, the starter runs <code>plectrum bootstrap</code>, which adds <code>.ai</code> rules, skills and agents, Cursor and VS Code/Copilot adapters and MCP configuration. After an upgrade, run <code>{command('consumerUpdate')}</code>: it refreshes these files and reports any you edited instead of overwriting them.</p>
 
-See [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) for the source starter and published-package distinction.
-
-The package includes application rules and roles, plus central rules, skills and protocols as reference material under `rules/central`. Bootstrap creates a portable `.ai/` subset; it does not copy the full Core tree or reproduce Core's agents unchanged. The generated application roles use the portable CLI; central paths and npm scripts still require a Plectrum checkout.
-
-The source starter declares Storybook, Sass and test dependencies; bootstrap generates ITCSS, configuration and a pre-commit hook. This source version still needs publication before a private-registry install can use it. MCP configuration connects an available server; it does not install that server. Follow the [application setup and readiness checks](?path=/docs/get-started-use-plectrum-in-an-app--docs#set-up-storybook-and-tests) before treating the workspace as ready.
+Application agents use the `plectrum` CLI and your local paths; the Core agents described below work only in the Plectrum repository. MCP configuration points to a server, it does not start one. Setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).
 
 Related pages:
 
@@ -36,7 +30,7 @@ Related pages:
 
 ## Definition
 
-The architecture, paths and npm scripts below describe the **Plectrum checkout**. Application repositories use the installed catalogue, JSON candidate metadata and `plectrum` commands described above.
+The rest of this page describes the Plectrum repository.
 
 A **contract** is a machine-readable file next to the thing it describes. Agents load the index, then Storybook MCP when the catalogue is running, then one metadata file, then a protocol. They do not invent a second design system.
 
@@ -112,25 +106,23 @@ A **contract** is a machine-readable file next to the thing it describes. Agents
 
 ## Process
 
-How an agent is expected to work. Same order as `.ai/contracts/protocols/query-protocol.md`.
+How an agent works, in the order of `.ai/contracts/protocols/query-protocol.md`.
 
 <Unstyled>
   <Story of={Figures.QueryOrder} />
 </Unstyled>
 
-The agent is the **default operator** for this flow. It scaffolds the component, fills the metadata, and runs the token scripts itself.
+The agent usually scaffolds the component, fills the metadata and runs the token scripts; you can do each step by hand.
 
-The index keeps itself current: `pds:component` regenerates it when it finishes, and a Cursor hook re-runs it after edits under `libs/ui`. The commit hook and CI both fail a stale index. `npm run docs:check` fails a docs page that restates a metadata block.
-
-You can still do any of these steps by hand. It is a choice, not a requirement.
+`pds:component` and a Cursor hook keep the index up to date; the commit hook and CI fail when it is stale.
 
 ---
 
 ## Storybook MCP
 
-<p><code>@storybook/addon-mcp</code> serves <code>{processContract.capabilities.storybookMcp.endpoint}</code> in a Plectrum checkout while <code>{processContract.capabilities.storybookMcp.requires}</code> is running. Cursor and VS Code register that URL. No running Storybook → no MCP; use <code>index.json</code>. It does not scaffold. {processContract.capabilities.storybookMcp.note} The gate is <code>{processContract.capabilities.storybookMcp.gate}</code>.</p>
+<p>While <code>{processContract.capabilities.storybookMcp.requires}</code> runs, <code>@storybook/addon-mcp</code> serves <code>{processContract.capabilities.storybookMcp.endpoint}</code>, registered in Cursor and VS Code. {processContract.capabilities.storybookMcp.note} The gate is <code>{processContract.capabilities.storybookMcp.gate}</code>.</p>
 
-The index stays. MCP is the live catalogue (stories, Controls, docs pages). The index is the offline map (paths, BEM, `uses` / `usedBy`, status, owner). `tokens.consumed` and `aiHints` stay in `.metadata.ts`.
+MCP is the live catalogue: stories, Controls and docs pages. When Storybook is not running, agents use `index.json`, the offline map of paths, BEM blocks, relationships, status and owner.
 
 <DocsTable
   headers={['Toolset', 'Tools']}
@@ -158,7 +150,7 @@ Pre-flight is PrimeNG MCP → Figma MCP → `index.json` → `docs-list` (when S
 
 ### Subagents
 
-Component work is coordinated by the Plectrum agent. In Cursor, select the generated Plectrum agent (or invoke `/plectrum` where supported); in VS Code/Copilot, select Plectrum in the chat agent picker. Each context generates both editors' role files from its shared role source: `.ai/agents/` for Core, the installed toolkit for applications. Describe the component, proposal and owner; the agent can involve the specialist roles. The following example is for a Plectrum checkout:
+The Plectrum agent coordinates component work. Select **Plectrum** in the Cursor or VS Code/Copilot agent picker (or type `/plectrum` in Cursor), then describe the component, the proposal and the owner. It calls the specialist roles when needed. Example in the Plectrum repository:
 
 ```
 /plectrum Add a Core status banner.
@@ -168,16 +160,16 @@ Proposal: [issue link].
 Use PrimeNG Message if it already covers this.
 ```
 
-<p>In an application repository, Plectrum uses <code>{command('consumerScaffold')}</code> for local work without a Core decision. A merged proposal decision is needed only to submit the result for shared intake. In the design-system repository, maintainers use <code>{command('scaffold')}</code>.</p>
+<p>In an application, the agent creates local components with <code>{command('consumerScaffold')}</code>, without waiting for Core. In the Plectrum repository, it uses <code>{command('scaffold')}</code>.</p>
 
-The central token, Figma and story-writing protocols remain in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
+Prompt templates for tokens, Figma and stories are in [`.ai/contracts/protocols/ai-prompts.md`](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/contracts/protocols/ai-prompts.md).
 
 <DocsTable
   headers={['Agent', 'Role']}
   rows={agentRoster.roles.map((role) => [role.name, role.summary])}
 />
 
-In the Plectrum checkout these roles are authored once in `.ai/agents/`; `npm run contracts:generate` writes the Cursor and VS Code files and fails CI when they drift. In an application repository, `plectrum init` writes the team roles from the installed toolkit.
+In the Plectrum repository, roles are written once in `.ai/agents/`; `npm run contracts:generate` produces the Cursor and VS Code files, and CI fails if they drift. In an application, bootstrap writes the team roles from the installed toolkit.
 
 ---
 

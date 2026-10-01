@@ -6,9 +6,9 @@ import * as Stories from './token-finder.stories';
 
 # Find a token
 
-A token is a named value. In application code, use `var(--pds-*)`; in Figma, use the published variables in Plectrum DS · PrimeNG v21. Do not copy the colour or the size.
+A token is a named value. Use `var(--pds-*)` in code and the published variables of Plectrum DS · PrimeNG v21 in Figma — never the raw colour or size.
 
-Pick what you are styling; the finder answers with the rule to follow, the snippet shape to write, and the live list of matching tokens — read from the compiled stylesheet, so it is always current.
+Pick what you are styling: the finder shows the rule to follow, a snippet and the matching tokens.
 
 <Unstyled>
   <Story of={Stories.Finder} />
@@ -22,9 +22,9 @@ Pick what you are styling; the finder answers with the rule to follow, the snipp
     ['Is it layout (flex, gap, padding, overflow)?', 'o-flex / o-layout classes in the template — never CSS in 06-components'],
     ['Is it static chrome (border, radius, resting shadow)?', 'u-* utility classes in the template'],
     ['Is there a semantic role for it?', 'Use the role (--pds-color-text, panel-border) — never a hue step like blue-500'],
-    ['Is the value component-specific?', 'Use an existing component token. If none fits, propose one; Core adds it in 01-settings before application code uses var(--pds-*)'],
-    ['Does PrimeNG own the element?', 'Use the Plectrum theme. If it needs a new --p-* to --pds-* bridge, propose the gap; Core maintains that bridge in 01-settings'],
+    ['Is the value component-specific?', 'Use an existing component token. If none fits and only your application needs it, declare it in a local token file; otherwise propose it'],
+    ['Does PrimeNG own the element?', 'Use the Plectrum theme. If you need a new --p-* to --pds-* bridge, propose it'],
   ]}
 />
 
-Playgrounds to compose values visually: [Spacing](?path=/story/foundations-spacing--playground) · [Borders](?path=/docs/foundations-borders--docs) · [Elevation](?path=/docs/foundations-elevation--docs) · [Typography](?path=/story/foundations-typography--playground) · [Colors](?path=/story/foundations-colors--playground). Full catalogues live on the other Foundations pages; the CSS contract is on [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs).
+Try values in the playgrounds: [Spacing](?path=/story/foundations-spacing--playground) · [Borders](?path=/docs/foundations-borders--docs) · [Elevation](?path=/docs/foundations-elevation--docs) · [Typography](?path=/story/foundations-typography--playground) · [Colors](?path=/story/foundations-colors--playground). What component SCSS may write: [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs).

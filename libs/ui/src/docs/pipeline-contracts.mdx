@@ -5,19 +5,11 @@ import * as Stories from './pipeline-contracts.stories';
 
 # Process and contracts
 
-This page reads the shared process contract, team registry and compatibility declaration. The installed toolkit renders `plectrum help` and its agent guidance from the same process contract, so a changed step or command reaches all three together.
-
-This is the reference for **who acts, what evidence is required and which command runs where**. For token values and their Figma sync, see [Token pipeline](?path=/docs/docs-token-pipeline--docs). For CI and release tasks, see [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
-
-## Application onboarding
-
-The source starter targets devkit 0.4.0 and bootstraps local ITCSS, Storybook, unit tests, hooks and CI adapters from the application `postinstall`. It must be published before registry consumers receive it. Follow the nine steps in [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs), including the external package-access and CI prerequisites.
-
-<Unstyled><Story of={Stories.Onboarding} /></Unstyled>
+Who does what, and which command runs where. `plectrum help` and the agents use the same process. Application setup: [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs). Token sync: [Token pipeline](?path=/docs/docs-token-pipeline--docs). CI and releases: [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
 
 ## Application candidate to Plectrum and Figma
 
-Local application scaffolding in the devkit 0.4.0 source needs no Core decision. A merged `approved-candidate` decision remains required for central submission. Earlier published toolkit versions may still require approval for scaffolding; follow their versioned documentation.
+A team builds local components without a Core decision. To submit one to Core, it needs an `approved-candidate` decision.
 
 <Unstyled><Story of={Stories.Contribution} /></Unstyled>
 
@@ -31,7 +23,7 @@ Local application scaffolding in the devkit 0.4.0 source needs no Core decision.
 
 ## Commands and repository context
 
-Run central commands from a Plectrum checkout. Run `plectrum` commands from an initialized application repository. The installed toolkit owns the offline metadata catalogue, process, schemas and token inventory; the application keeps its candidates locally.
+Run `npm run` commands in the Plectrum repository and `plectrum` commands in your application.
 
 <Unstyled><Story of={Stories.Commands} /></Unstyled>
 

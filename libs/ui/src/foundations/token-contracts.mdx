@@ -6,9 +6,9 @@ import * as Stories from './token-contracts.stories';
 
 # Token contracts
 
-Each metadata-backed component in this Plectrum catalogue declares the tokens it consumes in its `.metadata.ts`. Each listed token is checked against the compiled stylesheet, so a **not declared** row is a broken contract — the metadata references a token missing from that stylesheet. This check does not prove that the metadata lists every token used by the component.
+Each component lists the tokens it uses in its `.metadata.ts`, and each one is checked against the compiled stylesheet. A **not declared** row means the metadata names a token that does not exist: fix the list or add the token.
 
-This CSSOM check runs in the central Storybook. In an application repository, the installed toolkit's `plectrum tokens check` scans configured sources against its token inventory; it does not execute this Storybook test. Applications configure their own runtime tests and accessibility checks as described in [Build with Plectrum → Validate](?path=/docs/get-started-use-plectrum-in-an-app--docs#validate).
+In an application, `plectrum tokens check` does the equivalent check on your sources — see [Build with Plectrum → Validate](?path=/docs/get-started-use-plectrum-in-an-app--docs#validate).
 
 How metadata, the generated index and protocols fit together: [AI strategy](?path=/docs/docs-ai-strategy--docs).
 

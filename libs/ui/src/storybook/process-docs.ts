@@ -32,11 +32,6 @@ export function roleLabel(role: Role): string {
   return ROLE_LABEL[role] ?? role;
 }
 
-const REPOSITORY_LABEL: Record<Step['repository'], string> = {
-  consumer: 'application repository',
-  plectrum: 'Plectrum repository',
-};
-
 function toneOf(step: Pick<Step, 'owner' | 'repository'>): FigureTone {
   if (step.owner === 'designer') return 'design';
   if (step.owner === 'release') return 'neutral';
@@ -59,16 +54,43 @@ export function commandSummary(id: CommandId): string {
   return processContract.commands[id].summary;
 }
 
-const title = (id: string) => id.charAt(0).toUpperCase() + id.slice(1).replaceAll('-', ' ');
+/**
+ * Reader copy for each process step. The contract owns who acts, where and with which
+ * commands; these sentences only say it in plain words. process-docs.spec.ts fails when
+ * a contract step has no entry here.
+ */
+export const STEP_COPY: Readonly<Record<string, { title: string; detail: string }>> = {
+  install: { title: 'Install the packages', detail: 'Install the Plectrum packages in your application.' },
+  initialize: { title: 'Set up the application', detail: 'The plectrum bootstrap script adds the Plectrum configuration, local style layers, Storybook, tests, editor instructions, a pre-commit hook and a CI workflow.' },
+  build: { title: 'Build screens', detail: 'Compose screens from themed PrimeNG controls, Core components and --pds-* tokens.' },
+  validate: { title: 'Run the checks', detail: 'Check token usage and the Plectrum rules before each merge.' },
+  discover: { title: 'Look for an existing solution', detail: 'Search themed PrimeNG and Core components. If nothing fits, describe the gap in a proposal.' },
+  approve: { title: 'Core decides', detail: 'The core team records a decision on the proposal and names the owner.' },
+  implement: { title: 'Build the component', detail: 'Create the component in your application, with its story, unit test, metadata and evidence checklist.' },
+  submit: { title: 'Submit it to Core', detail: 'When your checks pass and Core has approved the proposal, open the intake pull request.' },
+  integrate: { title: 'Core integrates it', detail: 'The core team adds the component to the shared packages.' },
+  'design-return': { title: 'Update Figma', detail: 'A designer adds the component to Custom components and publishes the library. New tokens, if any, go back through the token sync.' },
+  'design-propose': { title: 'Propose a design', detail: 'A designer opens a proposal from a Custom components frame and names the intended owner.' },
+  'design-review': { title: 'Review the design', detail: 'The design team and Core record their decision on the design.' },
+  'design-publish': { title: 'Publish the design', detail: 'The designer publishes the approved component in Custom components, using PrimeNG 21 variables.' },
+  'export-design': { title: 'Export from Figma', detail: 'A designer pushes the approved tokens from Figma to the staging branch.' },
+  'validate-design': { title: 'Review the token sync', detail: 'Core reviews the generated pull request.' },
+  release: { title: 'Release', detail: 'A maintainer publishes the packages and their documentation.' },
+  adopt: { title: 'Report usage', detail: 'CI tells Core which Plectrum components your application uses, once the team is registered.' },
+  upgrade: { title: 'Upgrade', detail: 'Install the new release, refresh the generated files and run the checks.' },
+  'change-in-plectrum': { title: 'Implement in Plectrum', detail: 'The core team makes the change in the Plectrum repository, through a reviewed pull request.' },
+};
 
-/** One process step as a figure step: who, where, needs, provides and, unless omitted, its commands. */
+/** One process step as a figure step: who acts, what happens and, unless omitted, its commands. */
 export function docsStep(id: string, extra: Pick<DocsStep, 'links'> = {}, withCommands = true): DocsStep {
   const step = processStep(id);
+  const copy = STEP_COPY[step.id];
+  if (!copy) throw new Error(`No reader copy for process step: ${step.id}`);
   return {
-    title: title(step.id),
-    who: `${roleLabel(step.owner)} · ${REPOSITORY_LABEL[step.repository]}`,
+    title: copy.title,
+    who: roleLabel(step.owner),
     tone: toneOf(step),
-    detail: `Needs: ${step.prerequisites.join('; ')}. Provides: ${step.outputs.join('; ')}.`,
+    detail: copy.detail,
     ...(withCommands && step.commands.length ? { commands: step.commands.map((id) => command(id as CommandId)) } : {}),
     ...extra,
   };
@@ -83,12 +105,22 @@ export function journeySteps(
   return processContract.journeys[journey].map((id) => docsStep(id, { links: links[id] }, withCommands));
 }
 
+const CI_POLICY_LABEL: Readonly<Record<string, string>> = {
+  strictTokens: 'Fails on an unknown or hardcoded token',
+  requireSourceScan: 'Fails when no source or style file is scanned',
+  requireInstalledPackages: 'Fails when the Plectrum packages are missing or incompatible',
+  requireManagedAdapters: 'Fails when a generated editor or CI file is missing or edited',
+  requireCandidateStoriesAndEvidence: 'Fails when a local component lacks its story or completed evidence',
+};
+
 /** The consumer CI profile in reader words, straight from checkProfiles.consumerCi. */
 export function consumerCiRequirements(): string[] {
   const { commands, ...policy } = processContract.checkProfiles.consumerCi;
   return [
-    `Runs: ${commands.map((id) => command(id as CommandId)).join(', ')}`,
-    ...Object.entries(policy).map(([key, value]) => `${key.replace(/([A-Z])/g, ' $1').toLowerCase()}: ${value ? 'required' : 'off'}`),
+    `Runs ${commands.map((id) => command(id as CommandId)).join(', ')}`,
+    ...Object.entries(policy)
+      .filter(([, value]) => value)
+      .map(([key]) => CI_POLICY_LABEL[key] ?? key.replace(/([A-Z])/g, ' $1').toLowerCase()),
   ];
 }
 
@@ -97,17 +129,25 @@ export function profileCommands(profile: 'component' | 'release' | 'tokens'): st
   return processContract.checkProfiles[profile].map((id) => command(id as CommandId));
 }
 
-/** The four proposal decisions of the contract, with who acts next and what they provide. */
+/** Reader copy for each proposal decision; the spec fails when a contract decision has none. */
+export const OUTCOME_COPY: Readonly<Record<string, { title: string; lead: string }>> = {
+  'approved-candidate': { title: 'Build it, then submit it', lead: 'Your team builds the component and owns it. When it is ready, submit it to Core.' },
+  'use-existing': { title: 'Use what exists', lead: 'A PrimeNG control, Core component or token already covers the need.' },
+  'app-specific': { title: 'Keep it in your application', lead: 'The need is specific to your application. Build it locally; it will not be shared.' },
+  rejected: { title: 'Not accepted', lead: 'Core will not add this to the system. Your team can still build it locally.' },
+};
+
+/** The proposal decisions of the contract, in reader words. */
 export function outcomeCards(): DocsCard[] {
   return (Object.entries(processContract.proposalOutcomes) as [Decision, (typeof processContract.proposalOutcomes)[Decision]][]).map(
     ([decision, outcome]) => {
-      const next = outcome.step ? processStep(outcome.step) : null;
+      const copy = OUTCOME_COPY[decision];
+      if (!copy) throw new Error(`No reader copy for proposal decision: ${decision}`);
       return {
         eyebrow: decision,
-        title: next ? `${roleLabel(outcome.next as Role)}: ${title(next.id).toLowerCase()}` : `${roleLabel(outcome.next as Role)}: no candidate`,
-        tone: next ? toneOf(next) : 'neutral',
-        lead: outcome.effect,
-        items: next ? [`Provides: ${next.outputs.join('; ')}.`] : [],
+        title: copy.title,
+        tone: outcome.step ? toneOf(processStep(outcome.step)) : 'neutral',
+        lead: copy.lead,
       };
     },
   );

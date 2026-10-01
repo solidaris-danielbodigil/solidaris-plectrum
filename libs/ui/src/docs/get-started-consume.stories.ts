@@ -34,80 +34,76 @@ export const InstallFlow: StoryObj = {
   tags: ['!dev'],
   ...stepsStory([
     {
-      title: 'Prepare the application and package access',
-      who: 'App team + Core',
+      title: 'Prepare the application',
+      who: 'App team',
       tone: 'app',
-      detail: 'Start from the application starter or an existing Angular project. Confirm private package access and set the local identity.',
+      detail: 'Copy the starter or open an existing Angular project, and set your team identity.',
       links: [{ label: 'Prerequisites', href: '#prerequisites' }],
     },
     {
-      title: 'Install the runtime packages and devkit',
+      title: 'Install the packages',
       who: 'App team',
       tone: 'app',
-      detail: 'Install the matching released packages and peers, including PrimeNG. The starter postinstall runs the devkit bootstrap.',
+      detail: 'Run npm install. It sets up the application for Plectrum.',
       links: [{ label: 'Install the packages', href: '#install-the-packages' }],
     },
     {
-      title: 'Inspect toolkit and editor instructions',
+      title: 'Check the generated setup',
       who: 'App team',
       tone: 'app',
-      detail: 'Verify generated configuration, .ai guidance, editor adapters, hook and checks workflow.',
+      detail: 'Review the team identity and source paths in .plectrum/config.json.',
       links: [{ label: 'Initialize the team toolkit', href: '#initialize-the-team-toolkit' }],
     },
     {
-      title: 'Configure SCSS, ITCSS and assets',
+      title: 'Find your style layers',
       who: 'App team',
       tone: 'app',
-      detail: 'Verify the generated empty ITCSS layers, ordered shared/local SCSS and font/icon assets.',
+      detail: 'Your styles go in the local ITCSS layers under src/styles/.',
       links: [{ label: 'Wire the stylesheet', href: '#wire-the-stylesheet' }],
     },
     {
-      title: 'Register the Plectrum theme',
+      title: 'Check the theme',
       who: 'App team',
       tone: 'app',
-      detail: 'Add the Plectrum providers to the application and verify that a PrimeNG control renders with the theme.',
+      detail: 'A PrimeNG control should render with the Plectrum theme.',
       links: [{ label: 'Boot the theme', href: '#boot-the-theme' }],
     },
     {
       title: 'Render the first component',
       who: 'App team',
       tone: 'app',
-      detail: 'Build the Form Field example to check package imports, theme and shared styles together.',
+      detail: 'Add the Form Field example to a screen.',
       links: [{ label: 'First component', href: '#first-component' }],
     },
     {
-      title: 'Set up local Storybook and executable tests',
+      title: 'Run Storybook and the tests',
       who: 'App team',
       tone: 'app',
-      detail: 'Run local Storybook, its static build and Angular unit tests; complete interaction and accessibility evidence.',
+      detail: 'Start your local Storybook and run the unit and story tests.',
       links: [{ label: 'Set up Storybook and tests', href: '#set-up-storybook-and-tests' }],
     },
     {
-      title: 'Connect Plectrum checks to application CI',
+      title: 'Add the checks to CI',
       who: 'App team + CI owners',
       tone: 'app',
-      detail: 'Run static checks, build and tests, then map generated jobs to the Solidaris pipeline.',
+      detail: 'Run the checks before merging and decide with your CI owners which ones block.',
       links: [{ label: 'Validate', href: '#validate' }],
     },
     {
-      title: 'Verify that the team workspace is ready',
+      title: 'Confirm the setup is ready',
       who: 'App team',
       tone: 'app',
-      detail: 'Review the acceptance checklist and have a second developer reproduce the setup from the committed configuration.',
+      detail: 'A second developer reproduces it from a clean clone.',
       links: [{ label: 'Workspace readiness', href: '#workspace-readiness' }],
     },
   ]),
 };
 
-export const Initialize: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('initialize')]) };
-
-export const Validate: StoryObj = { tags: ['!dev'], ...stepsStory([docsStep('validate')]) };
-
 export const CiProfile: StoryObj = {
   tags: ['!dev'],
   ...calloutStory({
     tone: 'info',
-    title: 'The consumer CI profile',
+    title: 'What CI runs',
     items: consumerCiRequirements(),
   }),
 };
@@ -123,15 +119,15 @@ export const BeforeYouInvent: StoryObj = stepsStory([
     tone: 'app',
     title: 'Use Plectrum-themed PrimeNG',
     detail:
-      'Start in the theme gallery. Most screens are a PrimeNG control with the Plectrum theme, plus layout classes.',
-    links: [{ label: 'Theme gallery', path: '/docs/primeng-actions--docs' }],
+      'Most screens are PrimeNG controls with the Plectrum theme and layout classes.',
+    links: [{ label: 'PrimeNG components', path: '/docs/primeng-ui-kit--docs' }],
   },
   {
     who: 'App team',
     tone: 'app',
     title: 'Use a Core pds-* component',
     detail:
-      'If PrimeNG is not enough, import a Core component. Find a component lists each one and which teams already use it.',
+      'If PrimeNG is not enough, import a Core component. Find a component lists them all.',
     links: [
       { label: 'Find a component', path: '/docs/start-here-catalogue--docs' },
     ],
@@ -139,9 +135,9 @@ export const BeforeYouInvent: StoryObj = stepsStory([
   {
     who: 'App team',
     tone: 'design',
-    title: 'Build locally, propose sharing when useful',
+    title: 'Build it locally',
     detail:
-      'If nothing covers the need, the application team may create a local component. Core reviews only central intake and promotion.',
+      'If nothing fits, build the component in your application. Propose it to Core when other teams could use it.',
     links: [
       { label: 'Contribute', path: '/docs/get-started-contribute--docs' },
     ],
