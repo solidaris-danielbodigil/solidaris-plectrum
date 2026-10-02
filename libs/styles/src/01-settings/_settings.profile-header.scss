@@ -89,7 +89,9 @@
 // Custom properties inherit, so a Card projected into [slot=aside] would pick up
 // the header gradient, padding, radius and shadow. The host captures the theme
 // values before the override; the article inside the card body restores them,
-// so slot content gets the stock Card again.
+// so slot content gets the stock Card again. The capture properties are
+// internal (declared on the host, not :root), so they stay out of the
+// metadata tokens.consumed contract.
 
 .c-profile-header {
   --#{$pds-prefix}-color-profile-header-theme-card-bg: var(--p-card-background);
