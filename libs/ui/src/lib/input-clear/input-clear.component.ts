@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, output } from '@angular/core';
 import { TimesIcon } from 'primeng/icons';
 
 /**
@@ -23,6 +23,8 @@ export class InputClearComponent {
 
   readonly clear = output<void>();
 
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
   onClear(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
@@ -31,7 +33,18 @@ export class InputClearComponent {
       return;
     }
 
+    // A keyboard user activated the button, which hides itself once the field is
+    // empty: hand focus back to the field instead of leaving it on a hidden control.
+    const button = event.currentTarget as HTMLElement | null;
+    const hadFocus = !!button && button.ownerDocument.activeElement === button;
     this.clear.emit();
+    if (hadFocus) this.field()?.focus();
+  }
+
+  /** The text field this control clears: the input of the enclosing icon field or input group. */
+  private field(): HTMLInputElement | HTMLTextAreaElement | null {
+    const group = this.host.nativeElement.closest('p-iconfield, .p-iconfield, p-inputgroup, .p-inputgroup');
+    return group?.querySelector<HTMLInputElement | HTMLTextAreaElement>('input:not([type="hidden"]), textarea') ?? null;
   }
 
   /** Prevent the host input from blurring before the clear click is handled. */

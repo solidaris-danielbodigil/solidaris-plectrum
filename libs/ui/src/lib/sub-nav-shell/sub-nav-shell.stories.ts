@@ -4,7 +4,7 @@ import { provideStoryRouter } from '../../storybook/story-router';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { expect, within } from '../../storybook/story-tests';
+import { accessibleLabel, expect, fn, focused, resetFocus, tabSequence, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { SubNavShellComponent } from './sub-nav-shell.component';
 import { SubNavShellMetadata } from './sub-nav-shell.metadata';
 import { SubNavShellSection } from './sub-nav-shell.types';
@@ -319,5 +319,57 @@ export const ICRM: Story = {
     activeItemId: 'item-mon-compte',
     version: '0.1.001',
     changelogUrl: '#',
+  },
+};
+
+/**
+ * Keyboard contract (sub-nav-shell.metadata.ts → accessibility.keyboardSupport):
+ * Tab reaches the scrollable body, the items and the section headers in order,
+ * a disabled item is skipped, and Enter or Space activates a button item.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  args: {
+    title: 'Dossiers',
+    sections: [
+      { id: 'featured', label: '', items: [{ id: 'home', label: 'Accueil', icon: 'bi-house' }] },
+      {
+        id: 'files',
+        label: 'Mes dossiers',
+        items: [
+          { id: 'open', label: 'Ouverts', count: 3 },
+          { id: 'archived', label: 'Archivés', disabled: true },
+          { id: 'recent', label: 'Récents', routerLink: '/recent' },
+        ],
+      },
+    ],
+    itemClicked: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const body = canvasElement.querySelector('.c-sub-nav-shell__body')!;
+    resetFocus(canvasElement);
+    const stops: Element[] = [];
+    for (let i = 0; i < 3; i++) {
+      await userEvent.tab();
+      const element = focused(canvasElement);
+      if (!element || !canvasElement.contains(element) || stops.includes(element)) break;
+      stops.push(element);
+    }
+    const labels = (list: Element[]) => list.map((element) => (element === body ? 'body' : accessibleLabel(element).replace(/\s*\d+$/, '')));
+    // Sections start collapsed: their items are not in the tab order yet.
+    await expect(labels(stops)).toEqual(['body', 'Accueil', 'Mes dossiers']);
+    // Enter opens the section (PrimeNG); Tab then reaches its items and skips the disabled one.
+    await userEvent.keyboard('{Enter}');
+    // Wait for the panel to finish opening: Tab skips items that are still collapsed.
+    await waitFor(() => expect(within(canvasElement).getByRole('button', { name: /Ouverts/ })).toBeVisible());
+    const [open, recent] = await tabSequence(canvasElement, 2);
+    await expect(open).toMatch(/^Ouverts/);
+    await expect(recent).toBe('Récents');
+
+    within(canvasElement).getByRole('button', { name: /Ouverts/ }).focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    await expect(args.itemClicked).toHaveBeenCalledTimes(2);
+    await expect(args.itemClicked).toHaveBeenCalledWith(expect.objectContaining({ id: 'open' }));
   },
 };

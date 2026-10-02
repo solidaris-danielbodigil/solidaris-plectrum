@@ -215,6 +215,10 @@ export class TopNavComponent {
   });
 
   readonly searchInputId = 'top-nav-search';
+  readonly searchToggleId = 'top-nav-search-toggle';
+
+  /** Set while Escape hands focus back to the search toggle, so that focus does not reopen the search. */
+  private returningFocusToToggle = false;
 
   onBackClick(): void {
     this.backClicked.emit();
@@ -241,6 +245,12 @@ export class TopNavComponent {
     this.setSearchExpanded(false);
   }
 
+  /** Focus on the collapsed toggle opens the search, except when Escape just returned focus to it. */
+  onSearchToggleFocus(): void {
+    if (this.returningFocusToToggle) return;
+    this.openSearch();
+  }
+
   onSearchInput(event: Event): void {
     const target = event.target as HTMLInputElement;
     this._searchQuery.set(target.value);
@@ -259,6 +269,12 @@ export class TopNavComponent {
     if (event.key === 'Escape') {
       event.preventDefault();
       this.closeSearch();
+      // The field is removed: put focus back on the toggle that replaces it.
+      this.returningFocusToToggle = true;
+      setTimeout(() => {
+        document.getElementById(this.searchToggleId)?.focus();
+        this.returningFocusToToggle = false;
+      }, 0);
       return;
     }
 

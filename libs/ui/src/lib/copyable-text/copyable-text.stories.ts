@@ -1,6 +1,7 @@
 import { Component, inject, input } from '@angular/core';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, within } from 'storybook/test';
+import { expectFocus, isSkippedByTab, stubClipboard, tabTo, userEvent } from '../../storybook/story-tests';
 import { IconRegistry, registerPlectrumIcons } from '../icon';
 import type { IconSize } from '../icon/icon.types';
 import { showStorybookToast } from '../../storybook/storybook-toast';
@@ -187,5 +188,38 @@ export const Disabled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole('button')).toBeDisabled();
+  },
+};
+
+/**
+ * Keyboard contract (copyable-text.metadata.ts → accessibility.keyboardSupport):
+ * Tab reaches the copy button, Enter and Space copy, focus stays on the button,
+ * and a disabled chip is skipped.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-copyable-text [label]="label" [value]="value" />
+      <pds-copyable-text label="NISS" value="85.07.30-033.28" [disabled]="true" />
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const clipboard = stubClipboard(canvasElement);
+    try {
+      const canvas = within(canvasElement);
+      const [copy, disabled] = canvas.getAllByRole('button');
+      await tabTo(canvasElement, copy);
+      await expect(copy).toHaveAccessibleName('Copier Territoire');
+      await userEvent.keyboard('{Enter}');
+      await expect(clipboard.writes).toEqual(['319']);
+      await userEvent.keyboard(' ');
+      await expect(clipboard.writes).toEqual(['319', '319']);
+      await expectFocus(copy);
+      await expect(await isSkippedByTab(canvasElement, disabled)).toBe(true);
+    } finally {
+      clipboard.restore();
+    }
   },
 };

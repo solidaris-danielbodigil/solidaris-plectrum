@@ -107,6 +107,9 @@ export class ListComponent {
   }>();
 
   private readonly tagPopover = viewChild<Popover>('tagPopover');
+
+  /** Tag that opened the target picker from the keyboard; focus moves into the picker and back to it. */
+  private keyboardTagAnchor: HTMLElement | null = null;
   private readonly tagAnchorRect = signal<DOMRectReadOnly | null>(null);
   readonly tagPopoverStyle = signal<Record<string, string> | undefined>(
     undefined,
@@ -372,6 +375,7 @@ export class ListComponent {
       return;
     }
 
+    this.keyboardTagAnchor = event instanceof KeyboardEvent ? anchor : null;
     const rect = anchor.getBoundingClientRect();
     this.tagAnchorRect.set(rect);
     this.tagPopoverStyle.set(this.popoverStyleFromRect(rect));
@@ -382,11 +386,24 @@ export class ListComponent {
 
   onTagPopoverShow(): void {
     this.scheduleTagPopoverReposition();
+    // The picker is appended to body, out of the tab order after the tag: a
+    // keyboard user lands on its first option instead.
+    if (this.keyboardTagAnchor) {
+      requestAnimationFrame(() =>
+        document.body.querySelector<HTMLElement>('.c-list__tag-target-list [role="option"]')?.focus(),
+      );
+    }
   }
 
   onTagPopoverHide(): void {
     this.tagAnchorRect.set(null);
     this.tagPopoverStyle.set(undefined);
+    const anchor = this.keyboardTagAnchor;
+    this.keyboardTagAnchor = null;
+    const active = document.activeElement;
+    if (anchor?.isConnected && (!active || active === document.body || active.closest('.p-popover'))) {
+      anchor.focus();
+    }
   }
 
   private resolveTagAnchor(

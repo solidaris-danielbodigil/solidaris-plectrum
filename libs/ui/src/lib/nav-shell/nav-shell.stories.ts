@@ -8,7 +8,7 @@ import { provideStoryRouter } from '../../storybook/story-router';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { expect, within } from '../../storybook/story-tests';
+import { expect, expectFocus, fn, resetFocus, tabSequence, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { NavShellComponent } from './nav-shell.component';
 import { NavShellMetadata } from './nav-shell.metadata';
 import { IconRegistry } from '../icon/icon.registry';
@@ -237,5 +237,34 @@ export const Empty: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole('navigation')).toBeVisible();
     await expect(canvas.queryByRole('link')).toBeNull();
+  },
+};
+
+/**
+ * Keyboard contract (nav-shell.metadata.ts → accessibility.keyboardSupport):
+ * Tab moves through the links in order, focus inside widens the shell so the
+ * labels show, and Enter activates the focused link.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  decorators: [shellFrame],
+  args: {
+    items: SAMPLE_ITEMS,
+    activeItemId: null,
+    itemClicked: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    // The panel overlays the page: the reserved footprint stays, the panel grows.
+    const panel = canvasElement.querySelector('.c-nav-shell__panel')!;
+    const collapsed = panel.getBoundingClientRect().width;
+    resetFocus(canvasElement);
+    await expect(await tabSequence(canvasElement, 3)).toEqual(['iCRM', 'iShare', 'iGED']);
+    await waitFor(() => expect(panel.getBoundingClientRect().width).toBeGreaterThan(collapsed));
+    await userEvent.tab({ shift: true });
+    const ishare = canvas.getByRole('link', { name: /iShare/ });
+    await expectFocus(ishare);
+    await userEvent.keyboard('{Enter}');
+    await expect(args.itemClicked).toHaveBeenCalledWith(expect.objectContaining({ id: 'ishare' }));
   },
 };

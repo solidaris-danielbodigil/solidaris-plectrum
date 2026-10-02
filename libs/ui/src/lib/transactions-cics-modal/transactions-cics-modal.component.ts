@@ -1,12 +1,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   ViewEncapsulation,
   computed,
+  effect,
+  inject,
   input,
   model,
   output,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -90,6 +94,16 @@ export class TransactionsCicsModalComponent {
 
   readonly transactionLaunch = output<TransactionsCicsRow>();
 
+  private readonly document = inject(DOCUMENT);
+
+  /** Element focused before the dialog opened; PrimeNG Dialog does not hand focus back on close. */
+  private focusOrigin: HTMLElement | null = null;
+
+  private readonly focusReturn = effect(() => {
+    const visible = this.visible();
+    untracked(() => (visible ? this.captureFocusOrigin() : this.restoreFocusOrigin()));
+  });
+
   readonly searchQuery = signal('');
 
   readonly filteredRows = computed(() => {
@@ -116,5 +130,21 @@ export class TransactionsCicsModalComponent {
 
   onHide(): void {
     this.searchQuery.set('');
+  }
+
+  private captureFocusOrigin(): void {
+    const active = this.document.activeElement;
+    this.focusOrigin = active instanceof HTMLElement && active !== this.document.body ? active : null;
+  }
+
+  /** Return focus to the trigger unless the user already moved it somewhere else. */
+  private restoreFocusOrigin(): void {
+    const origin = this.focusOrigin;
+    this.focusOrigin = null;
+    if (!origin?.isConnected) return;
+    const active = this.document.activeElement;
+    if (!active || active === this.document.body || active.closest('.p-dialog, .p-dialog-mask')) {
+      origin.focus({ preventScroll: true });
+    }
   }
 }
