@@ -7,7 +7,6 @@ import type {
 export const DEAD_END_TARGETS = [
   'drawer-menu',
   'drawer-quick-actions',
-  'affiliate-overview-status-action',
   'actions-rapides',
 ] as const;
 

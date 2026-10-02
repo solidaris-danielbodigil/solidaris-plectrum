@@ -1,6 +1,8 @@
 @use '../01-settings/settings.prefix' as *;
 @use '../02-tools/tools.typography' as *;
 
+// DEPRECATED with plectrum:profile-card — replaced by _components.profile-header.scss. Remove in the next major.
+
 // =============================================================================
 // 06-components/_components.profile-card.scss
 // c-profile-card — iSHARE affiliate audit summary card.

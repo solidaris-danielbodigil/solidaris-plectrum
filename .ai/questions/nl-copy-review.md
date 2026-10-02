@@ -13,7 +13,8 @@ Dictionaries (NL-BE, u-form):
 - `libs/ui/src/lib/copyable-text/copyable-text.i18n.ts`
 - `libs/ui/src/lib/top-nav/top-nav.i18n.ts`
 - `libs/ui/src/lib/list/list.i18n.ts`
-- `libs/ui/src/lib/profile-card/profile-card.i18n.ts`
+- `libs/ui/src/lib/profile-card/profile-card.i18n.ts` (deprecated — same strings as Profile header)
+- `libs/ui/src/lib/profile-header/profile-header.i18n.ts` — new key `infoTagsLabel`: FR *Filtres rapides* / NL **Snelfilters** (2026-10-02)
 - `libs/ui/src/lib/profile-drawer/profile-drawer.i18n.ts`
 - `libs/ui/src/lib/delay-prediction-card/delay-prediction-card.i18n.ts`
 - `libs/ui/src/lib/transactions-cics-modal/transactions-cics-modal.i18n.ts`

@@ -1,0 +1,161 @@
+@use '../01-settings/settings.prefix' as *;
+@use '../02-tools/tools.typography' as *;
+
+// =============================================================================
+// 06-components/_components.profile-header.scss
+// c-profile-header — shell header for one person (pds-profile-header).
+//
+// Avatar | body (top bar: name, status, info tags, [slot=actions] ·
+// bottom: identifiers, [slot=aside]) and an optional nav row
+// ([slot=nav] + [slot=nav-end]). Layout (flex, gap, wrap, grow/shrink, the
+// 8-point padding) via o-flex / o-layout mixes in the template.
+//
+// Design ref:   Figma IRkr21rHS0w7rI0bgrv1fZ node 2438:10587 (anatomy 2587:997)
+// Token source: libs/styles/src/01-settings/_settings.profile-header.scss
+// Replaces:     _components.profile-card.scss (deprecated)
+// =============================================================================
+
+// ── Frame ───────────────────────────────────────────────────────────────────
+
+// Bottom edge: Figma 2438:10587 has no stroke; iShare (no tabs) keeps a
+// content/border line (u-border-bottom in the template). With tabs in
+// [slot=nav] the tablist border is the bottom edge, so the card drops its own
+// — one line, one grey.
+.c-profile-header__card:has(.c-profile-header__nav:not(:empty)) {
+  border-block-end-width: 0;
+}
+
+// Figma Container px 20 — off the 8-point scale, so a component token.
+.c-profile-header__main {
+  padding-inline: var(--#{$pds-prefix}-space-profile-header-padding-inline);
+}
+
+// Figma Top Bar h 56 — the large avatar, so loading and loaded rows match.
+.c-profile-header__top-bar {
+  min-block-size: var(--#{$pds-prefix}-size-profile-header-top-bar-min-h);
+}
+
+// ── Name ────────────────────────────────────────────────────────────────────
+
+.c-profile-header__title {
+  @include text-heading-md;
+  color: var(--#{$pds-prefix}-color-text);
+}
+
+.c-profile-header__name {
+  min-inline-size: 0;
+  text-align: start;
+}
+
+.c-profile-header__name-text {
+  @include text-heading-md;
+  min-inline-size: 0;
+  color: currentcolor;
+}
+
+.c-profile-header__name-icon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+// ── Status action ───────────────────────────────────────────────────────────
+
+// Figma Functional/button-md — SemiBold label (node 2371:3075).
+.c-profile-header__status-label {
+  font-weight: var(--#{$pds-prefix}-font-weight-semibold);
+}
+
+.c-profile-header__status-icon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c-profile-header__status-badge {
+  flex-shrink: 0;
+}
+
+// ── Info tags ───────────────────────────────────────────────────────────────
+// Filterable tags are PrimeNG ToggleButtons, display-only ones PrimeNG Tags —
+// both carry their own chrome; only the label / value weights are ours.
+
+// Pressed cue beside the theme's checked segment (WCAG 1.4.1).
+.c-profile-header__info-tag-icon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c-profile-header__info-tag-label {
+  font-weight: var(--#{$pds-prefix}-font-weight-regular);
+}
+
+.c-profile-header__info-tag-value {
+  font-weight: var(--#{$pds-prefix}-font-weight-bold);
+}
+
+// ── Identifiers ─────────────────────────────────────────────────────────────
+
+.c-profile-header__identifier-separator {
+  color: var(--#{$pds-prefix}-color-text-muted);
+  user-select: none;
+}
+
+// ── Slots — collapse when nothing is projected so gaps do not apply ─────────
+
+.c-profile-header__actions:empty,
+.c-profile-header__aside:empty,
+.c-profile-header__nav-end:empty {
+  display: none;
+}
+
+.c-profile-header__nav-row:has(> .c-profile-header__nav:empty):has(> .c-profile-header__nav-end:empty) {
+  display: none;
+}
+
+// Figma Selectbutton pr 20 — node 2479:5107.
+.c-profile-header__nav-end {
+  padding-inline-end: var(--#{$pds-prefix}-space-profile-header-padding-inline);
+}
+
+// ── Loading skeleton ────────────────────────────────────────────────────────
+
+.c-profile-header__skeleton-slot {
+  &--name {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-name-w);
+    block-size: var(--#{$pds-prefix}-size-profile-header-skeleton-name-h);
+    border-radius: var(--#{$pds-prefix}-radius-lg);
+  }
+
+  &--status {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-status-w);
+    block-size: var(--#{$pds-prefix}-size-profile-header-skeleton-status-h);
+    border-radius: var(--#{$pds-prefix}-radius-lg);
+  }
+
+  &--info-tags {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-info-tags-w);
+    max-inline-size: 100%;
+    block-size: var(--#{$pds-prefix}-size-profile-header-skeleton-info-tags-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--identifier {
+    block-size: var(--#{$pds-prefix}-size-profile-header-skeleton-identifier-h);
+    border-radius: var(--#{$pds-prefix}-radius-md);
+  }
+
+  &--identifier-1 {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-identifier-w-1);
+  }
+
+  &--identifier-2 {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-identifier-w-2);
+  }
+
+  &--identifier-3 {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-identifier-w-3);
+  }
+
+  &--identifier-4 {
+    inline-size: var(--#{$pds-prefix}-size-profile-header-skeleton-identifier-w-4);
+  }
+}

@@ -8,7 +8,11 @@ import { showStorybookToast } from '../../storybook/storybook-toast';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { CopyableTextComponent } from './copyable-text.component';
+import {
+  CopyableTextComponent,
+  type CopyableTextIconPosition,
+  type CopyableTextLabelWeight,
+} from './copyable-text.component';
 import { CopyableTextMetadata } from './copyable-text.metadata';
 
 @Component({
@@ -21,6 +25,8 @@ import { CopyableTextMetadata } from './copyable-text.metadata';
       [value]="value()"
       [ariaLabel]="ariaLabel()"
       [iconSize]="iconSize()"
+      [iconPosition]="iconPosition()"
+      [labelWeight]="labelWeight()"
       [disabled]="disabled()"
       (copied)="onCopied($event)"
     />
@@ -35,6 +41,8 @@ class CopyableTextToastDemoComponent {
   readonly value = input.required<string>();
   readonly ariaLabel = input<string | undefined>(undefined);
   readonly iconSize = input<IconSize>('xs');
+  readonly iconPosition = input<CopyableTextIconPosition>('start');
+  readonly labelWeight = input<CopyableTextLabelWeight>('semibold');
   readonly disabled = input(false);
 
   onCopied(value: string): void {
@@ -104,10 +112,14 @@ const meta: Meta<CopyableTextComponent> = {
     label: 'Territoire',
     value: '319',
     iconSize: 'xs',
+    iconPosition: 'start',
+    labelWeight: 'semibold',
     disabled: false,
   },
   argTypes: argTypesFromProps(CopyableTextMetadata.props ?? [], {
     iconSize: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    iconPosition: { control: 'radio', options: ['start', 'end'] },
+    labelWeight: { control: 'radio', options: ['semibold', 'regular'] },
   }),
   render: (args) => ({
     props: args,
@@ -117,6 +129,8 @@ const meta: Meta<CopyableTextComponent> = {
         [value]="value"
         [ariaLabel]="ariaLabel"
         [iconSize]="iconSize"
+        [iconPosition]="iconPosition"
+        [labelWeight]="labelWeight"
         [disabled]="disabled"
       />
     `,
@@ -154,6 +168,22 @@ export const IdentifierRow: Story = {
   }),
   args: {
     iconSize: 'sm',
+  },
+};
+
+/** Profile header identifier chip — Figma inplace 2443:4217: icon after the value, regular label. */
+export const IconEnd: Story = {
+  args: {
+    label: 'NISS',
+    value: '63092814612',
+    iconPosition: 'end',
+    labelWeight: 'regular',
+    iconSize: 'md',
+  },
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole('button', { name: 'Copier NISS' });
+    await expect(button).toHaveClass('c-copyable-text--label-regular');
+    await expect(button.lastElementChild).toHaveClass('c-copyable-text__icon');
   },
 };
 

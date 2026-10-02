@@ -12,6 +12,7 @@ export * from './lib/nav-shell';
 export * from './lib/plectrum-avatar';
 export * from './lib/profile-card';
 export * from './lib/profile-drawer';
+export * from './lib/profile-header';
 export * from './lib/sub-nav-shell';
 export * from './lib/testing-telemetry';
 export * from './lib/toolbar';

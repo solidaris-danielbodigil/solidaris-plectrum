@@ -15,7 +15,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     scssPath: 'libs/styles/src/06-components/_components.plectrum-avatar.scss',
     figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-1586',
     created: '2026-06-04',
-    modified: '2026-09-09',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'angular', entryPoint: '.', exportName: 'PlectrumAvatarComponent' },
   governance: {
@@ -134,7 +134,7 @@ export const PlectrumAvatarMetadata: ComponentMetadata = {
     nestedComponents: [],
     parentConstraints: [
       'TopNavComponent — avatar menu trigger (focusable="false" inside the button)',
-      'ProfileCardComponent — large illustrated avatar named by the title',
+      'ProfileHeaderComponent — large illustrated avatar named by the title',
       'ProfileDrawerComponent — large header avatar and small coloured related-person avatars',
     ],
     companions: [],

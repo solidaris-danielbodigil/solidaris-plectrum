@@ -1,0 +1,161 @@
+import { Meta, Canvas, Controls, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './profile-header.stories';
+
+<Meta of={Stories} />
+
+# Profile Header
+
+<Unstyled>
+  <Story of={Stories.Status} />
+</Unstyled>
+
+## Default
+
+Name button (opens the profile, Alt+A), quick-filter tags and copyable identifiers. Without content in the slots, the actions, aside and nav rows collapse.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Minimal
+
+Title only — without `primaryAction` the name is plain heading text; without tags or identifiers those rows collapse.
+
+<Canvas of={Stories.Minimal} />
+
+## Usage
+
+<Unstyled>
+  <Story of={Stories.Usage} />
+</Unstyled>
+
+## Patterns
+
+<Unstyled>
+  <Story of={Stories.Patterns} />
+</Unstyled>
+
+## With slots
+
+The full Figma composition. The icon actions, action buttons, A-valoir panel, tabs and view switch are example content projected into `[slot=actions]`, `[slot=aside]`, `[slot=nav]` and `[slot=nav-end]` — the application owns them. The A-valoir panel is a PrimeNG Card: the header's own Card bridges do not reach it, so it keeps the theme look. With tabs in `[slot=nav]` the tablist border is the bottom edge and the header drops its own.
+
+<Canvas of={Stories.WithSlots} />
+
+## Anatomy
+
+<Unstyled>
+  <Story of={Stories.Anatomy} />
+</Unstyled>
+
+## Variants
+
+<Unstyled>
+  <Story of={Stories.Variants} />
+</Unstyled>
+
+## In order
+
+Success status — check icon and the success gradient.
+
+<Canvas of={Stories.InOrder} />
+
+## Warning
+
+Single status action with a code badge — warning gradient; the button emits `statusActionClick`. Its accessible name starts with the visible « Actions à réaliser: C4 ».
+
+<Canvas of={Stories.Warning} />
+
+## Danger
+
+Critical status — octagon icon and the danger gradient.
+
+<Canvas of={Stories.Danger} />
+
+## Variant fallback
+
+No `statusAction`: `variant` alone picks the gradient — no status button.
+
+<Canvas of={Stories.VariantFallback} />
+
+## Single status menu item
+
+Exactly one `menuItems` entry: no SplitButton — the plain Button stands for that item, runs its `command` and emits `statusMenuSelect`.
+
+<Canvas of={Stories.SingleStatusMenuItem} />
+
+## Multiple status actions
+
+More than one `menuItems` entry: a SplitButton with the action count. The main button and the chevron both open the menu; `statusMenuSelect` reports the enabled item chosen. When the menu closes, focus returns to the half that opened it.
+
+<Canvas of={Stories.MultipleStatusActions} />
+
+## Disabled status
+
+`statusAction.disabled` keeps the status visible but inert.
+
+<Canvas of={Stories.DisabledStatus} />
+
+## Disabled status actions
+
+With several `menuItems`, `disabled` turns off both halves of the SplitButton — no menu opens.
+
+<Canvas of={Stories.DisabledStatusActions} />
+
+## Info tag filters
+
+Tags with a `filterKey` are PrimeNG ToggleButtons, one pressed at a time — the pressed one also shows a check icon. The last tag has no `filterKey` and stays a display-only Tag.
+
+<Canvas of={Stories.InfoTagFilters} />
+
+## Loading
+
+Skeleton placeholders for the avatar, name, status, tags and identifiers.
+
+<Canvas of={Stories.Loading} />
+
+## Simulated loading
+
+Skeleton for one second, then the loaded header — previews the transition.
+
+<Canvas of={Stories.SimulatedLoading} />
+
+## Wrapped layout
+
+Narrow container — the top bar, tags and identifiers wrap.
+
+<Canvas of={Stories.WrappedLayout} />
+
+## Dutch
+
+`PDS_LOCALE` set to `nl` — status prefix, filter group and copy labels in Dutch.
+
+<Canvas of={Stories.Dutch} />
+
+## Copy with toast
+
+Copy an identifier — the canvas listens to `identifierCopy` for the preview toast.
+
+<Canvas of={Stories.CopyWithToast} />
+
+## Examples
+
+<Unstyled>
+  <Story of={Stories.Examples} />
+</Unstyled>
+
+## Composition
+
+<Unstyled>
+  <Story of={Stories.Composition} />
+</Unstyled>
+
+## Behavior
+
+<Unstyled>
+  <Story of={Stories.Behavior} />
+</Unstyled>
+
+## Accessibility
+
+<Unstyled>
+  <Story of={Stories.Accessibility} />
+</Unstyled>

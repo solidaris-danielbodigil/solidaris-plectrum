@@ -1,0 +1,251 @@
+<p-card styleClass="c-profile-header__card u-border-bottom">
+  <article
+    class="c-profile-header__content o-flex o-flex--y"
+    [attr.aria-labelledby]="loading() ? null : titleId"
+    [attr.aria-label]="loading() ? title() : null"
+    [attr.aria-busy]="loading() || null"
+  >
+    <!-- Avatar + person block — Figma 2371:4244 -->
+    <div
+      class="c-profile-header__main o-flex o-flex--align-items-flex-start o-layout o-layout--gap-2 o-layout--padding-block-end-1 o-layout--min-w-0"
+    >
+      @if (loading()) {
+        <p-skeleton
+          shape="circle"
+          size="var(--pds-size-avatar-large-h)"
+          styleClass="c-profile-header__skeleton-avatar o-flex__item o-flex__item--shrink-0"
+          aria-hidden="true"
+        />
+      } @else {
+        <pds-plectrum-avatar
+          class="c-profile-header__avatar o-flex__item o-flex__item--shrink-0"
+          size="large"
+          [initials]="avatarInitials()"
+          [gender]="avatarGender()"
+          [variant]="avatarVariant()"
+          [focusable]="false"
+        />
+      }
+
+      <div
+        class="c-profile-header__body o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--gap-1 o-layout--min-w-0"
+      >
+        <!-- Top bar — Figma 2443:6002 -->
+        <div
+          class="c-profile-header__top-bar o-flex o-flex--align-items-center o-flex--justify-content-space-between o-flex--wrap o-layout o-layout--gap-2 o-layout--min-w-0"
+        >
+          @if (loading()) {
+            <div
+              class="c-profile-header__primary o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-2 o-layout--min-w-0"
+              aria-hidden="true"
+            >
+              <span class="c-skeleton-slot c-profile-header__skeleton-slot c-profile-header__skeleton-slot--name">
+                <p-skeleton />
+              </span>
+              <span class="c-skeleton-slot c-profile-header__skeleton-slot c-profile-header__skeleton-slot--status">
+                <p-skeleton />
+              </span>
+              <span class="c-skeleton-slot c-profile-header__skeleton-slot c-profile-header__skeleton-slot--info-tags">
+                <p-skeleton />
+              </span>
+            </div>
+          } @else {
+            <!-- Primary info — Figma 2443:6003 -->
+            <div
+              class="c-profile-header__primary o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-2 o-layout--min-w-0"
+            >
+              <h2 [id]="titleId" class="c-profile-header__title o-layout o-layout--margin-0 o-layout--min-w-0">
+                @if (primaryAction(); as action) {
+                  <button
+                    pButton
+                    type="button"
+                    outlined
+                    class="c-profile-header__name"
+                    data-telemetry-id="profile-header-name-action"
+                    [pdsTelemetryLabel]="action.label"
+                    [attr.aria-label]="primaryActionAriaLabel()"
+                    [attr.aria-keyshortcuts]="primaryActionAriaKeyShortcuts()"
+                    [pTooltip]="primaryActionTooltip()"
+                    tooltipPosition="bottom"
+                    tooltipEvent="both"
+                    (click)="onPrimaryActionClick()"
+                  >
+                    <span class="c-profile-header__name-text">{{ title() }}</span>
+                    <i class="c-profile-header__name-icon" [class]="primaryActionIcon()" aria-hidden="true"></i>
+                  </button>
+                } @else {
+                  {{ title() }}
+                }
+              </h2>
+
+              @if (showStatusAction() && statusAction(); as action) {
+                @if (hasMultipleStatusActions()) {
+                  <p-splitbutton
+                    #statusSplitButton
+                    styleClass="c-profile-header__status-action"
+                    data-telemetry-id="profile-header-status-action"
+                    [pdsTelemetryLabel]="statusActionsMultipleLabel()"
+                    [severity]="action.severity"
+                    [model]="statusMenuModel()"
+                    [disabled]="action.disabled ?? false"
+                    [menuButtonDisabled]="action.disabled ?? false"
+                    [buttonProps]="statusButtonProps()"
+                    [pt]="statusSplitButtonPt()"
+                    [expandAriaLabel]="statusActionExpandAriaLabel()"
+                    dropdownIcon="bi bi-chevron-down"
+                    (onClick)="onStatusSplitMainClick()"
+                    (onDropdownClick)="onStatusDropdownClick()"
+                    (onMenuShow)="onStatusMenuShow()"
+                    (onMenuHide)="onStatusMenuHide()"
+                  >
+                    <ng-template #content>
+                      @if (statusActionIcon(); as icon) {
+                        <i class="c-profile-header__status-icon" [class]="icon" aria-hidden="true"></i>
+                      }
+                      <span class="c-profile-header__status-label">{{ statusActionsMultipleLabel() }}</span>
+                      <p-badge
+                        class="c-profile-header__status-badge"
+                        [value]="statusActionCount()"
+                        severity="contrast"
+                        size="small"
+                      />
+                    </ng-template>
+                  </p-splitbutton>
+                } @else {
+                  <button
+                    pButton
+                    type="button"
+                    class="c-profile-header__status-action"
+                    data-telemetry-id="profile-header-status-action"
+                    [pdsTelemetryLabel]="action.label"
+                    [severity]="action.severity"
+                    [disabled]="statusActionDisabled()"
+                    [attr.aria-label]="statusActionAriaLabel()"
+                    (click)="onStatusActionClick($event)"
+                  >
+                    @if (statusActionIcon(); as icon) {
+                      <i class="c-profile-header__status-icon" [class]="icon" aria-hidden="true"></i>
+                    }
+                    @if (action.tagValue) {
+                      <span class="c-profile-header__status-label">{{ statusActionTagPrefix() }}</span>
+                      <p-badge
+                        class="c-profile-header__status-badge"
+                        [value]="action.tagValue"
+                        severity="contrast"
+                        size="small"
+                      />
+                    } @else {
+                      <span class="c-profile-header__status-label">{{ action.label }}</span>
+                    }
+                  </button>
+                }
+              }
+
+              <!-- Quick-filter tags — Figma 2443:6006 -->
+              @if (infoTags().length > 0) {
+                <div
+                  class="c-profile-header__info-tags o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-2"
+                  role="group"
+                  data-telemetry-id="profile-header-info-tags"
+                  [attr.aria-label]="infoTagsLabel()"
+                >
+                  @for (tag of infoTags(); track tag.label) {
+                    @if (tag.filterKey) {
+                      <!-- Quick filter — PrimeNG ToggleButton (role=button, aria-pressed); one pressed at a time -->
+                      <p-togglebutton
+                        styleClass="c-profile-header__info-tag"
+                        size="small"
+                        [pdsTelemetryLabel]="tag.label"
+                        [ngModel]="isInfoTagPressed(tag)"
+                        (onChange)="onInfoTagClick(tag)"
+                      >
+                        <ng-template #content let-checked>
+                          <!-- Non-colour pressed cue (WCAG 1.4.1): theme checked/unchecked backgrounds are 1.38:1 -->
+                          @if (checked) {
+                            <i class="c-profile-header__info-tag-icon bi bi-check-lg" aria-hidden="true"></i>
+                          }
+                          <span class="c-profile-header__info-tag-label">{{ tag.label }}</span>
+                          <strong class="c-profile-header__info-tag-value">{{ tag.value }}</strong>
+                        </ng-template>
+                      </p-togglebutton>
+                    } @else {
+                      <p-tag class="c-profile-header__info-tag-static" severity="secondary">
+                        <span class="c-profile-header__info-tag-label">{{ tag.label }}</span>
+                        <strong class="c-profile-header__info-tag-value">{{ tag.value }}</strong>
+                      </p-tag>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Slot actions — Figma 2443:6011 (icon actions, action buttons) -->
+          <div
+            class="c-profile-header__actions o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-6"
+          >
+            <ng-content select="[slot=actions]" />
+          </div>
+        </div>
+
+        <!-- Bottom section — Figma 2443:6022 -->
+        <div
+          class="c-profile-header__bottom o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-4 o-layout--min-w-0"
+        >
+          @if (loading()) {
+            <div
+              class="c-profile-header__identifiers o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-1"
+              aria-hidden="true"
+            >
+              @for (slot of skeletonIdentifierSlots; track slot) {
+                <span
+                  class="c-skeleton-slot c-profile-header__skeleton-slot c-profile-header__skeleton-slot--identifier c-profile-header__skeleton-slot--identifier-{{ slot }}"
+                >
+                  <p-skeleton />
+                </span>
+              }
+            </div>
+          } @else if (identifiers().length > 0) {
+            <!-- Label group — Figma 2443:6023 -->
+            <div
+              class="c-profile-header__identifiers o-flex o-flex--align-items-center o-flex--wrap o-layout o-layout--gap-1"
+            >
+              @for (identifier of identifiers(); track identifier.label; let last = $last) {
+                <pds-copyable-text
+                  [label]="identifier.label"
+                  [value]="identifier.value"
+                  iconPosition="end"
+                  labelWeight="regular"
+                  iconSize="md"
+                  (copied)="onIdentifierCopy(identifier)"
+                />
+                @if (!last) {
+                  <span class="c-profile-header__identifier-separator" aria-hidden="true">•</span>
+                }
+              }
+            </div>
+          }
+
+          <!-- Slot aside — Figma 2443:6035 (A-valoir panel) -->
+          <div
+            class="c-profile-header__aside o-flex o-flex--justify-content-flex-end o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0"
+          >
+            <ng-content select="[slot=aside]" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav row — Figma 2371:4439 (shell tabs + view select button) -->
+    <div
+      class="c-profile-header__nav-row o-flex o-flex--align-items-flex-end o-layout o-layout--gap-6 o-layout--min-w-0"
+    >
+      <div class="c-profile-header__nav o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
+        <ng-content select="[slot=nav]" />
+      </div>
+      <div class="c-profile-header__nav-end o-flex__item o-flex__item--shrink-0">
+        <ng-content select="[slot=nav-end]" />
+      </div>
+    </div>
+  </article>
+</p-card>

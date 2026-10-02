@@ -22,7 +22,7 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
     figmaUrl:
       'https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-?node-id=373-13726',
     created: '2026-09-09',
-    modified: '2026-09-09',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'styles' },
   governance: {
@@ -32,7 +32,7 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
   usage: {
     useCases: [
       'Loading placeholders that must match the eventual line or badge size',
-      'List and profile-card loading states that already wrap p-skeleton',
+      'List and profile-header loading states that already wrap p-skeleton',
     ],
     commonPatterns: [
       {
@@ -90,13 +90,13 @@ export const SkeletonSlotMetadata: ComponentMetadata = {
   },
   composition: {
     nestedComponents: ['Skeleton'],
-    companions: ['ProfileCardComponent'],
+    companions: ['ProfileHeaderComponent', 'ProfileCardComponent'],
     slots: [],
   },
   aiHints: {
     priority: 'medium',
     context:
-      'Generic sized wrappers for PrimeNG p-skeleton loading placeholders — the slot matches a text line, the count badge a circle. Reference usage: Affiliate Overview Card loading state (libs/ui) and the iSHARE affiliate document detail skeletons. There is no Plectrum UI Kit node.',
+      'Generic sized wrappers for PrimeNG p-skeleton loading placeholders — the slot matches a text line, the count badge a circle. Reference usage: Profile header loading state (libs/ui) and the iSHARE affiliate document detail skeletons. There is no Plectrum UI Kit node.',
     selectionCriteria: {
       'loading placeholder matching a text line': 'use c-skeleton-slot around p-skeleton',
       'count / avatar placeholder': 'use c-skeleton-count-badge with shape="circle"',

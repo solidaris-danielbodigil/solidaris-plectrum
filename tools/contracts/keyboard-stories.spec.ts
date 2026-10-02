@@ -20,6 +20,7 @@ test('interactive components are read from the source and each has a keyboard st
     'plectrum:nav-shell',
     'plectrum:plectrum-avatar',
     'plectrum:profile-drawer',
+    'plectrum:profile-header',
     'plectrum:sub-nav-shell',
     'plectrum:top-nav',
     'plectrum:transactions-cics-modal',

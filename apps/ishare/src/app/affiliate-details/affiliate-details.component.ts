@@ -43,11 +43,11 @@ import {
 } from '@solidaris-danielbodigil/pds-ui';
 import { TransactionsCicsModalComponent } from '@solidaris-danielbodigil/pds-ui/patterns/ishare';
 import type {
-  ProfileCardIdentifier,
-  ProfileCardInfoTag,
-  ProfileCardInfoTagFilterKey,
-  ProfileCardPrimaryAction,
-  ProfileCardStatusAction,
+  ProfileHeaderIdentifier,
+  ProfileHeaderInfoTag,
+  ProfileHeaderInfoTagFilterKey,
+  ProfileHeaderPrimaryAction,
+  ProfileHeaderStatusAction,
   ListEntryItem,
   ListEntryTag,
   ListEntryTagTarget,
@@ -373,10 +373,9 @@ export class AffiliateDetailsComponent {
   private static readonly EVA_STATUS_MENU_PLACEHOLDER =
     'eva-status-action-placeholder';
 
-  private static readonly EVA_C4_MISSING_STATUS_ACTION: ProfileCardStatusAction =
+  private static readonly EVA_C4_MISSING_STATUS_ACTION: ProfileHeaderStatusAction =
     {
       label: 'Actions à réaliser',
-      icon: 'bi bi-exclamation-triangle-fill',
       severity: 'warn',
       menuItems: [
         {
@@ -398,24 +397,24 @@ export class AffiliateDetailsComponent {
     panelId: 'calcul',
   } as const;
 
-  readonly statusAction = computed((): ProfileCardStatusAction | null =>
+  readonly statusAction = computed((): ProfileHeaderStatusAction | null =>
     this.isEvaDossier()
       ? AffiliateDetailsComponent.EVA_C4_MISSING_STATUS_ACTION
       : null,
   );
 
-  readonly documentInfoFilter = signal<ProfileCardInfoTagFilterKey | null>(
+  readonly documentInfoFilter = signal<ProfileHeaderInfoTagFilterKey | null>(
     null,
   );
 
   readonly transactionsCicsDialogVisible = signal(false);
 
-  readonly infoTags = computed<ProfileCardInfoTag[]>(() => {
+  readonly infoTags = computed<ProfileHeaderInfoTag[]>(() => {
     const allDocuments = this.allDocumentsForContext();
     const activeCount = allDocuments.filter(isActiveDocument).length;
     const closedCount = allDocuments.filter(isClosedDocument).length;
     const filter = this.documentInfoFilter();
-    const tags: ProfileCardInfoTag[] = [];
+    const tags: ProfileHeaderInfoTag[] = [];
 
     const lastActionDate = this.lastActionDateValue(allDocuments);
     if (lastActionDate) {
@@ -449,7 +448,7 @@ export class AffiliateDetailsComponent {
   });
 
   // The NISS chip echoes the identifier searched on the home page when present.
-  readonly identifiers = computed<ProfileCardIdentifier[]>(() => {
+  readonly identifiers = computed<ProfileHeaderIdentifier[]>(() => {
     const profile = this.affiliateProfile();
 
     return [
@@ -460,9 +459,8 @@ export class AffiliateDetailsComponent {
     ];
   });
 
-  readonly primaryAction: ProfileCardPrimaryAction = {
+  readonly primaryAction: ProfileHeaderPrimaryAction = {
     label: 'Voir carte affilié',
-    icon: 'bi bi-eye',
     shortcut: 'ALT + A',
   };
 
@@ -1115,7 +1113,7 @@ export class AffiliateDetailsComponent {
     this.endDocumentNavigationGuard();
   }
 
-  onInfoTagClick(tag: ProfileCardInfoTag): void {
+  onInfoTagClick(tag: ProfileHeaderInfoTag): void {
     if (!tag.filterKey) {
       return;
     }
@@ -1938,7 +1936,7 @@ export class AffiliateDetailsComponent {
       const availableFilters = new Set(
         this.infoTags()
           .map((tag) => tag.filterKey)
-          .filter((key): key is ProfileCardInfoTagFilterKey => !!key),
+          .filter((key): key is ProfileHeaderInfoTagFilterKey => !!key),
       );
 
       if (!availableFilters.has(filter)) {

@@ -50,6 +50,24 @@ export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
       }
     ],
     "summary": "List group header: the type (`titleAccent`) and the dates now share a second line under the group title. The dates are grouped in `c-list__date-range` as `start - end`, or the single known date. The divider is removed on group rows.\n\n- **Colour**: dates use `--pds-color-list-date-value` (surface-700), darker than the former label colour. `--pds-color-list-date-label` (surface-500) is deprecated: still declared but no longer read, removed in a later release.\n- **Accessibility**: the \"Date de début / fin\" labels are screen-reader only, and the group treeitem accessible name now includes the localised dates (FR/NL), e.g. \"Parcours Indemnités - Demande primaire, Date de début 24/11/2025, Date de fin 24/12/2025\".\n- **Telemetry**: the group label is now `Title - Type` (previously `Title Type`), and the treeitem name, previously `TitleType`, now starts with `Title - Type`. Update any telemetry filter or test selector keyed on the old label.\n- **API**: `ListGroup` is unchanged. Remove a trailing \" -\" from group titles, since the type no longer follows the title on the same line.\n- **Internal markup**: the template elements `c-list__dates`, `c-list__date`, `c-list__date--end` and `c-list__date-value` are no longer rendered or styled. They were never part of the documented anatomy.\n- **Tag severity**: `ListEntryStatus.severity` and `ListEntryTag.severity` also accept `contrast`, rendered as the dark PrimeNG tag."
+  },
+  {
+    "id": "profile-header",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "minor"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-styles",
+        "bump": "minor"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Add Profile Header (`pds-profile-header`, `plectrum:profile-header`), the Core shell header from the Figma Profile header design. It keeps the Profile Card content and logic with the new layout: the name is an outlined primary Button that opens the profile (Alt+A shortcut, shown in its tooltip), the status action is a Button — or a SplitButton when several actions wait, whose main button and chevron both open the menu — quick filters are PrimeNG ToggleButtons (display-only tags stay PrimeNG Tags), identifiers use the new inplace chip, and the severity gradient is unchanged. Slots `[slot=actions]`, `[slot=aside]`, `[slot=nav]` and `[slot=nav-end]` take the application's page actions, an aside panel and the shell tabs. Styles and tokens live in `_components.profile-header.scss` and `_settings.profile-header.scss` (`--pds-*-profile-header-*`).\n\niShare's app shell now uses `pds-profile-header` instead of `pds-profile-card`.\n\nCopyable Text gains two opt-in inputs, `iconPosition` (`'start'` default | `'end'`) and `labelWeight` (`'semibold'` default | `'regular'`); existing chips are unchanged.\n\nProfile Card is deprecated with `replacementId: 'plectrum:profile-header'` and is removed in the next major. Migration — same inputs and outputs, renamed types:\n\n| Profile Card | Profile Header |\n| --- | --- |\n| `pds-profile-card` / `ProfileCardComponent` | `pds-profile-header` / `ProfileHeaderComponent` |\n| `ProfileCardVariant` | `ProfileHeaderVariant` |\n| `ProfileCardStatusAction` / `ProfileCardStatusSeverity` | `ProfileHeaderStatusAction` / `ProfileHeaderStatusSeverity` |\n| `ProfileCardInfoTag` / `ProfileCardInfoTagFilterKey` | `ProfileHeaderInfoTag` / `ProfileHeaderInfoTagFilterKey` (now `string`) |\n| `ProfileCardIdentifier` | `ProfileHeaderIdentifier` |\n| `ProfileCardPrimaryAction` | `ProfileHeaderPrimaryAction` |\n| `primaryAction.icon` left of the name | right of the name, default `bi bi-person-square` — drop `icon: 'bi bi-eye'` to get the Figma glyph |\n| `statusAction.icon` default `bi-exclamation-triangle-fill` (several actions) | severity default `bi-check-lg` / `bi-exclamation-triangle` / `bi-exclamation-octagon` |\n| Telemetry `affiliate-overview-primary-action` / `-status-action` / `-info-tags` | `profile-header-name-action` / `-status-action` / `-info-tags` |"
   }
 ];
 
