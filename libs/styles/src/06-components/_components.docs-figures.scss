@@ -353,6 +353,14 @@ $docs-tones: design, system, app, neutral;
   overflow-wrap: anywhere;
 }
 
+// ── Copyable code (pds-docs-code) ────────────────────────────────────────────
+// The copy button sits in the top-right corner; the template keeps room for it
+// with o-layout--padding-inline-end-6 on the pre.
+.c-docs-code__copy {
+  inset-block-start: var(--#{$pds-prefix}-spacing-0-5);
+  inset-inline-end: var(--#{$pds-prefix}-spacing-0-5);
+}
+
 // ── Callout (p-message) ──────────────────────────────────────────────────────
 .c-docs-callout__title {
   @include text-label-md;

@@ -1,13 +1,13 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 
-<Meta title="Docs/Accessibility overview" id="foundations-accessibility-overview" />
+<Meta title="Reference/Accessibility overview" id="foundations-accessibility-overview" />
 
 # Accessibility overview
 
 Plectrum targets **WCAG 2.1 AA**. The label on a component page states that target; it does not mean a person has reviewed the component.
 
-Every story runs automated checks (axe, WCAG 2.1 A and AA) and fails on a violation. Screen-reader announcements, reading order and focus visibility in a real page still need a manual check.
+Every story runs automated checks (axe, WCAG 2.1 A and AA) and fails on a violation. Every interactive Plectrum component also has a keyboard story that presses the keys its page documents — Tab order, Enter and Space, Escape — and checks where focus goes when something opens or closes. Screen-reader announcements, reading order and focus visibility in a real page still need a manual check.
 
 WCAG 2.2 AA is not our target yet; the decision is open.
 

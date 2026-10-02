@@ -32,9 +32,11 @@
       </p>
     }
     @if (event.commands?.length) {
-      <pre
-        class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
-      ><code>{{ event.commands!.join('\n') }}</code></pre>
+      <pds-docs-code
+        class="o-layout--margin-block-start-0-5"
+        [code]="event.commands!.join('\n')"
+        [label]="'Copy the commands for ' + event.title"
+      />
     }
     @if (event.links?.length) {
       <ul

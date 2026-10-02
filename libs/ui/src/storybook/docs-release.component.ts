@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { Message } from 'primeng/message';
 import toolkitPackage from '../../../../tools/devkit/package.json';
+import { DocsCodeComponent } from './docs-code.component';
 import { DocsLinkComponent } from './docs-link.component';
 import { NPMRC, REGISTRY_INSTALL, REGISTRY_LOGIN } from './process-docs';
 import { DOCS_LINKS, loadReleaseContext, type ReleaseContext } from './release-context';
@@ -28,7 +29,7 @@ import { PACKAGE_VERSION } from './release-state';
 
 @Component({
   selector: 'pds-docs-release',
-  imports: [Message, DocsLinkComponent],
+  imports: [Message, DocsCodeComponent, DocsLinkComponent],
   templateUrl: './docs-release.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

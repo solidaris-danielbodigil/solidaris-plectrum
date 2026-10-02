@@ -4,9 +4,11 @@ import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './writing-stories-figures.stories';
 import * as AccordionStories from '../lib/accordion/accordion.stories';
 
-<Meta title="Docs/Writing stories" />
+<Meta title="Maintainers/Writing stories" id="docs-writing-stories" />
 
 # Writing stories
+
+> **In short.** For the core team. One story per state, written next to the component; play functions assert what a user sees, axe checks every story, and every interactive component has a keyboard story. The component page renders its metadata, so the MDX adds canvases, not prose.
 
 A story is one rendered state of a component. Developers write stories next to the component; designers review them against the Figma design.
 
@@ -18,14 +20,14 @@ Related pages:
 - [Empty State](?path=/docs/custom-components-empty-state--docs) — a finished CSF + attached MDX pair
 - [Form Field](?path=/docs/custom-components-form-field--docs) — PrimeNG control inside a Plectrum shell
 - [Token pipeline](?path=/docs/docs-token-pipeline--docs) — how Figma values become `var(--pds-*)`
-- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP
+- [How agents work](?path=/docs/docs-ai-strategy--docs) — contracts, index, Storybook MCP
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 
 ---
 
 ## Definition
 
-**CSF** (Component Story Format) is the TypeScript file that renders states. **Attached MDX** is the prose page that embeds those states as canvases. Storybook discovers both through `libs/ui/.storybook/main.ts`. Agents author against Storybook MCP when `npm run storybook` is running — see [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
+**CSF** (Component Story Format) is the TypeScript file that renders states. **Attached MDX** is the prose page that embeds those states as canvases. Storybook discovers both through `libs/ui/.storybook/main.ts`. Agents author against Storybook MCP when `npm run storybook` is running — see [How agents work → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
 
 <Diagram
   title="Story files"
@@ -366,6 +368,26 @@ Two bordered panels. Sibling radii and shared outer edge are why the layer lives
 
 ---
 
+## Keyboard stories
+
+Every Plectrum Angular component with a button, a link, a `tabindex` or a `keydown` handler has a story tagged `keyboard`. It proves the lines of `accessibility.keyboardSupport` that Plectrum owns, with key presses: Tab order, Enter and Space, Escape, and where focus goes when something opens or closes. Keyboard models PrimeNG already implements — Tree arrows, Accordion headers, the Dialog and Drawer focus trap — are not tested again.
+
+<DocsTable
+  headers={['Helper (storybook/story-tests.ts)', 'Use it to']}
+  rows={[
+    ['tabTo(canvas, element)', 'Reach an element with Tab from the start of the page; fails when it is not reachable'],
+    ['tabSequence(canvas, count)', 'Read the labels Tab lands on, to assert the order'],
+    ['isSkippedByTab(canvas, element)', 'Prove a disabled or hidden control is not in the tab order'],
+    ['expectFocus(element)', 'Wait until focus is on an element — after an overlay opens or closes'],
+    ['pressEscape(canvas)', 'Press Escape the way PrimeNG overlays read it (they check the legacy which code)'],
+    ['stubClipboard(canvas)', 'Record clipboard writes without a browser permission'],
+  ]}
+/>
+
+The tag is a string literal — `tags: ['keyboard']` — because Storybook reads tags without running the file. `npm run contracts:check` fails when an interactive component has no keyboard story.
+
+---
+
 ## Rules
 
 <Unstyled>
@@ -445,7 +467,7 @@ Do not end a docs file name in `.stories.mdx`: Storybook would read it as a stor
   ]}
 />
 
-Locally, run tests from the testing widget, Storybook MCP `test-run` or `npm run test-storybook:vitest`; CI uses `npm run test-storybook`. Without a running Storybook, agents read `.ai/contracts/index.json`. Full tool table: [AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
+Locally, run tests from the testing widget, Storybook MCP `test-run` or `npm run test-storybook:vitest`; CI uses `npm run test-storybook`. Without a running Storybook, agents read `.ai/contracts/index.json`. Full tool table: [How agents work → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp).
 
 ### Testing
 

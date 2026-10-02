@@ -3,9 +3,11 @@ import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './css-architecture.stories';
 
-<Meta title="Docs/CSS architecture" />
+<Meta title="Maintainers/CSS architecture" id="docs-css-architecture" />
 
 # CSS architecture
+
+> **In short.** For the core team. Styles load in ITCSS layers, from settings to trumps; classes say which layer they belong to (o- object, c- component, u- utility). Components write tokens, not values, and layout lives in object classes in the template.
 
 All shared CSS lives in `libs/styles` and is layered with **ITCSS**. Class names follow **BEMIT**. Templates mix a component block with object and utility classes. Component SCSS does not restate layout that an `o-*` class already covers.
 
@@ -18,7 +20,7 @@ Related pages:
 - [Layout](?path=/docs/foundations-layout--docs) — live `o-layout` catalogue
 - [Borders](?path=/docs/foundations-borders--docs) — `u-border-*` / `u-radius-*`
 - [Form Field](?path=/docs/custom-components-form-field--docs) — BEM + `o-flex` mix in a real template
-- [AI strategy](?path=/docs/docs-ai-strategy--docs) — contracts that record `tokens.consumed`
+- [How agents work](?path=/docs/docs-ai-strategy--docs) — contracts that record `tokens.consumed`
 
 ---
 

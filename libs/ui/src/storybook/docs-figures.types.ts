@@ -82,6 +82,8 @@ export interface DocsCard {
   eyebrow?: string;
   title: string;
   lead?: string;
+  /** A command or snippet shown as a copyable code block under the title. */
+  code?: string;
   items?: readonly string[];
   tone?: FigureTone;
   links?: readonly DocsLink[];

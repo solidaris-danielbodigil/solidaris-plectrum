@@ -31,6 +31,7 @@ import {
   toneSeverity,
   type ToneSeverity,
 } from './docs-figures.types';
+import { DocsCodeComponent } from './docs-code.component';
 import { DocsLinkComponent } from './docs-link.component';
 
 interface StepEvent extends DocsStep {
@@ -40,7 +41,7 @@ interface StepEvent extends DocsStep {
 
 @Component({
   selector: 'pds-docs-steps',
-  imports: [NgTemplateOutlet, Timeline, Badge, Tag, DocsLinkComponent],
+  imports: [NgTemplateOutlet, Timeline, Badge, Tag, DocsCodeComponent, DocsLinkComponent],
   templateUrl: './docs-steps.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

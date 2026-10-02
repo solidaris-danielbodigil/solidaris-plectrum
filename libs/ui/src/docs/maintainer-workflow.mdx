@@ -1,14 +1,25 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Source } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import { CI_JOBS } from '../storybook/ci-gates.generated';
 import { command, profileCommands, REGISTRY } from '../storybook/process-docs';
 import processContract from '../../../../.ai/contracts/process.json';
+import { REPO_CLONE, REPO_DIR } from '../storybook/release-state';
+import workspacePackage from '../../../../package.json';
 
-<Meta title="Docs/Maintainer workflow" id="docs-maintainer-workflow" />
+<Meta title="Maintainers/Maintainer workflow" id="docs-maintainer-workflow" />
 
 # Maintainer workflow
 
-For work in the Plectrum repository. Application teams: see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) and [Contribute](?path=/docs/get-started-contribute--docs).
+> **In short.** For the core team. Every change goes through a reviewed pull request; the scaffold writes the component, story and metadata, and CI fails on stale generated files, docs that restate metadata, props drift or a missing keyboard story. Application teams: see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs) and [Contribute](?path=/docs/get-started-contribute--docs).
+
+## Get the repository
+
+Fixes and Core work go through a reviewed pull request on the Plectrum repository (Node <code>{workspacePackage.engines.node}</code>):
+
+<Source language="bash" code={`git clone ${REPO_CLONE}
+cd ${REPO_DIR}
+npm install
+npm run storybook`} />
 
 ## Where things live
 
@@ -29,18 +40,20 @@ For work in the Plectrum repository. Application teams: see [Build with Plectrum
 
 Once the core team has recorded its decision, scaffold the component. The owner is a registered team ID ({REGISTRY.teams.map((team) => team.id).join(', ')}):
 
-<pre><code>{command('scaffold')}</code></pre>
+<Source language="bash" code={command('scaffold')} />
 
 The scaffolder creates the Angular files, the `.metadata.ts` contract with its `governance` block, a stories stub and the style partial. Then run the component check profile:
 
-<pre><code>{profileCommands('component').join('\n')}</code></pre>
+<Source language="bash" code={profileCommands('component').join('\n')} />
 
-1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** when `npm run storybook` is up — reuse before inventing ([AI strategy → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp)).
+1. Check **PrimeNG MCP**, **Figma MCP**, then **Storybook MCP** when `npm run storybook` is up — reuse before inventing ([How agents work → Storybook MCP](?path=/docs/docs-ai-strategy--docs#storybook-mcp)).
 2. Missing shared tokens go to `01-settings` first, cited with their Figma variable.
 3. Layout is `o-flex` / `o-layout` classes in the template — never flex/gap CSS in `06-components`.
 4. One story per state; the component is not done without them ([Writing stories](?path=/docs/docs-writing-stories--docs)). Application-owned pages are titled `Patterns/{App}/…`.
 
-A release candidate adds packing: <code>{profileCommands('release').at(-1)}</code>.
+A release candidate adds packing:
+
+<Source language="bash" code={profileCommands('release').at(-1)} />
 
 ## Language
 

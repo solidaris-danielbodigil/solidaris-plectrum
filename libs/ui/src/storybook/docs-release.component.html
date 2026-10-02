@@ -25,13 +25,13 @@
   <p class="c-docs-callout__text o-layout o-layout--margin-0">
     In the application's <code>.npmrc</code>, map the scope to the registry (no token in this file):
   </p>
-  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ npmrc }}</code></pre>
+  <pds-docs-code class="o-layout--margin-block-start-0-5" [code]="npmrc" label="Copy the .npmrc line" />
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
     Sign in once on your machine with a classic personal access token that has <code>read:packages</code>:
   </p>
-  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ login }}</code></pre>
+  <pds-docs-code class="o-layout--margin-block-start-0-5" [code]="login" label="Copy the login command" />
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">Install this release:</p>
-  <pre class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-0-5 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"><code>{{ registryInstall }}</code></pre>
+  <pds-docs-code class="o-layout--margin-block-start-0-5" [code]="registryInstall" label="Copy the install command" />
   <p class="c-docs-callout__text o-layout o-layout--margin-0 o-layout--margin-block-start-1">
     <pds-docs-link label="Browse packages on GitHub" [href]="links.packages" />
     — requires access to the private packages.

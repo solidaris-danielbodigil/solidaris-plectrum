@@ -19,7 +19,7 @@ if (version !== plectrum || version !== styles) {
   fail(`package versions differ: ui ${version}, plectrum ${plectrum}, styles ${styles}`);
 }
 
-const pages = ['get-started-consume', 'get-started-contribute', 'introduction', 'releases', 'whats-new', 'ai-strategy'];
+const pages = ['get-started-consume', 'get-started-contribute', 'introduction', 'releases', 'whats-new', 'ai-strategy', 'use-the-agent', 'at-a-glance'];
 for (const page of pages) {
   const text = read(`libs/ui/src/docs/${page}.mdx`);
   for (const [label, value] of [['runtime', version], ['toolkit', toolkit]]) {
