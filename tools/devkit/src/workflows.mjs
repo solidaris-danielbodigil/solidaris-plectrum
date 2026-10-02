@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { asset, configAt, filesUnder, flag, format, packageJson, projectPath, readJson, requiredFlag, slash } from './common.mjs';
+import { agentSummary } from './telemetry.mjs';
 import { candidateCheck, check, validateSchema } from './checks.mjs';
 import { GitHubClient, githubRepository } from './github.mjs';
 
@@ -220,12 +221,14 @@ export function adoptionReport(root, args) {
     });
     if (matches.length) observations.push({ componentId: component.id, kind: 'source-reference', count: matches.length, files: matches.map((m) => m.file) });
   }
-  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.'], localComponents: localComponents(root, config) };
+  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.', 'Agent counts cover the last 30 days of this checkout and of commit trailers; they hold no request text or code.'], localComponents: localComponents(root, config) };
+  const agent = agentSummary(root);
+  if (agent) report.agent = agent;
   validateSchema('adoption', report);
   const output = projectPath(root, flag(args, 'output') ?? config.reporting.output);
   fs.mkdirSync(path.dirname(output), { recursive: true });
   fs.writeFileSync(output, format(report));
-  console.log(`Wrote local adoption report ${slash(path.relative(root, output))}: ${observations.length} component references.`);
+  console.log(`Wrote local adoption report ${slash(path.relative(root, output))}: ${observations.length} component references${agent ? `; agent active on ${agent.activeDays} day(s), ${agent.commits.total} commit trailer(s)` : ''}.`);
   return report;
 }
 

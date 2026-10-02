@@ -70,3 +70,27 @@ test('local components reach Core with their reuse estimate and team prefix', ()
 function expectSighting(freshness: 'current' | 'stale') {
   return { application: 'external', label: 'External', kind: 'external', freshness, observedAt: freshness === 'current' ? '2026-09-25T00:00:00.000Z' : '2026-08-01T00:00:00.000Z', packageVersion: '2.0.0' };
 }
+
+test('agent counts from a report reach the Storybook listing without request text', () => {
+  const withAgent: AdoptionReport = {
+    ...report([usage]),
+    agent: {
+      window: { from: '2026-08-26T00:00:00.000Z', to: '2026-09-25T00:00:00.000Z', days: 30 },
+      activeDays: 6,
+      tools: { search_components: 9, get_component: 4 },
+      commands: { check: 3 },
+      lookups: { 'plectrum:empty-state': 4 },
+      emptySearches: 2,
+      commits: { total: 5, reuse: 3, scaffold: 1, advice: 1, reused: { 'plectrum:empty-state': 3 } },
+    },
+  };
+  const aggregate = aggregateAdoption([withAgent], registry, new Date('2026-09-25T12:00:00.000Z'));
+  assert.deepEqual(aggregate.agent, [{
+    application: 'external', label: 'External', freshness: 'current', observedAt: '2026-09-25T00:00:00.000Z',
+    windowDays: 30, activeDays: 6, toolCalls: 13, searches: 9, emptySearches: 2,
+    lookups: { 'plectrum:empty-state': 4 },
+    commits: { total: 5, reuse: 3, scaffold: 1, advice: 1 },
+    reused: { 'plectrum:empty-state': 3 },
+  }]);
+  assert.deepEqual(aggregateAdoption([report([usage])], registry, new Date('2026-09-25T12:00:00.000Z')).agent, []);
+});

@@ -98,7 +98,7 @@ function angularProject(root, config, changes, readOnly = false) {
 }
 
 function instructions(root, changes) {
-  newFile(root, '.storybook/main.ts', `import type { StorybookConfig } from '@storybook/angular-vite';\n\nconst config: StorybookConfig = {\n  stories: ['./*.stories.ts', '../src/**/*.stories.@(ts|tsx)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest'],\n  framework: { name: '@storybook/angular-vite', options: {} },\n  staticDirs: [{ from: '../node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts', to: 'assets/fonts' }],\n};\nexport default config;\n`, changes);
+  newFile(root, '.storybook/main.ts', `import type { StorybookConfig } from '@storybook/angular-vite';\n\nconst config: StorybookConfig = {\n  stories: ['./*.stories.ts', '../src/**/*.stories.@(ts|tsx)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest', '@storybook/addon-mcp'],\n  framework: { name: '@storybook/angular-vite', options: {} },\n  // Serves this application's stories to editor agents at http://localhost:6006/mcp while pds:storybook runs.\n  features: { componentsManifest: true },\n  staticDirs: [{ from: '../node_modules/@solidaris-danielbodigil/pds-styles/assets/fonts', to: 'assets/fonts' }],\n};\nexport default config;\n`, changes);
   newFile(root, '.storybook/tsconfig.json', `{"extends":"../tsconfig.json","compilerOptions":{"module":"esnext","moduleResolution":"bundler","emitDecoratorMetadata":true,"resolveJsonModule":true},"include":["../src/**/*.ts","./*.ts"],"exclude":["../src/**/*.spec.ts"]}\n`, changes);
   newFile(root, '.storybook/preview.ts', `import { inject, provideAppInitializer } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -209,6 +209,8 @@ export function bootstrap(root, { ci = Boolean(process.env.CI) } = {}) {
   const project = angularProject(root, config, changes);
   configureHook(root);
   console.log(`Plectrum bootstrap for ${project}: ${changes.length} file(s) created or configured. Commit the generated setup. Run npm run pds:storybook, npm run pds:test:unit, npm run pds:test:stories and npm run pds:check:ci.`);
+  const storybookMain = projectPath(root, '.storybook/main.ts');
+  if (fs.existsSync(storybookMain) && !fs.readFileSync(storybookMain, 'utf8').includes('@storybook/addon-mcp')) console.log("Storybook MCP: add '@storybook/addon-mcp' to the addons in .storybook/main.ts to serve http://localhost:6006/mcp to editor agents.");
   for (const line of usageReportStatus(config)) console.log(line);
   return changes;
 }

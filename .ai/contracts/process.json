@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.5.0",
+  "version": "1.6.0",
   "contexts": {
     "plectrum": {
       "root": "Plectrum checkout",
@@ -75,6 +75,12 @@
       "context": "consumer",
       "command": "npx --no-install plectrum catalogue [--id <component-id>]",
       "summary": "List the installed offline catalogue, or print one component contract.",
+      "available": true
+    },
+    "consumerMcp": {
+      "context": "consumer",
+      "command": "npx --no-install plectrum mcp",
+      "summary": "Serve the installed catalogue, tokens and process to editor agents as an offline MCP server over stdio. Editors start it from the managed MCP configuration.",
       "available": true
     },
     "consumerDoctor": {
@@ -812,6 +818,20 @@
       "scaffolds": false,
       "gate": "npm run test-storybook",
       "note": "test-run uses the same @storybook/addon-vitest runner as the testing widget. It is local feedback, not the CI gate."
+    },
+    "plectrumMcp": {
+      "context": "consumer",
+      "transport": "stdio",
+      "command": "npx --no-install plectrum mcp",
+      "tools": [
+        "search_components",
+        "get_component",
+        "find_token",
+        "check_tokens",
+        "get_process"
+      ],
+      "requires": "npm install (the installed toolkit)",
+      "note": "Answers from the catalogue, tokens and process installed with this toolkit version: no network, account or running Storybook. Each call records a content-free usage event in .plectrum/telemetry."
     }
   }
 }

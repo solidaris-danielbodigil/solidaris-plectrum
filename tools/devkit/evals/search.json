@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "knownMisses": ["member-side-panel"],
+  "description": "Reference requests for the Plectrum agent's catalogue search. Each request is phrased as an application team would ask it, not with the component's own keywords. A case passes when one of anyOf is in the first three results and every allOf id is in the first five. A case with none: true passes when no Plectrum component scores as a match (the answer is PrimeNG or a new local component). knownMisses lists the cases that do not pass today; any other case that fails is a regression and fails the Plectrum pull request. To accept a regression on purpose, add its case here in the same pull request.",
+  "cases": [
+    { "id": "member-side-panel", "query": "I need a side panel showing a member's details", "anyOf": ["plectrum:drawer", "plectrum:profile-drawer"], "allOf": ["plectrum:detail-list"] },
+    { "id": "document-list-states", "query": "What states does this document list need when it is empty or loading?", "anyOf": ["plectrum:list"], "allOf": ["plectrum:empty-state", "plectrum:skeleton-slot"] },
+    { "id": "copy-reference", "query": "Let the user copy a reference number to the clipboard", "anyOf": ["plectrum:copyable-text"] },
+    { "id": "clearable-search", "query": "Search input with a button to clear the text", "anyOf": ["plectrum:input-clear"] },
+    { "id": "required-field", "query": "Form label with a required marker and an error message", "anyOf": ["plectrum:form-field"] },
+    { "id": "certificate-panels", "query": "Expandable panels for certificates on a dossier", "anyOf": ["plectrum:accordion"] },
+    { "id": "event-history", "query": "Show the history of events in chronological order", "anyOf": ["plectrum:timeline"] },
+    { "id": "app-sidebar", "query": "Left sidebar navigation for the application", "anyOf": ["plectrum:nav-shell", "plectrum:sub-nav-shell"] },
+    { "id": "page-header", "query": "Page header with breadcrumb, search and the user's avatar", "anyOf": ["plectrum:top-nav"] },
+    { "id": "initials", "query": "Show a person's initials in a circle", "anyOf": ["plectrum:plectrum-avatar"] },
+    { "id": "loading-placeholder", "query": "Placeholder while the data is loading", "anyOf": ["plectrum:skeleton-slot"] },
+    { "id": "no-results", "query": "Message when a search returns no results", "anyOf": ["plectrum:empty-state"] },
+    { "id": "key-values", "query": "Summary of label and value pairs", "anyOf": ["plectrum:detail-list"] },
+    { "id": "filter-row", "query": "Row of filters and actions above a table", "anyOf": ["plectrum:toolbar"] },
+    { "id": "pictogram", "query": "Display a bootstrap icon with an accessible name", "anyOf": ["plectrum:icon"] },
+    { "id": "date-picker", "query": "Date picker for a birth date", "none": true },
+    { "id": "file-upload", "query": "Upload a PDF file", "none": true }
+  ]
+}

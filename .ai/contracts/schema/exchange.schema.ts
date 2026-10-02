@@ -198,6 +198,22 @@ export const adoptionReportSchema = z.strictObject({
       reuseNote: text.optional(),
     }),
   ).optional(),
+  /** Content-free Plectrum agent counts over a recent window: tool and command names, component IDs and commit trailers only. */
+  agent: z.strictObject({
+    window: z.strictObject({ from: z.iso.datetime(), to: z.iso.datetime(), days: z.number().int().positive() }),
+    activeDays: z.number().int().nonnegative(),
+    tools: z.record(text, z.number().int().nonnegative()),
+    commands: z.record(text, z.number().int().nonnegative()),
+    lookups: z.record(componentIdSchema, z.number().int().nonnegative()),
+    emptySearches: z.number().int().nonnegative(),
+    commits: z.strictObject({
+      total: z.number().int().nonnegative(),
+      reuse: z.number().int().nonnegative(),
+      scaffold: z.number().int().nonnegative(),
+      advice: z.number().int().nonnegative(),
+      reused: z.record(componentIdSchema, z.number().int().nonnegative()),
+    }),
+  }).optional(),
 });
 export const compatibilitySchema = z.strictObject({
   schemaVersion,
@@ -325,6 +341,15 @@ export const processSchema = z.strictObject({
       toolsets: z.record(text, z.array(text)),
       scaffolds: z.boolean(),
       gate: text,
+      note: text,
+    }),
+    /** Offline catalogue server shipped in the toolkit; editors start it over stdio. */
+    plectrumMcp: z.strictObject({
+      context: z.literal('consumer'),
+      transport: z.literal('stdio'),
+      command: text,
+      tools: z.array(text).min(1),
+      requires: text,
       note: text,
     }),
   }),
