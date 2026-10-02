@@ -1,7 +1,7 @@
 /** Status tag shown on entry row headers. */
 export interface ListEntryStatus {
   label: string;
-  severity: 'warn' | 'info' | 'success' | 'danger' | 'secondary';
+  severity: 'warn' | 'info' | 'success' | 'danger' | 'secondary' | 'contrast';
   icon?: string;
 }
 
@@ -14,7 +14,7 @@ export interface ListEntryTagTarget {
 /** Footer count tag on document rows (comments, warnings, …). */
 export interface ListEntryTag {
   label: string;
-  severity: 'info' | 'warn' | 'success' | 'danger' | 'secondary';
+  severity: 'info' | 'warn' | 'success' | 'danger' | 'secondary' | 'contrast';
   icon?: string;
   ariaLabel?: string;
   targets?: ListEntryTagTarget[];

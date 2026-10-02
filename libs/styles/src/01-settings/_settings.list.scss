@@ -23,6 +23,7 @@
   --#{$pds-prefix}-color-list-title-text: var(--#{$pds-prefix}-color-surface-700);
   --#{$pds-prefix}-color-list-title-accent: var(--#{$pds-prefix}-color-primary-interactive);
   --#{$pds-prefix}-color-list-icon: var(--#{$pds-prefix}-color-primary-interactive);
+  // DEPRECATED: unused since the group date range dropped visible labels — use --#{$pds-prefix}-color-list-date-value. Remove in a later release.
   --#{$pds-prefix}-color-list-date-label: var(--#{$pds-prefix}-color-surface-500);
   --#{$pds-prefix}-color-list-date-value: var(--#{$pds-prefix}-color-surface-700);
   --#{$pds-prefix}-color-list-timeline-line: var(--#{$pds-prefix}-color-surface-200);

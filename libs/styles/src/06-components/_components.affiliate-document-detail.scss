@@ -32,78 +32,44 @@
   flex: 1 1 auto;
   min-block-size: 0;
 
-  &:not(.c-affiliate-document-detail__stepper--vertical) {
+  // Match PrimeNG Stepper: steps share free space; last step stays content-sized.
+  // https://primeng.dev/stepper — @primeuix/styles `.p-step` / `.p-step:last-of-type`
+  .p-step {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--#{$pds-prefix}-spacing-1);
+    min-inline-size: max-content;
 
-    // Match PrimeNG Stepper: steps share free space; last step stays content-sized.
-    // https://primeng.dev/stepper — @primeuix/styles `.p-step` / `.p-step:last-of-type`
-    .p-step {
-      flex: 1 1 auto;
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--#{$pds-prefix}-spacing-1);
-      min-inline-size: max-content;
-
-      &:last-of-type {
-        flex: initial;
-      }
-    }
-
-    // Custom separator lives in __step-head-row; hide PrimeNG's trailing instance.
-    .p-step>.p-stepper-separator {
-      display: none;
-    }
-
-    .c-affiliate-document-detail__step-head-row {
-      inline-size: 100%;
-      min-inline-size: max-content;
-
-      .p-step-header {
-        flex: 0 0 auto;
-        max-inline-size: none;
-      }
-
-      .p-stepper-separator {
-        flex: 1 1 0;
-        min-inline-size: var(--#{$pds-prefix}-space-affiliate-document-detail-step-head-gap);
-        align-self: center;
-      }
-    }
-
-    .p-step-title {
-      text-align: center;
-      white-space: nowrap;
+    &:last-of-type {
+      flex: initial;
     }
   }
 
-  &--vertical {
-    .p-step {
-      flex: initial;
-      align-items: stretch;
-      gap: var(--#{$pds-prefix}-spacing-1);
-      min-inline-size: 0;
-    }
+  // Custom separator lives in __step-head-row; hide PrimeNG's trailing instance.
+  .p-step>.p-stepper-separator {
+    display: none;
+  }
 
-    .p-step>.p-stepper-separator {
-      display: none;
-    }
-
-    .c-affiliate-document-detail__step-head-row {
-      .p-step-header {
-        flex: 0 0 auto;
-      }
-    }
+  .c-affiliate-document-detail__step-head-row {
+    inline-size: 100%;
+    min-inline-size: max-content;
 
     .p-step-header {
-      white-space: nowrap;
+      flex: 0 0 auto;
+      max-inline-size: none;
     }
 
-    .p-step-title {
-      white-space: nowrap;
+    .p-stepper-separator {
+      flex: 1 1 0;
+      min-inline-size: var(--#{$pds-prefix}-space-affiliate-document-detail-step-head-gap);
+      align-self: center;
     }
+  }
 
-    .p-steppanel-content {
-      min-block-size: 0;
-    }
+  .p-step-title {
+    text-align: center;
+    white-space: nowrap;
   }
 
   &--unnumbered {

@@ -1,123 +1,171 @@
 <div
   class="c-affiliate-details o-flex o-flex--y o-layout o-layout--full-height o-layout--min-w-0 o-layout--min-h-0"
 >
-  <div
-    class="c-affiliate-documents-toolbar-shell o-layout o-layout--full-width o-flex__item o-flex__item--shrink-0"
-    [class.is-visible]="documentFiltersToolbarVisible()"
-    [attr.aria-hidden]="documentFiltersToolbarVisible() ? null : 'true'"
-    [attr.inert]="documentFiltersToolbarVisible() ? null : ''"
+  <pds-toolbar
+    class="c-affiliate-details__toolbar c-affiliate-documents-toolbar o-layout o-layout--full-width o-flex__item o-flex__item--shrink-0 o-layout--margin-block-end-2"
+    [sticky]="false"
   >
-    <div class="c-affiliate-documents-toolbar-shell__clip">
-      <pds-toolbar
-        class="c-affiliate-details__toolbar c-affiliate-documents-toolbar c-affiliate-documents-toolbar__panel o-layout o-layout--full-width"
-        [sticky]="false"
-      >
-        <ng-container slot="start">
-      @for (
-        toolbarFilterResetKey of [toolbarFilterControlsKey()];
-        track toolbarFilterResetKey
-      ) {
+    <ng-container slot="start">
       <div
         class="c-affiliate-documents-toolbar__row o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
       >
+        <!-- First field. Outside the remount block: "Effacer les filtres" does not reset the search, and typing focus survives a reset. -->
         <div class="c-affiliate-documents-toolbar__field">
-          <pds-form-field label="Secteur" inputId="document-sector">
-            <p-autocomplete
-              inputId="document-sector"
-              name="documentSector"
-              appendTo="body"
-              data-telemetry-id="filter-sector"
-              pdsTelemetryLabel="Secteur"
-              [ngModel]="selectedSector()"
-              (ngModelChange)="onSectorChange($event)"
-              (onSelect)="onSectorChange($event.value)"
-              [suggestions]="sectorSuggestions"
-              (completeMethod)="filterSectors($event)"
-              optionLabel="label"
-              dataKey="value"
-              [dropdown]="true"
-              [forceSelection]="true"
-              [showClear]="true"
-              [disabled]="pageLoading()"
-              placeholder="Sélectionnez un secteur"
-              size="small"
-              fluid
-            ></p-autocomplete>
+          <pds-form-field label="Rechercher un document" inputId="document-search">
+            <p-iconfield>
+              <p-inputicon>
+                <i class="bi bi-search" aria-hidden="true"></i>
+              </p-inputicon>
+              <input
+                pInputText
+                type="text"
+                role="searchbox"
+                autocomplete="off"
+                id="document-search"
+                name="documentSearch"
+                data-telemetry-id="document-search"
+                pdsTelemetryLabel="Rechercher"
+                [ngModel]="documentSearch()"
+                (ngModelChange)="documentSearch.set($event)"
+                [disabled]="pageLoading()"
+                placeholder="Rechercher document..."
+                pSize="small"
+                fluid
+              />
+              <p-inputicon>
+                <pds-input-clear
+                  [visible]="!!documentSearch()"
+                  ariaLabel="Effacer la recherche"
+                  (clear)="clearDocumentSearch()"
+                />
+              </p-inputicon>
+            </p-iconfield>
           </pds-form-field>
         </div>
 
-        <div class="c-affiliate-documents-toolbar__field">
-          <pds-form-field label="Trier par" inputId="document-sort">
-            <p-autocomplete
-              inputId="document-sort"
-              name="documentSort"
-              appendTo="body"
-              data-telemetry-id="filter-sort"
-              pdsTelemetryLabel="Trier par"
-              [ngModel]="selectedSort()"
-              (ngModelChange)="onSortChange($event)"
-              (onSelect)="onSortChange($event.value)"
-              [suggestions]="sortSuggestions"
-              (completeMethod)="filterSortOptions($event)"
-              optionLabel="label"
-              dataKey="value"
-              [dropdown]="true"
-              [forceSelection]="true"
-              [showClear]="true"
-              [disabled]="pageLoading()"
-              placeholder="Sélectionnez un tri"
-              size="small"
-              fluid
-            ></p-autocomplete>
-          </pds-form-field>
-        </div>
+        <!-- Remount only the filter fields after a programmatic reset; the clear action stays outside so focus can move. -->
+        @for (
+          toolbarFilterResetKey of [toolbarFilterControlsKey()];
+          track toolbarFilterResetKey
+        ) {
+          <div class="c-affiliate-documents-toolbar__field">
+            <pds-form-field label="Secteur" inputId="document-sector">
+              <p-autocomplete
+                inputId="document-sector"
+                name="documentSector"
+                appendTo="body"
+                data-telemetry-id="filter-sector"
+                pdsTelemetryLabel="Secteur"
+                [ngModel]="selectedSector()"
+                (ngModelChange)="onSectorChange($event)"
+                (onSelect)="onSectorChange($event.value)"
+                [suggestions]="sectorSuggestions"
+                (completeMethod)="filterSectors($event)"
+                optionLabel="label"
+                dataKey="value"
+                [dropdown]="true"
+                [forceSelection]="true"
+                [showClear]="true"
+                [disabled]="pageLoading()"
+                placeholder="Sélectionnez un secteur"
+                size="small"
+                fluid
+              ></p-autocomplete>
+            </pds-form-field>
+          </div>
 
-        <div
-          class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--date"
-        >
-          <pds-form-field label="Filtrer par date" inputId="document-date-range">
-            <p-datepicker
-              #documentDateRangePicker
-              inputId="document-date-range"
-              name="documentDateRange"
-              appendTo="body"
-              selectionMode="range"
-              data-telemetry-id="filter-date-range"
-              pdsTelemetryLabel="Filtrer par date"
-              [ngModel]="documentFilterDateRange()"
-              (ngModelChange)="onDocumentFilterDateRangeChange($event)"
-              (onClose)="onDocumentFilterDatePickerClose()"
-              (onClear)="onDocumentFilterDateRangeChange(null)"
-              [showClear]="true"
-              [readonlyInput]="true"
-              [disabled]="pageLoading()"
-              dateFormat="dd/mm/yy"
-              placeholder="Du — Au"
-              size="small"
-              fluid
+          <div class="c-affiliate-documents-toolbar__field">
+            <pds-form-field label="Trier par" inputId="document-sort">
+              <p-autocomplete
+                inputId="document-sort"
+                name="documentSort"
+                appendTo="body"
+                data-telemetry-id="filter-sort"
+                pdsTelemetryLabel="Trier par"
+                [ngModel]="selectedSort()"
+                (ngModelChange)="onSortChange($event)"
+                (onSelect)="onSortChange($event.value)"
+                [suggestions]="sortSuggestions"
+                (completeMethod)="filterSortOptions($event)"
+                optionLabel="label"
+                dataKey="value"
+                [dropdown]="true"
+                [forceSelection]="true"
+                [showClear]="true"
+                [disabled]="pageLoading()"
+                placeholder="Sélectionnez un tri"
+                size="small"
+                fluid
+              ></p-autocomplete>
+            </pds-form-field>
+          </div>
+
+          <div
+            class="c-affiliate-documents-toolbar__field c-affiliate-documents-toolbar__field--date"
+          >
+            <pds-form-field label="Filtrer par date" inputId="document-date-range">
+              <p-datepicker
+                #documentDateRangePicker
+                inputId="document-date-range"
+                name="documentDateRange"
+                appendTo="body"
+                selectionMode="range"
+                data-telemetry-id="filter-date-range"
+                pdsTelemetryLabel="Filtrer par date"
+                [ngModel]="documentFilterDateRange()"
+                (ngModelChange)="onDocumentFilterDateRangeChange($event)"
+                (onClose)="onDocumentFilterDatePickerClose()"
+                (onClear)="onDocumentFilterDateRangeChange(null)"
+                [showClear]="true"
+                [readonlyInput]="true"
+                [disabled]="pageLoading()"
+                dateFormat="dd/mm/yy"
+                placeholder="Du — Au"
+                size="small"
+                fluid
+              />
+            </pds-form-field>
+          </div>
+        }
+
+        @if (activeToolbarFilterCount() > 0) {
+          <button
+            pButton
+            type="button"
+            text
+            severity="secondary"
+            size="small"
+            class="c-affiliate-documents-toolbar__clear o-flex__item o-flex__item--shrink-0 o-flex__item--align-self-flex-end"
+            data-telemetry-id="documents-filters-clear"
+            pdsTelemetryLabel="Effacer les filtres"
+            [attr.aria-label]="
+              'Effacer les filtres (' +
+              activeToolbarFilterCount() +
+              (activeToolbarFilterCount() === 1 ? ' actif)' : ' actifs)')
+            "
+            [disabled]="pageLoading()"
+            (click)="clearToolbarFilters()"
+          >
+            <i pButtonIcon class="bi bi-x-lg" aria-hidden="true"></i>
+            <span pButtonLabel>Effacer les filtres</span>
+            <p-badge
+              data-telemetry-id="documents-filters-count"
+              severity="secondary"
+              [value]="activeToolbarFilterCount()"
             />
-          </pds-form-field>
-        </div>
-      </div>
-      }
-      </ng-container>
+          </button>
+        }
 
-      <ng-container slot="end">
-        <button
-          pButton
-          type="button"
-          text
-          severity="secondary"
-          icon="bi bi-chevron-up"
-          aria-label="Masquer les filtres"
-          data-telemetry-id="documents-filter-toolbar-close"
-          pdsTelemetryLabel="Masquer les filtres"
-          (click)="closeDocumentFiltersToolbar()"
-        ></button>
-      </ng-container>
-      </pds-toolbar>
-    </div>
-  </div>
+        <!-- Always rendered so screen readers pick up count changes; the clear button (and its badge) unmounts at zero. -->
+        <span
+          class="u-sr-only"
+          role="status"
+          aria-live="polite"
+          >{{ toolbarFilterAnnouncement() }}</span
+        >
+      </div>
+    </ng-container>
+  </pds-toolbar>
 
   <div
     class="c-affiliate-details__columns o-flex o-flex--y o-flex--row@lg o-layout o-layout--gap-2 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0 o-flex__item o-flex__item--grow-1"
@@ -127,290 +175,120 @@
     >
       <ng-template pTemplate="header">
         <div
-          class="c-affiliate-details__card-header o-flex o-flex--y o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0"
+          class="c-affiliate-details__card-header c-affiliate-details__documents-header-title o-flex o-flex--align-items-center o-layout o-layout--gap-1-5 o-layout--full-width o-layout--min-w-0"
         >
-          <div
-            class="c-affiliate-details__documents-header-top o-flex o-flex--wrap o-flex--align-items-center o-flex--justify-content-space-between o-layout o-layout--gap-2 o-layout--full-width o-layout--min-w-0"
-          >
-            <div
-              class="c-affiliate-details__documents-header-title o-flex o-flex--align-items-center o-layout o-layout--gap-1-5 o-layout--min-w-0"
+          <h2 class="c-list__title o-layout o-layout--margin-0">
+            Suivi des documents
+          </h2>
+          @if (pageLoading()) {
+            <p-skeleton
+              shape="circle"
+              size="var(--pds-size-list-count-badge-min)"
+              styleClass="c-skeleton-count-badge"
+              aria-hidden="true"
+            />
+          } @else {
+            <span
+              class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
+              >{{ documentCount() }}</span
             >
-              <h2 class="c-list__title o-layout o-layout--margin-0">
-                Suivi des documents
-              </h2>
-              @if (pageLoading()) {
-                <p-skeleton
-                  shape="circle"
-                  size="var(--pds-size-list-count-badge-min)"
-                  styleClass="c-skeleton-count-badge"
-                  aria-hidden="true"
-                />
-              } @else {
-                <span
-                  class="c-list__count-badge o-flex o-flex--align-items-center o-flex--justify-content-center"
-                  >{{ documentCount() }}</span
-                >
-              }
-            </div>
-            <div
-              class="c-affiliate-details__documents-header-actions o-flex o-flex--align-items-center o-flex--justify-content-flex-end o-layout o-layout--gap-1 o-layout--min-w-0"
-            >
-              <div class="c-affiliate-details__documents-search o-layout o-layout--min-w-0">
-                <p-iconfield
-                  class="c-affiliate-details__documents-search-input o-layout o-layout--full-width"
-                >
-                  <p-inputicon>
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                  </p-inputicon>
-                  <input
-                    pInputText
-                    type="text"
-                    role="searchbox"
-                    autocomplete="off"
-                    id="document-search"
-                    name="documentSearch"
-                    data-telemetry-id="document-search"
-                    pdsTelemetryLabel="Rechercher"
-                    [ngModel]="documentSearch()"
-                    (ngModelChange)="documentSearch.set($event)"
-                    [disabled]="pageLoading()"
-                    placeholder="Rechercher document..."
-                    class="c-affiliate-details__documents-search-input o-layout o-layout--full-width"
-                  />
-                  <p-inputicon>
-                    <pds-input-clear
-                      [visible]="!!documentSearch()"
-                      ariaLabel="Effacer la recherche"
-                      (clear)="clearDocumentSearch()"
-                    />
-                  </p-inputicon>
-                </p-iconfield>
-              </div>
-              <div class="c-affiliate-details__documents-filters-trigger o-flex__item o-flex__item--shrink-0">
-                <p-togglebutton
-                  data-telemetry-id="documents-filters-toggle"
-                  pdsTelemetryLabel="Filtres"
-                  [ngModel]="documentFiltersToolbarVisible()"
-                  (ngModelChange)="documentFiltersToolbarVisible.set($event)"
-                  ariaLabel="Filtres"
-                  size="small"
-                  [disabled]="pageLoading()"
-                >
-                  <ng-template #content>
-                    <span
-                      class="p-togglebutton-icon p-togglebutton-icon-left bi bi-funnel"
-                      aria-hidden="true"
-                    ></span>
-                    <span class="p-togglebutton-label">Filtres</span>
-                    @if (activeToolbarFilterCount() > 0) {
-                      <p-badge
-                        data-telemetry-id="documents-filters-count"
-                        [value]="activeToolbarFilterCount().toString()"
-                        [attr.aria-label]="
-                          activeToolbarFilterCount() + ' filtres actifs'
-                        "
-                      />
-                      <span
-                        class="p-togglebutton-icon bi bi-x"
-                        role="button"
-                        tabindex="0"
-                        data-telemetry-id="documents-filters-clear"
-                        pdsTelemetryLabel="Effacer les filtres"
-                        aria-label="Effacer les filtres"
-                        [attr.aria-disabled]="pageLoading() ? 'true' : null"
-                        (click)="onClearToolbarFilters($event)"
-                        (keydown.enter)="onClearToolbarFilters($event)"
-                        (keydown.space)="onClearToolbarFilters($event)"
-                      ></span>
-                    }
-                  </ng-template>
-                </p-togglebutton>
-              </div>
-            </div>
-          </div>
-
-          @if (showCategoryTabs()) {
-            <p-tabs
-              class="c-affiliate-details__category-tabs o-layout o-layout--full-width o-layout--min-w-0"
-              [value]="selectedCategoryTab()"
-              (valueChange)="onCategoryTabChange($event)"
-            >
-              <p-tablist>
-                @for (cat of categories(); track cat.id) {
-                  <p-tab
-                    class="c-affiliate-details__category-tab o-flex o-flex--align-items-center o-layout o-layout--gap-1-5"
-                    [class.c-affiliate-details__category-tab--disabled]="!cat.enabled"
-                    [value]="cat.id"
-                    [disabled]="pageLoading()"
-                    [attr.data-telemetry-id]="'category-tab-' + cat.id"
-                    [attr.aria-disabled]="cat.enabled ? null : 'true'"
-                    [pTooltip]="cat.enabled ? undefined : categoryTabDisabledHint"
-                    tooltipPosition="bottom"
-                    [pdsTelemetryLabel]="cat.label"
-                  >
-                    <button
-                      pButton
-                      type="button"
-                      text
-                      size="small"
-                      class="c-affiliate-details__category-eye"
-                      [class.c-affiliate-details__category-eye--disabled]="!cat.enabled"
-                      [attr.data-telemetry-id]="'category-toggle-' + cat.id"
-                      [attr.aria-disabled]="cat.enabled ? null : 'true'"
-                      [attr.tabindex]="cat.enabled ? 0 : -1"
-                      [disabled]="pageLoading()"
-                      [pdsTelemetryLabel]="
-                        isCategoryOpen(cat.id)
-                          ? 'Masquer ' + cat.label
-                          : 'Afficher ' + cat.label
-                      "
-                      [attr.aria-label]="
-                        isCategoryOpen(cat.id)
-                          ? 'Masquer ' + cat.label
-                          : 'Afficher ' + cat.label
-                      "
-                      [icon]="
-                        isCategoryOpen(cat.id)
-                          ? 'bi bi-eye'
-                          : 'bi bi-eye-slash'
-                      "
-                      (click)="
-                        toggleCategoryVisibility(cat.id);
-                        $event.stopPropagation()
-                      "
-                    ></button>
-                    <span class="c-affiliate-details__category-tab-label">{{
-                      cat.label
-                    }}</span>
-                    @if (pageLoading()) {
-                      <p-skeleton
-                        shape="circle"
-                        size="var(--pds-size-list-count-badge-min)"
-                        styleClass="c-skeleton-count-badge"
-                        aria-hidden="true"
-                      />
-                    } @else {
-                      <p-badge [value]="cat.count" />
-                    }
-                  </p-tab>
-                }
-              </p-tablist>
-            </p-tabs>
           }
         </div>
       </ng-template>
 
-      <div
-        class="c-affiliate-details__documents-scroll o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0"
-        [class.o-scroll-shadow]="!pageLoading()"
-        [class.o-layout--overflow-y-auto]="!pageLoading()"
-        [class.o-layout--overflow-hidden]="pageLoading()"
-      >
       @if (showCategoryTabs()) {
-        @if (hasListResults()) {
-          <div
-            class="c-affiliate-details__category-accordion o-layout o-layout--full-width o-layout--min-w-0 o-layout--padding-block-end-3"
-          >
-          <p-accordion
-            [value]="openCategories()"
-            [multiple]="true"
-            (valueChange)="onAccordionValueChange($event)"
+        <!-- One category at a time: p-tablist and p-tabpanels share this p-tabs (ids, aria-controls / aria-labelledby). Not lazy, so each list keeps its state across tab switches. -->
+        <p-tabs
+          class="c-affiliate-details__category-tabs o-flex o-flex--y o-flex__item o-flex__item--grow-1 o-layout o-layout--gap-3 o-layout--full-width o-layout--min-w-0 o-layout--min-h-0"
+          [value]="selectedCategoryTab()"
+          (valueChange)="onCategoryTabChange($event)"
+        >
+          <p-tablist
+            class="o-flex__item o-flex__item--shrink-0"
+            [pt]="categoryTabListPassThrough"
           >
             @for (cat of categories(); track cat.id) {
-              <p-accordion-panel
+              <p-tab
+                class="c-affiliate-details__category-tab o-flex o-flex--align-items-center o-layout o-layout--gap-1-5"
                 [value]="cat.id"
-                [attr.id]="'category-panel-' + cat.id"
+                [disabled]="pageLoading() || !cat.enabled"
+                [attr.data-telemetry-id]="'category-tab-' + cat.id"
+                [pdsTelemetryLabel]="cat.label"
               >
-                <p-accordion-header>
-                  <div
-                    class="c-affiliate-details__category-panel-header o-flex o-flex--align-items-center o-flex--justify-content-flex-start o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0"
-                  >
-                    <span class="c-affiliate-details__category-panel-label">{{
-                      cat.label
-                    }}</span>
-                    @if (cat.id === 'parcours') {
-                      <span
-                        class="c-affiliate-details__category-panel-count o-flex o-flex--align-items-center o-layout o-layout--gap-1"
-                      >
-                        @if (pageLoading()) {
-                          <p-skeleton
-                            shape="circle"
-                            size="var(--pds-size-list-count-badge-min)"
-                            styleClass="c-skeleton-count-badge"
-                            aria-hidden="true"
-                          />
-                        } @else {
-                          <p-badge
-                            class="c-affiliate-details__category-panel-badge"
-                            [value]="cat.count"
-                            [attr.aria-label]="cat.count + ' documents'"
-                          />
-                        }
-                        <span
-                          class="c-affiliate-details__category-panel-count-label"
-                          aria-hidden="true"
-                          >documents</span
-                        >
-                      </span>
-                    } @else if (pageLoading()) {
-                      <p-skeleton
-                        shape="circle"
-                        size="var(--pds-size-list-count-badge-min)"
-                        styleClass="c-skeleton-count-badge"
-                        aria-hidden="true"
-                      />
-                    } @else {
-                      <p-badge
-                        class="c-affiliate-details__category-panel-badge"
-                        [value]="cat.count"
+                <span class="c-affiliate-details__category-tab-label">{{
+                  cat.label
+                }}</span>
+                @if (pageLoading()) {
+                  <p-skeleton
+                    shape="circle"
+                    size="var(--pds-size-list-count-badge-min)"
+                    styleClass="c-skeleton-count-badge"
+                    aria-hidden="true"
+                  />
+                } @else {
+                  <p-badge
+                    [value]="cat.count"
+                    [severity]="
+                      selectedCategoryTab() === cat.id ? undefined : 'secondary'
+                    "
+                  />
+                }
+              </p-tab>
+            }
+          </p-tablist>
+
+          <div
+            class="c-affiliate-details__documents-scroll o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0"
+            [class.o-scroll-shadow]="!pageLoading()"
+            [class.o-layout--overflow-y-auto]="!pageLoading()"
+            [class.o-layout--overflow-hidden]="pageLoading()"
+          >
+            <p-tabpanels
+              class="o-layout o-layout--block o-layout--padding-block-end-3"
+            >
+              @for (cat of categories(); track cat.id) {
+                <!-- No display class on p-tabpanel: PrimeNG hides inactive panels with the [hidden] attribute. -->
+                <p-tabpanel [value]="cat.id">
+                  @if (!hasListResults()) {
+                    @if (cat.id === selectedCategoryTab()) {
+                      <pds-empty-state
+                        class="o-flex o-flex--col o-layout o-layout--full-width o-layout--min-w-0"
+                        [title]="emptyListTitle()"
+                        [description]="emptyListDescription()"
                       />
                     }
-                  </div>
-                </p-accordion-header>
-                <p-accordion-content>
-                  @if (!cat.enabled) {
-                    <p
-                      class="c-affiliate-details__category-empty-filter o-layout o-layout--margin-0 o-layout--padding-2 o-layout--padding-inline-3"
-                    >
-                      {{ categoryEmptyFilterMessage }}
-                    </p>
-                  } @else if (cat.kind === 'journey' && cat.groups) {
-                    <pds-list
-                      class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
-                      [showHeader]="false"
-                      [loading]="pageLoading()"
-                      [groups]="cat.groups"
-                      [items]="[]"
-                      [expandedGroupIds]="expandedGroupIds()"
-                      [selectedItemId]="selectedDocumentId()"
-                      (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
-                      (itemClick)="onDocumentClick($event)"
-                      (tagTargetClick)="onTagTargetClick($event)"
-                    />
-                  } @else if (cat.items) {
-                    <pds-list
-                      class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
-                      [showHeader]="false"
-                      [loading]="pageLoading()"
-                      [groups]="null"
-                      [items]="cat.items"
-                      [selectedItemId]="selectedDocumentId()"
-                      (itemClick)="onDocumentClick($event)"
-                      (tagTargetClick)="onTagTargetClick($event)"
-                    />
+                  } @else if (cat.enabled) {
+                    @if (cat.kind === 'journey') {
+                      <pds-list
+                        class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
+                        [showHeader]="false"
+                        [loading]="pageLoading()"
+                        [groups]="cat.groups ?? []"
+                        [items]="[]"
+                        [expandedGroupIds]="expandedGroupIds()"
+                        [selectedItemId]="selectedDocumentId()"
+                        (expandedGroupIdsChange)="onExpandedGroupIdsChange($event)"
+                        (itemClick)="onDocumentClick($event)"
+                        (tagTargetClick)="onTagTargetClick($event)"
+                      />
+                    } @else {
+                      <pds-list
+                        class="o-flex o-flex--y o-layout o-layout--full-width o-layout--min-w-0"
+                        [showHeader]="false"
+                        [loading]="pageLoading()"
+                        [groups]="null"
+                        [items]="cat.items ?? []"
+                        [selectedItemId]="selectedDocumentId()"
+                        (itemClick)="onDocumentClick($event)"
+                        (tagTargetClick)="onTagTargetClick($event)"
+                      />
+                    }
                   }
-                </p-accordion-content>
-              </p-accordion-panel>
-            }
-          </p-accordion>
-        </div>
-        } @else {
-          <pds-empty-state
-            class="o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-layout o-layout--full-width o-layout--min-w-0"
-            [title]="emptyListTitle()"
-            [description]="emptyListDescription()"
-          />
-        }
+                </p-tabpanel>
+              }
+            </p-tabpanels>
+          </div>
+        </p-tabs>
       } @else {
         <pds-empty-state
           class="o-flex o-flex--col o-flex__item o-flex__item--grow-1 o-layout o-layout--full-width o-layout--min-w-0"
@@ -418,7 +296,6 @@
           [description]="emptyListDescription()"
         />
       }
-      </div>
     </p-card>
 
     @if (visibleDocuments().length > 0) {
@@ -444,20 +321,6 @@
                 >
                   {{ selectedDocumentTitle() }}
                 </h2>
-
-                @if (showStepperViewToggle()) {
-                  <p-selectbutton
-                    class="c-affiliate-document-detail__stepper-layout-switch o-flex__item o-flex__item--shrink-0"
-                    [options]="stepperViewOptions"
-                    optionLabel="label"
-                    optionValue="value"
-                    [ngModel]="stepperView()"
-                    (ngModelChange)="stepperView.set($event)"
-                    [allowEmpty]="false"
-                    size="small"
-                    ariaLabel="Mode d'affichage du parcours"
-                  />
-                }
               }
 
               <div
@@ -499,7 +362,6 @@
               [navigableDocuments]="navigableDocuments()"
               [focusTarget]="documentFocus()"
               [loading]="pageLoading()"
-              [stepperView]="stepperView()"
               (selectedDocumentIdChange)="onSelectedDocumentIdChange($event)"
               (moreDetailsOpen)="onMoreDetailsOpen($event)"
               (transactionsCicsOpen)="onTransactionsCicsOpen()"

@@ -2,14 +2,28 @@
 
 // =============================================================================
 // 06-components/_components.affiliate-search-panel.scss
-// c-affiliate-search-panel — width cap for the iShare affiliate lookup card.
+// c-affiliate-search-panel — iShare affiliate lookup card. Fields keep a token
+// width instead of stretching; the submit button keeps its label on one line.
 //
-// Layout via o-flex / o-layout in template.
-// Token source: 01-settings/_settings.affiliate-search.scss
+// Layout (full-width card, wrapping field row, gap) via o-flex / o-layout in the template.
+// Only structural width constraints live here — same pattern as c-affiliate-documents-toolbar__field.
+//
+// Token source: libs/styles/src/01-settings/_settings.affiliate-search.scss
 // =============================================================================
 
-.c-affiliate-search-panel {
-  max-width: var(--#{$pds-prefix}-size-affiliate-search-panel-max);
+// Structural exception: fixed token width, shrinkable below it so the row fits a
+// 320px viewport (WCAG 1.4.10); wider viewports keep the token width.
+.c-affiliate-search-panel__field {
+  min-width: 0;
+  flex: 0 1 var(--#{$pds-prefix}-size-affiliate-search-field);
+  width: var(--#{$pds-prefix}-size-affiliate-search-field);
+  max-inline-size: 100%;
+}
+
+// Identifier input + "Chercher" button — wider token width.
+.c-affiliate-search-panel__field--query {
+  flex: 0 1 var(--#{$pds-prefix}-size-affiliate-search-query-field);
+  width: var(--#{$pds-prefix}-size-affiliate-search-query-field);
 }
 
 .c-affiliate-search-panel__query-submit {

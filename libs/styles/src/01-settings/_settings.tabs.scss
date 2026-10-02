@@ -2,14 +2,22 @@
 
 // =============================================================================
 // 01-settings/_settings.tabs.scss
-// PrimeNG Tabs token bridge — PDS spacing for tab chrome.
+// PrimeNG Tabs token bridge — scoped tab chrome.
 // =============================================================================
 
 :root {
+  // DEPRECATED: unused since the iShare category tabs use the PrimeNG preset padding — no replacement. Remove in a later release.
   --#{$pds-prefix}-space-tab-padding-block: var(--#{$pds-prefix}-spacing-1);
+  // DEPRECATED: unused since the iShare category tabs use the PrimeNG preset padding — no replacement. Remove in a later release.
   --#{$pds-prefix}-space-tab-padding-inline: 0;
 }
 
 .c-affiliate-details__category-tabs {
-  --p-tabs-tab-padding: var(--#{$pds-prefix}-space-tab-padding-block) var(--#{$pds-prefix}-space-tab-padding-inline);
+  // Active-tab count — filled primary (iSHARE tabs mockup 2026-10); inactive tabs use severity="secondary".
+  --p-badge-primary-background: var(--#{$pds-prefix}-color-primary-interactive);
+  --p-badge-primary-color: var(--#{$pds-prefix}-color-primary-interactive-contrast);
+  // Single-digit counts render as circles (p-badge-circle); multi-digit counts stay pill-shaped.
+  --p-badge-border-radius: var(--#{$pds-prefix}-radius-pill);
+  // Tab panels sit inside the documents card, which already pads its content — no second inset.
+  --p-tabs-tabpanel-padding: var(--#{$pds-prefix}-spacing-0);
 }

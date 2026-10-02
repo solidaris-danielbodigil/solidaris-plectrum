@@ -15,6 +15,7 @@ import {
   COMMENT_ICONS,
   MORE_DETAILS_LABEL,
 } from './affiliate-document-detail.types';
+import { documentStatusTag } from '../document-status';
 
 const SOURCE_IGED = 'IGED';
 const APP_GESTION_FEUILLES_RENSEIGNEMENT =
@@ -22,8 +23,7 @@ const APP_GESTION_FEUILLES_RENSEIGNEMENT =
 const APP_GESTION_COMPTES_BANCAIRES = 'Gestion des comptes bancaires';
 const APP_GESTION_CALCS = "Gestion des CALC's";
 const APP_PAIEMENTS_CICS = 'Paiements extraits du CICS';
-const APP_DECLARATION_REVENUS =
-  'Gestion des déclarations de revenus (225)';
+const APP_DECLARATION_REVENUS = 'Gestion des déclarations de revenus (225)';
 const APP_CARTES_REPRISE = 'Gestion des cartes de reprise';
 const APP_GESTION_CERTIFICATS_ITT = 'Gestion des certificats ITT';
 
@@ -37,18 +37,13 @@ function igedRecuOnlyMoreDetails(
       {
         id: `recu-${eventKey}`,
         dateLabel,
-        status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+        status: documentStatusTag('recu'),
         markerIcon: 'bi bi-save',
         markerTone: 'info',
         rows: [
           {
             date: `${dateLabel} 00:00:00`,
-            description: {
-              kind: 'tag',
-              label: 'Reçu',
-              severity: 'info',
-              icon: 'bi bi-save',
-            },
+            description: { kind: 'tag', ...documentStatusTag('recu') },
             application,
             source: SOURCE_IGED,
           },
@@ -63,18 +58,13 @@ const CALC_DEMANDE_PRIMAIRE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-10-12-2025',
       dateLabel: '10/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '10/12/2025 08:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: APP_GESTION_CALCS,
           source: SOURCE_IGED,
         },
@@ -83,11 +73,7 @@ const CALC_DEMANDE_PRIMAIRE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-15-12-2025',
       dateLabel: '15/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -139,18 +125,13 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-24-11-2025',
       dateLabel: '24/11/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '24/11/2025 14:30:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -159,11 +140,7 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-25-11-2025',
       dateLabel: '25/11/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -192,21 +169,13 @@ const CERTIFICAT_ITT_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-27-11-2025',
       dateLabel: '27/11/2025',
-      status: {
-        label: 'Accepté',
-        severity: 'success',
-        icon: 'bi bi-check-all',
-      },
+      status: documentStatusTag('accepte'),
       markerIcon: 'bi bi-check-all',
       markerTone: 'success',
       rows: [
         {
           date: '27/11/2025 14:30:00',
-          description: {
-            kind: 'tag',
-            label: 'Accepté - Auto',
-            severity: 'success',
-          },
+          description: { kind: 'tag', ...documentStatusTag('accepte-auto') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -220,18 +189,13 @@ const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-20-05-2026',
       dateLabel: '20/05/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '20/05/2026 09:15:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -240,11 +204,7 @@ const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-21-01-2026',
       dateLabel: '21/01/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -259,21 +219,13 @@ const CERTIFICAT_ITT_CLOTURE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-22-01-2026',
       dateLabel: '22/01/2026',
-      status: {
-        label: 'Accepté',
-        severity: 'success',
-        icon: 'bi bi-check-all',
-      },
+      status: documentStatusTag('accepte'),
       markerIcon: 'bi bi-check-all',
       markerTone: 'success',
       rows: [
         {
           date: '22/01/2026 11:30:00',
-          description: {
-            kind: 'tag',
-            label: 'Accepté - Auto',
-            severity: 'success',
-          },
+          description: { kind: 'tag', ...documentStatusTag('accepte-auto') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -287,11 +239,7 @@ const PAIEMENTS_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-paiements-30-06-2026',
       dateLabel: '30/06/2026',
-      status: {
-        label: 'Accepté',
-        severity: 'success',
-        icon: 'bi bi-check-lg',
-      },
+      status: documentStatusTag('accepte'),
       markerIcon: 'bi bi-check-lg',
       markerTone: 'success',
       rows: [
@@ -311,7 +259,7 @@ const DECLARATION_REVENU_VOLET_A_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-declaration-a-16-07-2026',
       dateLabel: '16/07/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-envelope',
       markerTone: 'info',
       rows: [
@@ -319,9 +267,8 @@ const DECLARATION_REVENU_VOLET_A_MORE_DETAILS: DocumentMoreDetails = {
           date: '16/07/2026 15:28:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('recu'),
             label: '000 - Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
           },
           application: APP_DECLARATION_REVENUS,
           source: SOURCE_IGED,
@@ -336,7 +283,7 @@ const DECLARATION_REVENU_VOLET_B_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-declaration-b-16-07-2026',
       dateLabel: '16/07/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-envelope',
       markerTone: 'info',
       rows: [
@@ -344,9 +291,8 @@ const DECLARATION_REVENU_VOLET_B_MORE_DETAILS: DocumentMoreDetails = {
           date: '16/07/2026 15:28:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('recu'),
             label: '000 - Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
           },
           application: APP_DECLARATION_REVENUS,
           source: SOURCE_IGED,
@@ -361,7 +307,7 @@ const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-carte-reprise-16-06-2026',
       dateLabel: '16/06/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-envelope' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-envelope',
       markerTone: 'info',
       rows: [
@@ -369,9 +315,8 @@ const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
           date: '16/06/2026 14:41:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('recu'),
             label: '000 - Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
           },
           application: APP_CARTES_REPRISE,
           source: SOURCE_IGED,
@@ -381,11 +326,7 @@ const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-carte-reprise-18-06-2026',
       dateLabel: '18/06/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-three-dots',
       markerTone: 'warn',
       rows: [
@@ -400,11 +341,7 @@ const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'cloture-carte-reprise-18-06-2026',
       dateLabel: '18/06/2026',
-      status: {
-        label: 'Clôturé',
-        severity: 'success',
-        icon: 'bi bi-check-lg',
-      },
+      status: documentStatusTag('cloture'),
       markerIcon: 'bi bi-check-lg',
       markerTone: 'success',
       rows: [
@@ -412,9 +349,8 @@ const CARTE_REPRISE_MORE_DETAILS: DocumentMoreDetails = {
           date: '18/06/2026 09:07:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('cloture'),
             label: '999 - Clôturé',
-            severity: 'success',
-            icon: 'bi bi-check-lg',
           },
           application: APP_CARTES_REPRISE,
           source: SOURCE_IGED,
@@ -429,7 +365,7 @@ const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-cit-prolongation-16-07-2026',
       dateLabel: '16/07/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
@@ -437,9 +373,8 @@ const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
           date: '16/07/2026 15:28:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('recu'),
             label: '000 - Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
           },
           application: APP_GESTION_CERTIFICATS_ITT,
           source: SOURCE_IGED,
@@ -456,11 +391,7 @@ const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-cit-prolongation-20-07-2026',
       dateLabel: '20/07/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-three-dots',
       markerTone: 'warn',
       rows: [
@@ -482,11 +413,7 @@ const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-cit-prolongation-20-07-2026',
       dateLabel: '20/07/2026',
-      status: {
-        label: 'Accepté',
-        severity: 'success',
-        icon: 'bi bi-check-lg',
-      },
+      status: documentStatusTag('accepte'),
       markerIcon: 'bi bi-check-lg',
       markerTone: 'success',
       rows: [
@@ -494,8 +421,8 @@ const CERTIFICAT_PROLONGATION_MORE_DETAILS: DocumentMoreDetails = {
           date: '20/07/2026 09:13:00',
           description: {
             kind: 'tag',
+            ...documentStatusTag('accepte-auto'),
             label: '920 - Accepté auto',
-            severity: 'success',
           },
           application: APP_GESTION_CERTIFICATS_ITT,
           source: SOURCE_IGED,
@@ -510,18 +437,13 @@ const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-02-01-2026',
       dateLabel: '02/01/2026',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '02/01/2026 10:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -530,11 +452,7 @@ const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-03-01-2026',
       dateLabel: '03/01/2026',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -549,21 +467,13 @@ const CERTIFICAT_ITT_RECHUTE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'accepte-04-01-2026',
       dateLabel: '04/01/2026',
-      status: {
-        label: 'Accepté',
-        severity: 'success',
-        icon: 'bi bi-check-all',
-      },
+      status: documentStatusTag('accepte'),
       markerIcon: 'bi bi-check-all',
       markerTone: 'success',
       rows: [
         {
           date: '04/01/2026 14:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Accepté - Auto',
-            severity: 'success',
-          },
+          description: { kind: 'tag', ...documentStatusTag('accepte-auto') },
           application: 'Gestion des certificats ITT',
           source: 'IGED',
         },
@@ -585,18 +495,13 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-affilie-05-12-2025',
       dateLabel: '05/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '05/12/2025 00:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: APP_GESTION_FEUILLES_RENSEIGNEMENT,
           source: SOURCE_IGED,
         },
@@ -605,11 +510,7 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-affilie-08-12-2025',
       dateLabel: '08/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -624,22 +525,13 @@ const FDR_AFFILIE_INCAPACITE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'cloture-affilie-11-12-2025',
       dateLabel: '11/12/2025',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
+      status: documentStatusTag('cloture'),
       markerIcon: 'bi bi-clock-history',
       markerTone: 'secondary',
       rows: [
         {
           date: '11/12/2025 11:45:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
+          description: { kind: 'tag', ...documentStatusTag('cloture') },
           application: APP_GESTION_FEUILLES_RENSEIGNEMENT,
           source: SOURCE_IGED,
         },
@@ -653,18 +545,13 @@ const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-compte-liasse-05-12-2025',
       dateLabel: '05/12/2025',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '05/12/2025 00:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: APP_GESTION_COMPTES_BANCAIRES,
           source: SOURCE_IGED,
         },
@@ -679,11 +566,7 @@ const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-compte-liasse-10-12-2025',
       dateLabel: '10/12/2025',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -698,22 +581,13 @@ const COMPTE_FINANCIER_LIASSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'cloture-compte-liasse-12-12-2025',
       dateLabel: '12/12/2025',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
+      status: documentStatusTag('cloture'),
       markerIcon: 'bi bi-clock-history',
       markerTone: 'secondary',
       rows: [
         {
           date: '12/12/2025 10:30:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
+          description: { kind: 'tag', ...documentStatusTag('cloture') },
           application: APP_GESTION_COMPTES_BANCAIRES,
           source: 'UOPV01RPA',
         },
@@ -761,18 +635,13 @@ const CHANGEMENT_ADRESSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'recu-15-06-2024',
       dateLabel: '15/06/2024',
-      status: { label: 'Reçu', severity: 'info', icon: 'bi bi-save' },
+      status: documentStatusTag('recu'),
       markerIcon: 'bi bi-save',
       markerTone: 'info',
       rows: [
         {
           date: '15/06/2024 09:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Reçu',
-            severity: 'info',
-            icon: 'bi bi-save',
-          },
+          description: { kind: 'tag', ...documentStatusTag('recu') },
           application: "Population - Changement d'adresse",
           source: 'IGED',
         },
@@ -781,11 +650,7 @@ const CHANGEMENT_ADRESSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'en-traitement-16-06-2024',
       dateLabel: '16/06/2024',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentStatusTag('en-traitement'),
       markerIcon: 'bi bi-hourglass-split',
       markerTone: 'warn',
       rows: [
@@ -800,22 +665,13 @@ const CHANGEMENT_ADRESSE_MORE_DETAILS: DocumentMoreDetails = {
     {
       id: 'cloture-20-06-2024',
       dateLabel: '20/06/2024',
-      status: {
-        label: 'Clôturé',
-        severity: 'secondary',
-        icon: 'bi bi-clock-history',
-      },
+      status: documentStatusTag('cloture'),
       markerIcon: 'bi bi-clock-history',
       markerTone: 'secondary',
       rows: [
         {
           date: '20/06/2024 14:00:00',
-          description: {
-            kind: 'tag',
-            label: 'Clôturé',
-            severity: 'secondary',
-            icon: 'bi bi-clock-history',
-          },
+          description: { kind: 'tag', ...documentStatusTag('cloture') },
           application: "Population - Changement d'adresse",
           source: 'IGED',
         },
@@ -841,10 +697,7 @@ const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
     id: 'fdr-employeur-cloture',
     title: 'F.D.R. employeur',
     disabled: true,
-    status: {
-      label: 'Non reçu',
-      severity: 'secondary',
-    },
+    status: documentStatusTag('non-recu'),
     actions: [],
     details: [],
     moreDetailsLabel: MORE_DETAILS_LABEL,
@@ -853,10 +706,7 @@ const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
     id: 'fdr-affilie-incapacite-cloture',
     title: 'F.D.R. affilié - Incapacité de travail',
     disabled: true,
-    status: {
-      label: 'Non reçu',
-      severity: 'secondary',
-    },
+    status: documentStatusTag('non-recu'),
     actions: [],
     details: [],
     moreDetailsLabel: MORE_DETAILS_LABEL,
@@ -865,10 +715,7 @@ const CLOTURE_PRIMAIRE_FDR_PANELS_NOT_RECEIVED: DocumentCertificatPanel[] = [
     id: 'compte-financier-liasse-cloture',
     title: 'Compte financier - Liasse',
     disabled: true,
-    status: {
-      label: 'Non reçu',
-      severity: 'secondary',
-    },
+    status: documentStatusTag('non-recu'),
     actions: [],
     details: [],
     moreDetailsLabel: MORE_DETAILS_LABEL,
@@ -891,11 +738,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'certificat-itt',
             title: 'Certificat ITT',
-            status: {
-              label: 'Accepté',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('accepte'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -921,11 +764,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'fdr-employeur',
             title: 'F.D.R. employeur',
-            status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
-            },
+            status: documentStatusTag('cloture'),
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS,
             delayPrediction: mockDelayPrediction(11, '19/06/2026'),
@@ -935,11 +774,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'fdr-affilie-incapacite',
             title: 'F.D.R. affilié - Incapacité de travail',
-            status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
-            },
+            status: documentStatusTag('cloture'),
             workerComment: {
               severity: 'info',
               text: 'En attente du flux employeur - 10/12/2025 15:56',
@@ -954,11 +789,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'compte-financier-liasse',
             title: 'Compte financier - Liasse',
-            status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
-            },
+            status: documentStatusTag('cloture'),
             workerComment: {
               severity: 'info',
               text: 'UOPV encodé en 9M à la réception - 10/12/2025 15:56',
@@ -979,11 +810,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'calcul',
             title: 'Calcul',
-            status: {
-              label: 'En attente',
-              severity: 'warn',
-              icon: 'bi bi-clock',
-            },
+            status: documentStatusTag('en-attente'),
             workerComment: {
               severity: 'warn',
               text: "Veuillez nous faire parvenir une copie de votre C4 dans les plus brefs délais. Le cas échéant, nous ne serons pas en mesure de poursuivre le traitement de votre demande d'indemnité. - 15/12/2025 15:56",
@@ -1016,11 +843,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'paiements-incapacite',
             title: 'Paiements',
-            status: {
-              label: 'Accepté',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('accepte'),
             actions: [
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
             ],
@@ -1041,11 +864,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             id: 'declaration-revenu-volet-a',
             title:
               'Déclaration de revenus (modèle 225) pour cohabitant - Volet A',
-            status: {
-              label: 'Reçu',
-              severity: 'info',
-              icon: 'bi bi-envelope',
-            },
+            status: documentStatusTag('recu'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1062,11 +881,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             id: 'declaration-revenu-volet-b',
             title:
               'Déclaration de revenus (modèle 225) pour cohabitant - Volet B',
-            status: {
-              label: 'Reçu',
-              severity: 'info',
-              icon: 'bi bi-envelope',
-            },
+            status: documentStatusTag('recu'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1088,11 +903,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'carte-reprise',
             title: 'Carte de reprise régime général',
-            status: {
-              label: 'Clôturé',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('cloture'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1113,11 +924,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'certificat-prolongation',
             title: 'Certificat ITT',
-            status: {
-              label: 'Accepté',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('accepte'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1146,11 +953,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'certificat-rechute',
             title: 'Certificat ITT',
-            status: {
-              label: 'Accepté',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('accepte'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1176,11 +979,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'fdr-employeur-rechute',
             title: 'F.D.R. employeur',
-            status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
-            },
+            status: documentStatusTag('en-traitement'),
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
             delayPrediction: mockDelayPrediction(8, '14/01/2026'),
@@ -1190,11 +989,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'fdr-affilie-rechute',
             title: 'F.D.R. affilié - Incapacité de travail',
-            status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
-            },
+            status: documentStatusTag('en-traitement'),
             workerComment: {
               severity: 'info',
               text: 'Accident de travail',
@@ -1209,11 +1004,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'compte-financier-rechute',
             title: 'Compte financier - Liasse',
-            status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
-            },
+            status: documentStatusTag('en-traitement'),
             actions: FDR_PANEL_ACTIONS,
             details: FDR_PANEL_DETAILS_RECHUTE,
             delayPrediction: mockDelayPrediction(6, '12/01/2026'),
@@ -1259,11 +1050,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'certificat-cloture',
             title: 'Certificat ITT',
-            status: {
-              label: 'Accepté',
-              severity: 'success',
-              icon: 'bi bi-check-lg',
-            },
+            status: documentStatusTag('accepte'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1325,11 +1112,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'c4-isolated',
             title: 'C4',
-            status: {
-              label: 'Reçu',
-              severity: 'info',
-              icon: 'bi bi-save',
-            },
+            status: documentStatusTag('recu'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1345,11 +1128,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 {
                   id: 'recu-16-12-2025',
                   dateLabel: '16/12/2025',
-                  status: {
-                    label: 'Reçu',
-                    severity: 'info',
-                    icon: 'bi bi-save',
-                  },
+                  status: documentStatusTag('recu'),
                   markerIcon: 'bi bi-save',
                   markerTone: 'info',
                   rows: [
@@ -1357,9 +1136,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                       date: '16/12/2025 10:15:00',
                       description: {
                         kind: 'tag',
-                        label: 'Reçu',
-                        severity: 'info',
-                        icon: 'bi bi-save',
+                        ...documentStatusTag('recu'),
                       },
                       application: 'Gestion des indemnités',
                       source: 'IGED',
@@ -1386,11 +1163,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'attestation-pedicure',
             title: 'Attestation de soin pédicure',
-            status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
-            },
+            status: documentStatusTag('en-traitement'),
             actions: [
               { label: 'Iris', icon: 'bi bi-box-arrow-up-right' },
               { label: 'Transactions CICS', icon: 'bi bi-box-arrow-up-right' },
@@ -1406,11 +1179,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 {
                   id: 'recu-09-06-2026',
                   dateLabel: '09/06/2026',
-                  status: {
-                    label: 'Reçu',
-                    severity: 'info',
-                    icon: 'bi bi-save',
-                  },
+                  status: documentStatusTag('recu'),
                   markerIcon: 'bi bi-save',
                   markerTone: 'info',
                   rows: [
@@ -1418,9 +1187,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                       date: '09/06/2026 13:28:00',
                       description: {
                         kind: 'tag',
-                        label: 'Reçu',
-                        severity: 'info',
-                        icon: 'bi bi-save',
+                        ...documentStatusTag('recu'),
                       },
                       application: 'Remboursements AO/AC',
                       source: 'IGED',
@@ -1430,11 +1197,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
                 {
                   id: 'en-traitement-10-06-2026',
                   dateLabel: '10/06/2026',
-                  status: {
-                    label: 'En traitement',
-                    severity: 'warn',
-                    icon: 'bi bi-hourglass-split',
-                  },
+                  status: documentStatusTag('en-traitement'),
                   markerIcon: 'bi bi-hourglass-split',
                   markerTone: 'warn',
                   rows: [
@@ -1466,17 +1229,13 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
           {
             id: 'changement-adresse',
             title: "Changement d'adresse",
-            status: {
-              label: 'Clôturé',
-              severity: 'secondary',
-              icon: 'bi bi-clock-history',
-            },
+            status: documentStatusTag('cloture'),
             actions: [{ label: 'Iris', icon: 'bi bi-box-arrow-up-right' }],
             details: [
               { label: 'Date de réception', value: '15/06/2024' },
               {
                 label: 'Application',
-                value: 'Population - Changement d\'adresse',
+                value: "Population - Changement d'adresse",
               },
             ],
             delayPrediction: mockDelayPrediction(20, '05/07/2024'),
@@ -1505,11 +1264,7 @@ export const JACK_MOTA_DOCUMENT_DETAILS: Record<
           {
             id: 'certificat-jack',
             title: 'Certificat médical',
-            status: {
-              label: 'En traitement',
-              severity: 'warn',
-              icon: 'bi bi-hourglass-split',
-            },
+            status: documentStatusTag('en-traitement'),
             actions: [],
             details: [{ label: 'Date de réception', value: '01/03/2026' }],
             delayPrediction: mockDelayPrediction(3, '04/03/2026'),
