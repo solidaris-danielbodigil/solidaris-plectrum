@@ -79,7 +79,7 @@ export const TransactionsCicsModalMetadata: ComponentMetadata = {
       'Each launch button shows the visible label CICS and is named by the localised launch message ("Lancer {code} dans CICS"); its external-link icon is decorative',
     ],
     keyboardSupport: [
-      'Escape or the mask closes the dialog (PrimeNG)',
+      'Escape or the mask closes the dialog (PrimeNG); focus returns to the element that opened it',
       'Tab cycles the close button, the search field and the launch buttons inside the focus trap',
       'Enter / Space on a launch button opens the transaction in a new tab',
     ],

@@ -265,6 +265,14 @@ export async function generateContracts(
   ).sort((a, b) => a.id.localeCompare(b.id));
   outputs.set('tools/devkit/assets/local-components.json', json({ schemaVersion: 1, source: '.ai/adoption usage reports', components: localComponents }));
   outputs.set('tools/devkit/assets/catalogue.json', json({ schemaVersion: 1, kind: 'toolkit-snapshot', toolkitVersion, sourceRepository: registry.repository, components: catalogue }));
+  // The agent's catalogue search, scored on the reference requests; the AI pages show the result.
+  const { evaluateSearch } = await import('../devkit/src/search.mjs');
+  const searchEvals = JSON.parse(fs.readFileSync(path.join(root, 'tools/devkit/evals/search.json'), 'utf8'));
+  const searchEvaluation = evaluateSearch(searchEvals.cases, { catalogue: { components: catalogue }, localComponents: [] }, searchEvals.knownMisses);
+  outputs.set(
+    'libs/ui/src/storybook/agent-eval.generated.ts',
+    generated + `// Source: tools/devkit/evals/search.json, scored by tools/devkit/src/search.mjs\nexport const AGENT_SEARCH_EVAL = ${JSON.stringify({ toolkitVersion, ...searchEvaluation }, null, 2)} as const;\n`,
+  );
   for (const name of ['process', 'compatibility', 'registry'])
     outputs.set(`tools/devkit/assets/${name}.json`, json(JSON.parse(fs.readFileSync(path.join(root, `.ai/contracts/${name}.json`), 'utf8'))));
   const processContract = exchangeSchemas.process.parse(JSON.parse(fs.readFileSync(path.join(root, '.ai/contracts/process.json'), 'utf8')));

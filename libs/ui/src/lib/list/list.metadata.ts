@@ -93,6 +93,7 @@ export const ListMetadata: ComponentMetadata = {
     keyboardSupport: [
       'PrimeNG Tree keyboard model: Up / Down move between rows, Right / Left expand or collapse a group, Enter or Space selects an entry (itemClick) or toggles a group',
       'Count tags with targets and the footnote are native buttons in the tab order; Enter or Space activates them and picks an option in the popover',
+      'Opening the target picker from the keyboard moves focus to its first option; Tab moves between options, Escape or a choice closes it and returns focus to the tag',
     ],
     contrastRequirements: [
       'Status and footer tags must include visible label text — not colour alone',

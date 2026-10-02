@@ -13,6 +13,9 @@
         @if (card.lead) {
           <p class="c-docs-cards__lead o-layout o-layout--margin-0">{{ card.lead }}</p>
         }
+        @if (card.code) {
+          <pds-docs-code class="o-layout--margin-block-end-1" [code]="card.code" [label]="'Copy ' + card.title + ' command'" />
+        }
         @if (card.items?.length) {
           <ul class="c-docs-cards__list o-layout o-layout--margin-0 o-layout--padding-inline-start-2">
             @for (item of card.items; track item) {

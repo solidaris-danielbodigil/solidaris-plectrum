@@ -3,9 +3,11 @@ import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './token-pipeline.stories';
 
-<Meta title="Docs/Token pipeline" />
+<Meta title="Maintainers/Token pipeline" id="docs-token-pipeline" />
 
 # Token pipeline
+
+> **In short.** For the core team. Designers push token values from Figma; a sync builds, audits and records them, and a reviewed pull request lands them as `var(--pds-*)`. Tokens can also go the other way, from the repository to Figma, as proposals.
 
 How design tokens move between the [Plectrum DS · PrimeNG v21](https://www.figma.com/design/wjMnb8GsK8bVKA7UreOJ4L/Plectrum-DS--PrimeNG-v21-) Figma file, the Plectrum repository and the applications.
 
@@ -21,7 +23,7 @@ Related pages:
 - [Sync status](?path=/docs/docs-token-pipeline-sync-status--docs) — the last promoted plugin sync: what changed, which checks passed
 - [CSS-first surface](?path=/docs/docs-token-pipeline-css-first-surface--docs) — the CSS contract for component authors
 - [Writing stories](?path=/docs/docs-writing-stories--docs) — CSF + attached MDX for designers and developers
-- [AI strategy](?path=/docs/docs-ai-strategy--docs) — Contract-Driven Development: index, metadata, protocols
+- [How agents work](?path=/docs/docs-ai-strategy--docs) — Contract-Driven Development: index, metadata, protocols
 - [CSS architecture](?path=/docs/docs-css-architecture--docs) — ITCSS layers and BEMIT mixes
 - **Foundations** — token browsers, rendered from the compiled CSS by `<pds-token-explorer>`
 

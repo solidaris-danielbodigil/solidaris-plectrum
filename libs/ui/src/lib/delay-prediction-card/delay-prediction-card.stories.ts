@@ -4,7 +4,7 @@ import { IconRegistry, registerPlectrumIcons } from '../icon';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { assertRoleVisible, assertTextVisible } from '../../storybook/story-tests';
+import { assertRoleVisible, assertTextVisible, expect, fn, tabSequence, resetFocus, userEvent, within } from '../../storybook/story-tests';
 import { DelayPredictionCardComponent } from './delay-prediction-card.component';
 import { DelayPredictionCardMetadata } from './delay-prediction-card.metadata';
 
@@ -99,5 +99,28 @@ export const FewDaysRemaining: Story = {
   play: async ({ canvasElement }) => {
     await assertTextVisible(canvasElement, '3');
     await assertTextVisible(canvasElement, '23/06/2026');
+  },
+};
+
+/**
+ * Keyboard contract (delay-prediction-card.metadata.ts → accessibility.keyboardSupport):
+ * the overflow trigger is the only stop in the tab order, and Enter or Space emits menuClick.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  args: {
+    daysRemaining: 11,
+    predictedCloseDate: '19/06/2026',
+    menuClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const trigger = within(canvasElement).getByRole('button', { name: "Plus d'actions — prédiction du délai" });
+    resetFocus(canvasElement);
+    await expect(await tabSequence(canvasElement, 1)).toEqual(["Plus d'actions — prédiction du délai"]);
+    await expect(trigger).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    await expect(args.menuClick).toHaveBeenCalledTimes(2);
+    await expect(canvasElement.querySelectorAll('button, [tabindex]:not([tabindex="-1"]), a[href], input')).toHaveLength(1);
   },
 };

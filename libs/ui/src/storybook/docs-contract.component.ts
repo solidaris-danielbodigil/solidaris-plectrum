@@ -34,6 +34,7 @@ import { Card } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { DocsAnatomyComponent } from './docs-anatomy.component';
+import { DocsCodeComponent } from './docs-code.component';
 import { DocsDoDontComponent } from './docs-do-dont.component';
 import { DocsLinkComponent } from './docs-link.component';
 import type { DocsContractSection, DocsDoDontItem } from './docs-figures.types';
@@ -82,6 +83,7 @@ export function usageToDoDont(usage: ComponentMetadata['usage']): {
     TableModule,
     Tag,
     DocsAnatomyComponent,
+    DocsCodeComponent,
     DocsDoDontComponent,
     DocsLinkComponent,
   ],

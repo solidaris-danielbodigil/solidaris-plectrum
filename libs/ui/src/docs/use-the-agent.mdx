@@ -1,0 +1,94 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { command } from '../storybook/process-docs';
+import { AGENT_SEARCH_EVAL } from '../storybook/agent-eval.generated';
+import { CENTRAL_ADOPTION } from '../storybook/adoption-data.generated';
+import processContract from '../../../../.ai/contracts/process.json';
+
+<Meta title="Start here/Use the Plectrum agent" id="start-here-use-the-agent" />
+
+# Use the Plectrum agent
+
+> **In short.** For application teams. Ask `/plectrum` before you build anything: it checks what already exists, helps with layout, tokens and states, and builds local components with you. It answers from the Plectrum version you installed, without network access. Core still decides what is shared.
+
+## Start it
+
+`npm install` sets it up. In **Cursor**, pick **Plectrum** in the agent picker or type `/plectrum`. In **VS Code / Copilot**, pick **Plectrum** in the chat agent picker. Describe what the screen must do, not the component you think you need.
+
+## What to ask
+
+<DocsTable
+  headers={['You want to…', 'Ask, for example', 'The agent…']}
+  rows={[
+    ['Avoid building something that exists', '/plectrum I need a side panel showing a member\'s details.', 'Searches PrimeNG, the catalogue and other teams’ local components, and proposes Drawer with Detail List, using the documented composition. No new component.'],
+    ['Lay out a screen', '/plectrum Two-column form that stacks on mobile?', 'Gives the o-flex / o-layout classes, breakpoints and Form Field usage.'],
+    ['Cover every state', '/plectrum What states does this document list need?', 'Lists empty, loading and error states with Empty State and Skeleton Slot, plus keyboard and screen-reader points.'],
+    ['Pick a token', '/plectrum Which colour for a warning border?', 'Picks a semantic role. If only your app needs a new value, adds it to your local token file.'],
+    ['Build a component', '/plectrum Create a claim summary card.', 'Checks reuse first, then scaffolds it, writes the story and unit test, and runs the checks.'],
+    ['Decide whether to share', '/plectrum Could other teams use this card?', 'Weighs reuse potential, fills the Reuse potential line of the evidence checklist, and helps you write the proposal for Core.'],
+  ]}
+/>
+
+The agent calls specialist roles when a task needs them: UX Researcher, UX Engineer, Frontend Dev, Tester, Token Auditor and Architect.
+
+## What it does not replace
+
+- **Designers.** The agent names the decisions a designer should take. Show new UX early to the core team or a designer, while you build. It is advice, not an approval step.
+- **Core decisions.** Sharing a component with other teams needs a Core decision. The agent prepares the proposal; Core decides.
+- **Checks and review.** Checks, tests and pull-request review run the same way whether a person or the agent wrote the code.
+
+## Where it gets its answers
+
+`npm install` writes the MCP configuration for Cursor (`.cursor/mcp.json`) and VS Code (`.vscode/mcp.json`). Each server answers one kind of question:
+
+<DocsTable
+  headers={['Server', 'Answers', 'Needs']}
+  rows={[
+    ['plectrum', `Plectrum components, tokens and process of the installed version (${processContract.capabilities.plectrumMcp.tools.join(', ')})`, 'Nothing: it runs from node_modules, offline'],
+    ['plectrum-primeng', 'Themed PrimeNG controls and their APIs', 'Network access'],
+    ['plectrum-figma', 'Designs and variables from the Figma files', 'A Figma seat; sign in from the editor the first time (OAuth)'],
+    ['plectrum-storybook', 'Your application’s own stories and local components', <>Your Storybook running: <code>npm run pds:storybook</code></>],
+  ]}
+/>
+
+To see which servers are configured — with `--live` it also tests them:
+
+<Source language="bash" code={command('consumerDoctor')} />
+
+Projects created with an earlier toolkit keep their settings: `doctor` lists the recommended values to add to `.plectrum/config.json`, then run:
+
+<Source language="bash" code={command('consumerUpdate')} />
+
+## What is measured
+
+Plectrum measures whether the agent helps, without reading what you ask it.
+
+- **Usage.** Each call to the `plectrum` server and each `plectrum` command adds one line to `.plectrum/telemetry`: the tool name, the component ID and the outcome. Never the request, the code or file names. The folder is ignored by git. Set `telemetry.enabled` to `false` in `.plectrum/config.json` to turn it off.
+- **Effect.** When the agent helped with a commit, it adds a trailer to the message: `Plectrum-Agent: reuse=<component ids>`, `scaffold=<slug>` or `advice`.
+- **Sharing.** The usage report counts both over the last 30 days and sends the totals to Core with the component usage, only when usage reporting is on.
+
+### Agent use by application
+
+{CENTRAL_ADOPTION.agent.length === 0 ? (
+  <p>No application has reported agent use yet. Counts appear here after a registered application sends its first usage report.</p>
+) : (
+  <DocsTable
+    headers={['Application', 'Active days', 'Searches', 'Searches with no match', 'Commits helped', 'Reuse commits', 'Observed']}
+    rows={CENTRAL_ADOPTION.agent.map((row) => [row.label, `${row.activeDays} / ${row.windowDays}`, String(row.searches), String(row.emptySearches), String(row.commits.total), String(row.commits.reuse), `${row.observedAt.slice(0, 10)}${row.freshness === 'stale' ? ' (stale)' : ''}`])}
+  />
+)}
+
+Searches with no match show where the catalogue has gaps. A component that Core later finds duplicated in an application is a reuse the agent missed.
+
+### Search quality
+
+<p>The core team checks that the agent keeps finding the right components. {AGENT_SEARCH_EVAL.total} requests, written the way teams ask, are replayed against the catalogue each time a component or its documentation changes, so the agent never finds less than it did before. This check runs in the Plectrum repository only: nothing in your application's build depends on it, or on how you use the agent. Today: <strong>{AGENT_SEARCH_EVAL.passed} of {AGENT_SEARCH_EVAL.total}</strong> requests find the expected component.</p>
+
+<DocsTable
+  headers={['Request', 'Expected', 'Found', 'Result']}
+  rows={AGENT_SEARCH_EVAL.results.map((item) => [item.query, item.none ? 'No Plectrum component' : [item.anyOf.map((id) => id.split(':')[1]).join(' or '), ...item.allOf.map((id) => `+ ${id.split(':')[1]}`)].join(' '), item.results.length ? item.results.slice(0, 3).map((id) => id.split(':')[1]).join(', ') : '—', item.pass ? 'Found' : 'Not yet'])}
+/>
+
+A request the search does not answer yet stays in the list: it shows where the agent needs help. For a need that two components answer together, the agent reads each component's documented companions.
+
+How the agents, contracts and checks work in the Plectrum repository: [How agents work](?path=/docs/docs-ai-strategy--docs).

@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
+import { expect, expectFocus, fn, pressEscape, tabTo, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TransactionsCicsModalComponent } from './transactions-cics-modal.component';
 import { TransactionsCicsModalMetadata } from './transactions-cics-modal.metadata';
 
@@ -96,4 +96,43 @@ export const Default: Story = {
 export const Anatomy = {
   tags: ['!dev'],
   ...anatomyStory(TransactionsCicsModalMetadata, Default),
+};
+
+/**
+ * Keyboard contract (transactions-cics-modal.metadata.ts → accessibility.keyboardSupport):
+ * opened from the keyboard, focus is inside the dialog; typing filters the rows,
+ * Enter on a launch button opens the transaction, and Escape closes the dialog
+ * with focus back on the trigger. The focus trap is PrimeNG Dialog's.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  play: async ({ canvasElement }) => {
+    const view = canvasElement.ownerDocument.defaultView!;
+    const open = view.open;
+    const opened = fn();
+    view.open = opened as unknown as typeof view.open;
+    try {
+      const trigger = within(canvasElement).getByRole('button', { name: 'Transactions CICS' });
+      await tabTo(canvasElement, trigger);
+      await userEvent.keyboard('{Enter}');
+      const page = within(canvasElement.ownerDocument.body);
+      const dialog = await waitFor(() => page.getByRole('dialog', { name: /Transactions CICS/ }));
+      await waitFor(() => expect(dialog.contains(canvasElement.ownerDocument.activeElement)).toBe(true));
+
+      const search = within(dialog).getByRole('searchbox');
+      await tabTo(canvasElement, search);
+      await userEvent.type(search, 'UA38');
+      await userEvent.tab();
+      const launch = within(dialog).getByRole('button', { name: 'Lancer UA38 dans CICS' });
+      await expectFocus(launch);
+      await userEvent.keyboard('{Enter}');
+      await expect(opened).toHaveBeenCalledWith('https://example.com/cics/UA38', '_blank', 'noopener,noreferrer');
+
+      pressEscape(canvasElement);
+      await waitFor(() => expect(page.queryByRole('dialog')).toBeNull());
+      await expectFocus(trigger);
+    } finally {
+      view.open = open;
+    }
+  },
 };

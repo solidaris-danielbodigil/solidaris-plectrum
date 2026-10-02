@@ -50,6 +50,8 @@ const processPages = [
   'libs/ui/src/docs/get-started-contribute.mdx',
   'libs/ui/src/docs/get-started-contribute.stories.ts',
   'libs/ui/src/docs/ai-strategy.mdx',
+  'libs/ui/src/docs/use-the-agent.mdx',
+  'libs/ui/src/docs/at-a-glance.mdx',
   'libs/ui/src/docs/introduction.mdx',
   'libs/ui/src/docs/introduction.stories.ts',
   'libs/ui/src/docs/maintainer-workflow.mdx',
@@ -72,7 +74,7 @@ if (read('.github/workflows/publish-release.yml').includes('VITE_PLECTRUM_RELEAS
 
 // Package names come from the manifests. The First component snippet is verified against the consumer app.
 const withoutVerifiedSnippet = (text) => text.replace(/(?:## First component|<h2 id="first-component"[^>]*>[\s\S]*?<\/h2>)[\s\S]*?```ts[\s\S]*?```/, '');
-for (const file of ['libs/ui/src/docs/get-started-consume.mdx', 'libs/ui/src/docs/get-started-contribute.mdx', 'libs/ui/src/docs/releases.mdx', 'libs/ui/src/docs/ai-strategy.mdx', 'libs/ui/src/docs/introduction.stories.ts']) {
+for (const file of ['libs/ui/src/docs/get-started-consume.mdx', 'libs/ui/src/docs/get-started-contribute.mdx', 'libs/ui/src/docs/releases.mdx', 'libs/ui/src/docs/ai-strategy.mdx', 'libs/ui/src/docs/use-the-agent.mdx', 'libs/ui/src/docs/at-a-glance.mdx', 'libs/ui/src/docs/introduction.stories.ts']) {
   const text = withoutVerifiedSnippet(read(file));
   for (const name of packages) if (text.includes(name)) fail(file, `hardcodes ${name} — import it from the manifests (process-docs)`);
 }

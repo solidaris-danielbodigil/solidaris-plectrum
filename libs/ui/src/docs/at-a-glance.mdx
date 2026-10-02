@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { DISTRIBUTED_PACKAGES, REGISTRY } from '../storybook/process-docs';
+import { ALL_COMPONENT_METADATA } from '../storybook/component-metadata';
+import { CI_JOBS } from '../storybook/ci-gates.generated';
+import { AGENT_SEARCH_EVAL } from '../storybook/agent-eval.generated';
+import { CENTRAL_ADOPTION } from '../storybook/adoption-data.generated';
+import tokenInventory from '../../../../tools/devkit/assets/tokens.json';
+
+<Meta title="Start here/At a glance" id="start-here-at-a-glance" />
+
+export const byStatus = (status) => ALL_COMPONENT_METADATA.filter((metadata) => metadata.governance.status === status).length;
+export const ciChecks = CI_JOBS.reduce((total, job) => total + job.steps.length, 0);
+export const externalApps = REGISTRY.applications.filter((app) => app.kind === 'external');
+
+# At a glance
+
+> **In short.** For reviewers and leads. What Plectrum is, how it is governed and how AI is used — on one screen, with what is proven today and what is not yet. Every figure below is computed from the repository when this Storybook is built.
+
+## What it is
+
+Plectrum is the Solidaris design system for Angular applications: PrimeNG 21 with the Plectrum theme, a small set of Plectrum components, `--pds-*` tokens synchronised with Figma, and a toolkit that gives each application team the same checks, Storybook and editor agents as the core team. It ships as {DISTRIBUTED_PACKAGES.length} packages: {DISTRIBUTED_PACKAGES.filter((pkg) => pkg.role === 'runtime').length} runtime packages that version together and the toolkit.
+
+## In numbers
+
+<DocsTable
+  headers={['Measure', 'Today', 'Source']}
+  rows={[
+    ['Plectrum components', `${byStatus('core')} Core · ${byStatus('app')} app-specific · ${byStatus('deprecated')} deprecated`, <a href="?path=/docs/start-here-catalogue--docs">Find a component</a>],
+    ['Tokens in the installed inventory', String(tokenInventory.names.length), <a href="?path=/docs/foundations-token-finder--docs">Find a token</a>],
+    ['Checks in the pull-request pipeline', String(ciChecks), <a href="?path=/docs/docs-maintainer-workflow--docs">Maintainer workflow</a>],
+    ['Agent search on reference requests', `${AGENT_SEARCH_EVAL.passed} of ${AGENT_SEARCH_EVAL.total} (${AGENT_SEARCH_EVAL.rate}%)`, <a href="?path=/docs/start-here-use-the-agent--docs#search-quality">Search quality</a>],
+    ['Registered applications', `${REGISTRY.applications.length} (${externalApps.length} in their own repository)`, <a href="?path=/docs/get-started-contribute--docs#register-your-team">Register your team</a>],
+    ['Applications sending usage reports', String(CENTRAL_ADOPTION.reported.length), <a href="?path=/docs/start-here-catalogue--docs">Find a component</a>],
+  ]}
+/>
+
+## How it is governed
+
+- **PrimeNG first.** Plectrum themes PrimeNG and adds a component only when PrimeNG does not cover the need.
+- **Teams build locally; Core decides what is shared.** An application team builds its own components without approval. Core answers proposals with a recorded decision and looks for local components worth sharing in the usage reports. [Contribute](?path=/docs/get-started-contribute--docs)
+- **Contracts are code.** Each component's metadata drives its documentation page and what agents read; CI fails when code and contract drift. [Process and contracts](?path=/docs/docs-pipeline-contracts--docs)
+- **Releases are versioned with their documentation.** Each release publishes its own Storybook. [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs)
+
+## How AI is used
+
+- **As a first reviewer in each application.** The `/plectrum` agent checks reuse before anything is built and answers from the installed catalogue through an offline MCP server. [Use the Plectrum agent](?path=/docs/start-here-use-the-agent--docs)
+- **On contracts, not on the whole code base.** Agents read metadata, a generated index and short protocols; the same checks gate their work and people's. [How agents work](?path=/docs/docs-ai-strategy--docs)
+- **Measured.** Search quality is replayed on every Plectrum pull request and may not regress; usage and effect are counted without collecting requests or code. [What is measured](?path=/docs/start-here-use-the-agent--docs#what-is-measured)
+
+## Proven, and not yet
+
+Proven by CI on every pull request: automated accessibility checks (WCAG 2.1 AA) on every story, interaction tests on the component stories, keyboard stories for every interactive Plectrum component, packed packages installed and built in a throwaway application, and generated contracts kept in sync with the code.
+
+Not yet proven:
+
+<ul>
+  {REGISTRY.operations.pending.map((item) => <li key={item}>{item}.</li>)}
+  <li>Manual screen-reader reviews of the priority components — see <a href="?path=/docs/foundations-accessibility-overview--docs">Accessibility overview</a>.</li>
+  <li>WCAG 2.2 AA is not the target yet.</li>
+  <li>Visual regression tests run in Chromatic only when the repository enables them.</li>
+</ul>
+
+## Decisions and plans
+
+Architecture and process decisions are recorded with their context and the options set aside in <a href={`${REGISTRY.repository}/tree/main/.ai/decisions`}><code>.ai/decisions</code></a>. Open questions are in <a href={`${REGISTRY.repository}/tree/main/.ai/questions`}><code>.ai/questions</code></a>, and plans in <a href={`${REGISTRY.repository}/tree/main/docs`}><code>docs</code></a>.

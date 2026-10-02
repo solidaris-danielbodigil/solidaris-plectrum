@@ -7,6 +7,7 @@ import {
 import { Component, input, signal } from '@angular/core';
 import { Tag } from 'primeng/tag';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expectFocus, fn, pressEscape, tabTo } from '../../storybook/story-tests';
 import { ListComponent } from './list.component';
 import { ListMetadata } from './list.metadata';
 import type { ListEntryItem, ListGroup } from './list.types';
@@ -467,4 +468,82 @@ export const RowStates: Story = {
       </div>
     `,
   }),
+};
+
+const KEYBOARD_DOCUMENTS: ListEntryItem[] = [
+  {
+    id: 'doc-keyboard',
+    title: 'Demande primaire',
+    tags: [
+      {
+        label: '2',
+        severity: 'warn',
+        icon: 'bi bi-exclamation-triangle-fill',
+        ariaLabel: '2 avertissements',
+        targets: [
+          { id: 'warning-1', label: 'Certificat manquant' },
+          { id: 'warning-2', label: 'Date incohérente' },
+        ],
+      },
+    ],
+  },
+];
+
+/**
+ * Keyboard contract (list.metadata.ts → accessibility.keyboardSupport): a count
+ * tag with several targets is a button; Enter opens the target picker with focus
+ * on its first option, Enter picks it, Escape closes the picker and returns focus
+ * to the tag, and the footnote is a button. Row navigation is PrimeNG Tree's.
+ */
+type KeyboardArgs = ListStoryArgs & { picked: (id: string) => void; footnoteClicked: () => void };
+
+export const Keyboard: StoryObj<KeyboardArgs> = {
+  tags: ['keyboard'],
+  args: {
+    groups: null,
+    items: KEYBOARD_DOCUMENTS,
+    expandedGroupIds: [],
+    selectedItemId: null,
+    loading: false,
+    picked: fn(),
+    footnoteClicked: fn(),
+  },
+  render: (args) => ({
+    props: args,
+    template: `
+      <pds-list
+        [groups]="groups"
+        [items]="items"
+        footnote="Voir tous les documents"
+        (tagTargetClick)="picked($event.target.id)"
+        (footnoteClick)="footnoteClicked()"
+      />
+    `,
+  }),
+  play: async ({ args: { picked, footnoteClicked }, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const tag = canvas.getByRole('button', { name: '2 avertissements' });
+
+    await tabTo(canvasElement, tag);
+    await userEvent.keyboard('{Enter}');
+    const first = await waitFor(() => body.getByRole('option', { name: 'Certificat manquant' }));
+    await expectFocus(first);
+    pressEscape(canvasElement);
+    await waitFor(() => expect(body.queryByRole('listbox')).toBeNull());
+    await expectFocus(tag);
+
+    await userEvent.keyboard('{Enter}');
+    await expectFocus(await waitFor(() => body.getByRole('option', { name: 'Certificat manquant' })));
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    await expect(picked).toHaveBeenCalledWith('warning-2');
+    await waitFor(() => expect(body.queryByRole('listbox')).toBeNull());
+    await expectFocus(tag);
+
+    const footnote = canvas.getByRole('button', { name: 'Voir tous les documents' });
+    await tabTo(canvasElement, footnote);
+    await userEvent.keyboard(' ');
+    await expect(footnoteClicked).toHaveBeenCalledTimes(1);
+  },
 };

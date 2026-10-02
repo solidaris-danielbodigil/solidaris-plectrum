@@ -564,10 +564,53 @@
             "note"
           ],
           "additionalProperties": false
+        },
+        "plectrumMcp": {
+          "type": "object",
+          "properties": {
+            "context": {
+              "type": "string",
+              "const": "consumer"
+            },
+            "transport": {
+              "type": "string",
+              "const": "stdio"
+            },
+            "command": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tools": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "requires": {
+              "type": "string",
+              "minLength": 1
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "context",
+            "transport",
+            "command",
+            "tools",
+            "requires",
+            "note"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
-        "storybookMcp"
+        "storybookMcp",
+        "plectrumMcp"
       ],
       "additionalProperties": false
     },

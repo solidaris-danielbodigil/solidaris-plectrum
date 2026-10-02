@@ -4,7 +4,7 @@ import * as Figures from './get-started-consume.stories';
 import { DISTRIBUTED_PACKAGES, REGISTRY } from '../storybook/process-docs';
 import changesetConfig from '../../../../.changeset/config.json';
 
-<Meta title="Docs/Releases and versioning" />
+<Meta title="Reference/Releases and versioning" id="docs-releases-and-versioning" />
 
 # Releases and versioning
 
@@ -63,7 +63,5 @@ The installed toolkit links each component to the documentation of your installe
   headers={['Package', 'Source version', 'Contents']}
   rows={DISTRIBUTED_PACKAGES.map((pkg) => [pkg.name, pkg.version, pkg.description])}
 />
-
-Release `2.0.1-devkit-0.2.0` used older public package names; do not install them.
 
 To set up an application with these packages, see [Build with Plectrum](?path=/docs/get-started-use-plectrum-in-an-app--docs).

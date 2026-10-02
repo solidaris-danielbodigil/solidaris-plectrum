@@ -18,7 +18,7 @@ export const Commands = {
       title: name,
       eyebrow: command.context,
       tone: 'neutral',
-      lead: command.command,
+      code: command.command,
       items: [
         command.summary,
         command.available

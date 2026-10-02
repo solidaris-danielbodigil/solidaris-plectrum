@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { expect, userEvent, within } from 'storybook/test';
+import { expectFocus, isSkippedByTab, tabTo } from '../../storybook/story-tests';
 import { InputClearComponent } from './input-clear.component';
 
 const meta: Meta<InputClearComponent> = {
@@ -159,5 +160,44 @@ export const InInputGroup: Story = {
   args: {
     visible: true,
     ariaLabel: 'Clear',
+  },
+};
+
+/**
+ * Keyboard contract (input-clear.metadata.ts → accessibility.keyboardSupport):
+ * the clear button follows the field in the tab order while there is text,
+ * Enter clears, focus goes back to the field, and the hidden button is skipped.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  render: (args) => ({
+    props: { ...args, query: 'Document' },
+    moduleMetadata: { imports: [FormsModule, IconFieldModule, InputIconModule, InputTextModule, InputClearComponent] },
+    template: `
+      <p-iconfield class="c-docs-control">
+        <input pInputText type="text" role="searchbox" aria-label="Rechercher" autocomplete="off" [(ngModel)]="query" />
+        <p-inputicon>
+          <pds-input-clear [visible]="!!query" [ariaLabel]="ariaLabel" (clear)="query = ''" />
+        </p-inputicon>
+      </p-iconfield>
+    `,
+  }),
+  args: { ariaLabel: 'Effacer la recherche' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole<HTMLInputElement>('searchbox');
+    const clear = canvas.getByRole('button', { name: 'Effacer la recherche' });
+    await tabTo(canvasElement, input);
+    await userEvent.tab();
+    await expectFocus(clear);
+    await userEvent.keyboard('{Enter}');
+    await expect(input).toHaveValue('');
+    await expectFocus(input);
+    await expect(await isSkippedByTab(canvasElement, clear)).toBe(true);
+    await userEvent.type(input, 'NISS');
+    await userEvent.tab();
+    await expectFocus(clear);
+    await userEvent.keyboard(' ');
+    await expect(input).toHaveValue('');
   },
 };

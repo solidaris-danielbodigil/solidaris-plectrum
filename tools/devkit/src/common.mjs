@@ -45,6 +45,16 @@ export function configAt(root) {
   return config;
 }
 
+/** Documentation for the installed runtime/toolkit pair, falling back to the development preview. */
+export function installedDocsUrl(root, entry) {
+  const ui = path.join(root, 'node_modules/@solidaris-danielbodigil/pds-ui/package.json');
+  const runtime = fs.existsSync(ui) ? readJson(ui).version : null;
+  if (runtime && entry.docs?.versionedUrlTemplate) {
+    return entry.docs.versionedUrlTemplate.replace('{version}', runtime).replace('{toolkitVersion}', packageJson.version);
+  }
+  return entry.docs?.previewUrl ?? entry.docs?.sourcePath ?? null;
+}
+
 export function flag(args, key) {
   const pos = args.findIndex((arg) => arg === `--${key}` || arg.startsWith(`--${key}=`));
   if (pos < 0) return undefined;

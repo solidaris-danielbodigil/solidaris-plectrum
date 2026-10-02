@@ -10,7 +10,7 @@ import { showStorybookToast } from '../../storybook/storybook-toast';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { userEvent, waitForText, within } from '../../storybook/story-tests';
+import { expect, expectFocus, pressEscape, tabTo, userEvent, waitFor, waitForText, within } from '../../storybook/story-tests';
 import {
   ProfileDrawerComponent,
   type ProfileDrawerData,
@@ -235,5 +235,30 @@ export const WithoutNotes: Story = {
       canvas.getByRole('button', { name: /Ouvrir la carte affilié/ }),
     );
     await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
+  },
+};
+
+/**
+ * Keyboard contract (profile-drawer.metadata.ts → accessibility.keyboardSupport):
+ * opening from the keyboard moves focus onto the profile heading, and Escape
+ * closes the drawer and returns focus to the button that opened it. The focus
+ * trap itself belongs to p-drawer and is not re-tested.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  args: {
+    data: EVA_MARTINEZ,
+    showNotes: true,
+  },
+  play: async ({ canvasElement }) => {
+    const trigger = within(canvasElement).getByRole('button', { name: /Ouvrir la carte affilié/ });
+    await tabTo(canvasElement, trigger);
+    await userEvent.keyboard('{Enter}');
+    await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
+    const heading = within(canvasElement.ownerDocument.body).getByRole('heading', { name: /Eva Martinez/ });
+    await expectFocus(heading);
+    pressEscape(canvasElement);
+    await waitFor(() => expect(within(canvasElement.ownerDocument.body).queryByRole('heading', { name: /Eva Martinez/ })).toBeNull());
+    await expectFocus(trigger);
   },
 };

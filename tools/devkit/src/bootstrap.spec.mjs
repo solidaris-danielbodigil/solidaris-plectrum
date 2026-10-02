@@ -67,3 +67,37 @@ test('bootstrap rejects a styles package without shipped Agenda assets', (contex
   assert.throws(() => bootstrap(root, { ci: false }), /pds-styles package lacks Agenda assets/);
   assert.equal(fs.existsSync(path.join(root, '.plectrum/config.json')), false);
 });
+
+test('bootstrap configures the offline Plectrum MCP server, Figma and the application Storybook MCP', async (context) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'plectrum-mcp-'));
+  context.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.cpSync(starter, root, { recursive: true });
+  fs.symlinkSync(path.join(repository, 'node_modules'), path.join(root, 'node_modules'), 'dir');
+  bootstrap(root, { ci: false });
+
+  const server = ['${workspaceFolder}/node_modules/@solidaris-danielbodigil/pds-devkit/bin/plectrum.mjs', 'mcp', '--root', '${workspaceFolder}'];
+  const cursor = readJson(path.join(root, '.cursor/mcp.json')).mcpServers;
+  const vscode = readJson(path.join(root, '.vscode/mcp.json')).servers;
+  assert.deepEqual(cursor.plectrum, { command: 'node', args: server });
+  assert.deepEqual(vscode.plectrum, { type: 'stdio', command: 'node', args: server });
+  assert.deepEqual(cursor['plectrum-figma'], { url: 'https://mcp.figma.com/mcp' });
+  assert.deepEqual(vscode['plectrum-storybook'], { type: 'http', url: 'http://localhost:6006/mcp' });
+  const main = fs.readFileSync(path.join(root, '.storybook/main.ts'), 'utf8');
+  assert.match(main, /'@storybook\/addon-mcp'/);
+  assert.match(main, /componentsManifest: true/);
+
+  // The editor starts the installed binary; answer a real search over stdio and record one event.
+  const cli = path.join(packageRoot, 'bin/plectrum.mjs');
+  const input = [
+    { jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'test', version: '1' } } },
+    { jsonrpc: '2.0', method: 'notifications/initialized' },
+    { jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'search_components', arguments: { request: 'copy a reference number to the clipboard' } } },
+  ].map((message) => JSON.stringify(message)).join('\n') + '\n';
+  const output = execFileSync(process.execPath, [cli, 'mcp', '--root', root], { input, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
+  const [init, search] = output.trim().split('\n').map((line) => JSON.parse(line));
+  assert.equal(init.result.serverInfo.name, 'plectrum');
+  assert.equal(JSON.parse(search.result.content[0].text).results[0].id, 'plectrum:copyable-text');
+  const events = fs.readFileSync(path.join(root, '.plectrum/telemetry/events.jsonl'), 'utf8').trim().split('\n').map((line) => JSON.parse(line));
+  assert.deepEqual(events.map(({ source, name, outcome }) => ({ source, name, outcome })), [{ source: 'mcp', name: 'search_components', outcome: 'ok' }]);
+  assert.doesNotMatch(JSON.stringify(events), /clipboard/);
+});

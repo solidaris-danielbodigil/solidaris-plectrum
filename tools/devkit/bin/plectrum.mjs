@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { asset, configAt, flag, packageJson, packageRoot, projectPath, readJson, requiredFlag } from '../src/common.mjs';
-import { initialize, update } from '../src/managed.mjs';
+import { asset, configAt, flag, installedDocsUrl, packageJson, packageRoot, projectPath, readJson, requiredFlag } from '../src/common.mjs';
+import { initialize, recommendedMcp, update } from '../src/managed.mjs';
 import { bootstrap } from '../src/bootstrap.mjs';
 import { candidateCheck, check, compatibility, tokenCheck, validateSchema } from '../src/checks.mjs';
 import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold, usageReportStatus } from '../src/workflows.mjs';
 import { probeMcp } from '../src/mcp.mjs';
+import { serveStdio } from '../src/mcp-server.mjs';
+import { recordEvent } from '../src/telemetry.mjs';
 import { consumerCommands, renderHelp, subcommandOf } from '../src/process.mjs';
 
 const args = process.argv.slice(2);
@@ -18,18 +20,11 @@ const exchangeSchemas = contract.commands.consumerValidate.values.schema;
 async function probe(name, url) {
   const result = await probeMcp(url);
   if (result.ok) console.log(`${name}: MCP initialized; capabilities ${result.capabilities.join(', ') || 'none'}`);
+  else if (/^HTTP 401\b/.test(result.error)) console.log(`${name}: reachable; sign in from the editor (OAuth) to use it`);
   else console.log(`${name}: unavailable (${result.error})`);
 }
 
-/** Documentation for the installed runtime/toolkit pair, falling back to the development preview. */
-function docsFor(entry) {
-  const ui = path.join(root, 'node_modules/@solidaris-danielbodigil/pds-ui/package.json');
-  const runtime = fs.existsSync(ui) ? readJson(ui).version : null;
-  if (runtime && entry.docs.versionedUrlTemplate) {
-    return entry.docs.versionedUrlTemplate.replace('{version}', runtime).replace('{toolkitVersion}', packageJson.version);
-  }
-  return entry.docs.previewUrl ?? entry.docs.sourcePath;
-}
+const docsFor = (entry) => installedDocsUrl(root, entry);
 
 function docsNotice() {
   const registry = asset('registry.json');
@@ -58,8 +53,10 @@ const handlers = {
     const report = candidateCheck(root, config);
     errors.push(...report.errors);
     console.log(`Toolkit ${packageJson.version}; process ${contract.version}; ${asset('catalogue.json').components.length} catalogue entries.\n${docsNotice()}`);
+    console.log(config.mcp?.plectrum === false ? 'plectrum: offline MCP server disabled (mcp.plectrum is false)' : 'plectrum: offline MCP server over stdio, started by the editor from .cursor/mcp.json and .vscode/mcp.json');
     for (const [name, url] of Object.entries(config.mcp ?? {})) {
-      if (!url) console.log(`${name}: not configured; offline catalogue available`);
+      if (name === 'plectrum') continue;
+      if (!url) console.log(`${name}: not configured${recommendedMcp[name] ? `; recommended ${recommendedMcp[name]} in .plectrum/config.json, then plectrum update` : ''}`);
       else if (args.includes('--live')) await probe(name, url);
       else console.log(`${name}: configured ${url}; pass --live to verify MCP initialize capabilities`);
     }
@@ -68,6 +65,7 @@ const handlers = {
     console.log('Compatibility and managed files: ok');
   },
   scaffold: () => scaffold(root, args),
+  mcp: () => new Promise((resolve) => serveStdio(root).on('close', resolve)),
   validate: () => {
     const schema = requiredFlag(args, 'schema');
     if (!exchangeSchemas.includes(schema)) throw new Error(`Unknown exchange schema. Use one of: ${exchangeSchemas.join(', ')}.`);
@@ -118,9 +116,19 @@ function selfCheck() {
 async function main() {
   if (!command || ['help', '--help', '-h'].includes(command)) return console.log(renderHelp(contract, packageJson.version));
   if (command === 'self-check') return selfCheck();
-  const handler = handlers[command === 'tokens' ? `tokens ${args[1]}` : command];
+  const name = command === 'tokens' ? `tokens ${args[1]}` : command;
+  const handler = handlers[name];
   if (!handler) throw new Error(`Unknown command: ${args.slice(0, 2).join(' ')}. Run plectrum help.`);
-  return handler();
+  // The MCP server records each tool call itself; setup commands are not usage.
+  const measured = !['mcp', 'init', 'bootstrap', 'update'].includes(name);
+  try {
+    const result = await handler();
+    if (measured) recordEvent(root, { source: 'cli', name });
+    return result;
+  } catch (error) {
+    if (measured) recordEvent(root, { source: 'cli', name, outcome: 'error' });
+    throw error;
+  }
 }
 
 main().catch((error) => { console.error(error.message); process.exitCode = 1; });

@@ -15,9 +15,7 @@
             <p-card class="o-layout o-layout--full-height">
               <ng-template #title>{{ pattern.name }}</ng-template>
               <p class="c-docs-contract__text o-layout o-layout--margin-0">{{ pattern.description }}</p>
-              <pre
-                class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
-              ><code>{{ pattern.composition }}</code></pre>
+              <pds-docs-code class="o-layout--margin-block-start-1" [code]="pattern.composition" [label]="'Copy ' + pattern.name" />
             </p-card>
           </li>
         }
@@ -225,9 +223,7 @@
             <p-card class="o-layout o-layout--full-height">
               <ng-template #title>{{ example.name }}</ng-template>
               <p class="c-docs-contract__text o-layout o-layout--margin-0">{{ example.description }}</p>
-              <pre
-                class="c-docs-contract__code o-layout o-layout--margin-0 o-layout--margin-block-start-1 o-layout--padding-block-1 o-layout--padding-inline-1-5 u-radius-sm o-layout--overflow-x-auto"
-              ><code>{{ example.code }}</code></pre>
+              <pds-docs-code class="o-layout--margin-block-start-1" [code]="example.code" [label]="'Copy ' + example.name" />
             </p-card>
           </li>
         }

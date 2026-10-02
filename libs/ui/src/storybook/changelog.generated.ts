@@ -2,7 +2,28 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "keyboard-focus-fixes",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Fix keyboard focus in four components. Input Clear hands focus back to its field after a keyboard clear instead of leaving it on the hidden button. Top Nav returns focus to the search toggle when Escape closes the search, without reopening it. List moves focus to the first option when its target picker opens from the keyboard, and back to the tag when it closes. Transactions CICS Modal returns focus to the element that opened it."
+  },
+  {
+    "id": "plectrum-agent-mcp",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "minor"
+      }
+    ],
+    "summary": "Add `plectrum mcp`, an offline MCP server over stdio that answers editor agents from the installed catalogue, tokens and process (`search_components`, `get_component`, `find_token`, `check_tokens`, `get_process`). `plectrum init` now configures it with the Figma remote MCP server (OAuth in the editor) and the application's own Storybook MCP at `http://localhost:6006/mcp`; generated Storybooks add `@storybook/addon-mcp`. Existing projects keep their `.plectrum/config.json` values; `plectrum doctor` lists the recommended ones.\n\nMeasure the Plectrum agent without collecting content: MCP tool calls and CLI commands record tool names, component IDs and outcomes in `.plectrum/telemetry` (ignored by git, off with `telemetry.enabled: false`), and `adoption-report` adds a 30-day `agent` block with these counts and the `Plectrum-Agent:` commit trailers."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {

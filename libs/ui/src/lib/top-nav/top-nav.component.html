@@ -76,10 +76,11 @@
         severity="secondary"
         pRipple
         class="c-top-nav__action-button o-flex o-flex--align-items-center o-flex--justify-content-center o-flex__item o-flex__item--shrink-0"
+        [id]="searchToggleId"
         [attr.aria-label]="searchAriaLabel()"
         [attr.aria-controls]="searchInputId"
         [attr.aria-expanded]="resolvedSearchExpanded()"
-        (focus)="openSearch()"
+        (focus)="onSearchToggleFocus()"
         (click)="openSearch()"
       >
         <i class="bi bi-search c-top-nav__action-icon" aria-hidden="true"></i>

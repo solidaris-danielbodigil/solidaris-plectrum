@@ -1,4 +1,4 @@
-<!-- Generated from process.json 1.5.0 by contracts:generate. Do not edit. -->
+<!-- Generated from process.json 1.6.0 by contracts:generate. Do not edit. -->
 # Plectrum in an application repository
 
 The installed `@solidaris-danielbodigil/pds-devkit` package owns the catalogue, schemas, process and shared role instructions. `.plectrum/config.json` owns this application's identity and paths. `plectrum update` regenerates editor adapters; keep team-specific notes in other files.
@@ -37,6 +37,7 @@ Never edit node_modules or assume libs/ui exists. Candidates live under `src/ple
 - `plectrum bootstrap` — Initialize or verify the Angular application, local ITCSS, Storybook and managed tooling. The application postinstall runs this automatically.
 - `plectrum update` — Regenerate managed adapters after a toolkit upgrade; report edited managed files as conflicts.
 - `plectrum catalogue [--id <component-id>]` — List the installed offline catalogue, or print one component contract.
+- `plectrum mcp` — Serve the installed catalogue, tokens and process to editor agents as an offline MCP server over stdio. Editors start it from the managed MCP configuration.
 - `plectrum doctor [--live]` — Check package and toolkit compatibility, managed files and configured MCP endpoints.
 - `plectrum validate --schema <schema> --file <relative.json>` — Validate a local JSON file against an installed exchange schema.
 - `plectrum tokens check [--strict]` — Check --pds-* usage against the installed token inventory; --strict also rejects hex and px.

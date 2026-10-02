@@ -114,6 +114,14 @@ export const Rules: StoryObj = cardsStory([
     lead: 'npm run contracts:check compares .metadata.ts props to Angular input / model / output. Name, required, type, and literal default must match.',
   },
   {
+    title: 'Keyboard contract is tested',
+    lead: "An Angular component with a button, link, tabindex or keydown handler needs a story tagged 'keyboard' that proves the keyboardSupport lines Plectrum owns. npm run contracts:check fails without it; PrimeNG's own keyboard models are not re-tested.",
+  },
+  {
+    title: 'Search does not regress',
+    lead: 'tools/devkit/evals/search.json replays reference requests against search_components in npm run devkit:test. A request that passed and no longer does fails the pull request; knownMisses lists the ones that do not pass yet, and a known miss that starts passing only prints a note. Accept a regression on purpose by adding it to knownMisses in the same pull request. Application CI never runs this check.',
+  },
+  {
     title: 'PrimeNG first',
     lead: 'No new Angular wrapper when PrimeNG already owns the behaviour. BEMIT classes and 01-settings bridges restyle; they do not fork the control.',
   },
@@ -136,5 +144,6 @@ export const Gaps: StoryObj = calloutStory({
   title: 'Not automated yet',
   items: [
     'tokens.consumed is checked one way only: a listed token must exist, but a token used in SCSS and missing from the list is not caught.',
+    'The agent search is scored on reference requests, not on real requests: application teams send counts, never what they asked.',
   ],
 });

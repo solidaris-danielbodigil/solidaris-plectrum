@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular-vite';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { expect, userEvent, waitFor, within } from '../../storybook/story-tests';
+import { accessibleLabel, expect, expectFocus, focused, resetFocus, userEvent, waitFor, within } from '../../storybook/story-tests';
 import { TopNavComponent } from './top-nav.component';
 import { TopNavMetadata } from './top-nav.metadata';
 
@@ -125,5 +125,43 @@ export const SearchOpen: Story = {
     await expect(
       canvas.getByRole('searchbox', { name: 'Search' }),
     ).toHaveValue('Keyboard');
+  },
+};
+/**
+ * Keyboard contract (top-nav.metadata.ts → accessibility.keyboardSupport):
+ * Tab follows the visual order up to the search, focus on the search toggle opens
+ * the field, Escape closes it and returns focus to the toggle, and Tab continues
+ * to the help button.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  args: {
+    breadcrumbs: breadcrumbItems,
+    avatarInitials: 'LV',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    resetFocus(canvasElement);
+    const reached: Element[] = [];
+    for (let i = 0; i < 15 && focused(canvasElement)?.getAttribute('role') !== 'searchbox'; i++) {
+      await userEvent.tab();
+      reached.push(focused(canvasElement)!);
+    }
+    const searchbox = canvas.getByRole('searchbox', { name: 'Search' });
+    await expectFocus(searchbox);
+    // Everything before the search sits on one row: each stop is right of the previous one.
+    const lefts = reached.slice(0, -1).map((element) => element.getBoundingClientRect().left);
+    await expect(lefts).toEqual([...lefts].sort((a, b) => a - b));
+    await expect(reached.slice(0, -1).map(accessibleLabel).filter(Boolean).length).toBe(reached.length - 1);
+
+    await userEvent.type(searchbox, 'clavier');
+    await userEvent.keyboard('{Escape}');
+    const toggle = await waitFor(() => canvas.getByRole('button', { name: 'Search' }));
+    await expectFocus(toggle);
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    await expect(canvas.queryByRole('searchbox')).toBeNull();
+
+    await userEvent.tab();
+    await expect(accessibleLabel(focused(canvasElement))).toBe('Help');
   },
 };

@@ -1,14 +1,14 @@
-import { Meta, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { Meta, Source, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import * as Figures from './get-started-contribute.stories';
 import { STATUS_PRESENTATION } from '../storybook/governance';
 import { command, REGISTRY } from '../storybook/process-docs';
-import { REPO_CLONE, REPO_DIR } from '../storybook/release-state';
-import workspacePackage from '../../../../package.json';
 
 <Meta title="Start here/Contribute" id="get-started-contribute" />
 
 # Contribute
+
+> **In short.** Build what you need locally — no approval required. Open a proposal only when you want other teams to share it; Core answers with a decision. Your usage report tells Core about your local components, so Core finds the ones worth sharing. Step-by-step commands: [Process and contracts](?path=/docs/docs-pipeline-contracts--docs).
 
 Anyone can contribute, developer or designer, in the core team or an application team.
 
@@ -41,7 +41,11 @@ Create the component in your application with `npm run pds:component -- --name <
 
 On the evidence checklist's **Reuse potential** line, say whether other teams could use the component: none, possible or likely, and why. Your usage report sends each local component and this estimate to Core, which looks for components worth sharing — you do not have to propose them yourself.
 
-To share it with other teams, you need an `approved-candidate` decision. Commit, publish a preview of that commit with its CI result, then run <code>{command('candidateSubmit')}</code>. After a new commit, run it again: the candidate keeps its ID. Once Core accepts it, the component appears in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
+To share it with other teams, you need an `approved-candidate` decision. Commit, publish a preview of that commit with its CI result, then run:
+
+<Source language="bash" code={command('candidateSubmit')} />
+
+After a new commit, run it again: the candidate keeps its ID. Once Core accepts it, the component appears in [Find a component](?path=/docs/start-here-catalogue--docs) with a link to your preview.
 
 <Unstyled>
   <Story of={Figures.AppLayer} />
@@ -63,30 +67,9 @@ If Core decides to make an accepted candidate a Core component, the core team ge
 
 More detail: [candidate records](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/.ai/candidates/README.md) and [component promotion](https://github.com/solidaris-danielbodigil/solidaris-plectrum/blob/main/docs/component-promotion.md).
 
-## Contribute to Plectrum Core
+## Core team and designers
 
-### Start from a reviewed Figma design
-
-A designer can open a proposal straight from a Custom components frame. Link the original and reviewed designs, the design-team decision and the intended owner. New tokens go on a separate branch of the PrimeNG v21 file. Example: [Profile header](https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587), a redesign of Profile Card.
-
-<Unstyled>
-  <Story of={Figures.DesignOrigin} />
-</Unstyled>
-
-### Work in the Plectrum repository
-
-Fixes and Core work go through a reviewed pull request on the Plectrum repository (Node <code>{workspacePackage.engines.node}</code>):
-
-<pre><code>{`git clone ${REPO_CLONE}
-cd ${REPO_DIR}
-npm install
-npm run storybook`}</code></pre>
-
-<Unstyled>
-  <Story of={Figures.PlectrumAgent} />
-</Unstyled>
-
-Paths, tests and CI: [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
+A designer can start a Core component from a reviewed Custom components frame; the core team implements it in the Plectrum repository. That flow, with its commands, is on [Process and contracts → Design-team component](?path=/docs/docs-pipeline-contracts--docs#design-team-component-to-plectrum-and-packages). Repository setup, paths, tests and CI: [Maintainer workflow](?path=/docs/docs-maintainer-workflow--docs).
 
 ## Who does what
 

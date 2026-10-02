@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import { inventory } from './inventory';
+import { missingKeyboardStories } from './keyboard-stories';
 import { generateContracts } from './generate';
 import { readRegistry, validateExchange } from './validate';
 import processContract from '../../.ai/contracts/process.json';
@@ -26,14 +27,20 @@ async function check() {
   const gate = /^npm run ([\w:-]+)/.exec(processContract.capabilities.storybookMcp.gate)?.[1];
   if (gate && !pkg.scripts[gate])
     throw new Error(`Storybook MCP gate missing from package.json: ${gate}`);
-  for (const item of await inventory(root)) {
+  const items = await inventory(root);
+  for (const item of items) {
     if (/\b(TODO|TBD|FIXME)\b/.test(JSON.stringify(item.metadata)))
       throw new Error(
         `${item.metadata.component.id}: complete metadata TODOs before review`,
       );
   }
+  const withoutKeyboardStory = missingKeyboardStories(root, items);
+  if (withoutKeyboardStory.length)
+    throw new Error(
+      `Interactive components need a story tagged 'keyboard' that proves accessibility.keyboardSupport: ${withoutKeyboardStory.join(', ')}`,
+    );
   console.log(
-    'Contract schemas, registry, process commands, generated files and metadata readiness passed.',
+    'Contract schemas, registry, process commands, generated files, metadata readiness and keyboard stories passed.',
   );
 }
 check().catch((error) => {

@@ -108,7 +108,7 @@ export const InputClearMetadata: ComponentMetadata = {
     states: ['visible', 'hidden'],
     interactions: [
       'Keep the control in the DOM and toggle [visible] (typically !!value) so the p-iconfield padding stays reserved and the layout never shifts',
-      'Activating the button emits clear; the parent resets the model — the control never touches the input itself',
+      'Activating the button emits clear; the parent resets the model — the control never changes the value, it only hands focus back to the field after a keyboard clear',
       'mousedown is prevented so the input keeps focus while the clear click is handled',
       'While hidden the click handler ignores activations',
     ],
@@ -126,6 +126,7 @@ export const InputClearMetadata: ComponentMetadata = {
     ],
     keyboardSupport: [
       'Native button: Tab reaches it while visible, Enter or Space emits clear',
+      'After a keyboard clear, focus returns to the field — never left on the hidden button',
       'Hidden controls are skipped in the tab order',
     ],
   },

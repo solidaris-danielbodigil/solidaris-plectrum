@@ -32,8 +32,25 @@ export interface LocalComponentSighting {
   freshness: 'current' | 'stale';
 }
 
+/** One application's Plectrum agent counts, as reported; counts only, never request text. */
+export interface AgentUsage {
+  application: string;
+  label: string;
+  freshness: 'current' | 'stale';
+  observedAt: string;
+  windowDays: number;
+  activeDays: number;
+  toolCalls: number;
+  searches: number;
+  emptySearches: number;
+  lookups: Record<string, number>;
+  commits: { total: number; reuse: number; scaffold: number; advice: number };
+  reused: Record<string, number>;
+}
+
 export interface AdoptionAggregate {
   staleAfterDays: number;
+  agent: AgentUsage[];
   localComponents: LocalComponentSighting[];
   usedIn: Record<string, UsageSighting[]>;
   missing: { id: string; label: string; kind: 'local-demo' | 'external' }[];
@@ -91,6 +108,7 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
   const reported: AdoptionAggregate['reported'] = [];
   const retired: AdoptionAggregate['retired'] = [];
   const localComponents: LocalComponentSighting[] = [];
+  const agent: AgentUsage[] = [];
   const staleMs = STALE_AFTER_DAYS * 24 * 60 * 60 * 1000;
   for (const app of registry.applications) {
     const report = byId.get(app.id);
@@ -102,6 +120,23 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
     const packageVersion = versions.length === 1 ? versions[0] : versions.sort().join(', ');
     reported.push({ id: app.id, label: app.label });
     const freshness = now.getTime() - Date.parse(report.observedAt) > staleMs ? 'stale' : 'current';
+    if (report.agent) {
+      const { agent: usage } = report;
+      agent.push({
+        application: app.id,
+        label: app.label,
+        freshness,
+        observedAt: report.observedAt,
+        windowDays: usage.window.days,
+        activeDays: usage.activeDays,
+        toolCalls: Object.values(usage.tools).reduce((sum, count) => sum + count, 0),
+        searches: usage.tools['search_components'] ?? 0,
+        emptySearches: usage.emptySearches,
+        lookups: usage.lookups,
+        commits: { total: usage.commits.total, reuse: usage.commits.reuse, scaffold: usage.commits.scaffold, advice: usage.commits.advice },
+        reused: usage.commits.reused,
+      });
+    }
     for (const local of report.localComponents ?? []) {
       localComponents.push({ ...local, team: report.team, application: app.id, label: app.label, freshness });
     }
@@ -114,7 +149,7 @@ export function aggregateAdoption(reports: Iterable<AdoptionReport>, registry: R
   for (const [id, report] of byId) {
     if (!registry.applications.some((app) => app.id === id)) retired.push({ id, observedAt: report.observedAt });
   }
-  return { staleAfterDays: STALE_AFTER_DAYS, localComponents: localComponents.sort((a, b) => a.label.localeCompare(b.label) || a.name.localeCompare(b.name)), usedIn, missing, reported: reported.sort((a, b) => a.label.localeCompare(b.label)), retired: retired.sort((a, b) => a.id.localeCompare(b.id)) };
+  return { staleAfterDays: STALE_AFTER_DAYS, agent: agent.sort((a, b) => a.label.localeCompare(b.label)), localComponents: localComponents.sort((a, b) => a.label.localeCompare(b.label) || a.name.localeCompare(b.name)), usedIn, missing, reported: reported.sort((a, b) => a.label.localeCompare(b.label)), retired: retired.sort((a, b) => a.id.localeCompare(b.id)) };
 }
 
 export async function checkAdoption(root = process.cwd(), base?: string): Promise<AdoptionAggregate> {

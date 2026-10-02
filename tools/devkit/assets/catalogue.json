@@ -1761,7 +1761,7 @@
           ],
           "interactions": [
             "Keep the control in the DOM and toggle [visible] (typically !!value) so the p-iconfield padding stays reserved and the layout never shifts",
-            "Activating the button emits clear; the parent resets the model — the control never touches the input itself",
+            "Activating the button emits clear; the parent resets the model — the control never changes the value, it only hands focus back to the field after a keyboard clear",
             "mousedown is prevented so the input keeps focus while the clear click is handled",
             "While hidden the click handler ignores activations"
           ]
@@ -1796,6 +1796,7 @@
           ],
           "keyboardSupport": [
             "Native button: Tab reaches it while visible, Enter or Space emits clear",
+            "After a keyboard clear, focus returns to the field — never left on the hidden button",
             "Hidden controls are skipped in the tab order"
           ],
           "wcagLevel": "AA"
@@ -2045,7 +2046,8 @@
           ],
           "keyboardSupport": [
             "PrimeNG Tree keyboard model: Up / Down move between rows, Right / Left expand or collapse a group, Enter or Space selects an entry (itemClick) or toggles a group",
-            "Count tags with targets and the footnote are native buttons in the tab order; Enter or Space activates them and picks an option in the popover"
+            "Count tags with targets and the footnote are native buttons in the tab order; Enter or Space activates them and picks an option in the popover",
+            "Opening the target picker from the keyboard moves focus to its first option; Tab moves between options, Escape or a choice closes it and returns focus to the tag"
           ],
           "wcagLevel": "AA",
           "contrastRequirements": [
@@ -4609,7 +4611,7 @@
             "Each launch button shows the visible label CICS and is named by the localised launch message (\"Lancer {code} dans CICS\"); its external-link icon is decorative"
           ],
           "keyboardSupport": [
-            "Escape or the mask closes the dialog (PrimeNG)",
+            "Escape or the mask closes the dialog (PrimeNG); focus returns to the element that opened it",
             "Tab cycles the close button, the search field and the launch buttons inside the focus trap",
             "Enter / Space on a launch button opens the transaction in a new tab"
           ],

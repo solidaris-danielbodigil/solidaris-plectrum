@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+
+<Meta title="Reference/Glossary" id="reference-glossary" />
+
+# Glossary
+
+> **In short.** The words these pages use, in one sentence each, with the page that explains them. Terms only the core team needs are on [How agents work](?path=/docs/docs-ai-strategy--docs#glossary).
+
+## Who owns what
+
+<DocsTable
+  headers={['Term', 'Meaning', 'More']}
+  rows={[
+    ['Core', 'A component, token or rule owned by the design-system team and safe in every application.', <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Status and owner</a>],
+    ['Local component', 'A component an application team builds and owns in its own repository, without waiting for Core.', <a href="?path=/docs/get-started-contribute--docs#develop-and-submit-a-candidate">Contribute</a>],
+    ['Candidate', 'A local component Core has agreed to consider for sharing. Other teams ask Core before reusing it.', <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Status and owner</a>],
+    ['App-specific', 'A component owned by one application. Other applications propose instead of importing it.', <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Status and owner</a>],
+    ['Deprecated', 'Scheduled for removal; add no new usages.', <a href="?path=/docs/get-started-contribute--docs#status-and-owner">Status and owner</a>],
+    ['Proposal', 'A GitHub issue asking Core for a missing component, variant or token: what the screen must do, what you tried, the Figma frame.', <a href="?path=/docs/get-started-contribute--docs">Contribute</a>],
+    ['Decision', 'Core’s answer to a proposal: approved-candidate, use-existing or app-specific.', <a href="?path=/docs/get-started-contribute--docs#proposal-decisions">Proposal decisions</a>],
+    ['Usage report', 'What an application’s CI sends to Core: which Plectrum components it uses, its local components and the agent counts. Counts only, through a reviewed pull request.', <a href="?path=/docs/start-here-catalogue--docs">Find a component</a>],
+  ]}
+/>
+
+## Building with Plectrum
+
+<DocsTable
+  headers={['Term', 'Meaning', 'More']}
+  rows={[
+    ['Starter', 'The application template: npm install sets up styles, Storybook, tests, editor instructions and checks.', <a href="?path=/docs/get-started-use-plectrum-in-an-app--docs">Build with Plectrum</a>],
+    ['Toolkit', 'The pds-devkit package: the plectrum command, rules, agents, the offline catalogue and the checks for application repositories.', <a href="?path=/docs/docs-pipeline-contracts--docs">Process and contracts</a>],
+    ['Preset', 'The PrimeNG theme Plectrum provides (v1). The v0.6 preset is kept only to compare during migration.', <a href="?path=/docs/primeng-ui-kit--docs">PrimeNG UI kit</a>],
+    ['Token', 'A named design value written var(--pds-…). Primitive tokens hold raw values; semantic tokens name a role (text, border, warning) and are the ones to use.', <a href="?path=/docs/foundations-token-finder--docs">Find a token</a>],
+    ['Local token', 'A value only your application needs, declared in a local token file instead of being invented inline.', <a href="?path=/docs/get-started-use-plectrum-in-an-app--docs">Build with Plectrum</a>],
+    ['ITCSS', 'The order styles load in: settings, tools, generic, elements, objects, components, utilities, trumps. Each layer may only override the ones before it.', <a href="?path=/docs/docs-css-architecture--docs">CSS architecture</a>],
+    ['BEMIT', 'The class naming: a prefix for the layer (o- object, c- component, u- utility) plus block__element--modifier.', <a href="?path=/docs/docs-css-architecture--docs">CSS architecture</a>],
+    ['Object classes', 'Layout classes written in the template (o-flex, o-layout) instead of new CSS.', <a href="?path=/docs/foundations-layout--docs">Layout</a>],
+    ['Evidence checklist', 'The evidence.md file next to a local component: states covered, accessibility checks and reuse potential.', <a href="?path=/docs/get-started-contribute--docs#develop-and-submit-a-candidate">Contribute</a>],
+  ]}
+/>
+
+## Agents and contracts
+
+<DocsTable
+  headers={['Term', 'Meaning', 'More']}
+  rows={[
+    ['Plectrum agent', 'The /plectrum agent in Cursor and VS Code: the team’s first reviewer for reuse, layout, tokens and states.', <a href="?path=/docs/start-here-use-the-agent--docs">Use the Plectrum agent</a>],
+    ['MCP server', 'A service an editor agent queries for facts. Plectrum configures four: plectrum (offline catalogue), PrimeNG, Figma and your Storybook.', <a href="?path=/docs/start-here-use-the-agent--docs#where-it-gets-its-answers">Where it gets its answers</a>],
+    ['Metadata', 'The .metadata.ts file next to each component: use cases, anti-patterns, anatomy, accessibility, tokens. Component pages render it; agents read it.', <a href="?path=/docs/docs-ai-strategy--docs#metadata-file">Metadata file</a>],
+    ['Contract', 'Any machine-readable file the checks enforce: metadata, process.json, the registry, the exchange schemas.', <a href="?path=/docs/docs-ai-strategy--docs#definition">How agents work</a>],
+    ['Keyboard story', 'A story tagged keyboard that proves a component’s keyboard support with real key presses. Required for every interactive Plectrum component.', <a href="?path=/docs/docs-writing-stories--docs">Writing stories</a>],
+    ['Agent trailer', 'A Plectrum-Agent: line the agent adds to a commit it helped with, so its effect can be counted.', <a href="?path=/docs/start-here-use-the-agent--docs#what-is-measured">What is measured</a>],
+  ]}
+/>
+
+## Releases and quality
+
+<DocsTable
+  headers={['Term', 'Meaning', 'More']}
+  rows={[
+    ['Changeset', 'A note added to a change that affects a package: patch, minor or major. Releases are built from them.', <a href="?path=/docs/docs-releases-and-versioning--docs">Releases and versioning</a>],
+    ['Development preview', 'This Storybook: it follows the main branch and may be ahead of the latest release.', <a href="?path=/docs/docs-releases-and-versioning--docs">Releases and versioning</a>],
+    ['WCAG 2.1 AA', 'The accessibility target. Automated checks run on every story; manual keyboard and screen-reader reviews are recorded separately.', <a href="?path=/docs/foundations-accessibility-overview--docs">Accessibility overview</a>],
+  ]}
+/>

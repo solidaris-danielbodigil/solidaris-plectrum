@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular-vite';
 import { anatomyStory, contractStory, statusStory } from '../../docs/docs-figure-stories';
 import { argTypesFromProps } from '../../storybook/arg-types-from-props';
 import { storyDesign } from '../../storybook/story-design';
-import { assertTextVisible } from '../../storybook/story-tests';
+import { assertTextVisible, expect, isSkippedByTab, tabTo, within } from '../../storybook/story-tests';
 import { PlectrumAvatarComponent } from './plectrum-avatar.component';
 import { PlectrumAvatarMetadata } from './plectrum-avatar.metadata';
 
@@ -84,5 +84,27 @@ export const LargeOther: Story = {
     gender: 'other',
     variant: 1,
     ariaLabel: 'Alex',
+  },
+};
+
+/**
+ * Keyboard contract (plectrum-avatar.metadata.ts → accessibility.keyboardSupport):
+ * a focusable avatar is a named image in the tab order; a decorative one is hidden
+ * from assistive technology and skipped.
+ */
+export const Keyboard: Story = {
+  tags: ['keyboard'],
+  render: () => ({
+    template: `
+      <pds-plectrum-avatar initials="LV" ariaLabel="Lucie Verbeke" />
+      <pds-plectrum-avatar initials="JD" [focusable]="false" />
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const named = within(canvasElement).getByRole('img', { name: 'Lucie Verbeke' });
+    await tabTo(canvasElement, named);
+    const decorative = canvasElement.querySelectorAll('pds-plectrum-avatar')[1];
+    await expect(decorative).toHaveAttribute('aria-hidden', 'true');
+    await expect(await isSkippedByTab(canvasElement, decorative)).toBe(true);
   },
 };
