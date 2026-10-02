@@ -509,6 +509,32 @@
         }
       }
     },
+    "size/affiliate/search/field": {
+      "$type": "dimension",
+      "$value": {
+        "value": 250,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-search-field",
+          "source": "_settings.affiliate-search.scss"
+        }
+      }
+    },
+    "size/affiliate/search/query/field": {
+      "$type": "dimension",
+      "$value": {
+        "value": 360,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-affiliate-search-query-field",
+          "source": "_settings.affiliate-search.scss"
+        }
+      }
+    },
     "size/avatar/large/h": {
       "$type": "dimension",
       "$value": {
