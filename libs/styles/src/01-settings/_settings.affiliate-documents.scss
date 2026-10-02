@@ -30,7 +30,7 @@
     0 0 0 1px var(--#{$pds-prefix}-color-card-border),
     var(--#{$pds-prefix}-shadow-sm);
 
-  // Elevation-off state — ring stays; shadow layers fade for staged reveal
+  // DEPRECATED: unused since the filter toolbar is always visible — no replacement. Remove in a later release.
   --#{$pds-prefix}-shadow-affiliate-documents-toolbar-none:
     0 0 0 1px var(--#{$pds-prefix}-color-card-border),
     0 0 0 0 transparent;

@@ -6,8 +6,8 @@
 // c-affiliate-details — full-width filter toolbar + two-column content row.
 //
 // Layout: o-flex / o-layout in templates.
-// Exceptions: PrimeNG .p-card-body / .p-accordionheader (no template access),
-//             scroll-padding on owned scroll wrappers.
+// Exceptions: PrimeNG .p-card-body (no template access), scroll-padding /
+//             scroll-margin on the owned documents scroller.
 //
 // Design ref:   Figma node 324:5739 (Dossier Affilié — page layout)
 // Token source: libs/styles/src/01-settings/_settings.affiliate-details.scss
@@ -24,28 +24,9 @@
   background: var(--#{$pds-prefix}-color-surface);
 }
 
-.c-affiliate-details__documents-header-title {
-  flex: 0 1 auto;
-}
-
-.c-affiliate-details__documents-header-actions {
-  flex: 1 1 auto;
-  min-inline-size: min(100%,
-    var(--#{$pds-prefix}-size-affiliate-details-documents-header-actions-min));
-}
-
-.c-affiliate-details__documents-header-actions .c-affiliate-details__documents-search {
-  flex: 1 1 auto;
-  max-width: var(--#{$pds-prefix}-size-affiliate-details-documents-search-max);
-}
-
-.c-affiliate-details__documents-search {
-  flex: 1 1 auto;
-  max-width: var(--#{$pds-prefix}-size-affiliate-details-documents-search-max);
-}
-
 .c-affiliate-details__documents {
-  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-documents-column-min);
+  // Capped at the row width so the card (and its tab-list navigators) never overflows a 320px viewport (WCAG 1.4.10).
+  min-inline-size: min(100%, var(--#{$pds-prefix}-size-affiliate-details-documents-column-min));
 
   .c-list {
     background: transparent;
@@ -64,60 +45,15 @@
   }
 }
 
-// Category tab — label min width from token so badges share one axis.
-.c-affiliate-details__category-tab {
-  &--disabled {
-    opacity: var(--#{$pds-prefix}-disabled-opacity);
-    cursor: var(--#{$pds-prefix}-cursor-disabled);
-    color: var(--#{$pds-prefix}-color-text-muted);
-  }
-}
-
+// Category tab label — disabled tabs use PrimeNG p-disabled chrome (no page modifier).
 .c-affiliate-details__category-tab-label {
   @include text-label-sm;
   line-height: 1;
-  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-category-label-min);
-}
-
-.c-affiliate-details__category-eye {
-  &--disabled {
-    opacity: var(--#{$pds-prefix}-disabled-opacity);
-    cursor: var(--#{$pds-prefix}-cursor-disabled);
-    pointer-events: none;
-  }
-}
-
-.c-affiliate-details__category-accordion {
-
-  // PrimeNG accordion header row — internal flex gap
-  .p-accordionheader {
-    gap: var(--#{$pds-prefix}-spacing-2);
-  }
-
-  .c-list__item--entry,
-  .c-list__item--group {
-    scroll-margin-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
-  }
-}
-
-.c-affiliate-details__category-empty-filter {
-  @include text-body-sm;
-  color: var(--#{$pds-prefix}-color-text-muted);
-}
-
-.c-affiliate-details__category-panel-label {
-  @include text-label-sm;
-  line-height: 1;
-  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-category-label-min);
-}
-
-.c-affiliate-details__category-panel-count-label {
-  @include text-label-xs;
-  color: var(--#{$pds-prefix}-color-text-muted);
 }
 
 .c-affiliate-details__detail {
-  min-inline-size: var(--#{$pds-prefix}-size-affiliate-details-detail-column-min);
+  // Capped at the row width so the card (and its tab-list navigators) never overflows a 320px viewport (WCAG 1.4.10).
+  min-inline-size: min(100%, var(--#{$pds-prefix}-size-affiliate-details-detail-column-min));
 
   :where(.p-card-body) {
     display: flex;
@@ -136,6 +72,12 @@
 
 .c-affiliate-details__documents-scroll {
   scroll-padding-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
+
+  // Rows of the selected category tab panel keep the inset when scrolled into view.
+  .c-list__item--entry,
+  .c-list__item--group {
+    scroll-margin-block: var(--#{$pds-prefix}-space-affiliate-details-list-scroll-inset);
+  }
 }
 
 .c-affiliate-details__detail-scroll {

@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PDS_LOCALE_STORAGE_KEY, providePdsLocale } from '../i18n';
+import {
+  PDS_LOCALE_STORAGE_KEY,
+  PdsLocaleService,
+  providePdsLocale,
+} from '../i18n';
 
 import { ListComponent } from './list.component';
 
@@ -10,7 +14,7 @@ const JOURNEY_GROUPS: ListGroup[] = [
   {
     id: 'parcours-demande-primaire',
 
-    title: 'Parcours Indemnités -',
+    title: 'Parcours Indemnités',
 
     titleAccent: 'Demande primaire',
 
@@ -44,7 +48,7 @@ const JOURNEY_GROUPS: ListGroup[] = [
   {
     id: 'parcours-rechute',
 
-    title: 'Parcours Indemnités -',
+    title: 'Parcours Indemnités',
 
     titleAccent: 'Rechute',
 
@@ -1066,28 +1070,28 @@ describe('ListComponent', () => {
     expect(container.querySelector('.c-list__tags')).toBeTruthy();
   });
 
-  it('should render hr on journey group rows when dates are present', () => {
-    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+  function groupMeta(): HTMLElement | null {
+    return fixture.nativeElement.querySelector(
+      '.c-list__item--group .c-list__meta',
+    ) as HTMLElement | null;
+  }
+
+  /** Visible text of an element — screen-reader-only spans removed, whitespace collapsed. */
+  function visibleText(element: Element): string {
+    const clone = element.cloneNode(true) as Element;
+    clone.querySelectorAll('.u-sr-only').forEach((node) => node.remove());
+    return (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
+  }
+
+  function renderGroup(group: Partial<ListGroup>): void {
+    fixture.componentRef.setInput('groups', [
+      { id: 'group-under-test', title: 'Parcours Indemnités', documents: [], ...group },
+    ]);
     fixture.detectChanges();
+  }
 
-    const groupContainer = fixture.nativeElement.querySelector(
-      '.c-list__item--group .c-list__container',
-    ) as HTMLElement;
-
-    expect(groupContainer.querySelector('hr')).toBeTruthy();
-    expect(groupContainer.querySelector('.c-list__dates')).toBeTruthy();
-  });
-
-  it('should not render hr on journey group rows without dates', () => {
-    const groupsWithoutDates: ListGroup[] = [
-      {
-        id: 'group-no-dates',
-        title: 'Parcours sans dates',
-        documents: [],
-      },
-    ];
-
-    fixture.componentRef.setInput('groups', groupsWithoutDates);
+  it('should not render hr on journey group rows', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
     fixture.detectChanges();
 
     const groupContainer = fixture.nativeElement.querySelector(
@@ -1096,6 +1100,168 @@ describe('ListComponent', () => {
 
     expect(groupContainer.querySelector('hr')).toBeNull();
     expect(groupContainer.querySelector('.c-list__dates')).toBeNull();
+  });
+
+  it('should render the group title alone on line 1 and type + date range on line 2', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.detectChanges();
+
+    const title = fixture.nativeElement.querySelector(
+      '.c-list__item--group .c-list__title',
+    ) as HTMLElement;
+    expect(title.textContent?.trim()).toBe('Parcours Indemnités');
+    expect(title.querySelector('.c-list__title-accent')).toBeNull();
+
+    const meta = groupMeta();
+    expect(meta).toBeTruthy();
+    expect(meta?.querySelector('.c-list__title-accent')?.textContent?.trim()).toBe(
+      'Demande primaire',
+    );
+
+    const range = meta?.querySelector('.c-list__date-range') as HTMLElement;
+    expect(range).toBeTruthy();
+    expect(visibleText(range)).toBe('24/11/2025 - 24/12/2025');
+    expect(range.querySelector('[aria-hidden="true"]')?.textContent?.trim()).toBe('-');
+  });
+
+  it('should expose start and end date labels to screen readers only', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.detectChanges();
+
+    const range = groupMeta()?.querySelector('.c-list__date-range') as HTMLElement;
+    const srLabels = Array.from(range.querySelectorAll('.u-sr-only')).map((node) =>
+      node.textContent?.trim(),
+    );
+
+    expect(srLabels).toEqual(['Date de début', 'Date de fin']);
+
+    const accessibleText = range.cloneNode(true) as Element;
+    accessibleText.querySelectorAll('[aria-hidden="true"]').forEach((node) => node.remove());
+    expect((accessibleText.textContent ?? '').replace(/\s+/g, ' ').trim()).toBe(
+      'Date de début 24/11/2025 Date de fin 24/12/2025',
+    );
+  });
+
+  it('should render only the start date without separator when the end date is unknown', () => {
+    renderGroup({ titleAccent: 'Rechute', startDate: '01/01/2026' });
+
+    const range = groupMeta()?.querySelector('.c-list__date-range') as HTMLElement;
+    expect(visibleText(range)).toBe('01/01/2026');
+    expect(range.querySelector('[aria-hidden="true"]')).toBeNull();
+    expect(range.querySelector('.u-sr-only')?.textContent?.trim()).toBe('Date de début');
+  });
+
+  it('should render only the end date without separator when the start date is unknown', () => {
+    renderGroup({ endDate: '15/01/2026' });
+
+    const range = groupMeta()?.querySelector('.c-list__date-range') as HTMLElement;
+    expect(visibleText(range)).toBe('15/01/2026');
+    expect(range.querySelector('[aria-hidden="true"]')).toBeNull();
+    expect(range.querySelector('.u-sr-only')?.textContent?.trim()).toBe('Date de fin');
+  });
+
+  it('should render only the type on line 2 when the group has no dates', () => {
+    renderGroup({ titleAccent: 'Demande primaire' });
+
+    const meta = groupMeta();
+    expect(meta).toBeTruthy();
+    expect(meta?.querySelector('.c-list__title-accent')?.textContent?.trim()).toBe(
+      'Demande primaire',
+    );
+    expect(meta?.querySelector('.c-list__date-range')).toBeNull();
+  });
+
+  it('should not render line 2 when the group has neither type nor dates', () => {
+    renderGroup({ title: 'Parcours sans dates' });
+
+    expect(groupMeta()).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('.c-list__item--group hr'),
+    ).toBeNull();
+  });
+
+  it('should join group title and type with a separator in the telemetry label', () => {
+    const component = fixture.componentInstance;
+
+    expect(component.groupTelemetryLabel(JOURNEY_GROUPS[0])).toBe(
+      'Parcours Indemnités - Demande primaire',
+    );
+    expect(
+      component.groupTelemetryLabel({ id: 'g', title: 'Parcours seul', documents: [] }),
+    ).toBe('Parcours seul');
+  });
+
+  function groupTreeItemLabels(): (string | null)[] {
+    // A group without documents renders as a PrimeNG leaf: find treeitems from the group rows.
+    return Array.from(
+      fixture.nativeElement.querySelectorAll(
+        '.c-list__item--group',
+      ) as NodeListOf<HTMLElement>,
+    ).map((row) => row.closest('[role="treeitem"]')?.getAttribute('aria-label') ?? null);
+  }
+
+  it('should name the group treeitem with title, type and the localised date range', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.detectChanges();
+
+    expect(groupTreeItemLabels()).toEqual([
+      'Parcours Indemnités - Demande primaire, Date de début 24/11/2025, Date de fin 24/12/2025',
+      'Parcours Indemnités - Rechute, Date de début 01/01/2026, Date de fin 15/01/2026',
+    ]);
+  });
+
+  it('should name the group treeitem with the start date only when the end date is unknown', () => {
+    renderGroup({ titleAccent: 'Rechute', startDate: '01/01/2026' });
+
+    expect(groupTreeItemLabels()).toEqual([
+      'Parcours Indemnités - Rechute, Date de début 01/01/2026',
+    ]);
+  });
+
+  it('should name the group treeitem with the end date only when the start date is unknown', () => {
+    renderGroup({ titleAccent: 'Rechute', endDate: '15/01/2026' });
+
+    expect(groupTreeItemLabels()).toEqual([
+      'Parcours Indemnités - Rechute, Date de fin 15/01/2026',
+    ]);
+  });
+
+  it('should name the group treeitem "Title - Type" when the group has no dates', () => {
+    renderGroup({ titleAccent: 'Demande primaire' });
+
+    expect(groupTreeItemLabels()).toEqual(['Parcours Indemnités - Demande primaire']);
+  });
+
+  it('should rename the group treeitems on locale change, keeping expansion and selection', () => {
+    fixture.componentRef.setInput('groups', JOURNEY_GROUPS);
+    fixture.componentRef.setInput('expandedGroupIds', ['parcours-demande-primaire']);
+    fixture.componentRef.setInput('selectedItemId', 'doc-demande-primaire');
+    fixture.detectChanges();
+
+    TestBed.inject(PdsLocaleService).setLocale('nl');
+    fixture.detectChanges();
+
+    expect(groupTreeItemLabels()).toEqual([
+      'Parcours Indemnités - Demande primaire, Begindatum 24/11/2025, Einddatum 24/12/2025',
+      'Parcours Indemnités - Rechute, Begindatum 01/01/2026, Einddatum 15/01/2026',
+    ]);
+
+    const groupTreeItems = fixture.nativeElement.querySelectorAll(
+      '.p-tree-node:not(.p-tree-node-leaf)[role="treeitem"]',
+    );
+    expect(groupTreeItems[0].getAttribute('aria-expanded')).toBe('true');
+    expect(groupTreeItems[1].getAttribute('aria-expanded')).toBe('false');
+
+    const selectedTreeItem = fixture.nativeElement
+      .querySelector('.c-list__item--entry.c-list__item--selected')
+      ?.closest('[role="treeitem"]');
+    expect(selectedTreeItem?.getAttribute('aria-selected')).toBe('true');
+
+    expect(component.groupTelemetryLabel(JOURNEY_GROUPS[0])).toBe(
+      'Parcours Indemnités - Demande primaire',
+    );
+
+    localStorage.removeItem(PDS_LOCALE_STORAGE_KEY);
   });
 });
 
@@ -1129,5 +1295,17 @@ describe('ListComponent (nl)', () => {
         .querySelector('.c-list__header-row .c-list__title')
         ?.textContent?.trim(),
     ).toBe('Opvolging van documenten');
+  });
+
+  it('should name the group treeitem with the Dutch date labels', () => {
+    fixture.componentRef.setInput('groups', [JOURNEY_GROUPS[0]]);
+    fixture.detectChanges();
+
+    const groupTreeItem = fixture.nativeElement.querySelector(
+      '.p-tree-node:not(.p-tree-node-leaf)[role="treeitem"]',
+    ) as HTMLElement;
+    expect(groupTreeItem.getAttribute('aria-label')).toBe(
+      'Parcours Indemnités - Demande primaire, Begindatum 24/11/2025, Einddatum 24/12/2025',
+    );
   });
 });

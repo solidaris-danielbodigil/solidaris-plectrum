@@ -6,6 +6,13 @@
 // =============================================================================
 
 :root {
-  // Search form card width cap on the home lookup panel.
+  // Field width (O.A. autocomplete, search type select button) — same 250px @ 14px base
+  // as --pds-size-affiliate-documents-filter-field so both iShare toolbars share one rhythm.
+  --#{$pds-prefix}-size-affiliate-search-field: calc(250 / 14 * var(--#{$pds-prefix}-base-unit));
+
+  // Identifier field — wider: the input keeps ~250px next to the "Chercher" submit button.
+  --#{$pds-prefix}-size-affiliate-search-query-field: calc(360 / 14 * var(--#{$pds-prefix}-base-unit));
+
+  // DEPRECATED: unused since c-affiliate-search-panel is full width — no replacement. Remove in a later release.
   --#{$pds-prefix}-size-affiliate-search-panel-max: 27.5rem; // 385px @ 14px base
 }

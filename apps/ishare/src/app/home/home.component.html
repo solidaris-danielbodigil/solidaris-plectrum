@@ -1,14 +1,17 @@
-<div class="o-flex o-flex--y o-flex--row@lg o-layout o-layout--gap-2 o-layout--full-height o-layout--min-w-0 o-layout--min-h-0">
-  <p-card class="c-affiliate-search-panel o-flex o-flex__item o-flex__item--shrink-0 o-layout o-layout--full-height o-layout--min-w-0" header="Recherche d'affilié">
-    <form class="o-flex o-flex--y o-layout o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
+<div class="o-flex o-flex--y o-layout o-layout--gap-2 o-layout--full-height o-layout--min-h-0 o-layout--min-w-0">
+  <p-card class="c-affiliate-search-panel o-flex__item o-flex__item--shrink-0 o-layout o-layout--min-w-0" header="Recherche d'affilié">
+    <form class="o-flex o-flex--row-wrap o-flex--align-items-flex-start o-layout o-layout--gap-3 o-layout--min-w-0" #searchForm="ngForm" (ngSubmit)="submitSearch(searchForm)" novalidate>
       <pds-form-field
+        class="c-affiliate-search-panel__field"
         label="O.A."
+        inputId="home-office"
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'office')"
         errorMessage="Sélectionnez une O.A."
       >
         <p-autocomplete
           #office="ngModel"
+          inputId="home-office"
           name="office"
           [(ngModel)]="selectedOffice"
           [suggestions]="officeSuggestions"
@@ -16,6 +19,7 @@
           optionLabel="label"
           dataKey="value"
           [dropdown]="true"
+          dropdownAriaLabel="Afficher les suggestions"
           [forceSelection]="true"
           [showClear]="true"
           [invalid]="isFieldInvalid(searchForm, 'office')"
@@ -26,6 +30,7 @@
       </pds-form-field>
 
       <pds-form-field
+        class="c-affiliate-search-panel__field"
         label="Type de recherche"
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'searchType')"
@@ -46,15 +51,18 @@
       </pds-form-field>
 
       <pds-form-field
+        class="c-affiliate-search-panel__field c-affiliate-search-panel__field--query"
         [label]="searchIdentifierLabel"
+        inputId="home-identifier"
         [required]="true"
         [invalid]="isFieldInvalid(searchForm, 'identifier')"
         errorMessage="Ce champ est obligatoire."
       >
-        <p-inputgroup class="c-affiliate-search-panel__query o-layout o-layout--full-width">
-          <p-iconfield class="c-affiliate-search-panel__query-field o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
+        <p-inputgroup class="o-layout o-layout--full-width">
+          <p-iconfield class="o-flex__item o-flex__item--grow-1 o-layout o-layout--min-w-0">
             <input
               #identifier="ngModel"
+              id="home-identifier"
               pInputText
               name="identifier"
               [(ngModel)]="searchIdentifier"
@@ -83,7 +91,7 @@
     </form>
   </p-card>
 
-  <p-card class="o-flex o-flex__item o-flex__item--grow-1 o-layout o-layout--full-height o-layout--min-w-0" header="Détails du document">
+  <p-card class="o-flex o-flex__item o-flex__item--grow-1 o-layout o-layout--min-h-0 o-layout--min-w-0" header="Détails du document">
     <pds-empty-state
       class="o-flex o-flex--col o-flex__item o-flex__item--grow-1"
       title="Aucun résultat pour l'instant"

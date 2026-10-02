@@ -125,9 +125,6 @@ export interface DocumentStep {
 
 export type AffiliateDocumentDetailLayout = 'stepper' | 'standalone';
 
-/** Stepper chrome layout toggle (A = horizontal, B = vertical). */
-export type DocumentStepperView = 'horizontal' | 'vertical';
-
 export interface AffiliateDocumentDetail {
   documentId: string;
   title: string;

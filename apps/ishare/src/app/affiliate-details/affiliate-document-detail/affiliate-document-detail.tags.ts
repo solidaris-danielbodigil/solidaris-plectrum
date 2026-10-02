@@ -12,18 +12,19 @@ import {
   type DocumentCertificatPanelStatusSeverity,
   type DocumentStep,
 } from './affiliate-document-detail.types';
+import { DOCUMENT_STATUS_TAGS } from '../document-status';
 
 type ListTagSeverity = ListEntryTag['severity'];
 
 /** Lower value = higher workflow priority (matches document list sort). */
 export const PANEL_STATUS_SORT_PRIORITY: Record<string, number> = {
-  'Non reçu': -2,
+  [DOCUMENT_STATUS_TAGS['non-recu'].label]: -2,
   'Non démarré': -1,
-  'En attente': 0,
-  'En traitement': 1,
-  Reçu: 2,
-  Accepté: 3,
-  Clôturé: 4,
+  [DOCUMENT_STATUS_TAGS['en-attente'].label]: 0,
+  [DOCUMENT_STATUS_TAGS['en-traitement'].label]: 1,
+  [DOCUMENT_STATUS_TAGS.recu.label]: 2,
+  [DOCUMENT_STATUS_TAGS.accepte.label]: 3,
+  [DOCUMENT_STATUS_TAGS.cloture.label]: 4,
 };
 
 const LIST_TAG_SEVERITIES: readonly ListTagSeverity[] = [
@@ -40,6 +41,7 @@ const COMMENT_TAG_ICONS: Record<ListTagSeverity, string> = {
   success: 'bi bi-check-circle-fill',
   danger: 'bi bi-exclamation-octagon-fill',
   secondary: COMMENT_ICONS.info,
+  contrast: COMMENT_ICONS.info,
 };
 
 const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
@@ -48,6 +50,7 @@ const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
   success: 'confirmation',
   danger: 'alerte',
   secondary: 'note',
+  contrast: 'note',
 };
 
 export interface DocumentStepSummary {
@@ -181,9 +184,7 @@ export function deriveStepCommentTags(
   return buildCommentTagsForPanels(
     step.panels ?? [],
     (panel) =>
-      layout === 'standalone'
-        ? panel.title
-        : `${stepLabel} - ${panel.title}`,
+      layout === 'standalone' ? panel.title : `${stepLabel} - ${panel.title}`,
     (panel) => `${step.value}::${panel.id}`,
   );
 }
@@ -204,7 +205,10 @@ export function summarizeDocumentStep(
  */
 export function deriveDocumentTags(
   documentId: string,
-  details: Record<string, AffiliateDocumentDetail> = EVA_MARTINEZ_DOCUMENT_DETAILS,
+  details: Record<
+    string,
+    AffiliateDocumentDetail
+  > = EVA_MARTINEZ_DOCUMENT_DETAILS,
 ): ListEntryTag[] {
   const detail = details[documentId];
   if (!detail) {
