@@ -19,141 +19,12 @@
   display: none;
 }
 
-// ── Collapsible toolbar shell — 3-phase height → slide → elevation ───────────
-// Close (user-validated): elevation off → slide down → collapse height.
-// Open (reverse): expand height → slide up → elevation on.
-.c-affiliate-documents-toolbar-shell {
-  display: grid;
-  grid-template-rows: 0fr;
-  z-index: 0;
-  overflow: hidden;
-  margin-bottom: 0;
-
-  // Close delays (elevation off → slide down → collapse height + gap)
-  --#{$pds-prefix}-toolbar-delay-height: 340ms;
-  --#{$pds-prefix}-toolbar-delay-slide: 140ms;
-  --#{$pds-prefix}-toolbar-delay-elevation: 0ms;
-
-  transition:
-    grid-template-rows var(--#{$pds-prefix}-duration-toolbar-height)
-      var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-height),
-    margin-bottom var(--#{$pds-prefix}-duration-toolbar-height)
-      var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-height);
-
-  &__clip {
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  &.is-visible {
-    grid-template-rows: 1fr;
-    margin-bottom: var(--#{$pds-prefix}-spacing-2);
-    overflow: visible;
-
-    // Open — height first (0ms), slide after height (220ms), elevation last (420ms).
-    --#{$pds-prefix}-toolbar-delay-height: 0ms;
-    --#{$pds-prefix}-toolbar-delay-slide: 220ms;
-    --#{$pds-prefix}-toolbar-delay-elevation: 420ms;
-
-    transition:
-      grid-template-rows var(--#{$pds-prefix}-duration-toolbar-height)
-        var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-height),
-      margin-bottom var(--#{$pds-prefix}-duration-toolbar-height)
-        var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-height);
-
-    @starting-style {
-      grid-template-rows: 0fr;
-
-      .c-affiliate-documents-toolbar__panel > p-card.p-card {
-        transform: translate3d(0, 100%, 0);
-        box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar-none);
-      }
-    }
-  }
-}
-
-// BEM-safe — &.is-visible { &__clip } wrongly compiles to .is-visible__clip.
-.c-affiliate-documents-toolbar-shell.is-visible > .c-affiliate-documents-toolbar-shell__clip {
-  overflow: visible;
-}
-
-// Slide + elevation on the p-card host (PrimeNG card root).
-.c-affiliate-documents-toolbar__panel > p-card.p-card {
-  display: block;
-  transform: translate3d(0, 100%, 0);
-  box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar-none);
-  transition:
-    transform var(--#{$pds-prefix}-duration-toolbar-slide)
-      var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-slide),
-    box-shadow var(--#{$pds-prefix}-duration-toolbar-elevation)
-      var(--#{$pds-prefix}-ease-standard) var(--#{$pds-prefix}-toolbar-delay-elevation);
-}
-
-.c-affiliate-documents-toolbar-shell.is-visible
-  .c-affiliate-documents-toolbar__panel > p-card.p-card {
-  transform: translate3d(0, 0, 0);
-  box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .c-affiliate-documents-toolbar-shell {
-    transition: none;
-
-    &.is-visible {
-      transition: none;
-      overflow: visible;
-      margin-bottom: var(--#{$pds-prefix}-spacing-2);
-    }
-
-    &:not(.is-visible) {
-      margin-bottom: 0;
-    }
-  }
-
-  .c-affiliate-documents-toolbar-shell.is-visible > .c-affiliate-documents-toolbar-shell__clip {
-    overflow: visible;
-  }
-
-  .c-affiliate-documents-toolbar__panel > p-card.p-card {
-    transition: none;
-  }
-
-  .c-affiliate-documents-toolbar-shell.is-visible
-    .c-affiliate-documents-toolbar__panel > p-card.p-card {
-    transform: translate3d(0, 0, 0);
-    box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar);
-  }
-
-  .c-affiliate-documents-toolbar-shell:not(.is-visible)
-    .c-affiliate-documents-toolbar__panel > p-card.p-card {
-    transform: translate3d(0, 100%, 0);
-    box-shadow: var(--#{$pds-prefix}-shadow-affiliate-documents-toolbar-none);
-  }
-}
-
 // Start slot is a single full-width row — avoid nested flex on __start.
 .c-affiliate-documents-toolbar .c-toolbar__start {
   display: block;
   flex: 1 1 100%;
   width: 100%;
   max-width: 100%;
-  // Reserve space for the absolutely positioned close control (top-right).
-  padding-inline-end: calc(
-    var(--#{$pds-prefix}-space-affiliate-documents-toolbar-padding) + var(--#{$pds-prefix}-spacing-6)
-  );
-}
-
-// Close control — top-right; overrides generic toolbar end-slot line break.
-.c-affiliate-documents-toolbar .c-toolbar__inner {
-  position: relative;
-}
-
-.c-affiliate-documents-toolbar .c-toolbar__end {
-  position: absolute;
-  top: var(--#{$pds-prefix}-space-affiliate-documents-toolbar-padding);
-  inset-inline-end: var(--#{$pds-prefix}-space-affiliate-documents-toolbar-padding);
-  flex-basis: auto;
-  z-index: 1;
 }
 
 // PrimeNG overlays + card chrome must not clip autocomplete panels or shadow.
@@ -166,33 +37,14 @@
   }
 }
 
-// Sticky filter bar — spans full content width above columns; bottom edge stays visible on scroll.
-.c-affiliate-documents-toolbar.c-toolbar--sticky {
-
-  // Structural — ring shadow must not clip at rounded corners.
-  .p-card {
-    overflow: visible;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 1px;
-    background: var(--#{$pds-prefix}-color-surface-200);
-    pointer-events: none;
-  }
-}
-
-// Row wrapper — full-width horizontal flex row for the five filter groups.
-
 // Fixed-width field shell (search, autocomplete) — mirrors c-token-explorer__search sizing.
 .c-affiliate-documents-toolbar__field,
 .c-affiliate-documents-toolbar__field--auto {
   min-width: 0;
-  flex: 0 0 var(--#{$pds-prefix}-size-affiliate-documents-filter-field);
+  // Shrinkable below the token width so fields fit a 320px toolbar (WCAG 1.4.10); desktop keeps the token width.
+  flex: 0 1 var(--#{$pds-prefix}-size-affiliate-documents-filter-field);
   width: var(--#{$pds-prefix}-size-affiliate-documents-filter-field);
+  max-inline-size: 100%;
 
   // Label-xs above control — Figma: 12px semibold, 7px label-to-control gap via --gap-xs modifier.
   &.c-form-field--vertical,
@@ -240,8 +92,8 @@
   width: auto;
 }
 
-// Date range — wider fixed width for dual-date placeholder.
+// Date range — wider token width for dual-date placeholder; shrinks with the row on narrow toolbars.
 .c-affiliate-documents-toolbar__field--date {
-  flex: 0 0 var(--#{$pds-prefix}-size-affiliate-documents-filter-date-field);
+  flex: 0 1 var(--#{$pds-prefix}-size-affiliate-documents-filter-date-field);
   width: var(--#{$pds-prefix}-size-affiliate-documents-filter-date-field);
 }

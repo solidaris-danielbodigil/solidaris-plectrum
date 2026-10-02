@@ -8,7 +8,8 @@
 // Layout (flex, gap, alignment) via o-flex / o-layout BEM mixes in the template.
 //
 // Design ref:   Figma iSHARE-Audit nodes 324:5827, 518:48833, 324:5840, 435:7384,
-//               435:7387, Custom-components node 2:125 (document row default / hover / selected)
+//               435:7387, Custom-components node 2:125 (document row default / hover / selected),
+//               iSHARE group header mockup 2026-10 (title / type + date range, no divider)
 // Token source: libs/styles/src/01-settings/_settings.list.scss
 // =============================================================================
 
@@ -196,8 +197,18 @@
   word-break: break-word;
 }
 
+// ── Group meta row (type + date range, line 2 of the group header) ──────────
+// Paint only — c-list__meta has no rule: the row is laid out with o-flex / o-layout in the template.
+// Design ref: iSHARE group header mockup (type in primary, dates grouped "start - end").
+
 .c-list__title-accent {
+  @include text-label-sm;
   color: var(--#{$pds-prefix}-color-list-title-accent);
+}
+
+.c-list__date-range {
+  @include text-label-xs;
+  color: var(--#{$pds-prefix}-color-list-date-value);
 }
 
 // ── Icons ───────────────────────────────────────────────────────────────────
@@ -206,25 +217,6 @@
   font-size: var(--#{$pds-prefix}-size-list-icon);
   line-height: 1;
   color: var(--#{$pds-prefix}-color-list-icon);
-}
-
-// ── Dates (group rows) ──────────────────────────────────────────────────────
-
-.c-list__dates {
-  min-width: 0;
-}
-
-.c-list__date {
-  @include text-label-xs;
-  color: var(--#{$pds-prefix}-color-list-date-label);
-}
-
-.c-list__date-value {
-  color: var(--#{$pds-prefix}-color-list-date-value);
-}
-
-.c-list__date--end {
-  text-align: end;
 }
 
 // ── Timeline gutter (journey document rows) ─────────────────────────────────

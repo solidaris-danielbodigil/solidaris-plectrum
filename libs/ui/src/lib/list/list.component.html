@@ -89,29 +89,29 @@
                 aria-hidden="true"
               ></i>
               <div class="o-flex o-flex--col o-layout o-layout--gap-1 o-flex__item o-flex__item--grow-1 o-layout--min-w-0">
-                <p class="c-list__title o-layout o-layout--margin-0">
-                  {{ group.title }}
-                  @if (group.titleAccent) {
-                    <span class="c-list__title-accent">{{ group.titleAccent }}</span>
-                  }
-                </p>
-                @if (groupHasFooterContent(group)) {
-                  <hr />
+                <p class="c-list__title o-layout o-layout--margin-0">{{ group.title }}</p>
+                @if (groupHasMeta(group)) {
+                  <p class="c-list__meta o-flex o-flex--wrap o-flex--align-items-baseline o-layout o-layout--gap-1 o-layout--margin-0">
+                    @if (group.titleAccent) {
+                      <span class="c-list__title-accent">{{ group.titleAccent }}</span>
+                    }
+                    @if (group.startDate || group.endDate) {
+                      <span class="c-list__date-range">
+                        @if (group.startDate) {
+                          <span class="u-sr-only">{{ messages().startDate }} </span>{{ group.startDate }}
+                        }
+                        @if (group.startDate && group.endDate) {
+                          <span aria-hidden="true"> - </span>
+                        }
+                        @if (group.endDate) {
+                          <span class="u-sr-only"> {{ messages().endDate }} </span>{{ group.endDate }}
+                        }
+                      </span>
+                    }
+                  </p>
                 }
               </div>
             </div>
-            @if (groupHasFooterContent(group)) {
-              <div class="c-list__dates o-flex o-layout o-layout--gap-0-25">
-                <p class="c-list__date o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
-                  {{ messages().startDate }} :
-                  <span class="c-list__date-value">{{ group.startDate }}</span>
-                </p>
-                <p class="c-list__date c-list__date--end o-flex__item o-flex__item--grow-1 o-layout o-layout--margin-0">
-                  {{ messages().endDate }} :
-                  <span class="c-list__date-value">{{ group.endDate }}</span>
-                </p>
-              </div>
-            }
           </div>
         </article>
       </ng-template>

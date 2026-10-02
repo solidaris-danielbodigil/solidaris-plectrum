@@ -8,7 +8,10 @@
 :root {
   --#{$pds-prefix}-ease-standard:             cubic-bezier(0.4, 0, 0.2, 1);
   --#{$pds-prefix}-ease-snappy:               cubic-bezier(0.2, 0.9, 0.4, 1);
+  // DEPRECATED: unused since the filter toolbar is always visible — no replacement. Remove in a later release.
   --#{$pds-prefix}-duration-toolbar-height:   220ms;
+  // DEPRECATED: unused since the filter toolbar is always visible — no replacement. Remove in a later release.
   --#{$pds-prefix}-duration-toolbar-slide:    200ms;
+  // DEPRECATED: unused since the filter toolbar is always visible — no replacement. Remove in a later release.
   --#{$pds-prefix}-duration-toolbar-elevation: 140ms;
 }

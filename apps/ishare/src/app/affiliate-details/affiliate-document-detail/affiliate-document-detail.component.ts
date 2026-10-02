@@ -31,6 +31,7 @@ import type {
 } from '@solidaris-danielbodigil/pds-ui';
 import {
   PdsTelemetryLabelDirective,
+  copyTextToClipboard,
 } from '@solidaris-danielbodigil/pds-ui';
 import { DelayPredictionCardComponent } from '@solidaris-danielbodigil/pds-ui/patterns/ishare';
 import { getDocumentDetailsForAffiliate } from './affiliate-document-detail.mock';
@@ -46,7 +47,6 @@ import {
   type DocumentCrossReference,
   type DocumentDetailField,
   type DocumentStep,
-  type DocumentStepperView,
 } from './affiliate-document-detail.types';
 
 /**
@@ -136,8 +136,6 @@ export class AffiliateDocumentDetailComponent {
   );
 
   readonly loading = input(false);
-
-  readonly stepperView = input<DocumentStepperView>('horizontal');
 
   protected readonly skeletonStepSlots = [1, 2, 3] as const;
   protected readonly skeletonDetailRowSlots = [1, 2, 3] as const;
@@ -460,28 +458,12 @@ export class AffiliateDocumentDetailComponent {
     );
   }
 
-  isStepPreviousDisabled(stepIndex: number): boolean {
-    return stepIndex <= 0;
-  }
-
-  isStepNextDisabled(stepIndex: number): boolean {
-    return stepIndex < 0 || stepIndex >= this.steps().length - 1;
-  }
-
   goToPreviousStep(): void {
-    this.goToPreviousStepFromIndex(this.activeStepIndex());
-  }
-
-  goToNextStep(): void {
-    this.goToNextStepFromIndex(this.activeStepIndex());
-  }
-
-  goToPreviousStepFromIndex(stepIndex: number): void {
-    if (this.isStepPreviousDisabled(stepIndex)) {
+    if (this.previousDisabled()) {
       return;
     }
 
-    const previousStep = this.steps()[stepIndex - 1];
+    const previousStep = this.steps()[this.activeStepIndex() - 1];
     if (!previousStep) {
       return;
     }
@@ -490,18 +472,35 @@ export class AffiliateDocumentDetailComponent {
     this.openFirstPanelOfActiveStep();
   }
 
-  goToNextStepFromIndex(stepIndex: number): void {
-    if (this.isStepNextDisabled(stepIndex)) {
+  goToNextStep(): void {
+    if (this.nextDisabled()) {
       return;
     }
 
-    const nextStep = this.steps()[stepIndex + 1];
+    const nextStep = this.steps()[this.activeStepIndex() + 1];
     if (!nextStep) {
       return;
     }
 
     this.activeStep.set(nextStep.value);
     this.openFirstPanelOfActiveStep();
+  }
+
+  /**
+   * Copies a worker comment to the clipboard and confirms with the same
+   * "Copié !" toast the profile identifiers use (`label: value` detail).
+   */
+  async copyMessage(text: string, label: string): Promise<void> {
+    const copied = await copyTextToClipboard(text);
+    if (!copied) {
+      return;
+    }
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Copié !',
+      detail: `${label}: ${text}`,
+    });
   }
 
   private openFirstPanelOfActiveStep(): void {

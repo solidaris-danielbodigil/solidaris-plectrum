@@ -24,15 +24,15 @@
   // Shared p-card header/body spacing — both column panels (Figma: 20px header padding)
   --#{$pds-prefix}-space-affiliate-details-card-header-padding: calc(20 / 14 * var(--#{$pds-prefix}-base-unit));
 
-  // Category tab + accordion label column — fits longest label ("Archivés") so badges share one axis.
+  // DEPRECATED: unused since the category accordions were replaced by tab panels — no replacement. Remove in a later release.
   --#{$pds-prefix}-size-affiliate-details-category-label-min: calc(60 / 14 * var(--#{$pds-prefix}-base-unit));
 
   // List scroll inset — keeps document rows fully visible inside the documents card scroller.
   --#{$pds-prefix}-space-affiliate-details-list-scroll-inset: var(--#{$pds-prefix}-spacing-3);
 
-  // Documents card header search field — compact width beside filter/sort actions.
+  // DEPRECATED: unused since the document search moved into the filter toolbar — no replacement. Remove in a later release.
   --#{$pds-prefix}-size-affiliate-details-documents-search-max: calc(220 / 14 * var(--#{$pds-prefix}-base-unit));
-  // Min width for search + Filtres row — triggers wrap under title when column is narrow.
+  // DEPRECATED: unused since the document search moved into the filter toolbar — no replacement. Remove in a later release.
   --#{$pds-prefix}-size-affiliate-details-documents-header-actions-min: calc(280 / 14 * var(--#{$pds-prefix}-base-unit));
 }
 

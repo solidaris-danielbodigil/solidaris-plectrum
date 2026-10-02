@@ -25,7 +25,7 @@ import { storyDesign } from '../../storybook/story-design';
 const EVA_MARTINEZ_GROUPS: ListGroup[] = [
   {
     id: 'parcours-demande-primaire',
-    title: 'Parcours Indemnités -',
+    title: 'Parcours Indemnités',
     titleAccent: 'Demande primaire',
     startDate: '24/11/2025',
     endDate: '24/12/2025',
@@ -70,10 +70,10 @@ const EVA_MARTINEZ_GROUPS: ListGroup[] = [
   },
   {
     id: 'parcours-rechute',
-    title: 'Parcours Indemnités -',
+    title: 'Parcours Indemnités',
     titleAccent: 'Rechute',
+    // Ongoing journey — no end date yet: line 2 shows the single start date.
     startDate: '01/01/2026',
-    endDate: '15/01/2026',
     expanded: true,
     documents: [
       {
@@ -288,6 +288,75 @@ export const SelectedDocument: Story = {
     ],
     expandedGroupIds: ['parcours-demande-primaire'],
     selectedItemId: 'doc-demande-primaire',
+  },
+};
+
+// Group header line 2 (c-list__meta) — every combination of type and dates.
+const GROUP_HEADER_VARIANTS: ListGroup[] = [
+  {
+    id: 'meta-both-dates',
+    title: 'Parcours Indemnités',
+    titleAccent: 'Demande primaire',
+    startDate: '24/11/2025',
+    endDate: '24/12/2025',
+    documents: [],
+  },
+  {
+    id: 'meta-start-only',
+    title: 'Parcours Indemnités',
+    titleAccent: 'Rechute',
+    startDate: '01/01/2026',
+    documents: [],
+  },
+  {
+    id: 'meta-end-only',
+    title: 'Parcours Indemnités',
+    titleAccent: 'Reprise',
+    endDate: '15/01/2026',
+    documents: [],
+  },
+  {
+    id: 'meta-type-only',
+    title: 'Parcours Indemnités',
+    titleAccent: 'Demande primaire',
+    documents: [],
+  },
+  {
+    id: 'meta-none',
+    title: 'Parcours sans type ni dates',
+    documents: [],
+  },
+];
+
+export const GroupHeaders: Story = {
+  args: {
+    ...journeyDefaults,
+    groups: GROUP_HEADER_VARIANTS,
+    expandedGroupIds: [],
+    selectedItemId: null,
+  },
+  play: async ({ canvasElement }) => {
+    const ranges = Array.from(
+      canvasElement.querySelectorAll('.c-list__item--group .c-list__date-range'),
+    ).map((range) => {
+      const clone = range.cloneNode(true) as Element;
+      clone.querySelectorAll('.u-sr-only').forEach((node) => node.remove());
+      return (clone.textContent ?? '').replace(/\s+/g, ' ').trim();
+    });
+    await expect(ranges).toEqual(['24/11/2025 - 24/12/2025', '01/01/2026', '15/01/2026']);
+    await expect(canvasElement.querySelectorAll('.c-list__item--group .c-list__meta')).toHaveLength(4);
+    await expect(canvasElement.querySelector('.c-list__item--group hr')).toBeNull();
+    // The treeitem name carries the dates the visible range shows without labels.
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('treeitem', {
+        name: 'Parcours Indemnités - Demande primaire, Date de début 24/11/2025, Date de fin 24/12/2025',
+      }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole('treeitem', { name: 'Parcours Indemnités - Reprise, Date de fin 15/01/2026' }),
+    ).toBeInTheDocument();
+    await expect(canvas.getAllByRole('treeitem', { name: /Date de début/ })).toHaveLength(2);
   },
 };
 

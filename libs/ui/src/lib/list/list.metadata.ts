@@ -16,7 +16,7 @@ export const ListMetadata: ComponentMetadata = {
     // no Figma component yet
     figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components',
     created: '2026-06-07',
-    modified: '2026-09-09',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'angular', entryPoint: '.', exportName: 'ListComponent' },
   governance: {
@@ -61,7 +61,7 @@ export const ListMetadata: ComponentMetadata = {
     { part: 'c-list', role: 'Region host — c-list--journey or c-list--flat modifier, is-loading + aria-busy while loading' },
     { part: 'c-list__header-row', role: 'Optional title + count badge above the tree (showHeader)' },
     { part: 'p-tree', role: 'PrimeNG tree — group and entry node templates, native toggler' },
-    { part: 'c-list__item--group', role: 'Expandable journey group header with folder icon and start / end dates' },
+    { part: 'c-list__item--group', role: 'Expandable journey group header with folder icon: title on line 1; c-list__meta line 2 with the type (c-list__title-accent) and the c-list__date-range ("start - end", or the single known date) — visible date labels are screen-reader only, no divider' },
     { part: 'c-list__item--entry', role: 'Document / entry card row — c-list__item--selected when selected' },
     { part: 'c-list__timeline-*', role: 'Journey gutter sprites (decorative)' },
     { part: 'p-tag / pButton', role: 'Status and count tags — a tag with deep-link targets is a button' },
@@ -87,6 +87,7 @@ export const ListMetadata: ComponentMetadata = {
     ariaAttributes: [
       'Host is role="region" with an aria-label ("Suivi des documents" / "Opvolging van documenten"); aria-busy is set while loading',
       'PrimeNG Tree supplies treeitem semantics for groups and entries; the group togglers carry a locale aria-label',
+      "Group treeitems are named 'Title - Type' plus the localised start/end dates; the telemetry label stays 'Title - Type'",
       'Selection is aria-selected on the PrimeNG treeitem — row cards are not nested buttons',
       'The sort icon and the timeline sprites are aria-hidden; the target picker is a role="listbox" of role="option" items named by the tag aria-label',
     ],
@@ -115,7 +116,6 @@ export const ListMetadata: ComponentMetadata = {
       '--pds-color-list-title-accent',
       '--pds-color-list-icon',
       '--pds-color-divider',
-      '--pds-color-list-date-label',
       '--pds-color-list-date-value',
       '--pds-color-list-timeline-line',
       '--pds-color-list-timeline-marker',

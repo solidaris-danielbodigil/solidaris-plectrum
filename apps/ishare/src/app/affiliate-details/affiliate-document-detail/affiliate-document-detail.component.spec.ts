@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest';
 import { Component, signal } from '@angular/core';
 import {
   ComponentFixture,
@@ -62,7 +63,6 @@ function findButtonByLabel(
       [selectedDocumentId]="selectedDocumentId()"
       [navigableDocuments]="navigableDocuments"
       [focusTarget]="focusTarget()"
-      [stepperView]="stepperView()"
       (moreDetailsOpen)="onMoreDetailsOpen($event)"
       (transactionsCicsOpen)="transactionsCicsDialogVisible.set(true)"
       (delayPredictionMenuClick)="
@@ -88,7 +88,6 @@ class DocumentDetailDrawerTestHostComponent {
     stepValue: number;
     panelId: string;
   } | null>(null);
-  readonly stepperView = signal<'horizontal' | 'vertical'>('horizontal');
   readonly moreDetailsDrawerVisible = signal(false);
   readonly moreDetailsPanel = signal<DocumentCertificatPanel | null>(null);
   readonly transactionsCicsDialogVisible = signal(false);
@@ -129,77 +128,51 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(host.classList.contains('c-affiliate-document-detail')).toBe(true);
   });
 
-  it('should render horizontal stepper chrome by default', () => {
+  it('should render the horizontal stepper without a layout switch', () => {
     const root = fixture.nativeElement as HTMLElement;
 
-    expect(root.querySelector('p-step-list')).toBeTruthy();
+    expect(root.querySelector('p-stepper p-step-list')).toBeTruthy();
+    expect(root.querySelectorAll('p-step-list p-step').length).toBe(3);
     expect(root.querySelector('p-step-item')).toBeFalsy();
     expect(
       root.querySelector('.c-affiliate-document-detail__step-chrome'),
     ).toBeTruthy();
-  });
-
-  it('should render vertical step items when stepperView is vertical', () => {
-    fixture.componentInstance.stepperView.set('vertical');
-    fixture.detectChanges();
-
-    const root = fixture.nativeElement as HTMLElement;
-
-    expect(root.querySelector('p-step-list')).toBeFalsy();
-    expect(root.querySelectorAll('p-step-item').length).toBe(3);
-    expect(
-      root.querySelector('.c-affiliate-document-detail__step-chrome'),
-    ).toBeFalsy();
+    expect(root.querySelector('p-selectbutton')).toBeFalsy();
     expect(
       root.querySelector('.c-affiliate-document-detail__stepper--vertical'),
-    ).toBeTruthy();
+    ).toBeFalsy();
     expect(
-      root.querySelector('.p-step .c-affiliate-document-detail__step-meta'),
-    ).toBeTruthy();
-    expect(root.querySelector('.p-accordion')).toBeTruthy();
+      root.querySelector('.c-affiliate-document-detail__vertical-step-nav'),
+    ).toBeFalsy();
   });
 
-  it('should render labeled step navigation buttons inside the active vertical step panel', () => {
-    fixture.componentInstance.stepperView.set('vertical');
-    fixture.detectChanges();
-
+  it('should advance to the next step when the stepper Suivant is clicked', () => {
     const root = fixture.nativeElement as HTMLElement;
-    const navRows = root.querySelectorAll(
-      '.c-affiliate-document-detail__vertical-step-nav',
-    );
+    const nextButton = root.querySelector(
+      '.c-affiliate-document-detail__step-chrome button[aria-label="Suivant"]',
+    ) as HTMLButtonElement | null;
+    const previousButton = root.querySelector(
+      '.c-affiliate-document-detail__step-chrome button[aria-label="Précédent"]',
+    ) as HTMLButtonElement | null;
 
-    expect(navRows.length).toBe(1);
-
-    const previousButton = findButtonByLabel(root, 'Précédent');
-    const nextButton = findButtonByLabel(root, 'Suivant');
-
-    expect(previousButton).toBeTruthy();
-    expect(nextButton).toBeTruthy();
     expect(previousButton?.disabled).toBe(true);
     expect(nextButton?.disabled).toBe(false);
-  });
-
-  it('should disable vertical Suivant on the last step', () => {
-    fixture.componentInstance.stepperView.set('vertical');
-    component.activeStep.set(3);
-    fixture.detectChanges();
-
-    const root = fixture.nativeElement as HTMLElement;
-    const nextButton = findButtonByLabel(root, 'Suivant');
-
-    expect(nextButton?.disabled).toBe(true);
-  });
-
-  it('should advance to the next step when vertical Suivant is clicked', () => {
-    fixture.componentInstance.stepperView.set('vertical');
-    fixture.detectChanges();
-
-    const nextButton = findButtonByLabel(fixture.nativeElement, 'Suivant');
 
     nextButton?.click();
     fixture.detectChanges();
 
     expect(component.activeStep()).toBe(2);
+  });
+
+  it('should disable the stepper Suivant on the last step', () => {
+    component.activeStep.set(3);
+    fixture.detectChanges();
+
+    const nextButton = (fixture.nativeElement as HTMLElement).querySelector(
+      '.c-affiliate-document-detail__step-chrome button[aria-label="Suivant"]',
+    ) as HTMLButtonElement | null;
+
+    expect(nextButton?.disabled).toBe(true);
   });
 
   it('should expose the selected document title from mock data', () => {
@@ -343,12 +316,41 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(card).toBeTruthy();
     expect(card?.textContent).toContain('7');
     expect(card?.textContent).toContain('22/12/2025');
-    expect(card?.textContent).not.toContain('Prédiction du delai');
-    expect(fixture.nativeElement.textContent).toContain('Prédiction du delai');
+    expect(card?.textContent).not.toContain('Prédiction du délai');
+    expect(fixture.nativeElement.textContent).toContain('Prédiction du délai');
     const predictionHeading = fixture.nativeElement.querySelector(
       '.c-affiliate-document-detail__delay-prediction-group .c-affiliate-document-detail__details-heading',
     );
-    expect(predictionHeading?.textContent?.trim()).toBe('Prédiction du delai');
+    expect(predictionHeading?.textContent?.trim()).toBe('Prédiction du délai');
+
+    const predictionGroup = card?.closest(
+      '.c-affiliate-document-detail__delay-prediction-group',
+    ) as HTMLElement | null;
+    const section = predictionGroup?.parentElement ?? null;
+    expect(
+      section?.classList.contains('c-affiliate-document-detail__details-section'),
+    ).toBe(true);
+    const columns = Array.from(section?.children ?? []);
+    const detailsColumn = section?.querySelector(
+      ':scope > .c-affiliate-document-detail__details-column',
+    );
+    expect(columns).toEqual([detailsColumn, predictionGroup]);
+    expect(
+      detailsColumn
+        ?.querySelector(':scope > .c-affiliate-document-detail__details-heading')
+        ?.textContent?.trim(),
+    ).toBe('Détails');
+    expect(
+      detailsColumn?.querySelector(
+        ':scope > .c-affiliate-document-detail__details',
+      ),
+    ).toBeTruthy();
+    expect(
+      predictionGroup?.querySelector(
+        ':scope > .c-affiliate-document-detail__details-heading',
+      ),
+    ).toBe(predictionHeading);
+    expect(section?.classList.contains('o-flex--row-wrap')).toBe(true);
   });
 
   it('should not render delay prediction card when panel status is Accepté', () => {
@@ -361,8 +363,22 @@ describe('AffiliateDocumentDetailComponent', () => {
 
     expect(panel?.querySelector('pds-delay-prediction-card')).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain(
-      'Prédiction du delai',
+      'Prédiction du délai',
     );
+
+    const section = panel?.querySelector(
+      '.c-affiliate-document-detail__details-section',
+    );
+    const columns = Array.from(section?.children ?? []);
+    expect(columns.length).toBe(1);
+    expect(
+      columns[0]?.classList.contains(
+        'c-affiliate-document-detail__details-column',
+      ),
+    ).toBe(true);
+    expect(
+      section?.querySelector('.c-affiliate-document-detail__delay-prediction-group'),
+    ).toBeNull();
   });
 
   it('should not render delay prediction card when panel status is Clôturé', () => {
@@ -375,7 +391,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     ) as HTMLElement | null;
 
     expect(panel?.querySelector('pds-delay-prediction-card')).toBeNull();
-    expect(panel?.textContent).not.toContain('Prédiction du delai');
+    expect(panel?.textContent).not.toContain('Prédiction du délai');
   });
 
   it('should not render delay prediction card on disabled panels', () => {
@@ -440,7 +456,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     const voletA = fixture.nativeElement.querySelector(
       '[data-panel-id="declaration-revenu-volet-a"]',
     ) as HTMLElement | null;
-    expect(voletA?.textContent).toContain('Prédiction du delai');
+    expect(voletA?.textContent).toContain('Prédiction du délai');
     expect(voletA?.textContent).toContain('11');
     expect(voletA?.textContent).toContain('04/08/2026');
 
@@ -450,7 +466,7 @@ describe('AffiliateDocumentDetailComponent', () => {
     const voletB = fixture.nativeElement.querySelector(
       '[data-panel-id="declaration-revenu-volet-b"]',
     ) as HTMLElement | null;
-    expect(voletB?.textContent).toContain('Prédiction du delai');
+    expect(voletB?.textContent).toContain('Prédiction du délai');
     expect(voletB?.textContent).toContain(
       "Aucune prédiction de délais n'est disponible pour ce document",
     );
@@ -602,7 +618,7 @@ describe('AffiliateDocumentDetailComponent', () => {
 
   it('should render the Détails heading in the certificate panel body', () => {
     const heading = fixture.nativeElement.querySelector(
-      '.c-affiliate-document-detail__details-heading',
+      '.c-affiliate-document-detail__details-section > .c-affiliate-document-detail__details-column > .c-affiliate-document-detail__details-heading',
     );
 
     expect(heading?.textContent?.trim()).toBe('Détails');
@@ -634,10 +650,20 @@ describe('AffiliateDocumentDetailComponent', () => {
     expect(stepOneTag?.classList.contains('p-tag-success')).toBe(true);
 
     expect(stepTwoTag?.textContent).toContain('Clôturé');
-    expect(stepTwoTag?.classList.contains('p-tag-secondary')).toBe(true);
+    expect(stepTwoTag?.classList.contains('p-tag-contrast')).toBe(true);
+    expect(
+      stepTwoTag
+        ?.querySelector('.p-tag-icon')
+        ?.classList.contains('bi-check-lg'),
+    ).toBe(true);
 
     expect(stepThreeTag?.textContent).toContain('En attente');
     expect(stepThreeTag?.classList.contains('p-tag-warn')).toBe(true);
+    expect(
+      stepThreeTag
+        ?.querySelector('.p-tag-icon')
+        ?.classList.contains('bi-clock'),
+    ).toBe(true);
   });
 
   it('should render step-level comment and warning count buttons aligned with document list tags', () => {
@@ -747,6 +773,84 @@ describe('AffiliateDocumentDetailComponent', () => {
         ?.querySelector('.p-message-icon')
         ?.classList.contains('bi-chat-right-text-fill'),
     ).toBe(true);
+  });
+
+  describe('worker comment copy action', () => {
+    const LIASSE_COMMENT = 'UOPV encodé en 9M à la réception - 10/12/2025 15:56';
+
+    function openLiasseComment(): HTMLElement {
+      component.activeStep.set(2);
+      component.certPanelValue.set('compte-financier-liasse');
+      fixture.detectChanges();
+
+      return fixture.nativeElement.querySelector(
+        '[data-panel-id="compte-financier-liasse"] p-message',
+      ) as HTMLElement;
+    }
+
+    function mockClipboard(writeText: Mock): void {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText },
+      });
+    }
+
+    it('should project the comment text and an icon-only copy button', () => {
+      const message = openLiasseComment();
+      const copyButton = message.querySelector(
+        'button[aria-label="Copier le message"]',
+      ) as HTMLButtonElement | null;
+
+      expect(message.querySelector('.p-message-text')?.textContent?.trim()).toBe(
+        LIASSE_COMMENT,
+      );
+      expect(copyButton).toBeTruthy();
+      expect(copyButton?.textContent?.trim()).toBe('');
+      expect(copyButton?.querySelector('.bi-copy')).toBeTruthy();
+      expect(copyButton?.getAttribute('data-telemetry-id')).toBe(
+        'message-copy-compte-financier-liasse',
+      );
+      // Icon stays PrimeNG-rendered next to the projected container.
+      expect(
+        message
+          .querySelector('.p-message-icon')
+          ?.classList.contains('bi-chat-right-text-fill'),
+      ).toBe(true);
+    });
+
+    it('should copy the comment and show the Copié ! toast', async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      mockClipboard(writeText);
+      const addSpy = vi.spyOn(TestBed.inject(MessageService), 'add');
+
+      const copyButton = openLiasseComment().querySelector(
+        'button[aria-label="Copier le message"]',
+      ) as HTMLButtonElement;
+      copyButton.click();
+      await fixture.whenStable();
+
+      expect(writeText).toHaveBeenCalledWith(LIASSE_COMMENT);
+      expect(addSpy).toHaveBeenCalledWith({
+        severity: 'success',
+        summary: 'Copié !',
+        detail: `Compte financier - Liasse: ${LIASSE_COMMENT}`,
+      });
+    });
+
+    it('should not show the toast when the clipboard write fails', async () => {
+      mockClipboard(vi.fn().mockRejectedValue(new Error('denied')));
+      const execCommand = vi.fn().mockReturnValue(false);
+      Object.defineProperty(document, 'execCommand', {
+        configurable: true,
+        value: execCommand,
+      });
+      const addSpy = vi.spyOn(TestBed.inject(MessageService), 'add');
+
+      await component.copyMessage(LIASSE_COMMENT, 'Compte financier - Liasse');
+
+      expect(execCommand).toHaveBeenCalledWith('copy');
+      expect(addSpy).not.toHaveBeenCalled();
+    });
   });
 
   it('should render step 3 Calcul panel with warn message and En attente status', () => {

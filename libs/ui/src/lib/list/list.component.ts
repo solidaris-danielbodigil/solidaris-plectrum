@@ -21,7 +21,7 @@ import { Ripple } from 'primeng/ripple';
 import { Skeleton } from 'primeng/skeleton';
 import { Tag } from 'primeng/tag';
 import { Tree } from 'primeng/tree';
-import { injectPdsMessages } from '../i18n';
+import { injectPdsMessages, type PdsLocale } from '../i18n';
 import { PdsTelemetryLabelDirective } from '../testing-telemetry/telemetry-label.directive';
 import type {
   ListEntryItem,
@@ -188,8 +188,12 @@ export class ListComponent {
 
     if (this.isJourneyMode()) {
       const groups = this.groups() ?? [];
+      // Tracked: the group treeitem names carry the localised date labels.
+      const messages = this.messages();
       const expandedIds = untracked(() => this.expandedGroupIds());
-      const nodes = groups.map((group) => this.buildGroupTreeNode(group));
+      const nodes = groups.map((group) =>
+        this.buildGroupTreeNode(group, messages),
+      );
       this.applyExpandedToNodes(nodes, expandedIds);
       this.treeNodesInternal.set(nodes);
       return;
@@ -295,10 +299,9 @@ export class ListComponent {
     return doc.titleLine2 ? `${doc.title} ${doc.titleLine2}` : doc.title;
   }
 
+  /** "Title - Type" — static telemetry name of a group row, independent of the locale. */
   groupTelemetryLabel(group: ListGroup): string {
-    return group.titleAccent
-      ? `${group.title} ${group.titleAccent}`
-      : group.title;
+    return this.groupLabel(group);
   }
 
   documentIcon(doc: ListEntryItem): string {
@@ -314,9 +317,9 @@ export class ListComponent {
     return Boolean(doc.tags?.length);
   }
 
-  /** True when a journey group row has dates below the header. */
-  groupHasFooterContent(group: ListGroup): boolean {
-    return Boolean(group.startDate || group.endDate);
+  /** True when a journey group row has a meta line (type and/or dates) under its title. */
+  groupHasMeta(group: ListGroup): boolean {
+    return Boolean(group.titleAccent || group.startDate || group.endDate);
   }
 
   onDocumentRowClick(event: MouseEvent, doc: ListEntryItem): void {
@@ -536,11 +539,33 @@ export class ListComponent {
     this.syncExpandedGroupId(groupId, false);
   }
 
-  private buildGroupTreeNode(group: ListGroup): TreeNode {
+  /** "Title - Type" — the visible name of a group row. */
+  private groupLabel(group: ListGroup): string {
+    return [group.title, group.titleAccent].filter(Boolean).join(' - ');
+  }
+
+  /** Accessible treeitem name — "Title - Type, Date de début …, Date de fin …" in the active locale. */
+  private groupTreeLabel(
+    group: ListGroup,
+    m: (typeof ListMessages)[PdsLocale],
+  ): string {
+    return [
+      this.groupLabel(group),
+      group.startDate && `${m.startDate} ${group.startDate}`,
+      group.endDate && `${m.endDate} ${group.endDate}`,
+    ]
+      .filter(Boolean)
+      .join(', ');
+  }
+
+  private buildGroupTreeNode(
+    group: ListGroup,
+    messages: (typeof ListMessages)[PdsLocale],
+  ): TreeNode {
     return {
       key: group.id,
       type: 'group',
-      label: `${group.title}${group.titleAccent ?? ''}`,
+      label: this.groupTreeLabel(group, messages),
       data: { group },
       expanded: false,
       selectable: false,

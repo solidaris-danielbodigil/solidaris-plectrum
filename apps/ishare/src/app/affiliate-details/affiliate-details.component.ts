@@ -1,10 +1,12 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   effect,
   inject,
+  Injector,
   signal,
   untracked,
   ViewChild,
@@ -22,11 +24,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
-import { AccordionModule } from 'primeng/accordion';
 import { TabsModule } from 'primeng/tabs';
-import { TooltipModule } from 'primeng/tooltip';
-import { SelectButton } from 'primeng/selectbutton';
-import { ToggleButton } from 'primeng/togglebutton';
 import { Skeleton } from 'primeng/skeleton';
 import {
   ProfileDrawerComponent,
@@ -82,9 +80,9 @@ import {
   type AffiliateDocumentDetail,
   type DocumentCertificatPanel,
   type DocumentCrossReference,
-  type DocumentStepperView,
 } from './affiliate-document-detail/affiliate-document-detail.types';
 import { resolveListEntryIcon } from './list-entry-icon';
+import { documentListStatus, documentStatusFromLabel } from './document-status';
 
 interface SectorOption {
   label: string;
@@ -116,7 +114,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
   [
     {
       id: 'parcours-demande-primaire',
-      title: 'Parcours Indemnités -',
+      title: 'Parcours Indemnités',
       titleAccent: 'Demande primaire',
       startDate: '24/11/2025',
       endDate: '27/12/2025',
@@ -126,26 +124,18 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
           id: 'doc-demande-primaire',
           title: 'Demande primaire -',
           titleLine2: 'Régime général',
-          status: {
-            label: 'En attente',
-            severity: 'warn',
-            icon: 'bi bi-clock',
-          },
+          status: documentListStatus('en-attente'),
         },
         {
           id: 'doc-incapacite',
           title: 'Incapacité',
-          status: {
-            label: 'En traitement',
-            severity: 'warn',
-            icon: 'bi bi-hourglass-split',
-          },
+          status: documentListStatus('en-traitement'),
         },
       ],
     },
     {
       id: 'parcours-rechute',
-      title: 'Parcours Indemnités -',
+      title: 'Parcours Indemnités',
       titleAccent: 'Rechute',
       startDate: '01/01/2026',
       endDate: '15/01/2026',
@@ -154,17 +144,13 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
         {
           id: 'doc-rechute',
           title: 'Rechute',
-          status: {
-            label: 'En traitement',
-            severity: 'warn',
-            icon: 'bi bi-hourglass-split',
-          },
+          status: documentListStatus('en-traitement'),
         },
       ],
     },
     {
       id: 'parcours-clotures',
-      title: 'Parcours Indemnités -',
+      title: 'Parcours Indemnités',
       titleAccent: 'Demande primaire',
       startDate: '20/05/2026',
       endDate: '12/06/2026',
@@ -174,11 +160,7 @@ const EVA_MARTINEZ_DOCUMENT_GROUPS: ListGroup[] = (
           id: 'doc-cloture-primaire',
           title: 'Demande primaire -',
           titleLine2: 'Régime général',
-          status: {
-            label: 'En attente',
-            severity: 'warn',
-            icon: 'bi bi-clock',
-          },
+          status: documentListStatus('en-attente'),
         },
       ],
     },
@@ -195,20 +177,12 @@ export const EVA_MARTINEZ_STANDALONE_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-c4',
     title: 'Attestation C4',
-    status: {
-      label: 'Reçu',
-      severity: 'info',
-      icon: 'bi bi-save',
-    },
+    status: documentListStatus('recu'),
   },
   {
     id: 'doc-attestation-pedicure',
     title: 'Attestation de soin pédicure',
-    status: {
-      label: 'En traitement',
-      severity: 'warn',
-      icon: 'bi bi-hourglass-split',
-    },
+    status: documentListStatus('en-traitement'),
   },
 ].map((document) =>
   withDerivedTags(document as ListEntryItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
@@ -219,11 +193,7 @@ export const EVA_MARTINEZ_ARCHIVED_DOCUMENTS: ListEntryItem[] = [
   {
     id: 'doc-archive-changement-adresse',
     title: "Changement d'adresse",
-    status: {
-      label: 'Clôturé',
-      severity: 'secondary',
-      icon: 'bi bi-clock-history',
-    },
+    status: documentListStatus('cloture'),
   },
 ].map((document) =>
   withDerivedTags(document as ListEntryItem, EVA_MARTINEZ_DOCUMENT_DETAILS),
@@ -250,6 +220,10 @@ interface DocCategory {
   items?: ListEntryItem[];
 }
 
+/**
+ * Fixed set of three categories — the template sizes each tab `o-flex__item--4`
+ * (12-column grid / 3). Adding or removing a category means updating that class.
+ */
 const DOC_CATEGORY_SPECS: ReadonlyArray<
   Pick<DocCategory, 'id' | 'label' | 'icon' | 'kind'>
 > = [
@@ -267,9 +241,6 @@ const DOC_CATEGORY_SPECS: ReadonlyArray<
   },
   { id: 'archives', label: 'Archivés', icon: 'bi bi-archive', kind: 'flat' },
 ];
-
-const CATEGORY_EMPTY_FILTER_MESSAGE =
-  'Aucun document ne correspond à ce filtre.';
 
 type DocumentSector = SectorOption['value'];
 
@@ -291,11 +262,7 @@ const JACK_MOTA_DOCUMENTS: ListEntryItem[] = (
     {
       id: 'doc-jack-certificat',
       title: 'Certificat médical',
-      status: {
-        label: 'En traitement',
-        severity: 'warn',
-        icon: 'bi bi-hourglass-split',
-      },
+      status: documentListStatus('en-traitement'),
     },
   ] satisfies ListEntryItem[]
 ).map((document) => withDerivedTags(document));
@@ -343,10 +310,8 @@ function allEvaMartinezDocuments(): ListEntryItem[] {
     InputTextModule,
     CardModule,
     TagModule,
-    AccordionModule,
     BadgeModule,
     TabsModule,
-    TooltipModule,
     ToolbarComponent,
     FormFieldComponent,
     InputClearComponent,
@@ -357,8 +322,6 @@ function allEvaMartinezDocuments(): ListEntryItem[] {
     ProfileDrawerComponent,
     DocumentMoreDetailsDrawerComponent,
     TransactionsCicsModalComponent,
-    SelectButton,
-    ToggleButton,
     Skeleton,
   ],
   templateUrl: './affiliate-details.component.html',
@@ -378,6 +341,7 @@ export class AffiliateDetailsComponent {
   private readonly telemetry = inject(TestingTelemetryService);
   private readonly testingTelemetryEnabled = inject(TESTING_TELEMETRY_ENABLED);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
 
   @ViewChild('documentDateRangePicker')
   private documentDateRangePicker?: DatePicker;
@@ -545,8 +509,6 @@ export class AffiliateDetailsComponent {
 
   readonly documentFilterDateRange = signal<Date[] | null>(null);
 
-  readonly documentFiltersToolbarVisible = signal(false);
-
   /** Bumps when toolbar filter controls must remount after a programmatic reset. */
   readonly toolbarFilterControlsKey = signal(0);
 
@@ -562,16 +524,16 @@ export class AffiliateDetailsComponent {
     this.sortSuggestions = [...this.sortOptions];
     this.documentDateRangePicker?.writeControlValue(null);
     this.toolbarFilterControlsKey.update((key) => key + 1);
-  }
+    this.toolbarFiltersJustCleared.set(true);
 
-  onClearToolbarFilters(event: Event): void {
-    if (this.pageLoading()) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-    this.clearToolbarFilters();
+    // The clear action unmounts once no filter is active — hand focus to the first
+    // (remounted) filter field so keyboard users keep their place in the toolbar.
+    afterNextRender(
+      () => {
+        document.getElementById('document-sector')?.focus();
+      },
+      { injector: this.injector },
+    );
   }
 
   onDocumentFilterDateRangeChange(
@@ -601,10 +563,6 @@ export class AffiliateDetailsComponent {
     }
   }
 
-  closeDocumentFiltersToolbar(): void {
-    this.documentFiltersToolbarVisible.set(false);
-  }
-
   readonly selectedSector = signal<SectorOption | null>(null);
   sectorSuggestions: SectorOption[] = [...this.sectorOptions];
   readonly selectedSort = signal<SortOption | null>(this.sortOptions[1]);
@@ -632,7 +590,24 @@ export class AffiliateDetailsComponent {
     return count;
   });
 
-  readonly openCategories = signal<DocCategoryId[]>(['parcours', 'isoles']);
+  /** True from "Effacer les filtres" until a filter becomes active again. */
+  private readonly toolbarFiltersJustCleared = signal(false);
+
+  /** Polite live-region text — the count badge sits inside a button that unmounts at zero, so it is not announced. */
+  readonly toolbarFilterAnnouncement = computed(() => {
+    const count = this.activeToolbarFilterCount();
+    if (count > 0) {
+      return count === 1 ? '1 filtre actif' : `${count} filtres actifs`;
+    }
+    return this.toolbarFiltersJustCleared() ? 'Filtres effacés' : '';
+  });
+
+  /** Accessible name on the inner role="tablist" element rendered by p-tablist. */
+  readonly categoryTabListPassThrough = {
+    tabList: { 'aria-label': 'Catégories de documents' },
+  };
+
+  /** Category asked for by the user or a selection; `selectedCategoryTab` applies the enabled fallback. */
   readonly activeCategory = signal<DocCategoryId>('parcours');
 
   readonly expandedGroupIds = signal<string[]>([]);
@@ -643,10 +618,7 @@ export class AffiliateDetailsComponent {
   /** Skips auto-select in onExpandedGroupIdsChange after reveal-driven expansion. */
   private readonly programmaticGroupExpansions = new Set<string>();
 
-  /** Ignores accordion echo when openCategories is updated from component code. */
-  private suppressAccordionSync = false;
-
-  /** Tracks filter inputs so category visibility syncs only on filter changes. */
+  /** Tracks filter inputs so the selected-row viewport restore runs only on filter changes. */
   private categoryFilterSnapshot = '';
 
   private categoryFilterSnapshotReady = false;
@@ -810,10 +782,6 @@ export class AffiliateDetailsComponent {
     () => this.allDocumentsForContext().length > 0,
   );
 
-  readonly categoryTabDisabledHint = CATEGORY_EMPTY_FILTER_MESSAGE;
-
-  readonly categoryEmptyFilterMessage = CATEGORY_EMPTY_FILTER_MESSAGE;
-
   readonly selectedCategoryTab = computed((): DocCategoryId => {
     const categories = this.categories();
     const active = this.activeCategory();
@@ -868,19 +836,6 @@ export class AffiliateDetailsComponent {
   readonly selectedDocumentTitle = computed(
     () => this.selectedDocumentDetail()?.title ?? '',
   );
-
-  readonly stepperView = signal<DocumentStepperView>('horizontal');
-
-  readonly stepperViewOptions: { label: string; value: DocumentStepperView }[] =
-    [
-      { label: 'A', value: 'horizontal' },
-      { label: 'B', value: 'vertical' },
-    ];
-
-  readonly showStepperViewToggle = computed(() => {
-    const detail = this.selectedDocumentDetail();
-    return detail != null && detail.layout !== 'standalone';
-  });
 
   readonly canGoToPreviousDocument = computed(() => {
     const selectedId = this.selectedDocumentId();
@@ -977,103 +932,38 @@ export class AffiliateDetailsComponent {
       : [...this.sortOptions];
   }
 
-  isCategoryOpen(id: DocCategoryId): boolean {
-    return this.openCategories().includes(id);
-  }
-
   isCategoryEnabled(id: DocCategoryId): boolean {
     return (
       this.categories().find((category) => category.id === id)?.enabled ?? false
     );
   }
 
-  toggleCategoryVisibility(id: DocCategoryId): void {
-    if (!this.isCategoryEnabled(id)) {
-      return;
-    }
-
-    const current = this.openCategories();
-
-    if (current.includes(id)) {
-      this.syncOpenCategories(
-        current.filter((categoryId) => categoryId !== id),
-      );
-      return;
-    }
-
-    this.syncOpenCategories([...current, id]);
-  }
-
-  onAccordionValueChange(
-    value: DocCategoryId | DocCategoryId[] | null | undefined,
-  ): void {
-    if (this.suppressAccordionSync) {
-      return;
-    }
-
-    const ids = Array.isArray(value) ? value : value != null ? [value] : [];
-    this.openCategories.set(ids);
-  }
-
   onCategoryTabChange(id: DocCategoryId | string | number | undefined): void {
-    if (id === 'parcours' || id === 'isoles' || id === 'archives') {
-      if (!this.isCategoryEnabled(id)) {
-        return;
-      }
-
-      this.scrollToCategory(id);
-    }
-  }
-
-  scrollToCategory(id: DocCategoryId): void {
-    if (!this.isCategoryEnabled(id)) {
+    if (id !== 'parcours' && id !== 'isoles' && id !== 'archives') {
       return;
     }
 
-    if (!this.openCategories().includes(id)) {
-      this.syncOpenCategories([...this.openCategories(), id]);
-    }
-
-    this.activeCategory.set(id);
-
-    queueMicrotask(() => {
-      const panel = document.getElementById(`category-panel-${id}`);
-      if (panel) {
-        this.scrollElementIntoViewWithInset(panel);
-      }
-    });
-  }
-
-  private ensureParcoursVisible(): void {
-    this.ensureCategoryVisible('parcours');
-  }
-
-  private ensureArchivesVisible(): void {
-    this.ensureCategoryVisible('archives');
-  }
-
-  private ensureCategoryVisible(id: DocCategoryId): void {
-    if (!this.isCategoryEnabled(id)) {
+    if (!this.isCategoryEnabled(id) || id === this.selectedCategoryTab()) {
       return;
     }
 
-    if (!this.openCategories().includes(id)) {
-      this.syncOpenCategories([...this.openCategories(), id]);
-    }
-
     this.activeCategory.set(id);
+    // One scroller hosts every tab panel — start the newly shown list at its top.
+    const scroller = this.getDocumentsScroller();
+    if (scroller) {
+      scroller.scrollTop = 0;
+    }
   }
 
-  private syncOpenCategories(ids: DocCategoryId[]): void {
-    this.suppressAccordionSync = true;
-    this.openCategories.set(ids);
-    queueMicrotask(() => {
-      this.suppressAccordionSync = false;
-    });
+  /** Shows the tab of `id` when it has documents; empty (disabled) categories are never selected. */
+  private showCategory(id: DocCategoryId): void {
+    if (this.isCategoryEnabled(id)) {
+      this.activeCategory.set(id);
+    }
   }
 
   onCrossReferenceNavigate(reference: DocumentCrossReference): void {
-    this.ensureParcoursVisible();
+    this.showCategory('parcours');
     this.documentFocus.set({
       stepValue: reference.stepValue,
       panelId: reference.panelId,
@@ -1202,7 +1092,7 @@ export class AffiliateDetailsComponent {
 
     const categoryId = this.categoryForDocumentId(documentId);
     if (categoryId) {
-      this.ensureCategoryVisible(categoryId);
+      this.showCategory(categoryId);
 
       if (categoryId === 'parcours') {
         const group = this.parcoursGroups().find((item) =>
@@ -1244,7 +1134,7 @@ export class AffiliateDetailsComponent {
           this.visibleDocuments().some((document) => document.id === latestId)
         ) {
           this.selectedDocumentId.set(latestId);
-          this.scheduleFilterViewportRestore({ documentId: latestId });
+          this.scheduleFilterViewportRestore(latestId);
         }
       });
     }
@@ -1275,9 +1165,8 @@ export class AffiliateDetailsComponent {
     const { documentId, groupId, stepValue, panelId } =
       AffiliateDetailsComponent.EVA_C4_MISSING_DEEP_LINK;
 
-    this.ensureParcoursVisible();
+    this.showCategory('parcours');
     this.ensureGroupExpanded(groupId);
-    this.scrollToCategory('parcours');
     this.selectedDocumentId.set(documentId);
     this.documentFocus.set({ stepValue, panelId });
     this.recordTelemetry(
@@ -1427,7 +1316,10 @@ export class AffiliateDetailsComponent {
     return generation === this.viewportScrollGeneration;
   }
 
-  /** Re-expands category/group chrome and scrolls after filter-driven list reflows. */
+  /**
+   * Re-reveals the selected row after a filter-driven list reflow. Keeps the
+   * user's tab: the row is only scrolled to when it lives in the selected tab.
+   */
   private restoreSelectedDocumentViewport(): void {
     const selected = this.selectedDocumentId();
 
@@ -1435,28 +1327,18 @@ export class AffiliateDetailsComponent {
       selected &&
       this.visibleDocuments().some((document) => document.id === selected)
     ) {
-      this.scheduleFilterViewportRestore({ documentId: selected });
-      return;
-    }
-
-    const active = this.activeCategory();
-
-    if (this.isCategoryEnabled(active)) {
-      this.scheduleFilterViewportRestore({ categoryId: active });
+      this.scheduleFilterViewportRestore(selected);
     }
   }
 
-  private scheduleFilterViewportRestore(target: {
-    documentId?: string;
-    categoryId?: DocCategoryId;
-  }): void {
+  private scheduleFilterViewportRestore(documentId: string): void {
     const generation = this.bumpViewportScrollGeneration();
     this.isNavigatingDocuments = true;
-    this.settleFilterViewport(target, 0, generation);
+    this.settleFilterViewport(documentId, 0, generation);
   }
 
   private settleFilterViewport(
-    target: { documentId?: string; categoryId?: DocCategoryId },
+    documentId: string,
     attempt: number,
     generation: number,
   ): void {
@@ -1468,19 +1350,14 @@ export class AffiliateDetailsComponent {
         return;
       }
 
-      const documentId = target.documentId;
-      const categoryId =
-        target.categoryId ??
-        (documentId ? this.categoryForDocumentId(documentId) : null);
+      const categoryId = this.categoryForDocumentId(documentId);
 
-      if (!categoryId) {
+      if (!categoryId || categoryId !== this.selectedCategoryTab()) {
         this.isNavigatingDocuments = false;
         return;
       }
 
-      this.ensureCategoryVisible(categoryId);
-
-      if (categoryId === 'parcours' && documentId) {
+      if (categoryId === 'parcours') {
         const group = this.parcoursGroups().find((item) =>
           item.documents.some((document) => document.id === documentId),
         );
@@ -1490,28 +1367,18 @@ export class AffiliateDetailsComponent {
         }
       }
 
-      this.activeCategory.set(categoryId);
+      const row = document.querySelector(
+        `[data-telemetry-id="document-row-${documentId}"]`,
+      );
 
-      if (documentId) {
-        const row = document.querySelector(
-          `[data-telemetry-id="document-row-${documentId}"]`,
-        );
-
-        if (row instanceof HTMLElement) {
-          this.scrollElementIntoViewWithInset(row, 'auto');
-          this.isNavigatingDocuments = false;
-          return;
-        }
-      }
-
-      const panel = document.getElementById(`category-panel-${categoryId}`);
-
-      if (panel instanceof HTMLElement) {
-        this.scrollElementIntoViewWithInset(panel, 'auto');
+      if (row instanceof HTMLElement) {
+        this.scrollElementIntoViewWithInset(row, 'auto');
+        this.isNavigatingDocuments = false;
+        return;
       }
 
       if (attempt < maxAttempts) {
-        this.settleFilterViewport(target, attempt + 1, generation);
+        this.settleFilterViewport(documentId, attempt + 1, generation);
         return;
       }
 
@@ -1519,14 +1386,26 @@ export class AffiliateDetailsComponent {
     }, delay);
   }
 
-  private isFirstNavigableDocument(documentId: string): boolean {
-    const documents = this.navigableDocuments();
-    return documents.length > 0 && documents[0].id === documentId;
+  /** Documents of the tab panel that holds `documentId`, in list order. */
+  private documentsInCategoryOf(documentId: string): ListEntryItem[] {
+    const categoryId = this.categoryForDocumentId(documentId);
+    const category = this.categories().find((item) => item.id === categoryId);
+
+    if (!category?.enabled) {
+      return [];
+    }
+
+    return category.kind === 'journey'
+      ? (category.groups ?? []).flatMap((group) => group.documents)
+      : (category.items ?? []);
   }
 
-  private isLastNavigableDocument(documentId: string): boolean {
-    const documents = this.navigableDocuments();
-    return documents.length > 0 && documents.at(-1)?.id === documentId;
+  private isFirstDocumentInCategory(documentId: string): boolean {
+    return this.documentsInCategoryOf(documentId)[0]?.id === documentId;
+  }
+
+  private isLastDocumentInCategory(documentId: string): boolean {
+    return this.documentsInCategoryOf(documentId).at(-1)?.id === documentId;
   }
 
   /** Waits for journey group content to render before scrolling the document row. */
@@ -1541,7 +1420,7 @@ export class AffiliateDetailsComponent {
           return;
         }
 
-        if (this.isFirstNavigableDocument(documentId)) {
+        if (this.isFirstDocumentInCategory(documentId)) {
           const scroller = this.getDocumentsScroller();
           if (scroller) {
             this.scrollDocumentsScrollerTo(scroller, 'top');
@@ -1555,12 +1434,12 @@ export class AffiliateDetailsComponent {
         );
 
         if (row instanceof HTMLElement) {
-          if (this.isLastNavigableDocument(documentId)) {
+          if (this.isLastDocumentInCategory(documentId)) {
             this.settleDocumentsScrollerAtBottom(row, 0);
             return;
           }
 
-          if (this.isFirstNavigableDocument(documentId)) {
+          if (this.isFirstDocumentInCategory(documentId)) {
             const scroller = this.getDocumentsScroller();
             if (scroller) {
               this.scrollDocumentsScrollerTo(scroller, 'top');
@@ -1584,7 +1463,7 @@ export class AffiliateDetailsComponent {
           return;
         }
 
-        if (this.isLastNavigableDocument(documentId)) {
+        if (this.isLastDocumentInCategory(documentId)) {
           const row = document.querySelector(
             `[data-telemetry-id="document-row-${documentId}"]`,
           );
@@ -1624,7 +1503,7 @@ export class AffiliateDetailsComponent {
   }
 
   /**
-   * Snaps the documents scroller to the bottom while accordion content settles,
+   * Snaps the documents scroller to the bottom while the tab panel content settles,
    * then fine-tunes so the last row is fully visible with scroll inset.
    */
   private settleDocumentsScrollerAtBottom(
@@ -2006,6 +1885,13 @@ export class AffiliateDetailsComponent {
       this.clearAffiliatePageLoadingTimer();
     });
 
+    // A filter set after a clear ends the "Filtres effacés" announcement window.
+    effect(() => {
+      if (this.activeToolbarFilterCount() > 0) {
+        this.toolbarFiltersJustCleared.set(false);
+      }
+    });
+
     effect(() => {
       const routeId = this.affiliateId();
       if (!routeId) {
@@ -2043,11 +1929,6 @@ export class AffiliateDetailsComponent {
     });
 
     effect(() => {
-      this.selectedDocumentId();
-      untracked(() => this.stepperView.set('horizontal'));
-    });
-
-    effect(() => {
       const filter = this.documentInfoFilter();
 
       if (!filter) {
@@ -2080,6 +1961,23 @@ export class AffiliateDetailsComponent {
       }
     });
 
+    // Any selection (row click, prev/next, deep link, default or "Dernière action"
+    // pick) shows the tab that holds the selected document. Tracks the selection
+    // only, so a later manual tab switch is not undone.
+    effect(() => {
+      const documentId = this.selectedDocumentId();
+      if (!documentId) {
+        return;
+      }
+
+      untracked(() => {
+        const categoryId = this.categoryForDocumentId(documentId);
+        if (categoryId) {
+          this.showCategory(categoryId);
+        }
+      });
+    });
+
     effect(() => {
       const search = this.documentSearch();
       const sector = this.selectedSector()?.value ?? '';
@@ -2090,49 +1988,12 @@ export class AffiliateDetailsComponent {
         '\u0000',
       );
 
-      const categories = this.categories();
-      const open = untracked(() => this.openCategories());
-      const enabledIds = categories
-        .filter((category) => category.enabled)
-        .map((category) => category.id);
-      const enabledSet = new Set(enabledIds);
-
       const previousSnapshot = this.categoryFilterSnapshot;
       const filterChanged =
         this.categoryFilterSnapshotReady && filterSnapshot !== previousSnapshot;
 
-      const [
-        prevSearch = '',
-        prevSector = '',
-        prevInfo = '',
-        prevDateFrom = '',
-      ] = previousSnapshot.split('\u0000');
-      const filterCleared =
-        filterChanged &&
-        ((prevInfo !== '' && info === '') ||
-          (prevSector !== '' && sector === '') ||
-          (prevSearch !== '' && search === '') ||
-          (prevDateFrom !== '' && dateFrom === ''));
-
       this.categoryFilterSnapshot = filterSnapshot;
       this.categoryFilterSnapshotReady = true;
-
-      const next =
-        filterChanged && filterCleared
-          ? open.filter((id) => enabledSet.has(id))
-          : filterChanged
-            ? [
-                ...open.filter((id) => enabledSet.has(id)),
-                ...enabledIds.filter((id) => !open.includes(id)),
-              ]
-            : open.filter((id) => enabledSet.has(id));
-
-      const changed =
-        next.length !== open.length || next.some((id) => !open.includes(id));
-
-      if (changed) {
-        this.syncOpenCategories(next);
-      }
 
       if (filterChanged) {
         untracked(() => {
@@ -2241,12 +2102,12 @@ export class AffiliateDetailsComponent {
   }
 }
 
-function isActiveDocument(document: ListEntryItem): boolean {
-  return document.status?.label !== 'Clôturé';
+function isClosedDocument(document: ListEntryItem): boolean {
+  return documentStatusFromLabel(document.status?.label) === 'cloture';
 }
 
-function isClosedDocument(document: ListEntryItem): boolean {
-  return document.status?.label === 'Clôturé';
+function isActiveDocument(document: ListEntryItem): boolean {
+  return !isClosedDocument(document);
 }
 
 function parseFrenchDate(value: string): number {

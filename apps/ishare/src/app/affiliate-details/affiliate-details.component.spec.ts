@@ -5,6 +5,7 @@ import {
   flushMicrotasks,
   tick,
 } from '@angular/core/testing';
+import { NgZone } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
@@ -39,14 +40,6 @@ function expandJourneyGroup(
   fixture.detectChanges();
 }
 
-function openDocumentFiltersToolbar(
-  component: AffiliateDetailsComponent,
-  fixture: ComponentFixture<AffiliateDetailsComponent>,
-): void {
-  component.documentFiltersToolbarVisible.set(true);
-  fixture.detectChanges();
-}
-
 function clickElement(host: HTMLElement): void {
   const target =
     host.closest('button') ??
@@ -54,6 +47,35 @@ function clickElement(host: HTMLElement): void {
     host;
   target.dispatchEvent(
     new MouseEvent('click', { bubbles: true, cancelable: true }),
+  );
+}
+
+type CategoryId = 'parcours' | 'isoles' | 'archives';
+
+function categoryTab(
+  fixture: ComponentFixture<AffiliateDetailsComponent>,
+  id: CategoryId,
+): HTMLElement {
+  return fixture.nativeElement.querySelector(
+    `[data-telemetry-id="category-tab-${id}"]`,
+  ) as HTMLElement;
+}
+
+/** The p-tabpanel the category tab controls (resolved through `aria-controls`). */
+function categoryPanel(
+  fixture: ComponentFixture<AffiliateDetailsComponent>,
+  id: CategoryId,
+): HTMLElement | null {
+  const panelId = categoryTab(fixture, id).getAttribute('aria-controls');
+  return fixture.nativeElement.querySelector(`[id="${panelId}"]`);
+}
+
+/** Ids of the categories whose tab panel is shown (not `hidden`). */
+function shownCategoryPanels(
+  fixture: ComponentFixture<AffiliateDetailsComponent>,
+): CategoryId[] {
+  return (['parcours', 'isoles', 'archives'] as const).filter(
+    (id) => categoryPanel(fixture, id)?.hidden === false,
   );
 }
 
@@ -106,77 +128,88 @@ describe('AffiliateDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should hide documents filter toolbar by default', () => {
-    expect(component.documentFiltersToolbarVisible()).toBe(false);
-
-    const shell = fixture.nativeElement.querySelector(
-      '.c-affiliate-documents-toolbar-shell',
-    );
-
-    expect(shell).toBeTruthy();
-    expect(shell.classList.contains('is-visible')).toBe(false);
-    expect(shell.getAttribute('aria-hidden')).toBe('true');
-  });
-
-  it('should open documents filter toolbar when the header Filtres trigger is clicked', () => {
-    const trigger = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="documents-filters-toggle"]',
+  it('should render the documents filter toolbar by default', () => {
+    const toolbar = fixture.nativeElement.querySelector(
+      'pds-toolbar.c-affiliate-documents-toolbar',
     ) as HTMLElement;
 
-    trigger.click();
-    fixture.detectChanges();
-
-    expect(component.documentFiltersToolbarVisible()).toBe(true);
+    expect(toolbar).toBeTruthy();
+    expect(toolbar.getAttribute('aria-hidden')).toBeNull();
+    expect(toolbar.hasAttribute('inert')).toBe(false);
+    expect(toolbar.closest('[aria-hidden="true"], [inert]')).toBeNull();
     expect(
-      fixture.nativeElement
-        .querySelector('.c-affiliate-documents-toolbar-shell')
-        ?.classList.contains('is-visible'),
-    ).toBe(true);
-    expect(trigger.getAttribute('aria-pressed')).toBe('true');
+      fixture.nativeElement.querySelector('.c-affiliate-documents-toolbar-shell'),
+    ).toBeNull();
   });
 
-  it('should close documents filter toolbar when the chevron close button is clicked', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
-    const closeButton = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="documents-filter-toolbar-close"]',
-    ) as HTMLButtonElement;
-
-    closeButton.click();
-    fixture.detectChanges();
-
-    expect(component.documentFiltersToolbarVisible()).toBe(false);
+  it('should not render a Filtres toggle or a collapse control', () => {
     expect(
-      fixture.nativeElement
-        .querySelector('.c-affiliate-documents-toolbar-shell')
-        ?.classList.contains('is-visible'),
-    ).toBe(false);
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="documents-filters-toggle"]',
+      ),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector(
+        '[data-telemetry-id="documents-filter-toolbar-close"]',
+      ),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('[aria-label="Masquer les filtres"]'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__card-header p-togglebutton',
+      ),
+    ).toBeNull();
   });
 
-  it('should render the documents search input and Filtres trigger in the card header', () => {
-    const searchInput = fixture.nativeElement.querySelector(
+  it('should render the documents search as the first toolbar field', () => {
+    const toolbar = fixture.nativeElement.querySelector(
+      'pds-toolbar.c-affiliate-documents-toolbar',
+    ) as HTMLElement;
+    const firstField = toolbar.querySelector(
+      '.c-affiliate-documents-toolbar__row > .c-affiliate-documents-toolbar__field',
+    ) as HTMLElement;
+    const searchInput = firstField.querySelector(
       '#document-search',
     ) as HTMLInputElement;
-    const trigger = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="documents-filters-toggle"]',
-    ) as HTMLElement;
 
     expect(searchInput).toBeTruthy();
     expect(searchInput.getAttribute('role')).toBe('searchbox');
     expect(searchInput.placeholder).toBe('Rechercher document...');
-    expect(trigger).toBeTruthy();
-    expect(trigger.textContent).toContain('Filtres');
-    expect(trigger.classList.contains('p-togglebutton')).toBe(true);
-    expect(trigger.querySelector('.bi-funnel')).toBeTruthy();
-    expect(trigger.getAttribute('aria-pressed')).toBe('false');
+    expect(searchInput.getAttribute('data-telemetry-id')).toBe('document-search');
     expect(
-      trigger.querySelector('.p-togglebutton-label')?.textContent,
-    ).toContain('Filtres');
-    const defaultFilterBadge = trigger.querySelector(
-      '[data-telemetry-id="documents-filters-count"]',
+      firstField.querySelector('label.c-form-field__label[for="document-search"]')
+        ?.textContent?.trim(),
+    ).toBe('Rechercher un document');
+  });
+
+  it('should not render the documents search in the documents card header', () => {
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__card-header #document-search',
+      ),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__documents-header-actions, .c-affiliate-details__documents-search',
+      ),
+    ).toBeNull();
+  });
+
+  it('should keep the documents search when the toolbar filters are cleared', () => {
+    component.documentSearch.set('rechute');
+    fixture.detectChanges();
+    const searchBefore = fixture.nativeElement.querySelector('#document-search');
+
+    component.clearToolbarFilters();
+    fixture.detectChanges();
+
+    expect(component.documentSearch()).toBe('rechute');
+    // The search sits outside the remount block, so it keeps its element (and typing focus).
+    expect(fixture.nativeElement.querySelector('#document-search')).toBe(
+      searchBefore,
     );
-    expect(defaultFilterBadge).toBeTruthy();
-    expect(defaultFilterBadge?.textContent).toContain('1');
   });
 
   it('should initialize document filter state from Figma defaults', () => {
@@ -188,27 +221,29 @@ describe('AffiliateDetailsComponent', () => {
       label: 'Date de réception',
       value: 'date-reception',
     });
-    expect(component.openCategories()).toEqual(['parcours', 'isoles']);
     expect(component.activeCategory()).toBe('parcours');
+    expect(component.selectedCategoryTab()).toBe('parcours');
   });
 
-  it('should render three toolbar filter controls with expected labels', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
+  it('should render the search and three filter controls with expected labels', () => {
     const labels = [
       ...fixture.nativeElement.querySelectorAll('.c-form-field__label-text'),
     ].map((label) => (label as Element).textContent?.trim());
 
-    expect(labels).toEqual(['Secteur', 'Trier par', 'Filtrer par date']);
+    expect(labels).toEqual([
+      'Rechercher un document',
+      'Secteur',
+      'Trier par',
+      'Filtrer par date',
+    ]);
   });
 
   it('should associate labels with controls via matching input ids', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     const associations: Array<{
       labelFor: string | null;
       controlId: string | null;
     }> = [
+      { labelFor: 'document-search', controlId: 'document-search' },
       { labelFor: 'document-sector', controlId: 'document-sector' },
       { labelFor: 'document-sort', controlId: 'document-sort' },
       { labelFor: 'document-date-range', controlId: 'document-date-range' },
@@ -226,21 +261,19 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should not render journey-view or archived-only toolbar toggles', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     expect(fixture.nativeElement.querySelector('#journey-view')).toBeNull();
     expect(fixture.nativeElement.querySelector('#archived-only')).toBeNull();
   });
 
-  it('should mark the header search icon as decorative', () => {
+  it('should mark the toolbar search icon as decorative', () => {
     const searchIcon = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents-search .bi-search',
+      '.c-affiliate-documents-toolbar .bi-search',
     );
 
     expect(searchIcon?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('should render header search input as a clearable text searchbox', () => {
+  it('should render the toolbar search input as a clearable text searchbox', () => {
     const searchInput = fixture.nativeElement.querySelector(
       '#document-search',
     ) as HTMLInputElement;
@@ -251,14 +284,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(searchInput.value).toBe('');
     expect(
       fixture.nativeElement.querySelector(
-        '.c-affiliate-details__documents-search pds-input-clear',
+        '.c-affiliate-documents-toolbar pds-input-clear',
       ),
     ).toBeTruthy();
   });
 
   it('should enable showClear on sector and sort autocompletes', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     const autocompletes = fixture.debugElement.queryAll(
       By.directive(AutoComplete),
     );
@@ -275,8 +306,6 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should render placeholders on sector and sort autocompletes', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     const sectorInput = fixture.nativeElement.querySelector(
       '#document-sector',
     ) as HTMLInputElement;
@@ -289,8 +318,6 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should clear sector autocomplete via showClear', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     component.selectedSector.set({
       label: 'indémnités',
       value: 'indemnites',
@@ -310,8 +337,6 @@ describe('AffiliateDetailsComponent', () => {
   });
 
   it('should clear sort autocomplete via showClear', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
     const sortAutocomplete = fixture.debugElement
       .queryAll(By.directive(AutoComplete))
       .find((autocomplete) =>
@@ -324,12 +349,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedSort()).toBeNull();
   });
 
-  it('should clear document search via pds-input-clear in the card header', () => {
+  it('should clear document search via pds-input-clear in the toolbar', () => {
     component.documentSearch.set('rechute');
     fixture.detectChanges();
 
     const clearButton = fixture.debugElement.query(
-      By.css('.c-affiliate-details__documents-search pds-input-clear button'),
+      By.css('.c-affiliate-documents-toolbar pds-input-clear button'),
     );
     clearButton.triggerEventHandler('click', new MouseEvent('click'));
     fixture.detectChanges();
@@ -337,16 +362,22 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.documentSearch()).toBe('');
   });
 
-  it('should show an active filter count badge when toolbar filters are applied', () => {
+  it('should show an active filter count badge inside the toolbar clear action', () => {
     component.onSectorChange({ label: 'médical', value: 'medical' });
     fixture.detectChanges();
 
-    const badge = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
-    );
+    const clearButton = fixture.nativeElement.querySelector(
+      '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
+    ) as HTMLButtonElement;
+    const badge = fixture.nativeElement.querySelector('.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-count"]');
 
-    expect(badge).toBeTruthy();
+    expect(clearButton).toBeTruthy();
+    expect(clearButton.contains(badge)).toBe(true);
     expect(badge.textContent).toContain('2');
+    expect(clearButton.getAttribute('aria-label')).toBe(
+      'Effacer les filtres (2 actifs)',
+    );
+    expect(clearButton.textContent).toContain('Effacer les filtres');
     expect(component.activeToolbarFilterCount()).toBe(2);
   });
 
@@ -360,7 +391,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.activeToolbarFilterCount()).toBe(2);
     expect(
       fixture.nativeElement.querySelector(
-        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-count"]',
       )?.textContent,
     ).toContain('2');
   });
@@ -369,14 +400,32 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.activeToolbarFilterCount()).toBe(1);
     expect(
       fixture.nativeElement.querySelector(
-        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-count"]',
       )?.textContent,
     ).toContain('1');
+    // Singular agreement in the accessible name — "1 actif", not "1 actifs".
+    expect(
+      fixture.nativeElement
+        .querySelector(
+          '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
+        )
+        ?.getAttribute('aria-label'),
+    ).toBe('Effacer les filtres (1 actif)');
   });
 
-  it('should clear toolbar filters when the filters clear icon is clicked', () => {
-    openDocumentFiltersToolbar(component, fixture);
+  it('should hide the clear action when no toolbar filter is active', () => {
+    component.onSortChange(null);
+    fixture.detectChanges();
 
+    expect(component.activeToolbarFilterCount()).toBe(0);
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
+      ),
+    ).toBeNull();
+  });
+
+  it('should clear toolbar filters and focus the sector field when the clear action is clicked', () => {
     component.onSectorChange({ label: 'médical', value: 'medical' });
     component.onSortChange({ label: 'Nom du document', value: 'nom-document' });
     component.documentFilterDateRange.set([
@@ -386,10 +435,13 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     const clearButton = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="documents-filters-clear"]',
+      '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
     ) as HTMLButtonElement;
+    clearButton.focus();
     clickElement(clearButton);
-    fixture.detectChanges();
+    // Full app tick (inside the zone, as in the running app) so the
+    // afterNextRender focus hand-off runs.
+    TestBed.inject(NgZone).run(() => TestBed.tick());
 
     expect(component.selectedSector()).toBeNull();
     expect(component.selectedSort()).toBeNull();
@@ -397,7 +449,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.activeToolbarFilterCount()).toBe(0);
     expect(
       fixture.nativeElement.querySelector(
-        '[data-telemetry-id="documents-filters-toggle"] [data-telemetry-id="documents-filters-count"]',
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
+      ),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-count"]',
       ),
     ).toBeNull();
 
@@ -410,7 +467,56 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(sectorInput.value).toBe('');
     expect(dateInput.value).toBe('');
-    expect(component.selectedSort()).toBeNull();
+    expect(document.activeElement).toBe(sectorInput);
+  });
+
+  it('should announce the active filter count in a polite live region', () => {
+    const status = (): HTMLElement =>
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-documents-toolbar [role="status"]',
+      ) as HTMLElement;
+
+    // Default sort counts as one active filter.
+    expect(status()).toBeTruthy();
+    expect(status().getAttribute('aria-live')).toBe('polite');
+    expect(status().classList.contains('u-sr-only')).toBe(true);
+    expect(status().textContent?.trim()).toBe('1 filtre actif');
+
+    component.onSectorChange({ label: 'médical', value: 'medical' });
+    fixture.detectChanges();
+    expect(status().textContent?.trim()).toBe('2 filtres actifs');
+
+    // Clearing a field one by one down to zero leaves the region empty (still rendered).
+    component.onSectorChange(null);
+    component.onSortChange(null);
+    fixture.detectChanges();
+    expect(status()).toBeTruthy();
+    expect(status().textContent?.trim()).toBe('');
+  });
+
+  it('should announce "Filtres effacés" after the clear action until a filter is set again', () => {
+    const status = (): string | undefined =>
+      (
+        fixture.nativeElement.querySelector(
+          '.c-affiliate-documents-toolbar [role="status"]',
+        ) as HTMLElement
+      ).textContent?.trim();
+
+    clickElement(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-documents-toolbar [data-telemetry-id="documents-filters-clear"]',
+      ) as HTMLButtonElement,
+    );
+    TestBed.inject(NgZone).run(() => TestBed.tick());
+    expect(status()).toBe('Filtres effacés');
+
+    component.onSectorChange({ label: 'médical', value: 'medical' });
+    fixture.detectChanges();
+    expect(status()).toBe('1 filtre actif');
+
+    component.onSectorChange(null);
+    fixture.detectChanges();
+    expect(status()).toBe('');
   });
 
   it('should filter sector suggestions by query', () => {
@@ -518,8 +624,8 @@ describe('AffiliateDetailsComponent', () => {
     affiliateHeaderService.header()?.onStatusActionClick?.();
     fixture.detectChanges();
 
-    expect(component.openCategories()).toContain('parcours');
     expect(component.activeCategory()).toBe('parcours');
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
     expect(component.expandedGroupIds()).toContain('parcours-demande-primaire');
     expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
     expect(component.documentFocus()).toEqual({
@@ -538,7 +644,7 @@ describe('AffiliateDetailsComponent', () => {
   it('should ignore disabled status menu placeholder selection', () => {
     component.selectedDocumentId.set('doc-incapacite');
     component.documentFocus.set(null);
-    component.openCategories.set(['parcours']);
+    fixture.detectChanges();
 
     affiliateHeaderService.header()?.onStatusMenuSelect?.({
       id: 'eva-status-action-placeholder',
@@ -547,7 +653,7 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    expect(component.openCategories()).toEqual(['parcours']);
+    expect(component.selectedCategoryTab()).toBe('parcours');
     expect(component.selectedDocumentId()).toBe('doc-incapacite');
     expect(component.documentFocus()).toBeNull();
   });
@@ -666,12 +772,9 @@ describe('AffiliateDetailsComponent', () => {
     const archivesTab = fixture.nativeElement.querySelector(
       '[data-telemetry-id="category-tab-archives"]',
     ) as HTMLElement;
-    expect(
-      archivesTab.classList.contains(
-        'c-affiliate-details__category-tab--disabled',
-      ),
-    ).toBe(true);
+    expect(archivesTab.classList.contains('p-disabled')).toBe(true);
     expect(archivesTab.getAttribute('aria-disabled')).toBe('true');
+    expect(archivesTab.getAttribute('tabindex')).toBe('-1');
     expect(component.activeCategory()).toBe('parcours');
     expect(component.selectedCategoryTab()).toBe('parcours');
   });
@@ -692,8 +795,8 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.activeCategory()).toBe('archives');
   });
 
-  it('should collapse disabled category accordion panels when the filter changes', () => {
-    expect(component.openCategories()).toEqual(['parcours', 'isoles']);
+  it('should fall back to the enabled tab and show its panel when the filter empties the selected tab', () => {
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
 
     component.onInfoTagClick({
       label: 'Documents clôturés:',
@@ -702,12 +805,14 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    expect(component.openCategories()).not.toContain('parcours');
-    expect(component.openCategories()).not.toContain('isoles');
-    expect(component.openCategories()).toContain('archives');
+    expect(component.selectedCategoryTab()).toBe('archives');
+    expect(categoryTab(fixture, 'archives').getAttribute('aria-selected')).toBe(
+      'true',
+    );
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
   });
 
-  it('should show an explicit empty-filter message in a disabled accordion panel', () => {
+  it('should disable empty category tabs and render no list in their panels', () => {
     component.onInfoTagClick({
       label: 'Documents clôturés:',
       value: '1',
@@ -715,131 +820,245 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    component.onAccordionValueChange(['parcours', 'archives']);
-    fixture.detectChanges();
-
-    const parcoursPanel = fixture.nativeElement.querySelector(
-      '#category-panel-parcours',
-    );
-    const emptyMessage = parcoursPanel?.querySelector(
-      '.c-affiliate-details__category-empty-filter',
-    );
-
-    expect(emptyMessage?.textContent?.trim()).toBe(
-      'Aucun document ne correspond à ce filtre.',
-    );
-    expect(parcoursPanel?.querySelector('pds-list')).toBeNull();
+    for (const id of ['parcours', 'isoles'] as const) {
+      const tab = categoryTab(fixture, id);
+      expect(tab.getAttribute('aria-disabled')).toBe('true');
+      expect(tab.getAttribute('tabindex')).toBe('-1');
+      expect(categoryPanel(fixture, id)?.hidden).toBe(true);
+      expect(categoryPanel(fixture, id)?.querySelector('pds-list')).toBeNull();
+    }
+    expect(
+      categoryPanel(fixture, 'archives')?.querySelectorAll('.c-list__item--entry')
+        .length,
+    ).toBe(1);
   });
 
-  it('should render p-badge counts in accordion panel headers', () => {
-    const headers = fixture.nativeElement.querySelectorAll(
-      '.c-affiliate-details__category-panel-header',
-    );
+  it('should not render category accordions in the documents card', () => {
+    const documentsCard = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents',
+    ) as HTMLElement;
 
-    expect(headers.length).toBe(3);
-    headers.forEach((header: Element) => {
-      expect(header.querySelector('p-badge, .p-badge')).toBeTruthy();
-    });
+    expect(documentsCard.querySelector('p-accordion')).toBeNull();
+    expect(documentsCard.querySelector('p-accordion-header')).toBeNull();
+  });
 
-    const parcoursHeader = fixture.nativeElement.querySelector(
-      '#category-panel-parcours .c-affiliate-details__category-panel-header',
-    );
-    expect(
-      parcoursHeader
-        ?.querySelector('.c-affiliate-details__category-panel-count-label')
-        ?.textContent?.trim(),
-    ).toBe('documents');
-    expect(
-      fixture.nativeElement.querySelector(
-        '#category-panel-isoles .c-affiliate-details__category-panel-count-label',
+  it('should render one tab panel per category, each labelled by the tab that controls it', () => {
+    const tabs = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-details__category-tabs [role="tab"]',
       ),
-    ).toBeNull();
+    ] as HTMLElement[];
+    const panels = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-details__category-tabs [role="tabpanel"]',
+      ),
+    ] as HTMLElement[];
+
+    expect(tabs.length).toBe(3);
+    expect(panels.length).toBe(3);
+
+    tabs.forEach((tab) => {
+      const controls = tab.getAttribute('aria-controls');
+      const panel = panels.find((item) => item.id === controls);
+
+      expect(controls).toBeTruthy();
+      expect(panel, `${tab.id} controls an existing tabpanel`).toBeTruthy();
+      expect(panel?.getAttribute('aria-labelledby')).toBe(tab.id);
+    });
   });
 
-  it('should render parcours journey list inside the parcours accordion panel', () => {
-    const parcoursList = fixture.nativeElement.querySelector(
-      '#category-panel-parcours pds-list',
+  it('should show only the selected category panel', () => {
+    expect(component.selectedCategoryTab()).toBe('parcours');
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
+    expect(categoryPanel(fixture, 'isoles')?.hidden).toBe(true);
+    expect(categoryPanel(fixture, 'archives')?.hidden).toBe(true);
+  });
+
+  it('should render the parcours journey list inside the parcours tab panel', () => {
+    const parcoursList = categoryPanel(fixture, 'parcours')?.querySelector(
+      'pds-list',
     );
 
     expect(parcoursList).toBeTruthy();
-    expect(parcoursList.classList.contains('c-list--journey')).toBe(true);
+    expect(parcoursList?.classList.contains('c-list--journey')).toBe(true);
     expect(
-      fixture.nativeElement.querySelectorAll(
-        '#category-panel-parcours .c-list__item--group',
+      categoryPanel(fixture, 'parcours')?.querySelectorAll(
+        '.c-list__item--group',
       ).length,
     ).toBe(3);
   });
 
-  it('should render flat lists for isolés and archivés accordion panels', () => {
-    const isolesList = fixture.nativeElement.querySelector(
-      '#category-panel-isoles pds-list',
+  it('should render flat lists inside the isolés and archivés tab panels', () => {
+    const isolesList = categoryPanel(fixture, 'isoles')?.querySelector(
+      'pds-list',
     );
-    const archivesList = fixture.nativeElement.querySelector(
-      '#category-panel-archives pds-list',
+    const archivesList = categoryPanel(fixture, 'archives')?.querySelector(
+      'pds-list',
     );
 
     expect(isolesList?.classList.contains('c-list--flat')).toBe(true);
     expect(archivesList?.classList.contains('c-list--flat')).toBe(true);
     expect(
-      fixture.nativeElement.querySelectorAll(
-        '#category-panel-isoles .c-list__item--entry',
-      ).length,
+      categoryPanel(fixture, 'isoles')?.querySelectorAll('.c-list__item--entry')
+        .length,
     ).toBe(2);
     expect(
-      fixture.nativeElement.querySelectorAll(
-        '#category-panel-archives .c-list__item--entry',
+      categoryPanel(fixture, 'archives')?.querySelectorAll(
+        '.c-list__item--entry',
       ).length,
     ).toBe(1);
   });
 
-  it('should collapse a category when the eye toggle is clicked', () => {
-    const eyeToggle = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="category-toggle-isoles"]',
-    ) as HTMLButtonElement;
+  it('should not render category visibility toggles on the tabs', () => {
+    expect(
+      fixture.nativeElement.querySelector('[data-telemetry-id^="category-toggle-"]'),
+    ).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector(
+        '.c-affiliate-details__category-tab .bi-eye, .c-affiliate-details__category-tab .bi-eye-slash',
+      ),
+    ).toBeNull();
+  });
 
-    expect(eyeToggle.querySelector('.bi-eye')).toBeTruthy();
-    expect(component.openCategories()).toContain('isoles');
+  it('should render three content-sized, left-aligned category tabs (PrimeNG default)', () => {
+    const tabs = [
+      ...fixture.nativeElement.querySelectorAll(
+        '.c-affiliate-details__category-tab',
+      ),
+    ] as HTMLElement[];
 
-    clickElement(eyeToggle);
+    expect(tabs.length).toBe(3);
+    tabs.forEach((tab) => {
+      expect(tab.classList.contains('o-flex__item--4')).toBe(false);
+      expect(tab.classList.contains('o-flex__item--grow-1')).toBe(false);
+      expect(tab.classList.contains('o-flex__item--shrink-0')).toBe(false);
+      expect(tab.classList.contains('o-flex--justify-content-center')).toBe(
+        false,
+      );
+    });
+  });
+
+  it('should not render the stepper-view A/B toggle in the detail header', () => {
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(
+      fixture.nativeElement.querySelector(
+        ".c-affiliate-details__detail p-selectbutton, [aria-label=\"Mode d'affichage du parcours\"]",
+      ),
+    ).toBeNull();
+  });
+
+  it('should name the category tab list', () => {
+    const tablist = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__category-tabs [role="tablist"]',
+    ) as HTMLElement;
+
+    expect(tablist.getAttribute('aria-label')).toBe('Catégories de documents');
+  });
+
+  it('should fill the active tab count badge and keep inactive ones secondary', () => {
+    const badgeFor = (id: string): HTMLElement =>
+      fixture.nativeElement.querySelector(
+        `[data-telemetry-id="category-tab-${id}"] .p-badge`,
+      ) as HTMLElement;
+
+    expect(component.selectedCategoryTab()).toBe('parcours');
+    expect(badgeFor('parcours').classList.contains('p-badge-secondary')).toBe(
+      false,
+    );
+    expect(badgeFor('isoles').classList.contains('p-badge-secondary')).toBe(
+      true,
+    );
+    expect(badgeFor('archives').classList.contains('p-badge-secondary')).toBe(
+      true,
+    );
+  });
+
+  it('should show the Archivés panel when the Archivés tab is clicked', () => {
+    expect(categoryPanel(fixture, 'archives')?.hidden).toBe(true);
+
+    categoryTab(fixture, 'archives').click();
     fixture.detectChanges();
 
-    expect(component.openCategories()).not.toContain('isoles');
-    expect(eyeToggle.querySelector('.bi-eye-slash')).toBeTruthy();
+    expect(component.activeCategory()).toBe('archives');
+    expect(categoryTab(fixture, 'archives').getAttribute('aria-selected')).toBe(
+      'true',
+    );
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
+    // Switching tabs does not change the document shown in the detail card.
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
   });
 
-  it('should hide archivés by default and show eye-slash on the archives tab', () => {
-    expect(component.openCategories()).not.toContain('archives');
-
-    const archivesEyeToggle = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="category-toggle-archives"]',
-    ) as HTMLButtonElement;
-
-    expect(archivesEyeToggle.querySelector('.bi-eye-slash')).toBeTruthy();
-    expect(archivesEyeToggle.querySelector('.bi-eye')).toBeFalsy();
-  });
-
-  it('should add archives to openCategories when the archives eye toggle is clicked', () => {
-    const archivesEyeToggle = fixture.nativeElement.querySelector(
-      '[data-telemetry-id="category-toggle-archives"]',
-    ) as HTMLButtonElement;
-
-    clickElement(archivesEyeToggle);
-    fixture.detectChanges();
-
-    expect(component.openCategories()).toContain('archives');
-    expect(archivesEyeToggle.querySelector('.bi-eye')).toBeTruthy();
-    expect(archivesEyeToggle.querySelector('.bi-eye-slash')).toBeFalsy();
-  });
-
-  it('should set activeCategory and scroll when a category tab is clicked', fakeAsync(() => {
-    const scrollToCategorySpy = vi.spyOn(component, 'scrollToCategory');
+  it('should show the other list when switching tab and start it at the top', () => {
+    const scroller = fixture.nativeElement.querySelector(
+      '.c-affiliate-details__documents-scroll',
+    ) as HTMLElement;
+    scroller.scrollTop = 120;
 
     component.onCategoryTabChange('isoles');
-    flushMicrotasks();
+    fixture.detectChanges();
 
     expect(component.activeCategory()).toBe('isoles');
-    expect(component.openCategories()).toContain('isoles');
-    expect(scrollToCategorySpy).toHaveBeenCalledWith('isoles');
+    expect(scroller.scrollTop).toBe(0);
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
+    expect(
+      categoryPanel(fixture, 'isoles')?.querySelectorAll('.c-list__item--entry')
+        .length,
+    ).toBe(2);
+  });
+
+  it('should select a tab with Enter after moving focus with the arrow keys', () => {
+    const parcoursTab = categoryTab(fixture, 'parcours');
+    parcoursTab.focus();
+    parcoursTab.dispatchEvent(
+      new KeyboardEvent('keydown', { code: 'ArrowRight', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    const isolesTab = categoryTab(fixture, 'isoles');
+    expect(document.activeElement).toBe(isolesTab);
+    // Focus alone does not select (PrimeNG selectOnFocus is off).
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
+
+    isolesTab.dispatchEvent(
+      new KeyboardEvent('keydown', { code: 'Enter', bubbles: true }),
+    );
+    fixture.detectChanges();
+
+    expect(component.selectedCategoryTab()).toBe('isoles');
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
+  });
+
+  it('should switch the tab when a document of another category is selected programmatically', () => {
+    categoryTab(fixture, 'archives').click();
+    fixture.detectChanges();
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
+
+    component.selectedDocumentId.set('doc-c4');
+    fixture.detectChanges();
+
+    expect(component.selectedCategoryTab()).toBe('isoles');
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
+    expect(
+      categoryPanel(fixture, 'isoles')?.querySelector(
+        '.c-list__item--selected[data-telemetry-id="document-row-doc-c4"]',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('should keep the selected tab when a filter change keeps the selection in another category', fakeAsync(() => {
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    categoryTab(fixture, 'archives').click();
+    fixture.detectChanges();
+
+    component.documentSearch.set('a');
+    fixture.detectChanges();
+    flushMicrotasks();
+    flushViewportSettling();
+    fixture.detectChanges();
+
+    expect(component.selectedDocumentId()).toBe('doc-demande-primaire');
+    expect(component.selectedCategoryTab()).toBe('archives');
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
   }));
 
   it('should show closed-documents info tag when archived documents exist', () => {
@@ -882,7 +1101,7 @@ describe('AffiliateDetailsComponent', () => {
         ?.enabled,
     ).toBe(true);
     expect(component.activeCategory()).toBe('archives');
-    expect(component.openCategories()).toContain('archives');
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
     expect(component.archivesItems()[0].id).toBe(
       'doc-archive-changement-adresse',
     );
@@ -905,24 +1124,22 @@ describe('AffiliateDetailsComponent', () => {
       component.categories().find((category) => category.id === 'isoles')
         ?.enabled,
     ).toBe(false);
-    expect(component.openCategories()).toContain('parcours');
+    expect(component.selectedCategoryTab()).toBe('parcours');
     expect(component.parcoursGroups()[0].documents[0].id).toBe('doc-rechute');
   });
 
-  it('should place toolbar shell at page level outside documents column', () => {
-    openDocumentFiltersToolbar(component, fixture);
-
-    const shell = fixture.nativeElement.querySelector(
-      '.c-affiliate-details > .c-affiliate-documents-toolbar-shell',
+  it('should place the filter toolbar at page level outside documents column', () => {
+    const toolbar = fixture.nativeElement.querySelector(
+      '.c-affiliate-details > pds-toolbar.c-affiliate-documents-toolbar',
     );
     const toolbarInDocuments = fixture.nativeElement.querySelector(
-      '.c-affiliate-details__documents .c-affiliate-documents-toolbar-shell',
+      '.c-affiliate-details__documents .c-affiliate-documents-toolbar',
     );
 
-    expect(shell).toBeTruthy();
-    expect(
-      shell?.querySelector('pds-toolbar.c-affiliate-documents-toolbar'),
-    ).toBeTruthy();
+    expect(toolbar).toBeTruthy();
+    expect(toolbar?.classList.contains('o-layout--margin-block-end-2')).toBe(
+      true,
+    );
     expect(toolbarInDocuments).toBeNull();
   });
 
@@ -943,7 +1160,7 @@ describe('AffiliateDetailsComponent', () => {
     expect(documentsColumn).toBeTruthy();
     expect(
       documentsColumn?.querySelector(
-        'pds-list, pds-empty-state, .c-affiliate-details__category-accordion',
+        'p-tabpanels pds-list, pds-empty-state',
       ),
     ).toBeTruthy();
     expect(detailPanel).toBeTruthy();
@@ -1303,8 +1520,8 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedDocumentId()).toBe(
       'doc-archive-changement-adresse',
     );
-    expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
   }));
 
   it('should select archived document from the archivés list', () => {
@@ -1317,8 +1534,8 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedDocumentId()).toBe(
       'doc-archive-changement-adresse',
     );
-    expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
     expect(
       fixture.nativeElement.querySelector('app-affiliate-document-detail'),
     ).toBeTruthy();
@@ -1342,15 +1559,12 @@ describe('AffiliateDetailsComponent', () => {
     expect(selectedInTree?.textContent).toContain('Rechute');
   });
 
-  it('should expand a collapsed category accordion when navigating to a document in that category', fakeAsync(() => {
+  it('should switch to the Archivés tab when next navigates from the last isolés document', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
-    component.toggleCategoryVisibility('isoles');
-    fixture.detectChanges();
-
-    expect(component.openCategories()).toEqual(['parcours']);
-
     component.selectedDocumentId.set('doc-c4');
     fixture.detectChanges();
+
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
 
     component.goToNextDocument();
     flushMicrotasks();
@@ -1360,19 +1574,16 @@ describe('AffiliateDetailsComponent', () => {
     expect(component.selectedDocumentId()).toBe(
       'doc-archive-changement-adresse',
     );
-    expect(component.openCategories()).toContain('archives');
     expect(component.activeCategory()).toBe('archives');
+    expect(shownCategoryPanels(fixture)).toEqual(['archives']);
   }));
 
-  it('should reopen isolés when prev/next navigates to an isolés document', fakeAsync(() => {
+  it('should switch to the Documents tab when next navigates from the last parcours document', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
-    component.toggleCategoryVisibility('isoles');
-    fixture.detectChanges();
-
-    expect(component.openCategories()).not.toContain('isoles');
-
     component.selectedDocumentId.set('doc-cloture-primaire');
     fixture.detectChanges();
+
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
 
     component.goToNextDocument();
     flushMicrotasks();
@@ -1380,14 +1591,12 @@ describe('AffiliateDetailsComponent', () => {
     fixture.detectChanges();
 
     expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
-    expect(component.openCategories()).toContain('isoles');
     expect(component.activeCategory()).toBe('isoles');
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
   }));
 
   it('should select and reveal the last parcours document when navigating back from isolés', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
-    component.toggleCategoryVisibility('isoles');
-    fixture.detectChanges();
 
     component.selectedDocumentId.set('doc-attestation-pedicure');
     component.activeCategory.set('isoles');
@@ -1402,6 +1611,7 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.selectedDocumentId()).toBe('doc-cloture-primaire');
     expect(component.activeCategory()).toBe('parcours');
+    expect(shownCategoryPanels(fixture)).toEqual(['parcours']);
     expect(component.expandedGroupIds()).toContain('parcours-clotures');
 
     const selectedInTree = fixture.nativeElement.querySelector(
@@ -1463,9 +1673,6 @@ describe('AffiliateDetailsComponent', () => {
 
   it('should scroll the documents list to the bottom when navigating to the last document', fakeAsync(() => {
     expandJourneyGroup(component, fixture, 'parcours-demande-primaire');
-    component.toggleCategoryVisibility('isoles');
-    component.toggleCategoryVisibility('archives');
-    fixture.detectChanges();
 
     component.selectedDocumentId.set('doc-c4');
     fixture.detectChanges();
@@ -1527,10 +1734,10 @@ describe('AffiliateDetailsComponent', () => {
 
     expect(component.selectedDocumentId()).toBe('doc-attestation-pedicure');
     expect(component.activeCategory()).toBe('isoles');
-    expect(component.openCategories()).toEqual(['isoles']);
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
   }));
 
-  it('should not re-expand parcours when derniere action filter is cleared', () => {
+  it('should stay on the isolés tab when derniere action filter is cleared', () => {
     component.onInfoTagClick({
       label: 'Dernière action:',
       value: '09/06/2026',
@@ -1538,7 +1745,7 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    expect(component.openCategories()).toEqual(['isoles']);
+    expect(component.selectedCategoryTab()).toBe('isoles');
 
     component.onInfoTagClick({
       label: 'Dernière action:',
@@ -1547,9 +1754,8 @@ describe('AffiliateDetailsComponent', () => {
     });
     fixture.detectChanges();
 
-    expect(component.openCategories()).toEqual(['isoles']);
-    expect(component.openCategories()).not.toContain('parcours');
-    expect(component.openCategories()).not.toContain('archives');
+    expect(component.selectedCategoryTab()).toBe('isoles');
+    expect(shownCategoryPanels(fixture)).toEqual(['isoles']);
   });
 
   it('should keep standalone documents in isolés but out of parcours groups', () => {
