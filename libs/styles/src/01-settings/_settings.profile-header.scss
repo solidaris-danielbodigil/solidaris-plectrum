@@ -1,0 +1,173 @@
+@use 'settings.prefix' as *;
+
+// =============================================================================
+// 01-settings/_settings.profile-header.scss
+// Profile header (pds-profile-header) component tokens + scoped PrimeNG bridges.
+//
+// Design ref: Figma PLECTRUM · Custom components (IRkr21rHS0w7rI0bgrv1fZ)
+//             Profile header 2438:10587 · anatomy 2587:997
+//             Status splitbutton set 2371:3075 · identifier inplace chip 2443:4217
+// Replaces:   _settings.profile-card.scss (deprecated with plectrum:profile-card)
+// Figma px are expressed on the repo scale (1rem = 14px): spacing tokens for
+// the 8-point values, calc(N / 14 * base-unit) otherwise. Line heights keep
+// the repo typography tokens, not Figma's.
+// =============================================================================
+
+:root {
+  // ── Severity backgrounds ─────────────────────────────────────────────────────
+  // Kept from Profile Card (Figma 507:8227 — 88deg, 0% → 23.21%); the Profile
+  // header frame itself is content/background (2438:10587).
+  --#{$pds-prefix}-size-profile-header-bg-gradient-angle: 88deg;
+  --#{$pds-prefix}-size-profile-header-bg-gradient-stop: 23.21%;
+
+  // Figma: content/background — node 2438:10587 (also the gradient end stop)
+  --#{$pds-prefix}-color-profile-header-bg-default: var(--#{$pds-prefix}-color-content-bg);
+  --#{$pds-prefix}-color-profile-header-bg-gradient-end: var(--#{$pds-prefix}-color-content-bg);
+
+  --#{$pds-prefix}-color-profile-header-bg-in-order-gradient-start: var(--#{$pds-prefix}-color-success-subtle);
+  // Primitive on purpose: Figma 507:8227 starts the warning gradient on orange/50,
+  // which no semantic warning token matches (warning-subtle is orange/100).
+  --#{$pds-prefix}-color-profile-header-bg-warning-gradient-start: var(--#{$pds-prefix}-color-orange-50);
+  --#{$pds-prefix}-color-profile-header-bg-danger-gradient-start: var(--#{$pds-prefix}-color-danger-subtle);
+
+  --#{$pds-prefix}-color-profile-header-bg-in-order: linear-gradient(
+    var(--#{$pds-prefix}-size-profile-header-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-header-bg-in-order-gradient-start) 0%,
+    var(--#{$pds-prefix}-color-profile-header-bg-gradient-end) var(--#{$pds-prefix}-size-profile-header-bg-gradient-stop)
+  );
+  --#{$pds-prefix}-color-profile-header-bg-warning: linear-gradient(
+    var(--#{$pds-prefix}-size-profile-header-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-header-bg-warning-gradient-start) 0%,
+    var(--#{$pds-prefix}-color-profile-header-bg-gradient-end) var(--#{$pds-prefix}-size-profile-header-bg-gradient-stop)
+  );
+  --#{$pds-prefix}-color-profile-header-bg-danger: linear-gradient(
+    var(--#{$pds-prefix}-size-profile-header-bg-gradient-angle),
+    var(--#{$pds-prefix}-color-profile-header-bg-danger-gradient-start) 0%,
+    var(--#{$pds-prefix}-color-profile-header-bg-gradient-end) var(--#{$pds-prefix}-size-profile-header-bg-gradient-stop)
+  );
+
+  // ── Frame ────────────────────────────────────────────────────────────────────
+  // Figma: Profile header pt 16 — node 2438:10587
+  --#{$pds-prefix}-space-profile-header-padding-block-start: var(--#{$pds-prefix}-spacing-2);
+  // Figma: Container px 20 — node 2371:4243 (also the nav-end pr 20 — node 2479:5107)
+  --#{$pds-prefix}-space-profile-header-padding-inline: calc(
+    var(--#{$pds-prefix}-spacing-2) + var(--#{$pds-prefix}-spacing-0-5)
+  );
+  // Figma: Top Bar h 56 = the large avatar — node 2443:6002
+  --#{$pds-prefix}-size-profile-header-top-bar-min-h: var(--#{$pds-prefix}-size-avatar-large-h);
+
+  // ── Name action ──────────────────────────────────────────────────────────────
+  // Figma: button py 6 around Heading/heading-md — node 2443:6004
+  --#{$pds-prefix}-space-profile-header-name-padding-block: var(--#{$pds-prefix}-spacing-0-75);
+
+  // ── Info tags ────────────────────────────────────────────────────────────────
+  // Figma: tag/padding/y 4 · tag/padding/x 8 · tag/border/radius 6 · label/label-sm — node 2443:6007
+  --#{$pds-prefix}-space-profile-header-info-tag-padding-block: var(--#{$pds-prefix}-spacing-0-5);
+  --#{$pds-prefix}-space-profile-header-info-tag-padding-inline: var(--#{$pds-prefix}-spacing-1);
+
+  // ── Identifier chips ─────────────────────────────────────────────────────────
+  // Figma: inplace/padding/x 12 · inplace/padding/y 8 · inplace/border/radius 6 — node 2443:4218
+  --#{$pds-prefix}-space-profile-header-identifier-padding-inline: var(--#{$pds-prefix}-spacing-1-5);
+  --#{$pds-prefix}-space-profile-header-identifier-padding-block: var(--#{$pds-prefix}-spacing-1);
+
+  // ── Loading skeleton — mirrors the loaded chrome ─────────────────────────────
+  // Figma: name button 2443:6004 · splitbutton 2371:3074 · tags 2443:6006 · inplace 2443:4218
+  --#{$pds-prefix}-size-profile-header-skeleton-name-w: calc(200 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-name-h: calc(40 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-status-w: calc(160 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-status-h: calc(40 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-info-tags-w: calc(231 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-info-tags-h: calc(28 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-identifier-h: calc(36 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-identifier-w-1: calc(126 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-identifier-w-2: calc(127 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-identifier-w-3: calc(200 / 14 * var(--#{$pds-prefix}-base-unit));
+  --#{$pds-prefix}-size-profile-header-skeleton-identifier-w-4: calc(161 / 14 * var(--#{$pds-prefix}-base-unit));
+}
+
+// ── PrimeNG Card bridge — the header's own p-card only (styleClass c-profile-header__card) ─
+// Custom properties inherit, so a Card projected into [slot=aside] would pick up
+// the header gradient, padding, radius and shadow. The host captures the theme
+// values before the override; the article inside the card body restores them,
+// so slot content gets the stock Card again.
+
+.c-profile-header {
+  --#{$pds-prefix}-color-profile-header-theme-card-bg: var(--p-card-background);
+  --#{$pds-prefix}-space-profile-header-theme-card-body-padding: var(--p-card-body-padding);
+  --#{$pds-prefix}-radius-profile-header-theme-card: var(--p-card-border-radius);
+  --#{$pds-prefix}-shadow-profile-header-theme-card: var(--p-card-shadow);
+  --#{$pds-prefix}-space-profile-header-theme-tabpanel-padding: var(--p-tabs-tabpanel-padding);
+}
+
+.c-profile-header__card {
+  --p-card-body-padding: var(--#{$pds-prefix}-space-profile-header-padding-block-start) 0 0;
+  --p-card-background: var(--#{$pds-prefix}-color-profile-header-bg-default);
+  --p-card-border-radius: var(--#{$pds-prefix}-radius-none);
+  --p-card-shadow: none;
+}
+
+.c-profile-header--in-order .c-profile-header__card {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-header-bg-in-order);
+}
+
+.c-profile-header--warning .c-profile-header__card {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-header-bg-warning);
+}
+
+.c-profile-header--danger .c-profile-header__card {
+  --p-card-background: var(--#{$pds-prefix}-color-profile-header-bg-danger);
+}
+
+.c-profile-header__content {
+  --p-card-body-padding: var(--#{$pds-prefix}-space-profile-header-theme-card-body-padding);
+  --p-card-background: var(--#{$pds-prefix}-color-profile-header-theme-card-bg);
+  --p-card-border-radius: var(--#{$pds-prefix}-radius-profile-header-theme-card);
+  --p-card-shadow: var(--#{$pds-prefix}-shadow-profile-header-theme-card);
+}
+
+// ── Tabs bridge — [slot=nav] shell tabs sit flush on the header's bottom edge (Figma 2371:4288) ─
+// The shell renders the tab content below the header; the panels kept inside
+// the slot for ARIA (tab ↔ tabpanel) add no padding. Whatever a panel holds
+// (e.g. nested tabs) gets the theme padding back.
+
+.c-profile-header__nav {
+  --p-tabs-tabpanel-padding: 0;
+}
+
+.c-profile-header__nav [role='tabpanel'] > * {
+  --p-tabs-tabpanel-padding: var(--#{$pds-prefix}-space-profile-header-theme-tabpanel-padding);
+}
+
+// ── Name — outlined primary Button (Figma 2443:6004) ───────────────────────────
+
+.c-profile-header__name {
+  --p-button-padding-y: var(--#{$pds-prefix}-space-profile-header-name-padding-block);
+}
+
+// ── Status action — SplitButton / Button + contrast count Badge (Figma 2371:3075) ─
+
+.c-profile-header__status-action {
+  // Figma: badge Circle=True, Size=Small — node I2371:2851;1690:33895;1644:32467
+  --p-badge-border-radius: var(--#{$pds-prefix}-radius-pill);
+}
+
+// ── Info tags — display-only PrimeNG Tag look (Figma 2443:6007) ────────────────
+// Filterable tags are PrimeNG ToggleButtons (size small) on the theme look.
+
+.c-profile-header__info-tags {
+  --p-tag-font-size: var(--#{$pds-prefix}-text-label-sm-size);
+  --p-tag-font-weight: var(--#{$pds-prefix}-text-label-sm-weight);
+  --p-tag-padding: var(--#{$pds-prefix}-space-profile-header-info-tag-padding-block)
+    var(--#{$pds-prefix}-space-profile-header-info-tag-padding-inline);
+  --p-tag-border-radius: var(--#{$pds-prefix}-radius-md);
+}
+
+// ── Identifier chips — pds-copyable-text as the inplace chip (Figma 2443:4217) ─
+// Padding and radius follow the node; the regular label / bold value weights are
+// a product decision (labelWeight="regular"), not the node's typography.
+
+.c-profile-header__identifiers {
+  --p-button-sm-padding-x: var(--#{$pds-prefix}-space-profile-header-identifier-padding-inline);
+  --p-button-sm-padding-y: var(--#{$pds-prefix}-space-profile-header-identifier-padding-block);
+  --p-button-rounded-border-radius: var(--#{$pds-prefix}-radius-md);
+}

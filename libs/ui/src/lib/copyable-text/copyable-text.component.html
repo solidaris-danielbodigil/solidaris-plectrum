@@ -6,16 +6,26 @@
   severity="secondary"
   size="small"
   class="c-copyable-text o-flex o-flex--align-items-center o-layout o-layout--gap-0-75"
+  [class.c-copyable-text--label-regular]="labelWeight() === 'regular'"
   [attr.aria-label]="resolvedAriaLabel()"
   [disabled]="disabled()"
   (click)="onCopy($event)"
 >
+  @if (iconPosition() === 'start') {
+    <ng-container [ngTemplateOutlet]="copyIcon" />
+  }
+  <span class="c-copyable-text__label">{{ label() }}</span>
+  <span class="c-copyable-text__value">{{ value() }}</span>
+  @if (iconPosition() === 'end') {
+    <ng-container [ngTemplateOutlet]="copyIcon" />
+  }
+</button>
+
+<ng-template #copyIcon>
   <pds-icon
     class="c-copyable-text__icon"
     icon="copy-content-LEGACY"
     source="svg"
     [size]="iconSize()"
   />
-  <span class="c-copyable-text__label">{{ label() }}</span>
-  <span class="c-copyable-text__value">{{ value() }}</span>
-</button>
+</ng-template>

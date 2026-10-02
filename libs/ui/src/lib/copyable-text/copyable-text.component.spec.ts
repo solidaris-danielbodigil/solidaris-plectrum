@@ -50,6 +50,43 @@ describe('CopyableTextComponent', () => {
     expect(button.textContent).toContain('319');
   });
 
+  it('should render the icon first with a semibold label by default', () => {
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+    const parts = Array.from(button.children).map((child) =>
+      Array.from(child.classList).find((name) => name.startsWith('c-copyable-text__')),
+    );
+
+    expect(parts).toEqual([
+      'c-copyable-text__icon',
+      'c-copyable-text__label',
+      'c-copyable-text__value',
+    ]);
+    expect(button.classList.contains('c-copyable-text--label-regular')).toBe(false);
+  });
+
+  it('should render the icon after the value when iconPosition is end', () => {
+    fixture.componentRef.setInput('iconPosition', 'end');
+    fixture.componentRef.setInput('labelWeight', 'regular');
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector(
+      '.c-copyable-text',
+    ) as HTMLButtonElement;
+    const parts = Array.from(button.children).map((child) =>
+      Array.from(child.classList).find((name) => name.startsWith('c-copyable-text__')),
+    );
+
+    expect(parts).toEqual([
+      'c-copyable-text__label',
+      'c-copyable-text__value',
+      'c-copyable-text__icon',
+    ]);
+    expect(button.classList.contains('c-copyable-text--label-regular')).toBe(true);
+    expect(button.getAttribute('aria-label')).toBe('Copier Territoire');
+  });
+
   it('should set the default French copy aria-label', () => {
     const button = fixture.nativeElement.querySelector(
       '.c-copyable-text',

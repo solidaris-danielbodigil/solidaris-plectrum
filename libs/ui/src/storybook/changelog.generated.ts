@@ -2,7 +2,26 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "profile-header",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "minor"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-styles",
+        "bump": "minor"
+      },
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Add Profile Header (`pds-profile-header`, `plectrum:profile-header`), the Core shell header from the Figma Profile header design. It keeps the Profile Card content and logic with the new layout: the name is an outlined primary Button that opens the profile (Alt+A shortcut, shown in its tooltip), the status action is a Button — or a SplitButton when several actions wait, whose main button and chevron both open the menu — quick filters are PrimeNG ToggleButtons (display-only tags stay PrimeNG Tags), identifiers use the new inplace chip, and the severity gradient is unchanged. Slots `[slot=actions]`, `[slot=aside]`, `[slot=nav]` and `[slot=nav-end]` take the application's page actions, an aside panel and the shell tabs. Styles and tokens live in `_components.profile-header.scss` and `_settings.profile-header.scss` (`--pds-*-profile-header-*`).\n\niShare's app shell now uses `pds-profile-header` instead of `pds-profile-card`.\n\nCopyable Text gains two opt-in inputs, `iconPosition` (`'start'` default | `'end'`) and `labelWeight` (`'semibold'` default | `'regular'`); existing chips are unchanged.\n\nProfile Card is deprecated with `replacementId: 'plectrum:profile-header'` and is removed in the next major. Migration — same inputs and outputs, renamed types:\n\n| Profile Card | Profile Header |\n| --- | --- |\n| `pds-profile-card` / `ProfileCardComponent` | `pds-profile-header` / `ProfileHeaderComponent` |\n| `ProfileCardVariant` | `ProfileHeaderVariant` |\n| `ProfileCardStatusAction` / `ProfileCardStatusSeverity` | `ProfileHeaderStatusAction` / `ProfileHeaderStatusSeverity` |\n| `ProfileCardInfoTag` / `ProfileCardInfoTagFilterKey` | `ProfileHeaderInfoTag` / `ProfileHeaderInfoTagFilterKey` (now `string`) |\n| `ProfileCardIdentifier` | `ProfileHeaderIdentifier` |\n| `ProfileCardPrimaryAction` | `ProfileHeaderPrimaryAction` |\n| `primaryAction.icon` left of the name | right of the name, default `bi bi-person-square` — drop `icon: 'bi bi-eye'` to get the Figma glyph |\n| `statusAction.icon` default `bi-exclamation-triangle-fill` (several actions) | severity default `bi-check-lg` / `bi-exclamation-triangle` / `bi-exclamation-octagon` |\n| Telemetry `affiliate-overview-primary-action` / `-status-action` / `-info-tags` | `profile-header-name-action` / `-status-action` / `-info-tags` |"
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {

@@ -6,7 +6,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
     name: 'CopyableText',
     category: 'molecules',
     description:
-      'Copy-to-clipboard chip for identifiers and similar metadata: a copy icon, a label and a value rendered as one PrimeNG text button. Activating it writes the value to the clipboard and emits copied.',
+      'Copy-to-clipboard chip for identifiers and similar metadata: a copy icon, a label and a value rendered as one PrimeNG text button. Activating it writes the value to the clipboard and emits copied. iconPosition and labelWeight opt into the Profile header identifier chip (icon after the value, regular label).',
     type: 'interactive',
     path: 'libs/ui/src/lib/copyable-text/copyable-text.component.ts',
     primeNgComponent: 'Button',
@@ -16,7 +16,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
     // no Figma component yet
     figmaUrl: 'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components',
     created: '2026-06-08',
-    modified: '2026-09-09',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'angular', entryPoint: '.', exportName: 'CopyableTextComponent' },
   governance: {
@@ -54,6 +54,12 @@ export const CopyableTextMetadata: ComponentMetadata = {
   (copied)="showCopiedToast('Territoire', $event)"
 />`,
       },
+      {
+        name: 'Profile header identifier chip',
+        description:
+          'Icon after the value (Figma inplace chip layout) and a regular label beside the bold value (product decision) — the Profile header identifier row.',
+        composition: `<(pds|app|lib)-copyable-text label="NISS" value="85010112345" iconPosition="end" labelWeight="regular" iconSize="md" />`,
+      },
     ],
     antiPatterns: [
       {
@@ -78,9 +84,9 @@ export const CopyableTextMetadata: ComponentMetadata = {
     },
     {
       part: 'c-copyable-text__icon',
-      role: 'Copy glyph (pds-icon, decorative)',
+      role: 'Copy glyph (pds-icon, decorative) — before the label, or after the value with iconPosition="end"',
     },
-    { part: 'c-copyable-text__label', role: 'Visible field name' },
+    { part: 'c-copyable-text__label', role: 'Visible field name — semibold, or regular with c-copyable-text--label-regular (labelWeight="regular")' },
     { part: 'c-copyable-text__value', role: 'Value written to the clipboard' },
     {
       part: 'c-copyable-text__separator',
@@ -93,11 +99,12 @@ export const CopyableTextMetadata: ComponentMetadata = {
       'Writes value through the async Clipboard API, with an execCommand fallback in older or non-secure contexts',
       'Emits (copied) after a successful write — see Usage for the parent toast contract',
       'disabled makes the button inert: no clipboard write, no copied event',
+      'iconPosition and labelWeight change the visual order and weight only — the accessible name stays "Copier {label}"',
     ],
   },
   composition: {
     nestedComponents: ['Button', 'Icon'],
-    companions: ['ProfileCard', 'ProfileDrawer'],
+    companions: ['ProfileHeaderComponent', 'ProfileDrawerComponent', 'ProfileCardComponent'],
   },
   accessibility: {
     ariaAttributes: [
@@ -119,6 +126,8 @@ export const CopyableTextMetadata: ComponentMetadata = {
       '--pds-color-primary-interactive-hover',
       '--pds-color-primary-interactive-active',
       '--pds-color-text-muted',
+      '--pds-font-weight-bold',
+      '--pds-font-weight-regular',
     ],
   },
   props: [
@@ -151,6 +160,22 @@ export const CopyableTextMetadata: ComponentMetadata = {
         'Copy icon size — sm on the overview card, xs in the drawer.',
     },
     {
+      name: 'iconPosition',
+      type: 'CopyableTextIconPosition',
+      required: false,
+      default: 'start',
+      description:
+        'Copy icon before the label (start) or after the value (end — Profile header identifier chip).',
+    },
+    {
+      name: 'labelWeight',
+      type: 'CopyableTextLabelWeight',
+      required: false,
+      default: 'semibold',
+      description:
+        'Label weight — semibold, or regular beside the bold value (Profile header identifier chip).',
+    },
+    {
       name: 'disabled',
       type: 'boolean',
       required: false,
@@ -169,7 +194,7 @@ export const CopyableTextMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-profile-card and pds-profile-drawer. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
+      'Reusable copy-to-clipboard chip for affiliate identifiers and similar metadata. Used in pds-profile-header (iconPosition end, labelWeight regular), pds-profile-drawer and the deprecated pds-profile-card. Clipboard API with execCommand fallback lives in copy-to-clipboard.ts.',
     selectionCriteria: {},
     keywords: [
       'copy',

@@ -30,6 +30,12 @@
   font-weight: var(--#{$pds-prefix}-font-weight-bold);
 }
 
+// labelWeight="regular" — Regular label beside the Bold value: a product decision for the
+// Profile header identifier chip (the Figma inplace chip does not set this typography).
+.c-copyable-text--label-regular .c-copyable-text__label {
+  font-weight: var(--#{$pds-prefix}-font-weight-regular);
+}
+
 .c-copyable-text__separator {
   color: var(--#{$pds-prefix}-color-text-muted);
   user-select: none;

@@ -1,26 +1,26 @@
 import { Injectable, signal } from '@angular/core';
 import type { MenuItem } from 'primeng/api';
 import type {
-  ProfileCardVariant,
-  ProfileCardIdentifier,
-  ProfileCardInfoTag,
-  ProfileCardPrimaryAction,
-  ProfileCardStatusAction,
+  ProfileHeaderVariant,
+  ProfileHeaderIdentifier,
+  ProfileHeaderInfoTag,
+  ProfileHeaderPrimaryAction,
+  ProfileHeaderStatusAction,
   PlectrumAvatarGender,
   PlectrumAvatarVariant,
 } from '@solidaris-danielbodigil/pds-ui';
 
 export interface AffiliateHeaderData {
   title: string;
-  variant: ProfileCardVariant;
+  variant: ProfileHeaderVariant;
   avatarGender: PlectrumAvatarGender;
   avatarVariant: PlectrumAvatarVariant;
   avatarInitials: string;
-  statusAction: ProfileCardStatusAction | null;
-  infoTags: ProfileCardInfoTag[];
-  identifiers: ProfileCardIdentifier[];
-  primaryAction: ProfileCardPrimaryAction | null;
-  onInfoTagClick?: (tag: ProfileCardInfoTag) => void;
+  statusAction: ProfileHeaderStatusAction | null;
+  infoTags: ProfileHeaderInfoTag[];
+  identifiers: ProfileHeaderIdentifier[];
+  primaryAction: ProfileHeaderPrimaryAction | null;
+  onInfoTagClick?: (tag: ProfileHeaderInfoTag) => void;
   onPrimaryActionClick?: () => void;
   onStatusActionClick?: () => void;
   onStatusMenuSelect?: (item: MenuItem) => void;

@@ -16,13 +16,14 @@ export const ProfileCardMetadata: ComponentMetadata = {
     figmaUrl:
       'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=2438-10587',
     created: '2026-09-08',
-    modified: '2026-09-28',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'angular', entryPoint: '.', exportName: 'ProfileCardComponent' },
   governance: {
     status: 'deprecated',
     owner: 'design-system',
-    note: 'Retained for existing consumers. For new work, review the proposed Profile header design at the Figma link above. It is not yet a published replacement component; keep using this export until a reviewed implementation and migration path are available.',
+    note: 'Use Profile header (`pds-profile-header`); removed in the next major. Same inputs and outputs — rename the ProfileCard* types to ProfileHeader*.',
+    replacementId: 'plectrum:profile-header',
   },
   usage: {
     useCases: [

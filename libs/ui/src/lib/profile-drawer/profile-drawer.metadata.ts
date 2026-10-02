@@ -16,7 +16,7 @@ export const ProfileDrawerMetadata: ComponentMetadata = {
     figmaUrl:
       'https://www.figma.com/design/IRkr21rHS0w7rI0bgrv1fZ/PLECTRUM-%C2%B7-Custom-components?node-id=1-2386',
     created: '2026-09-08',
-    modified: '2026-09-09',
+    modified: '2026-10-02',
   },
   distribution: { kind: 'angular', entryPoint: '.', exportName: 'ProfileDrawerComponent' },
   governance: {
@@ -70,7 +70,7 @@ export const ProfileDrawerMetadata: ComponentMetadata = {
   ],
   composition: {
     nestedComponents: ['Drawer', 'SelectButton', 'Accordion', 'Tag', 'Button', 'PlectrumAvatar', 'CopyableText'],
-    companions: ['ProfileCardComponent'],
+    companions: ['ProfileHeaderComponent'],
     slots: [],
   },
   behavior: {
@@ -131,11 +131,11 @@ export const ProfileDrawerMetadata: ComponentMetadata = {
   aiHints: {
     priority: 'high',
     context:
-      'Generic single-person detail drawer. Headless p-drawer wrapper with a dialog role, focus management and locale copy. Reuses pds-plectrum-avatar (large illustrated + small coloured) and the pds-copyable-text identifier chips of ProfileCardComponent.',
+      'Generic single-person detail drawer. Headless p-drawer wrapper with a dialog role, focus management and locale copy. Reuses pds-plectrum-avatar (large illustrated + small coloured) and the pds-copyable-text identifier chips of ProfileHeaderComponent.',
     selectionCriteria: {
       'detail drawer':
         'Slide-in profile detail surface with sections and accordions',
-      'overview card': 'Use pds-profile-card for the inline summary instead',
+      'overview card': 'Use pds-profile-header for the inline summary instead',
     },
     keywords: [
       'profile',

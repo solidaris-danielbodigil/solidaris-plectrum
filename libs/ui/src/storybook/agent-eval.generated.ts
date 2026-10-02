@@ -104,6 +104,7 @@ export const AGENT_SEARCH_EVAL = {
       "none": false,
       "results": [
         "plectrum:accordion",
+        "plectrum:profile-header",
         "plectrum:list"
       ],
       "pass": true,
@@ -135,7 +136,8 @@ export const AGENT_SEARCH_EVAL = {
       "results": [
         "plectrum:nav-shell",
         "plectrum:sub-nav-shell",
-        "plectrum:top-nav"
+        "plectrum:top-nav",
+        "plectrum:profile-header"
       ],
       "pass": true,
       "knownMiss": false
@@ -150,7 +152,9 @@ export const AGENT_SEARCH_EVAL = {
       "none": false,
       "results": [
         "plectrum:top-nav",
+        "plectrum:profile-header",
         "plectrum:empty-state",
+        "plectrum:skeleton-slot",
         "plectrum:toolbar"
       ],
       "pass": true,
@@ -222,7 +226,8 @@ export const AGENT_SEARCH_EVAL = {
       "allOf": [],
       "none": false,
       "results": [
-        "plectrum:toolbar"
+        "plectrum:toolbar",
+        "plectrum:profile-header"
       ],
       "pass": true,
       "knownMiss": false

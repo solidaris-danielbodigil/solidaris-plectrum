@@ -87,10 +87,11 @@
       "iSHARE"
     ],
     "plectrum:plectrum-avatar": [],
-    "plectrum:profile-card": [
+    "plectrum:profile-card": [],
+    "plectrum:profile-drawer": [
       "iSHARE"
     ],
-    "plectrum:profile-drawer": [
+    "plectrum:profile-header": [
       "iSHARE"
     ],
     "plectrum:skeleton-slot": [
@@ -595,9 +596,7 @@
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ProfileCardComponent"
       },
-      "usedIn": [
-        "iSHARE"
-      ]
+      "usedIn": []
     },
     "plectrum:profile-drawer": {
       "id": "plectrum:profile-drawer",
@@ -630,6 +629,42 @@
         "version": "2.0.5",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ProfileDrawerComponent"
+      },
+      "usedIn": [
+        "iSHARE"
+      ]
+    },
+    "plectrum:profile-header": {
+      "id": "plectrum:profile-header",
+      "name": "ProfileHeader",
+      "path": "libs/ui/src/lib/profile-header/profile-header.component.ts",
+      "category": "organisms",
+      "status": "core",
+      "owner": "design-system",
+      "metadata": "libs/ui/src/lib/profile-header/profile-header.metadata.ts",
+      "bemBlock": "c-profile-header",
+      "primeNg": "Card, Button, SplitButton, Badge, ToggleButton, Tag, Tooltip, Skeleton",
+      "scssPath": "libs/styles/src/06-components/_components.profile-header.scss",
+      "implementation": "Angular",
+      "distribution": {
+        "kind": "angular",
+        "entryPoint": ".",
+        "exportName": "ProfileHeaderComponent"
+      },
+      "source": {
+        "repository": "https://github.com/solidaris-danielbodigil/solidaris-plectrum",
+        "path": "libs/ui/src/lib/profile-header/profile-header.component.ts"
+      },
+      "docs": {
+        "baseUrl": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
+        "sourcePath": "libs/ui/src/lib/profile-header/profile-header.mdx",
+        "componentId": "plectrum:profile-header"
+      },
+      "package": {
+        "name": "@solidaris-danielbodigil/pds-ui",
+        "version": "2.0.5",
+        "importPath": "@solidaris-danielbodigil/pds-ui",
+        "exportName": "ProfileHeaderComponent"
       },
       "usedIn": [
         "iSHARE"
@@ -857,7 +892,8 @@
       ],
       "usedBy": [
         "plectrum:profile-card",
-        "plectrum:profile-drawer"
+        "plectrum:profile-drawer",
+        "plectrum:profile-header"
       ]
     },
     "plectrum:delay-prediction-card": {
@@ -909,6 +945,7 @@
       "usedBy": [
         "plectrum:profile-card",
         "plectrum:profile-drawer",
+        "plectrum:profile-header",
         "plectrum:top-nav"
       ]
     },
@@ -920,6 +957,13 @@
       "usedBy": []
     },
     "plectrum:profile-drawer": {
+      "uses": [
+        "plectrum:copyable-text",
+        "plectrum:plectrum-avatar"
+      ],
+      "usedBy": []
+    },
+    "plectrum:profile-header": {
       "uses": [
         "plectrum:copyable-text",
         "plectrum:plectrum-avatar"
@@ -957,13 +1001,13 @@
     }
   },
   "summary": {
-    "totalComponents": 20,
-    "componentsWithMetadata": 20,
-    "relationshipsMapped": 9,
-    "tokenFiles": 48,
-    "primeNgMappings": 15,
+    "totalComponents": 21,
+    "componentsWithMetadata": 21,
+    "relationshipsMapped": 11,
+    "tokenFiles": 49,
+    "primeNgMappings": 16,
     "byStatus": {
-      "core": 17,
+      "core": 18,
       "app": 2,
       "deprecated": 1
     }

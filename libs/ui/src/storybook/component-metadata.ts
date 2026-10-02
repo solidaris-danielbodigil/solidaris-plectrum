@@ -14,14 +14,15 @@ import { NavShellMetadata as m10 } from '../lib/nav-shell/nav-shell.metadata';
 import { PlectrumAvatarMetadata as m11 } from '../lib/plectrum-avatar/plectrum-avatar.metadata';
 import { ProfileCardMetadata as m12 } from '../lib/profile-card/profile-card.metadata';
 import { ProfileDrawerMetadata as m13 } from '../lib/profile-drawer/profile-drawer.metadata';
-import { SkeletonSlotMetadata as m14 } from '../lib/skeleton-slot/skeleton-slot.metadata';
-import { SubNavShellMetadata as m15 } from '../lib/sub-nav-shell/sub-nav-shell.metadata';
-import { TimelineMetadata as m16 } from '../lib/timeline/timeline.metadata';
-import { ToolbarMetadata as m17 } from '../lib/toolbar/toolbar.metadata';
-import { TopNavMetadata as m18 } from '../lib/top-nav/top-nav.metadata';
-import { TransactionsCicsModalMetadata as m19 } from '../lib/transactions-cics-modal/transactions-cics-modal.metadata';
+import { ProfileHeaderMetadata as m14 } from '../lib/profile-header/profile-header.metadata';
+import { SkeletonSlotMetadata as m15 } from '../lib/skeleton-slot/skeleton-slot.metadata';
+import { SubNavShellMetadata as m16 } from '../lib/sub-nav-shell/sub-nav-shell.metadata';
+import { TimelineMetadata as m17 } from '../lib/timeline/timeline.metadata';
+import { ToolbarMetadata as m18 } from '../lib/toolbar/toolbar.metadata';
+import { TopNavMetadata as m19 } from '../lib/top-nav/top-nav.metadata';
+import { TransactionsCicsModalMetadata as m20 } from '../lib/transactions-cics-modal/transactions-cics-modal.metadata';
 export const COMPONENT_METADATA_GLOB = 'libs/ui/src/lib/**/*.metadata.ts';
-export const ALL_COMPONENT_METADATA: readonly ComponentMetadata[] = [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19];
+export const ALL_COMPONENT_METADATA: readonly ComponentMetadata[] = [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20];
 export const COMPONENT_SOURCES: Readonly<Record<string, { metadata: string; docs: string }>> = {
   "plectrum:accordion": {
     "metadata": "libs/ui/src/lib/accordion/accordion.metadata.ts",
@@ -78,6 +79,10 @@ export const COMPONENT_SOURCES: Readonly<Record<string, { metadata: string; docs
   "plectrum:profile-drawer": {
     "metadata": "libs/ui/src/lib/profile-drawer/profile-drawer.metadata.ts",
     "docs": "libs/ui/src/lib/profile-drawer/profile-drawer.mdx"
+  },
+  "plectrum:profile-header": {
+    "metadata": "libs/ui/src/lib/profile-header/profile-header.metadata.ts",
+    "docs": "libs/ui/src/lib/profile-header/profile-header.mdx"
   },
   "plectrum:skeleton-slot": {
     "metadata": "libs/ui/src/lib/skeleton-slot/skeleton-slot.metadata.ts",

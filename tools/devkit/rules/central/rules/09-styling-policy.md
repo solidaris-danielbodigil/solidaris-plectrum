@@ -157,7 +157,7 @@ When a shared block has feature-specific children, prefix the **element** name â
 | `c-profile-drawer__name`                | `c-drawer__profile-name`                |
 | `c-document-more-details-drawer__title` | `c-drawer__document-more-details-title` |
 
-Standalone `libs/ui` components keep their own block (`c-profile-card`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
+Standalone `libs/ui` components keep their own block (`c-profile-header`, `c-list`). Shared layout primitives stay separate blocks (`c-detail-list`). Flat panel dividers use `u-border-bottom` + `--pds-border-color` in templates.
 
 ---
 

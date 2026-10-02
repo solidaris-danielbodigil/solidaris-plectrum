@@ -199,6 +199,39 @@
         }
       }
     },
+    "color/profile/header/bg/danger": {
+      "$type": "other",
+      "$value": "linear-gradient( var(--pds-size-profile-header-bg-gradient-angle), var(--pds-color-profile-header-bg-danger-gradient-start) 0%, var(--pds-color-profile-header-bg-gradient-end) var(--pds-size-profile-header-bg-gradient-stop) )",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-header-bg-danger",
+          "source": "_settings.profile-header.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "color/profile/header/bg/in/order": {
+      "$type": "other",
+      "$value": "linear-gradient( var(--pds-size-profile-header-bg-gradient-angle), var(--pds-color-profile-header-bg-in-order-gradient-start) 0%, var(--pds-color-profile-header-bg-gradient-end) var(--pds-size-profile-header-bg-gradient-stop) )",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-header-bg-in-order",
+          "source": "_settings.profile-header.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "color/profile/header/bg/warning": {
+      "$type": "other",
+      "$value": "linear-gradient( var(--pds-size-profile-header-bg-gradient-angle), var(--pds-color-profile-header-bg-warning-gradient-start) 0%, var(--pds-color-profile-header-bg-gradient-end) var(--pds-size-profile-header-bg-gradient-stop) )",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-color-profile-header-bg-warning",
+          "source": "_settings.profile-header.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
     "color/red/75": {
       "$type": "color",
       "$value": "#fee2e2",
@@ -633,6 +666,171 @@
         }
       }
     },
+    "size/profile/header/bg/gradient/angle": {
+      "$type": "other",
+      "$value": "88deg",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-bg-gradient-angle",
+          "source": "_settings.profile-header.scss",
+          "reason": "unsupported:value"
+        }
+      }
+    },
+    "size/profile/header/bg/gradient/stop": {
+      "$type": "other",
+      "$value": "23.21%",
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-bg-gradient-stop",
+          "source": "_settings.profile-header.scss",
+          "reason": "unit:%"
+        }
+      }
+    },
+    "size/profile/header/skeleton/identifier/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 36,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-identifier-h",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/identifier/w/1": {
+      "$type": "dimension",
+      "$value": {
+        "value": 126,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-identifier-w-1",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/identifier/w/2": {
+      "$type": "dimension",
+      "$value": {
+        "value": 127,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-identifier-w-2",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/identifier/w/3": {
+      "$type": "dimension",
+      "$value": {
+        "value": 200,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-identifier-w-3",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/identifier/w/4": {
+      "$type": "dimension",
+      "$value": {
+        "value": 161,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-identifier-w-4",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/info/tags/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 28,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-info-tags-h",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/info/tags/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 231,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-info-tags-w",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/name/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-name-h",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/name/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 200,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-name-w",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/status/h": {
+      "$type": "dimension",
+      "$value": {
+        "value": 40,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-status-h",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
+    "size/profile/header/skeleton/status/w": {
+      "$type": "dimension",
+      "$value": {
+        "value": 160,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-size-profile-header-skeleton-status-w",
+          "source": "_settings.profile-header.scss"
+        }
+      }
+    },
     "size/token/explorer/preview/bar": {
       "$type": "dimension",
       "$value": {
@@ -643,6 +841,19 @@
         "com.solidaris.pds": {
           "cssVar": "--pds-size-token-explorer-preview-bar",
           "source": "_settings.token-explorer.scss"
+        }
+      }
+    },
+    "space/profile/header/padding/inline": {
+      "$type": "dimension",
+      "$value": {
+        "value": 17.5,
+        "unit": "px"
+      },
+      "$extensions": {
+        "com.solidaris.pds": {
+          "cssVar": "--pds-space-profile-header-padding-inline",
+          "source": "_settings.profile-header.scss"
         }
       }
     },

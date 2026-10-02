@@ -40,10 +40,14 @@ test('terms split camel case, drop stopwords and stem plurals', () => {
 });
 
 test('app-specific and deprecated components rank below an importable match', () => {
-  // Profile Card is deprecated in favour of Profile Drawer; its keywords match the request better.
-  const [first, second] = searchComponents('profile summary card', data);
-  assert.deepEqual([first.id, first.status], ['plectrum:profile-drawer', 'core']);
-  assert.deepEqual([second.id, second.status], ['plectrum:profile-card', 'deprecated']);
+  // Profile Card is deprecated in favour of Profile Header; its keywords match the request better,
+  // yet both core profile components (Header and Drawer) rank above it.
+  const [first, second, third] = searchComponents('profile summary card', data);
+  assert.deepEqual(
+    [first, second].map((item) => [item.id, item.status]).sort(),
+    [['plectrum:profile-drawer', 'core'], ['plectrum:profile-header', 'core']],
+  );
+  assert.deepEqual([third.id, third.status], ['plectrum:profile-card', 'deprecated']);
 });
 
 test('token search needs every word', () => {
