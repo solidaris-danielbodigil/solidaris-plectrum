@@ -1,0 +1,47 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_settings.dashboard-sessions.scss
+// User Testing Dashboard — Session analysis page tokens + PrimeNG bridges.
+//
+// Colours alias PrimeNG Aura (dark) tokens: see _settings.dashboard.scss for why
+// the dashboard does not use the Plectrum light semantic colours.
+// Consumer: _components.dashboard-sessions.scss
+// =============================================================================
+
+:root {
+  // p-card #header content inset — matches the Aura card body padding so header
+  // labels line up with the body (Aura has no card header padding token).
+  --#{$pds-prefix}-space-dashboard-sessions-card-inset: var(--p-card-body-padding);
+
+  // Summary tiles — wrap to the next row below this width.
+  --#{$pds-prefix}-size-dashboard-sessions-summary-card-min: calc(168 / 14 * var(--#{$pds-prefix}-base-unit)); // 12rem
+
+  // Click-path side panel — flex basis beside the timeline, minimum before it wraps.
+  --#{$pds-prefix}-size-dashboard-sessions-side-panel-min: calc(252 / 14 * var(--#{$pds-prefix}-base-unit)); // 18rem
+  --#{$pds-prefix}-size-dashboard-sessions-side-panel-basis: calc(336 / 14 * var(--#{$pds-prefix}-base-unit)); // 24rem
+
+  // Click-path ordered list indent.
+  --#{$pds-prefix}-space-dashboard-sessions-click-path-indent: calc(2.5 * var(--#{$pds-prefix}-spacing-unit)); // 1.25rem
+
+  // Chart cards — chart.js needs a sized container (maintainAspectRatio: false).
+  --#{$pds-prefix}-size-dashboard-sessions-chart-card-min: calc(280 / 14 * var(--#{$pds-prefix}-base-unit)); // 20rem
+  --#{$pds-prefix}-size-dashboard-sessions-chart: calc(252 / 14 * var(--#{$pds-prefix}-base-unit)); // 18rem
+
+  // Element frequency chart — scrolls past this height (row count drives the chart height).
+  --#{$pds-prefix}-size-dashboard-sessions-frequency-viewport-max: calc(504 / 14 * var(--#{$pds-prefix}-base-unit)); // 36rem
+
+  // Table header row — Aura content surface pulled towards the canvas.
+  --#{$pds-prefix}-color-dashboard-sessions-table-head-bg: color-mix(
+    in srgb,
+    var(--p-content-background) 88%,
+    var(--p-surface-950)
+  );
+}
+
+// ── PrimeNG DataTable token bridge — muted header row on a recessed surface ──
+// Body rows keep the Aura defaults (row colour and hover colour are the text colour).
+.c-dashboard-sessions__table {
+  --p-datatable-header-cell-color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+  --p-datatable-header-cell-background: var(--#{$pds-prefix}-color-dashboard-sessions-table-head-bg);
+}

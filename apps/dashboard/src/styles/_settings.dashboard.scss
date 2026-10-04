@@ -1,0 +1,29 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_settings.dashboard.scss
+// User Testing Dashboard (apps/dashboard) — app canvas tokens.
+//
+// The dashboard runs PrimeNG Aura in dark mode (`providePrimeNG` + `.dark` on
+// <html>), not `providePlectrum()`. The Plectrum semantic colour tokens
+// (--pds-color-text, --pds-color-surface, …) describe the light Plectrum theme
+// and would paint dark text on the dark canvas, so dashboard colour tokens
+// alias the Aura `--p-*` tokens instead. They resolve on :root, where Aura
+// declares its dark values (the `.dark` selector is the <html> element).
+//
+// Consumers: _components.dashboard*.scss (c-dashboard,
+// c-dashboard-shell, c-dashboard-sessions).
+// =============================================================================
+
+:root {
+  // Page canvas — Aura v21 has no surface-ground token; the darkest surface stop is the canvas.
+  --#{$pds-prefix}-color-dashboard-canvas-bg: var(--p-surface-950);
+
+  // Text roles — Aura content text, muted and hover colours.
+  --#{$pds-prefix}-color-dashboard-text: var(--p-text-color);
+  --#{$pds-prefix}-color-dashboard-text-muted: var(--p-text-muted-color);
+  --#{$pds-prefix}-color-dashboard-text-hover: var(--p-text-hover-color);
+
+  // Accent — Aura primary (icons, active navigation).
+  --#{$pds-prefix}-color-dashboard-accent: var(--p-primary-color);
+}

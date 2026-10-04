@@ -1,22 +1,26 @@
 <header
-  class="c-dashboard-shell__header o-flex o-flex--align-items-center o-layout o-layout--gap-3 o-layout--padding-2 o-layout--full-width"
+  class="c-dashboard-shell__header u-border-bottom o-flex o-flex--wrap o-flex--align-items-center o-layout o-layout--gap-3 o-layout--padding-2 o-layout--full-width"
 >
   <div class="o-flex o-flex--align-items-center o-layout o-layout--gap-2">
     <i class="bi bi-speedometer2 c-dashboard-shell__brand-icon" aria-hidden="true"></i>
     <strong class="c-dashboard-shell__brand-title">User Testing Dashboard</strong>
   </div>
   <nav class="o-flex o-layout o-layout--gap-2" aria-label="Dashboard sections">
-    <a routerLink="/sessions" routerLinkActive="is-active" class="c-dashboard-shell__link">
+    <a
+      routerLink="/sessions"
+      routerLinkActive="is-active"
+      class="c-dashboard-shell__link o-flex o-flex--inline o-flex--align-items-center o-layout o-layout--gap-0-75 o-layout--padding-block-0-75"
+    >
       <i class="bi bi-collection c-dashboard-shell__link-icon" aria-hidden="true"></i>
       <span>Sessions</span>
     </a>
     <a
       routerLink="/design-system"
       routerLinkActive="is-active"
-      class="c-dashboard-shell__link"
+      class="c-dashboard-shell__link o-flex o-flex--inline o-flex--align-items-center o-layout o-layout--gap-0-75 o-layout--padding-block-0-75"
     >
       <i class="bi bi-palette c-dashboard-shell__link-icon" aria-hidden="true"></i>
-      <span>Design system</span>
+      <span>Plectrum metrics</span>
     </a>
   </nav>
 </header>

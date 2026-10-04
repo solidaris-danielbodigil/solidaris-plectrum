@@ -23,6 +23,7 @@ import {
   buildCatalogue,
   matchesCatalogue,
   teamFilterLabels,
+  usageTags,
   type CatalogueEntry,
   type CatalogueImplementation,
   type CataloguePurpose,
@@ -63,6 +64,7 @@ type ScopeFilter = CatalogueScope | 'all';
 })
 export class DocsCatalogueComponent {
   protected readonly pageSize = 25;
+  protected readonly usageTags = usageTags;
   protected readonly search = signal('');
   protected readonly purpose = signal<PurposeFilter>('all');
   protected readonly implementation = signal<ImplementationFilter>('all');

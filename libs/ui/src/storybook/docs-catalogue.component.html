@@ -141,13 +141,8 @@
       <td>
         @if (row.usedIn.length) {
           <div class="o-flex o-flex--wrap o-layout o-layout--gap-1">
-            @for (team of row.usedIn; track team) {
-              <p-tag [value]="team" severity="secondary" [rounded]="true" />
-              @if (row.usageMarks?.[team] === 'stale') {
-                <p-tag value="stale" severity="warn" [rounded]="true" />
-              } @else if (row.usageMarks?.[team] === 'local-demo') {
-                <p-tag value="demo" severity="secondary" [rounded]="true" />
-              }
+            @for (tag of usageTags(row); track tag.label) {
+              <p-tag [value]="tag.label" [severity]="tag.severity" [rounded]="true" />
             }
           </div>
         } @else {

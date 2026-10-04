@@ -2,7 +2,18 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "devkit-scan-styles",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Adoption reports now also detect styles-only components (Accordion, Drawer, Skeleton Slot, Timeline, Detail List…) by their BEM block class — the block, an element or a modifier such as `c-accordion--bordered`, in templates and class strings — so usage counts for those components appear in reports. The report limitations say so. The scanner is exported as `scanObservations(root, sourceFiles, catalogue)` for central tooling; Angular components are still matched by named import or selector, unchanged.\n\nThe central registry now accepts usage reports (`operations.reportIngestionEnabled: true`); the toolkit's registry snapshot carries the new value."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {

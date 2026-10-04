@@ -1,0 +1,17 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_components.dashboard.scss
+// c-dashboard — User Testing Dashboard canvas, set on <body> (apps/dashboard
+// index.html) so overlays appended to the body (drawers, select panels) sit on
+// the same dark canvas and colour scheme.
+//
+// Overrides the Plectrum light body text colour from 04-elements.
+// Token source: _settings.dashboard.scss
+// =============================================================================
+
+.c-dashboard {
+  color-scheme: dark;
+  background-color: var(--#{$pds-prefix}-color-dashboard-canvas-bg);
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "provenance": "demo",
+  "note": "DEMO ONLY. Invented Plectrum agent counts and local components for the Core dashboard while no application sends usage reports. Component usage is not seeded: tools/insights/demo.ts scans each local-demo application. Never copy these values into .ai/adoption. Chosen so every recommendation family fires: iSHARE no-match searches (catalogue gap), drawer-like local components in iSHARE and iCRM (promote, duplicates Core), iCRM last report 3 weeks old (stale) with deprecated profile-card lookups, iGED drawer lookups without usage, older pinned DS versions (outdated runtime), no check_tokens calls (MCP tool unused).",
+  "applications": {
+    "ishare": {
+      "snapshots": [
+        {
+          "weeksBeforeHead": 6,
+          "agent": {
+            "days": 30, "activeDays": 9,
+            "tools": { "search_components": 31, "get_component": 44, "find_token": 12, "check_tokens": 0, "get_process": 3 },
+            "commands": { "check": 14, "scaffold": 1 },
+            "lookups": { "plectrum:drawer": 9 },
+            "emptySearches": 9,
+            "commits": { "total": 11, "reuse": 7, "scaffold": 1, "advice": 3, "reused": { "plectrum:drawer": 3 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 4,
+          "agent": {
+            "days": 30, "activeDays": 11,
+            "tools": { "search_components": 38, "get_component": 51, "find_token": 15, "check_tokens": 0, "get_process": 4 },
+            "commands": { "check": 17, "scaffold": 1 },
+            "lookups": { "plectrum:drawer": 7, "plectrum:timeline": 5 },
+            "emptySearches": 12,
+            "commits": { "total": 13, "reuse": 8, "scaffold": 1, "advice": 4, "reused": { "plectrum:timeline": 2 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 2,
+          "agent": {
+            "days": 30, "activeDays": 12,
+            "tools": { "search_components": 44, "get_component": 58, "find_token": 17, "check_tokens": 0, "get_process": 3 },
+            "commands": { "check": 19, "scaffold": 2 },
+            "lookups": { "plectrum:skeleton-slot": 6, "plectrum:accordion": 4 },
+            "emptySearches": 15,
+            "commits": { "total": 15, "reuse": 9, "scaffold": 2, "advice": 4, "reused": { "plectrum:skeleton-slot": 3 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 0,
+          "agent": {
+            "days": 30, "activeDays": 14,
+            "tools": { "search_components": 48, "get_component": 63, "find_token": 19, "check_tokens": 0, "get_process": 4 },
+            "commands": { "check": 22, "scaffold": 1 },
+            "lookups": { "plectrum:profile-header": 7, "plectrum:drawer": 5 },
+            "emptySearches": 18,
+            "commits": { "total": 16, "reuse": 10, "scaffold": 1, "advice": 5, "reused": { "plectrum:profile-header": 2, "plectrum:drawer": 1 } }
+          }
+        }
+      ],
+      "localComponents": [
+        {
+          "id": "ishare:document-more-details-drawer",
+          "name": "DocumentMoreDetailsDrawer",
+          "description": "Side drawer with the full details of a document: certificate metadata, audit events and related files.",
+          "useCases": ["Show every detail of a document in a side drawer without leaving the list", "Review the audit history of a document certificate"],
+          "reusePotential": "likely",
+          "reuseNote": "Same structure as the iCRM contact details drawer; both sit on PrimeNG Drawer."
+        },
+        {
+          "id": "ishare:delay-banner",
+          "name": "DelayBanner",
+          "description": "Inline banner announcing processing delays for the current file type.",
+          "useCases": ["Warn a member that a request will take longer than usual"],
+          "reusePotential": "none"
+        }
+      ]
+    },
+    "iged": {
+      "packageVersion": "2.0.5",
+      "snapshots": [
+        {
+          "weeksBeforeHead": 6,
+          "agent": {
+            "days": 30, "activeDays": 5,
+            "tools": { "search_components": 14, "get_component": 18, "find_token": 6, "check_tokens": 0, "get_process": 2 },
+            "commands": { "check": 6 },
+            "lookups": { "plectrum:sub-nav-shell": 5, "plectrum:form-field": 4 },
+            "emptySearches": 2,
+            "commits": { "total": 6, "reuse": 4, "scaffold": 0, "advice": 2, "reused": { "plectrum:sub-nav-shell": 1 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 4,
+          "agent": {
+            "days": 30, "activeDays": 6,
+            "tools": { "search_components": 17, "get_component": 21, "find_token": 5, "check_tokens": 0, "get_process": 2 },
+            "commands": { "check": 8 },
+            "lookups": { "plectrum:form-field": 5, "plectrum:drawer": 3 },
+            "emptySearches": 2,
+            "commits": { "total": 7, "reuse": 5, "scaffold": 0, "advice": 2, "reused": { "plectrum:form-field": 2 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 2,
+          "agent": {
+            "days": 30, "activeDays": 7,
+            "tools": { "search_components": 20, "get_component": 26, "find_token": 7, "check_tokens": 0, "get_process": 3 },
+            "commands": { "check": 9, "scaffold": 1 },
+            "lookups": { "plectrum:drawer": 5, "plectrum:list": 3 },
+            "emptySearches": 3,
+            "commits": { "total": 8, "reuse": 5, "scaffold": 1, "advice": 2, "reused": { "plectrum:toolbar": 1 } }
+          }
+        },
+        {
+          "weeksBeforeHead": 0,
+          "agent": {
+            "days": 30, "activeDays": 8,
+            "tools": { "search_components": 22, "get_component": 30, "find_token": 8, "check_tokens": 0, "get_process": 2 },
+            "commands": { "check": 11 },
+            "lookups": { "plectrum:drawer": 6, "plectrum:list": 4 },
+            "emptySearches": 3,
+            "commits": { "total": 9, "reuse": 6, "scaffold": 0, "advice": 3, "reused": { "plectrum:empty-state": 2 } }
+          }
+        }
+      ],
+      "localComponents": [
+        {
+          "id": "iged:queue-card",
+          "name": "QueueCard",
+          "description": "Tile summarising one work queue: how many files wait at each processing step.",
+          "useCases": ["Pick the next work queue to process", "See which queue is falling behind"],
+          "reusePotential": "possible",
+          "reuseNote": "Close to a list item with a count; could become a List variant."
+        }
+      ]
+    },
+    "icrm": {
+      "packageVersion": "2.0.2",
+      "snapshots": [
+        {
+          "weeksBeforeHead": 7,
+          "agent": {
+            "days": 30, "activeDays": 0,
+            "tools": { "search_components": 0, "get_component": 0, "find_token": 0, "check_tokens": 0, "get_process": 0 },
+            "commands": {},
+            "lookups": {},
+            "emptySearches": 0,
+            "commits": { "total": 0, "reuse": 0, "scaffold": 0, "advice": 0, "reused": {} }
+          }
+        },
+        {
+          "weeksBeforeHead": 5,
+          "agent": {
+            "days": 30, "activeDays": 2,
+            "tools": { "search_components": 4, "get_component": 5, "find_token": 1, "check_tokens": 0, "get_process": 1 },
+            "commands": { "check": 1 },
+            "lookups": { "plectrum:profile-card": 2 },
+            "emptySearches": 1,
+            "commits": { "total": 2, "reuse": 1, "scaffold": 0, "advice": 1, "reused": {} }
+          }
+        },
+        {
+          "weeksBeforeHead": 3,
+          "agent": {
+            "days": 30, "activeDays": 3,
+            "tools": { "search_components": 6, "get_component": 9, "find_token": 2, "check_tokens": 0, "get_process": 1 },
+            "commands": { "check": 2 },
+            "lookups": { "plectrum:profile-card": 4, "plectrum:drawer": 2 },
+            "emptySearches": 1,
+            "commits": { "total": 3, "reuse": 1, "scaffold": 0, "advice": 2, "reused": {} }
+          }
+        }
+      ],
+      "localComponents": [
+        {
+          "id": "icrm:contact-details-drawer",
+          "name": "ContactDetailsDrawer",
+          "description": "Side drawer with the full details of a contact: identity, channels and recent interactions.",
+          "useCases": ["Show every detail of a contact in a side drawer from a search result", "Check the last interactions before calling back"],
+          "reusePotential": "likely"
+        }
+      ]
+    }
+  }
+}

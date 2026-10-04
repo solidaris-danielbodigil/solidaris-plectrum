@@ -15,11 +15,11 @@
   "scripts": {
     "start": "ng serve ishare",
     "start:icrm": "ng serve icrm",
-    "start:dashboard": "ng serve dashboard",
+    "start:dashboard": "npm run insights:generate && ng serve dashboard",
     "start:iged": "ng serve iged",
     "build": "ng build ishare",
     "build:icrm": "ng build icrm",
-    "build:dashboard": "ng build dashboard",
+    "build:dashboard": "npm run insights:generate && ng build dashboard",
     "build:iged": "ng build iged",
     "build:ui": "ng build ui",
     "build:plectrum": "ng build plectrum",
@@ -81,11 +81,12 @@
     "devkit:test": "node --test tools/devkit/src/*.spec.mjs",
     "contracts:docs-check": "node tools/contracts/check-doc-routes.mjs",
     "contracts:validate": "tsx tools/contracts/validate.ts",
-    "test:pipelines": "node --import tsx --test tools/contracts/*.spec.ts tools/candidates/*.spec.ts tools/adoption/*.spec.ts",
+    "test:pipelines": "node --import tsx --test tools/contracts/*.spec.ts tools/candidates/*.spec.ts tools/adoption/*.spec.ts libs/insights/src/*.spec.ts tools/insights/*.spec.ts",
     "candidate:check": "tsx tools/candidates/check.ts",
     "candidate:generate": "tsx tools/candidates/generate.ts",
     "adoption:check": "tsx tools/adoption/check.ts",
     "adoption:generate": "tsx tools/adoption/generate.ts",
+    "insights:generate": "tsx tools/insights/generate.ts",
     "candidate:record": "tsx tools/candidates/record.ts"
   },
   "dependencies": {

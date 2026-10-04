@@ -72,6 +72,21 @@ function usageOf(id: string, localLabels: readonly string[]): Pick<CatalogueEntr
   return { usedIn: Object.keys(marks).sort((a, b) => a.localeCompare(b)), usageMarks: marks };
 }
 
+export interface UsageTag {
+  label: string;
+  severity: 'secondary' | 'warn';
+}
+
+/** One tag per application: `iSHARE demo` for a demo app here, `iSHARE (stale)` for an old report. */
+export function usageTags(entry: Pick<CatalogueEntry, 'usedIn' | 'usageMarks'>): UsageTag[] {
+  return entry.usedIn.map((team) => {
+    const mark = entry.usageMarks?.[team];
+    if (mark === 'local-demo') return { label: `${team} demo`, severity: 'secondary' };
+    if (mark === 'stale') return { label: `${team} (stale)`, severity: 'warn' };
+    return { label: team, severity: 'secondary' };
+  });
+}
+
 function purposeOf(meta: ComponentMetadata): CataloguePurpose {
   const name = meta.component.name.toLowerCase();
   if (name.includes('drawer')) return 'Overlays';

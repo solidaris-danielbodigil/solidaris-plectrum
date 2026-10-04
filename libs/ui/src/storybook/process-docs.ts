@@ -17,6 +17,8 @@ export type Decision = keyof typeof processContract.proposalOutcomes;
 
 export const PROCESS_VERSION = processContract.version;
 export const REGISTRY = registry;
+/** Core dashboard on the same Pages site as Storybook (usage, agent effect, recommendations). */
+export const DASHBOARD_URL = new URL('../dashboard/', registry.operations.storybook).href;
 
 const coreTeam = registry.teams.find((team) => team.kind === 'core');
 

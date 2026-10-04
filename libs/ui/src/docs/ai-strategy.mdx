@@ -2,7 +2,7 @@ import { Meta, Source, Story, Unstyled } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
 import { Diagram } from '../../.storybook/docs-figures';
 import * as Figures from './ai-strategy.stories';
-import { command, PACKAGE_NAMES } from '../storybook/process-docs';
+import { command, DASHBOARD_URL, PACKAGE_NAMES } from '../storybook/process-docs';
 import processContract from '../../../../.ai/contracts/process.json';
 import agentRoster from '../../../../.ai/agents/agents.json';
 
@@ -12,7 +12,7 @@ import agentRoster from '../../../../.ai/agents/agents.json';
 
 > **In short.** For the core team. Agents read typed contracts — one metadata file per component, a generated index and short protocols — instead of the whole code base, and the same checks gate their work and yours. Application teams: see [Use the Plectrum agent](?path=/docs/start-here-use-the-agent--docs).
 
-Plectrum ships AI agents with the toolkit. In an application, the **Plectrum agent** is the team's first reviewer; how to use it, which MCP servers it reads and what is measured are on [Use the Plectrum agent](?path=/docs/start-here-use-the-agent--docs). This page describes the contracts behind it and how the Core agents work in the Plectrum repository.
+Plectrum ships AI agents with the toolkit. In an application, the **Plectrum agent** is the team's first reviewer; how to use it, which MCP servers it reads and what is measured are on [Use the Plectrum agent](?path=/docs/start-here-use-the-agent--docs). Core follows usage and search quality on the <a href={DASHBOARD_URL}>Plectrum dashboard</a>. This page describes the contracts behind it and how the Core agents work in the Plectrum repository.
 
 ## Team repositories
 

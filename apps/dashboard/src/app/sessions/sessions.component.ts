@@ -23,6 +23,7 @@ import { ChartModule } from 'primeng/chart';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
+import { readChartTheme, type ChartTheme } from '../shared/chart-theme';
 
 @Component({
   selector: 'app-sessions',
@@ -37,7 +38,6 @@ import { TableModule } from 'primeng/table';
     TableModule,
   ],
   templateUrl: './sessions.component.html',
-  styleUrl: './sessions.component.scss',
 })
 export class SessionsComponent {
   private static readonly FREQUENCY_CHART_MAX_ITEMS = 20;
@@ -86,7 +86,7 @@ export class SessionsComponent {
     return labels;
   });
 
-  private readonly chartTheme = computed(() => this.readChartTheme());
+  private readonly chartTheme = computed(() => readChartTheme());
 
   readonly barChartData = computed(() => {
     const aggregates = this.clickAggregates();
@@ -310,62 +310,8 @@ export class SessionsComponent {
     return isGenericTelemetryTarget(target);
   }
 
-  private readChartTheme(): {
-    text: string;
-    muted: string;
-    primary: string;
-    primaryFill: string;
-    accent: string;
-    accentFill: string;
-    grid: string;
-    tooltipBg: string;
-  } {
-    if (typeof document === 'undefined') {
-      return {
-        text: '#f1f5f9',
-        muted: '#94a3b8',
-        primary: '#60a5fa',
-        primaryFill: 'rgba(96, 165, 250, 0.72)',
-        accent: '#34d399',
-        accentFill: 'rgba(52, 211, 153, 0.15)',
-        grid: 'rgba(148, 163, 184, 0.2)',
-        tooltipBg: '#0f172a',
-      };
-    }
-
-    const root = getComputedStyle(document.documentElement);
-    const get = (token: string, fallback: string) =>
-      root.getPropertyValue(token).trim() || fallback;
-    const primary = get('--p-primary-color', '#60a5fa');
-
-    return {
-      text: get('--p-text-color', '#f1f5f9'),
-      muted: get('--p-text-muted-color', '#94a3b8'),
-      primary,
-      primaryFill: this.withAlpha(primary, 0.72),
-      accent: get('--p-green-400', '#34d399'),
-      accentFill: 'rgba(52, 211, 153, 0.15)',
-      grid: get('--p-content-border-color', 'rgba(148, 163, 184, 0.2)'),
-      tooltipBg: get('--p-surface-900', '#0f172a'),
-    };
-  }
-
-  private withAlpha(color: string, alpha: number): string {
-    const rgbMatch = color.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
-    if (rgbMatch) {
-      return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${alpha})`;
-    }
-
-    const hexMatch = color.match(/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
-    if (hexMatch) {
-      return `rgba(${parseInt(hexMatch[1], 16)}, ${parseInt(hexMatch[2], 16)}, ${parseInt(hexMatch[3], 16)}, ${alpha})`;
-    }
-
-    return `rgba(96, 165, 250, ${alpha})`;
-  }
-
   private buildChartPlugins(
-    theme: ReturnType<SessionsComponent['readChartTheme']>,
+    theme: ChartTheme,
     showFullTooltipTitle: boolean,
     fullLabels?: string[],
   ) {

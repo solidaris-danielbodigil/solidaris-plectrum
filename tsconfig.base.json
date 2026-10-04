@@ -7,6 +7,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
+      "@pds-internal/insights": [
+        "libs/insights/src/index.ts"
+      ],
       "@solidaris/contracts": [
         ".ai/contracts/schema/index.ts"
       ],

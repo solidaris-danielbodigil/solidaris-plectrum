@@ -15,6 +15,9 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "paths": {
+      "@pds-internal/insights": [
+        "libs/insights/src/index.ts"
+      ],
       "@solidaris/contracts": [
         ".ai/contracts/schema/index.ts"
       ],
