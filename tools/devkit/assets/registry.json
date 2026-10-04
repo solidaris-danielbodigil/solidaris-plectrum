@@ -62,7 +62,7 @@
     "visibility": "private",
     "publicationEnabled": true,
     "reportTransport": "reviewed-pull-request",
-    "reportIngestionEnabled": false,
+    "reportIngestionEnabled": true,
     "editors": [
       "cursor",
       "vscode-copilot"

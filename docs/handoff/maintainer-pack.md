@@ -14,6 +14,7 @@ Every runbook below states purpose, prerequisites, source-linked steps, expected
 | Plectrum  | `libs/plectrum`                                                                                | `@solidaris-danielbodigil/pds-plectrum` — `providePlectrum()`, PrimeNG presets `Plectrum_v0.6` / `Plectrum_v1`, `src/tokens.json` (design-token SSOT)         |
 | Tools     | `tools/tokens/*.mjs`, `tools/scripts/*`, `tools/generators/pds-component`, `tools/packaging/*` | Token pipeline, generated indexes, scaffold, pack + smoke                                                                                   |
 | Contracts | `.ai/contracts/index.json` (generated), `.ai/contracts/schema/*.ts`, `.ai/rules/*.md`          | Machine-readable map and the rules agents and reviewers apply                                                                               |
+| Insights  | `libs/insights`, `tools/insights`                                                               | Core dashboard engine (pure TS types + recommendation rules) and its fact generator — §9                                                    |
 | Upstream  | PrimeNG (`primeng/*`), Bootstrap Icons, Figma Plectrum UI Kit                                  | PrimeNG first; Figma is the visual SSOT                                                                                                     |
 
 Source-of-truth map: visual decisions → Figma UI Kit; token values → `libs/plectrum/src/tokens.json` → `tokens:build` → `libs/styles/src/01-settings/*.generated.scss` + `libs/ui/src/storybook/tokens.generated.ts`; component contract → `{name}.metadata.ts` → `generate-index` → `index.json`; which tokens/classes exist → the compiled CSS (Storybook reads the CSSOM at runtime, `.ai/rules/10-css-ssot.md`).
@@ -120,7 +121,7 @@ Selected gates from `.github/workflows/ci.yml` (the complete generated command t
 | Changelog feed committed                       | `npm run changelog:build` + `git diff --exit-code`         | yes                                     |
 | Token usage lint                               | `npm run tokens:lint`                                      | yes                                     |
 | Contracts and exports current                  | `npm run contracts:generate -- --check`                    | yes                                     |
-| Apps build                                     | `npm run build` and `npx ng build iged --configuration=production` | yes                              |
+| Apps build                                     | `npm run build`, `npx ng build iged --configuration=production` and `npm run build:dashboard` | yes                              |
 | Unit tests + coverage                          | `npm run test:coverage`                                    | yes                                     |
 | Pack smoke                                     | `npm run pack:smoke`                                       | yes                                     |
 | Story tests (smoke, play, a11y, coverage)      | `npm run build-storybook:coverage` then `npm run test-storybook:ci` | yes                                     |
@@ -158,6 +159,41 @@ Owner: unresolved · Verified: unresolved
 ## 8. Support and ownership
 
 Receiving teams, request channel, escalation route and backup maintainers: **unresolved — to be filled by the customer before cutover.** Do not invent people or response-time commitments. The proposal route consumers see today is Get started → Contribute (“request a change / report a problem”); whatever replaces it must be reachable from that page.
+
+## 9. Core dashboard
+
+Purpose: see component usage, agent effect, search quality, the candidate pipeline, tokens and releases, with ranked recommendations. Decision: [`.ai/decisions/2026-10-03-core-dashboard.md`](../../.ai/decisions/2026-10-03-core-dashboard.md).
+
+Prerequisites: a full clone (`git fetch --unshallow` on a shallow one), `npm ci`.
+
+Run locally:
+
+```bash
+npm run start:dashboard   # runs insights:generate, then ng serve dashboard
+```
+
+Open the Plectrum metrics area (`#/design-system/overview`). Sections are hash routes (`#/design-system/agent`, `#/design-system/search`, …); drill-downs use query parameters such as `?app=ishare&component=plectrum:profile-card`.
+
+How the data is produced:
+
+1. `npm run insights:generate` (`tools/insights/generate.ts`) reads repository facts and their git history: `.ai/contracts/index.json`, `tools/devkit/assets/catalogue.json`, `libs/ui/src/storybook/agent-eval.generated.ts`, candidate records, the token sync report and `tools/tokens/proposed.dtcg.json`, `plectrum-v*-devkit-*` tags and pending `.changeset/*.md`, plus reported usage from `.ai/adoption/*.json`.
+2. It writes `apps/dashboard/src/app/design-system/data/insights.generated.ts` — facts only, gitignored, never committed. The same checkout always yields the same file (`generatedAt` is the HEAD commit time). A shallow clone gives empty trends and `historyAvailable: false`.
+3. The dashboard calls `recommend()` from `libs/insights` in the browser with the current date, so ages and staleness are live.
+
+Demo vs reported: the module carries `usage.reported` (from `.ai/adoption/*.json`) and `usage.demo` (a real scan of the local-demo apps combined with invented agent counts and local components from `tools/insights/demo/seed.json`). They are never merged. The Reported | Demo switch at the top of the area picks one; it defaults to Demo while no application has a `reportedAt`, and a warning stays visible while Demo is selected. Never copy seed data into `.ai/adoption/`: `contracts:generate` ships local components from there in `tools/devkit/assets/local-components.json`, and the isolation tests in `npm run test:pipelines` fail on any seed id.
+
+Add a recommendation rule:
+
+1. Add `libs/insights/src/rules/<rule-id>.ts`. It reads `PlectrumInsights`, the selected source and `now`, and returns `Recommendation`s with a stable `id` (`<rule>:<subject>`), severity, evidence (label, value, source file) and a drill target. No Node, Angular or devkit imports.
+2. Register it in `libs/insights/src/recommend.ts`; put any threshold in `libs/insights/src/thresholds.ts` (`DEFAULT_THRESHOLDS`).
+3. Add one positive and one negative fixture to `libs/insights/src/recommend.spec.ts` and run `npm run test:pipelines`.
+4. If the rule needs a fact the module does not carry, extend `libs/insights/src/insights.types.ts` and the collector in `tools/insights/`; never add request text or anything that identifies a person.
+
+Publication: the Pages workflow builds it with `--base-href=/solidaris-plectrum/dashboard/` after a full-history checkout and copies `dist/apps/dashboard/browser` to `dist/pages/dashboard`: <https://solidaris-danielbodigil.github.io/solidaris-plectrum/dashboard/>. Storybook links to it through `DASHBOARD_URL` (`libs/ui/src/storybook/process-docs.ts`). Versioned Storybook bundles never contain it. CI builds it on every pull request (`npm run build:dashboard`).
+
+Failure and recovery: `insights:generate` fails on an invalid adoption report or candidate record — run `npm run adoption:check` / `npm run candidate:check` and fix the record. Empty trends mean a shallow clone. The dashboard deliberately stays on PrimeNG Aura dark (Plectrum dark tokens are incomplete). Dashboard-only styles live in `apps/dashboard/src/styles/`; do not add them to the shared `libs/styles` token inventory.
+
+Owner: unresolved · Verified: unresolved
 
 ## Rehearsal record (B06)
 

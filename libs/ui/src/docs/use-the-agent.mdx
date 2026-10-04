@@ -1,8 +1,6 @@
 import { Meta, Source } from '@storybook/addon-docs/blocks';
 import { DocsTable } from '../../.storybook/docs-table';
-import { command } from '../storybook/process-docs';
-import { AGENT_SEARCH_EVAL } from '../storybook/agent-eval.generated';
-import { CENTRAL_ADOPTION } from '../storybook/adoption-data.generated';
+import { command, DASHBOARD_URL } from '../storybook/process-docs';
 import processContract from '../../../../.ai/contracts/process.json';
 
 <Meta title="Start here/Use the Plectrum agent" id="start-here-use-the-agent" />
@@ -67,28 +65,10 @@ Plectrum measures whether the agent helps, without reading what you ask it.
 - **Effect.** When the agent helped with a commit, it adds a trailer to the message: `Plectrum-Agent: reuse=<component ids>`, `scaffold=<slug>` or `advice`.
 - **Sharing.** The usage report counts both over the last 30 days and sends the totals to Core with the component usage, only when usage reporting is on.
 
-### Agent use by application
-
-{CENTRAL_ADOPTION.agent.length === 0 ? (
-  <p>No application has reported agent use yet. Counts appear here after a registered application sends its first usage report.</p>
-) : (
-  <DocsTable
-    headers={['Application', 'Active days', 'Searches', 'Searches with no match', 'Commits helped', 'Reuse commits', 'Observed']}
-    rows={CENTRAL_ADOPTION.agent.map((row) => [row.label, `${row.activeDays} / ${row.windowDays}`, String(row.searches), String(row.emptySearches), String(row.commits.total), String(row.commits.reuse), `${row.observedAt.slice(0, 10)}${row.freshness === 'stale' ? ' (stale)' : ''}`])}
-  />
-)}
-
-Searches with no match show where the catalogue has gaps. A component that Core later finds duplicated in an application is a reuse the agent missed.
+Core reads only these totals, per application, on the <a href={`${DASHBOARD_URL}#/design-system/agent`}>Plectrum dashboard</a>. Searches with no match point to gaps in the catalogue, and similar local components in several applications point to components worth sharing. Nothing in the totals identifies a person.
 
 ### Search quality
 
-<p>The core team checks that the agent keeps finding the right components. {AGENT_SEARCH_EVAL.total} requests, written the way teams ask, are replayed against the catalogue each time a component or its documentation changes, so the agent never finds less than it did before. This check runs in the Plectrum repository only: nothing in your application's build depends on it, or on how you use the agent. Today: <strong>{AGENT_SEARCH_EVAL.passed} of {AGENT_SEARCH_EVAL.total}</strong> requests find the expected component.</p>
-
-<DocsTable
-  headers={['Request', 'Expected', 'Found', 'Result']}
-  rows={AGENT_SEARCH_EVAL.results.map((item) => [item.query, item.none ? 'No Plectrum component' : [item.anyOf.map((id) => id.split(':')[1]).join(' or '), ...item.allOf.map((id) => `+ ${id.split(':')[1]}`)].join(' '), item.results.length ? item.results.slice(0, 3).map((id) => id.split(':')[1]).join(', ') : '—', item.pass ? 'Found' : 'Not yet'])}
-/>
-
-A request the search does not answer yet stays in the list: it shows where the agent needs help. For a need that two components answer together, the agent reads each component's documented companions.
+Requests written the way teams ask are replayed against the catalogue in the Plectrum repository each time a component or its documentation changes, and the agent may never find less than it did before; nothing in your application's build depends on this check, or on how you use the agent. The results are on the <a href={`${DASHBOARD_URL}#/design-system/search`}>Plectrum dashboard</a>.
 
 How the agents, contracts and checks work in the Plectrum repository: [How agents work](?path=/docs/docs-ai-strategy--docs).

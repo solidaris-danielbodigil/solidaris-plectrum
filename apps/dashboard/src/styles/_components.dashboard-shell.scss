@@ -1,0 +1,47 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+@use '../../../../libs/styles/src/02-tools/tools.typography' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_components.dashboard-shell.scss
+// c-dashboard-shell — User Testing Dashboard header bar and section navigation.
+//
+// Layout: o-flex / o-layout in apps/dashboard/src/app/layout/shell.component.html.
+// Divider: u-border-bottom (colour bridged in the settings file).
+// Token source: _settings.dashboard-shell.scss
+// =============================================================================
+
+.c-dashboard-shell__header {
+  background-color: var(--#{$pds-prefix}-color-dashboard-shell-header-bg);
+}
+
+.c-dashboard-shell__brand-title {
+  @include text-heading-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+.c-dashboard-shell__brand-icon {
+  font-size: var(--#{$pds-prefix}-size-dashboard-shell-brand-icon);
+  color: var(--#{$pds-prefix}-color-dashboard-accent);
+}
+
+.c-dashboard-shell__link {
+  @include text-label-md;
+  padding-inline: var(--#{$pds-prefix}-space-dashboard-shell-link-padding-inline);
+  border-radius: var(--#{$pds-prefix}-radius-dashboard-shell-link);
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+  transition: var(--#{$pds-prefix}-transition-dashboard-shell-link);
+
+  &:hover {
+    color: var(--#{$pds-prefix}-color-dashboard-text-hover);
+  }
+
+  &.is-active {
+    background-color: var(--#{$pds-prefix}-color-dashboard-shell-link-active-bg);
+    color: var(--#{$pds-prefix}-color-dashboard-accent);
+    font-weight: var(--#{$pds-prefix}-font-weight-semibold);
+  }
+}
+
+.c-dashboard-shell__link-icon {
+  font-size: var(--#{$pds-prefix}-size-dashboard-shell-link-icon);
+}

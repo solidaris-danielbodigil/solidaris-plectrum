@@ -7,6 +7,7 @@ import {
   localCatalogue,
   matchesCatalogue,
   primengCatalogue,
+  usageTags,
 } from './catalogue';
 
 describe('catalogue generation', () => {
@@ -53,6 +54,19 @@ describe('catalogue generation', () => {
     const button = entries.find((entry) => entry.name === 'Button');
     expect(empty?.usedIn).toEqual(['iGED', 'iSHARE']);
     expect(button?.usedIn).toEqual([]);
+  });
+
+  it('shows one tag per application, naming demo apps and stale reports in the same tag', () => {
+    const tags = usageTags({
+      usedIn: ['iGED', 'iSHARE', 'Claims'],
+      usageMarks: { iGED: 'current', iSHARE: 'local-demo', Claims: 'stale' },
+    });
+    expect(tags).toEqual([
+      { label: 'iGED', severity: 'secondary' },
+      { label: 'iSHARE demo', severity: 'secondary' },
+      { label: 'Claims (stale)', severity: 'warn' },
+    ]);
+    expect(usageTags({ usedIn: ['Claims'] })).toEqual([{ label: 'Claims', severity: 'secondary' }]);
   });
 
   it('filters to one team and to rows no team renders', () => {

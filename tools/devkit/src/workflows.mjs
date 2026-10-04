@@ -197,6 +197,41 @@ export function localComponents(root, config) {
   });
 }
 
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** Drops HTML, block and whole-line `//` comments: a commented-out class is not usage. */
+const withoutComments = (body) => body.replace(/<!--[\s\S]*?-->/g, ' ').replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
+
+/**
+ * Static source references per catalogue component, in catalogue order. Pure: reads `sourceFiles`
+ * (absolute or relative to `root`) and returns adoption-report observations with root-relative files.
+ * Angular components match a named import from their entry point or their `<selector>`. Styles-only
+ * components (`metadata.distribution.kind === 'styles'`) match their BEM block class: `c-accordion`,
+ * `c-accordion--bordered` and `c-accordion__item` count for `c-accordion`; `c-accordion-x` does not.
+ * `count` is the number of matching files, as for every observation.
+ */
+export function scanObservations(root, sourceFiles, catalogue) {
+  const bodies = sourceFiles.map((file) => {
+    const absolute = path.resolve(root, file);
+    const body = fs.readFileSync(absolute, 'utf8');
+    return { file: slash(path.relative(root, absolute)), code: withoutComments(body) };
+  });
+  const observations = [];
+  for (const component of catalogue.components) {
+    const entry = component.package?.importPath;
+    const exportName = component.package?.exportName;
+    const angular = Boolean(entry && exportName);
+    const block = component.metadata?.distribution?.kind === 'styles' ? component.metadata.component?.bemBlock : undefined;
+    if (!angular && !block) continue;
+    const imported = angular && new RegExp(`import\\s*\\{[^}]*\\b${exportName}\\b[^}]*\\}\\s*from\\s*['"]${escapeRegExp(entry)}['"]`, 's');
+    const selector = angular && component.selector && new RegExp(`<${component.selector}(?:\\s|>)`);
+    // The block plus optional BEM elements/modifiers; a different block sharing the prefix (c-accordion-x) is excluded.
+    const bem = block && new RegExp(`(?<![\\w-])${escapeRegExp(block)}(?:(?:__|--)[a-z0-9]+(?:-[a-z0-9]+)*)*(?![\\w-])`);
+    const matches = bodies.filter(({ code }) => (imported && imported.test(code)) || (selector && selector.test(code)) || (bem && bem.test(code)));
+    if (matches.length) observations.push({ componentId: component.id, kind: 'source-reference', count: matches.length, files: matches.map((m) => m.file) });
+  }
+  return observations;
+}
+
 export function adoptionReport(root, args) {
   const config = configAt(root);
   requireCommitted(root, [...config.paths.source, '.plectrum/config.json']);
@@ -207,21 +242,10 @@ export function adoptionReport(root, args) {
     if (!fs.existsSync(file)) throw new Error(`Missing installed package ${name}`);
     return { name, version: readJson(file).version };
   });
-  const observations = [];
   const sourceFiles = [...new Set(config.paths.source.flatMap((relative) => filesUnder(projectPath(root, relative))))].filter((file) => /\.(ts|html)$/.test(file) && !/\.(spec|stories|metadata)\.ts$/.test(file));
   if (!sourceFiles.length) throw new Error('No source files for adoption report; check config.paths.source.');
-  const bodies = sourceFiles.map((file) => ({ file: slash(path.relative(root, file)), body: fs.readFileSync(file, 'utf8') }));
-  for (const component of catalogue.components) {
-    const entry = component.package?.importPath;
-    if (!entry || !component.package.exportName) continue;
-    const matches = bodies.filter(({ body }) => {
-      const imported = new RegExp(`import\\s*\\{[^}]*\\b${component.package.exportName}\\b[^}]*\\}\\s*from\\s*['"]${entry.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['"]`, 's').test(body);
-      const selector = component.selector && new RegExp(`<${component.selector}(?:\\s|>)`).test(body);
-      return imported || selector;
-    });
-    if (matches.length) observations.push({ componentId: component.id, kind: 'source-reference', count: matches.length, files: matches.map((m) => m.file) });
-  }
-  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Runtime rendering, dynamic composition and styling-only usage are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.', 'Agent counts cover the last 30 days of this checkout and of commit trailers; they hold no request text or code.'], localComponents: localComponents(root, config) };
+  const observations = scanObservations(root, sourceFiles, catalogue);
+  const report = { schemaVersion: 1, application: config.application, team: config.team, source: { repository: config.repository, revision: revision(root), path: '.' }, observedAt: new Date().toISOString(), reporterVersion: packageJson.version, packages, observations, limitations: ['Static source references can include unused imports.', 'Styles-only components are detected by their BEM block class (block, element or modifier) in templates and class strings; class names built at runtime are missed.', 'Runtime rendering and dynamic composition are not measured.', 'PrimeNG controls are omitted until a reliable selector mapping is packed with the toolkit.', 'Installed package versions are not usage.', 'A missing central report is not proof of non-adoption.', 'Agent counts cover the last 30 days of this checkout and of commit trailers; they hold no request text or code.'], localComponents: localComponents(root, config) };
   const agent = agentSummary(root);
   if (agent) report.agent = agent;
   validateSchema('adoption', report);

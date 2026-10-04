@@ -43,7 +43,7 @@ test('starter bootstraps once, composes SCSS and scaffolds an autonomous local c
   assert.match(fs.readFileSync(path.join(root, 'src/styles/06-components/_index.scss'), 'utf8'), /@use 'components\.local-card';/);
   assert.equal(candidateCheck(root, config).errors.some((item) => /proposal/.test(item)), false);
   const css = path.join(root, 'compiled.css');
-  execFileSync(path.join(repository, 'node_modules/.bin/sass'), [`--load-path=${path.join(root, 'node_modules/@solidaris-danielbodigil/pds-styles/src')}`, path.join(root, 'src/styles.scss'), css]);
+  execFileSync(process.execPath, [path.join(repository, 'node_modules/sass/sass.js'), `--load-path=${path.join(root, 'node_modules/@solidaris-danielbodigil/pds-styles/src')}`, path.join(root, 'src/styles.scss'), css]);
   assert.match(fs.readFileSync(css, 'utf8'), /\.c-local-card/);
 });
 

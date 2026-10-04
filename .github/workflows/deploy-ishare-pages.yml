@@ -27,6 +27,8 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.event.client_payload.revision || github.sha }}
+          # Full history: the Core dashboard reads scan, catalogue and search-quality trends from git.
+          fetch-depth: 0
 
       - name: Reject stale or mismatched source revision
         run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -46,6 +48,9 @@ jobs:
       - name: Build iGED for production
         run: npx ng build iged --configuration=production --base-href=/solidaris-plectrum/iged/
 
+      - name: Build Core dashboard for production
+        run: npm run insights:generate && npx ng build dashboard --configuration=production --base-href=/solidaris-plectrum/dashboard/
+
       - name: Build Storybook
         run: node tools/tokens/mark-sync-merged.mjs && npm run candidate:check && npm run build-storybook
         env:
@@ -53,11 +58,12 @@ jobs:
 
       - name: Assemble Pages site
         run: |
-          mkdir -p dist/pages/storybook dist/pages/iged
+          mkdir -p dist/pages/storybook dist/pages/iged dist/pages/dashboard
           cp -R dist/apps/ishare/browser/. dist/pages/
           cp dist/pages/index.html dist/pages/404.html
           node tools/pages/inject-iged-404-dispatcher.mjs dist/pages/404.html
           cp -R dist/apps/iged/browser/. dist/pages/iged/
+          cp -R dist/apps/dashboard/browser/. dist/pages/dashboard/
           cp -R dist/storybook/ui/. dist/pages/storybook/
 
       - name: Add verified immutable Storybook releases

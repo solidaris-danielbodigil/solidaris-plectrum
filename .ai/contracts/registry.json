@@ -18,7 +18,7 @@
     "visibility": "private",
     "publicationEnabled": true,
     "reportTransport": "reviewed-pull-request",
-    "reportIngestionEnabled": false,
+    "reportIngestionEnabled": true,
     "editors": ["cursor", "vscode-copilot"],
     "storybook": "https://solidaris-danielbodigil.github.io/solidaris-plectrum/storybook/",
     "figma": {

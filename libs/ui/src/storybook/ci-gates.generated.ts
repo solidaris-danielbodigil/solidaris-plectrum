@@ -114,6 +114,12 @@ export const CI_JOBS = [
         "condition": null
       },
       {
+        "name": "Build Core dashboard",
+        "run": "npm run build:dashboard",
+        "advisory": false,
+        "condition": null
+      },
+      {
         "name": "Install Playwright Chromium",
         "run": "npx playwright install --with-deps chromium",
         "advisory": false,

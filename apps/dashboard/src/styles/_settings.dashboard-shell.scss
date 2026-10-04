@@ -1,0 +1,38 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_settings.dashboard-shell.scss
+// User Testing Dashboard shell — header bar and section navigation tokens.
+//
+// Colours alias PrimeNG Aura (dark) tokens: see _settings.dashboard.scss for why
+// the dashboard does not use the Plectrum light semantic colours.
+// Consumer: _components.dashboard-shell.scss
+// =============================================================================
+
+:root {
+  // Header bar — Aura content surface and its border.
+  --#{$pds-prefix}-color-dashboard-shell-header-bg: var(--p-content-background);
+  --#{$pds-prefix}-color-dashboard-shell-header-border: var(--p-content-border-color);
+
+  // Brand + navigation glyphs.
+  --#{$pds-prefix}-size-dashboard-shell-brand-icon: var(--#{$pds-prefix}-icon-size-lg); // 1.25rem
+  --#{$pds-prefix}-size-dashboard-shell-link-icon: var(--#{$pds-prefix}-icon-size-md); // 1rem
+
+  // Navigation link — block padding is o-layout--padding-block-0-75 in the template;
+  // the inline inset is off the spacing scale.
+  --#{$pds-prefix}-space-dashboard-shell-link-padding-inline: calc(1.25 * var(--#{$pds-prefix}-spacing-unit)); // 0.625rem
+  --#{$pds-prefix}-radius-dashboard-shell-link: var(--p-border-radius-md);
+  --#{$pds-prefix}-color-dashboard-shell-link-active-bg: color-mix(
+    in srgb,
+    var(--p-primary-color) 16%,
+    transparent
+  );
+  --#{$pds-prefix}-transition-dashboard-shell-link:
+    color var(--#{$pds-prefix}-transition-duration-mask) ease,
+    background-color var(--#{$pds-prefix}-transition-duration-mask) ease;
+}
+
+// ── u-border-bottom bridge — header divider in the Aura border colour ────────
+.c-dashboard-shell__header {
+  --#{$pds-prefix}-border-color: var(--#{$pds-prefix}-color-dashboard-shell-header-border);
+}

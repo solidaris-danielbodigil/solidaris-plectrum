@@ -1,0 +1,111 @@
+@use '../../../../libs/styles/src/01-settings/settings.prefix' as *;
+@use '../../../../libs/styles/src/02-tools/tools.typography' as *;
+
+// =============================================================================
+// apps/dashboard/src/styles/_components.dashboard-sessions.scss
+// c-dashboard-sessions — User Testing Dashboard session analysis page
+// (summary tiles, event timeline, click path, charts, idle gaps).
+//
+// Layout: o-flex / o-layout in apps/dashboard/src/app/sessions/sessions.component.html.
+// Kept here: typography + colour, component-token sizing (card minimums, chart
+// heights, side-panel flex basis) and the p-card #header inset on our own label.
+// PrimeNG DataTable header colours: --p-* bridge in the settings file.
+// Token source: _settings.dashboard-sessions.scss
+// =============================================================================
+
+.c-dashboard-sessions__title {
+  @include text-display-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+.c-dashboard-sessions__title-icon {
+  color: var(--#{$pds-prefix}-color-dashboard-accent);
+}
+
+.c-dashboard-sessions__subtitle {
+  @include text-body-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+}
+
+.c-dashboard-sessions__meta {
+  @include text-label-sm;
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+}
+
+// Our labels inside p-card #header — inset like the Aura card body.
+.c-dashboard-sessions__summary-label,
+.c-dashboard-sessions__card-header {
+  padding-block-start: var(--#{$pds-prefix}-space-dashboard-sessions-card-inset);
+  padding-inline: var(--#{$pds-prefix}-space-dashboard-sessions-card-inset);
+}
+
+.c-dashboard-sessions__summary-card {
+  flex: 1 1 var(--#{$pds-prefix}-size-dashboard-sessions-summary-card-min);
+  min-inline-size: var(--#{$pds-prefix}-size-dashboard-sessions-summary-card-min);
+}
+
+.c-dashboard-sessions__summary-label {
+  @include text-label-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+}
+
+.c-dashboard-sessions__summary-value {
+  @include text-heading-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+.c-dashboard-sessions__summary-value--secondary {
+  @include text-body-md;
+}
+
+.c-dashboard-sessions__card-header {
+  @include text-heading-sm;
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+// Table rows we own in the p-table templates — cells inherit the type role.
+.c-dashboard-sessions__table-head {
+  @include text-label-sm;
+}
+
+.c-dashboard-sessions__table-row {
+  @include text-body-sm;
+}
+
+.c-dashboard-sessions__target-label {
+  @include text-body-sm;
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+.c-dashboard-sessions__target-id {
+  @include text-body-xs;
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+}
+
+.c-dashboard-sessions__side-panel {
+  flex: 0 1 var(--#{$pds-prefix}-size-dashboard-sessions-side-panel-basis);
+  min-inline-size: var(--#{$pds-prefix}-size-dashboard-sessions-side-panel-min);
+}
+
+.c-dashboard-sessions__click-path {
+  @include text-body-sm;
+  padding-inline-start: var(--#{$pds-prefix}-space-dashboard-sessions-click-path-indent);
+  color: var(--#{$pds-prefix}-color-dashboard-text);
+}
+
+.c-dashboard-sessions__chart-card {
+  min-block-size: var(--#{$pds-prefix}-size-dashboard-sessions-chart-card-min);
+}
+
+.c-dashboard-sessions__chart {
+  block-size: var(--#{$pds-prefix}-size-dashboard-sessions-chart);
+}
+
+.c-dashboard-sessions__frequency-chart-viewport {
+  max-block-size: var(--#{$pds-prefix}-size-dashboard-sessions-frequency-viewport-max);
+}
+
+.c-dashboard-sessions__empty-state {
+  @include text-body-md;
+  color: var(--#{$pds-prefix}-color-dashboard-text-muted);
+}
