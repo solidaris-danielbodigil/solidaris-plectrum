@@ -91,7 +91,7 @@
               type="text"
               role="searchbox"
               autocomplete="off"
-              placeholder="Name, value, Figma or --p-* …"
+              [placeholder]="showFigmaRefs() ? 'Name, value, Figma or --p-* …' : 'Name, value or --p-* …'"
               class="c-token-explorer__search-input"
               [attr.aria-labelledby]="'pds-token-explorer-search-label-' + explorerId"
               [value]="search()"
@@ -372,7 +372,7 @@
                       >{{ row.primeNgVar }}</span
                     >
                   }
-                  @if (row.figmaRef) {
+                  @if (showFigmaRefs() && row.figmaRef) {
                     <span
                       class="c-token-explorer__tag o-layout o-layout--padding-inline-0-5 u-radius-sm"
                       >{{ row.figmaRef }}</span
@@ -432,12 +432,14 @@
               >
                 PrimeNG
               </th>
-              <th
-                class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
-                scope="col"
-              >
-                Figma
-              </th>
+              @if (showFigmaRefs()) {
+                <th
+                  class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
+                  scope="col"
+                >
+                  Figma
+                </th>
+              }
               <th
                 class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2"
                 scope="col"
@@ -490,9 +492,11 @@
                     —
                   }
                 </td>
-                <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
-                  {{ row.figmaRef ?? '—' }}
-                </td>
+                @if (showFigmaRefs()) {
+                  <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
+                    {{ row.figmaRef ?? '—' }}
+                  </td>
+                }
                 <td class="o-layout o-layout--padding-block-1 o-layout--padding-inline-2">
                   <button
                     type="button"

@@ -184,6 +184,8 @@ export class TokenExplorerComponent {
   /** Blank mapped `--p-*` on the host so authored fallbacks are visible. */
   readonly stubPrime = input(false);
   readonly view = input<TokenExplorerView>('grid');
+  /** Hide incomplete Figma references in task-oriented views such as Find a token. */
+  readonly showFigmaRefs = input(true);
 
   private readonly host = inject(ElementRef<HTMLElement>);
 

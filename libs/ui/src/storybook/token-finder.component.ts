@@ -162,6 +162,7 @@ const INTENTS: readonly TokenIntent[] = [
       [groups]="intent().groups"
       [bundle]="intent().bundle"
       [nameFilter]="intent().nameFilter ?? null"
+      [showFigmaRefs]="false"
     >
       <pds-form-field
         toolbarStart

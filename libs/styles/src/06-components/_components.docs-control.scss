@@ -28,3 +28,18 @@
   width: max-content;
   max-width: 100%;
 }
+
+// Fixed modifier: search fields keep one width while the user types instead
+// of growing with the value. Clamped so it never overflows a narrow column.
+.c-docs-control--fixed.p-iconfield,
+.c-docs-control--fixed.p-inputgroup {
+  width: 24rem;
+  min-width: min(12rem, 100%);
+  max-width: 100%;
+}
+
+.c-docs-control--fixed .p-inputtext {
+  field-sizing: fixed;
+  width: 100%;
+  flex: 1 1 auto;
+}
