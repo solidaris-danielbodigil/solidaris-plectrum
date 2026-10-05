@@ -20,16 +20,18 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Message } from 'primeng/message';
+import { ButtonModule } from 'primeng/button';
 import toolkitPackage from '../../../../tools/devkit/package.json';
 import { DocsCodeComponent } from './docs-code.component';
 import { DocsLinkComponent } from './docs-link.component';
-import { NPMRC, REGISTRY_INSTALL, REGISTRY_LOGIN } from './process-docs';
+import { DISTRIBUTED_PACKAGES, NPMRC, REGISTRY_INSTALL, REGISTRY_LOGIN } from './process-docs';
 import { DOCS_LINKS, loadReleaseContext, type ReleaseContext } from './release-context';
 import { PACKAGE_VERSION } from './release-state';
+import { copyStorybookText } from './storybook-toast';
 
 @Component({
   selector: 'pds-docs-release',
-  imports: [Message, DocsCodeComponent, DocsLinkComponent],
+  imports: [Message, ButtonModule, DocsCodeComponent, DocsLinkComponent],
   templateUrl: './docs-release.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -49,6 +51,11 @@ export class DocsReleaseComponent {
   protected readonly npmrc = NPMRC;
   protected readonly login = REGISTRY_LOGIN;
   protected readonly registryInstall = REGISTRY_INSTALL;
+  protected readonly packageNames = DISTRIBUTED_PACKAGES.map((pkg) => pkg.name).join(' ');
+
+  protected copyPackageNames(): void {
+    void copyStorybookText(this.packageNames);
+  }
 
   constructor() {
     void loadReleaseContext().then((context) => this.loaded.set(context));
