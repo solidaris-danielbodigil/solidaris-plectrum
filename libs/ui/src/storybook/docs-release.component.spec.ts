@@ -9,7 +9,10 @@ describe('release installation guidance', () => {
   beforeEach(() => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('', { status: 404 }));
   });
-  afterEach(() => vi.restoreAllMocks());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   async function render(context: ReturnType<typeof releaseContextFrom>) {
     await TestBed.configureTestingModule({ imports: [DocsReleaseComponent] }).compileComponents();
@@ -21,14 +24,20 @@ describe('release installation guidance', () => {
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('sends application teams to the published guide without fictitious archive paths', async () => {
+  it('lets application teams copy all package names and find the published guide', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } });
     const el = await render({ kind: 'development', reason: 'no-release-record' });
     const firstLink = el.querySelector('a');
     expect(firstLink?.getAttribute('href')).toBe(DOCS_LINKS.latestInstall);
     expect(firstLink?.textContent).toContain('Open the installation guide of the latest release');
+    const copy = Array.from(el.querySelectorAll('button')).find((button) => button.textContent?.includes('Copy all package names'));
+    expect(copy).toBeDefined();
+    copy!.click();
+    await Promise.resolve();
+    expect(writeText).toHaveBeenCalledWith(DISTRIBUTED_PACKAGES.map((pkg) => pkg.name).join(' '));
     expect(el.textContent).not.toContain('./path/to/');
     expect(el.querySelector('details')).toBeNull();
-    expect(el.querySelector('pre')).toBeNull();
   });
 
   it('keeps exact registry install commands for a matching recorded release', async () => {
