@@ -42,7 +42,7 @@
     "@angular/build": "21.2.14",
     "@angular/cli": "21.2.14",
     "@angular/compiler-cli": "21.2.16",
-    "@solidaris-danielbodigil/pds-devkit": "0.7.2",
+    "@solidaris-danielbodigil/pds-devkit": "0.7.3",
     "@storybook/addon-a11y": "^10.6.0",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/addon-mcp": "^10.6.0",
