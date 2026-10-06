@@ -2,20 +2,15 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "styles-docs-control-fixed",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-styles",
-        "bump": "patch"
-      }
-    ],
-    "summary": "Docs search fields keep a fixed width while typing: `.c-docs-control--fixed` sizes the input to 24rem, clamped to its column, instead of growing and shrinking with each keystroke. This ships the change from `add90a1`, which reached `libs/styles` after 2.1.0 was published without a version bump."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris-danielbodigil/pds-ui",
+    "version": "2.1.1",
+    "changes": [],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris-danielbodigil/pds-ui",
     "version": "2.1.0",
@@ -121,6 +116,12 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   },
   {
     "packageName": "@solidaris-danielbodigil/pds-plectrum",
+    "version": "2.1.1",
+    "changes": [],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-plectrum",
     "version": "2.1.0",
     "changes": [],
     "notes": ""
@@ -195,6 +196,17 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
       {
         "bump": "patch",
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-styles",
+    "version": "2.1.1",
+    "changes": [
+      {
+        "bump": "patch",
+        "text": "846506d: Docs search fields keep a fixed width while typing: `.c-docs-control--fixed` sizes the input to 24rem, clamped to its column, instead of growing and shrinking with each keystroke. This ships the change from `add90a1`, which reached `libs/styles` after 2.1.0 was published without a version bump."
       }
     ],
     "notes": ""
