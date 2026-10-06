@@ -34,8 +34,11 @@ function adapters() {
   return result;
 }
 
-/** Recommended endpoints for a new project. Figma authenticates with OAuth in the editor; Storybook is the application's own. */
-export const recommendedMcp = { primeNg: 'https://primeng.org/mcp', figma: 'https://mcp.figma.com/mcp', storybook: 'http://localhost:6006/mcp' };
+/**
+ * Recommended endpoints for a new project. Figma authenticates with OAuth in the editor; Storybook is the application's own.
+ * PrimeNG is `true`: its MCP server is the stdio package below, not a URL.
+ */
+export const recommendedMcp = { primeNg: true, figma: 'https://mcp.figma.com/mcp', storybook: 'http://localhost:6006/mcp' };
 
 /** The offline Plectrum server runs the installed toolkit with node, so no shell or npx resolution is needed on Windows. */
 const plectrumServer = {
@@ -43,11 +46,32 @@ const plectrumServer = {
   args: ['${workspaceFolder}/node_modules/@solidaris-danielbodigil/pds-devkit/bin/plectrum.mjs', 'mcp', '--root', '${workspaceFolder}'],
 };
 
+/** PrimeNG publishes its MCP server as an npm package; https://primeng.org/mcp redirects to a page that does not answer MCP. */
+export const primeNgServer = {
+  command: 'npx',
+  args: ['-y', '-p', '@primeng/mcp@21.1.9', '-p', '@modelcontextprotocol/sdk@1.25.2', 'primeng-mcp'],
+};
+
+/** Configs written up to 0.7.1 recommended this URL; read it as "use the stdio server". */
+const legacyPrimeNgUrl = /^https?:\/\/primeng\.(org|dev)\/mcp\/?$/;
+
+/** `true` or the legacy URL → stdio package; another http(s) URL → that remote server; anything else → not configured. */
+export function primeNgSetting(value) {
+  if (value === true || (typeof value === 'string' && legacyPrimeNgUrl.test(value))) return 'stdio';
+  if (typeof value === 'string' && /^https?:\/\//.test(value)) return value;
+  return null;
+}
+
 function desiredServers(config, editor) {
   const mcp = config.mcp ?? {};
-  const endpoints = { 'plectrum-primeng': mcp.primeNg, 'plectrum-figma': mcp.figma, 'plectrum-storybook': mcp.storybook };
+  const stdio = (server) => (editor === 'cursor' ? server : { type: 'stdio', ...server });
+  const primeNg = primeNgSetting(mcp.primeNg);
+  const endpoints = { 'plectrum-primeng': primeNg === 'stdio' ? null : primeNg, 'plectrum-figma': mcp.figma, 'plectrum-storybook': mcp.storybook };
   const remote = Object.entries(endpoints).filter(([, url]) => typeof url === 'string' && /^https?:\/\//.test(url)).map(([name, url]) => [name, editor === 'cursor' ? { url } : { type: 'http', url }]);
-  const local = mcp.plectrum === false ? [] : [['plectrum', editor === 'cursor' ? plectrumServer : { type: 'stdio', ...plectrumServer }]];
+  const local = [
+    ...(mcp.plectrum === false ? [] : [['plectrum', stdio(plectrumServer)]]),
+    ...(primeNg === 'stdio' ? [['plectrum-primeng', stdio(primeNgServer)]] : []),
+  ];
   return Object.fromEntries([...local, ...remote]);
 }
 

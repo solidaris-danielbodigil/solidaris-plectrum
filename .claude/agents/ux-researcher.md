@@ -1,13 +1,7 @@
 ---
-name: UX Researcher
+name: ux-researcher
 description: Inspects candidate nodes in Custom components and token variables in PrimeNG 21, then produces a structured design brief. Read-only.
-user-invocable: false
-tools:
-  - read
-  - search
-  - fetch
-  - figma/*
-  - primeng/*
+disallowedTools: Edit, Write, NotebookEdit
 ---
 
 <!-- Generated from .ai/agents by contracts:generate. Do not edit. -->

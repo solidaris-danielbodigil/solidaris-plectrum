@@ -2,11 +2,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { asset, configAt, flag, installedDocsUrl, packageJson, packageRoot, projectPath, readJson, requiredFlag } from '../src/common.mjs';
-import { initialize, recommendedMcp, update } from '../src/managed.mjs';
+import { initialize, primeNgServer, primeNgSetting, recommendedMcp, update } from '../src/managed.mjs';
 import { bootstrap } from '../src/bootstrap.mjs';
 import { candidateCheck, check, compatibility, tokenCheck, validateSchema } from '../src/checks.mjs';
 import { adoptionReport, adoptionSubmit, candidateExport, candidateSubmit, candidateWithdraw, scaffold, usageReportStatus } from '../src/workflows.mjs';
-import { probeMcp } from '../src/mcp.mjs';
+import { probeMcp, probeStdioMcp } from '../src/mcp.mjs';
 import { serveStdio } from '../src/mcp-server.mjs';
 import { recordEvent } from '../src/telemetry.mjs';
 import { consumerCommands, renderHelp, subcommandOf } from '../src/process.mjs';
@@ -56,6 +56,14 @@ const handlers = {
     console.log(config.mcp?.plectrum === false ? 'plectrum: offline MCP server disabled (mcp.plectrum is false)' : 'plectrum: offline MCP server over stdio, started by the editor from .cursor/mcp.json and .vscode/mcp.json');
     for (const [name, url] of Object.entries(config.mcp ?? {})) {
       if (name === 'plectrum') continue;
+      if (name === 'primeNg' && primeNgSetting(url) === 'stdio') {
+        const note = url === true ? '' : `; ${url} is not an MCP endpoint, so set mcp.primeNg to true in .plectrum/config.json`;
+        if (args.includes('--live')) {
+          const result = await probeStdioMcp(primeNgServer);
+          console.log(result.ok ? `primeNg: MCP initialized over stdio; capabilities ${result.capabilities.join(', ') || 'none'}${note}` : `primeNg: unavailable over stdio (${result.error})${note}`);
+        } else console.log(`primeNg: stdio server ${primeNgServer.args.find((arg) => arg.startsWith('@primeng/'))}${note}; pass --live to verify MCP initialize capabilities`);
+        continue;
+      }
       if (!url) console.log(`${name}: not configured${recommendedMcp[name] ? `; recommended ${recommendedMcp[name]} in .plectrum/config.json, then plectrum update` : ''}`);
       else if (args.includes('--live')) await probe(name, url);
       else console.log(`${name}: configured ${url}; pass --live to verify MCP initialize capabilities`);

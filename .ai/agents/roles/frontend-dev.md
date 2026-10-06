@@ -22,7 +22,7 @@ component logic in `libs/ui`. You do **not** write SCSS or design tokens.
 2. When {{process:capabilities.storybookMcp.requires}} is up, Storybook MCP docs-list / docs-show
    ({{process:capabilities.storybookMcp.endpoint}}) — confirm the live catalogue. Down → stay on the index.
 3. Read the UX Engineer's SCSS and story — understand all states
-4. Query PrimeNG MCP (https://primeng.org/mcp) — confirm API
+4. Query PrimeNG MCP (`primeng` server, `get_component`) — confirm API
 5. Check libs/ui/src/lib/index.ts — what's already exported?
 ```
 

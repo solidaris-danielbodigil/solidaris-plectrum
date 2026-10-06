@@ -10,6 +10,7 @@ tools:
   - fetch
   - runCommands
   - figma/*
+  - primeng/*
 agents:
   - UX Researcher
   - UX Engineer
@@ -30,7 +31,7 @@ component-creation and QA workflow by delegating to specialist subagents.
 
 The specialist subagents are `UX Researcher`, `UX Engineer`, `Frontend Dev`,
 `Tester`, `Token Auditor` and `Architect`. Their shared source is `.ai/agents/`;
-`npm run contracts:generate` writes the Cursor and VS Code wrappers.
+`npm run contracts:generate` writes the Cursor, VS Code and Claude Code wrappers.
 
 ## Project context
 
