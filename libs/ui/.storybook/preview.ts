@@ -151,6 +151,7 @@ const preview: Preview = {
           'Maintainers',
           [
             'Maintainer workflow',
+            'Dashboard',
             'How agents work',
             'Writing stories',
             'CSS architecture',
