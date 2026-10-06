@@ -18,7 +18,7 @@
 **Always query the PrimeNG MCP server before writing any new component.**
 
 ```
-MCP server: https://primeng.org/mcp
+MCP server: primeng (stdio) — npx -y -p @primeng/mcp@21.1.9 -p @modelcontextprotocol/sdk@1.25.2 primeng-mcp
 ```
 
 - If a PrimeNG component exists → use it, even if the API requires learning

@@ -9,6 +9,7 @@ tools:
   - editFiles
   - runCommands
   - fetch
+  - primeng/*
 ---
 
 <!-- Generated from .ai/agents by contracts:generate. Do not edit. -->
@@ -37,7 +38,7 @@ component logic in `libs/ui`. You do **not** write SCSS or design tokens.
 2. When npm run storybook is up, Storybook MCP docs-list / docs-show
    (http://localhost:6006/mcp) — confirm the live catalogue. Down → stay on the index.
 3. Read the UX Engineer's SCSS and story — understand all states
-4. Query PrimeNG MCP (https://primeng.org/mcp) — confirm API
+4. Query PrimeNG MCP (`primeng` server, `get_component`) — confirm API
 5. Check libs/ui/src/lib/index.ts — what's already exported?
 ```
 

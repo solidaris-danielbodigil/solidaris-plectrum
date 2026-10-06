@@ -9,6 +9,7 @@ import { bootstrap } from './bootstrap.mjs';
 import { scaffold } from './workflows.mjs';
 import { candidateCheck } from './checks.mjs';
 import { configAt, packageRoot, readJson } from './common.mjs';
+import { primeNgServer } from './managed.mjs';
 
 const repository = path.resolve(packageRoot, '../..');
 const starter = path.join(repository, 'tools/consumers/starter');
@@ -80,6 +81,9 @@ test('bootstrap configures the offline Plectrum MCP server, Figma and the applic
   const vscode = readJson(path.join(root, '.vscode/mcp.json')).servers;
   assert.deepEqual(cursor.plectrum, { command: 'node', args: server });
   assert.deepEqual(vscode.plectrum, { type: 'stdio', command: 'node', args: server });
+  assert.equal(readJson(path.join(root, '.plectrum/config.json')).mcp.primeNg, true);
+  assert.deepEqual(cursor['plectrum-primeng'], primeNgServer);
+  assert.deepEqual(vscode['plectrum-primeng'], { type: 'stdio', ...primeNgServer });
   assert.deepEqual(cursor['plectrum-figma'], { url: 'https://mcp.figma.com/mcp' });
   assert.deepEqual(vscode['plectrum-storybook'], { type: 'http', url: 'http://localhost:6006/mcp' });
   const main = fs.readFileSync(path.join(root, '.storybook/main.ts'), 'utf8');

@@ -1,7 +1,6 @@
 ---
-name: Frontend Dev
+name: frontend-dev
 description: Implements Angular components in libs/ui — TypeScript class, HTML template, accessibility, PrimeNG wiring, inputs/outputs, exports.
-readonly: false
 ---
 
 <!-- Generated from .ai/agents by contracts:generate. Do not edit. -->

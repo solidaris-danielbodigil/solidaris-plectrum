@@ -40,7 +40,7 @@ For each extracted value, identify the closest existing token by searching
 
 ### 3 — Confirm PrimeNG component
 
-Query the PrimeNG MCP (`https://primeng.org/mcp`):
+Query the PrimeNG MCP (`primeng` server, `list_components` / `get_component`):
 - Does an existing PrimeNG component cover this use case?
 - If yes → name the component and list the relevant props/slots
 - If no → note "custom component required"

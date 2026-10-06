@@ -27,7 +27,7 @@ Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.
 | Server | Purpose |
 | --- | --- |
 | Figma (`http://127.0.0.1:3845/mcp`) | Custom components for candidate designs; PrimeNG 21 for all token variables |
-| PrimeNG (`https://primeng.org/mcp`) | Component API, props, variants, examples |
+| PrimeNG (stdio `@primeng/mcp`, server `primeng`) | Component API, props, variants, examples |
 | Storybook (`http://localhost:6006/mcp`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `npm run storybook` |
 
 Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Storybook MCP when the catalogue is up — `docs-list` before inventing. 4. Custom code only when none cover the need. Offline fallback: `.ai/contracts/index.json`. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.

@@ -20,7 +20,7 @@
 | Server | URL | Use for |
 |---|---|---|
 | Figma | `http://127.0.0.1:3845/mcp` | Inspect Custom components candidates and PrimeNG 21 variables. Write each onto its own Figma **branch** via `use_figma` (never either main file) |
-| PrimeNG | `https://primeng.org/mcp` | Query component API, props, slots, variants, examples |
+| PrimeNG | stdio: `npx -y -p @primeng/mcp@21.1.9 -p @modelcontextprotocol/sdk@1.25.2 primeng-mcp` | Query component API, props, slots, variants, examples |
 | Storybook | `http://localhost:6006/mcp` | Live catalogue — `docs-list`, `docs-show`, `stories-preview`. Needs `npm run storybook`. |
 
 Order of operations:

@@ -1,24 +1,16 @@
-<!-- editor:cursor -->
-# Solidaris — Cursor Rules
-<!-- /editor -->
-<!-- editor:vscode -->
-# Solidaris — GitHub Copilot Instructions
-<!-- /editor -->
-<!-- editor:claude -->
 # Solidaris — Claude Code Instructions
-<!-- /editor -->
 
 Angular CLI workspace (`angular.json`) · Angular latest · PrimeNG latest · Plectrum design system.
-The local applications ({{applications}}) share one source of truth for components, styles, and utilities.
+The local applications (iSHARE, iCRM, iGED) share one source of truth for components, styles, and utilities.
 
 This file is the always-on baseline. The knowledge base is `.ai/` — start at `.ai/README.md`.
 Detailed rules live in `.ai/rules/01…10`; how-to guides in `.ai/skills/`; agent contracts in `.ai/contracts/`.
-Agent roles are authored once in `.ai/agents/`; `{{command:generate}}` writes this file and the editor agents.
+Agent roles are authored once in `.ai/agents/`; `npm run contracts:generate` writes this file and the editor agents.
 
 ## Workspace
 
 ```
-{{applicationPaths}}   ← apps only — no shared logic here
+apps/ishare/  apps/icrm/  apps/iged/   ← apps only — no shared logic here
 libs/ui/                   ← SSOT: shared Angular components · Storybook in libs/ui/.storybook
 libs/styles/               ← SSOT: ITCSS SCSS — tokens, objects, components, utilities
 libs/plectrum/             ← SSOT: PrimeNG theme integration (providePlectrum(), presets, tokens.json)
@@ -28,23 +20,15 @@ tools/                     ← pds:component generator, token pipeline scripts, 
 
 ## Agents
 
-<!-- editor:cursor -->
-Select the **Plectrum** agent (`.cursor/agents/plectrum.md`) for full component builds. It delegates to UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor.
-<!-- /editor -->
-<!-- editor:vscode -->
-Switch to the **Plectrum** agent in the chat dropdown (`.github/agents/plectrum.agent.md`) for full component builds. It delegates to UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor.
-<!-- /editor -->
-<!-- editor:claude -->
 Run `/plectrum` (`.claude/skills/plectrum/SKILL.md`) for full component builds. It delegates to the UX Researcher, Architect, UX Engineer, Frontend Dev, Tester and Token Auditor subagents in `.claude/agents/`.
-<!-- /editor -->
 
 ## MCP servers — query before implementing
 
 | Server | Purpose |
 | --- | --- |
-| Figma (`{{mcp:figma}}`) | Custom components for candidate designs; PrimeNG 21 for all token variables |
+| Figma (`http://127.0.0.1:3845/mcp`) | Custom components for candidate designs; PrimeNG 21 for all token variables |
 | PrimeNG (stdio `@primeng/mcp`, server `primeng`) | Component API, props, variants, examples |
-| Storybook (`{{process:capabilities.storybookMcp.endpoint}}`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `{{process:capabilities.storybookMcp.requires}}` |
+| Storybook (`http://localhost:6006/mcp`) | Live catalogue (`docs-list`, `docs-show`, `stories-preview`) — needs `npm run storybook` |
 
 Order: 1. PrimeNG MCP — does a component exist? 2. Figma MCP — extract exact specs. 3. Storybook MCP when the catalogue is up — `docs-list` before inventing. 4. Custom code only when none cover the need. Offline fallback: `.ai/contracts/index.json`. Plectrum doc and Figma UI Kit links: `.ai/skills/01-design-system.md`.
 
@@ -65,11 +49,13 @@ Short form — full detail and examples in `.ai/rules/`:
 
 ## Workflow
 
-- **Scaffold**: `{{command:scaffold}}` with a registered team — creates metadata, CSF/MDX figures and ITCSS styles. Core styles join the main stylesheet; candidate styles stay Storybook-only outside the published styles tree. `{{command:generate}}` owns the metadata registry, index, eligible package exports and these agent files; never edit those generated files. Teams, commands and contexts come from `.ai/contracts/{registry,process}.json`.
-- **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when the catalogue is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `{{command:check}}` fails props drift. {{process:capabilities.storybookMcp.note}} CI runs `{{process:capabilities.storybookMcp.gate}}`.
+- **Scaffold**: `npm run pds:component -- --name=<name> --owner=<team>` with a registered team — creates metadata, CSF/MDX figures and ITCSS styles. Core styles join the main stylesheet; candidate styles stay Storybook-only outside the published styles tree. `npm run contracts:generate` owns the metadata registry, index, eligible package exports and these agent files; never edit those generated files. Teams, commands and contexts come from `.ai/contracts/{registry,process}.json`.
+- **Contracts**: load `.ai/contracts/index.json` (offline map) → Storybook MCP `docs-list` / `docs-show` when the catalogue is up → the colocated `{name}.metadata.ts` → the protocol (`.ai/contracts/protocols/component-creation.md` is the creation gate). `npm run contracts:check` fails props drift. test-run uses the same @storybook/addon-vitest runner as the testing widget. It is local feedback, not the CI gate. CI runs `npm run test-storybook`.
 - **Token pipeline**: run `tokens:audit | build | lint | check-prefix | propose | apply` as tools — never edit `*.generated.scss` or `tokens.generated.ts` by hand. Reference: Storybook → Docs → Token pipeline → Commands.
 - **Before starting**: read `.ai/README.md`, check `.ai/questions/`, make sure tests pass.
 
 ## Typography
 
 `1rem = 14px`. Agenda = display, Open Sans = body/labels — always via `--pds-text-*` tokens, never hardcoded `font-size` / `font-family`.
+
+<!-- Generated from .ai/agents by contracts:generate. Do not edit. -->

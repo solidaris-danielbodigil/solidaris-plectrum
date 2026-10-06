@@ -28,6 +28,7 @@ Ce document suit les chantiers ouverts après la review du Storybook publié. Ch
 - **Storybook** : `http://localhost:6006/mcp`, servi par le Storybook **de l'application** (`npm run pds:storybook`) une fois `@storybook/addon-mcp` ajouté (chantier 3). Il expose les composants locaux de l'équipe, pas le catalogue Core.
 - **Plectrum** : nouveau serveur stdio hors ligne (chantier 2), toujours configuré, car il ne dépend ni du réseau ni d'un compte.
 - Les configurations existantes gardent leurs `null` (fichier possédé par l'équipe) ; `plectrum doctor` indique les valeurs recommandées.
+- **PrimeNG** (mise à jour du 7 octobre 2026) : `https://primeng.org/mcp` n'est pas un serveur MCP (redirection vers `primeng.dev/mcp`, qui répond 404). Le serveur est le paquet stdio `@primeng/mcp`. `mcp.primeNg` vaut désormais `true` ; l'ancienne URL est lue comme `true`, donc `plectrum update` remplace le serveur `plectrum-primeng` qu'il avait écrit. Une autre URL http(s) reste un serveur distant.
 
 - [x] `tools/devkit/src/managed.mjs` : valeurs par défaut de `init`, serveurs stdio acceptés.
 - [x] `plectrum doctor` : conseil pour les valeurs `null`.

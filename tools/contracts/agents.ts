@@ -1,11 +1,11 @@
 // Editor wrappers for the Plectrum-checkout agents, generated from .ai/agents.
-// One role text per agent; editor-only lines sit in <!-- editor:cursor|vscode --> blocks.
+// One role text per agent; editor-only lines sit in <!-- editor:cursor|vscode|claude --> blocks.
 // Commands, capabilities and identities resolve from process.json, registry.json and
 // the editor MCP configuration, so a changed command reaches every agent in one edit.
 import fs from 'node:fs';
 import path from 'node:path';
 
-export type Editor = 'cursor' | 'vscode';
+export type Editor = 'cursor' | 'vscode' | 'claude';
 
 interface Role {
   slug: string;
@@ -35,7 +35,7 @@ export interface GuidanceContext {
 /** Keep the requested editor's blocks, drop the others, then resolve every placeholder. */
 export function renderGuidance(text: string, editor: Editor, context: GuidanceContext): string {
   const local = context.registry.applications.filter((app) => app.kind === 'local-demo');
-  const blocks = text.replace(/<!-- editor:(cursor|vscode) -->\n([\s\S]*?)<!-- \/editor -->\n?/g, (_, name: Editor, body: string) => (name === editor ? body : ''));
+  const blocks = text.replace(/<!-- editor:(cursor|vscode|claude) -->\n([\s\S]*?)<!-- \/editor -->\n?/g, (_, name: Editor, body: string) => (name === editor ? body : ''));
   return blocks.replace(/\{\{([A-Za-z]+)(?::([A-Za-z0-9.]+))?\}\}/g, (token, kind: string, key?: string) => {
     if (kind === 'command' && key) {
       const command = context.process.commands[key];
@@ -52,9 +52,12 @@ export function renderGuidance(text: string, editor: Editor, context: GuidanceCo
 }
 
 function frontmatter(role: Role, editor: Editor): string {
-  const lines = ['---', `name: ${role.name}`, `description: ${role.description}`];
+  // Claude Code addresses subagents and skills by slug; the coordinator becomes the /plectrum skill.
+  const lines = ['---', `name: ${editor === 'claude' ? role.slug : role.name}`, `description: ${role.description}`];
   if (editor === 'cursor') lines.push(`readonly: ${role.readonly}`);
-  else {
+  else if (editor === 'claude') {
+    if (role.readonly) lines.push('disallowedTools: Edit, Write, NotebookEdit');
+  } else {
     if (!role.userInvocable) lines.push('user-invocable: false');
     lines.push('tools:', ...role.vscodeTools.map((tool) => `  - ${tool}`));
     if (role.delegates?.length) lines.push('agents:', ...role.delegates.map((name) => `  - ${name}`));
@@ -72,13 +75,23 @@ export function agentOutputs(root: string, context: GuidanceContext): Map<string
   for (const role of roles) {
     for (const name of role.delegates ?? []) if (!names.has(name)) throw new Error(`${role.name} delegates to unknown agent ${name}`);
     const body = read(`roles/${role.slug}.md`);
-    for (const editor of ['cursor', 'vscode'] as const) {
-      const file = editor === 'cursor' ? `.cursor/agents/${role.slug}.md` : `.github/agents/${role.slug}.agent.md`;
+    for (const editor of ['cursor', 'vscode', 'claude'] as const) {
+      const file = {
+        cursor: `.cursor/agents/${role.slug}.md`,
+        vscode: `.github/agents/${role.slug}.agent.md`,
+        claude: role.userInvocable ? `.claude/skills/${role.slug}/SKILL.md` : `.claude/agents/${role.slug}.md`,
+      }[editor];
       outputs.set(file, `${frontmatter(role, editor)}\n\n${marker}\n\n${renderGuidance(body, editor, context).trimEnd()}\n`);
     }
   }
   const baseline = read('baseline.md');
   outputs.set('.cursorrules', `${renderGuidance(baseline, 'cursor', context).trimEnd()}\n\n${marker}\n`);
   outputs.set('.github/copilot-instructions.md', `${renderGuidance(baseline, 'vscode', context).trimEnd()}\n\n${marker}\n`);
+  outputs.set('CLAUDE.md', `${renderGuidance(baseline, 'claude', context).trimEnd()}\n\n${marker}\n`);
+  // Claude Code reads project MCP servers from .mcp.json. Mirror Cursor's servers: PrimeNG only answers as the
+  // stdio package everywhere: its https://primeng.org/mcp URL does not serve MCP.
+  const cursorMcp = JSON.parse(fs.readFileSync(path.join(root, '.cursor/mcp.json'), 'utf8')).mcpServers as Record<string, { url?: string }>;
+  const servers = Object.fromEntries(Object.entries(cursorMcp).map(([name, server]) => [name, server.url ? { type: 'http', ...server } : { type: 'stdio', ...server }]));
+  outputs.set('.mcp.json', `${JSON.stringify({ mcpServers: servers }, null, 2)}\n`);
   return outputs;
 }

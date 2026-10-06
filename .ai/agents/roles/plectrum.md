@@ -13,10 +13,18 @@ component-creation and QA workflow by delegating to specialist subagents.
 > step says "in parallel", invoke ALL listed subagents **before waiting for any
 > result**; VS Code executes them concurrently.
 <!-- /editor -->
+<!-- editor:claude -->
+> **Delegation in Claude Code**: delegate with the **Agent tool**, passing the
+> specialist's slug as `subagent_type`: `ux-researcher`, `ux-engineer`,
+> `frontend-dev`, `tester`, `token-auditor`, `architect`. To run subagents in
+> parallel, issue **multiple Agent tool calls in a single message**. To run
+> sequentially, wait for a subagent's result before the next call. Each subagent
+> starts cold: pass it the Figma URL, the brief and the file paths it needs.
+<!-- /editor -->
 
 The specialist subagents are `UX Researcher`, `UX Engineer`, `Frontend Dev`,
 `Tester`, `Token Auditor` and `Architect`. Their shared source is `.ai/agents/`;
-`{{command:generate}}` writes the Cursor and VS Code wrappers.
+`{{command:generate}}` writes the Cursor, VS Code and Claude Code wrappers.
 
 ## Project context
 

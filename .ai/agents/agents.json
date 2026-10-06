@@ -9,7 +9,7 @@
       "summary": "Coordinator, invoked with /plectrum. Delegates to the specialists below; the only user-facing agent",
       "readonly": false,
       "userInvocable": true,
-      "vscodeTools": ["agent", "read", "search", "edit", "editFiles", "fetch", "runCommands", "figma/*"],
+      "vscodeTools": ["agent", "read", "search", "edit", "editFiles", "fetch", "runCommands", "figma/*", "primeng/*"],
       "delegates": ["UX Researcher", "UX Engineer", "Frontend Dev", "Tester", "Token Auditor", "Architect"]
     },
     {
@@ -19,7 +19,7 @@
       "summary": "Figma inspection, token extraction, design brief — read-only",
       "readonly": true,
       "userInvocable": false,
-      "vscodeTools": ["read", "search", "fetch", "figma/*"]
+      "vscodeTools": ["read", "search", "fetch", "figma/*", "primeng/*"]
     },
     {
       "slug": "ux-engineer",
@@ -37,7 +37,7 @@
       "summary": "Angular implementation: class, template, accessibility, PrimeNG wiring",
       "readonly": false,
       "userInvocable": false,
-      "vscodeTools": ["read", "search", "edit", "editFiles", "runCommands", "fetch"]
+      "vscodeTools": ["read", "search", "edit", "editFiles", "runCommands", "fetch", "primeng/*"]
     },
     {
       "slug": "tester",
