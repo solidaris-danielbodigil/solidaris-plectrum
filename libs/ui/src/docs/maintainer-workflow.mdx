@@ -33,6 +33,7 @@ npm run storybook`} />
     ['Contracts', `${processContract.contexts.plectrum.contracts} — process, registry, compatibility, schemas; generated index`],
     ['Agent roles', '.ai/agents — shared role text; contracts:generate writes the Cursor and VS Code wrappers'],
     ['Scaffolder + token scripts', 'tools/generators, tools/tokens'],
+    ['Usage, agent effect, recommendations', 'apps/dashboard + libs/insights — read it on the Dashboard page'],
   ]}
 />
 
@@ -127,3 +128,7 @@ Every step, read from `.github/workflows/ci.yml` (setup steps omitted):
 Review rules (Code Owner review, design-system review under `libs/`, token risk levels) are in `.ai/rules/07-version-control.md` and `.ai/contracts/protocols/token-audit.md`. See also [Releases and versioning](?path=/docs/docs-releases-and-versioning--docs) and [Token pipeline → Commands](?path=/docs/docs-token-pipeline--docs#commands).
 
 When a stage fails, follow the <a href={`${REGISTRY.repository}/blob/main/docs/handoff/pipeline-recovery.md`}>pipeline recovery guide</a>.
+
+## After the merge
+
+What teams do with what you shipped — usage, agent effect, the candidate pipeline and what Core should pick up next — is on the [Dashboard](?path=/docs/docs-dashboard--docs), not in this Storybook.

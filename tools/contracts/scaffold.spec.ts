@@ -47,6 +47,9 @@ test(
         'libs/ui',
         'libs/styles',
         'libs/plectrum',
+        // Not packaged, but the Storybook tsconfig typechecked below reads it
+        // through @pds-internal/insights (Maintainers/Dashboard).
+        'libs/insights',
       ]) {
         fs.cpSync(path.join(root, file), path.join(fixture, file), {
           recursive: true,
