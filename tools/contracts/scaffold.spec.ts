@@ -39,6 +39,7 @@ test(
         '.ai/skills',
         '.github/workflows/ci.yml',
         '.vscode/mcp.json',
+        '.cursor/mcp.json',
         'tools/adoption',
         'tools/contracts',
         'tools/devkit',
