@@ -1,0 +1,83 @@
+import { Meta, Source, Story, Unstyled } from '@storybook/addon-docs/blocks';
+import { DocsTable } from '../../.storybook/docs-table';
+import { DASHBOARD_URL, REGISTRY } from '../storybook/process-docs';
+import { DASHBOARD_RULES, DASHBOARD_SECTIONS, sectionUrl } from '../storybook/dashboard-docs';
+import * as Figures from './dashboard.stories';
+
+<Meta title="Maintainers/Dashboard" id="docs-dashboard" />
+
+export const repoFile = (path) => `${REGISTRY.repository}/blob/main/${path}`;
+
+# Dashboard
+
+> **In short.** For the core team. The <a href={DASHBOARD_URL}>Plectrum dashboard</a> is where Core sees whether the design system is used, whether the agent helps and what to do next. It is built from facts already committed in the repository plus the usage reports applications send; the recommendations are computed in your browser, with today's date. This page says what each screen answers and what to do with the answer.
+
+Numbers that belong to a release live in Storybook. Numbers about *teams* — who uses what, whose submission is waiting, which agent search fails — live on the dashboard, because they change daily and should not be frozen into a release bundle.
+
+## Open it
+
+Published beside this Storybook at <a href={DASHBOARD_URL}>{DASHBOARD_URL}</a>, and built on every pull request. Locally, the data is generated first and the dashboard is served from the same checkout:
+
+<Source language="bash" code={`npm run start:dashboard   # insights:generate, then the dev server
+npm run insights:generate # regenerate the data without restarting`} />
+
+Routing is hash-based, so every section and every drill-down is a link you can paste into an issue.
+
+## Read it in this order
+
+<Unstyled><Story of={Figures.Routine} /></Unstyled>
+
+## The sections
+
+<Unstyled><Story of={Figures.Sections} /></Unstyled>
+
+## Reported or Demo
+
+<Unstyled><Story of={Figures.Demo} /></Unstyled>
+
+## Where the numbers come from
+
+<Unstyled><Story of={Figures.Flow} /></Unstyled>
+
+Every fact is traceable to a file in the repository, and each recommendation names the file it was read from. The collector is the authority on the full list:
+
+<DocsTable
+  headers={['Facts', 'Read from', 'Written by']}
+  rows={[
+    ['Components, status, owner, relationships', <code>.ai/contracts/index.json</code>, 'contracts:generate, from each component metadata'],
+    ['Catalogue the toolkit ships', <code>tools/devkit/assets/catalogue.json</code>, 'contracts:generate'],
+    ['Agent search quality', <code>libs/ui/src/storybook/agent-eval.generated.ts</code>, 'The reference-request evaluation, replayed on every pull request'],
+    ['Candidate pipeline', <code>.ai/candidates/**</code>, 'candidate:record, one JSON record per step'],
+    ['Token sync and proposals', <code>libs/ui/src/storybook/sync-report.generated.ts</code>, 'The Figma sync workflow and tokens:propose'],
+    ['Releases and pending work', <code>.changeset/*.md</code>, 'Changesets and release tags'],
+    ['Usage, local components, agent counts', <code>.ai/adoption/*.json</code>, 'The adoption report in each application pipeline'],
+    ['The collector itself', <code>tools/insights/generate.ts</code>, <a href={repoFile('tools/insights/generate.ts')}>Read it when a number is unclear</a>],
+  ]}
+/>
+
+The generated module is **gitignored**. It is a pure function of the checkout, so committing it would change on every commit and churn every pull request. Reviewing it in a diff is not a thing you have to do.
+
+## What a recommendation carries
+
+<Unstyled><Story of={Figures.Card} /></Unstyled>
+
+Recommendations are deduplicated by a stable `rule:subject` id and ranked by severity, applications affected and volume. The same id stays the same between runs, so you can refer to one in an issue.
+
+## Every rule
+
+Rules live in <a href={repoFile('libs/insights/src/rules')}><code>libs/insights/src/rules</code></a>; the numbers below come from `DEFAULT_THRESHOLDS` and change with the code, not with this page.
+
+<DocsTable
+  headers={['Rule', 'What it means, and when it fires', 'What to do']}
+  rows={Object.entries(DASHBOARD_RULES).map(([id, rule]) => [
+    <><code>{id}</code><br /><a href={sectionUrl(rule.section)}>{DASHBOARD_SECTIONS[rule.section].label}</a></>,
+    <>{rule.means}<br /><em>{rule.fires}</em></>,
+    rule.act,
+  ])}
+/>
+
+## Keep it running
+
+<Unstyled><Story of={Figures.Maintenance} /></Unstyled>
+
+The reasoning behind the split between Storybook and the dashboard, the privacy rules and the publication setup are recorded in <a href={repoFile('.ai/decisions/2026-10-03-core-dashboard.md')}>the dashboard decision</a>; the operational runbook is <a href={repoFile('docs/handoff/maintainer-pack.md')}>maintainer pack §9</a>. What the agent counts, and how a team turns it off, is on [Use the Plectrum agent](?path=/docs/start-here-use-the-agent--docs#what-is-measured).
