@@ -37,7 +37,7 @@
     "test-storybook:vitest": "vitest --project=storybook --run",
     "test-storybook:vitest:coverage": "vitest --project=storybook --run --coverage",
     "test-storybook:coverage": "test-storybook --config-dir libs/ui/.storybook --url http://localhost:6006 --coverage --coverageDirectory coverage/storybook",
-    "test-storybook:ci": "concurrently -k -s first -n SB,TEST \"http-server dist/storybook/ui --port 6006 --silent\" \"wait-on http://127.0.0.1:6006/iframe.html && test-storybook --config-dir libs/ui/.storybook --url http://127.0.0.1:6006 --coverage --coverageDirectory coverage/storybook\"",
+    "test-storybook:ci": "concurrently -P -k -s first -n SB,TEST \"http-server dist/storybook/ui --port 6006 --silent\" \"wait-on http://127.0.0.1:6006/iframe.html && test-storybook --config-dir libs/ui/.storybook --url http://127.0.0.1:6006 --coverage --coverageDirectory coverage/storybook {@}\" --",
     "test-storybook:nav": "node tools/scripts/storybook-nav-smoke.mjs",
     "chromatic": "chromatic --exit-zero-on-changes",
     "chromatic:from-build": "chromatic --exit-zero-on-changes --storybook-build-dir dist/storybook/ui",

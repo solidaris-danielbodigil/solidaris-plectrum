@@ -9,6 +9,17 @@ on:
       - main
   workflow_dispatch:
 
+# A newer push to a pull request supersedes its previous run. Every other event gets its own
+# group, so a push to main always finishes: the Pages deploy and the release read its result.
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('ci-pr-{0}', github.event.pull_request.number) || format('ci-{0}', github.sha) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# The npm audit and fund requests add seconds to every install and nothing here reads them.
+env:
+  npm_config_audit: 'false'
+  npm_config_fund: 'false'
+
 jobs:
   intake-guard:
     runs-on: ubuntu-latest
@@ -44,7 +55,9 @@ jobs:
             fi
           fi
 
-  build:
+  # `build` is a required status check, so it stays a single name: it passes when the four
+  # parallel jobs below pass. Those run side by side instead of one after the other.
+  static-checks:
     needs: intake-guard
     runs-on: ubuntu-latest
 
@@ -54,14 +67,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
 
       - name: Audit token drift
         run: npm run tokens:audit
@@ -108,6 +115,23 @@ jobs:
       - name: Metadata props match Angular inputs
         run: npm run contracts:check
 
+      # `ng lint` has no architect target (and no eslint config) yet.
+      # Storybook is built and smoke-tested in the storybook-tests job.
+
+  apps-build:
+    needs: intake-guard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          # The Core dashboard reads scan, catalogue and search-quality trends from git.
+          fetch-depth: 0
+
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
+
       - name: Build applications
         run: npm run build
 
@@ -117,14 +141,60 @@ jobs:
       - name: Build Core dashboard
         run: npm run build:dashboard
 
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
+  # Unit tests stay split to mirror `npm run test:coverage`: ui, then ishare and plectrum.
+  # Add a new Angular test target to one of these two jobs when a project gets one.
+  unit-ui:
+    needs: intake-guard
+    runs-on: ubuntu-latest
 
-      - name: Run tests
-        run: npm run test:coverage
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-      # `ng lint` has no architect target (and no eslint config) yet.
-      # Storybook is built and smoke-tested in the storybook-tests job.
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          playwright: 'true'
+
+      - name: Run ui tests
+        run: npx ng test ui --watch=false --coverage
+
+  unit-ishare:
+    needs: intake-guard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          playwright: 'true'
+
+      - name: Run ishare tests
+        run: npx ng test ishare --watch=false --coverage
+
+      - name: Run plectrum tests
+        run: npx ng test plectrum --watch=false --coverage
+
+  build:
+    needs: [static-checks, apps-build, unit-ui, unit-ishare]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Require every build job to pass
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for result in $RESULTS; do
+            if [[ "$result" != "success" ]]; then
+              echo "A build job did not succeed ($result)." >&2
+              exit 1
+            fi
+          done
 
   pack-smoke:
     needs: intake-guard
@@ -134,17 +204,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
         with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
+          playwright: 'true'
 
       - name: Pack libraries and build a throwaway consumer app
         run: npm run pack:smoke
@@ -152,36 +215,56 @@ jobs:
       - name: Verify package ownership, registry target and release artifacts
         run: npm run release:check
 
-  storybook-tests:
+  # `storybook-tests` is a required status check, so it stays a single name: it passes when
+  # every shard below passes. The shards split the story files across runners and each one
+  # builds Storybook, because rebuilding (about 30 s) is cheaper than handing the build over.
+  storybook-tests-shard:
     needs: intake-guard
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
         with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+          playwright: 'true'
 
       - name: Build Storybook
         run: npm run build-storybook:coverage
 
+      # Once per run, not once per shard.
       - name: Verify toolkit catalogue documentation routes
+        if: ${{ matrix.shard == 1 }}
         run: npm run contracts:docs-check
 
       - name: Run story smoke, interaction, a11y and coverage tests
-        run: npm run test-storybook:ci
+        run: npm run test-storybook:ci -- --shard=${{ matrix.shard }}/3
 
       - name: Cross-page navigation under the Pages sub-path
+        if: ${{ matrix.shard == 1 }}
         run: npm run test-storybook:nav
+
+  storybook-tests:
+    needs: storybook-tests-shard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every Storybook test shard to pass
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for result in $RESULTS; do
+            if [[ "$result" != "success" ]]; then
+              echo "A Storybook test shard did not succeed ($result)." >&2
+              exit 1
+            fi
+          done
 
   chromatic:
     needs: intake-guard
@@ -219,14 +302,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
 
       - name: Build packed libraries
         run: npm run pack:libs
@@ -239,11 +316,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
       - name: Typecheck, test and build
         run: |
           npm run figma-plugin:typecheck
