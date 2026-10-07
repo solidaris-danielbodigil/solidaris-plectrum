@@ -177,6 +177,12 @@ const meta: Meta<ProfileDrawerStoryArgs> = {
     layout: 'padded',
     ...storyDesign(ProfileDrawerMetadata.component.figmaUrl),
   },
+  args: {
+    disabledViews: [],
+    quickActionsDisabled: false,
+    callDisabled: false,
+    emailDisabled: false,
+  },
   argTypes: argTypesFromProps(ProfileDrawerMetadata.props ?? [], {
     view: { control: 'select', options: ['details', 'documents'] },
     position: { control: 'select', options: ['left', 'right', 'top', 'bottom'] },
@@ -247,6 +253,10 @@ export const DisabledActions: Story = {
     quickActionsDisabled: true,
     callDisabled: true,
     emailDisabled: true,
+  },
+  parameters: {
+    // WCAG 1.4.3 exempts inactive components; axe still scores the disabled toggle label.
+    a11y: { config: { rules: [{ id: 'color-contrast', enabled: false }] } },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
