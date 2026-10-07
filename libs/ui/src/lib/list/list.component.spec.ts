@@ -1007,7 +1007,7 @@ describe('ListComponent', () => {
     });
   });
 
-  it('should render status and date inline inside the standard option', () => {
+  it('should render label and date on row one and status on row two inside the standard option', () => {
     fixture.componentRef.setInput('groups', null);
     fixture.componentRef.setInput('items', [
       {
@@ -1046,15 +1046,20 @@ describe('ListComponent', () => {
     expect(options.length).toBe(2);
     expect(options[0].getAttribute('role')).toBe('option');
     expect(options[0].getAttribute('aria-label')).toBe('Étape - Note 1');
-    const spans = Array.from(options[0].querySelectorAll('span > span')).map(
-      (span) => span.textContent?.trim(),
-    );
-    expect(spans).toEqual(['Étape - Note 1', 'En attente', '25/04/2023 16:23']);
+    const rowTexts = (option: HTMLElement) =>
+      Array.from(option.querySelectorAll('.o-flex--y > span')).map((row) =>
+        Array.from(row.children.length ? row.children : [row]).map((cell) =>
+          cell.textContent?.trim(),
+        ),
+      );
+    expect(rowTexts(options[0])).toEqual([
+      ['Étape - Note 1', '25/04/2023 16:23'],
+      ['En attente'],
+    ]);
     expect(
-      Array.from(options[1].querySelectorAll('span > span')).map((span) =>
-        span.textContent?.trim(),
-      ),
-    ).toEqual(['Note 2', 'Reçu']);
+      options[0].querySelector('.u-text-label-md')?.textContent?.trim(),
+    ).toBe('Étape - Note 1');
+    expect(rowTexts(options[1])).toEqual([['Note 2'], ['Reçu']]);
   });
 
   it('should keep label-only tag targets as plain rows', () => {

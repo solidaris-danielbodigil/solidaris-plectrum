@@ -1982,7 +1982,7 @@
             "Selecting an entry emits itemClick; selectedItemId takes precedence over item.selected and expands the parent group once when it moves programmatically",
             "Entry rows: neutral border by default, primary border on hover, primary border plus elevation (--pds-shadow-list-row-selected) and an accented bold title when selected; group headers get no hover / selected chrome",
             "Count tags with one target emit tagTargetClick directly; with several targets they open a p-popover listbox to pick one",
-            "A picker target may carry an optional status text and date/time; they render as plain inline text after the label inside the standard p-autocomplete-option (aria-label stays the label) — targets with only a label render unchanged",
+            "A picker target may carry an optional status text and date/time; they render on two rows inside the standard p-autocomplete-option — row 1 the bold label followed by the date, row 2 the status alone (aria-label stays the label) — targets with only a label render unchanged",
             "loading=true replaces the tree with three PrimeNG skeleton rows and sets aria-busy"
           ]
         },
