@@ -14,7 +14,7 @@ export const CI_JOBS = [
     ]
   },
   {
-    "id": "build",
+    "id": "static-checks",
     "condition": null,
     "steps": [
       {
@@ -100,7 +100,13 @@ export const CI_JOBS = [
         "run": "npm run contracts:check",
         "advisory": false,
         "condition": null
-      },
+      }
+    ]
+  },
+  {
+    "id": "apps-build",
+    "condition": null,
+    "steps": [
       {
         "name": "Build applications",
         "run": "npm run build",
@@ -118,16 +124,46 @@ export const CI_JOBS = [
         "run": "npm run build:dashboard",
         "advisory": false,
         "condition": null
-      },
+      }
+    ]
+  },
+  {
+    "id": "unit-ui",
+    "condition": null,
+    "steps": [
       {
-        "name": "Install Playwright Chromium",
-        "run": "npx playwright install --with-deps chromium",
+        "name": "Run ui tests",
+        "run": "npx ng test ui --watch=false --coverage",
+        "advisory": false,
+        "condition": null
+      }
+    ]
+  },
+  {
+    "id": "unit-ishare",
+    "condition": null,
+    "steps": [
+      {
+        "name": "Run ishare tests",
+        "run": "npx ng test ishare --watch=false --coverage",
         "advisory": false,
         "condition": null
       },
       {
-        "name": "Run tests",
-        "run": "npm run test:coverage",
+        "name": "Run plectrum tests",
+        "run": "npx ng test plectrum --watch=false --coverage",
+        "advisory": false,
+        "condition": null
+      }
+    ]
+  },
+  {
+    "id": "build",
+    "condition": "${{ !cancelled() }}",
+    "steps": [
+      {
+        "name": "Require every build job to pass",
+        "run": "inline shell script",
         "advisory": false,
         "condition": null
       }
@@ -137,12 +173,6 @@ export const CI_JOBS = [
     "id": "pack-smoke",
     "condition": null,
     "steps": [
-      {
-        "name": "Install Playwright Chromium",
-        "run": "npx playwright install --with-deps chromium",
-        "advisory": false,
-        "condition": null
-      },
       {
         "name": "Pack libraries and build a throwaway consumer app",
         "run": "npm run pack:smoke",
@@ -161,12 +191,6 @@ export const CI_JOBS = [
     "id": "storybook-tests",
     "condition": null,
     "steps": [
-      {
-        "name": "Install Playwright browser",
-        "run": "npx playwright install --with-deps chromium",
-        "advisory": false,
-        "condition": null
-      },
       {
         "name": "Build Storybook",
         "run": "npm run build-storybook:coverage",
