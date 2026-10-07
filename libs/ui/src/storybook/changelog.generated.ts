@@ -2,7 +2,18 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "devkit-assets-note-popover",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Regenerated devkit assets (`catalogue.json`, `tokens.json`) for the Profile drawer disabled inputs and the List tag-target `status` / `date`. Republished as a new patch because `pds-devkit@0.7.3` is immutable on the registry."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {
