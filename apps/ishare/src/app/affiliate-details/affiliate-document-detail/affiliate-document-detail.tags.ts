@@ -53,6 +53,19 @@ const COMMENT_TAG_NOUNS: Record<ListTagSeverity, string> = {
   contrast: 'note',
 };
 
+function commentTagTarget(
+  panel: DocumentCertificatPanel,
+  id: string,
+  label: string,
+): ListEntryTagTarget {
+  return {
+    id,
+    label,
+    status: panel.workerComment?.status ?? panel.status.label,
+    date: panel.workerComment?.date,
+  };
+}
+
 export interface DocumentStepSummary {
   status: DocumentCertificatPanel['status'] | null;
   tags: ListEntryTag[];
@@ -150,10 +163,11 @@ function buildCommentTagsForPanels(
     addTarget(
       commentCountListTagSeverity(panel.workerComment.severity),
       panel.workerComment.severity,
-      {
-        id: resolveTargetId(panel),
-        label: resolveTargetLabel(panel),
-      },
+      commentTagTarget(
+        panel,
+        resolveTargetId(panel),
+        resolveTargetLabel(panel),
+      ),
     );
   }
 
@@ -251,10 +265,7 @@ export function deriveDocumentTags(
       addTarget(
         commentCountListTagSeverity(panel.workerComment.severity),
         panel.workerComment.severity,
-        {
-          id: `${step.value}::${panel.id}`,
-          label: targetLabel,
-        },
+        commentTagTarget(panel, `${step.value}::${panel.id}`, targetLabel),
       );
     }
   }

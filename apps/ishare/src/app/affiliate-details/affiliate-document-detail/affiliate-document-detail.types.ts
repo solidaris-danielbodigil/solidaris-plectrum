@@ -108,6 +108,10 @@ export interface DocumentCertificatPanel {
     severity: DocumentCertificatPanelStatusSeverity;
     text: string;
     icon?: string;
+    /** Note status text shown in the count-tag popover (e.g. `En attente`); falls back to the panel status label. */
+    status?: string;
+    /** Note timestamp shown in the count-tag popover (e.g. `25/04/2023 16:23`). */
+    date?: string;
   };
   crossReference?: DocumentCrossReference;
   actions: DocumentCertificatAction[];

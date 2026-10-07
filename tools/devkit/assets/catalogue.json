@@ -1982,6 +1982,7 @@
             "Selecting an entry emits itemClick; selectedItemId takes precedence over item.selected and expands the parent group once when it moves programmatically",
             "Entry rows: neutral border by default, primary border on hover, primary border plus elevation (--pds-shadow-list-row-selected) and an accented bold title when selected; group headers get no hover / selected chrome",
             "Count tags with one target emit tagTargetClick directly; with several targets they open a p-popover listbox to pick one",
+            "A picker target may carry an optional status text and date/time; they render as plain inline text after the label inside the standard p-autocomplete-option (aria-label stays the label) — targets with only a label render unchanged",
             "loading=true replaces the tree with three PrimeNG skeleton rows and sets aria-busy"
           ]
         },
@@ -3164,6 +3165,34 @@
             "required": false,
             "default": "true",
             "description": "Whether the Notes accordion section is rendered."
+          },
+          {
+            "name": "disabledViews",
+            "type": "ProfileDrawerView[]",
+            "required": false,
+            "default": "[]",
+            "description": "Views whose Détails / Documents option is disabled."
+          },
+          {
+            "name": "quickActionsDisabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Disables the Quick actions button."
+          },
+          {
+            "name": "callDisabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Disables the call action."
+          },
+          {
+            "name": "emailDisabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Disables the email action."
           },
           {
             "name": "labels",

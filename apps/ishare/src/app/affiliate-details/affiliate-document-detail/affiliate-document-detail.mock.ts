@@ -778,6 +778,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             workerComment: {
               severity: 'info',
               text: 'En attente du flux employeur - 10/12/2025 15:56',
+              status: 'En attente',
+              date: '25/04/2023 16:23',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -793,6 +795,8 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
             workerComment: {
               severity: 'info',
               text: 'UOPV encodé en 9M à la réception - 10/12/2025 15:56',
+              status: 'Reçu',
+              date: '25/04/2023 16:23',
               icon: COMMENT_ICONS.info,
             },
             actions: FDR_PANEL_ACTIONS,
@@ -858,7 +862,7 @@ export const EVA_MARTINEZ_DOCUMENT_DETAILS: Record<
       },
       {
         value: 2,
-        label: 'Déclaration de revenu',
+        label: 'Feuille 225',
         panels: [
           {
             id: 'declaration-revenu-volet-a',

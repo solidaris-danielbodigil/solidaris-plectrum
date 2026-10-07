@@ -2,7 +2,18 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
+  {
+    "id": "list-tag-target-status-date",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "minor"
+      }
+    ],
+    "summary": "List and Profile drawer: new optional inputs, no change for existing callers.\n\n- **Profile drawer**: `disabledViews`, `quickActionsDisabled`, `callDisabled` and `emailDisabled` disable the matching view option (Détails / Documents) and the quick actions, call and email buttons.\n- **List**: `ListEntryTagTarget` gains optional `status` and `date`, shown inline after the label in the tag popover. A target with only a `label` renders as before.\n- **List**: count-tag buttons that open a target popover are no longer pill-shaped (`rounded` removed), so they read as regular buttons."
+  }
+];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   {

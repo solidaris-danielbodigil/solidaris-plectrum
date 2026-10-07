@@ -112,6 +112,36 @@ describe('ProfileDrawerComponent', () => {
     ).toBeFalsy();
   });
 
+  it('should disable the quick actions, call, email and Documents controls when requested', async () => {
+    fixture.componentRef.setInput('disabledViews', ['documents']);
+    fixture.componentRef.setInput('quickActionsDisabled', true);
+    fixture.componentRef.setInput('callDisabled', true);
+    fixture.componentRef.setInput('emailDisabled', true);
+    await openDrawer();
+
+    const q = (s: string) =>
+      document.querySelector<HTMLButtonElement>(s);
+    expect(q('.c-drawer__profile-quick-actions')?.disabled).toBe(true);
+    const contact = document.querySelectorAll<HTMLButtonElement>(
+      '.c-drawer__profile-contact-action',
+    );
+    expect(contact.length).toBe(2);
+    contact.forEach((b) => expect(b.disabled).toBe(true));
+    const options = document.querySelectorAll('.p-togglebutton');
+    expect(options[0].classList.contains('p-disabled')).toBe(false);
+    expect(options[1].classList.contains('p-disabled')).toBe(true);
+  });
+
+  it('should leave the controls enabled by default', async () => {
+    await openDrawer();
+
+    expect(
+      document.querySelector<HTMLButtonElement>(
+        '.c-drawer__profile-quick-actions',
+      )?.disabled,
+    ).toBe(false);
+  });
+
   it('should render the affiliate name when visible', async () => {
     await openDrawer();
 

@@ -1351,10 +1351,14 @@ describe('AffiliateDetailsComponent', () => {
               id: '2::fdr-affilie-incapacite',
               label:
                 'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+              status: 'En attente',
+              date: '25/04/2023 16:23',
             },
             {
               id: '2::compte-financier-liasse',
               label: 'Feuilles de renseignement - Compte financier - Liasse',
+              status: 'Reçu',
+              date: '25/04/2023 16:23',
             },
           ],
         }),
@@ -1363,7 +1367,13 @@ describe('AffiliateDetailsComponent', () => {
           severity: 'warn',
           icon: 'bi bi-exclamation-triangle-fill',
           ariaLabel: '1 avertissement',
-          targets: [{ id: '3::calcul', label: 'Calcul - Calcul' }],
+          targets: [
+            expect.objectContaining({
+              id: '3::calcul',
+              label: 'Calcul - Calcul',
+              status: 'En attente',
+            }),
+          ],
         }),
       ]),
     );

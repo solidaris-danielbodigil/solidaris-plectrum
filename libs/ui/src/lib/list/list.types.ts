@@ -8,7 +8,12 @@ export interface ListEntryStatus {
 /** Opaque deep-link target a count tag can jump to (consumer-resolved). */
 export interface ListEntryTagTarget {
   id: string;
+  /** Plain-text name — row title, accessible name and telemetry label. */
   label: string;
+  /** Optional status text shown inline after the label (e.g. `En attente`, `Reçu`). */
+  status?: string;
+  /** Optional preformatted date/time shown inline after the status (e.g. `25/04/2023 16:23`). */
+  date?: string;
 }
 
 /** Footer count tag on document rows (comments, warnings, …). */
