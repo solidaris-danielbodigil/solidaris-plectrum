@@ -431,7 +431,11 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "cache": {
+      "enabled": true,
+      "environment": "all"
+    }
   },
   "schematics": {
     "@schematics/angular:component": {

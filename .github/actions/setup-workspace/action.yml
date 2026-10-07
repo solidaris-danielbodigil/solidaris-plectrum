@@ -6,6 +6,12 @@ inputs:
     description: Also install Playwright Chromium with its system dependencies.
     required: false
     default: 'false'
+  cache:
+    description: >-
+      Name of the build cache to restore and save for .angular/cache and node_modules/.cache,
+      one name per job type so jobs do not overwrite each other. Leave empty to skip.
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -19,6 +25,17 @@ runs:
     - name: Install dependencies
       shell: bash
       run: npm ci
+
+    # Angular's disk cache is off in CI by default; angular.json turns it on for every environment.
+    # The key changes with the lockfile, so a dependency update starts a fresh cache.
+    - name: Restore the build cache
+      if: ${{ inputs.cache != '' }}
+      uses: actions/cache@v4
+      with:
+        path: |
+          .angular/cache
+          node_modules/.cache
+        key: build-${{ runner.os }}-${{ inputs.cache }}-${{ hashFiles('package-lock.json', 'angular.json') }}
 
     - name: Install Playwright Chromium
       if: ${{ inputs.playwright == 'true' }}

@@ -131,6 +131,8 @@ jobs:
 
       - name: Set up workspace
         uses: ./.github/actions/setup-workspace
+        with:
+          cache: apps
 
       - name: Build applications
         run: npm run build
@@ -155,6 +157,7 @@ jobs:
         uses: ./.github/actions/setup-workspace
         with:
           playwright: 'true'
+          cache: ui
 
       - name: Run ui tests
         run: npx ng test ui --watch=false --coverage
@@ -171,6 +174,7 @@ jobs:
         uses: ./.github/actions/setup-workspace
         with:
           playwright: 'true'
+          cache: ishare
 
       - name: Run ishare tests
         run: npx ng test ishare --watch=false --coverage
@@ -208,6 +212,7 @@ jobs:
         uses: ./.github/actions/setup-workspace
         with:
           playwright: 'true'
+          cache: pack
 
       - name: Pack libraries and build a throwaway consumer app
         run: npm run pack:smoke
@@ -233,6 +238,7 @@ jobs:
         uses: ./.github/actions/setup-workspace
         with:
           playwright: 'true'
+          cache: storybook
 
       - name: Build Storybook
         run: npm run build-storybook:coverage
@@ -304,6 +310,8 @@ jobs:
 
       - name: Set up workspace
         uses: ./.github/actions/setup-workspace
+        with:
+          cache: storybook-packed
 
       - name: Build packed libraries
         run: npm run pack:libs
