@@ -215,9 +215,16 @@ jobs:
       - name: Verify package ownership, registry target and release artifacts
         run: npm run release:check
 
-  storybook-tests:
+  # `storybook-tests` is a required status check, so it stays a single name: it passes when
+  # every shard below passes. The shards split the story files across runners and each one
+  # builds Storybook, because rebuilding (about 30 s) is cheaper than handing the build over.
+  storybook-tests-shard:
     needs: intake-guard
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -230,14 +237,34 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook:coverage
 
+      # Once per run, not once per shard.
       - name: Verify toolkit catalogue documentation routes
+        if: ${{ matrix.shard == 1 }}
         run: npm run contracts:docs-check
 
       - name: Run story smoke, interaction, a11y and coverage tests
-        run: npm run test-storybook:ci
+        run: npm run test-storybook:ci -- --shard=${{ matrix.shard }}/3
 
       - name: Cross-page navigation under the Pages sub-path
+        if: ${{ matrix.shard == 1 }}
         run: npm run test-storybook:nav
+
+  storybook-tests:
+    needs: storybook-tests-shard
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every Storybook test shard to pass
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for result in $RESULTS; do
+            if [[ "$result" != "success" ]]; then
+              echo "A Storybook test shard did not succeed ($result)." >&2
+              exit 1
+            fi
+          done
 
   chromatic:
     needs: intake-guard
