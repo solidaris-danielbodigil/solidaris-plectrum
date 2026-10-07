@@ -648,8 +648,8 @@ const NOTES_DOCUMENTS: ListEntryItem[] = [
 
 /**
  * A count tag whose targets carry an optional `status` and `date` opens the
- * standard picker with that text inline after the label. Targets with only a
- * `label` render unchanged.
+ * standard picker on two rows: the bold label followed by the date, then the
+ * status alone. Targets with only a `label` render unchanged.
  */
 export const TagTargetNotes: Story = {
   args: {
@@ -671,6 +671,10 @@ export const TagTargetNotes: Story = {
     );
     await expect(first).toHaveTextContent('25/04/2023 16:23');
     await expect(first).toHaveTextContent('En attente');
+    const rows = first.querySelectorAll('.o-flex--y > span');
+    await expect(rows).toHaveLength(2);
+    await expect(rows[0]).toHaveTextContent('25/04/2023 16:23');
+    await expect(rows[1]).toHaveTextContent(/^En attente$/);
     await expect(
       body.getByRole('option', {
         name: 'Feuilles de renseignement - Compte financier - Liasse',

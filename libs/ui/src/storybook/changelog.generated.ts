@@ -12,6 +12,26 @@ export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
       }
     ],
     "summary": "Regenerated devkit assets (`catalogue.json`, `tokens.json`) for the Profile drawer disabled inputs and the List tag-target `status` / `date`. Republished as a new patch because `pds-devkit@0.7.3` is immutable on the registry."
+  },
+  {
+    "id": "devkit-assets-tag-popover-two-rows",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-devkit",
+        "bump": "patch"
+      }
+    ],
+    "summary": "Regenerated devkit asset (`catalogue.json`) for the List tag-target popover two-row layout (bold label and date on row one, status on row two)."
+  },
+  {
+    "id": "list-tag-popover-two-rows",
+    "bumps": [
+      {
+        "packageName": "@solidaris-danielbodigil/pds-ui",
+        "bump": "patch"
+      }
+    ],
+    "summary": "List: comment-tag popover options now render on two rows — the bold label followed by the date on row one, and the status alone on row two. Label-only targets are unchanged."
   }
 ];
 

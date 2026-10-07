@@ -650,15 +650,17 @@
           (keydown)="onStepTagTargetKeydown($event, target)"
         >
           @if (target.status || target.date) {
-            <span
-              class="o-flex o-flex--wrap o-flex--align-items-baseline o-layout o-layout--gap-1-5"
-            >
-              <span>{{ target.label }}</span>
+            <span class="o-flex o-flex--y">
+              <span
+                class="o-flex o-flex--wrap o-flex--align-items-baseline o-layout o-layout--gap-1-5"
+              >
+                <span class="u-text-label-md">{{ target.label }}</span>
+                @if (target.date) {
+                  <span>{{ target.date }}</span>
+                }
+              </span>
               @if (target.status) {
                 <span>{{ target.status }}</span>
-              }
-              @if (target.date) {
-                <span>{{ target.date }}</span>
               }
             </span>
           } @else {

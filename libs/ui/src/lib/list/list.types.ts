@@ -10,9 +10,9 @@ export interface ListEntryTagTarget {
   id: string;
   /** Plain-text name — row title, accessible name and telemetry label. */
   label: string;
-  /** Optional status text shown inline after the label (e.g. `En attente`, `Reçu`). */
+  /** Optional status text shown on its own second row (e.g. `En attente`, `Reçu`). */
   status?: string;
-  /** Optional preformatted date/time shown inline after the status (e.g. `25/04/2023 16:23`). */
+  /** Optional preformatted date/time shown after the bold label on row one (e.g. `25/04/2023 16:23`). */
   date?: string;
 }
 
