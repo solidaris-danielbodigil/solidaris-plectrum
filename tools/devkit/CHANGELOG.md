@@ -1,5 +1,12 @@
 # @solidaris-danielbodigil/pds-devkit
 
+## 0.7.4
+
+### Patch Changes
+
+- 6e1cc6c: Regenerated devkit assets (`catalogue.json`, `tokens.json`) for the Profile drawer disabled inputs and the List tag-target `status` / `date`. Republished as a new patch because `pds-devkit@0.7.3` is immutable on the registry.
+- 46c7e77: Regenerated devkit asset (`catalogue.json`) for the List tag-target popover two-row layout (bold label and date on row one, status on row two).
+
 ## 0.7.3
 
 ### Patch Changes
