@@ -209,7 +209,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-styles",
-        "version": "2.1.1"
+        "version": "2.2.0"
       },
       "selector": null,
       "docs": {
@@ -434,7 +434,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "CopyableTextComponent"
       },
@@ -632,7 +632,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui/patterns/ishare",
         "exportName": "DelayPredictionCardComponent"
       },
@@ -782,7 +782,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-styles",
-        "version": "2.1.1"
+        "version": "2.2.0"
       },
       "selector": null,
       "docs": {
@@ -993,7 +993,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-styles",
-        "version": "2.1.1"
+        "version": "2.2.0"
       },
       "selector": null,
       "docs": {
@@ -1173,7 +1173,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "EmptyStateComponent"
       },
@@ -1433,7 +1433,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "FormFieldComponent"
       },
@@ -1661,7 +1661,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "IconComponent"
       },
@@ -1847,7 +1847,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "InputClearComponent"
       },
@@ -2140,7 +2140,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ListComponent"
       },
@@ -2360,7 +2360,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "NavShellComponent"
       },
@@ -2622,7 +2622,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "PlectrumAvatarComponent"
       },
@@ -2996,7 +2996,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ProfileCardComponent"
       },
@@ -3315,7 +3315,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ProfileDrawerComponent"
       },
@@ -3776,7 +3776,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ProfileHeaderComponent"
       },
@@ -3924,7 +3924,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-styles",
-        "version": "2.1.1"
+        "version": "2.2.0"
       },
       "selector": null,
       "docs": {
@@ -4216,7 +4216,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "SubNavShellComponent"
       },
@@ -4363,7 +4363,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-styles",
-        "version": "2.1.1"
+        "version": "2.2.0"
       },
       "selector": null,
       "docs": {
@@ -4573,7 +4573,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "ToolbarComponent"
       },
@@ -4986,7 +4986,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui",
         "exportName": "TopNavComponent"
       },
@@ -5160,7 +5160,7 @@
       },
       "package": {
         "name": "@solidaris-danielbodigil/pds-ui",
-        "version": "2.1.1",
+        "version": "2.2.0",
         "importPath": "@solidaris-danielbodigil/pds-ui/patterns/ishare",
         "exportName": "TransactionsCicsModalComponent"
       },

@@ -2,20 +2,20 @@
 
 import type { ChangelogChangeset, ChangelogRelease } from './changelog.types';
 
-export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [
-  {
-    "id": "list-tag-target-status-date",
-    "bumps": [
-      {
-        "packageName": "@solidaris-danielbodigil/pds-ui",
-        "bump": "minor"
-      }
-    ],
-    "summary": "List and Profile drawer: new optional inputs, no change for existing callers.\n\n- **Profile drawer**: `disabledViews`, `quickActionsDisabled`, `callDisabled` and `emailDisabled` disable the matching view option (Détails / Documents) and the quick actions, call and email buttons.\n- **List**: `ListEntryTagTarget` gains optional `status` and `date`, shown inline after the label in the tag popover. A target with only a `label` renders as before.\n- **List**: count-tag buttons that open a target popover are no longer pill-shaped (`rounded` removed), so they read as regular buttons."
-  }
-];
+export const CHANGELOG_UNRELEASED: ChangelogChangeset[] = [];
 
 export const CHANGELOG_RELEASES: ChangelogRelease[] = [
+  {
+    "packageName": "@solidaris-danielbodigil/pds-ui",
+    "version": "2.2.0",
+    "changes": [
+      {
+        "bump": "minor",
+        "text": "772b03a: List and Profile drawer: new optional inputs, no change for existing callers. - **Profile drawer**: `disabledViews`, `quickActionsDisabled`, `callDisabled` and `emailDisabled` disable the matching view option (Détails / Documents) and the quick actions, call and email buttons. - **List**: `ListEntryTagTarget` gains optional `status` and `date`, shown inline after the label in the tag popover. A target with only a `label` renders as before. - **List**: count-tag buttons that open a target popover are no longer pill-shaped (`rounded` removed), so they read as regular buttons."
+      }
+    ],
+    "notes": ""
+  },
   {
     "packageName": "@solidaris-danielbodigil/pds-ui",
     "version": "2.1.1",
@@ -127,6 +127,12 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
   },
   {
     "packageName": "@solidaris-danielbodigil/pds-plectrum",
+    "version": "2.2.0",
+    "changes": [],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-plectrum",
     "version": "2.1.1",
     "changes": [],
     "notes": ""
@@ -209,6 +215,12 @@ export const CHANGELOG_RELEASES: ChangelogRelease[] = [
         "text": "f699043: Publish `@solidaris/ui`, `@solidaris/plectrum`, and `@solidaris/styles` as versioned packages (APF for the Angular libs, SCSS source for styles)."
       }
     ],
+    "notes": ""
+  },
+  {
+    "packageName": "@solidaris-danielbodigil/pds-styles",
+    "version": "2.2.0",
+    "changes": [],
     "notes": ""
   },
   {
