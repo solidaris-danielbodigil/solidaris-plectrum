@@ -101,6 +101,7 @@ The jobs of the Plectrum repository, with their application counterparts:
     ['storybook-packed', 'Builds the central catalogue against packed libraries to catch differences between source aliases and package consumption.', 'Application imports resolve installed packages; build both the application and its local Storybook.'],
     ['figma-plugin', 'Typechecks, tests and builds the Plectrum token plugin and uploads its artifact.', 'Core token tooling only.'],
     ['chromatic / visual-tests', 'Runs only when CHROMATIC_ENABLED is true; requires the project token and checks visual changes against baselines.', 'Choose and configure the application visual regression service with its owners.'],
+    ['pages-site / deploy-pages', 'On pushes to main, builds the GitHub Pages site (iSHARE, iGED, dashboard, Storybook) next to the checks and deploys it once every other job has passed and the revision is still the head of main. The Deploy GitHub Pages workflow rebuilds it when a release is published and on demand.', 'Core hosting only; applications choose their own deployment pipeline.'],
   ]}
 />
 

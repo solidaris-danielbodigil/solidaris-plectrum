@@ -263,5 +263,22 @@ export const CI_JOBS = [
         "condition": null
       }
     ]
+  },
+  {
+    "id": "pages-site",
+    "condition": "${{ github.event_name != 'pull_request' }}",
+    "steps": []
+  },
+  {
+    "id": "deploy-pages",
+    "condition": "${{ !failure() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main' }}",
+    "steps": [
+      {
+        "name": "Check this revision is still the head of main",
+        "run": "inline shell script",
+        "advisory": false,
+        "condition": null
+      }
+    ]
   }
 ] as const;
