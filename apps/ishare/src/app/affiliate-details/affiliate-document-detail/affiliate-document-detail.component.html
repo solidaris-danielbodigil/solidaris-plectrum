@@ -280,7 +280,6 @@
               pButton
               [severity]="tag.severity"
               outlined
-              rounded
               size="small"
               [label]="tag.label"
               [icon]="tag.icon"
@@ -645,11 +644,26 @@
           class="p-autocomplete-option"
           tabindex="0"
           pRipple
+          [attr.aria-label]="target.label"
           [pdsTelemetryLabel]="target.label"
           (click)="onStepTagTargetSelect($event, target)"
           (keydown)="onStepTagTargetKeydown($event, target)"
         >
-          {{ target.label }}
+          @if (target.status || target.date) {
+            <span
+              class="o-flex o-flex--wrap o-flex--align-items-baseline o-layout o-layout--gap-1-5"
+            >
+              <span>{{ target.label }}</span>
+              @if (target.status) {
+                <span>{{ target.status }}</span>
+              }
+              @if (target.date) {
+                <span>{{ target.date }}</span>
+              }
+            </span>
+          } @else {
+            {{ target.label }}
+          }
         </li>
       }
     </ul>

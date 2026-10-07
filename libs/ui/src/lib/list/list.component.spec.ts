@@ -899,7 +899,7 @@ describe('ListComponent', () => {
     expect(treeItems.length).toBe(FLAT_DOCUMENTS.length);
   });
 
-  it('should render interactive count tags as outlined rounded p-buttons with aria-label', () => {
+  it('should render interactive count tags as outlined non-rounded p-buttons with aria-label', () => {
     fixture.componentRef.setInput('groups', null);
     fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
     fixture.detectChanges();
@@ -911,7 +911,7 @@ describe('ListComponent', () => {
     expect(tagButton).toBeTruthy();
     expect(tagButton.getAttribute('aria-label')).toBe('1 commentaire');
     expect(tagButton.classList.contains('p-button-outlined')).toBe(true);
-    expect(tagButton.classList.contains('p-button-rounded')).toBe(true);
+    expect(tagButton.classList.contains('p-button-rounded')).toBe(false);
     expect(tagButton.classList.contains('p-button-sm')).toBe(true);
     expect(tagButton.classList.contains('p-button-secondary')).toBe(true);
   });
@@ -1005,6 +1005,73 @@ describe('ListComponent', () => {
       tag: DOCS_WITH_TAG_TARGETS[1].tags![0],
       target: DOCS_WITH_TAG_TARGETS[1].tags![0].targets![0],
     });
+  });
+
+  it('should render status and date inline inside the standard option', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', [
+      {
+        id: 'doc-notes',
+        title: 'Document avec notes',
+        tags: [
+          {
+            label: '2',
+            severity: 'info',
+            ariaLabel: '2 commentaires',
+            targets: [
+              {
+                id: 'n1',
+                label: 'Étape - Note 1',
+                status: 'En attente',
+                date: '25/04/2023 16:23',
+              },
+              { id: 'n2', label: 'Note 2', status: 'Reçu' },
+            ],
+          },
+        ],
+      },
+    ] satisfies ListEntryItem[]);
+    fixture.detectChanges();
+
+    (
+      fixture.nativeElement.querySelector(
+        '.c-list__tags button.p-button',
+      ) as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    const options = document.querySelectorAll(
+      '.p-autocomplete-option',
+    ) as NodeListOf<HTMLElement>;
+    expect(options.length).toBe(2);
+    expect(options[0].getAttribute('role')).toBe('option');
+    expect(options[0].getAttribute('aria-label')).toBe('Étape - Note 1');
+    const spans = Array.from(options[0].querySelectorAll('span > span')).map(
+      (span) => span.textContent?.trim(),
+    );
+    expect(spans).toEqual(['Étape - Note 1', 'En attente', '25/04/2023 16:23']);
+    expect(
+      Array.from(options[1].querySelectorAll('span > span')).map((span) =>
+        span.textContent?.trim(),
+      ),
+    ).toEqual(['Note 2', 'Reçu']);
+  });
+
+  it('should keep label-only tag targets as plain rows', () => {
+    fixture.componentRef.setInput('groups', null);
+    fixture.componentRef.setInput('items', DOCS_WITH_TAG_TARGETS);
+    fixture.detectChanges();
+
+    (
+      fixture.nativeElement.querySelectorAll(
+        '.c-list__tags button.p-button',
+      )[1] as HTMLButtonElement
+    ).click();
+    fixture.detectChanges();
+
+    const options = document.querySelectorAll('.p-autocomplete-option');
+    expect(options.length).toBe(2);
+    expect(options[0].textContent?.trim()).toBe('Étape 1 — Panneau A');
   });
 
   it('should render footnote below the tree and emit footnoteClick', () => {

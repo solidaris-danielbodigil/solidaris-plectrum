@@ -84,4 +84,25 @@ describe('affiliate-document-detail.tags', () => {
       }),
     ]);
   });
+
+  it('should enrich comment tag targets with panel status and note date', () => {
+    const detail = EVA_MARTINEZ_DOCUMENT_DETAILS['doc-demande-primaire'];
+    const fdr = detail.steps.find((step) => step.label === 'Feuilles de renseignement');
+    const [tag] = deriveStepCommentTags(fdr!);
+
+    expect(tag.targets).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: expect.stringContaining('Incapacité de travail'),
+          status: 'En attente',
+          date: '25/04/2023 16:23',
+        }),
+        expect.objectContaining({
+          label: expect.stringContaining('Compte financier - Liasse'),
+          status: 'Reçu',
+          date: '25/04/2023 16:23',
+        }),
+      ]),
+    );
+  });
 });

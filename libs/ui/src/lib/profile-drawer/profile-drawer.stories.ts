@@ -107,6 +107,10 @@ const plectrumIconProviders = [
       [data]="data()"
       [view]="activeView()"
       [showNotes]="showNotes()"
+      [disabledViews]="disabledViews()"
+      [quickActionsDisabled]="quickActionsDisabled()"
+      [callDisabled]="callDisabled()"
+      [emailDisabled]="emailDisabled()"
       (identifierCopy)="onIdentifierCopy($event)"
       (viewChange)="onViewChange($event)"
       (quickActionsClick)="notify('Actions rapides')"
@@ -120,6 +124,10 @@ const plectrumIconProviders = [
 class ProfileDrawerDemoComponent {
   readonly data = input.required<ProfileDrawerData>();
   readonly showNotes = input<boolean>(true);
+  readonly disabledViews = input<ProfileDrawerView[]>([]);
+  readonly quickActionsDisabled = input<boolean>(false);
+  readonly callDisabled = input<boolean>(false);
+  readonly emailDisabled = input<boolean>(false);
 
   readonly open = signal(false);
   readonly activeView = signal<ProfileDrawerView>('details');
@@ -149,6 +157,10 @@ class ProfileDrawerDemoComponent {
 interface ProfileDrawerStoryArgs {
   data: ProfileDrawerData;
   showNotes: boolean;
+  disabledViews: ProfileDrawerView[];
+  quickActionsDisabled: boolean;
+  callDisabled: boolean;
+  emailDisabled: boolean;
 }
 
 // Promoted to core and reused across applications — catalogued with the Shell.
@@ -165,6 +177,12 @@ const meta: Meta<ProfileDrawerStoryArgs> = {
     layout: 'padded',
     ...storyDesign(ProfileDrawerMetadata.component.figmaUrl),
   },
+  args: {
+    disabledViews: [],
+    quickActionsDisabled: false,
+    callDisabled: false,
+    emailDisabled: false,
+  },
   argTypes: argTypesFromProps(ProfileDrawerMetadata.props ?? [], {
     view: { control: 'select', options: ['details', 'documents'] },
     position: { control: 'select', options: ['left', 'right', 'top', 'bottom'] },
@@ -175,6 +193,10 @@ const meta: Meta<ProfileDrawerStoryArgs> = {
       <pds-profile-drawer-demo
         [data]="data"
         [showNotes]="showNotes"
+        [disabledViews]="disabledViews"
+        [quickActionsDisabled]="quickActionsDisabled"
+        [callDisabled]="callDisabled"
+        [emailDisabled]="emailDisabled"
       />
     `,
   }),
@@ -221,6 +243,36 @@ export const Dutch: Story = {
       canvas.getByRole('button', { name: /Ouvrir la carte affilié/ }),
     );
     await waitForText(canvasElement, 'Algemene informatie', { inDocument: true });
+  },
+};
+
+export const DisabledActions: Story = {
+  args: {
+    data: EVA_MARTINEZ,
+    disabledViews: ['documents'],
+    quickActionsDisabled: true,
+    callDisabled: true,
+    emailDisabled: true,
+  },
+  parameters: {
+    // WCAG 1.4.3 exempts inactive components; axe still scores the disabled toggle label.
+    a11y: { config: { rules: [{ id: 'color-contrast', enabled: false }] } },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(
+      canvas.getByRole('button', { name: /Ouvrir la carte affilié/ }),
+    );
+    await waitForText(canvasElement, 'Eva Martinez', { inDocument: true });
+    const doc = canvasElement.ownerDocument;
+    for (const selector of [
+      '.c-drawer__profile-quick-actions',
+      '.c-drawer__profile-contact-action',
+    ]) {
+      doc.querySelectorAll<HTMLButtonElement>(selector).forEach((button) => {
+        expect(button.disabled).toBe(true);
+      });
+    }
   },
 };
 

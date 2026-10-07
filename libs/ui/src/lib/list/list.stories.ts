@@ -616,3 +616,65 @@ export const Keyboard: StoryObj<KeyboardArgs> = {
     await expect(footnoteClicked).toHaveBeenCalledTimes(1);
   },
 };
+
+const NOTES_DOCUMENTS: ListEntryItem[] = [
+  {
+    id: 'doc-notes',
+    title: 'Feuilles de renseignement',
+    tags: [
+      {
+        label: '2',
+        severity: 'info',
+        icon: 'bi bi-chat-right-text-fill',
+        ariaLabel: '2 commentaires',
+        targets: [
+          {
+            id: 'note-1',
+            label: 'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+            status: 'En attente',
+            date: '25/04/2023 16:23',
+          },
+          {
+            id: 'note-2',
+            label: 'Feuilles de renseignement - Compte financier - Liasse',
+            status: 'Reçu',
+            date: '25/04/2023 16:23',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+/**
+ * A count tag whose targets carry an optional `status` and `date` opens the
+ * standard picker with that text inline after the label. Targets with only a
+ * `label` render unchanged.
+ */
+export const TagTargetNotes: Story = {
+  args: {
+    groups: null,
+    items: NOTES_DOCUMENTS,
+    expandedGroupIds: [],
+    selectedItemId: null,
+    loading: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByRole('button', { name: '2 commentaires' }));
+    const first = await waitFor(() =>
+      body.getByRole('option', {
+        name: 'Feuilles de renseignement - F.D.R. affilié - Incapacité de travail',
+      }),
+    );
+    await expect(first).toHaveTextContent('25/04/2023 16:23');
+    await expect(first).toHaveTextContent('En attente');
+    await expect(
+      body.getByRole('option', {
+        name: 'Feuilles de renseignement - Compte financier - Liasse',
+      }),
+    ).toHaveTextContent('25/04/2023 16:23');
+  },
+};

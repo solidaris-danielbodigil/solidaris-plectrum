@@ -1017,7 +1017,7 @@ describe('AffiliateDocumentDetailComponent', () => {
       ),
       (el) => (el as HTMLElement).textContent?.trim() ?? '',
     );
-    expect(stepLabels).toContain('Déclaration de revenu');
+    expect(stepLabels).toContain('Feuille 225');
   });
 
   it('should leave all panels collapsed when every panel on a step is disabled', () => {

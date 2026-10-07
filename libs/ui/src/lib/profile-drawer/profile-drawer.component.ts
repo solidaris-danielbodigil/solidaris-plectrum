@@ -109,6 +109,7 @@ export type ProfileDrawerLabels = Partial<ProfileDrawerLabelSet>;
 interface ProfileDrawerViewOption {
   label: string;
   value: ProfileDrawerView;
+  disabled: boolean;
 }
 
 const FAMILY_PANEL_VALUE = 'family';
@@ -210,6 +211,18 @@ export class ProfileDrawerComponent {
   /** Whether the Notes accordion section is rendered. */
   readonly showNotes = input<boolean>(true);
 
+  /** Views whose segmented-control option is disabled. */
+  readonly disabledViews = input<ProfileDrawerView[]>([]);
+
+  /** Disables the Quick actions button. */
+  readonly quickActionsDisabled = input<boolean>(false);
+
+  /** Disables the call action. */
+  readonly callDisabled = input<boolean>(false);
+
+  /** Disables the email action. */
+  readonly emailDisabled = input<boolean>(false);
+
   /** Partial copy override. Unset keys use the active locale messages. */
   readonly labels = input<ProfileDrawerLabels>({});
 
@@ -242,8 +255,16 @@ export class ProfileDrawerComponent {
   }));
 
   protected readonly viewOptions = computed<ProfileDrawerViewOption[]>(() => [
-    { label: this.resolvedLabels().details, value: 'details' },
-    { label: this.resolvedLabels().documents, value: 'documents' },
+    {
+      label: this.resolvedLabels().details,
+      value: 'details',
+      disabled: this.disabledViews().includes('details'),
+    },
+    {
+      label: this.resolvedLabels().documents,
+      value: 'documents',
+      disabled: this.disabledViews().includes('documents'),
+    },
   ]);
 
   protected readonly familyPanel = FAMILY_PANEL_VALUE;
