@@ -16,12 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '24'
-          cache: 'npm'
-
-      - run: npm install
+      # `npm ci` keeps the lockfile untouched, so the version PR carries only the version changes.
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
 
       # This workflow only prepares version PRs. The attended
       # publish-release.yml workflow checks private package visibility,
