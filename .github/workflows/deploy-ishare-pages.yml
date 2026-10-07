@@ -35,8 +35,6 @@ jobs:
 
       - name: Set up workspace
         uses: ./.github/actions/setup-workspace
-        with:
-          cache: pages
 
       - name: Build the Pages site
         uses: ./.github/actions/build-pages-site
