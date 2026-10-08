@@ -330,3 +330,67 @@ jobs:
           path: |
             tools/figma-plugin/manifest.json
             tools/figma-plugin/dist/
+
+  # The GitHub Pages site (iSHARE, iGED, the dashboard and Storybook) is built here, next to the
+  # checks, so deploy-pages only has to publish it once they all pass. The Deploy GitHub Pages
+  # workflow rebuilds it on demand: when a release is published, and by hand.
+  pages-site:
+    needs: intake-guard
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          # Full history: the Core dashboard reads scan, catalogue and search-quality trends from git.
+          fetch-depth: 0
+
+      - name: Set up workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Build the Pages site
+        uses: ./.github/actions/build-pages-site
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/pages
+
+  deploy-pages:
+    needs: [build, pack-smoke, storybook-tests, storybook-packed, figma-plugin, chromatic, pages-site]
+    if: ${{ !failure() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Two merges in quick succession: only the revision that is still main's head may deploy.
+      - name: Check this revision is still the head of main
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest="$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)"
+          if [[ "$latest" == "$GITHUB_SHA" ]]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "A newer commit ($latest) reached main; not deploying $GITHUB_SHA."
+            echo "current=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy to GitHub Pages
+        if: ${{ steps.current.outputs.current == 'true' }}
+        id: deployment
+        uses: actions/deploy-pages@v4
